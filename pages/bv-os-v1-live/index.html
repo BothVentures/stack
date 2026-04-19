@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — V1 LIVE · Status Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:           #000000;
+  --surface-1:    #0d0d0d;
+  --surface-2:    #141414;
+  --surface-3:    #1e1e1e;
+  --border:       #222121;
+  --border-dim:   rgba(255,255,255,0.05);
+  --text:         #ffffff;
+  --text-muted:   #6d6d6d;
+  --text-dim:     #414141;
+  --accent:       #c8c8c8;
+  --accent-dim:   rgba(200,200,200,0.08);
+  --accent-glow:  rgba(200,200,200,0.04);
+  --blue:         #7dd3fc;
+  --blue-dim:     rgba(125,211,252,0.10);
+  --live:         #86efac;
+  --live-dim:     rgba(134,239,172,0.10);
+  --red:          #fca5a5;
+  --red-dim:      rgba(252,165,165,0.10);
+  --purple:       #d8b4fe;
+  --purple-dim:   rgba(216,180,254,0.10);
+  --gold:         #fbbf24;
+  --gold-dim:     rgba(251,191,36,0.10);
+  --font:         'Roboto', system-ui, -apple-system, sans-serif;
+  --mono:         'Space Mono', 'Courier New', monospace;
+  --shadow-card:  0 2px 6px rgba(0,0,0,0.4);
+  --border-hover: #3a3a3a;
+  --surface-hover:#161616;
+  --ease-out:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-width: 320px;
+}
+
+/* ══ HEADER ══ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--s6);
+  height: 52px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-left { display: flex; align-items: center; gap: var(--s4); }
+.logo { display: flex; align-items: center; gap: 6px; }
+.dot-fill { width: 10px; height: 10px; border-radius: 50%; background: var(--text); flex-shrink: 0; }
+.dot-ring  { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--text); flex-shrink: 0; }
+.wordmark  { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; }
+.header-div { color: var(--border); font-size: 16px; user-select: none; }
+.header-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); }
+.header-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid rgba(134,239,172,0.35);
+  color: var(--live);
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  background: var(--live-dim);
+}
+.header-right {
+  display: flex; align-items: center; gap: var(--s3);
+  font-size: 10px; color: var(--text-muted);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.header-right .sep { color: var(--border); }
+
+/* ══ HERO ══ */
+.hero {
+  padding: 64px var(--s6) 48px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--live);
+  background: var(--live-dim);
+  border: 1px solid rgba(134,239,172,0.30);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin-bottom: 24px;
+}
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--live);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+.hero-title {
+  font-family: 'Roboto Condensed', var(--font);
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.hero-title span { color: var(--text-muted); }
+.hero-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 640px;
+  margin: 0 auto 32px;
+}
+.hero-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s4);
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+.hero-meta .sep { color: var(--border); }
+
+/* ══ STATUS STRIP ══ */
+.status-strip {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 16px var(--s6);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s4);
+  justify-content: center;
+}
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-dot.live { background: var(--live); }
+.status-dot.planned { background: var(--text-dim); }
+.status-label { font-weight: 700; color: var(--text); }
+
+/* ══ PAGE BODY ══ */
+.page {
+  padding: var(--s8) var(--s6) 80px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* ══ SECTION ══ */
+.section {}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  margin-bottom: var(--s6);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--border);
+}
+.section-number {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 0.12em;
+  flex-shrink: 0;
+}
+.section-label {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text);
+}
+.section-label-sub {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ══ INTRO CARD ══ */
+.intro-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  padding: var(--s6);
+  line-height: 1.75;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.intro-card strong { color: var(--text); font-weight: 600; }
+.intro-card em { color: var(--accent); font-style: normal; }
+
+/* ══ TUTORIAL CARD ══ */
+.tutorial-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s var(--ease-out);
+}
+.tutorial-card:hover { border-color: var(--border-hover); }
+.tutorial-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  padding: var(--s5);
+  background: var(--surface-3);
+  border-bottom: 1px solid var(--border);
+}
+.cmd-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.cmd-badge.green  { background: var(--live-dim);   color: var(--live);   border: 1px solid rgba(134,239,172,0.35); }
+.cmd-badge.yellow { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(200,200,200,0.20); }
+.cmd-badge.blue   { background: var(--blue-dim);   color: var(--blue);   border: 1px solid rgba(125,211,252,0.35); }
+.cmd-badge.muted  { background: var(--surface-3);  color: var(--text-muted); border: 1px solid var(--border); }
+
+.skill-meta { flex: 1; }
+.skill-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.skill-tagline { font-size: 11px; color: var(--text-muted); }
+.owner-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.owner-chip {
+  font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1px 7px; border-radius: 10px; font-weight: 700;
+}
+.owner-chip.gaston  { background: rgba(252,165,165,0.10); color: #fca5a5; border: 1px solid rgba(252,165,165,0.25); }
+.owner-chip.rene    { background: var(--purple-dim);      color: #d8b4fe; border: 1px solid rgba(216,180,254,0.25); }
+.owner-chip.daiana  { background: rgba(94,234,212,0.10);  color: #5eead4; border: 1px solid rgba(94,234,212,0.25); }
+.owner-chip.andres  { background: rgba(253,186,116,0.10); color: #fdba74; border: 1px solid rgba(253,186,116,0.25); }
+.owner-chip.boris   { background: var(--accent-dim);      color: var(--accent); border: 1px solid rgba(200,200,200,0.15); }
+.owner-chip.all     { background: var(--surface-3);       color: var(--text-muted); border: 1px solid var(--border); }
+
+.tutorial-body {
+  padding: var(--s5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+}
+.tutorial-explain {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.tutorial-explain strong { color: var(--text); }
+.tutorial-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tutorial-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.step-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.tutorial-tip {
+  background: var(--accent-glow);
+  border: 1px solid rgba(200,200,200,0.08);
+  padding: var(--s3) var(--s4);
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+.tutorial-tip strong { color: var(--accent); font-style: normal; }
+
+/* ══ FLOW ROW ══ */
+.flow-wrap { display: flex; flex-direction: column; gap: var(--s3); }
+.flow-mode-label {
+  font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 4px; font-weight: 700;
+}
+.flow { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.flow-arrow { color: var(--text-muted); font-size: 11px; flex-shrink: 0; font-family: var(--mono); }
+.node {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; letter-spacing: 0.04em;
+  padding: 3px 10px; border-radius: 3px;
+  white-space: nowrap; font-family: var(--mono); border: 1px solid;
+}
+.node.in     { background: var(--blue-dim);            color: var(--blue);   border-color: rgba(125,211,252,0.35); }
+.node.proc   { background: var(--surface-3);           color: #9a9a9a;       border-color: var(--border); }
+.node.out    { background: var(--live-dim);            color: var(--live);   border-color: rgba(134,239,172,0.35); }
+.node.branch { background: rgba(255,255,255,0.06);     color: #e8e8e8;       border-color: rgba(255,255,255,0.22); }
+.node.tool   { background: rgba(255,255,255,0.06);     color: #d4d4d4;       border-color: rgba(255,255,255,0.16); }
+.node.auto   { background: var(--live-dim);            color: var(--live);   border-color: rgba(134,239,172,0.35); }
+.node-icon   { font-size: 9px; opacity: 0.8; }
+.flow-sep    { height: 1px; background: var(--border); margin: var(--s3) 0; }
+
+/* ══ CARDS GRID ══ */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+}
+
+/* ══ AGENT CARD ══ */
+.agent-group { margin-bottom: var(--s6); }
+.agent-group-label {
+  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-dim); font-weight: 700;
+  margin-bottom: var(--s3); padding-left: 2px;
+}
+.agent-card {
+  background: var(--surface-1); border: 1px solid var(--border);
+  padding: var(--s4); display: flex; gap: var(--s3); align-items: flex-start;
+  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+}
+.agent-card:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+.agent-cmd {
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  color: var(--text-muted); background: var(--surface-3);
+  border: 1px solid var(--border); padding: 2px 8px; border-radius: 2px;
+  flex-shrink: 0; letter-spacing: 0.04em;
+}
+.agent-body { flex: 1; }
+.agent-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.agent-desc { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+
+/* ══ TIMELINE (Weekly Rhythm) ══ */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  padding-left: 32px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--border);
+}
+.timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0 12px 24px;
+  position: relative;
+}
+.timeline-dot {
+  position: absolute;
+  left: -22px;
+  top: 16px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-3);
+  flex-shrink: 0;
+}
+.timeline-dot.live { background: var(--live); border-color: rgba(134,239,172,0.5); }
+.timeline-dot.auto { background: var(--blue); border-color: rgba(125,211,252,0.5); }
+.timeline-day { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); font-weight: 700; font-family: var(--mono); }
+.timeline-action { font-size: 13px; color: var(--text); font-weight: 500; }
+.timeline-sub { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.timeline-cmd { font-family: var(--mono); font-size: 10px; color: var(--live); margin-top: 2px; }
+.timeline-divider {
+  position: absolute; left: -22px; top: 0; height: 12px;
+  width: 1px; background: transparent;
+}
+
+/* ══ MONITOR BUTTON ══ */
+.monitor-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  padding: 48px var(--s6);
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  text-align: center;
+}
+.monitor-cta-label {
+  font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-dim); font-family: var(--mono);
+}
+.monitor-cta-title {
+  font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: 0.01em;
+}
+.monitor-cta-sub {
+  font-size: 12px; color: var(--text-muted); max-width: 420px; line-height: 1.6;
+}
+.monitor-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--live);
+  background: var(--live-dim);
+  border: 1px solid rgba(134,239,172,0.35);
+  padding: 10px 24px; border-radius: 3px;
+  text-decoration: none;
+  transition: background 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+.monitor-link:hover { background: rgba(134,239,172,0.18); border-color: rgba(134,239,172,0.6); }
+
+/* ══ HORIZON LIST ══ */
+.horizon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+}
+.horizon-item {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  padding: var(--s4);
+  display: flex;
+  gap: var(--s3);
+  align-items: flex-start;
+}
+.horizon-cmd {
+  font-family: var(--mono); font-size: 10px;
+  color: var(--text-dim); background: var(--surface-3);
+  border: 1px solid var(--border); padding: 2px 7px; border-radius: 2px;
+  flex-shrink: 0;
+}
+.horizon-body {}
+.horizon-name { font-size: 12px; font-weight: 700; color: var(--accent); margin-bottom: 3px; }
+.horizon-desc { font-size: 11px; color: var(--text-muted); line-height: 1.45; }
+
+/* ══ FOOTER ══ */
+.footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface-1);
+  padding: 24px var(--s6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s3);
+}
+.footer-left {
+  display: flex; align-items: center; gap: var(--s4);
+}
+.footer-right {
+  font-size: 10px; color: var(--text-dim);
+  letter-spacing: 0.08em; font-family: var(--mono);
+}
+.footer-sig {
+  font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em;
+}
+.footer-sig strong { color: var(--text); }
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-1); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <div class="dot-fill"></div>
+      <div class="dot-ring"></div>
+      <span class="wordmark">B_V® | OS</span>
+    </div>
+    <span class="header-div">|</span>
+    <span class="header-label">Status Report</span>
+    <span class="header-badge">V1 LIVE</span>
+  </div>
+  <div class="header-right">
+    <span>SYNERGY</span>
+    <span class="sep">·</span>
+    <span>Q-02.26</span>
+    <span class="sep">·</span>
+    <span>2026-04-19</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">
+    <div class="live-dot"></div>
+    All Systems Operational
+  </div>
+  <h1 class="hero-title">B_V® | OS <span>is</span><br>Fully Live</h1>
+  <p class="hero-sub">
+    Synergy — the internal operating system for BOTH Ventures — has reached V1. Every core workflow is automated. Every agent is active. The knowledge vault is live. This is the guide for the whole team.
+  </p>
+  <div class="hero-meta">
+    <span>11 Skills</span>
+    <span class="sep">·</span>
+    <span>12 Agents</span>
+    <span class="sep">·</span>
+    <span>Signed by SYNERGY</span>
+    <span class="sep">·</span>
+    <span>April 19, 2026</span>
+  </div>
+</div>
+
+<!-- STATUS STRIP -->
+<div class="status-strip">
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">n8n Cloud</span>&nbsp;— automation backbone live</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">Supabase</span>&nbsp;— database + vault context live</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">Read.ai → Asana</span>&nbsp;— auto-mine pipeline live</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">Slack</span>&nbsp;— champion DMs live</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">Notion</span>&nbsp;— ventures DB synced</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">GitHub Pages</span>&nbsp;— publishing live</div>
+  <div class="status-item"><div class="status-dot live"></div><span class="status-label">Claude Agents</span>&nbsp;— 13 agents active</div>
+</div>
+
+<div class="page">
+
+  <!-- ══ 00 — WHAT IS SYNERGY ══ -->
+  <section class="section" id="what-is">
+    <div class="section-header">
+      <span class="section-number">00</span>
+      <span class="section-label">What Is Synergy?</span>
+    </div>
+    <div class="intro-card">
+      <p>
+        <strong>Synergy is the operating system that makes BOTH Ventures run.</strong> Not a product. Not a project. The infrastructure layer that connects every venture, every person, and every decision into a single coherent system.
+      </p>
+      <br>
+      <p>
+        It is built on four layers working together. The <em>automation layer</em> (n8n) handles all the repetitive workflows — mining meeting transcripts, routing tasks to Asana, sending Slack notifications — without anyone pressing a button. The <em>knowledge vault</em> (GitHub + Supabase) stores every decision, risk, venture update, and action item, versioned and searchable. The <em>agent layer</em> (Claude Code + Cowork) gives every team member access to 13 specialized AI agents, each scoped to a specific job. And the <em>publishing layer</em> turns internal work into external artifacts — PDFs, HTML pages, Notion pages, Google Drive documents.
+      </p>
+      <br>
+      <p>
+        <strong>V1 means the core loop is complete.</strong> You can open a session, work, capture knowledge, mine a meeting, publish a document, and close — and all of it flows automatically into the right place. This guide walks you through each piece of that loop, step by step.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 01 — DAILY SESSION ══ -->
+  <section class="section" id="daily">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <span class="section-label">Daily Session</span>
+      <span class="section-label-sub">— Open · Work · Close</span>
+    </div>
+
+    <div class="tutorial-card" style="margin-bottom: 8px;">
+      <div class="tutorial-body">
+        <div class="flow-mode-label">Every session — no exceptions</div>
+        <div class="flow" style="align-items:center; gap: 12px;">
+          <span class="node in" style="font-size:13px; padding: 6px 16px; font-weight:700;">/startup</span>
+          <span class="flow-arrow" style="font-size: 18px; color: var(--text-dim);">→</span>
+          <span class="node branch" style="font-size:13px; padding: 6px 16px; font-weight:700;">WORK</span>
+          <span class="flow-arrow" style="font-size: 18px; color: var(--text-dim);">→</span>
+          <span class="node out" style="font-size:13px; padding: 6px 16px; font-weight:700;">/upc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge green">/startup</span>
+          <div class="skill-meta">
+            <div class="skill-name">Session Start</div>
+            <div class="skill-tagline">Opens every Claude session. Run this first — always.</div>
+            <div class="owner-chips"><span class="owner-chip all">Everyone</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Think of <strong>/startup</strong> as the morning briefing. The moment you open Claude Code or Cowork, type <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/startup</code> before anything else. It does three things automatically: pulls the latest changes from GitHub so your vault is current, shows you what changed since your last session, and flags any pending items that need your attention.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Claude pulls the latest vault state from GitHub — you see any updates from teammates</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Recent vault changes are surfaced — decisions made, risks logged, ventures updated</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Pending approvals are flagged — if someone needs your sign-off, you'll see it here</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Claude is now oriented to today's context — ready to work with you</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Why it matters:</strong> Without /startup, Claude works from stale context. With it, every session starts from the current state of the company.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge green">/upc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Update Push Commit</div>
+            <div class="skill-tagline">Closes every session. Run this when you're done.</div>
+            <div class="owner-chips"><span class="owner-chip all">Everyone</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            <strong>/upc</strong> is the session closer. When you're done working — whether you updated a venture file, wrote a decision, or just had a conversation — type <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/upc</code> before closing the window. It validates your vault files, commits everything to GitHub, and updates Claude's memory with what happened in this session.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Validates all vault files have correct frontmatter — catches formatting issues before they become problems</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Commits all changes to git with a meaningful message — your work is versioned and recoverable</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Pushes to GitHub — teammates can pull your changes in their next /startup</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Updates Claude's memory — context from this session carries forward</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Rule of thumb:</strong> If you touched anything in the vault, /upc. Even if it feels like a small change. The vault is the team's memory.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 02 — WEEKLY RHYTHM ══ -->
+  <section class="section" id="rhythm">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <span class="section-label">Weekly Rhythm</span>
+      <span class="section-label-sub">— Tuesday Sync Cadence</span>
+    </div>
+
+    <div class="tutorial-card" style="margin-bottom: 16px;">
+      <div class="tutorial-body">
+        <p class="tutorial-explain">
+          The Tuesday Sync is the most important weekly process in the system. <strong>Every piece of the OS is designed to feed into it and flow out of it.</strong> Here is how the week actually works — from Monday prep to automatic post-meeting processing.
+        </p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">MON AM</span>
+          <div class="skill-meta">
+            <div class="skill-name">Venture + Area Updates</div>
+            <div class="skill-tagline">Champions run /vu · Area leads run /au</div>
+            <div class="owner-chips">
+              <span class="owner-chip gaston">Gaston</span>
+              <span class="owner-chip rene">Rene</span>
+              <span class="owner-chip daiana">Daiana</span>
+              <span class="owner-chip andres">Andres</span>
+            </div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Every Monday morning, each venture champion runs <strong>/vu</strong> to update their venture file in the vault. Area leads run <strong>/au</strong> for their functional area. Claude scans the week's transcripts, synthesizes activity, and writes the update — the champion just confirms or edits.
+          </p>
+          <div class="tutorial-tip"><strong>What this produces:</strong> A fresh vault snapshot for every venture and area, ready for the digest.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">MON PM</span>
+          <div class="skill-meta">
+            <div class="skill-name">Weekly Digest Generation</div>
+            <div class="skill-tagline">Boris runs /wr · Daiana validates</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span><span class="owner-chip daiana">Daiana</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Boris runs <strong>/wr</strong> (Weekly Reporter) which reads every venture and area update from the vault and generates the Tuesday Sync digest. Daiana reviews it. The digest goes out as pre-reading so Tuesday's meeting stays focused on decisions — not status updates.
+          </p>
+          <div class="tutorial-tip"><strong>The goal:</strong> Everyone arrives Tuesday already knowing the state of every venture. The meeting is for decisions only.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge green">AUTO PATH</span>
+          <div class="skill-meta">
+            <div class="skill-name">Read.ai → Auto-Mine Pipeline</div>
+            <div class="skill-tagline">Recorded calls — no manual step required</div>
+            <div class="owner-chips"><span class="owner-chip all">Automatic</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            When the Tuesday meeting (or any recorded call) ends, <strong>everything happens automatically.</strong> Read.ai was recording. When the call ends, it fires a webhook to n8n. n8n mines the transcript, writes vault files, creates tasks in Asana, and sends a Slack DM to each venture champion with a summary and a direct Asana link.
+          </p>
+          <div class="flow-wrap">
+            <div class="flow">
+              <span class="node auto">Read.ai call ends</span>
+              <span class="flow-arrow">→</span>
+              <span class="node tool">n8n webhook</span>
+              <span class="flow-arrow">→</span>
+              <span class="node proc">Claude mines</span>
+              <span class="flow-arrow">→</span>
+              <span class="node proc">Vault + Asana</span>
+              <span class="flow-arrow">→</span>
+              <span class="node out">Slack DM to champion</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Your entry point as champion:</strong> Check Slack. Your DM will have the task count, owner assignments, and a direct link to Asana. Nothing else required.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge muted">FALLBACK</span>
+          <div class="skill-meta">
+            <div class="skill-name">Manual Path</div>
+            <div class="skill-tagline">No Read.ai? No recording? Use this.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            When there's no recording, Daiana captures notes manually (text paste or audio). If audio: Boris runs <strong>/transcribe</strong> first to convert it. Then run <strong>/mine</strong> on the transcript — Claude extracts decisions, action items, risks, and venture updates into <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/pending/</code>. The champion reviews and approves, then runs <strong>/mine approve</strong> to push to the vault and Asana.
+          </p>
+          <div class="tutorial-tip"><strong>Key difference from Auto Path:</strong> Fallback requires explicit champion approval before anything writes to the main vault. The pending file is the review step.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 03 — KNOWLEDGE CAPTURE ══ -->
+  <section class="section" id="knowledge">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <span class="section-label">Knowledge Capture</span>
+      <span class="section-label-sub">— Mine · Transcribe · Update</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">/mine</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Miner</div>
+            <div class="skill-tagline">Extract structured knowledge from any meeting or conversation.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            <strong>/mine</strong> is the core knowledge extraction tool. Give it any transcript, meeting notes, or audio file and it finds what matters: decisions made, action items assigned, risks surfaced, venture updates. It has two modes.
+          </p>
+          <div class="flow-wrap">
+            <div class="flow-mode-label">Mode 1 — Mine (extract)</div>
+            <div class="flow">
+              <span class="node in">notes or file</span>
+              <span class="flow-arrow">→</span>
+              <span class="node branch">audio?</span>
+              <span class="flow-arrow">→</span>
+              <span class="node tool">Whisper API</span>
+              <span class="flow-arrow">→</span>
+              <span class="node proc">extract items</span>
+              <span class="flow-arrow">→</span>
+              <span class="node out">vault/pending/</span>
+            </div>
+            <div class="flow-sep"></div>
+            <div class="flow-mode-label">Mode 2 — Approve (commit)</div>
+            <div class="flow">
+              <span class="node in">/mine approve {file}</span>
+              <span class="flow-arrow">→</span>
+              <span class="node proc">read approved: true</span>
+              <span class="flow-arrow">→</span>
+              <span class="node proc">write vault</span>
+              <span class="flow-arrow">→</span>
+              <span class="node tool">n8n → Asana</span>
+              <span class="flow-arrow">→</span>
+              <span class="node out">vault committed</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Approval model (fallback path only):</strong> After mining, open the pending file in <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/pending/</code>. Set <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">approved: true</code> on the items you want to keep. Then run /mine approve. Nothing writes to the main vault without your explicit sign-off.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">/transcribe</span>
+          <div class="skill-meta">
+            <div class="skill-name">Audio Transcriber</div>
+            <div class="skill-tagline">Convert any voice note to a labeled transcript.</div>
+            <div class="owner-chips"><span class="owner-chip all">Everyone</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Got a WhatsApp voice note from Gaston? A meeting recording that didn't go through Read.ai? Use <strong>/transcribe</strong> to convert any audio file into a speaker-labeled transcript and save it to <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/transcripts/</code>. From there you can run /mine on it.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Drop your audio file anywhere in the repo (or reference the full path)</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Run <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/transcribe {path-to-file}</code></span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>OpenAI Whisper transcribes it with speaker labels</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Transcript is saved to <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/transcripts/</code> — edit the frontmatter (attendees, ventures), then run /mine on it</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Supported formats:</strong> .opus (WhatsApp default), .mp3, .m4a, .wav, .ogg, .webm. No manual ffmpeg conversion needed — the script handles it.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">/vu</span>
+          <div class="skill-meta">
+            <div class="skill-name">Venture Update</div>
+            <div class="skill-tagline">Weekly champion update for your venture.</div>
+            <div class="owner-chips">
+              <span class="owner-chip gaston">Gaston</span>
+              <span class="owner-chip rene">Rene</span>
+              <span class="owner-chip daiana">Daiana</span>
+              <span class="owner-chip andres">Andres</span>
+              <span class="owner-chip boris">Boris</span>
+            </div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Every Monday, each venture champion runs <strong>/vu</strong> for their venture(s). Claude scans the week's transcripts, synthesizes what happened, and drafts the update. You confirm or edit. The file in <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/ventures/</code> gets updated, and it feeds directly into the Tuesday digest.
+          </p>
+          <div class="tutorial-tip"><strong>Why this matters:</strong> The digest is only as good as the venture updates. If you skip /vu, your venture shows as stale in the Tuesday digest — and Gaston chairs the meeting without a current picture of your work.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge yellow">/au</span>
+          <div class="skill-meta">
+            <div class="skill-name">Area Update</div>
+            <div class="skill-tagline">Weekly update for your functional area.</div>
+            <div class="owner-chips">
+              <span class="owner-chip gaston">Gaston</span>
+              <span class="owner-chip rene">Rene</span>
+              <span class="owner-chip daiana">Daiana</span>
+              <span class="owner-chip andres">Andres</span>
+              <span class="owner-chip boris">Boris</span>
+            </div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Same rhythm as /vu — but for functional areas rather than ventures. Each area lead (Operations, Strategy, Legal, Infrastructure) runs <strong>/au</strong> Monday morning. Claude synthesizes cross-cutting activity from the week's transcripts that's relevant to your area, and writes it to <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">vault/strategy/</code>.
+          </p>
+          <div class="tutorial-tip"><strong>Difference from /vu:</strong> /vu is venture-specific (what happened with LAK3, La Chamana, etc). /au is function-specific (what happened in Operations, Legal, Finance across all ventures).</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 04 — PUBLISHING ══ -->
+  <section class="section" id="publishing">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <span class="section-label">Publishing</span>
+      <span class="section-label-sub">— Drive · Pages · PDF</span>
+    </div>
+
+    <div class="cards-grid">
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge blue">/print-to-drive</span>
+          <div class="skill-meta">
+            <div class="skill-name">Print to Drive</div>
+            <div class="skill-tagline">Render any .md as branded HTML and save to the right Drive folder.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            <strong>/print-to-drive</strong> takes any markdown file from the vault, renders it as BOTH-branded HTML, and saves it directly to the correct Google Drive folder — no manual download-and-upload. You just give it a routing keyword.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Run <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/print-to-drive {file.md} --dest {keyword}</code></span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Claude renders the markdown as branded HTML with BOTH styling</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Routes to the matching Google Drive folder based on keyword</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Available keywords:</strong> ops · comms · exec · finance · legal · lak3 · manantial · reshore · lachamana · panambi · photonic · puntacripto · quantum · bothos</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge blue">/notion-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">Notion Page Publisher</div>
+            <div class="skill-tagline">Publish any Notion page as a live branded website.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            Have a Notion page you want to share externally as a polished website? <strong>/notion-web</strong> fetches all the content via the Notion API, renders it with the BOTH brand theme, and deploys it to GitHub Pages. Takes a URL or page ID.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Run <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/notion-web {notion-url-or-id}</code></span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Claude fetches all blocks via the Notion API</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Rendered as branded HTML, deployed to <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">docs/pages/</code>, pushed to GitHub</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Returns the live URL at <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">bothventures.github.io/stack/pages/</code></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge blue">/html-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">HTML Page Publisher</div>
+            <div class="skill-tagline">Publish any local HTML file to GitHub Pages instantly.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span><span class="owner-chip rene">Rene</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            The simplest publishing path. If you have an HTML file — a report, a design mockup, a venture brief — <strong>/html-web</strong> copies it into <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">docs/pages/</code>, updates the pages index, commits, and pushes. The page is live in seconds.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Run <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/html-web /path/to/file.html</code></span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Claude derives a slug from the filename and copies it to docs/pages/</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Pages index is updated, git push happens automatically</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Returns the live URL — shareable immediately</span>
+            </div>
+          </div>
+          <div class="tutorial-tip"><strong>Meta note:</strong> This page was published using exactly this skill.</div>
+        </div>
+      </div>
+
+      <div class="tutorial-card">
+        <div class="tutorial-card-header">
+          <span class="cmd-badge blue">/generate-pdf</span>
+          <div class="skill-meta">
+            <div class="skill-name">Branded PDF Generator</div>
+            <div class="skill-tagline">Two-pass Puppeteer pipeline for professional PDFs.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="tutorial-body">
+          <p class="tutorial-explain">
+            For documents that need to be printed or sent as PDFs — investor materials, briefs, reports — <strong>/generate-pdf</strong> takes an HTML file and runs it through a two-pass Puppeteer pipeline. First pass measures page height for precise layout. Second pass applies BOTH brand CSS and renders the final PDF.
+          </p>
+          <div class="tutorial-steps">
+            <div class="tutorial-step">
+              <span class="step-num">01</span>
+              <span>Design your document as an HTML file using the BOTH brand system</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">02</span>
+              <span>Run <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">/generate-pdf {file}.html</code></span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">03</span>
+              <span>Puppeteer renders it (requires puppeteer-core + Chrome on the machine)</span>
+            </div>
+            <div class="tutorial-step">
+              <span class="step-num">04</span>
+              <span>Outputs <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">{Output_Name}.pdf</code> — print-ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 05 — DATA / INFRA ══ -->
+  <section class="section" id="data">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <span class="section-label">Data &amp; Infrastructure</span>
+      <span class="section-label-sub">— Supabase · Database Layer</span>
+    </div>
+
+    <div class="tutorial-card">
+      <div class="tutorial-card-header">
+        <span class="cmd-badge green">/supabase-query</span>
+        <div class="skill-meta">
+          <div class="skill-name">Supabase Query</div>
+          <div class="skill-tagline">Query the live database in plain language or SQL, directly from Claude.</div>
+          <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+        </div>
+      </div>
+      <div class="tutorial-body">
+        <p class="tutorial-explain">
+          Everything in Synergy lives in two places: the vault (GitHub markdown files) and the database (Supabase). <strong>/supabase-query</strong> — or <strong>/sq</strong> for short — lets you query the live database without leaving Claude. Ask in natural language or write SQL directly. The database has 12 tables covering every layer of the OS.
+        </p>
+        <div class="cards-grid" style="gap:6px; margin-top: var(--s4);">
+          <div style="background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--blue);margin-bottom:4px;letter-spacing:0.08em">USER LAYER</div>
+            <div style="font-size:11px;color:var(--text-muted);line-height:1.6">user_profiles · access_grants · agent_registry</div>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--live);margin-bottom:4px;letter-spacing:0.08em">VAULT LAYER</div>
+            <div style="font-size:11px;color:var(--text-muted);line-height:1.6">vault_context · venture_snapshots · agent_outputs</div>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--accent);margin-bottom:4px;letter-spacing:0.08em">AGENT LAYER</div>
+            <div style="font-size:11px;color:var(--text-muted);line-height:1.6">conversations · conversation_messages · agent_memory</div>
+          </div>
+          <div style="background:var(--surface-2);border:1px solid var(--border);padding:10px 12px;">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--purple);margin-bottom:4px;letter-spacing:0.08em">OPS LAYER</div>
+            <div style="font-size:11px;color:var(--text-muted);line-height:1.6">task_queue · pending_actions · usage_metrics</div>
+          </div>
+        </div>
+        <div class="tutorial-tip" style="margin-top:var(--s4)"><strong>Example queries:</strong> "Show me all active tasks for La Chamana" · "How many vault entries were written this week?" · "Which agents have been used most this month?" — Claude composes the SQL, runs it, and formats the results.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 06 — AGENTS ══ -->
+  <section class="section" id="agents">
+    <div class="section-header">
+      <span class="section-number">06</span>
+      <span class="section-label">The Agent Directory</span>
+      <span class="section-label-sub">— 12 Specialists</span>
+    </div>
+
+    <div class="tutorial-card" style="margin-bottom: 16px;">
+      <div class="tutorial-body">
+        <p class="tutorial-explain">
+          Skills (sections 01–05) are structured workflows with their own logic and scripts. Agents are different — they are specialized AI personas living in <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">.claude/agents/</code>, activated by referencing them in Claude Code or Cowork. Each one is tuned for a specific job. <strong>You invoke them by typing the command directly in your Claude session.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="agent-group">
+      <div class="agent-group-label">Operations — Daiana's Agents</div>
+      <div class="cards-grid">
+        <div class="agent-card">
+          <span class="agent-cmd">/wr</span>
+          <div class="agent-body">
+            <div class="agent-name">Weekly Reporter</div>
+            <div class="agent-desc">Reads all venture and area updates from the vault and generates the Tuesday Sync digest. Daiana validates before it goes out. Run every Monday evening.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/mm</span>
+          <div class="agent-body">
+            <div class="agent-name">Meeting Miner (agent)</div>
+            <div class="agent-desc">Agent-mode meeting miner. Same purpose as the /mine skill — use /mine for the full structured flow with vault writing. /mm for lighter, conversational extraction.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/tc</span>
+          <div class="agent-body">
+            <div class="agent-name">Task Coordinator</div>
+            <div class="agent-desc">Coordinates tasks from vault pending items. Routes work to the right owners across ventures. Use when you need to untangle ownership on a complex set of action items.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/vt</span>
+          <div class="agent-body">
+            <div class="agent-name">Venture Tracker</div>
+            <div class="agent-desc">Portfolio-level view. Tracks status, health, and KPIs across all 9 ventures from the vault. Use for a quick cross-venture snapshot.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/cs</span>
+          <div class="agent-body">
+            <div class="agent-name">Capital Strategist</div>
+            <div class="agent-desc">Capital allocation, venture financing strategy, and portfolio-level financial positioning. Use when the conversation involves money, funding, or financial trade-offs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-group">
+      <div class="agent-group-label">Capital — Gaston's Agents</div>
+      <div class="cards-grid">
+        <div class="agent-card">
+          <span class="agent-cmd">/ir</span>
+          <div class="agent-body">
+            <div class="agent-name">Investor Researcher</div>
+            <div class="agent-desc">Research LP and co-investor prospects. Builds profiles and thesis alignment analysis into vault/investors/. Access scoped to Gaston + full-scope users.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/dr</span>
+          <div class="agent-body">
+            <div class="agent-name">Deck Refiner</div>
+            <div class="agent-desc">Refines pitch decks and investor materials. Sharpens structure, narrative flow, and slide logic. Gaston's agent for anything going to LPs or co-investors.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-group">
+      <div class="agent-group-label">Narrative &amp; Intelligence — Rene's Agents</div>
+      <div class="cards-grid">
+        <div class="agent-card">
+          <span class="agent-cmd">/nw</span>
+          <div class="agent-body">
+            <div class="agent-name">Narrative Writer</div>
+            <div class="agent-desc">Venture narratives, positioning copy, and comms. Applies BOTH voice — precise, not promotional. "Structural" beats "innovative." Short declaratives. Rene's primary agent.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/if</span>
+          <div class="agent-body">
+            <div class="agent-name">Intelligence Feed</div>
+            <div class="agent-desc">Curated intelligence on market signals, regulatory changes, and ecosystem moves relevant to BOTH ventures. Use when you need to know what's happening in the world that affects your work.</div>
+          </div>
+        </div>
+        <div class="agent-card">
+          <span class="agent-cmd">/ad</span>
+          <div class="agent-body">
+            <div class="agent-name">Art Director</div>
+            <div class="agent-desc">Art direction for visual assets, brand alignment, and design decisions across ventures. BOTH brand applied to anything that needs to look like us.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-group">
+      <div class="agent-group-label">Legal &amp; Governance — Andres's Agent</div>
+      <div class="cards-grid">
+        <div class="agent-card">
+          <span class="agent-cmd">/ga</span>
+          <div class="agent-body">
+            <div class="agent-name">Governance Advisor</div>
+            <div class="agent-desc">Fund structure, legal entity design, equity, and compliance. Andres's primary agent. Use for any question that touches legal structure, due diligence, or regulatory compliance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-group">
+      <div class="agent-group-label">Infrastructure — Boris's Agent</div>
+      <div class="cards-grid">
+        <div class="agent-card">
+          <span class="agent-cmd">/scan</span>
+          <div class="agent-body">
+            <div class="agent-name">Document Scanner</div>
+            <div class="agent-desc">Extract and structure information from any document type — contracts, reports, research papers, or scanned images. Outputs structured vault-ready data.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══ 07 — V1 MONITOR ══ -->
+  <section class="section" id="monitor">
+    <div class="section-header">
+      <span class="section-number">07</span>
+      <span class="section-label">V1 Live Monitor</span>
+      <span class="section-label-sub">— The Reference Card</span>
+    </div>
+
+    <div class="monitor-cta">
+      <div class="monitor-cta-label">B_V® | OS · Skills Cheatsheet</div>
+      <div class="monitor-cta-title">Everything above — in a single reference card.</div>
+      <div class="monitor-cta-sub">
+        All 11 skills and 12 agents with full flow diagrams, commands, and owner chips. Bookmark it. Open it next to your Claude session when you're learning the system.
+      </div>
+      <a class="monitor-link" href="https://bothventures.github.io/stack/pages/b-v-os-skills-cheatsheet/" target="_blank">
+        <div class="live-dot"></div>
+        Open V1 Live Monitor →
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ 08 — V2 HORIZON ══ -->
+  <section class="section" id="horizon">
+    <div class="section-header">
+      <span class="section-number">08</span>
+      <span class="section-label">What's Next</span>
+      <span class="section-label-sub">— V2 Horizon</span>
+    </div>
+
+    <div class="tutorial-card" style="margin-bottom: 16px;">
+      <div class="tutorial-body">
+        <p class="tutorial-explain">
+          V1 is the <strong>complete core loop</strong>: session management, weekly rhythm, knowledge capture, publishing, and the database layer. V2 closes the remaining gaps — proactive coherence, security, capacity awareness, and deeper integrations.
+        </p>
+      </div>
+    </div>
+
+    <div class="horizon-grid">
+      <div class="horizon-item">
+        <span class="horizon-cmd">/ai</span>
+        <div class="horizon-body">
+          <div class="horizon-name">Asuntos Internos</div>
+          <div class="horizon-desc">Coherence agent. Audits repo structure, CLAUDE.md drift, and vault health on every push. The OS watching itself.</div>
+        </div>
+      </div>
+      <div class="horizon-item">
+        <span class="horizon-cmd">/bw</span>
+        <div class="horizon-body">
+          <div class="horizon-name">Bandwidth Optimization</div>
+          <div class="horizon-desc">Weekly capacity report from vault signals. Human + AI bandwidth monitor — no manual input required.</div>
+        </div>
+      </div>
+      <div class="horizon-item">
+        <span class="horizon-cmd">/cso</span>
+        <div class="horizon-body">
+          <div class="horizon-name">Cybersecurity Officer</div>
+          <div class="horizon-desc">Security audit agent + pre-commit hook + 1Password integration. Phase 1: rotate all exposed credentials.</div>
+        </div>
+      </div>
+      <div class="horizon-item">
+        <span class="horizon-cmd">cal</span>
+        <div class="horizon-body">
+          <div class="horizon-name">Calendar Integration</div>
+          <div class="horizon-desc">Natural language scheduling via n8n → Google Calendar API. Already wired — waiting on service account credentials.</div>
+        </div>
+      </div>
+      <div class="horizon-item">
+        <span class="horizon-cmd">graph</span>
+        <div class="horizon-body">
+          <div class="horizon-name">Graphify</div>
+          <div class="horizon-desc">Knowledge graph builder. Maps the vault, agents, and repo architecture into a queryable interactive graph.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-left">
+    <div class="logo">
+      <div class="dot-fill"></div>
+      <div class="dot-ring"></div>
+      <span class="wordmark">B_V® | OS</span>
+    </div>
+    <span style="color:var(--border);font-size:14px">|</span>
+    <span class="footer-sig">Signed by <strong>SYNERGY</strong> — The BOTH Operating Platform</span>
+  </div>
+  <div class="footer-right">V1.0 · Q-02.26 · 2026-04-19</div>
+</footer>
+
+</body>
+</html>
