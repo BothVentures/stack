@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Venture status grid, area summaries, recent decisions, risks, and open action items for the 2026-04-22 Tuesday meeting.">
+<title>Tuesday Weekly Sync Digest — 2026-04-22 — Both_Ventures</title>
+<style>
+/*
+ * Weekly Digest — Editorial Design System
+ * Based on photonic-lab Swiss editorial base.
+ * Purpose: Tuesday Sync digest and executive reports.
+ *
+ * Governing principle: scannable in 5 minutes.
+ * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
+ * Section headings as hard dividers. Urgency signals visible at a glance.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals */
+  --white:    #ffffff;
+  --off:      #f5f4f0;
+  --rule:     #e0ddd8;
+  --rule2:    #c8c4bc;
+  --text:     #111110;
+  --text2:    #444440;
+  --text3:    #888880;
+
+  /* Primary accent — BOTH olive-gold */
+  --acc:      #939324;
+  --acc-lt:   #f5f4e0;
+  --acc-dk:   #5a5a14;
+
+  /* Status signals */
+  --urgent-bg:    #fdecea;
+  --urgent-bd:    #c0392b;
+  --warn-bg:      #fdf3e3;
+  --warn-bd:      #b06a00;
+  --info-bg:      #edf1f5;
+  --info-bd:      #3a4a58;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1280px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY — wider than photonic-lab for multi-column tables ── */
+article.notion-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 8px;
+}
+/* H2 acts as a hard section divider */
+article.notion-page h2 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 52px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule2);
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 6px 0 16px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 4px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 18px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
+figure.code-block code {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); background: none;
+  border: none; padding: 0; white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px; font-weight: 400; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE — rendered as callout panel ── */
+article.notion-page blockquote {
+  background: var(--off);
+  border-left: 3px solid var(--acc);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+}
+article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
+article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
+
+/* ── URGENT / WARN SIGNAL CLASSES (for future HTML-aware paths) ── */
+.urgent-signal {
+  background: var(--urgent-bg);
+  border-left: 3px solid var(--urgent-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--urgent-bd);
+}
+.warn-signal {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--warn-bd);
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── TABLES — digest-optimized ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #f0efe8;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 300;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafaf8; }
+tr:hover td { background: var(--off); }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc-dk);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--text);
+  border-bottom-color: var(--acc);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 2px solid var(--text);
+  background: var(--off);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc-dk);
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta">2026-04-20</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+
+<h1>BOTH Ventures — Tuesday Weekly Sync — 2026-04-22</h1>
+
+<blockquote><p><strong>Note:</strong> This is the first <code>/wr</code> run. No formal <code>/vu</code> or <code>/au</code> updates were submitted this cycle (Monday April 20). Venture content reflects the most recent vault state. Area summaries are stale — area leads have not filed <code>/au</code> since 2026-04-05. Champions should submit updates before Tuesday's meeting.</p></blockquote>
+
+<hr>
+
+<h2>Venture Status Grid</h2>
+
+<table>
+<thead>
+<tr><th>Venture</th><th>Champion</th><th>Stage</th><th>Health</th><th>This Week</th><th>Next Priority</th></tr>
+</thead>
+<tbody>
+<tr><td>Manantial</td><td>Gaston / Daiana</td><td>Build</td><td>🟡</td><td>Booking system live (2026-04-15). No /vu this week.</td><td>Contract backup payment processor before May 2026 (owner unassigned)</td></tr>
+<tr><td>Reshore</td><td>Gaston</td><td>Build</td><td>🟢</td><td>"The Long Ride" — full cinematic commercial completed by René (4K, brand anchor asset)</td><td>Document OS bridge between Synergy and Reshore's existing OS (Attio CRM)</td></tr>
+<tr><td>LAK3</td><td>Rene</td><td>Build / Distressed</td><td>🟡</td><td>ERC-20 token design complete. INTEL-004 source archived. Whitepaper deadline: <strong>today (Apr 20)</strong></td><td>Confirm Nasar vs Option B path; commission water source legal diligence (CRITICAL)</td></tr>
+<tr><td>Photonic Lab</td><td>Rene</td><td>Explore</td><td>🟢</td><td>April work streams consolidated: financial model stress-tested ($2.1M CAPEX, M22 break-even), Qualia+ intel ingested (ANII-in-ZF confirmed, Equipo Inox quote pending), legal framework complete (Andres + Qualia+), team-visibility dashboard live</td><td>Close 3 non-negotiable gates: 5 LOIs, $600K bridge, QA Director hire</td></tr>
+<tr><td>La Chamana</td><td>Daiana</td><td>Explore / GTM</td><td>🟡</td><td>INTEL-004 + Narrative Framework + influencer shortlist + IG outreach list integrated. 5 commercial advisor audios mined. Josefina (Hard Rock, 20yr network) confirmed — awaiting Gaston call.</td><td>Resolve pricing structure (blocking all channels); lock 2–3 influencers by <strong>Apr 24</strong></td></tr>
+<tr><td>Panambi</td><td>Andres</td><td>Explore</td><td>🔴</td><td><strong>No update — last updated 2026-04-04 (16 days stale)</strong></td><td>Status check with Andres; map portfolio companies</td></tr>
+<tr><td>Punta Cripto</td><td>Rene <sup>1</sup></td><td>Build</td><td>🟢</td><td>Business case &amp; sponsorship deck integrated: Title ($150–250K), 4× Platinum ($260K), 10× Gold ($250K), target prospect list (Ripio, Binance, OKX), cost structure $645–940K</td><td>Lock title sponsor + 3 anchor speakers (Foundation Phase gate)</td></tr>
+<tr><td>Quantum</td><td>Andres</td><td>Explore</td><td>🔴</td><td><strong>No update — last updated 2026-03-31 (20 days stale)</strong></td><td>Complete legal structuring + business plan</td></tr>
+<tr><td>B_V® | OS</td><td>Boris</td><td>Build</td><td>🟡</td><td>Core systems operational. Source doc archiving sprint completed across 4 ventures (Apr 20).</td><td>Fix empty Read.ai transcript bug (since Apr 12); activate calendar-watcher workflow</td></tr>
+</tbody>
+</table>
+
+<blockquote><p><sup>1</sup> <strong>Ownership flag:</strong> <code>punta-cripto.md</code> lists Gaston as owner; <code>CLAUDE.md</code> lists Rene. Clarify before next update cycle.</p></blockquote>
+
+<hr>
+
+<h2>Area Summaries</h2>
+
+<h3>Capital — Gaston</h3>
+<p><strong>Focus:</strong> [No update this week — area file last updated 2026-04-05]<br>
+<strong>Cross-venture patterns:</strong> —<br>
+<strong>Decisions / needs:</strong> La Chamana commercial speed decision made (Apr 15). Punta Cripto title sponsor is the next capital unlock event. LAK3 Nasar path requires Gaston sign-off on direction.</p>
+
+<hr>
+
+<h3>Narrative &amp; Comms — Rene</h3>
+<p><strong>Focus (last filed 2026-04-05):</strong> Institutional messaging architecture loaded. La Chamana branding assessed; website planning started. Photonic Lab v0 branding initiated.<br>
+<strong>Cross-venture patterns:</strong> Branding maturity is uneven across portfolio — a portfolio-wide branding assessment was flagged as needed.<br>
+<strong>Decisions / needs:</strong> La Chamana Narrative Framework is now complete and operational (René, April 2026). Awaiting <code>/au</code> update on current week's status.</p>
+<blockquote><p>⚠️ No <code>/au</code> filed this week — Rene has produced major narrative deliverables (La Chamana framework, Reshore commercial, Photonic Lab dashboard) but area file is not updated.</p></blockquote>
+
+<hr>
+
+<h3>Operations &amp; Finance — Daiana</h3>
+<p><strong>Focus:</strong> [No update this week — area file last updated 2026-04-05]<br>
+<strong>Cross-venture patterns:</strong> —<br>
+<strong>Decisions / needs:</strong> La Chamana GTM meeting format shifted to funnel review (Gaston, Apr 15). Backup payment processor for Manantial is unassigned — Daiana is the logical owner. Influencer lock deadline Apr 24 requires Daiana's execution.</p>
+
+<hr>
+
+<h3>Legal &amp; Governance — Andres</h3>
+<p><strong>Focus:</strong> [No update this week — area file last updated 2026-04-05]<br>
+<strong>Cross-venture patterns:</strong> Legal structuring is a multi-venture bottleneck: Quantum (pending), Punta Cripto (entity incorporation needed), Photonic Lab (ZF/ANII tax question pending tax counsel).<br>
+<strong>Decisions / needs:</strong> Photonic Lab legal framework co-authored with Alejandro San Juan (Qualia+) — delivered. Awaiting <code>/au</code> for Quantum and Panambi status.</p>
+
+<hr>
+
+<h2>Recent Decisions — Past 7 Days</h2>
+
+<ol>
+<li><strong>No exclusivity with Loco Luxury</strong> — Gaston — La Chamana — Type-2. Property must be listed under real name or relationship is cut. No exclusivity granted.</li>
+<li><strong>Promotional channels internal only</strong> — Gaston — La Chamana — Type-2. No delegation to third parties for IG, web, or marketing materials.</li>
+<li><strong>Germany channel on hold</strong> — Daiana — La Chamana — Type-2. No action until German team resumes contact.</li>
+<li><strong>Commercial response speed = top priority</strong> — Gaston — La Chamana — Type-2. Internal process gaps must not block deals.</li>
+<li><strong>La Chamana weekly meeting → funnel review format</strong> — Gaston — La Chamana — Type-2. Effective immediately.</li>
+<li><strong>Remove HITL from Asana pipeline</strong> — Gaston — B_V® OS — Type-2. Auto-mine publishes directly; champion reviews post-publication via Slack.</li>
+<li><strong>Skill-based architecture as OS paradigm</strong> — Boris — B_V® OS — Type-2. Hierarchy: workflow &gt; agent &gt; skill. New builds start as skills.</li>
+<li><strong>Per-venture OS instances</strong> — Gaston — B_V® OS — Type-2. La Chamana is first fork candidate. Reshore already operates as reference instance.</li>
+</ol>
+
+<hr>
+
+<h2>Active Risks</h2>
+
+<table>
+<thead>
+<tr><th>Risk</th><th>Severity</th><th>Venture</th><th>Owner</th><th>Status</th></tr>
+</thead>
+<tbody>
+<tr><td>Sargassum objection — luxury agencies refusing to sell Tulum</td><td>H/H</td><td>La Chamana</td><td>Daiana</td><td>New — must develop interior-experience positioning before Josefina call</td></tr>
+<tr><td>Hard Rock contact (Josefina) without incentive structure</td><td>H/H</td><td>La Chamana</td><td>Gaston</td><td>New — Gaston must define commission/retainer before advisor can approach her</td></tr>
+<tr><td>Word-of-mouth acquisition doesn't scale</td><td>H/H</td><td>La Chamana</td><td>Daiana</td><td>New — pivot to B2B agency channel confirmed; requires fair presence plan</td></tr>
+<tr><td>Artisanal service model unsustainable</td><td>H/H</td><td>La Chamana</td><td>Daiana</td><td>Monitoring — productize catalog + implement AI/CRM system</td></tr>
+<tr><td>Below-market pricing consolidating low floor</td><td>M/H</td><td>La Chamana</td><td>Gaston</td><td>Monitoring — $500 USD/room floor established</td></tr>
+<tr><td>No backup payment processor</td><td>M/H</td><td>Manantial</td><td>Unassigned</td><td>New — must contract before May 2026</td></tr>
+<tr><td>LAK3 water source legal separation</td><td>CRITICAL</td><td>LAK3</td><td>Rene</td><td>Open — diligence not yet commissioned; blocks Nasar path</td></tr>
+<tr><td>René bandwidth — triple-venture creative output</td><td>M/H</td><td>Portfolio</td><td>Boris</td><td>New — surfaced by digest synthesis; warrants Tuesday discussion</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>Open Action Items</h2>
+
+<h3>Overdue / Urgent</h3>
+
+<table>
+<thead>
+<tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr>
+</thead>
+<tbody>
+<tr><td>Define incentive structure for Josefina (commission %, retainer, or combo)</td><td>Gaston</td><td>Now</td><td>La Chamana</td></tr>
+<tr><td>Call Josefina (number arriving from advisor)</td><td>Gaston</td><td>Now</td><td>La Chamana</td></tr>
+<tr><td>Develop sargassum counter-positioning before any agency call</td><td>Daiana</td><td>Before Josefina call</td><td>La Chamana</td></tr>
+<tr><td>Complete LAK3 whitepaper</td><td>Rene</td><td>2026-04-20 (today)</td><td>LAK3</td></tr>
+<tr><td>Assign backup payment processor owner + contract</td><td>Daiana (logical)</td><td>Before May 2026</td><td>Manantial</td></tr>
+<tr><td>Fix empty Read.ai transcript bug</td><td>Boris</td><td>Overdue since Apr 12</td><td>B_V® OS</td></tr>
+</tbody>
+</table>
+
+<h3>Due This Week</h3>
+
+<table>
+<thead>
+<tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr>
+</thead>
+<tbody>
+<tr><td>Lock 2–3 influencers (@gypsea_lust, @tuulavintage, @elodie.ouedraogo)</td><td>Daiana</td><td>Apr 24</td><td>La Chamana</td></tr>
+<tr><td>Begin IG curatorial warm-up on Tier A accounts (3–5 days)</td><td>Daiana</td><td>This week</td><td>La Chamana</td></tr>
+<tr><td>2–3 exploratory calls with luxury agencies before fair commitment</td><td>Daiana</td><td>This week</td><td>La Chamana</td></tr>
+<tr><td>Commission water source legal diligence for LAK3/Nasar</td><td>Rene</td><td>This week</td><td>LAK3</td></tr>
+<tr><td>Submit /au updates (all area leads)</td><td>Gaston, Rene, Daiana, Andres</td><td>Before Tuesday</td><td>All</td></tr>
+</tbody>
+</table>
+
+<hr>
+
+<h2>Cross-Cutting Themes</h2>
+
+<ol>
+<li><p><strong>La Chamana is the highest-velocity venture this week</strong> — 5 commercial advisor audios mined, Narrative Framework finalized, influencer shortlist locked, INTEL-004 integrated. Yet two structural blockers remain unresolved (pricing gate + sargassum positioning) that block all channel activation. Execution sprint is ready; leadership decisions are the bottleneck.</p></li>
+<li><p><strong>René is carrying simultaneous creative output across 3–4 ventures</strong> — LAK3 whitepaper (due today), Punta Cripto business case, Reshore cinematic commercial, Photonic Lab financial model + dashboard, La Chamana Narrative Framework. No formal bandwidth signal has been raised. This warrants a Tuesday discussion.</p></li>
+<li><p><strong>Legal structuring is a multi-venture bottleneck</strong> — Quantum (pending), Punta Cripto (entity incorporation in M1–3), Photonic Lab (ZF/ANII tax question open with counsel). Andres's legal bandwidth is the shared constraint. No <code>/au</code> filed — his queue is invisible.</p></li>
+<li><p><strong>Source document archiving sprint completed</strong> — 4 ventures (LAK3, Photonic Lab, La Chamana, Punta Cripto) had major intelligence documents integrated into the vault this week. Vault is significantly richer. Next step: ensure this feeds the Notion sync on Monday.</p></li>
+<li><p><strong>B2B vs direct-to-consumer pattern across portfolio</strong> — La Chamana pivoting to luxury agency model, Punta Cripto building sponsor outreach playbook (5-step sequence), Photonic Lab seeking anchor tenants + LOIs. All require institutional relationship-building at scale that exceeds team bandwidth with current GTM staffing.</p></li>
+</ol>
+
+<hr>
+
+<h2>This Week's Priorities</h2>
+
+<ol>
+<li><strong>Gaston + Daiana: Unblock La Chamana commercial channel</strong> — pricing decision + Josefina call + incentive structure. Every day of ambiguity = blocked agency outreach. — Venture: La Chamana</li>
+<li><strong>Rene: Confirm LAK3 whitepaper delivery + Nasar path decision</strong> — whitepaper due today; water source diligence must be commissioned. — Venture: LAK3</li>
+<li><strong>Daiana: Lock influencers by Apr 24</strong> — May 4–8 first-wave stays are at risk if creators are not confirmed by Thursday. — Venture: La Chamana</li>
+<li><strong>Boris: Resolve empty Read.ai transcript bug</strong> — pipeline has been partially broken since Apr 12; auto-mine reliability is degraded. — B_V® OS</li>
+<li><strong>All area leads: File <code>/au</code> updates before Tuesday</strong> — this digest has no area-level intelligence; Tuesday meeting will be blind on area capacity and cross-venture coordination.</li>
+</ol>
+
+<hr>
+
+<h2>Questions for Tuesday Meeting</h2>
+
+<ul>
+<li><strong>René bandwidth:</strong> Is the current creative load across LAK3 + Punta Cripto + Photonic Lab + La Chamana + Reshore sustainable? What comes off the plate?</li>
+<li><strong>La Chamana pricing gate:</strong> Is the pricing decision (half-villa, per-room, experience unbundling) being decided today, or is it still open for Tuesday?</li>
+<li><strong>Punta Cripto ownership:</strong> Frontmatter lists Gaston; CLAUDE.md lists Rene. Who is the official champion for /vu purposes?</li>
+<li><strong>Panambi + Quantum:</strong> Andres has had no vault updates in 16 and 20 days respectively. Is there material progress that needs to be captured?</li>
+<li><strong>La Chamana OS instance:</strong> Gaston decided each operative venture gets its own OS fork (La Chamana first). Should Boris prioritize this now (before May 4–8 influencer stays) so it's live when GTM activity accelerates?</li>
+</ul>
+
+<hr>
+
+<p><em>Generated by /wr — Boris — 2026-04-20. Daiana to validate before Tuesday meeting.</em></p>
+
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · weekly-digest · 2026-04-20</span>
+</footer>
+</body>
+</html>
