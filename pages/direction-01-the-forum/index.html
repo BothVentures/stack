@@ -10,20 +10,36 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
-  --cream:#F0EDE8;
+  --bg:#F0EDE8;
   --ink:#000000;
   --ink-mid:#000000;
   --ink-faint:#000000;
+  --line:rgba(28,27,25,0.10);
+  --line-mid:var(--line-mid);
+  --line-strong:var(--line-strong);
+  --line-ghost:var(--line-ghost);
   --ease-out:cubic-bezier(0.16,1,0.3,1);
+}
+
+[data-theme="dark"]{
+  --bg:#000000;
+  --ink:#ffffff;
+  --ink-mid:rgba(255,255,255,0.60);
+  --ink-faint:rgba(255,255,255,0.35);
+  --line:rgba(255,255,255,0.10);
+  --line-mid:rgba(255,255,255,0.15);
+  --line-strong:rgba(255,255,255,0.40);
+  --line-ghost:rgba(255,255,255,0.04);
 }
 
 html{font-size:16px}
 body{
   font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--cream);
+  background:var(--bg);
   color:var(--ink);
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
+  transition:background 0.45s var(--ease-out),color 0.45s var(--ease-out);
 }
 
 /* ─────────────────────────────────────────
@@ -80,7 +96,7 @@ body{
   align-items:flex-end;
   padding:2.4vh 6vw 2.8vh;
   z-index:10;
-  border-top:1px solid rgba(28,27,25,0.12);
+  border-top:1px solid var(--line);
 }
 
 .f-col{
@@ -98,7 +114,7 @@ body{
 .section{
   width:100%;
   padding:120px 6vw;
-  border-top:1px solid rgba(28,27,25,0.1);
+  border-top:1px solid var(--line);
   position:relative;
 }
 
@@ -113,7 +129,7 @@ body{
 }
 .sect-label::after{
   content:'';flex:1;height:1px;
-  background:rgba(28,27,25,0.1);
+  background:var(--line);
 }
 
 /* MARKET NUMBERS — large editorial */
@@ -121,11 +137,11 @@ body{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:0;
-  border:1px solid rgba(28,27,25,0.1);
+  border:1px solid var(--line);
 }
 .num-cell{
   padding:64px 48px;
-  border-right:1px solid rgba(28,27,25,0.1);
+  border-right:1px solid var(--line);
   position:relative;overflow:hidden;
 }
 .num-cell:last-child{border-right:none}
@@ -171,10 +187,10 @@ body{
   grid-template-columns:80px 1fr 1fr;
   gap:48px;
   padding:40px 0;
-  border-top:1px solid rgba(28,27,25,0.1);
+  border-top:1px solid var(--line);
   align-items:start;
 }
-.day-row:last-child{border-bottom:1px solid rgba(28,27,25,0.1)}
+.day-row:last-child{border-bottom:1px solid var(--line)}
 .day-num{
   font-size:clamp(11px, 0.9vw, 14px);
   font-weight:300;
@@ -213,7 +229,7 @@ body{
   display:grid;
   grid-template-columns:1fr;
   gap:0;
-  border:1px solid rgba(28,27,25,0.1);
+  border:1px solid var(--line);
 }
 .tier{
   display:grid;
@@ -221,11 +237,11 @@ body{
   gap:40px;
   align-items:center;
   padding:32px 48px;
-  border-bottom:1px solid rgba(28,27,25,0.1);
+  border-bottom:1px solid var(--line);
   transition:background 0.4s var(--ease-out);
 }
 .tier:last-child{border-bottom:none}
-.tier:hover{background:rgba(28,27,25,0.025)}
+.tier:hover{background:var(--line-ghost)}
 .tier-name{
   font-size:clamp(16px, 1.4vw, 22px);
   font-weight:300;
@@ -240,11 +256,11 @@ body{
   font-weight:300;
   letter-spacing:0.06em;
   color:var(--ink-mid);
-  border:1px solid rgba(28,27,25,0.15);
+  border:1px solid var(--line-mid);
   padding:4px 10px;
   transition:border-color 0.2s;
 }
-.tier:hover .perk{border-color:rgba(28,27,25,0.3)}
+.tier:hover .perk{border-color:var(--line-strong)}
 .tier-price{
   font-size:clamp(16px, 1.4vw, 22px);
   font-weight:200;
@@ -258,7 +274,7 @@ body{
 .cta{
   padding:160px 6vw 120px;
   position:relative;overflow:hidden;
-  border-top:1px solid rgba(28,27,25,0.1);
+  border-top:1px solid var(--line);
 }
 .cta-canvas-wrap{
   position:absolute;inset:0;
@@ -293,13 +309,13 @@ body{
   font-weight:300;
   letter-spacing:0.1em;
   text-transform:uppercase;
-  color:var(--cream);
+  color:var(--bg);
   background:var(--ink);
   padding:14px 32px;
   text-decoration:none;
   white-space:nowrap;
   text-align:center;
-  transition:background 0.3s;
+  transition:background 0.3s,color 0.3s;
 }
 .btn-ink:hover{background:#3a3835}
 .btn-outline{
@@ -308,7 +324,7 @@ body{
   letter-spacing:0.1em;
   text-transform:uppercase;
   color:var(--ink);
-  border:1px solid rgba(28,27,25,0.35);
+  border:1px solid var(--line-strong);
   padding:14px 32px;
   text-decoration:none;
   white-space:nowrap;
@@ -320,7 +336,7 @@ body{
 /* PAGE FOOTER */
 .page-footer{
   padding:40px 6vw;
-  border-top:1px solid rgba(28,27,25,0.1);
+  border-top:1px solid var(--line);
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -344,11 +360,30 @@ body{
 /* DIRECTION BADGE */
 .badge{
   position:fixed;bottom:24px;right:24px;z-index:500;
-  background:var(--ink);color:var(--cream);
+  background:var(--ink);color:var(--bg);
   font-size:0.55rem;font-weight:300;
   letter-spacing:0.14em;text-transform:uppercase;
   padding:8px 16px;
+  transition:background 0.45s var(--ease-out),color 0.45s var(--ease-out);
 }
+
+/* THEME TOGGLE */
+.theme-toggle{
+  position:fixed;bottom:24px;left:24px;z-index:500;
+  background:transparent;
+  border:1px solid var(--line-mid);
+  color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.55rem;font-weight:300;
+  letter-spacing:0.14em;text-transform:uppercase;
+  padding:8px 16px;
+  cursor:pointer;
+  transition:background 0.3s var(--ease-out),color 0.3s var(--ease-out),border-color 0.3s;
+}
+.theme-toggle:hover{background:var(--ink);color:var(--bg);}
+[data-theme="dark"] .num-orb-accent{opacity:0.05;}
+[data-theme="dark"] .tier:hover{background:var(--line-ghost);}
+[data-theme="dark"] .btn-ink:hover{background:rgba(200,200,200,1);}
 
 /* ─── SCROLL REVEAL ─── */
 .reveal{
@@ -359,12 +394,39 @@ body{
 [data-delay="1"]{transition-delay:0.1s}
 [data-delay="2"]{transition-delay:0.2s}
 [data-delay="3"]{transition-delay:0.3s}
+
+/* ─── MOBILE ─── */
+@media(max-width:700px){
+  .numbers-grid{grid-template-columns:1fr;}
+  .num-cell{border-right:none;border-bottom:1px solid var(--line);padding:40px 24px;}
+  .num-cell:last-child{border-bottom:none;}
+  .day-row{grid-template-columns:52px 1fr;gap:16px 12px;}
+  .day-items{grid-column:1/-1;}
+  .tier{grid-template-columns:1fr auto;grid-template-rows:auto auto;gap:10px 16px;padding:24px;}
+  .tier-perks{grid-column:1/-1;}
+  .section{padding:64px 5vw;}
+  .cta{padding:88px 5vw 72px;}
+  .cta-inner{grid-template-columns:1fr;gap:36px;}
+  .cta-actions{flex-direction:row;flex-wrap:wrap;}
+  .hero-wordmark{font-size:clamp(18px,4.8vw,30px);top:5vh;right:5vw;}
+  .hero-pillars{font-size:clamp(18px,4.8vw,30px);bottom:12vh;left:5vw;}
+  .hero-footer{padding:1.8vh 5vw 2vh;gap:6px;}
+  .f-col{font-size:clamp(8px,2.2vw,11px);}
+  .program-intro{font-size:clamp(16px,4.5vw,26px);margin-bottom:40px;}
+}
+@media(max-width:480px){
+  .tier{grid-template-columns:1fr;}
+  .tier-price{text-align:left;}
+  .hero-footer .f-col:nth-child(2){display:none;}
+  .day-num{font-size:10px;}
+}
 </style>
 </head>
 <body>
 
 <div class="badge">01 — The Form</div>
-<div style="position:fixed;inset:0;background:#FFD700;opacity:0.55;mix-blend-mode:multiply;pointer-events:none;z-index:5;"></div>
+<button class="theme-toggle" id="themeToggle">◑ &nbsp;Dark</button>
+<div id="yellowOverlay" style="position:fixed;inset:0;background:#FFD700;opacity:0.55;mix-blend-mode:multiply;pointer-events:none;z-index:5;"></div>
 
 <!-- ══════════════════════════════════════
      HERO — POSTER CLONE
@@ -561,7 +623,7 @@ grainOffscreen.width = grainOffscreen.height = GRAIN_SIZE;
 })();
 function tileGrain(ctx, x0, y0, x1, y1, gx, gy, alpha) {
   ctx.save();
-  ctx.globalCompositeOperation='multiply'; ctx.globalAlpha=alpha;
+  ctx.globalCompositeOperation=isDark?'screen':'multiply'; ctx.globalAlpha=alpha;
   const ox0=Math.floor((x0+gx)/GRAIN_SIZE)*GRAIN_SIZE-gx;
   const oy0=Math.floor((y0+gy)/GRAIN_SIZE)*GRAIN_SIZE-gy;
   for (let ox=ox0; ox<x1+GRAIN_SIZE; ox+=GRAIN_SIZE)
@@ -614,40 +676,44 @@ function drawGlitter(ctx, cx, cy, r, pts, t) {
 }
 
 // ─── PHYSICS — smooth, lazy, elastic ─────────────────────
-const SPRING_K=0.006, DAMPING=0.91, MAX_SPEED=11;
+const SPRING_K=0.006, DAMPING=0.91, MAX_SPEED=22;
 
-function updateBlobs(blobs, mouse) {
+function updateBlobs(blobs, mouse, tilt) {
   const n=blobs.length;
   blobs.forEach((b,i)=>{
-    // Spring to home
     b.vx+=(b.hx-b.x)*SPRING_K;
     b.vy+=(b.hy-b.y)*SPRING_K;
 
-    // Smooth mouse push — hermite falloff, no hard edge
-    if (mouse.sx > -999) {
+    // Mouse/touch push — hermite smooth-step, no hard edge
+    if (mouse.sx>-999) {
       const mdx=b.x-mouse.sx, mdy=b.y-mouse.sy;
       const md2=mdx*mdx+mdy*mdy, mr=b.r*2.5;
-      if (md2 < mr*mr) {
+      if (md2<mr*mr) {
         const md=Math.sqrt(md2)||1, u=md/mr;
-        // Hermite smooth-step: 0 at center → 1 at edge, so force is max near center
         const sm=u*u*(3-2*u), f=(1-sm)*(1-sm)*6;
         b.vx+=(mdx/md)*f; b.vy+=(mdy/md)*f;
       }
     }
 
-    // Minimal repulsion — only prevents complete center-overlap
-    for (let j=i+1; j<n; j++) {
-      const b2=blobs[j], dx=b.x-b2.x, dy=b.y-b2.y;
-      const d2=dx*dx+dy*dy, min=(b.r+b2.r)*0.20;
+    // Gyroscope gravity — tilting the phone drifts blobs in that direction
+    if (tilt.active) {
+      b.vx+=tilt.sx*5.0;
+      b.vy+=tilt.sy*5.0;
+    }
+
+    // Minimal center-overlap repulsion
+    for (let j=i+1;j<n;j++) {
+      const b2=blobs[j],dx=b.x-b2.x,dy=b.y-b2.y;
+      const d2=dx*dx+dy*dy,min=(b.r+b2.r)*0.20;
       if (d2<min*min) {
-        const d=Math.sqrt(d2)||1, ov=1-d/min, f=ov*ov*4, nx=dx/d, ny=dy/d;
-        b.vx+=nx*f; b.vy+=ny*f; b2.vx-=nx*f; b2.vy-=ny*f;
+        const d=Math.sqrt(d2)||1,ov=1-d/min,f=ov*ov*4,nx=dx/d,ny=dy/d;
+        b.vx+=nx*f;b.vy+=ny*f;b2.vx-=nx*f;b2.vy-=ny*f;
       }
     }
 
     b.vx*=DAMPING; b.vy*=DAMPING;
     const spd=Math.sqrt(b.vx*b.vx+b.vy*b.vy);
-    if (spd>MAX_SPEED){b.vx=b.vx/spd*MAX_SPEED; b.vy=b.vy/spd*MAX_SPEED;}
+    if (spd>MAX_SPEED){b.vx=b.vx/spd*MAX_SPEED;b.vy=b.vy/spd*MAX_SPEED;}
     b.x+=b.vx; b.y+=b.vy;
   });
 }
@@ -658,8 +724,10 @@ const _L=(function(){const x=-0.45,y=-0.55,z=0.70,n=Math.sqrt(x*x+y*y+z*z);retur
 // ─── METABALL + CODE-ASCII RENDERER ──────────────────────
 const GRID=7; // character pitch in px
 
+let isDark = false;
+
 function drawMetaballs(ctx, blobs, t, grainX, grainY, W, H, transparent) {
-  if (!transparent){ctx.fillStyle='#F0EDE8'; ctx.fillRect(0,0,W,H);}
+  if (!transparent){ctx.fillStyle=isDark?'#000000':'#F0EDE8'; ctx.fillRect(0,0,W,H);}
   else{ctx.clearRect(0,0,W,H);}
 
   const THRESH=1.0, lx=_L.x, ly=_L.y, lz=_L.z;
@@ -708,9 +776,9 @@ function drawMetaballs(ctx, blobs, t, grainX, grainY, W, H, transparent) {
       const ch=getChar(bright, px, py, t);
       if (ch===' '||ch==='`') continue; // sparse chars → background shows = bright spot
 
-      // Color: dark shadow → near-cream highlight, interpolated per brightness
-      const dk=nearest.type==='dark'?[30,28,26]:[58,56,54];
-      const lt=[226,222,216];
+      // Color: dark shadow → highlight, light or dark mode
+      const dk=isDark?(nearest.type==='dark'?[8,8,8]:[18,18,18]):(nearest.type==='dark'?[30,28,26]:[58,56,54]);
+      const lt=isDark?[255,255,255]:[226,222,216];
       const ri=Math.round(dk[0]+(lt[0]-dk[0])*bright);
       const gi=Math.round(dk[1]+(lt[1]-dk[1])*bright);
       const bi=Math.round(dk[2]+(lt[2]-dk[2])*bright);
@@ -726,16 +794,59 @@ function drawMetaballs(ctx, blobs, t, grainX, grainY, W, H, transparent) {
   tileGrain(ctx,0,0,W,H,grainX,grainY,0.22);
 }
 
-// ─── SMOOTH MOUSE — lerp 9%/frame ≈ 170ms lag ────────────
+// ─── INPUT STATE ─────────────────────────────────────────
 const mouse={x:-9999,y:-9999,sx:-9999,sy:-9999};
+const tilt={x:0,y:0,sx:0,sy:0,active:false};
+
+function stepInputs(){
+  if (mouse.sx<-900){mouse.sx=mouse.x;mouse.sy=mouse.y;}
+  else{mouse.sx+=(mouse.x-mouse.sx)*0.09;mouse.sy+=(mouse.y-mouse.sy)*0.09;}
+  if (tilt.active){tilt.sx+=(tilt.x-tilt.sx)*0.22;tilt.sy+=(tilt.y-tilt.sy)*0.22;}
+}
+
+// Desktop mouse
 document.addEventListener('mousemove',e=>{
   const r=document.getElementById('heroCanvas').getBoundingClientRect();
   mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
 });
-function stepMouse(){
-  if (mouse.sx<-900){mouse.sx=mouse.x;mouse.sy=mouse.y;return;}
-  mouse.sx+=(mouse.x-mouse.sx)*0.09;
-  mouse.sy+=(mouse.y-mouse.sy)*0.09;
+
+// Mobile touch — drag on hero canvas moves blobs
+(function(){
+  const hero=document.querySelector('.hero');
+  function onTouch(e){
+    const r=hero.getBoundingClientRect(),t=e.touches[0];
+    mouse.x=t.clientX-r.left; mouse.y=t.clientY-r.top;
+  }
+  hero.addEventListener('touchstart',onTouch,{passive:true});
+  hero.addEventListener('touchmove',onTouch,{passive:true});
+  hero.addEventListener('touchend',()=>{mouse.x=-9999;mouse.y=-9999;});
+})();
+
+// Device orientation — gyroscope gravity (tilting moves blobs)
+function setupOrientation(){
+  window.addEventListener('deviceorientation',e=>{
+    if (e.gamma===null||e.beta===null) return;
+    const angle=(window.screen?.orientation?.angle)||window.orientation||0;
+    if (Math.abs(angle)===90){
+      tilt.x=(e.beta||0)/15; tilt.y=(e.gamma||0)/15;
+    } else {
+      tilt.x=(e.gamma||0)/15; tilt.y=((e.beta||0)-70)/15;
+    }
+    tilt.x=Math.max(-2.5,Math.min(2.5,tilt.x));
+    tilt.y=Math.max(-2.5,Math.min(2.5,tilt.y));
+    tilt.active=true;
+  },{passive:true});
+}
+// iOS 13+ needs a user-gesture permission; Android fires immediately
+if (typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function') {
+  document.addEventListener('touchstart',function ask(){
+    DeviceOrientationEvent.requestPermission()
+      .then(s=>{if(s==='granted')setupOrientation();})
+      .catch(()=>{});
+    document.removeEventListener('touchstart',ask);
+  },{once:true});
+} else if (typeof DeviceOrientationEvent!=='undefined') {
+  setupOrientation();
 }
 
 // ─── HERO CANVAS ─────────────────────────────────────────
@@ -753,7 +864,10 @@ function stepMouse(){
   ];
 
   function resize(){
-    W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight;
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=canvas.offsetWidth; H=canvas.offsetHeight;
+    canvas.width=W*dpr; canvas.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
     if (blobs){const m=Math.min(W,H);DEFS.forEach((d,i)=>{blobs[i].hx=d.nx*W;blobs[i].hy=d.ny*H;blobs[i].r=d.nr*m;});}
   }
   resize();
@@ -766,8 +880,8 @@ function stepMouse(){
   function draw(ts){
     if (!startT) startT=ts;
     const t=(ts-startT)*0.001;
-    stepMouse();
-    updateBlobs(blobs,mouse);
+    stepInputs();
+    updateBlobs(blobs,mouse,tilt);
     const gx=Math.sin(t*2.1)*13,gy=Math.cos(t*1.8)*11;
     drawMetaballs(ctx,blobs,t,gx,gy,W,H,false);
     requestAnimationFrame(draw);
@@ -781,7 +895,12 @@ function stepMouse(){
   if (!canvas) return;
   const ctx=canvas.getContext('2d');
   let W=0,H=0;
-  function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=canvas.offsetWidth; H=canvas.offsetHeight;
+    canvas.width=W*dpr; canvas.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
   resize();
   new ResizeObserver(resize).observe(canvas.parentElement);
   const glitA=makeGlitter(140),glitB=makeGlitter(120);
@@ -822,6 +941,18 @@ const counterObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting&&e.target.dataset.count){runCounter(e.target);counterObs.unobserve(e.target);}});
 },{threshold:0.5});
 document.querySelectorAll('[data-count]').forEach(el=>counterObs.observe(el));
+
+// ─── THEME TOGGLE ─────────────────────────────────────────
+(function(){
+  const btn=document.getElementById('themeToggle');
+  const overlay=document.getElementById('yellowOverlay');
+  btn.addEventListener('click',()=>{
+    isDark=!isDark;
+    document.documentElement.dataset.theme=isDark?'dark':'';
+    overlay.style.display=isDark?'none':'';
+    btn.innerHTML=isDark?'◐ &nbsp;Light':'◑ &nbsp;Dark';
+  });
+})();
 </script>
 </body>
 </html>
