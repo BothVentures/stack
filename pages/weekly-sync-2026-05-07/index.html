@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="W19 venture status grid, decisions, risks, and action items for the BOTH Ventures weekly sync of 2026-05-07.">
+<title>Weekly Sync Digest W19 — 2026-05-07 — Both_Ventures</title>
+<style>
+/*
+ * Weekly Digest — Editorial Design System
+ * Based on photonic-lab Swiss editorial base.
+ * Purpose: Tuesday Sync digest and executive reports.
+ *
+ * Governing principle: scannable in 5 minutes.
+ * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
+ * Section headings as hard dividers. Urgency signals visible at a glance.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals */
+  --white:    #ffffff;
+  --off:      #f5f4f0;
+  --rule:     #e0ddd8;
+  --rule2:    #c8c4bc;
+  --text:     #111110;
+  --text2:    #444440;
+  --text3:    #888880;
+
+  /* Primary accent — BOTH olive-gold */
+  --acc:      #939324;
+  --acc-lt:   #f5f4e0;
+  --acc-dk:   #5a5a14;
+
+  /* Status signals */
+  --urgent-bg:    #fdecea;
+  --urgent-bd:    #c0392b;
+  --warn-bg:      #fdf3e3;
+  --warn-bd:      #b06a00;
+  --info-bg:      #edf1f5;
+  --info-bd:      #3a4a58;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1280px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY ── */
+article.notion-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 8px;
+}
+article.notion-page h2 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 52px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule2);
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 6px 0 16px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 4px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 18px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
+figure.code-block code {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); background: none;
+  border: none; padding: 0; white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px; font-weight: 400; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE ── */
+article.notion-page blockquote {
+  background: var(--off);
+  border-left: 3px solid var(--acc);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+}
+article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
+article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── TABLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #f0efe8;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 300;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafaf8; }
+tr:hover td { background: var(--off); }
+
+/* ── HEALTH BADGES ── */
+.health-green  { color: #1a7a1a; font-weight: 700; }
+.health-yellow { color: #b06a00; font-weight: 700; }
+.health-red    { color: #c0392b; font-weight: 700; }
+.health-review { color: #3a4a58; font-weight: 700; }
+.health-obs    { color: var(--text3); font-weight: 400; }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc-dk);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--text);
+  border-bottom-color: var(--acc);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 2px solid var(--text);
+  background: var(--off);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc-dk);
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta">2026-05-05</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+
+    <h1>BOTH Ventures — Tuesday Weekly Sync — 2026-05-07</h1>
+    <p><em>W19 · Reunión movida a miércoles/jueves 7-8 mayo · Generado por /wr · Daiana valida antes de distribución</em></p>
+
+    <hr>
+
+    <h2>Venture Status Grid</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Venture</th>
+          <th>Champion</th>
+          <th>Stage</th>
+          <th>Health</th>
+          <th>Esta Semana</th>
+          <th>Next Priority</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Manantial.Casa</strong></td>
+          <td>Gaston / Daiana</td>
+          <td>Build</td>
+          <td><span class="health-yellow">Yellow</span></td>
+          <td>Open House 7/5 (3er aniversario). Cash USD 83.6K (ajuste contable). 44 members. Ocupación 63.3%. UBS meeting ejecutado.</td>
+          <td>Destrabar CAPEX con Gastón + recuperar lead Pignaro (Full, follow-up vencido)</td>
+        </tr>
+        <tr>
+          <td><strong>La Chamana</strong></td>
+          <td>Daiana</td>
+          <td>Explore</td>
+          <td><span class="health-red">Red</span></td>
+          <td>GTM full system demo (5/5). Airtable CRM live (57 contactos). Lucia lista (Stress Test 8 msgs pending send). Clay aprobado. funnel.html + dashboard.html en GitHub Pages. Iru no presente en demo — walkthrough urgente.</td>
+          <td>Stress Test send a Boris (IG sessionid ~10min) → CLEARED May 8 → Lucia autónoma</td>
+        </tr>
+        <tr>
+          <td><strong>Reshore</strong></td>
+          <td>Gaston</td>
+          <td>Build</td>
+          <td><span class="health-yellow">Yellow</span></td>
+          <td>Coco handover en movimiento (3 repos con READMEs). Boris scope post-supersession ("fierros"). Conversación Boris↔Sergio pendiente de confirmar.</td>
+          <td>Confirmar Boris↔Sergio scoping + agendar 3-way call Gaston+Boris+Coco</td>
+        </tr>
+        <tr>
+          <td><strong>LAK3</strong></td>
+          <td>Rene</td>
+          <td>Build</td>
+          <td><span class="health-green">Green</span></td>
+          <td>Jean H track en frente. Qatar PM-level meeting confirmada. Sesión EN inversores May 6. Contrapropuesta dos capas Xavier (LAK3+BGLD) bajo análisis.</td>
+          <td>Respuesta a Xavier dos capas + resultado sesión EN May 6</td>
+        </tr>
+        <tr>
+          <td><strong>Photonic Lab</strong></td>
+          <td>Rene</td>
+          <td>Explore</td>
+          <td><span class="health-review">⚠ Under Review</span></td>
+          <td>Archivo vault marcado inaccurate por Gastón (2026-04-28). Phase 2 1:1 con Gastón target 2026-05-01 — estado desconocido.</td>
+          <td>Rene confirma si Phase 2 1:1 ocurrió + actualiza archivo vault</td>
+        </tr>
+        <tr>
+          <td><strong>Panambi</strong></td>
+          <td>Andres</td>
+          <td>Explore</td>
+          <td><span class="health-obs">Observational</span></td>
+          <td>Gaby Genovese (GP) considerando La Chamana como venue para retreats. Mike intro → Gaby (LP nativo americano) en secuencia.</td>
+          <td>Daiana envía rate card / disponibilidad a Andres para relay a Gaby</td>
+        </tr>
+        <tr>
+          <td><strong>Punta Cripto</strong></td>
+          <td>Rene</td>
+          <td>Build</td>
+          <td><span class="health-yellow">Yellow</span></td>
+          <td>Landing page "Direction 01 — The Forum" live en GitHub Pages (v3, dark mode). Inaugural edition: 2027.</td>
+          <td>Lock execution team (Dario/Chino/Marco) + arrancar outreach title sponsor</td>
+        </tr>
+        <tr>
+          <td><strong>Quantum</strong></td>
+          <td>Andres</td>
+          <td>Explore</td>
+          <td><span class="health-green">Green</span></td>
+          <td>Carta BOTH×TQA a Presidencia ROU finalizada en español. Signatario TQA: Facundo Díaz (President, TQA Delaware). BOTH signatory: placeholder [firma], pendiente lock.</td>
+          <td>Lock signatory BOTH (Gastón CEO) + secuencia pre-brief ANII + Uruguay XXI</td>
+        </tr>
+        <tr>
+          <td><strong>B_V® | OS</strong></td>
+          <td>Boris</td>
+          <td>Build</td>
+          <td><span class="health-yellow">Yellow</span></td>
+          <td>El Chaman OS (lc-chaman) W19: Lucia built, CRM live, Stress Test ready. Daiana git merge conflicts → Boris destraba. Asana consolidación en progreso.</td>
+          <td>Fix Daiana git conflicts + extraer IG sessionid (desbloquea Stress Test)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Area Summaries</h2>
+
+    <h3>Capital — Gaston</h3>
+    <p><strong>Foco:</strong> La Chamana sale process activa — Cristis (exclusividad, $12M list, redes cerradas). TQA letter a Presidencia lista para firmar — sovereign capital positioning. Native-American-Reserve LP intro para Gaby (Panambi) secuenciada tras interacción Reshore con Mike.</p>
+    <p><strong>Cross-venture:</strong> Quantum + Punta Cripto convergen en oportunidad de capital soberano / institucional en Q2.</p>
+    <p><strong>Pendiente:</strong> Confirmar signatory en carta Quantum (Gastón CEO). Llamada con Gastón Silverman (Grateful / Punta Cripto sponsorship).</p>
+
+    <h3>Narrative &amp; Comms — Rene</h3>
+    <p><strong>Foco:</strong> La Chamana full GTM funnel narrative live. LAK3 sesión EN inversores May 6 + análisis tokenomics dos capas. Punta Cripto landing page Direction 01 publicada.</p>
+    <p><strong>Pendiente crítico:</strong> Photonic Lab vault revision — Gastón flagueó contenido como inaccurate. Sin esto, Phase 2 decision no puede cerrar en base correcta.</p>
+    <p><strong>Cross-venture:</strong> Rene holds 3 ventures en movimiento simultáneo (LAK3/Photonic/Punta Cripto). Bandwidth riesgo activo.</p>
+
+    <h3>Operations &amp; Finance — Daiana</h3>
+    <p><strong>Foco:</strong> Coco cerrado (factura + pago ejecutados May 4). QB/Getnet para Casa Manantial avanzando post-cierre Abril. Update financiero CM al board enviado martes 5/5.</p>
+    <p><strong>Gap detectado:</strong> No existe reporte BOTH-consolidado para LP. Definir periodicidad es prioridad próxima semana.</p>
+    <p><strong>Pendiente:</strong> Auditoría suscripciones BOTH + handoff accesos a Daiana (sesión única con Boris). Iru walkthrough sistema GTM La Chamana — Daiana owns, urgente.</p>
+
+    <h3>Legal &amp; Governance — Andres</h3>
+    <p><strong>Foco:</strong> Update legal paquete BOTH — en manos de Andy (ya en Synergy). Quantum structuring en curso. Panambi/LC venue thread.</p>
+    <p><strong>Standing:</strong> ZF structure para Photonic Lab en re-derivación (ANII inside ZF confirmada desde 2025).</p>
+    <p><strong>Pendiente:</strong> Output del update legal paquete BOTH esperado esta semana.</p>
+
+    <h3>Tech &amp; Infrastructure — Boris</h3>
+    <p><strong>Foco:</strong> El Chaman OS W19 completo (Lucia, CRM, Stress Test). Fix Daiana git merge conflicts. Asana consolidation in progress.</p>
+    <p><strong>⚠ CRÍTICO — GitHub PAT expira 2026-05-11 (en 4 días).</strong> Cloudflare Worker (toda la pipeline de transcripts) falla silenciosamente si no se rota. Acción: <code>npx wrangler secret put GITHUB_PAT</code>.</p>
+
+    <hr>
+
+    <h2>Decisiones Recientes (últimos 7 días)</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Decisión</th>
+          <th>Venture</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Airtable como CRM source of truth para funnel de outreach</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Clay activado para data enrichment ($185/mo, Gastón aprobó)</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Instantly AI para email outreach (Lucia engine)</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>ManyChat para IG DM outreach (única opción Meta-sanctioned)</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Influencer strategy: 1 por mes, stay solo</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Human in the Loop para primeras 3 conversiones</td>
+          <td>La Chamana</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Carta BOTH×TQA a Presidencia ROU finalizada — lista para firmar</td>
+          <td>Quantum</td>
+          <td>2026-05-05</td>
+        </tr>
+        <tr>
+          <td>Boris scope Reshore supersession ($5K retirado, TBD directo Boris↔Sergio)</td>
+          <td>Reshore</td>
+          <td>2026-04-28</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Riesgos Activos</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Riesgo</th>
+          <th>Venture</th>
+          <th>Likelihood</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Iru no onboarded en sistema GTM antes de que el funnel se active</td>
+          <td>La Chamana</td>
+          <td>High</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Instagram ban risk por DM automation</td>
+          <td>La Chamana</td>
+          <td>High</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><strong>GitHub PAT expira 2026-05-11 — Worker pipeline falla silenciosamente</strong></td>
+          <td>B_V® | OS</td>
+          <td><strong style="color:#c0392b">Critical</strong></td>
+          <td><strong style="color:#c0392b">Critical</strong></td>
+        </tr>
+        <tr>
+          <td>AI outreach accuracy 85-90% — personalización incorrecta daña marca</td>
+          <td>La Chamana</td>
+          <td>Medium</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Costos LC paralelos sin cashflow tracking centralizado</td>
+          <td>La Chamana</td>
+          <td>Medium</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Reshore handover dependency — solo Boris+Coco entienden el setup</td>
+          <td>Reshore</td>
+          <td>Medium</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Rene bandwidth — 3 ventures simultáneos (LAK3/Photonic/Punta Cripto)</td>
+          <td>Cross-venture</td>
+          <td>Medium</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Photonic Lab vault inaccurate — Phase 2 decision en base incorrecta</td>
+          <td>Photonic Lab</td>
+          <td>Active</td>
+          <td>High</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Action Items Abiertos</h2>
+
+    <h3>La Chamana — GTM Sprint</h3>
+    <ul>
+      <li>Extraer IG sessionid → test DM a @boris.b0rg — <strong>Boris · HOY (desbloquea todo)</strong></li>
+      <li>Activar Clay para data enrichment ($185/mo) — <strong>Boris · ASAP</strong></li>
+      <li>Configurar notificaciones para Iru (Slack o Telegram) — <strong>Boris · antes de funnel live</strong></li>
+      <li>Walkthrough profundo con Iru sobre sistema GTM — <strong>Daiana · URGENTE</strong></li>
+      <li>Documentar closing workflow (depósito, pago, contrato, cancelación) — <strong>Daiana</strong></li>
+      <li>Call Gesini + Iru pre-arrival y add-ons — <strong>Pato · target 2026-05-06</strong></li>
+      <li>Definir qualification scoring matrix (grupo 4+, 3+ noches, Airbnb 4.5+) — <strong>Boris</strong></li>
+      <li>Enviar outreach database + OS system doc a Pato — <strong>Boris</strong></li>
+    </ul>
+
+    <h3>Cross-venture</h3>
+    <ul>
+      <li>Rotar GitHub PAT en Cloudflare Worker — <strong>Boris · antes de 2026-05-11 (CRÍTICO)</strong></li>
+      <li>Confirmar Boris↔Sergio scoping conversation (Reshore) — <strong>Gaston · esta semana</strong></li>
+      <li>Lock BOTH signatory en carta Quantum — <strong>Gaston</strong></li>
+      <li>Rate card / disponibilidad La Chamana para Gaby (Panambi) — <strong>Daiana → Andres</strong></li>
+      <li>Auditoría suscripciones BOTH + handoff accesos a Daiana — <strong>Boris + Daiana</strong></li>
+      <li>Fix Daiana git merge conflicts en Cowork — <strong>Boris</strong></li>
+      <li><code>vault/pending/2026-04-28-gaston-followups.md</code> pendiente aprobación — <strong>Gastón</strong></li>
+    </ul>
+
+    <hr>
+
+    <h2>Temas Transversales</h2>
+
+    <p><strong>1. La Chamana GTM es el trabajo de la semana.</strong> Full funnel infrastructure construida en 5 días: Lucia, Airtable CRM (57 contactos), Stress Test (8 msgs listos). Desbloqueo real: IG sessionid (~10min). Riesgo no es el sistema — es que Iru no está onboarded y es el único gate humano entre el funnel y el cierre.</p>
+
+    <p><strong>2. Quantum institutional move.</strong> Carta a Presidencia lista. Solo falta OK de Gastón como signatory. Ventana corta antes de que el momentum se enfríe.</p>
+
+    <p><strong>3. GitHub PAT — cuenta regresiva de 4 días.</strong> Worker muere en silencio. No hay alertas. No admite demora.</p>
+
+    <p><strong>4. Photonic Lab en limbo.</strong> Under review desde 28-abr. Phase 2 1:1 sin confirmación en vault. Si Rene no actualizó, la reunión no tiene datos confiables sobre Photonic.</p>
+
+    <hr>
+
+    <h2>Notas Pre-Meeting</h2>
+
+    <ul>
+      <li>Reunión en Casa Manantial — Open House 3er aniversario es jueves 7/5. Coordinar timing.</li>
+      <li>Andres primer sync completo tras viaje a Canadá.</li>
+      <li>LAK3 sesión EN inversores May 6 (ayer): Rene trae resultado en fresco.</li>
+      <li>La Chamana: considerar si walkthrough Iru ocurre antes o después de la reunión.</li>
+    </ul>
+
+    <hr>
+
+    <p><em>Generado: 2026-05-05 · Fuentes: vault/ventures/ · vault/decisions/ · vault/risks/ · vault/pending/ · lc-chaman/ops/pulse.md (bridge) · Daiana valida antes de distribución</em></p>
+
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · weekly-digest · 2026-05-05</span>
+</footer>
+</body>
+</html>
