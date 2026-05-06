@@ -385,6 +385,16 @@ body{
 [data-theme="dark"] .tier:hover{background:var(--line-ghost);}
 [data-theme="dark"] .btn-ink:hover{background:rgba(200,200,200,1);}
 
+/* EDITORIAL STATEMENT — large paragraph between sections */
+.editorial-statement{
+  max-width:820px;
+  font-size:clamp(18px, 2.2vw, 32px);
+  font-weight:300;
+  line-height:1.45;
+  letter-spacing:-0.015em;
+  color:var(--ink);
+}
+
 /* ─── SCROLL REVEAL ─── */
 .reveal{
   opacity:0;transform:translateY(20px);
@@ -424,8 +434,7 @@ body{
 </head>
 <body>
 
-<div class="badge">01 — The Form</div>
-<button class="theme-toggle" id="themeToggle">◑ &nbsp;Dark</button>
+<button class="theme-toggle" id="themeToggle">◐ &nbsp;Light</button>
 <div id="yellowOverlay" style="position:fixed;inset:0;background:#FFD700;opacity:0.55;mix-blend-mode:multiply;pointer-events:none;z-index:5;"></div>
 
 <!-- ══════════════════════════════════════
@@ -437,7 +446,8 @@ body{
   <div class="hero-wordmark">
     Punta<br>
     Crypto<br>
-    Summit
+    Summit<br>
+    <span style="font-weight:500;letter-spacing:-0.01em;">2027</span>
   </div>
 
   <div class="hero-pillars">
@@ -462,6 +472,15 @@ body{
 </section>
 
 <!-- ══════════════════════════════════════
+     INTRO STATEMENT
+══════════════════════════════════════ -->
+<section class="section">
+  <p class="editorial-statement reveal">
+    Punta Crypto is a premium destination summit for the digital asset industry — the first of its kind in Latin America's Southern Cone. It is a designed concentration point, built to bring together the three audiences that drive the sector — capital allocators, protocol builders, and the regulatory actors.
+  </p>
+</section>
+
+<!-- ══════════════════════════════════════
      MARKET SIGNAL
 ══════════════════════════════════════ -->
 <section class="section">
@@ -483,6 +502,15 @@ body{
       <div class="num-desc">Argentine on-chain volume<br>zero premium home event</div>
     </div>
   </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     PLACE STATEMENT
+══════════════════════════════════════ -->
+<section class="section">
+  <p class="editorial-statement reveal">
+    The place matters. Punta del Este provides a high-trust ground for capital, builders, and regulators to connect with more than a view, a vision. By prioritizing institutional density, the summit turns location into leverage.
+  </p>
 </section>
 
 <!-- ══════════════════════════════════════
@@ -724,7 +752,7 @@ const _L=(function(){const x=-0.45,y=-0.55,z=0.70,n=Math.sqrt(x*x+y*y+z*z);retur
 // ─── METABALL + CODE-ASCII RENDERER ──────────────────────
 const GRID=7; // character pitch in px
 
-let isDark = false;
+let isDark = true;
 
 function drawMetaballs(ctx, blobs, t, grainX, grainY, W, H, transparent) {
   if (!transparent){ctx.fillStyle=isDark?'#000000':'#F0EDE8'; ctx.fillRect(0,0,W,H);}
@@ -824,8 +852,15 @@ document.addEventListener('mousemove',e=>{
 
 // Device orientation — gyroscope gravity (tilting moves blobs)
 function setupOrientation(){
+  let evtCount=0;
   window.addEventListener('deviceorientation',e=>{
     if (e.gamma===null||e.beta===null) return;
+    evtCount++;
+    // Confirm it's actually firing after first real event
+    if (evtCount===1){
+      const h=document.getElementById('motionHint');
+      if(h){h.textContent='Motion on';setTimeout(()=>h.remove(),1200);}
+    }
     const angle=(window.screen?.orientation?.angle)||window.orientation||0;
     if (Math.abs(angle)===90){
       tilt.x=(e.beta||0)/15; tilt.y=(e.gamma||0)/15;
@@ -837,17 +872,40 @@ function setupOrientation(){
     tilt.active=true;
   },{passive:true});
 }
-// iOS 13+ needs a user-gesture permission; Android fires immediately
-if (typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function') {
-  document.addEventListener('touchstart',function ask(){
-    DeviceOrientationEvent.requestPermission()
-      .then(s=>{if(s==='granted')setupOrientation();})
-      .catch(()=>{});
-    document.removeEventListener('touchstart',ask);
-  },{once:true});
-} else if (typeof DeviceOrientationEvent!=='undefined') {
-  setupOrientation();
-}
+
+(function initOrientation(){
+  if (typeof DeviceOrientationEvent==='undefined') return;
+
+  // iOS 13+ requires explicit permission from a user gesture
+  if (typeof DeviceOrientationEvent.requestPermission==='function') {
+    // Show a visible tap-to-enable hint in the hero
+    const hint=document.createElement('div');
+    hint.id='motionHint';
+    hint.textContent='Tap to enable motion';
+    hint.style.cssText='position:fixed;bottom:68px;left:24px;z-index:501;font-family:"Plus Jakarta Sans",sans-serif;font-size:0.55rem;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);padding:8px 16px;border:1px solid var(--ink);background:var(--bg);pointer-events:none;';
+    document.body.appendChild(hint);
+
+    document.addEventListener('touchstart',function ask(){
+      DeviceOrientationEvent.requestPermission()
+        .then(state=>{
+          if(state==='granted'){
+            setupOrientation();
+          } else {
+            const h=document.getElementById('motionHint');
+            if(h){h.textContent='Motion denied — check Settings';setTimeout(()=>h.remove(),3000);}
+          }
+        })
+        .catch(err=>{
+          const h=document.getElementById('motionHint');
+          if(h){h.textContent='Motion unavailable';setTimeout(()=>h.remove(),3000);}
+        });
+      document.removeEventListener('touchstart',ask);
+    },{once:true});
+  } else {
+    // Android / non-iOS — fires immediately, no permission needed
+    setupOrientation();
+  }
+})();
 
 // ─── HERO CANVAS ─────────────────────────────────────────
 (function initHero(){
@@ -946,6 +1004,9 @@ document.querySelectorAll('[data-count]').forEach(el=>counterObs.observe(el));
 (function(){
   const btn=document.getElementById('themeToggle');
   const overlay=document.getElementById('yellowOverlay');
+  // Apply dark mode immediately on load (default state)
+  document.documentElement.dataset.theme='dark';
+  overlay.style.display='none';
   btn.addEventListener('click',()=>{
     isDark=!isDark;
     document.documentElement.dataset.theme=isDark?'dark':'';
