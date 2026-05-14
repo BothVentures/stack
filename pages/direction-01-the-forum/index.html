@@ -850,62 +850,19 @@ document.addEventListener('mousemove',e=>{
   hero.addEventListener('touchend',()=>{mouse.x=-9999;mouse.y=-9999;});
 })();
 
-// Device orientation — gyroscope gravity (tilting moves blobs)
-function setupOrientation(){
-  let evtCount=0;
-  window.addEventListener('deviceorientation',e=>{
-    if (e.gamma===null||e.beta===null) return;
-    evtCount++;
-    // Confirm it's actually firing after first real event
-    if (evtCount===1){
-      const h=document.getElementById('motionHint');
-      if(h){h.textContent='Motion on';setTimeout(()=>h.remove(),1200);}
-    }
-    const angle=(window.screen?.orientation?.angle)||window.orientation||0;
-    if (Math.abs(angle)===90){
-      tilt.x=(e.beta||0)/15; tilt.y=(e.gamma||0)/15;
-    } else {
-      tilt.x=(e.gamma||0)/15; tilt.y=((e.beta||0)-70)/15;
-    }
-    tilt.x=Math.max(-2.5,Math.min(2.5,tilt.x));
-    tilt.y=Math.max(-2.5,Math.min(2.5,tilt.y));
-    tilt.active=true;
-  },{passive:true});
+// Mobile detection — touch-primary devices (no hover)
+const isMobile = window.matchMedia('(hover:none) and (pointer:coarse)').matches;
+
+// Ambient gravity for mobile — Lissajous orbit, no permissions required
+// Two sine waves at different frequencies create an organic pattern that never exactly repeats
+function ambientGravity(t) {
+  if (!isMobile) return;
+  tilt.x  = Math.sin(t * 0.18) * 0.10;
+  tilt.y  = Math.cos(t * 0.13) * 0.08;
+  tilt.sx = tilt.x; // write smoothed values directly — no lerp lag on ambient
+  tilt.sy = tilt.y;
+  tilt.active = true;
 }
-
-(function initOrientation(){
-  if (typeof DeviceOrientationEvent==='undefined') return;
-
-  // iOS 13+ requires explicit permission from a user gesture
-  if (typeof DeviceOrientationEvent.requestPermission==='function') {
-    // Show a visible tap-to-enable hint in the hero
-    const hint=document.createElement('div');
-    hint.id='motionHint';
-    hint.textContent='Tap to enable motion';
-    hint.style.cssText='position:fixed;bottom:68px;left:24px;z-index:501;font-family:"Plus Jakarta Sans",sans-serif;font-size:0.55rem;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);padding:8px 16px;border:1px solid var(--ink);background:var(--bg);pointer-events:none;';
-    document.body.appendChild(hint);
-
-    document.addEventListener('touchstart',function ask(){
-      DeviceOrientationEvent.requestPermission()
-        .then(state=>{
-          if(state==='granted'){
-            setupOrientation();
-          } else {
-            const h=document.getElementById('motionHint');
-            if(h){h.textContent='Motion denied — check Settings';setTimeout(()=>h.remove(),3000);}
-          }
-        })
-        .catch(err=>{
-          const h=document.getElementById('motionHint');
-          if(h){h.textContent='Motion unavailable';setTimeout(()=>h.remove(),3000);}
-        });
-      document.removeEventListener('touchstart',ask);
-    },{once:true});
-  } else {
-    // Android / non-iOS — fires immediately, no permission needed
-    setupOrientation();
-  }
-})();
 
 // ─── HERO CANVAS ─────────────────────────────────────────
 (function initHero(){
@@ -938,6 +895,7 @@ function setupOrientation(){
   function draw(ts){
     if (!startT) startT=ts;
     const t=(ts-startT)*0.001;
+    ambientGravity(t);
     stepInputs();
     updateBlobs(blobs,mouse,tilt);
     const gx=Math.sin(t*2.1)*13,gy=Math.cos(t*1.8)*11;
