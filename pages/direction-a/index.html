@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Both_Ventures — Direction A · Locked</title>
+<meta name="description" content="An agentic venture platform. Direction A — Fraunces titles, Space Mono terminal substrate, living yin-yang signature, cream institutional ground.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,200..900,0..100,0..1;1,9..144,200..900,0..100,0..1&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<style>
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS — Direction A · Locked
+   Palette: cream / ink / warm-gray / olive-teal
+   Type:    Fraunces (titles only) + Space Mono (everything else, terminal-style)
+   Signal:  Living yin-yang as subtle ambient hero background
+   ───────────────────────────────────────────── */
+:root {
+  /* Surface — A's cream baseline */
+  --bg:          #E8E4DC;                        /* cream */
+  --bg-deep:     #DDD8CE;                        /* deeper cream */
+  --warm-gray:   #D4D0C8;                        /* warm gray surface */
+  --paper:       #EFEBE3;                        /* slightly warmer paper for hero */
+
+  /* Ink */
+  --ink:         #0A0A08;
+  --ink-mid:     oklch(28% 0.005 90);
+  --ink-faint:   oklch(45% 0.004 90);
+  --ink-whisper: oklch(60% 0.004 90);
+  --ink-ghost:   oklch(72% 0.004 90);
+
+  /* Lines */
+  --line:        rgba(10,10,8,0.10);
+  --line-mid:    rgba(10,10,8,0.20);
+  --line-strong: rgba(10,10,8,0.42);
+  --line-hair:   rgba(10,10,8,0.06);
+
+  /* Signal — A's deepened olive-teal */
+  --signal:      oklch(58% 0.10 108);
+  --signal-deep: oklch(46% 0.09 108);
+  --signal-bright: oklch(68% 0.12 108);
+  --signal-tint: oklch(58% 0.10 108 / 0.10);
+
+  /* Type stack */
+  --serif: 'Fraunces', 'Times New Roman', Georgia, serif;
+  --mono:  'Space Mono', ui-monospace, monospace;
+
+  /* Spacing */
+  --gutter: clamp(1.25rem, 2.4vw, 2.5rem);
+  --section-y: clamp(4.5rem, 10vh, 9rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:  cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-sharp: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-feature-settings: "ss01";
+  font-size: 14px;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  cursor: none;
+  overflow-x: hidden;
+}
+::selection { background: var(--ink); color: var(--bg); }
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+
+/* ─────────────────────────────────────────────
+   CURSOR — small typographic crosshair
+   ───────────────────────────────────────────── */
+.cursor {
+  position: fixed; top: 0; left: 0;
+  width: 26px; height: 26px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out);
+}
+.cursor::before, .cursor::after {
+  content: ''; position: absolute; background: #fff;
+}
+.cursor::before { top: 50%; left: 0; width: 100%; height: 1px; transform: translateY(-50%); }
+.cursor::after  { top: 0; left: 50%; width: 1px; height: 100%; transform: translateX(-50%); }
+.cursor.is-hovering { width: 58px; height: 58px; }
+@media (pointer: coarse) { .cursor { display: none; } body { cursor: auto; } }
+
+/* ─────────────────────────────────────────────
+   TERMINAL CHROME — Space Mono dominant
+   ───────────────────────────────────────────── */
+.chrome {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 12px var(--gutter);
+  background: linear-gradient(to bottom, var(--bg) 60%, rgba(232,228,220,0));
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border-bottom: 1px solid var(--line-hair);
+}
+.chrome .mark { color: var(--ink); font-weight: 700; letter-spacing: 0.04em; }
+.chrome .stat {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  white-space: nowrap;
+}
+.chrome .stat .lbl { color: var(--ink-whisper); }
+.chrome .stat .val { color: var(--ink); font-weight: 700; }
+.chrome .stat .sig { color: var(--signal-deep); font-weight: 700; }
+.chrome .live {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.chrome .live .dot {
+  width: 7px; height: 7px; background: var(--signal); border-radius: 50%;
+  animation: live-pulse 2s var(--ease-out) infinite;
+}
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.7); }
+}
+@media (max-width: 760px) {
+  /* Compact chrome — show only essentials so it doesn't overlap the hero */
+  .chrome {
+    grid-template-columns: auto 1fr auto;
+    gap: 0.6rem;
+    padding: 8px var(--gutter);
+  }
+  .chrome > * { font-size: 9px; }
+  /* Hide the Direction stat (2nd child) and Latency stat (4th child) on mobile */
+  .chrome > *:nth-child(2),
+  .chrome > *:nth-child(4) { display: none; }
+  .chrome > *:nth-child(3) { justify-self: center; }   /* SYNERGY LIVE */
+  .chrome > *:last-child { justify-self: end; }        /* V 0.2 / Q-02.26 */
+}
+
+/* ─────────────────────────────────────────────
+   SIDE RAILS — vertical Space Mono metadata
+   ───────────────────────────────────────────── */
+.rail {
+  position: fixed;
+  top: 50%; transform: translateY(-50%);
+  z-index: 50;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--ink-whisper);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+.rail-left  { left: 14px; }
+.rail-right { right: 14px; }
+.rail .sig { color: var(--signal-deep); font-weight: 700; }
+@media (max-width: 900px) { .rail { display: none; } }
+
+/* ─────────────────────────────────────────────
+   HERO — ASCII signature as ambient background
+   ───────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  padding: clamp(5rem, 9vh, 7rem) var(--gutter) clamp(2rem, 5vh, 4rem);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: clamp(1.5rem, 3vh, 2.5rem);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+/* The ASCII canvas — ambient, behind hero content */
+.ascii-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.ascii-bg canvas { width: 100%; height: 100%; display: block; }
+.ascii-bg::after {
+  /* Subtle vignette so center reads clean */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 0%, transparent 40%, var(--paper) 95%);
+  pointer-events: none;
+}
+
+.hero > *:not(.ascii-bg) { position: relative; z-index: 5; }
+
+/* Hero top: terminal metadata strip */
+.hero-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: end;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-mid);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.hero-top .col-l { text-align: left; }
+.hero-top .col-m { text-align: center; }
+.hero-top .col-r { text-align: right; }
+.hero-top .heavy { color: var(--ink); font-weight: 700; }
+.hero-top .sig { color: var(--signal-deep); font-weight: 700; }
+
+/* Wordmark stage */
+.wordmark-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vh, 2.5rem) 0;
+  text-align: center;
+}
+
+/* THE wordmark — Fraunces, A's display scale, B's variable axis */
+.wordmark {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "wght" 320, "SOFT" 40, "WONK" 0;
+  font-size: clamp(3.5rem, 12.5vw, 14rem);
+  line-height: 0.9;
+  letter-spacing: -0.038em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* True underscore — sits at the baseline like the code-identifier convention */
+.wordmark .underscore {
+  display: inline-block;
+  width: 0.46em;
+  height: 0.06em;
+  background: var(--ink);
+  vertical-align: -0.04em;
+  margin: 0 -0.02em;
+  border-radius: 1px;
+  animation: cursor-pulse 1.6s steps(2,end) infinite;
+}
+.wordmark .ventures {
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "wght" 380, "SOFT" 80, "WONK" 1;
+}
+@keyframes cursor-pulse { 0%, 60% { opacity: 1; } 80%, 100% { opacity: 0.25; } }
+
+/* Tagline strip — Space Mono terminal style */
+.tagline {
+  margin-top: clamp(1.5rem, 3vh, 2.4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  font-family: var(--mono);
+  font-size: clamp(0.7rem, 0.95vw, 0.86rem);
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.tagline .sig { color: var(--signal-deep); font-weight: 700; }
+.tagline .glyph {
+  display: inline-block;
+  color: var(--ink);
+  font-family: Arial, sans-serif;
+  font-size: 0.85em;
+  letter-spacing: -0.1em;
+}
+.tagline .sep { color: var(--ink-ghost); }
+@media (max-width: 700px) {
+  .tagline { flex-direction: column; gap: 0.4rem; }
+}
+
+/* Hero bottom — scroll cue and terminal stats */
+.hero-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-mid);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.hero-bottom .col { display: flex; flex-direction: column; gap: 4px; }
+.hero-bottom .col.center { align-items: center; }
+.hero-bottom .col.right { align-items: flex-end; text-align: right; }
+.hero-bottom .lbl { font-size: 9px; letter-spacing: 0.30em; color: var(--ink-whisper); }
+.hero-bottom .val { color: var(--ink); font-weight: 700; }
+.hero-bottom .sig { color: var(--signal-deep); }
+.hero-bottom .arrow {
+  display: inline-block;
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, var(--signal) 0%, transparent 100%);
+  animation: scroll-flow 2.4s var(--ease-out) infinite;
+}
+@keyframes scroll-flow {
+  0% { opacity: 0; transform: translateY(-10px); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+@media (max-width: 760px) {
+  .hero-top, .hero-bottom { grid-template-columns: 1fr; gap: 0.4rem; }
+  .hero-top > *, .hero-bottom > * { text-align: left !important; align-items: flex-start !important; }
+}
+
+/* ─────────────────────────────────────────────
+   DOCTRINE — Fraunces title + Space Mono body (mono = more presence)
+   ───────────────────────────────────────────── */
+.doctrine {
+  position: relative;
+  padding: var(--section-y) var(--gutter);
+  border-top: 1px solid var(--line-mid);
+}
+.doctrine-meta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-mid);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.doctrine-meta .sig { color: var(--signal-deep); font-weight: 700; }
+.doctrine-meta .heavy { color: var(--ink); font-weight: 700; }
+
+/* The doctrine statement — Fraunces at A's editorial-display scale */
+.doctrine-statement {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 144, "wght" 320, "SOFT" 40, "WONK" 0;
+  font-size: clamp(1.8rem, 4.2vw, 4.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  max-width: 26ch;
+  text-wrap: balance;
+  hanging-punctuation: first;
+}
+.doctrine-statement em {
+  font-style: italic;
+  font-variation-settings: "opsz" 144, "wght" 380, "SOFT" 80, "WONK" 1;
+  color: var(--signal-deep);
+}
+.doctrine-statement .sig-under {
+  position: relative;
+  display: inline-block;
+}
+.doctrine-statement .sig-under::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -0.04em;
+  height: 2px;
+  background: var(--ink);
+  transform-origin: left;
+  animation: under-extend 1.6s var(--ease-out) 0.3s both;
+}
+@keyframes under-extend { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* Body grid — Space Mono dominant (the "more presence" Rene asked for) */
+.doctrine-grid {
+  margin-top: clamp(3rem, 6vh, 4.5rem);
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+.doctrine-grid .col {
+  grid-column: span 4;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink-mid);
+}
+.doctrine-grid .col .label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.doctrine-grid .col .label .num { color: var(--ink-faint); margin-right: 0.5rem; }
+.doctrine-grid .col strong { color: var(--ink); font-weight: 700; }
+.doctrine-grid .col em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-variation-settings: "opsz" 18, "wght" 420, "SOFT" 60, "WONK" 1;
+  font-size: 1.05em;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+@media (max-width: 900px) {
+  .doctrine-grid .col { grid-column: span 12; padding-bottom: 1.2rem; border-bottom: 1px dotted var(--line); }
+}
+
+/* ─────────────────────────────────────────────
+   TENSIONS — Fraunces left/right terms + Space Mono axis & footnotes
+   ───────────────────────────────────────────── */
+.tensions {
+  position: relative;
+  padding: var(--section-y) var(--gutter);
+  border-top: 1px solid var(--line-mid);
+  background: var(--bg-deep);
+}
+.tensions-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-mid);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.tensions-head .sig { color: var(--signal-deep); font-weight: 700; }
+/* Section h2 — Fraunces */
+.tensions-head h2 {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "wght" 320, "SOFT" 40, "WONK" 0;
+  font-size: clamp(2rem, 4.4vw, 4.4rem);
+  letter-spacing: -0.030em;
+  line-height: 0.96;
+  color: var(--ink);
+  text-transform: none;
+  text-wrap: balance;
+}
+.tensions-head h2 em {
+  font-style: italic;
+  font-variation-settings: "opsz" 96, "wght" 380, "SOFT" 80, "WONK" 1;
+}
+
+.tensions-list { display: grid; gap: 0; }
+.t-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto 1fr 100px;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.5s var(--ease-out);
+}
+.t-row:first-child { border-top: 1px solid var(--line-mid); }
+.t-row:hover { background: var(--warm-gray); }
+.t-row .n {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--ink-whisper);
+  font-feature-settings: "tnum";
+  text-transform: uppercase;
+}
+.t-row .l, .t-row .r {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 60, "wght" 350, "SOFT" 40, "WONK" 0;
+  font-size: clamp(1.4rem, 2.7vw, 2.4rem);
+  letter-spacing: -0.020em;
+  line-height: 1;
+  color: var(--ink);
+}
+.t-row .r {
+  text-align: right;
+  font-style: italic;
+  font-variation-settings: "opsz" 60, "wght" 400, "SOFT" 80, "WONK" 1;
+}
+.t-row .ax {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.30em;
+  color: var(--signal-deep);
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0 0.5rem;
+}
+.t-row .fn {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  text-align: right;
+}
+.t-row .fn .sig { color: var(--signal-deep); font-weight: 700; }
+@media (max-width: 760px) {
+  .t-row { grid-template-columns: 50px 1fr; gap: 0.4rem; padding: 0.9rem 0; }
+  .t-row > * { grid-column: 2; text-align: left; padding: 0; }
+  .t-row .n { grid-column: 1; }
+}
+
+/* Footnotes — Space Mono (was Fraunces in B, now mono per Rene's call) */
+.footnotes {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-mid);
+  columns: 2;
+  column-gap: 2rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ink-mid);
+}
+.footnotes p { break-inside: avoid; margin-bottom: 0.7rem; }
+.footnotes sup { color: var(--signal-deep); font-weight: 700; margin-right: 0.4em; font-feature-settings: "sups"; }
+.footnotes strong { color: var(--ink); font-weight: 700; }
+@media (max-width: 700px) { .footnotes { columns: 1; } }
+
+/* ─────────────────────────────────────────────
+   PORTFOLIO — Fraunces venture names + Space Mono lockups (heavy mono)
+   ───────────────────────────────────────────── */
+.portfolio {
+  position: relative;
+  padding: var(--section-y) var(--gutter);
+  border-top: 1px solid var(--line-mid);
+}
+.portfolio-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line-mid);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+}
+.portfolio-head .sig { color: var(--signal-deep); font-weight: 700; }
+.portfolio-head h2 {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 96, "wght" 320, "SOFT" 40, "WONK" 0;
+  font-size: clamp(2rem, 4.4vw, 4.4rem);
+  letter-spacing: -0.030em;
+  line-height: 0.96;
+  color: var(--ink);
+  text-transform: none;
+  text-wrap: balance;
+}
+.portfolio-head h2 em {
+  font-style: italic;
+  font-variation-settings: "opsz" 96, "wght" 380, "SOFT" 80, "WONK" 1;
+}
+
+.portfolio-intro {
+  max-width: 64ch;
+  margin-bottom: 2.5rem;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.75;
+  color: var(--ink-mid);
+}
+.portfolio-intro strong { color: var(--ink); font-weight: 700; }
+.portfolio-intro .lock-mark {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.05em;
+  color: var(--signal-deep);
+  font-variation-settings: "opsz" 14, "wght" 500, "SOFT" 60, "WONK" 1;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line-mid);
+}
+@media (max-width: 1000px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .portfolio-grid { grid-template-columns: 1fr; } }
+
+.v {
+  position: relative;
+  padding: 2rem 1.75rem 2.25rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 240px;
+  font-family: var(--mono);
+  transition: background 0.5s var(--ease-out);
+}
+.v:hover { background: var(--warm-gray); }
+.v .index {
+  font-size: 9.5px;
+  letter-spacing: 0.30em;
+  color: var(--ink-whisper);
+  text-transform: uppercase;
+}
+.v .prompt {
+  font-size: 10px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+  font-weight: 700;
+}
+.v .lockup {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.v .lockup .parent { color: var(--ink-faint); font-weight: 400; }
+.v .lockup .slash { color: var(--signal); margin: 0 0.1em; }
+/* Venture name — Fraunces (this is the per-venture title) */
+.v .name {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 60, "wght" 350, "SOFT" 40, "WONK" 0;
+  font-size: clamp(1.5rem, 2.3vw, 2rem);
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  color: var(--ink);
+  margin-top: 0.5rem;
+  text-wrap: balance;
+}
+.v .name em {
+  font-style: italic;
+  font-variation-settings: "opsz" 60, "wght" 400, "SOFT" 80, "WONK" 1;
+}
+/* Domain — Space Mono with terminal-style key/value */
+.v .domain {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  line-height: 1.7;
+  color: var(--ink-mid);
+  margin-top: auto;
+}
+.v .domain .key { color: var(--ink-whisper); }
+.v .domain .arrow { color: var(--signal-deep); padding: 0 0.3em; }
+.v .domain .val { color: var(--ink); font-weight: 700; }
+.v .tier {
+  position: absolute;
+  top: 1.6rem;
+  right: 1.75rem;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+  font-weight: 700;
+}
+.v.locked .tier { color: var(--ink-faint); }
+.v.locked::after {
+  content: '※ LOCKED SUB-BRAND';
+  position: absolute;
+  bottom: 1.3rem;
+  right: 1.75rem;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.32em;
+  color: var(--ink-whisper);
+}
+
+/* ─────────────────────────────────────────────
+   COLOPHON / FOOT — terminal-style
+   ───────────────────────────────────────────── */
+.foot {
+  position: relative;
+  padding: clamp(3rem, 6vh, 5rem) var(--gutter) clamp(2rem, 4vh, 3rem);
+  border-top: 1px solid var(--line-strong);
+  background: var(--bg);
+}
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  line-height: 1.8;
+}
+.foot-grid .heavy { color: var(--ink); font-weight: 700; }
+.foot-grid .sig { color: var(--signal-deep); font-weight: 700; }
+.foot-grid .mid { text-align: center; }
+.foot-grid .right { text-align: right; }
+.foot-grid .pulse {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--signal);
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  animation: live-pulse 2.2s var(--ease-out) infinite;
+}
+.foot-imprint {
+  font-family: var(--serif);
+  font-variation-settings: "opsz" 60, "wght" 380, "SOFT" 80, "WONK" 1;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.4vw, 2.2rem);
+  color: var(--ink);
+  text-transform: none;
+  letter-spacing: -0.015em;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.foot-band {
+  margin-top: 2.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.30em;
+  color: var(--ink-whisper);
+  text-transform: uppercase;
+}
+.foot-band .right { text-align: right; }
+.foot-band .mid { text-align: center; color: var(--signal-deep); font-weight: 700; }
+@media (max-width: 760px) {
+  .foot-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .foot-grid .mid, .foot-grid .right { text-align: left; }
+  .foot-band { grid-template-columns: 1fr; gap: 0.4rem; }
+  .foot-band .right, .foot-band .mid { text-align: left; }
+}
+
+/* ─────────────────────────────────────────────
+   REVEALS
+   ───────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+}
+[data-reveal].in { opacity: 1; transform: translateY(0); }
+
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+[data-reveal-stagger].in > * { opacity: 1; transform: translateY(0); }
+
+/* Hero wordmark initial reveal — clip-path + opsz sweep */
+.wordmark {
+  clip-path: inset(0 0 100% 0);
+  animation:
+    wm-paint 1.5s var(--ease-out) 0.3s both,
+    wm-opsz 2.4s var(--ease-out) 0.5s both;
+}
+@keyframes wm-paint {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes wm-opsz {
+  0%   { font-variation-settings: "opsz" 9, "wght" 240, "SOFT" 0, "WONK" 0; letter-spacing: -0.020em; }
+  100% { font-variation-settings: "opsz" 144, "wght" 320, "SOFT" 40, "WONK" 0; letter-spacing: -0.038em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal], [data-reveal-stagger] > * { opacity: 1 !important; transform: none !important; }
+}
+
+/* ─────────────────────────────────────────────
+   MOBILE RESPONSIVE FIXES — stack metas to prevent text superposition
+   ───────────────────────────────────────────── */
+@media (max-width: 760px) {
+  .doctrine-meta,
+  .tensions-head,
+  .portfolio-head {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .doctrine-meta > *,
+  .tensions-head > *,
+  .portfolio-head > * {
+    text-align: left !important;
+  }
+  /* Section h2s already wrap their own way; keep generous vertical rhythm */
+  .tensions-head h2,
+  .portfolio-head h2 {
+    margin-top: 0.4rem;
+  }
+  /* Doctrine grid: gaps tightened so columns don't crowd */
+  .doctrine-grid { gap: 1.2rem; }
+  /* Side rails — already hidden at <900px, double-check no fixed overflow */
+}
+</style>
+</head>
+<body>
+
+<!-- Custom crosshair cursor -->
+<div class="cursor" aria-hidden="true"></div>
+
+<!-- Side rails -->
+<aside class="rail rail-left" aria-hidden="true">
+  <span class="sig">●</span> &nbsp; SYNERGY · B_V/OS &nbsp; · &nbsp; PERMANENT BETA
+</aside>
+<aside class="rail rail-right" aria-hidden="true">
+  Q-02.26 &nbsp; · &nbsp; MANANTIAL CASA · 34°57′S · 54°57′W
+</aside>
+
+<!-- Terminal chrome -->
+<header class="chrome" role="banner">
+  <span class="mark">B_V®</span>
+  <span class="stat">
+    <span class="lbl">Direction</span>
+    <span class="val">A · Locked</span>
+  </span>
+  <span class="stat live">
+    <span class="dot"></span>
+    <span class="sig">SYNERGY · LIVE</span>
+  </span>
+  <span class="stat">
+    <span class="lbl">Latency</span>
+    <span class="val" id="latency">000ms</span>
+  </span>
+  <span class="stat">
+    <span class="lbl">V</span>
+    <span class="val">1.0 · Q-02.26</span>
+  </span>
+</header>
+
+<!-- ─────────────────────────────────────────────
+     HERO
+     ───────────────────────────────────────────── -->
+<section class="hero">
+
+  <!-- Ambient ASCII signature behind hero content -->
+  <div class="ascii-bg" aria-hidden="true">
+    <canvas id="ascii-canvas"></canvas>
+  </div>
+
+  <div class="hero-top">
+    <span class="col-l">
+      <span class="heavy">B_V®</span> &nbsp;//&nbsp; <span class="sig">AGENTIC VENTURE PLATFORM</span>
+    </span>
+    <span class="col-m">
+      § 00 · IRREDUCIBLE CORE · DOCTRINE V2.0
+    </span>
+    <span class="col-r">
+      OPERATING INTELLIGENCE &nbsp;/&nbsp; <span class="heavy">HUMAN ⊕ ARTIFICIAL</span>
+    </span>
+  </div>
+
+  <div class="wordmark-stage">
+    <h1 class="wordmark" aria-label="Both Ventures">
+      Both<span class="underscore" aria-hidden="true"></span><span class="ventures">Ventures</span>
+    </h1>
+
+    <p class="tagline">
+      <span class="glyph">●&nbsp;&nbsp;○</span>
+      <span class="sig">BITS &amp; Q-BITS</span>
+      <span class="sep">/</span>
+      TO TRANSFORM THE ATOM
+      <span class="sep">/</span>
+      <span class="sig">THE NEW CODE-ORDER</span>
+    </p>
+  </div>
+
+  <div class="hero-bottom">
+    <div class="col">
+      <span class="lbl">Built for</span>
+      <span class="val">A post-Shift world.</span>
+    </div>
+    <div class="col center">
+      <span class="lbl">Scroll</span>
+      <span class="arrow" aria-hidden="true"></span>
+      <span class="sig" style="font-size:9px;letter-spacing:0.30em;">§00 → §05</span>
+    </div>
+    <div class="col right">
+      <span class="lbl">Base</span>
+      <span class="val">Manantial Casa<br>Punta del Este · UY</span>
+    </div>
+  </div>
+
+</section>
+
+<!-- ─────────────────────────────────────────────
+     DOCTRINE
+     ───────────────────────────────────────────── -->
+<section class="doctrine">
+
+  <div class="doctrine-meta">
+    <span><span class="sig">§ 00 ›</span> &nbsp;IRREDUCIBLE CORE</span>
+    <span style="text-align:center;">THE POSITION, IN ONE SENTENCE</span>
+    <span style="text-align:right;"><span class="heavy">DOCTRINE V2.0 — DRAFT</span></span>
+  </div>
+
+  <p class="doctrine-statement" data-reveal>
+    Both_Ventures is an <em>agentic venture platform</em> — a shared <span class="sig-under">operating intelligence</span>, human and artificial, that builds, accelerates, and interconnects deep-tech ventures reshaping infrastructure for a <em>post-Shift world.</em>
+  </p>
+
+  <div class="doctrine-grid" data-reveal-stagger>
+    <div class="col">
+      <span class="label"><span class="num">§ 01</span>CATEGORY</span>
+      A <strong>new institutional kind.</strong> Not a fund. Not a studio. Not an accelerator. Not a holding company. Not an AI lab. A venture platform whose operating substrate is itself <em>intelligence</em> — human and artificial, held as one system.
+    </div>
+    <div class="col">
+      <span class="label"><span class="num">§ 02</span>ENGINE</span>
+      <strong>Bits and q-bits to transform the atom.</strong> Digital and post-classical computation applied to physical reality — water, materials, biology, energy, supply chains, governance rails.
+    </div>
+    <div class="col">
+      <span class="label"><span class="num">§ 03</span>VECTOR</span>
+      <strong>The new code-order.</strong> The world that emerges when infrastructure is re-coded by institutions designed with intelligence at the core — not at the <em>edge.</em>
+    </div>
+  </div>
+
+</section>
+
+<!-- ─────────────────────────────────────────────
+     TENSIONS
+     ───────────────────────────────────────────── -->
+<section class="tensions">
+
+  <div class="tensions-head">
+    <span><span class="sig">§ 04 ›</span> &nbsp;TENSIONS</span>
+    <h2>Held simultaneously. <em>By design.</em></h2>
+    <span style="text-align:right;">11 AXES · ORCHESTRATED</span>
+  </div>
+
+  <div class="tensions-list" data-reveal-stagger>
+    <div class="t-row">
+      <span class="n">[01/11]</span>
+      <span class="l">Capital</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Meaning</span>
+      <span class="fn">Cf.<span class="sig">·a</span></span>
+    </div>
+    <div class="t-row">
+      <span class="n">[02/11]</span>
+      <span class="l">Speed</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Depth</span>
+      <span class="fn">Cf.<span class="sig">·b</span></span>
+    </div>
+    <div class="t-row">
+      <span class="n">[03/11]</span>
+      <span class="l">Structure</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Emergence</span>
+      <span class="fn">Cf.<span class="sig">·c</span></span>
+    </div>
+    <div class="t-row">
+      <span class="n">[04/11]</span>
+      <span class="l">Execution</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Reflection</span>
+      <span class="fn">—</span>
+    </div>
+    <div class="t-row">
+      <span class="n">[05/11]</span>
+      <span class="l">Discipline</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Intuition</span>
+      <span class="fn">—</span>
+    </div>
+    <div class="t-row">
+      <span class="n">[06/11]</span>
+      <span class="l">Rigor</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Imagination</span>
+      <span class="fn">—</span>
+    </div>
+    <div class="t-row">
+      <span class="n">[07/11]</span>
+      <span class="l">Human judgment</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Machine intelligence</span>
+      <span class="fn">Cf.<span class="sig">·d</span></span>
+    </div>
+    <div class="t-row">
+      <span class="n">[08/11]</span>
+      <span class="l">Stability</span>
+      <span class="ax">↔ both</span>
+      <span class="r">Transformation</span>
+      <span class="fn">—</span>
+    </div>
+  </div>
+
+  <div class="footnotes" data-reveal>
+    <p><sup>a</sup> <strong>Capital ↔ Meaning.</strong> Purpose without economic structure is aspiration; capital without accountability is drift. Both_Ventures rejects both readings.</p>
+    <p><sup>b</sup> <strong>Speed ↔ Depth.</strong> Velocity without architecture amplifies fragility. The operating formula: speed with depth.</p>
+    <p><sup>c</sup> <strong>Structure ↔ Emergence.</strong> The institution is designed; the value compounds where structure makes emergence productive.</p>
+    <p><sup>d</sup> <strong>Human judgment ↔ Machine intelligence.</strong> Co-pilot framing misses the point. Intelligence is the substrate — not a tool layered on the org chart.</p>
+  </div>
+
+</section>
+
+<!-- ─────────────────────────────────────────────
+     PORTFOLIO
+     ───────────────────────────────────────────── -->
+<section class="portfolio">
+
+  <div class="portfolio-head">
+    <span><span class="sig">§ 05 ›</span> &nbsp;PORTFOLIO</span>
+    <h2>One parent. Nine ventures. <em>One system.</em></h2>
+    <span style="text-align:right;">09 / 09 · INDEXED</span>
+  </div>
+
+  <p class="portfolio-intro" data-reveal>
+    Each venture inherits a slot in the parent system without bespoke redesign. The lockup is the rule: <strong>B_V® / VENTURE</strong>. Casa Manantial's locked sub-brand (marked <span class="lock-mark">※</span>) is honored, not overwritten — the parent sits above without dominating.
+  </p>
+
+  <div class="portfolio-grid" data-reveal-stagger>
+
+    <article class="v">
+      <div class="tier">DEEP-TECH</div>
+      <span class="index">01 / 09</span>
+      <span class="prompt">$ B_V/init</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>LAK3</span>
+      <span class="name"><em>Water</em> as infrastructure.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Blockchain · RWA</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">DEEP-TECH</div>
+      <span class="index">02 / 09</span>
+      <span class="prompt">$ B_V/init</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>PHOTONIC LAB</span>
+      <span class="name"><em>Light</em> as instrument.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Biotech · Photonics</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">DEEP-TECH</div>
+      <span class="index">03 / 09</span>
+      <span class="prompt">$ B_V/init</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>QUANTUM</span>
+      <span class="name"><em>Post-classical</em> computation.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Q-bits · State</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">DEEP-TECH</div>
+      <span class="index">04 / 09</span>
+      <span class="prompt">$ B_V/init</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>PUNTA CRIPTO</span>
+      <span class="name"><em>Sovereign</em> signal.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Crypto · Research</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">DEEP-TECH</div>
+      <span class="index">05 / 09</span>
+      <span class="prompt">$ B_V/init</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>RESHORE</span>
+      <span class="name"><em>Re-localized</em> production.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Supply · Infrastructure</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">SUBSTRATE</div>
+      <span class="index">06 / 09</span>
+      <span class="prompt">$ B_V/run</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>OS · SYNERGY</span>
+      <span class="name">The <em>shared</em> intelligence.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Vault · Agents · Protocols</span></p>
+    </article>
+
+    <article class="v locked">
+      <div class="tier">NODE</div>
+      <span class="index">07 / 09</span>
+      <span class="prompt">$ B_V/link</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>MANANTIAL CASA</span>
+      <span class="name"><em>Institutional</em> base.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">HQ · Punta del Este</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">NODE</div>
+      <span class="index">08 / 09</span>
+      <span class="prompt">$ B_V/link</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>LA CHAMANA</span>
+      <span class="name"><em>High-trust</em> retreat.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Convening · Tulum</span></p>
+    </article>
+
+    <article class="v">
+      <div class="tier">NODE</div>
+      <span class="index">09 / 09</span>
+      <span class="prompt">$ B_V/link</span>
+      <span class="lockup"><span class="parent">B_V®</span><span class="slash">/</span>PANAMBI</span>
+      <span class="name"><em>Mental-health</em> sciences.</span>
+      <p class="domain"><span class="key">domain</span> <span class="arrow">→</span> <span class="val">Investment · LATAM</span></p>
+    </article>
+
+  </div>
+
+</section>
+
+<!-- ─────────────────────────────────────────────
+     FOOTER
+     ───────────────────────────────────────────── -->
+<footer class="foot">
+  <div class="foot-grid">
+    <div>
+      <span class="heavy">B_V®</span> &nbsp; / &nbsp; BOTH_VENTURES<br>
+      AGENTIC VENTURE PLATFORM<br>
+      <span class="sig">PERMANENT BETA</span>
+    </div>
+    <div class="mid">
+      <span class="foot-imprint">Both_Ventures Press</span>
+      <span class="pulse"></span><span class="heavy">SYNERGY · LIVE</span>
+    </div>
+    <div class="right">
+      MANANTIAL CASA<br>
+      PUNTA DEL ESTE · URUGUAY<br>
+      <span class="heavy">RENE@BOTH.VENTURES</span>
+    </div>
+  </div>
+
+  <div class="foot-band">
+    <span>V1.0 · Q-02.26 · DIRECTION A · LOCKED</span>
+    <span class="mid">IT IS BOTH WHAT IT IS AND WHAT IT IS BECOMING</span>
+    <span class="right">EOF · END OF TRANSMISSION</span>
+  </div>
+</footer>
+
+<!-- ─────────────────────────────────────────────
+     SCRIPTS
+     ───────────────────────────────────────────── -->
+<script>
+/* ─────────────────────────────────────────────
+   CURSOR
+   ───────────────────────────────────────────── */
+(() => {
+  const cursor = document.querySelector('.cursor');
+  let tx = innerWidth/2, ty = innerHeight/2;
+  let cx = tx, cy = ty;
+  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  function tick() {
+    cx += (tx - cx) * 0.20;
+    cy += (ty - cy) * 0.20;
+    cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(tick);
+  }
+  tick();
+  document.querySelectorAll('a, .v, .t-row').forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('is-hovering'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('is-hovering'));
+  });
+})();
+
+/* ─────────────────────────────────────────────
+   REVEAL ON SCROLL
+   ───────────────────────────────────────────── */
+(() => {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        if (e.target.hasAttribute('data-reveal-stagger')) {
+          [...e.target.children].forEach((child, i) => {
+            child.style.transitionDelay = `${i * 90}ms`;
+          });
+        }
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('[data-reveal], [data-reveal-stagger]').forEach(el => io.observe(el));
+})();
+
+/* ─────────────────────────────────────────────
+   LATENCY METER — terminal liveness
+   ───────────────────────────────────────────── */
+(() => {
+  const el = document.getElementById('latency');
+  if (!el) return;
+  function tick() {
+    const n = 12 + Math.floor(Math.random() * 28);
+    el.textContent = String(n).padStart(3, '0') + 'ms';
+  }
+  setInterval(tick, 950);
+  tick();
+})();
+
+/* ─────────────────────────────────────────────
+   ASCII SIGNATURE — mysterious roaming yin-yang on cream
+   Canonical taoist S-curve construction. Phong sphere lighting gives 3D
+   presence. Lissajous drift + spring-damped mouse attraction (desktop only)
+   make it "roam mysteriously" around the background.
+   ───────────────────────────────────────────── */
+(() => {
+  const canvas = document.getElementById('ascii-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+
+  const SHADE_BANDS = [
+    '@#$WM', '&%8BQ', '0OGbd', '(){}[',
+    ']/\\|!', '*=<>+', '~-_;:', ',. `'
+  ];
+
+  const GRID = 8;
+  let W = 0, H = 0, COLS = 0, ROWS = 0;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = Math.floor(rect.width);
+    H = Math.floor(rect.height);
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    COLS = Math.floor(W / GRID);
+    ROWS = Math.floor(H / GRID);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Desktop pointer detection — mouse interaction is desktop-only
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+
+  // Mouse state
+  let mouseX = 0.5, mouseY = 0.5, mouseActive = false;
+  if (!isCoarsePointer) {
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX / window.innerWidth;
+      mouseY = e.clientY / window.innerHeight;
+      mouseActive = true;
+    });
+    window.addEventListener('mouseleave', () => { mouseActive = false; });
+    window.addEventListener('blur', () => { mouseActive = false; });
+  }
+
+  function smoothStep(t) {
+    t = Math.max(0, Math.min(1, t));
+    return t * t * (3 - 2 * t);
+  }
+
+  // World-frame light direction — upper-left, slightly forward.
+  // Stays fixed as the yin-yang rotates — gives it 3D sphere presence.
+  const LX = -0.45, LY = -0.62, LZ = 0.65;
+  const Llen = Math.hypot(LX, LY, LZ);
+  const Lx = LX/Llen, Ly = LY/Llen, Lz = LZ/Llen;
+
+  // State — current center, velocity, rotation
+  const state = {
+    cx: 0.5, cy: 0.5,
+    vx: 0,   vy: 0,
+    angle: 0,
+  };
+  const SPRING_K = 0.0085;     // softer pull → languid, mysterious
+  const DAMPING  = 0.91;
+  let lastT = 0;
+
+  function step(t) {
+    if (lastT === 0) lastT = t;
+    const dt = Math.min(t - lastT, 64);
+    lastT = t;
+
+    // Autonomous drift via Lissajous — roams ±16% horiz, ±10% vert from center
+    const driftX = 0.5 + Math.sin(t * 0.000095) * 0.16;
+    const driftY = 0.5 + Math.cos(t * 0.000135 + 1.2) * 0.10;
+
+    // Target = drift (mobile) or drift + cursor attraction (desktop)
+    let tx, ty;
+    if (mouseActive && !isCoarsePointer) {
+      // Cursor pulls the yin toward it — but never fully overrides the drift
+      tx = driftX * 0.50 + mouseX * 0.50;
+      ty = driftY * 0.50 + mouseY * 0.50;
+    } else {
+      tx = driftX;
+      ty = driftY;
+    }
+
+    // Spring physics toward target
+    const fx = (tx - state.cx) * SPRING_K;
+    const fy = (ty - state.cy) * SPRING_K;
+    state.vx = (state.vx + fx) * DAMPING;
+    state.vy = (state.vy + fy) * DAMPING;
+    state.cx += state.vx;
+    state.cy += state.vy;
+
+    // Slow rotation — ~70s per revolution. Languid, hypnotic.
+    state.angle += 0.000030 * dt;
+  }
+
+  function render(t) {
+    step(t);
+
+    // Clear with cream
+    ctx.fillStyle = '#EFEBE3';
+    ctx.fillRect(0, 0, W, H);
+    ctx.font = `${GRID}px "Space Mono", ui-monospace, monospace`;
+    ctx.textBaseline = 'top';
+
+    const cxPx = state.cx * W;
+    const cyPx = state.cy * H;
+    const minDim = Math.min(W, H);
+    const breathe = 1 + Math.sin(t * 0.00040) * 0.024;
+    const Rpx = minDim * 0.23 * breathe;
+
+    // Inverse rotation (rotates the SHAPE while lighting stays fixed in world)
+    const cosA = Math.cos(-state.angle);
+    const sinA = Math.sin(-state.angle);
+
+    const eyePulse = 1 + Math.sin(t * 0.0017) * 0.08;
+    const EYE_R = 0.13 * eyePulse;
+    const EDGE_SOFT = 0.022;
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLS; col++) {
+        const px = col * GRID + GRID * 0.5;
+        const py = row * GRID + GRID * 0.5;
+
+        const dxPx = px - cxPx;
+        const dyPx = py - cyPx;
+
+        // Bounding-box reject
+        if (dxPx*dxPx + dyPx*dyPx > Rpx*Rpx * 1.08) continue;
+
+        // World-frame radius-units — used for lighting
+        const xw = dxPx / Rpx;
+        const yw = dyPx / Rpx;
+
+        const r2 = xw*xw + yw*yw;
+        if (r2 > 1.04) continue;
+        const dOuter = Math.sqrt(r2);
+
+        // Local-frame radius-units — rotate INTO the yin-yang for shape test
+        const xr = xw * cosA - yw * sinA;
+        const yr = xw * sinA + yw * cosA;
+
+        // ─── CANONICAL YIN-YANG SHAPE TEST ───
+        // Black phase iff xr < S-curve(yr).
+        // Upper half (yr<0): S-curve is the RIGHT half of small circle (0, -0.5).
+        // Lower half (yr>0): S-curve is the LEFT half of small circle (0, +0.5).
+        let edgeX;
+        if (yr < 0) {
+          edgeX =  Math.sqrt(Math.max(0, 0.25 - (yr + 0.5) * (yr + 0.5)));
+        } else {
+          edgeX = -Math.sqrt(Math.max(0, 0.25 - (yr - 0.5) * (yr - 0.5)));
+        }
+        // Smoothed darkness — 1 deep inside black, 0 deep inside white
+        let darkness = smoothStep((edgeX - xr) / EDGE_SOFT + 0.5);
+
+        // ─── EYES ───
+        // Light eye centered at (0, -0.5) inside the BLACK phase head (top)
+        // Dark eye centered at (0, +0.5) inside the WHITE phase head (bottom)
+        const dEyeLight = Math.sqrt(xr*xr + (yr + 0.5) * (yr + 0.5));
+        const dEyeDark  = Math.sqrt(xr*xr + (yr - 0.5) * (yr - 0.5));
+        const inEyeLight = 1 - smoothStep((dEyeLight - EYE_R) / EDGE_SOFT + 0.5);
+        const inEyeDark  = 1 - smoothStep((dEyeDark  - EYE_R) / EDGE_SOFT + 0.5);
+        // Light eye pushes darkness → 0; dark eye pushes darkness → 1
+        darkness = darkness * (1 - inEyeLight) + inEyeDark;
+        darkness = Math.min(1, Math.max(0, darkness));
+
+        // Soft outer fade so the disk has a clean halo into cream
+        const outerFade = 1 - smoothStep((dOuter - 0.94) / 0.06);
+        darkness *= outerFade;
+        if (darkness < 0.02 && dOuter > 0.94) continue;
+
+        // ─── PHONG SPHERE LIGHTING (world frame, fixed light) ───
+        const nz = Math.sqrt(Math.max(0, 1 - r2));
+        let NdotL = xw * Lx + yw * Ly + nz * Lz;
+        NdotL = Math.max(0, NdotL);
+        const spec = Math.pow(Math.max(0, 2 * NdotL * nz - Lz), 28) * 0.38;
+        let lit = NdotL * 0.85 + spec;
+        lit = Math.min(1, Math.max(0, lit));
+
+        // ─── BAND + COLOR SELECTION ───
+        let bandIdx, color;
+
+        if (darkness > 0.62) {
+          // BLACK PHASE — dense, modulated by light
+          // Shadow side: deepest ink, densest characters
+          // Lit side: warmer ink with olive hint, slightly sparser
+          if (lit < 0.30) {
+            bandIdx = 0;
+            color = `oklch(13% 0.005 90 / 0.78)`;
+          } else if (lit < 0.55) {
+            bandIdx = 1;
+            color = `oklch(20% 0.015 100 / 0.70)`;
+          } else if (lit < 0.78) {
+            bandIdx = 2;
+            color = `oklch(32% 0.06 108 / 0.62)`;
+          } else {
+            bandIdx = 3;
+            color = `oklch(50% 0.12 108 / 0.58)`;
+          }
+        } else if (darkness > 0.32) {
+          // S-CURVE BOUNDARY — smooth transition band
+          const t01 = (darkness - 0.32) / 0.30;
+          bandIdx = Math.max(2, Math.min(5, Math.round(5 - t01 * 3)));
+          color = `oklch(${36 + t01 * 14}% ${0.04 + t01 * 0.05} 108 / ${0.20 + t01 * 0.30})`;
+        } else if (darkness > 0.05 && lit < 0.55) {
+          // WHITE PHASE shadow side — very sparse, suggests ambient shading
+          bandIdx = 7;
+          const a = 0.05 + (0.55 - lit) * 0.18 * (darkness * 4);
+          color = `oklch(56% 0.006 90 / ${a})`;
+        } else {
+          // Lit white phase = empty cream; outside symbol = nothing
+          continue;
+        }
+
+        // Character cycle — shadow regions cycle slowly (more solid),
+        // lit regions cycle faster (more shimmering)
+        const speed = 0.0008 + (bandIdx / 7) * 0.0040;
+        const band = SHADE_BANDS[bandIdx];
+        const charIdx = Math.floor((t * speed + col * 0.13 + row * 0.21)) % band.length;
+        const ch = band[Math.abs(charIdx)];
+
+        ctx.fillStyle = color;
+        ctx.fillText(ch, col * GRID, row * GRID);
+      }
+    }
+  }
+
+  function loop(t) {
+    render(t);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
