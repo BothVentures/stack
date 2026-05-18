@@ -45,11 +45,15 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
+html{height:100%;}
 body{
   font-family:var(--font);background:var(--bg);color:var(--text);
-  display:grid;grid-template-rows:52px 1fr 30px;min-width:1100px;
+  display:grid;grid-template-rows:52px 1fr 30px;
+  height:100vh;overflow:hidden;min-width:1100px;
 }
+.main{min-height:0;}
+.map-area{min-height:0;}
+.right-panel{min-height:0;}
 
 /* ══ HEADER ══ */
 .header{
@@ -502,6 +506,196 @@ body{
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px;}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+
+/* ══════════════════════════════════════════════════════════
+   TEAM TAB — Bento grid · Linear/shadcn-inspired dark ops
+══════════════════════════════════════════════════════════ */
+:root {
+  --c-gaston:      #fca5a5; --c-gaston-dim: rgba(252,165,165,0.12); --c-gaston-glow: rgba(252,165,165,0.30);
+  --c-rene:        #d8b4fe; --c-rene-dim:   rgba(216,180,254,0.12); --c-rene-glow:   rgba(216,180,254,0.30);
+  --c-daiana:      #5eead4; --c-daiana-dim: rgba(94,234,212,0.12);  --c-daiana-glow: rgba(94,234,212,0.30);
+  --c-andres:      #fdba74; --c-andres-dim: rgba(253,186,116,0.12); --c-andres-glow: rgba(253,186,116,0.30);
+  --c-mariano-glow:rgba(248,192,35,0.30);
+}
+
+/* Bento grid — 3 cols, 2 rows */
+.team-bento {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 7px;
+}
+
+/* Base team card */
+.tc {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color .2s var(--ease-out), box-shadow .2s var(--ease-out), transform .2s var(--ease-out);
+  cursor: default;
+  animation: fadeUp .3s var(--ease-out) both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.tc:nth-child(1){animation-delay:0ms;} .tc:nth-child(2){animation-delay:60ms;}
+.tc:nth-child(3){animation-delay:120ms;} .tc:nth-child(4){animation-delay:180ms;}
+.tc:nth-child(5){animation-delay:240ms;}
+
+/* Bento positions */
+.tc-gaston  { grid-column:1; grid-row:1; }
+.tc-rene    { grid-column:2; grid-row:1; }
+.tc-daiana  { grid-column:3; grid-row:1; }
+.tc-andres  { grid-column:1; grid-row:2; }
+.tc-mariano { grid-column:2 / span 2; grid-row:2; }
+
+/* Colored top stripe */
+.tc-stripe { height:2px; width:100%; flex-shrink:0; }
+.tc-gaston  .tc-stripe { background:linear-gradient(90deg, var(--c-gaston),  transparent 70%); }
+.tc-rene    .tc-stripe { background:linear-gradient(90deg, var(--c-rene),    transparent 70%); }
+.tc-daiana  .tc-stripe { background:linear-gradient(90deg, var(--c-daiana),  transparent 70%); }
+.tc-andres  .tc-stripe { background:linear-gradient(90deg, var(--c-andres),  transparent 70%); }
+.tc-mariano .tc-stripe { background:linear-gradient(90deg, var(--accent),    transparent 70%); }
+
+/* Hover: lift + glow */
+.tc:hover { transform:translateY(-2px); }
+.tc-gaston:hover  { border-color:rgba(252,165,165,0.35); box-shadow:0 0 22px rgba(252,165,165,0.07), 0 4px 18px rgba(0,0,0,.45); }
+.tc-rene:hover    { border-color:rgba(216,180,254,0.35); box-shadow:0 0 22px rgba(216,180,254,0.07), 0 4px 18px rgba(0,0,0,.45); }
+.tc-daiana:hover  { border-color:rgba(94,234,212,0.35);  box-shadow:0 0 22px rgba(94,234,212,0.07),  0 4px 18px rgba(0,0,0,.45); }
+.tc-andres:hover  { border-color:rgba(253,186,116,0.35); box-shadow:0 0 22px rgba(253,186,116,0.07), 0 4px 18px rgba(0,0,0,.45); }
+.tc-mariano:hover { border-color:rgba(248,192,35,0.35);  box-shadow:0 0 22px rgba(248,192,35,0.07),  0 4px 18px rgba(0,0,0,.45); }
+
+/* Card body */
+.tc-body { padding:16px 17px 17px; }
+
+/* Mariano wide layout — split body */
+.tc-mariano .tc-body { display:grid; grid-template-columns:200px 1fr; gap:18px; align-items:start; }
+.tc-mariano .tc-right { border-left:1px solid var(--border); padding-left:18px; }
+
+/* Head: avatar + name */
+.tc-head { display:flex; gap:13px; align-items:flex-start; margin-bottom:13px; }
+.tc-avatar {
+  width:50px; height:50px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; font-weight:700; flex-shrink:0;
+  border:1.5px solid; position:relative;
+  transition:box-shadow .2s var(--ease-out);
+}
+.tc-gaston  .tc-avatar { background:var(--c-gaston-dim);  color:var(--c-gaston);  border-color:var(--c-gaston-glow); }
+.tc-rene    .tc-avatar { background:var(--c-rene-dim);    color:var(--c-rene);    border-color:var(--c-rene-glow); }
+.tc-daiana  .tc-avatar { background:var(--c-daiana-dim);  color:var(--c-daiana);  border-color:var(--c-daiana-glow); }
+.tc-andres  .tc-avatar { background:var(--c-andres-dim);  color:var(--c-andres);  border-color:var(--c-andres-glow); }
+.tc-mariano .tc-avatar { background:var(--accent-dim);    color:var(--accent);    border-color:var(--c-mariano-glow); }
+.tc-gaston:hover  .tc-avatar { box-shadow:0 0 16px var(--c-gaston-glow); }
+.tc-rene:hover    .tc-avatar { box-shadow:0 0 16px var(--c-rene-glow); }
+.tc-daiana:hover  .tc-avatar { box-shadow:0 0 16px var(--c-daiana-glow); }
+.tc-andres:hover  .tc-avatar { box-shadow:0 0 16px var(--c-andres-glow); }
+.tc-mariano:hover .tc-avatar { box-shadow:0 0 16px var(--c-mariano-glow); }
+
+/* Avatar pulse ring on hover */
+.tc-avatar::after {
+  content:''; position:absolute; inset:-5px; border-radius:50%;
+  border:1px solid transparent; pointer-events:none;
+  transition:border-color .2s var(--ease-out);
+}
+.tc-gaston:hover  .tc-avatar::after { border-color:rgba(252,165,165,0.18); animation:tc-ring 1.6s ease-in-out infinite; }
+.tc-rene:hover    .tc-avatar::after { border-color:rgba(216,180,254,0.18); animation:tc-ring 1.6s ease-in-out infinite; }
+.tc-daiana:hover  .tc-avatar::after { border-color:rgba(94,234,212,0.18);  animation:tc-ring 1.6s ease-in-out infinite; }
+.tc-andres:hover  .tc-avatar::after { border-color:rgba(253,186,116,0.18); animation:tc-ring 1.6s ease-in-out infinite; }
+.tc-mariano:hover .tc-avatar::after { border-color:rgba(248,192,35,0.18);  animation:tc-ring 1.6s ease-in-out infinite; }
+@keyframes tc-ring { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.15);opacity:0;} }
+
+.tc-name { font-size:12px; font-weight:700; color:var(--text); letter-spacing:.02em; }
+.tc-role { font-size:9px;  color:var(--text-muted); margin-top:2px; line-height:1.5; }
+
+/* Access badge */
+.tc-access {
+  font-family:var(--mono); font-size:7.5px; letter-spacing:.1em; text-transform:uppercase;
+  padding:2px 7px; border-radius:2px; margin-top:5px; display:inline-block;
+}
+.tc-access.full    { color:var(--live);   background:var(--live-dim);   border:1px solid rgba(34,197,94,.25); }
+.tc-access.founder { color:var(--blue);   background:var(--blue-dim);   border:1px solid rgba(50,125,182,.25); }
+.tc-access.system  { color:var(--accent); background:var(--accent-dim); border:1px solid rgba(248,192,35,.25); }
+
+/* Section label inside card */
+.tc-label {
+  font-size:7.5px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--text-dim); font-weight:700; margin-bottom:6px;
+  display:flex; align-items:center; gap:5px;
+}
+.tc-label i { font-size:9px; opacity:.55; }
+
+/* Divider */
+.tc-div { height:1px; background:var(--border); margin:11px 0; }
+
+/* Authority blurb */
+.tc-authority {
+  font-size:9px; color:var(--text-dim); line-height:1.55;
+  padding:6px 9px; background:var(--surface-3);
+  border:1px solid var(--border-dim); border-radius:2px;
+}
+
+/* Note chip (e.g. scheduling constraint) */
+.tc-note {
+  display:inline-flex; align-items:center; gap:4px;
+  font-family:var(--mono); font-size:7.5px; letter-spacing:.07em;
+  padding:2px 7px; border-radius:2px; margin-top:5px;
+  color:var(--accent); background:var(--accent-dim); border:1px solid rgba(248,192,35,.2);
+}
+
+/* Ventures */
+.tc-ventures { display:flex; flex-direction:column; gap:4px; }
+.tc-venture {
+  display:flex; align-items:center; gap:7px;
+  padding:4px 8px; border-radius:2px;
+  background:var(--surface-3); border:1px solid var(--border);
+  transition:border-color .15s, background .15s;
+  cursor:crosshair;
+}
+.tc-venture:hover { background:var(--surface-2); border-color:var(--border-hover); }
+.tc-v-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.tc-v-dot.build   { background:var(--build);   box-shadow:0 0 4px rgba(248,192,35,.5); }
+.tc-v-dot.explore { background:var(--explore); box-shadow:0 0 4px rgba(50,125,182,.5); }
+.tc-v-name { flex:1; font-size:9.5px; color:var(--text-muted); }
+.tc-v-tag {
+  font-family:var(--mono); font-size:7px; padding:1px 5px; border-radius:2px; letter-spacing:.06em;
+}
+.tc-v-tag.build   { color:var(--build);   background:var(--accent-dim); border:1px solid rgba(248,192,35,.2); }
+.tc-v-tag.explore { color:var(--explore); background:var(--blue-dim);   border:1px solid rgba(50,125,182,.2); }
+
+/* Agent chips */
+.tc-agents { display:flex; flex-wrap:wrap; gap:4px; }
+.tc-agent-chip {
+  font-family:var(--mono); font-size:8px; padding:2px 7px;
+  background:var(--surface-3); border:1px solid var(--border);
+  border-radius:2px; color:var(--text-muted); letter-spacing:.04em;
+  transition:border-color .15s, color .15s, background .15s;
+}
+.tc-gaston  .tc-agent-chip:hover { color:var(--c-gaston);  border-color:var(--c-gaston-glow);  background:var(--c-gaston-dim); }
+.tc-rene    .tc-agent-chip:hover { color:var(--c-rene);    border-color:var(--c-rene-glow);    background:var(--c-rene-dim); }
+.tc-daiana  .tc-agent-chip:hover { color:var(--c-daiana);  border-color:var(--c-daiana-glow);  background:var(--c-daiana-dim); }
+.tc-andres  .tc-agent-chip:hover { color:var(--c-andres);  border-color:var(--c-andres-glow);  background:var(--c-andres-dim); }
+.tc-mariano .tc-agent-chip:hover { color:var(--accent);    border-color:var(--c-mariano-glow); background:var(--accent-dim); }
+
+/* Infra chips (Mariano only) - subtle cyan/live coloring */
+.tc-infra-chip {
+  font-family:var(--mono); font-size:8px; padding:2px 7px;
+  border-radius:2px; letter-spacing:.04em;
+  background:var(--surface-3); border:1px solid var(--border);
+  transition:border-color .15s;
+}
+
+/* Orbital map highlight when team card hovered */
+.venture-node.tc-hl .node-dot {
+  transform: scale(1.18) !important;
+}
+.venture-node.tc-hl.build-node .node-dot {
+  box-shadow: var(--glow-accent) !important;
+  border-color: rgba(248,192,35,0.85) !important;
+}
+.venture-node.tc-hl.explore-node .node-dot {
+  box-shadow: var(--glow-blue) !important;
+  border-color: rgba(50,125,182,0.85) !important;
+}
 </style>
 </head>
 <body>
@@ -527,7 +721,7 @@ body{
     <span class="h-sep">·</span>
     <div class="header-stat"><strong id="cnt-tools">0</strong>&nbsp;Live Tools</div>
     <span class="h-sep">·</span>
-    <div class="live-chip"><div class="live-dot"></div>Worker V2.7</div>
+    <div class="live-chip"><div class="live-dot"></div>Worker V2.9</div>
   </div>
 </header>
 
@@ -540,7 +734,7 @@ body{
     <svg class="connections-svg" id="conn-svg"></svg>
 
     <!-- CENTER: BOTH -->
-    <div class="venture-node" id="n-both" style="left:50%;top:50%">
+    <div class="venture-node center-node" id="n-both" style="left:50%;top:50%">
       <div class="node-inner">
         <div class="node-dot center">B_V</div>
         <div class="node-label" style="color:var(--accent)">BOTH OS</div>
@@ -549,7 +743,7 @@ body{
 
     <!-- INNER RING: BUILD (r≈22% of height) — 5 nodes, 72° apart from 270° -->
     <!-- MC: 270° top -->
-    <div class="venture-node" id="n-mc" style="left:50%;top:28%">
+    <div class="venture-node build-node" id="n-mc" style="left:50%;top:28%">
       <div class="node-inner">
         <div class="node-dot build">MC<div class="node-owner gaston">G</div></div>
         <div class="node-label">Manantial</div>
@@ -558,7 +752,7 @@ body{
     </div>
 
     <!-- RS: 342° top-right -->
-    <div class="venture-node" id="n-rs" style="left:68%;top:36%">
+    <div class="venture-node build-node" id="n-rs" style="left:68%;top:36%">
       <div class="node-inner">
         <div class="node-dot build">RS<div class="node-owner gaston">G</div></div>
         <div class="node-label">Reshore</div>
@@ -567,7 +761,7 @@ body{
     </div>
 
     <!-- L3: 54° right -->
-    <div class="venture-node" id="n-l3" style="left:70%;top:58%">
+    <div class="venture-node build-node" id="n-l3" style="left:70%;top:58%">
       <div class="node-inner">
         <div class="node-dot build">L3<div class="node-owner rene">R</div></div>
         <div class="node-label">LAK3</div>
@@ -576,7 +770,7 @@ body{
     </div>
 
     <!-- PC: 126° bottom-right -->
-    <div class="venture-node" id="n-pc" style="left:55%;top:72%">
+    <div class="venture-node build-node" id="n-pc" style="left:55%;top:72%">
       <div class="node-inner">
         <div class="node-dot build">PC<div class="node-owner rene">R</div></div>
         <div class="node-label">Punta Cripto</div>
@@ -585,7 +779,7 @@ body{
     </div>
 
     <!-- OS: 198° left -->
-    <div class="venture-node" id="n-os" style="left:30%;top:58%">
+    <div class="venture-node build-node" id="n-os" style="left:30%;top:58%">
       <div class="node-inner">
         <div class="node-dot build">OS<div class="node-owner mariano">M</div></div>
         <div class="node-label">Both OS</div>
@@ -595,7 +789,7 @@ body{
 
     <!-- OUTER RING: EXPLORE — 4 nodes at 315°, 45°, 135°, 225° -->
     <!-- PL: 315° top-right -->
-    <div class="venture-node" id="n-pl" style="left:74%;top:18%">
+    <div class="venture-node explore-node" id="n-pl" style="left:74%;top:18%">
       <div class="node-inner">
         <div class="node-dot explore">PL<div class="node-owner rene">R</div></div>
         <div class="node-label">Photonic Lab</div>
@@ -604,7 +798,7 @@ body{
     </div>
 
     <!-- LC: 45° bottom-right -->
-    <div class="venture-node" id="n-lc" style="left:78%;top:72%">
+    <div class="venture-node explore-node" id="n-lc" style="left:78%;top:72%">
       <div class="node-inner">
         <div class="node-dot explore">LC<div class="node-owner daiana">D</div></div>
         <div class="node-label">La Chamana</div>
@@ -613,7 +807,7 @@ body{
     </div>
 
     <!-- PA: 135° bottom-left -->
-    <div class="venture-node" id="n-pa" style="left:32%;top:80%">
+    <div class="venture-node explore-node" id="n-pa" style="left:32%;top:80%">
       <div class="node-inner">
         <div class="node-dot explore">PA<div class="node-owner andres">A</div></div>
         <div class="node-label">Panambi</div>
@@ -622,7 +816,7 @@ body{
     </div>
 
     <!-- QT: 225° top-left -->
-    <div class="venture-node" id="n-qt" style="left:20%;top:22%">
+    <div class="venture-node explore-node" id="n-qt" style="left:20%;top:22%">
       <div class="node-inner">
         <div class="node-dot explore">QT<div class="node-owner andres">A</div></div>
         <div class="node-label">Quantum</div>
@@ -644,6 +838,8 @@ body{
       <button class="tab-btn active" data-tab="pipeline"><i class="bi bi-diagram-3"></i> Pipeline</button>
       <button class="tab-btn" data-tab="stack"><i class="bi bi-layers"></i> Stack</button>
       <button class="tab-btn" data-tab="agents"><i class="bi bi-cpu"></i> Agents</button>
+      <button class="tab-btn" data-tab="projects"><i class="bi bi-grid-3x3-gap-fill"></i> Projects</button>
+      <button class="tab-btn" data-tab="team"><i class="bi bi-people-fill"></i> Team</button>
       <button class="tab-btn" data-tab="flow"><i class="bi bi-arrow-left-right"></i> Flow</button>
     </nav>
 
@@ -718,7 +914,7 @@ body{
             <div class="tl-branch-label a"><i class="bi bi-lightning-charge-fill"></i> Path A — Auto · HMAC</div>
             <div class="tl-branch-card a">
               <div class="tl-title"><span class="tl-name">05A · Auto-Mine</span><span class="tl-day">Immediate</span></div>
-              <div class="tl-actors"><span class="owner-chip auto">Worker V2.7</span></div>
+              <div class="tl-actors"><span class="owner-chip auto">Worker V2.9</span></div>
               <div class="tl-tools"><span class="tl-tool">HMAC</span><span class="tl-tool">Claude API</span><span class="tl-tool">ventures.json</span></div>
               <div class="tl-output">vault + Asana + Slack DMs</div>
             </div>
@@ -766,7 +962,7 @@ body{
           <div class="tool-icon c-cyan"><i class="bi bi-cloud-lightning-fill"></i></div>
           <div class="tool-body">
             <div class="tool-name">Cloudflare Worker</div>
-            <div class="tool-role">Transcript pipeline · HMAC auth · V2.7</div>
+            <div class="tool-role">Transcript pipeline · HMAC auth · V2.9</div>
             <div class="tool-status live">LIVE</div>
           </div>
         </div>
@@ -889,14 +1085,14 @@ body{
       <div class="rp-header">
         <span class="rp-title">Agent Workforce</span>
         <div class="rp-chips">
-          <span class="rp-chip live">21 Agents</span>
-          <span class="rp-chip blue">17 Skills</span>
+          <span class="rp-chip live">31 Agents</span>
+          <span class="rp-chip blue">30 Skills</span>
         </div>
       </div>
 
       <div class="agents-stats">
-        <div class="ag-stat"><div class="ag-stat-val" id="cnt-ag-agents">21</div><div class="ag-stat-lbl">Agents</div></div>
-        <div class="ag-stat"><div class="ag-stat-val" id="cnt-ag-skills">17</div><div class="ag-stat-lbl">Skills</div></div>
+        <div class="ag-stat"><div class="ag-stat-val" id="cnt-ag-agents">31</div><div class="ag-stat-lbl">Agents</div></div>
+        <div class="ag-stat"><div class="ag-stat-val" id="cnt-ag-skills">30</div><div class="ag-stat-lbl">Skills</div></div>
         <div class="ag-stat"><div class="ag-stat-val">4</div><div class="ag-stat-lbl">Archived</div></div>
         <div class="ag-stat"><div class="ag-stat-val">5</div><div class="ag-stat-lbl">Humans</div></div>
       </div>
@@ -909,6 +1105,8 @@ body{
       <div class="agent-row"><span class="agent-cmd">/mine</span><span class="agent-name">Knowledge Miner</span><div class="agent-owner-dot mariano">M</div></div>
       <div class="agent-row"><span class="agent-cmd">/transcribe</span><span class="agent-name">Audio Transcriber</span><div class="agent-owner-dot all">★</div></div>
       <div class="agent-row"><span class="agent-cmd">/scan</span><span class="agent-name">Document Scanner</span><div class="agent-owner-dot mariano">M</div></div>
+      <div class="agent-row"><span class="agent-cmd">/tc</span><span class="agent-name">Task Coordinator</span><div class="agent-owner-dot daiana">D</div></div>
+      <div class="agent-row"><span class="agent-cmd">/vt</span><span class="agent-name">Venture Tracker</span><div class="agent-owner-dot daiana">D</div></div>
 
       <!-- Update & Reporting -->
       <div class="ag-section-label" style="margin-top:12px"><i class="bi bi-arrow-repeat"></i> Update &amp; Reporting</div>
@@ -942,6 +1140,8 @@ body{
       <div class="agent-row"><span class="agent-cmd">/html-web</span><span class="agent-name">HTML Publisher</span><div class="agent-owner-dot mariano">M</div></div>
       <div class="agent-row"><span class="agent-cmd">/generate-pdf</span><span class="agent-name">PDF Generator</span><div class="agent-owner-dot all">★</div></div>
       <div class="agent-row"><span class="agent-cmd">/cookie-monster</span><span class="agent-name">Knowledge Capture</span><div class="agent-owner-dot all">★</div></div>
+      <div class="agent-row"><span class="agent-cmd">/vault-notion</span><span class="agent-name">Vault Notion Linker</span><div class="agent-owner-dot all">★</div></div>
+      <div class="agent-row"><span class="agent-cmd">/print-to-drive</span><span class="agent-name">Print to Drive</span><div class="agent-owner-dot mariano">M</div></div>
 
       <!-- Human Team -->
       <div class="rp-header" style="margin-top:20px">
@@ -990,6 +1190,365 @@ body{
 
     </div><!-- /tab-agents -->
 
+    <!-- ── PROJECTS TAB ── -->
+    <div class="tab-content" id="tab-projects">
+      <div class="rp-header">
+        <span class="rp-title">Active Projects · B_V® OS</span>
+        <div class="rp-chips">
+          <span class="rp-chip live">3 Live</span>
+          <span class="rp-chip blue">3 Active</span>
+          <span class="rp-chip accent">1 Paused</span>
+          <span class="rp-chip muted">5 Planned</span>
+        </div>
+      </div>
+
+      <div class="stack-grid">
+
+        <div class="tool-card live">
+          <div class="sdot live"></div>
+          <div class="tool-icon c-live"><i class="bi bi-box-fill"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">lc-paperclip</div>
+            <div class="tool-role">BOTH-branded AI interface · Docker · local</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status live">LIVE</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card live">
+          <div class="sdot live"></div>
+          <div class="tool-icon c-live"><i class="bi bi-file-text-fill"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">notion-web</div>
+            <div class="tool-role">Notion → HTML → GitHub Pages</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status live">LIVE</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card live">
+          <div class="sdot live"></div>
+          <div class="tool-icon c-live"><i class="bi bi-filetype-html"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">html-web</div>
+            <div class="tool-role">HTML file → GitHub Pages publisher</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status live">LIVE</div>
+              <span class="owner-chip rene">R</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card live">
+          <div class="sdot" style="background:var(--blue);box-shadow:0 0 5px rgba(50,125,182,.6);"></div>
+          <div class="tool-icon c-cyan"><i class="bi bi-bar-chart-steps"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">ai-infrastructure</div>
+            <div class="tool-role">AI stack docs · snapshots · decisions</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status" style="color:var(--blue);background:var(--blue-dim);border:1px solid rgba(50,125,182,.25);">ACTIVE</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card live">
+          <div class="sdot" style="background:var(--blue);box-shadow:0 0 5px rgba(50,125,182,.6);"></div>
+          <div class="tool-icon c-cyan"><i class="bi bi-stars"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">synergy</div>
+            <div class="tool-role">OS doctrine · manifest · V0.1.0</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status" style="color:var(--blue);background:var(--blue-dim);border:1px solid rgba(50,125,182,.25);">ACTIVE</div>
+              <span class="owner-chip daiana">D</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card live">
+          <div class="sdot" style="background:var(--blue);box-shadow:0 0 5px rgba(50,125,182,.6);"></div>
+          <div class="tool-icon c-cyan"><i class="bi bi-plug-fill"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">integrations</div>
+            <div class="tool-role">n8n · Asana · Notion · setup in progress</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status" style="color:var(--blue);background:var(--blue-dim);border:1px solid rgba(50,125,182,.25);">ACTIVE</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card hold">
+          <div class="sdot hold"></div>
+          <div class="tool-icon c-accent"><i class="bi bi-telegram"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">telegram-agent</div>
+            <div class="tool-role">Vault search · tasks · Claude tool_use</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status hold">PAUSED</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card planned">
+          <div class="sdot planned"></div>
+          <div class="tool-icon c-dim"><i class="bi bi-calendar3"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">calendar-integration</div>
+            <div class="tool-role">Natural language → Calendar API via n8n</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status planned">PLANNED</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card planned">
+          <div class="sdot planned"></div>
+          <div class="tool-icon c-dim"><i class="bi bi-diagram-2-fill"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">graphify</div>
+            <div class="tool-role">Vault + agents → queryable knowledge graph</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status planned">PLANNED</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card planned">
+          <div class="sdot planned"></div>
+          <div class="tool-icon c-dim"><i class="bi bi-shield-check"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">asuntos-internos</div>
+            <div class="tool-role">Coherence agent · repo + vault audit</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status planned">PLANNED</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card planned">
+          <div class="sdot planned"></div>
+          <div class="tool-icon c-dim"><i class="bi bi-speedometer2"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">bandwidth-optimization</div>
+            <div class="tool-role">Human + AI capacity monitor · weekly /bw</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status planned">PLANNED</div>
+              <span class="owner-chip mariano">M</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-card planned">
+          <div class="sdot planned"></div>
+          <div class="tool-icon c-dim"><i class="bi bi-people-fill"></i></div>
+          <div class="tool-body">
+            <div class="tool-name">council-of-war</div>
+            <div class="tool-role">Autonomous advisory board · /cw</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:4px;">
+              <div class="tool-status planned">PLANNED</div>
+              <span class="owner-chip gaston">G</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /stack-grid -->
+    </div><!-- /tab-projects -->
+
+    <!-- ── TEAM TAB ── -->
+    <div class="tab-content" id="tab-team">
+      <div class="rp-header">
+        <span class="rp-title">Human Team · 5 Champions</span>
+        <div class="rp-chips">
+          <span class="rp-chip live">3 Full Access</span>
+          <span class="rp-chip blue">2 Founder Scope</span>
+          <span class="rp-chip muted">Hover → orbital map</span>
+        </div>
+      </div>
+
+      <div class="team-bento">
+
+        <!-- ── GASTON ── -->
+        <div class="tc tc-gaston" data-person="gaston" id="tc-gaston">
+          <div class="tc-stripe"></div>
+          <div class="tc-body">
+            <div class="tc-head">
+              <div class="tc-avatar">G</div>
+              <div>
+                <div class="tc-name">Gaston Frydlewski</div>
+                <div class="tc-role">CEO · Ultimate Decision Maker</div>
+                <span class="tc-access full">Full Access</span>
+              </div>
+            </div>
+            <div class="tc-label"><i class="bi bi-lightning-charge-fill"></i> Sole Authority</div>
+            <div class="tc-authority">Capital allocation · New projects · Exits · Corporate structure · LP / investor comms</div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-building"></i> Ventures</div>
+            <div class="tc-ventures">
+              <div class="tc-venture" data-node="n-mc"><div class="tc-v-dot build"></div><span class="tc-v-name">Manantial Casa</span><span class="tc-v-tag build">Build</span></div>
+              <div class="tc-venture" data-node="n-rs"><div class="tc-v-dot build"></div><span class="tc-v-name">Reshore</span><span class="tc-v-tag build">Build</span></div>
+            </div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-terminal-fill"></i> Agent Commands</div>
+            <div class="tc-agents">
+              <span class="tc-agent-chip">/ir</span><span class="tc-agent-chip">/dr</span>
+              <span class="tc-agent-chip">/mp</span><span class="tc-agent-chip">/db</span>
+              <span class="tc-agent-chip">/startup</span><span class="tc-agent-chip">/upc</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── RENE ── -->
+        <div class="tc tc-rene" data-person="rene" id="tc-rene">
+          <div class="tc-stripe"></div>
+          <div class="tc-body">
+            <div class="tc-head">
+              <div class="tc-avatar">R</div>
+              <div>
+                <div class="tc-name">Rene Labarthe</div>
+                <div class="tc-role">Head of Strategy + Comms</div>
+                <span class="tc-access founder">Founder Scope</span>
+              </div>
+            </div>
+            <div class="tc-label"><i class="bi bi-lightning-charge-fill"></i> Sole Authority</div>
+            <div class="tc-authority">Narrative direction · Positioning · Content sign-off</div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-building"></i> Ventures</div>
+            <div class="tc-ventures">
+              <div class="tc-venture" data-node="n-l3"><div class="tc-v-dot build"></div><span class="tc-v-name">LAK3</span><span class="tc-v-tag build">Build</span></div>
+              <div class="tc-venture" data-node="n-pc"><div class="tc-v-dot build"></div><span class="tc-v-name">Punta Cripto</span><span class="tc-v-tag build">Build</span></div>
+              <div class="tc-venture" data-node="n-pl"><div class="tc-v-dot explore"></div><span class="tc-v-name">Photonic Lab</span><span class="tc-v-tag explore">Explore</span></div>
+            </div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-terminal-fill"></i> Agent Commands</div>
+            <div class="tc-agents">
+              <span class="tc-agent-chip">/nw</span><span class="tc-agent-chip">/ad</span>
+              <span class="tc-agent-chip">/if</span><span class="tc-agent-chip">/vu</span>
+              <span class="tc-agent-chip">/mp</span><span class="tc-agent-chip">/md-web</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DAIANA ── -->
+        <div class="tc tc-daiana" data-person="daiana" id="tc-daiana">
+          <div class="tc-stripe"></div>
+          <div class="tc-body">
+            <div class="tc-head">
+              <div class="tc-avatar">D</div>
+              <div>
+                <div class="tc-name">Daiana Goldenberg</div>
+                <div class="tc-role">Operations + Finance · Orchestrator</div>
+                <span class="tc-access full">Full Access</span>
+                <span class="tc-note"><i class="bi bi-calendar-x"></i> No Fridays</span>
+              </div>
+            </div>
+            <div class="tc-label"><i class="bi bi-lightning-charge-fill"></i> Sole Authority</div>
+            <div class="tc-authority">Ops priorities · Finance tracking · Process design</div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-building"></i> Ventures</div>
+            <div class="tc-ventures">
+              <div class="tc-venture" data-node="n-mc"><div class="tc-v-dot build"></div><span class="tc-v-name">Manantial Casa</span><span class="tc-v-tag build">Build</span></div>
+              <div class="tc-venture" data-node="n-lc"><div class="tc-v-dot explore"></div><span class="tc-v-name">La Chamana</span><span class="tc-v-tag explore">Explore</span></div>
+            </div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-terminal-fill"></i> Agent Commands</div>
+            <div class="tc-agents">
+              <span class="tc-agent-chip">/db</span><span class="tc-agent-chip">/wr</span>
+              <span class="tc-agent-chip">/au</span><span class="tc-agent-chip">/tc</span>
+              <span class="tc-agent-chip">/vt</span><span class="tc-agent-chip">/mc</span>
+              <span class="tc-agent-chip">/mp</span><span class="tc-agent-chip">/cs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ANDRES ── -->
+        <div class="tc tc-andres" data-person="andres" id="tc-andres">
+          <div class="tc-stripe"></div>
+          <div class="tc-body">
+            <div class="tc-head">
+              <div class="tc-avatar">A</div>
+              <div>
+                <div class="tc-name">Andres Burecovics</div>
+                <div class="tc-role">Co-founder · CLO</div>
+                <span class="tc-access founder">Founder Scope</span>
+              </div>
+            </div>
+            <div class="tc-label"><i class="bi bi-lightning-charge-fill"></i> Sole Authority</div>
+            <div class="tc-authority">Legal structuring · Due diligence · Compliance</div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-building"></i> Ventures</div>
+            <div class="tc-ventures">
+              <div class="tc-venture" data-node="n-pa"><div class="tc-v-dot explore"></div><span class="tc-v-name">Panambi</span><span class="tc-v-tag explore">Explore</span></div>
+              <div class="tc-venture" data-node="n-qt"><div class="tc-v-dot explore"></div><span class="tc-v-name">Quantum</span><span class="tc-v-tag explore">Explore</span></div>
+            </div>
+            <div class="tc-div"></div>
+            <div class="tc-label"><i class="bi bi-terminal-fill"></i> Agent Commands</div>
+            <div class="tc-agents">
+              <span class="tc-agent-chip">/ga</span><span class="tc-agent-chip">/mp</span>
+              <span class="tc-agent-chip">/vu</span><span class="tc-agent-chip">/au</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MARIANO (wide) ── -->
+        <div class="tc tc-mariano" data-person="mariano" id="tc-mariano">
+          <div class="tc-stripe"></div>
+          <div class="tc-body">
+            <div class="tc-left">
+              <div class="tc-head">
+                <div class="tc-avatar">M</div>
+                <div>
+                  <div class="tc-name">Mariano Boris</div>
+                  <div class="tc-role">Context Engineer · Tools Admin · Technical Lead</div>
+                  <span class="tc-access system">System Operator</span>
+                </div>
+              </div>
+              <div class="tc-label"><i class="bi bi-building"></i> Ventures</div>
+              <div class="tc-ventures">
+                <div class="tc-venture" data-node="n-os"><div class="tc-v-dot build"></div><span class="tc-v-name">B_V® | OS</span><span class="tc-v-tag build">Build</span></div>
+              </div>
+              <div class="tc-div"></div>
+              <div class="tc-label"><i class="bi bi-shield-lock-fill"></i> Scope Note</div>
+              <div class="tc-authority" style="font-size:8.5px">System-level access exists because Mariano operates the infrastructure — not as organizational authority over founders.</div>
+            </div>
+            <div class="tc-right">
+              <div class="tc-label"><i class="bi bi-terminal-fill"></i> Full Stack Agent Commands</div>
+              <div class="tc-agents" style="margin-bottom:11px">
+                <span class="tc-agent-chip">/mine</span><span class="tc-agent-chip">/transcribe</span>
+                <span class="tc-agent-chip">/scan</span><span class="tc-agent-chip">/cso</span>
+                <span class="tc-agent-chip">/sec-audit</span><span class="tc-agent-chip">/startup</span>
+                <span class="tc-agent-chip">/upc</span><span class="tc-agent-chip">/cookie-monster</span>
+                <span class="tc-agent-chip">/notion-web</span><span class="tc-agent-chip">/md-web</span>
+                <span class="tc-agent-chip">/html-web</span><span class="tc-agent-chip">/print-to-drive</span>
+                <span class="tc-agent-chip">/vault-notion</span><span class="tc-agent-chip">/supabase-query</span>
+              </div>
+              <div class="tc-div"></div>
+              <div class="tc-label"><i class="bi bi-gear-fill"></i> Infrastructure Ownership</div>
+              <div class="tc-agents">
+                <span class="tc-agent-chip" style="color:var(--cyan);border-color:rgba(0,215,255,.28)">CF Worker V2.9</span>
+                <span class="tc-agent-chip" style="color:var(--live);border-color:rgba(34,197,94,.28)">Supabase</span>
+                <span class="tc-agent-chip" style="color:var(--live);border-color:rgba(34,197,94,.28)">GitHub PAT</span>
+                <span class="tc-agent-chip" style="color:var(--live);border-color:rgba(34,197,94,.28)">n8n</span>
+                <span class="tc-agent-chip" style="color:var(--blue);border-color:rgba(50,125,182,.28)">Notion Sync</span>
+                <span class="tc-agent-chip" style="color:var(--blue);border-color:rgba(50,125,182,.28)">Asana Push</span>
+                <span class="tc-agent-chip" style="color:var(--blue);border-color:rgba(50,125,182,.28)">Slack Bot</span>
+                <span class="tc-agent-chip" style="color:var(--accent);border-color:rgba(248,192,35,.28)">Read.ai hooks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /team-bento -->
+    </div><!-- /tab-team -->
+
     <!-- ── FLOW TAB ── -->
     <div class="tab-content" id="tab-flow">
       <div class="rp-header">
@@ -1036,7 +1595,7 @@ body{
             <div class="flow-col-label">Processing</div>
             <div class="flow-proc">
               <div class="flow-proc-card worker" id="fd-worker">
-                <div class="flow-proc-name c-cyan"><i class="bi bi-cloud-lightning-fill"></i> Worker V2.7</div>
+                <div class="flow-proc-name c-cyan"><i class="bi bi-cloud-lightning-fill"></i> Worker V2.9</div>
                 <div class="flow-proc-cap">Path A · automated</div>
                 <div class="flow-tags">
                   <span class="flow-tag cyan">HMAC</span>
@@ -1126,7 +1685,7 @@ body{
 <div class="status-bar">
   <div class="status-live"><div class="status-dot"></div>SYNERGY V3 LIVE</div>
   <span class="status-sep">·</span>
-  <span class="status-val">Worker V2.7 · 2026-05-13</span>
+  <span class="status-val">Worker V2.9 · 2026-05-17</span>
   <span class="status-sep">·</span>
   <span class="status-val">NLAH · arxiv:2603.25723</span>
   <span class="status-sep">·</span>
@@ -1155,8 +1714,8 @@ function countUp(el, target, duration) {
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     countUp(document.getElementById('cnt-ventures'), 9,  600);
-    countUp(document.getElementById('cnt-agents'),   21, 700);
-    countUp(document.getElementById('cnt-skills'),   17, 600);
+    countUp(document.getElementById('cnt-agents'),   31, 700);
+    countUp(document.getElementById('cnt-skills'),   30, 600);
     countUp(document.getElementById('cnt-tools'),     8, 500);
   }, 200);
 });
@@ -1347,16 +1906,65 @@ function drawFlowLines() {
   if (sc&&sb) fl(sc.r, sc.y, sb.l, sb.y, 'fl-sync',    'blue');
 }
 
-/* ── 6. Init & resize ── */
+/* ── 6. Team card → orbital map crosslink ── */
+function setupTeamCrosslink() {
+  var personToNodes = {
+    gaston:  ['n-mc','n-rs'],
+    rene:    ['n-l3','n-pc','n-pl'],
+    daiana:  ['n-mc','n-lc'],
+    andres:  ['n-pa','n-qt'],
+    mariano: ['n-os']
+  };
+
+  Object.keys(personToNodes).forEach(function(person) {
+    var card = document.getElementById('tc-' + person);
+    if (!card) return;
+    var nodeIds = personToNodes[person];
+
+    /* Full card hover: highlight all owned ventures */
+    card.addEventListener('mouseenter', function() {
+      nodeIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('tc-hl');
+      });
+    });
+    card.addEventListener('mouseleave', function() {
+      nodeIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.remove('tc-hl');
+      });
+    });
+
+    /* Individual venture row hover: highlight only that node */
+    card.querySelectorAll('.tc-venture[data-node]').forEach(function(row) {
+      row.addEventListener('mouseenter', function(e) {
+        e.stopPropagation();
+        /* dim all first */
+        nodeIds.forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.remove('tc-hl'); });
+        var target = document.getElementById(row.dataset.node);
+        if (target) target.classList.add('tc-hl');
+      });
+      row.addEventListener('mouseleave', function() {
+        /* restore all when leaving the row */
+        nodeIds.forEach(function(id) {
+          var el = document.getElementById(id);
+          if (el) el.classList.add('tc-hl');
+        });
+      });
+    });
+  });
+}
+
+/* ── 7. Init & resize ── */
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
     drawOrbital();
     setupNodeHover();
+    setupTeamCrosslink();
   }, 150);
 });
 window.addEventListener('resize', function() {
   drawOrbital();
-  // Redraw flow lines only if flow tab is active
   var flowPanel = document.getElementById('tab-flow');
   if (flowPanel && flowPanel.classList.contains('active')) drawFlowLines();
 });
