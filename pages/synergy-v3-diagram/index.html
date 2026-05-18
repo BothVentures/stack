@@ -45,21 +45,15 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;}
-html{height:100%;}
-body{
-  font-family:var(--font);background:var(--bg);color:var(--text);
-  display:grid;grid-template-rows:52px 1fr 30px;
-  height:100vh;overflow:hidden;min-width:1100px;
-}
-.main{min-height:0;}
-.map-area{min-height:0;}
-.right-panel{min-height:0;}
+html,body{width:100%;height:100%;overflow:hidden;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);position:relative;}
 
 /* ══ HEADER ══ */
 .header{
+  position:absolute;top:0;left:0;right:0;height:52px;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 var(--s6);border-bottom:1px solid var(--border);
-  background:var(--surface-1);position:relative;z-index:100;
+  background:var(--surface-1);z-index:100;
 }
 .header-left{display:flex;align-items:center;gap:var(--s4);}
 .logo{display:flex;align-items:center;gap:6px;}
@@ -97,7 +91,10 @@ body{
 }
 
 /* ══ MAIN ══ */
-.main{display:grid;grid-template-columns:60fr 40fr;overflow:hidden;}
+.main{
+  position:absolute;top:52px;bottom:30px;left:0;right:0;
+  display:grid;grid-template-columns:60fr 40fr;overflow:hidden;
+}
 
 /* ══════════════════════════════════════════════════════════
    LEFT PANEL — ORBITAL NETWORK MAP
@@ -490,10 +487,11 @@ body{
 
 /* ══ STATUS BAR ══ */
 .status-bar{
+  position:absolute;bottom:0;left:0;right:0;height:30px;
   background:var(--surface-1);border-top:1px solid var(--border);
   display:flex;align-items:center;padding:0 var(--s6);gap:var(--s4);
   font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--text-dim);z-index:200;
+  color:var(--text-dim);z-index:200;overflow:hidden;
 }
 .status-live{display:flex;align-items:center;gap:5px;color:var(--live);}
 .status-dot{width:5px;height:5px;border-radius:50%;background:var(--live);animation:blink 2.5s ease-in-out infinite;}
@@ -506,6 +504,106 @@ body{
 ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:2px;}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+
+/* ══ RESPONSIVE ══════════════════════════════════════════ */
+
+/* Tablet (900–1199px): compress map, keep dual panel */
+@media(max-width:1199px) and (min-width:900px){
+  .main{grid-template-columns:50fr 50fr;}
+  .team-bento{grid-template-columns:1fr 1fr;}
+  .tc-gaston{grid-column:1;grid-row:1;}
+  .tc-rene  {grid-column:2;grid-row:1;}
+  .tc-daiana{grid-column:1;grid-row:2;}
+  .tc-andres{grid-column:2;grid-row:2;}
+  .tc-mariano{grid-column:1/span 2;grid-row:3;}
+  .stack-grid{grid-template-columns:1fr;}
+  .agents-stats{grid-template-columns:repeat(2,1fr);}
+}
+
+/* Mobile (≤899px): single column, hide map, scrollable */
+@media(max-width:899px){
+  /* Layout: switch to scroll-based, header/status sticky */
+  html,body{overflow:auto;height:auto;}
+  body{min-height:100dvh;position:static;}
+
+  .header{
+    position:sticky;top:0;left:0;right:0;height:auto;
+    min-height:44px;padding:8px 14px;flex-wrap:wrap;gap:6px;
+  }
+  .header-stat{display:none;}
+  .h-sep{display:none;}
+  .header-badge{font-size:8px;padding:1px 6px;}
+
+  .main{
+    position:static;top:auto;bottom:auto;
+    display:block;
+    height:calc(100dvh - 44px - 30px);
+    min-height:400px;
+    overflow:hidden;
+  }
+
+  /* Hide orbital map on mobile — not usable at small size */
+  .map-area{display:none;}
+
+  /* Right panel takes full width */
+  .right-panel{
+    width:100%;height:100%;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .tab-nav{
+    padding:8px 10px 0;gap:2px;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .tab-nav::-webkit-scrollbar{display:none;}
+  .tab-btn{font-size:8px;padding:5px 8px;white-space:nowrap;}
+  .tab-content{padding:var(--s4);}
+
+  .status-bar{
+    position:sticky;bottom:0;left:0;right:0;height:30px;
+    overflow-x:auto;white-space:nowrap;scrollbar-width:none;
+    flex-wrap:nowrap;justify-content:flex-start;gap:var(--s3);
+  }
+  .status-bar::-webkit-scrollbar{display:none;}
+
+  /* Pipeline */
+  .pipeline-meta{gap:4px;}
+  .tl-branch{margin:0;padding:var(--s2) 0;}
+  .tl-branch-card{margin-left:0;}
+
+  /* Stack */
+  .stack-grid{grid-template-columns:1fr;}
+
+  /* Agents */
+  .agents-stats{grid-template-columns:1fr 1fr;}
+  .agent-row{grid-template-columns:58px 1fr 18px;}
+
+  /* Projects */
+  /* stack-grid already single col above */
+
+  /* Team bento → single column stacked */
+  .team-bento{
+    grid-template-columns:1fr !important;
+    gap:6px;
+  }
+  .tc-gaston,.tc-rene,.tc-daiana,.tc-andres,.tc-mariano{
+    grid-column:1 !important;grid-row:auto !important;
+  }
+  .tc-mariano .tc-body{
+    grid-template-columns:1fr !important;gap:0;
+  }
+  .tc-mariano .tc-right{
+    border-left:none !important;padding-left:0 !important;
+    border-top:1px solid var(--border);padding-top:12px;margin-top:12px;
+  }
+
+  /* Flow — hide SVG arrows on mobile, cards stack fine */
+  .flow-cols{grid-template-columns:1fr;gap:var(--s3);}
+  .flow-proc{flex-direction:column;}
+  .flow-svg-wrap{display:none;}
+
+  /* Human team section in agents tab */
+  .human-row{flex-wrap:wrap;gap:var(--s2);}
+}
 
 /* ══════════════════════════════════════════════════════════
    TEAM TAB — Bento grid · Linear/shadcn-inspired dark ops
