@@ -821,6 +821,104 @@ body{
   box-shadow: var(--glow-blue) !important;
   border-color: rgba(50,125,182,0.85) !important;
 }
+
+/* ══ NODE DOT — add transform to transition list ══ */
+.venture-node .node-dot {
+  transition: box-shadow .25s var(--ease-out), border-color .25s var(--ease-out), transform .2s var(--ease-out), background .2s;
+}
+
+/* ══ NODE — SELECTED STATE ══ */
+.venture-node.selected { z-index:5; }
+.venture-node.selected .node-dot.build {
+  border-color:rgba(248,192,35,0.95)!important;
+  box-shadow:0 0 26px rgba(248,192,35,.65),0 0 60px rgba(248,192,35,.22)!important;
+  background:rgba(248,192,35,.16)!important;
+  transform:scale(1.15);
+}
+.venture-node.selected .node-dot.explore {
+  border-color:rgba(50,125,182,0.95)!important;
+  box-shadow:0 0 26px rgba(50,125,182,.65),0 0 60px rgba(50,125,182,.22)!important;
+  background:rgba(50,125,182,.16)!important;
+  transform:scale(1.15);
+}
+.venture-node.selected .node-dot.center {
+  border-color:rgba(248,192,35,1)!important;
+  box-shadow:0 0 32px rgba(248,192,35,.8),0 0 72px rgba(248,192,35,.28)!important;
+  transform:scale(1.15);
+}
+.venture-node.selected .node-label { color:var(--text)!important; }
+
+/* ══ VENTURE DETAIL PANEL (slides up from map bottom) ══ */
+.vdp {
+  position:absolute; bottom:0; left:0; right:0; z-index:8;
+  background:rgba(6,8,16,0.97);
+  border-top:1px solid rgba(255,255,255,0.09);
+  backdrop-filter:blur(24px);
+  padding:13px 18px 15px;
+  transform:translateY(100%);
+  transition:transform .28s cubic-bezier(0.25,0.46,0.45,0.94);
+  display:flex; flex-direction:column; gap:8px;
+}
+.vdp.open { transform:translateY(0); }
+.vdp-top  { display:flex; align-items:flex-start; justify-content:space-between; }
+.vdp-title{ display:flex; align-items:center; gap:8px; }
+.vdp-abbr {
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  padding:2px 8px; border-radius:4px; letter-spacing:.06em; flex-shrink:0;
+}
+.vdp-abbr.build   { color:var(--build);   background:var(--accent-dim); border:1px solid rgba(248,192,35,.32); }
+.vdp-abbr.explore { color:var(--explore); background:var(--blue-dim);   border:1px solid rgba(50,125,182,.32); }
+.vdp-name { font-size:13px; font-weight:700; color:var(--text); letter-spacing:.02em; }
+.vdp-close {
+  background:none; border:1px solid rgba(255,255,255,0.1); color:var(--text-muted);
+  width:22px; height:22px; border-radius:50%; cursor:pointer; font-size:14px;
+  display:flex; align-items:center; justify-content:center; line-height:1;
+  transition:background .15s,color .15s; flex-shrink:0;
+}
+.vdp-close:hover { background:rgba(255,255,255,0.09); color:var(--text); }
+.vdp-meta  { font-size:8.5px; color:var(--text-muted); letter-spacing:.03em; }
+.vdp-meta .vdp-lbl { color:var(--text-dim); }
+.vdp-desc  { font-size:9px; color:var(--text-dim); line-height:1.55; }
+.vdp-agents{ display:flex; flex-wrap:wrap; gap:4px; }
+.vdp-agent {
+  font-family:var(--mono); font-size:8px; padding:2px 8px;
+  background:rgba(248,192,35,0.07); border:1px solid rgba(248,192,35,0.2);
+  border-radius:10px; color:var(--accent); letter-spacing:.03em;
+}
+
+/* ══ TOOLTIP CARD (position:fixed, follows cursor) ══ */
+.tooltip-card {
+  position:fixed; z-index:9999; pointer-events:none;
+  background:rgba(8,10,18,0.97); border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px; padding:12px 14px; min-width:190px; max-width:240px;
+  backdrop-filter:blur(24px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.03);
+  opacity:1; transform:translateY(0);
+  transition:opacity .12s,transform .12s;
+}
+.tooltip-card.hidden { opacity:0; transform:translateY(5px); pointer-events:none; }
+.tt-header {
+  display:flex; align-items:center; gap:8px;
+  margin-bottom:9px; padding-bottom:8px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.tt-abbr {
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  padding:2px 7px; border-radius:4px; letter-spacing:.06em; flex-shrink:0;
+}
+.tt-abbr.build   { color:var(--build);   background:var(--accent-dim); border:1px solid rgba(248,192,35,.3); }
+.tt-abbr.explore { color:var(--explore); background:var(--blue-dim);   border:1px solid rgba(50,125,182,.3); }
+.tt-name  { font-size:11px; font-weight:700; color:var(--text); line-height:1.3; }
+.tt-row   { display:flex; align-items:flex-start; gap:6px; margin-bottom:4px; }
+.tt-label { font-size:7.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dim); width:38px; flex-shrink:0; padding-top:1px; }
+.tt-value { font-size:9px; color:var(--text-muted); }
+.tt-desc  { font-size:8.5px; color:var(--text-dim); line-height:1.55; margin-top:6px; padding-top:7px; border-top:1px solid rgba(255,255,255,0.04); }
+.tt-agents{ display:flex; flex-wrap:wrap; gap:3px; margin-top:7px; }
+.tt-agent {
+  font-family:var(--mono); font-size:7.5px; padding:1px 6px;
+  background:rgba(248,192,35,0.07); border:1px solid rgba(248,192,35,0.2);
+  border-radius:8px; color:var(--accent);
+}
 </style>
 </head>
 <body>
@@ -955,6 +1053,20 @@ body{
     </div>
 
     <div class="map-footer">BOTH Ventures · Punta del Este, UY · config/ventures.json</div>
+
+    <!-- Venture Detail Panel — click any node to open -->
+    <div id="venture-detail-panel" class="vdp">
+      <div class="vdp-top">
+        <div class="vdp-title">
+          <span class="vdp-abbr" id="vdp-abbr">—</span>
+          <span class="vdp-name" id="vdp-name">—</span>
+        </div>
+        <button class="vdp-close" id="vdp-close" aria-label="Close">×</button>
+      </div>
+      <div class="vdp-meta" id="vdp-meta"></div>
+      <div class="vdp-desc" id="vdp-desc"></div>
+      <div class="vdp-agents" id="vdp-agents"></div>
+    </div>
   </div>
 
   <!-- ══ RIGHT: TAB PANELS ══ -->
@@ -1824,9 +1936,27 @@ body{
 <script>
 (function() {
 
-/* ── 1. Counter animation ── */
+/* ══════════════════════════════════════════════════════════
+   VENTURE DATA REGISTRY
+══════════════════════════════════════════════════════════ */
+var VENTURE_DATA = {
+  'n-both': { name:'Synergy Hub',      abbr:'B_V', phase:'build',   ownerName:'All team',              desc:'BOTH Ventures operating platform — orchestrates all 9 ventures via Synergy V3. Harness, registry, pipeline.', agents:['/startup','/upc','/db','/mine','/wr','/vu','/au'] },
+  'n-mc':   { name:'Manantial Casa',   abbr:'MC',  phase:'build',   ownerName:'Gaston + Daiana',       desc:'Physical HQ + institutional base. Events, retreats, innovation. Punta del Este, UY.', agents:['/vu','/mp','/db','/mc'] },
+  'n-rs':   { name:'Reshore',          abbr:'RS',  phase:'build',   ownerName:'Gaston Frydlewski',     desc:'Infrastructure for re-localizing production. Resilient supply chains for a fragmented world.', agents:['/vu','/ir','/mp'] },
+  'n-l3':   { name:'LAK3',             abbr:'L3',  phase:'build',   ownerName:'Rene Labarthe',         desc:'Tokenizes water and real-world assets for liquidity and transparent ownership.', agents:['/vu','/nw','/if','/ad'] },
+  'n-pc':   { name:'Punta Cripto',     abbr:'PC',  phase:'build',   ownerName:'Rene Labarthe',         desc:'Crypto initiative. Key income source for BOTH\'s financial self-sufficiency.', agents:['/vu','/if','/nw'] },
+  'n-os':   { name:'Both OS',          abbr:'OS',  phase:'build',   ownerName:'Mariano Boris',         desc:'n8n, Supabase, Claude agents, harness, tooling — Synergy V3 lives here.', agents:['/mine','/scan','/sec-audit','/cso','/notion-web','/md-web'] },
+  'n-pl':   { name:'Photonic Lab',     abbr:'PL',  phase:'explore', ownerName:'Rene Labarthe',         desc:'Venture-scale biotech lab. Research to impact. Deep science meets venture capital.', agents:['/vu','/if','/scan','/nw'] },
+  'n-lc':   { name:'La Chamana',       abbr:'LC',  phase:'explore', ownerName:'Daiana Goldenberg',     desc:'Luxury private villa in Tulum. High-trust founder retreat space.', agents:['/vu','/mp','/mc'] },
+  'n-pa':   { name:'Panambi',          abbr:'PA',  phase:'explore', ownerName:'Andres Burecovics',     desc:'Investment fund for mental health sciences in Latin America.', agents:['/vu','/ga','/ir'] },
+  'n-qt':   { name:'Quantum',          abbr:'QT',  phase:'explore', ownerName:'Andres Burecovics',     desc:'New venture — legal structuring in progress. Business plan pending.', agents:['/vu','/ga','/ir'] }
+};
+
+/* ══════════════════════════════════════════════════════════
+   1. Counter animation
+══════════════════════════════════════════════════════════ */
 function countUp(el, target, duration) {
-  var start = 0, startTime = null;
+  var startTime = null;
   function step(ts) {
     if (!startTime) startTime = ts;
     var progress = Math.min((ts - startTime) / duration, 1);
@@ -1836,20 +1966,13 @@ function countUp(el, target, duration) {
   }
   requestAnimationFrame(step);
 }
-window.addEventListener('DOMContentLoaded', function() {
-  setTimeout(function() {
-    countUp(document.getElementById('cnt-ventures'), 9,  600);
-    countUp(document.getElementById('cnt-agents'),   31, 700);
-    countUp(document.getElementById('cnt-skills'),   30, 600);
-    countUp(document.getElementById('cnt-tools'),     8, 500);
-  }, 200);
-});
 
-/* ── 2. Tab switching ── */
+/* ══════════════════════════════════════════════════════════
+   2. Tab switching
+══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function() {
-  var btns = document.querySelectorAll('.tab-btn');
+  var btns   = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.tab-content');
-
   btns.forEach(function(btn) {
     btn.addEventListener('click', function() {
       var target = btn.dataset.tab;
@@ -1865,19 +1988,17 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-/* ── 3. Orbital network SVG connections ── */
+/* ══════════════════════════════════════════════════════════
+   3. Orbital network SVG connections
+══════════════════════════════════════════════════════════ */
 function getNodeCenter(id) {
   var el = document.getElementById(id);
   if (!el) return null;
   var dot = el.querySelector('.node-dot');
   if (!dot) return null;
-  var r = dot.getBoundingClientRect();
-  var svgEl = document.getElementById('conn-svg');
-  var svgR = svgEl.getBoundingClientRect();
-  return {
-    x: r.left + r.width/2  - svgR.left,
-    y: r.top  + r.height/2 - svgR.top
-  };
+  var r    = dot.getBoundingClientRect();
+  var svgR = document.getElementById('conn-svg').getBoundingClientRect();
+  return { x: r.left + r.width/2 - svgR.left, y: r.top + r.height/2 - svgR.top };
 }
 
 function makeLine(svg, x1, y1, x2, y2, cls) {
@@ -1886,152 +2007,230 @@ function makeLine(svg, x1, y1, x2, y2, cls) {
   line.setAttribute('x2', x2); line.setAttribute('y2', y2);
   line.setAttribute('class', cls);
   svg.appendChild(line);
-  return line;
 }
 
-/* SVG line classes for orbital map */
-var style = document.createElement('style');
-style.textContent = [
-  '.conn-build { stroke:rgba(248,192,35,0.22); stroke-width:1; stroke-dasharray:6,5; fill:none; animation:flow-dash 3s linear infinite; }',
+var orbStyle = document.createElement('style');
+orbStyle.textContent = [
+  '.conn-build  { stroke:rgba(248,192,35,0.22); stroke-width:1; stroke-dasharray:6,5; fill:none; animation:flow-dash 3s linear infinite; }',
   '.conn-explore{ stroke:rgba(50,125,182,0.18); stroke-width:1; stroke-dasharray:4,6; fill:none; }',
-  '.conn-champ { stroke:rgba(34,197,94,0.15);   stroke-width:1; stroke-dasharray:3,8; fill:none; }',
-  '@keyframes flow-dash{ from{stroke-dashoffset:22;} to{stroke-dashoffset:0;} }',
+  '.conn-champ  { stroke:rgba(34,197,94,0.15);  stroke-width:1; stroke-dasharray:3,8; fill:none; }',
+  '@keyframes flow-dash     { from{stroke-dashoffset:22;} to{stroke-dashoffset:0;} }',
   '@keyframes flow-dash-slow{ from{stroke-dashoffset:28;} to{stroke-dashoffset:0;} }',
 ].join('\n');
-document.head.appendChild(style);
+document.head.appendChild(orbStyle);
 
 function drawOrbital() {
   var svg = document.getElementById('conn-svg');
   if (!svg) return;
   var rect = svg.getBoundingClientRect();
-  svg.setAttribute('width',  rect.width);
+  svg.setAttribute('width', rect.width);
   svg.setAttribute('height', rect.height);
-  // clear
   while (svg.lastChild) svg.removeChild(svg.lastChild);
 
   var center = getNodeCenter('n-both');
-  var nodes = {
+  var nodes  = {
     mc: getNodeCenter('n-mc'), rs: getNodeCenter('n-rs'),
     l3: getNodeCenter('n-l3'), pc: getNodeCenter('n-pc'),
     os: getNodeCenter('n-os'),
     pl: getNodeCenter('n-pl'), lc: getNodeCenter('n-lc'),
     pa: getNodeCenter('n-pa'), qt: getNodeCenter('n-qt')
   };
-
   if (!center) return;
 
-  // Center → Build ring (yellow animated)
   ['mc','rs','l3','pc','os'].forEach(function(k) {
     if (nodes[k]) makeLine(svg, center.x, center.y, nodes[k].x, nodes[k].y, 'conn-build');
   });
-
-  // Champion pairs (green subtle)
-  var champPairs = [['mc','rs'],['l3','pc'],['pa','qt']];
-  champPairs.forEach(function(pair) {
-    var a = nodes[pair[0]], b = nodes[pair[1]];
+  [['mc','rs'],['l3','pc'],['pa','qt']].forEach(function(p) {
+    var a = nodes[p[0]], b = nodes[p[1]];
     if (a && b) makeLine(svg, a.x, a.y, b.x, b.y, 'conn-champ');
   });
-
-  // Build → Explore champion links (blue)
-  var crossLinks = [['l3','pl'],['pc','pl'],['lc','l3']];
-  crossLinks.forEach(function(pair) {
-    var a = nodes[pair[0]], b = nodes[pair[1]];
+  [['l3','pl'],['pc','pl'],['lc','l3']].forEach(function(p) {
+    var a = nodes[p[0]], b = nodes[p[1]];
     if (a && b) makeLine(svg, a.x, a.y, b.x, b.y, 'conn-explore');
   });
-
-  // Outer Explore ring arcs (between adjacent explore nodes, very faint)
-  var exploreRing = ['pl','lc','pa','qt'];
-  for (var i = 0; i < exploreRing.length; i++) {
-    var a2 = nodes[exploreRing[i]];
-    var b2 = nodes[exploreRing[(i+1)%exploreRing.length]];
+  var er = ['pl','lc','pa','qt'];
+  for (var i = 0; i < er.length; i++) {
+    var a2 = nodes[er[i]], b2 = nodes[er[(i+1)%er.length]];
     if (a2 && b2) makeLine(svg, a2.x, a2.y, b2.x, b2.y, 'conn-explore');
   }
 }
 
-/* ── 4. Node hover: brighten connected lines ── */
+/* ══════════════════════════════════════════════════════════
+   4. Tooltip system
+══════════════════════════════════════════════════════════ */
+var tooltip    = null;
+
+function initTooltip() {
+  tooltip = document.getElementById('venture-tooltip');
+}
+
+function showTooltip(e, nodeId) {
+  if (!tooltip) return;
+  var d = VENTURE_DATA[nodeId];
+  if (!d) return;
+
+  document.getElementById('tt-abbr').textContent  = d.abbr;
+  document.getElementById('tt-abbr').className    = 'tt-abbr ' + d.phase;
+  document.getElementById('tt-name').textContent  = d.name;
+  document.getElementById('tt-owner').textContent = d.ownerName;
+  document.getElementById('tt-status').textContent = d.phase.charAt(0).toUpperCase() + d.phase.slice(1);
+  document.getElementById('tt-desc').textContent  = d.desc;
+
+  var ag = document.getElementById('tt-agents');
+  ag.innerHTML = '';
+  (d.agents || []).forEach(function(a) {
+    var s = document.createElement('span');
+    s.className = 'tt-agent';
+    s.textContent = a;
+    ag.appendChild(s);
+  });
+
+  tooltip.classList.remove('hidden');
+  tooltip.setAttribute('aria-hidden', 'false');
+  positionTooltip(e);
+}
+
+function positionTooltip(e) {
+  if (!tooltip) return;
+  var x = e.clientX + 18, y = e.clientY - 16;
+  var w = tooltip.offsetWidth  || 220;
+  var h = tooltip.offsetHeight || 170;
+  if (x + w > window.innerWidth  - 10) x = e.clientX - w - 18;
+  if (y + h > window.innerHeight - 10) y = window.innerHeight - h - 10;
+  if (y < 10) y = 10;
+  tooltip.style.left = x + 'px';
+  tooltip.style.top  = y + 'px';
+}
+
+function hideTooltip() {
+  if (!tooltip) return;
+  tooltip.classList.add('hidden');
+  tooltip.setAttribute('aria-hidden', 'true');
+}
+
+/* ══════════════════════════════════════════════════════════
+   5. Venture Detail Panel
+══════════════════════════════════════════════════════════ */
+var vdp          = null;
+var selectedNode = null;
+
+function initVDP() {
+  vdp = document.getElementById('venture-detail-panel');
+  if (!vdp) return;
+
+  /* Close button */
+  var closeBtn = document.getElementById('vdp-close');
+  if (closeBtn) closeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeVDP();
+  });
+
+  /* Clicks inside panel don't bubble to map-area (which would re-close) */
+  vdp.addEventListener('click', function(e) { e.stopPropagation(); });
+}
+
+function openVDP(nodeId) {
+  if (!vdp) return;
+  var d = VENTURE_DATA[nodeId];
+  if (!d) return;
+
+  document.getElementById('vdp-abbr').textContent = d.abbr;
+  document.getElementById('vdp-abbr').className   = 'vdp-abbr ' + d.phase;
+  document.getElementById('vdp-name').textContent = d.name;
+
+  var meta = document.getElementById('vdp-meta');
+  meta.innerHTML =
+    '<span class="vdp-lbl">Owner</span> ' + d.ownerName +
+    '&ensp;·&ensp;<span class="vdp-lbl">Phase</span> ' + (d.phase.charAt(0).toUpperCase() + d.phase.slice(1));
+
+  document.getElementById('vdp-desc').textContent = d.desc;
+
+  var ag = document.getElementById('vdp-agents');
+  ag.innerHTML = '';
+  (d.agents || []).forEach(function(a) {
+    var s = document.createElement('span');
+    s.className = 'vdp-agent';
+    s.textContent = a;
+    ag.appendChild(s);
+  });
+
+  vdp.classList.add('open');
+}
+
+function closeVDP() {
+  if (!vdp) return;
+  vdp.classList.remove('open');
+  if (selectedNode) {
+    var el = document.getElementById(selectedNode);
+    if (el) el.classList.remove('selected');
+    selectedNode = null;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   6. Node hover + click interactions
+══════════════════════════════════════════════════════════ */
 function setupNodeHover() {
   var nodeIds = ['n-both','n-mc','n-rs','n-l3','n-pc','n-os','n-pl','n-lc','n-pa','n-qt'];
+
   nodeIds.forEach(function(id) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.addEventListener('mouseenter', function() {
-      var dot = el.querySelector('.node-dot');
-      if (dot) dot.style.transform = 'scale(1.12)';
+    el.style.cursor = 'pointer';
+
+    el.addEventListener('mouseenter', function(e) {
+      if (!el.classList.contains('selected')) {
+        var dot = el.querySelector('.node-dot');
+        if (dot) dot.style.transform = 'scale(1.12)';
+      }
+      showTooltip(e, id);
     });
+
+    el.addEventListener('mousemove', function(e) {
+      positionTooltip(e);
+    });
+
     el.addEventListener('mouseleave', function() {
-      var dot = el.querySelector('.node-dot');
-      if (dot) dot.style.transform = '';
+      if (!el.classList.contains('selected')) {
+        var dot = el.querySelector('.node-dot');
+        if (dot) dot.style.transform = '';
+      }
+      hideTooltip();
     });
+
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      hideTooltip();
+
+      if (selectedNode === id) {
+        /* Toggle off */
+        el.classList.remove('selected');
+        selectedNode = null;
+        if (vdp) vdp.classList.remove('open');
+      } else {
+        /* Deselect previous */
+        if (selectedNode) {
+          var prev = document.getElementById(selectedNode);
+          if (prev) prev.classList.remove('selected');
+        }
+        /* Select new */
+        el.classList.add('selected');
+        selectedNode = id;
+        openVDP(id);
+      }
+    });
+  });
+
+  /* Click map background → close panel */
+  var mapArea = document.getElementById('map-area');
+  if (mapArea) mapArea.addEventListener('click', function() {
+    if (selectedNode) closeVDP();
   });
 }
 
-/* ── 5. Flow tab SVG lines ── */
-function drawFlowLines() {
-  var wrap = document.getElementById('flow-svg-wrap');
-  var svg  = document.getElementById('flow-svg');
-  if (!wrap || !svg) return;
-
-  var wR = wrap.getBoundingClientRect();
-  svg.setAttribute('width',  wR.width);
-  svg.setAttribute('height', wR.height);
-
-  // Clear existing lines
-  Array.from(svg.querySelectorAll('line')).forEach(function(l){l.remove();});
-
-  function fc(id) {
-    var el = document.getElementById(id);
-    if (!el) return null;
-    var r = el.getBoundingClientRect();
-    return {
-      x: r.left + r.width/2 - wR.left,
-      y: r.top  + r.height/2 - wR.top,
-      l: r.left - wR.left,
-      r: r.right - wR.left,
-      t: r.top  - wR.top,
-      b: r.bottom - wR.top
-    };
-  }
-
-  function fl(x1,y1,x2,y2,cls,marker) {
-    var line = document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',x1); line.setAttribute('y1',y1);
-    line.setAttribute('x2',x2); line.setAttribute('y2',y2);
-    line.setAttribute('class',cls);
-    if (marker) line.setAttribute('marker-end','url(#arr-'+marker+')');
-    svg.appendChild(line);
-  }
-
-  var flowStyle = document.getElementById('flow-style-el');
-  if (!flowStyle) {
-    flowStyle = document.createElement('style');
-    flowStyle.id = 'flow-style-el';
-    flowStyle.textContent = [
-      '.fl-auto  { stroke:rgba(0,215,255,0.55);  stroke-width:1.5; stroke-dasharray:6,3; fill:none; animation:flow-dash 1.8s linear infinite; }',
-      '.fl-manual{ stroke:rgba(248,192,35,0.4);  stroke-width:1.5; stroke-dasharray:4,4; fill:none; animation:flow-dash-slow 3s linear infinite; }',
-      '.fl-sync  { stroke:rgba(50,125,182,0.4);  stroke-width:1.5; stroke-dasharray:3,5; fill:none; }',
-    ].join('\n');
-    document.head.appendChild(flowStyle);
-  }
-
-  var ra=fc('fd-readai'), cl=fc('fd-claude'), vs=fc('fd-vault-src');
-  var wk=fc('fd-worker'), mn=fc('fd-mine'), sc=fc('fd-scripts');
-  var vo=fc('fd-vault-out'), as=fc('fd-asana'), sl=fc('fd-slack');
-  var no=fc('fd-notion'), sb=fc('fd-supabase');
-
-  if (!ra||!wk) return;
-
-  if (ra&&wk) fl(ra.r, ra.y, wk.l, wk.y, 'fl-auto',   'cyan');
-  if (wk&&vo) fl(wk.r, wk.y, vo.l, vo.y, 'fl-auto',   'cyan');
-  if (wk&&as) fl(wk.r, wk.y, as.l, as.y, 'fl-auto',   'cyan');
-  if (wk&&sl) fl(wk.r, wk.y, sl.l, sl.y, 'fl-auto',   'cyan');
-  if (cl&&mn) fl(cl.r, cl.y, mn.l, mn.y, 'fl-manual',  'yellow');
-  if (mn&&vo) fl(mn.r, mn.y, vo.l, vo.y, 'fl-manual',  'yellow');
-  if (vs&&sc) fl(vs.r, vs.y, sc.l, sc.y, 'fl-sync',    'blue');
-  if (sc&&no) fl(sc.r, sc.y, no.l, no.y, 'fl-sync',    'blue');
-  if (sc&&sb) fl(sc.r, sc.y, sb.l, sb.y, 'fl-sync',    'blue');
-}
-
-/* ── 6. Team card → orbital map crosslink ── */
+/* ══════════════════════════════════════════════════════════
+   7. Team card → orbital map crosslink
+══════════════════════════════════════════════════════════ */
 function setupTeamCrosslink() {
   var personToNodes = {
     gaston:  ['n-mc','n-rs'],
@@ -2042,11 +2241,10 @@ function setupTeamCrosslink() {
   };
 
   Object.keys(personToNodes).forEach(function(person) {
-    var card = document.getElementById('tc-' + person);
+    var card    = document.getElementById('tc-' + person);
     if (!card) return;
     var nodeIds = personToNodes[person];
 
-    /* Full card hover: highlight all owned ventures */
     card.addEventListener('mouseenter', function() {
       nodeIds.forEach(function(id) {
         var el = document.getElementById(id);
@@ -2060,17 +2258,14 @@ function setupTeamCrosslink() {
       });
     });
 
-    /* Individual venture row hover: highlight only that node */
     card.querySelectorAll('.tc-venture[data-node]').forEach(function(row) {
       row.addEventListener('mouseenter', function(e) {
         e.stopPropagation();
-        /* dim all first */
         nodeIds.forEach(function(id) { var el = document.getElementById(id); if (el) el.classList.remove('tc-hl'); });
         var target = document.getElementById(row.dataset.node);
         if (target) target.classList.add('tc-hl');
       });
       row.addEventListener('mouseleave', function() {
-        /* restore all when leaving the row */
         nodeIds.forEach(function(id) {
           var el = document.getElementById(id);
           if (el) el.classList.add('tc-hl');
@@ -2080,14 +2275,119 @@ function setupTeamCrosslink() {
   });
 }
 
-/* ── 7. Init & resize ── */
+/* ══════════════════════════════════════════════════════════
+   8. Flow tab — curved paths + animated dots
+══════════════════════════════════════════════════════════ */
+function drawFlowLines() {
+  var wrap = document.getElementById('flow-svg-wrap');
+  var svg  = document.getElementById('flow-svg');
+  if (!wrap || !svg) return;
+
+  var wR = wrap.getBoundingClientRect();
+  svg.setAttribute('width',  wR.width);
+  svg.setAttribute('height', wR.height);
+
+  /* Clear previous paths/circles, keep <defs> */
+  Array.from(svg.querySelectorAll('line,path,circle')).forEach(function(el) { el.remove(); });
+
+  var flowStyle = document.getElementById('flow-style-el');
+  if (!flowStyle) {
+    flowStyle = document.createElement('style');
+    flowStyle.id = 'flow-style-el';
+    flowStyle.textContent = [
+      '.fl-auto  { stroke:rgba(0,215,255,0.45);  stroke-width:1.5; stroke-dasharray:6,3; fill:none; animation:flow-dash 1.8s linear infinite; }',
+      '.fl-manual{ stroke:rgba(248,192,35,0.35); stroke-width:1.5; stroke-dasharray:4,4; fill:none; animation:flow-dash-slow 3s linear infinite; }',
+      '.fl-sync  { stroke:rgba(50,125,182,0.35); stroke-width:1.5; stroke-dasharray:3,5; fill:none; }',
+    ].join('\n');
+    document.head.appendChild(flowStyle);
+  }
+
+  function fc(id) {
+    var el = document.getElementById(id);
+    if (!el) return null;
+    var r = el.getBoundingClientRect();
+    return {
+      x: r.left + r.width/2  - wR.left, y: r.top + r.height/2 - wR.top,
+      l: r.left - wR.left,  r: r.right  - wR.left,
+      t: r.top  - wR.top,   b: r.bottom - wR.top
+    };
+  }
+
+  var pathIdx = 0;
+
+  function addPath(x1, y1, x2, y2, cls, marker) {
+    var id  = 'flp-' + (pathIdx++);
+    var mx  = (x1 + x2) / 2;
+    var cy  = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.18;
+    var d   = 'M '+x1+' '+y1+' Q '+mx+' '+cy+' '+x2+' '+y2;
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('id', id);
+    path.setAttribute('d', d);
+    path.setAttribute('class', cls);
+    if (marker) path.setAttribute('marker-end', 'url(#arr-'+marker+')');
+    svg.appendChild(path);
+    return id;
+  }
+
+  function addDot(pathId, dur, color, beginOffset) {
+    var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('r', '2.8');
+    c.setAttribute('fill', color);
+    c.style.filter = 'drop-shadow(0 0 4px ' + color + ')';
+    var am = document.createElementNS('http://www.w3.org/2000/svg','animateMotion');
+    am.setAttribute('dur', dur);
+    am.setAttribute('repeatCount', 'indefinite');
+    am.setAttribute('calcMode', 'linear');
+    if (beginOffset) am.setAttribute('begin', beginOffset);
+    var mp = document.createElementNS('http://www.w3.org/2000/svg','mpath');
+    mp.setAttribute('href', '#' + pathId);
+    am.appendChild(mp);
+    c.appendChild(am);
+    svg.appendChild(c);
+  }
+
+  function flow(coords, dur, color, marker, cls, dots) {
+    var id = addPath(coords[0], coords[1], coords[2], coords[3], cls, marker);
+    var n  = dots || 2;
+    var period = parseFloat(dur) / n;
+    for (var i = 0; i < n; i++) addDot(id, dur, color, (period * i).toFixed(2) + 's');
+  }
+
+  var ra=fc('fd-readai'), cl=fc('fd-claude'), vs=fc('fd-vault-src');
+  var wk=fc('fd-worker'), mn=fc('fd-mine'), sc=fc('fd-scripts');
+  var vo=fc('fd-vault-out'), as=fc('fd-asana'), sl=fc('fd-slack');
+  var no=fc('fd-notion'), sb=fc('fd-supabase');
+
+  if (!ra || !wk) return;
+
+  if (ra&&wk) flow([ra.r,ra.y,wk.l,wk.y], '1.8s', 'rgba(0,215,255,0.9)', 'cyan',  'fl-auto',   2);
+  if (wk&&vo) flow([wk.r,wk.y,vo.l,vo.y], '2.0s', 'rgba(0,215,255,0.9)', 'cyan',  'fl-auto',   2);
+  if (wk&&as) flow([wk.r,wk.y,as.l,as.y], '2.2s', 'rgba(0,215,255,0.9)', 'cyan',  'fl-auto',   2);
+  if (wk&&sl) flow([wk.r,wk.y,sl.l,sl.y], '2.4s', 'rgba(0,215,255,0.9)', 'cyan',  'fl-auto',   2);
+  if (cl&&mn) flow([cl.r,cl.y,mn.l,mn.y], '2.6s', 'rgba(248,192,35,0.9)','yellow','fl-manual', 2);
+  if (mn&&vo) flow([mn.r,mn.y,vo.l,vo.y], '2.6s', 'rgba(248,192,35,0.9)','yellow','fl-manual', 2);
+  if (vs&&sc) flow([vs.r,vs.y,sc.l,sc.y], '3.2s', 'rgba(50,125,182,0.8)','blue',  'fl-sync',   2);
+  if (sc&&no) flow([sc.r,sc.y,no.l,no.y], '3.4s', 'rgba(50,125,182,0.8)','blue',  'fl-sync',   2);
+  if (sc&&sb) flow([sc.r,sc.y,sb.l,sb.y], '3.6s', 'rgba(50,125,182,0.8)','blue',  'fl-sync',   2);
+}
+
+/* ══════════════════════════════════════════════════════════
+   9. Init & resize
+══════════════════════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', function() {
   setTimeout(function() {
+    countUp(document.getElementById('cnt-ventures'), 9,  600);
+    countUp(document.getElementById('cnt-agents'),   31, 700);
+    countUp(document.getElementById('cnt-skills'),   30, 600);
+    countUp(document.getElementById('cnt-tools'),     8, 500);
+    initTooltip();
+    initVDP();
     drawOrbital();
     setupNodeHover();
     setupTeamCrosslink();
   }, 150);
 });
+
 window.addEventListener('resize', function() {
   drawOrbital();
   var flowPanel = document.getElementById('tab-flow');
@@ -2096,5 +2396,22 @@ window.addEventListener('resize', function() {
 
 })();
 </script>
+<!-- Venture tooltip — position:fixed, follows cursor on orbital map hover -->
+<div id="venture-tooltip" class="tooltip-card hidden" aria-hidden="true">
+  <div class="tt-header">
+    <span class="tt-abbr" id="tt-abbr">—</span>
+    <span class="tt-name" id="tt-name">—</span>
+  </div>
+  <div class="tt-row">
+    <span class="tt-label">Owner</span>
+    <span class="tt-value" id="tt-owner">—</span>
+  </div>
+  <div class="tt-row">
+    <span class="tt-label">Phase</span>
+    <span class="tt-value" id="tt-status">—</span>
+  </div>
+  <div class="tt-desc" id="tt-desc"></div>
+  <div class="tt-agents" id="tt-agents"></div>
+</div>
 </body>
 </html>
