@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BOTH Ventures Tuesday Sync Digest — venture status, area summaries, decisions, risks, action items.">
+<title>Tuesday Weekly Sync Digest — 2026-05-19 — Both_Ventures</title>
+<style>
+/*
+ * Weekly Digest — Editorial Design System
+ * Based on photonic-lab Swiss editorial base.
+ * Purpose: Tuesday Sync digest and executive reports.
+ *
+ * Governing principle: scannable in 5 minutes.
+ * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
+ * Section headings as hard dividers. Urgency signals visible at a glance.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals */
+  --white:    #ffffff;
+  --off:      #f5f4f0;
+  --rule:     #e0ddd8;
+  --rule2:    #c8c4bc;
+  --text:     #111110;
+  --text2:    #444440;
+  --text3:    #888880;
+
+  /* Primary accent — BOTH olive-gold */
+  --acc:      #939324;
+  --acc-lt:   #f5f4e0;
+  --acc-dk:   #5a5a14;
+
+  /* Status signals */
+  --urgent-bg:    #fdecea;
+  --urgent-bd:    #c0392b;
+  --warn-bg:      #fdf3e3;
+  --warn-bd:      #b06a00;
+  --info-bg:      #edf1f5;
+  --info-bd:      #3a4a58;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1280px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY — wider than photonic-lab for multi-column tables ── */
+article.notion-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 8px;
+}
+/* H2 acts as a hard section divider */
+article.notion-page h2 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 52px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule2);
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 6px 0 16px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 4px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 18px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
+figure.code-block code {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); background: none;
+  border: none; padding: 0; white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px; font-weight: 400; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE — rendered as callout panel ── */
+article.notion-page blockquote {
+  background: var(--off);
+  border-left: 3px solid var(--acc);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+}
+article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
+article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
+
+/* ── URGENT / WARN SIGNAL CLASSES (for future HTML-aware paths) ── */
+.urgent-signal {
+  background: var(--urgent-bg);
+  border-left: 3px solid var(--urgent-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--urgent-bd);
+}
+.warn-signal {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--warn-bd);
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── TABLES — digest-optimized ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #f0efe8;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 300;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafaf8; }
+tr:hover td { background: var(--off); }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc-dk);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--text);
+  border-bottom-color: var(--acc);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 2px solid var(--text);
+  background: var(--off);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc-dk);
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta author">wr</span>
+    <span class="header-meta">2026-05-18</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+    <h1>BOTH Ventures — Tuesday Weekly Sync — 2026-05-19</h1>
+<blockquote><p><strong>Draft for review</strong> — generated Monday evening 2026-05-18. Daiana validates before Tuesday meeting. Some venture rows draw on stale <code>/vu</code> updates and are flagged below. Open Action Items section pending Supabase <code>pending_actions</code> query — populated by Mariano at validation.</p></blockquote>
+<h2>Venture Status Grid</h2>
+<table><thead><tr><th>Venture</th><th>Champion</th><th>Stage</th><th>Health</th><th>This Week</th><th>Next Priority</th></tr></thead><tbody><tr><td>Manantial.Casa</td><td>Gaston / Daiana</td><td>Build</td><td>🟡 Yellow</td><td>Ocupación récord año (70.6% sem. 04–08/05) · 44 members → 42 post-bajas 15/05 · ops cash $56.2K · Oddone evento 15/05 ejecutado · QB en implementación.</td><td>Cerrar QB CM · UBS seguimiento (Gaston) · Snapshot leads Open House (Delfi) · Doc Mundial junio-julio.</td></tr><tr><td>Reshore</td><td>Gaston</td><td>Build</td><td>🟡 Yellow</td><td><em>Update venture stale (2026-05-05).</em> Capital memo (14/05) trae frente nuevo: <strong>Zenith Group Advisors</strong> — facility USD 25M, fee promedio 1.0%/mes, revenue share 10–20% (target 15–20%). Reframea allocation BOTH → Reshore como <em>ownership uplift</em> vs. <em>cubrir burn</em>. CENI term sheet (USD 25M, ~$3M interest share BOTH) sigue activo de Tuesday pasada.</td><td>Cerrar posición Zenith (revenue share + exclusividad + account flow) y decisión BOTH → Reshore USD 200K antes del cierre de ronda. Schedule Mariano ↔ Sergio scoping.</td></tr><tr><td>LAK3</td><td>Rene</td><td>Build</td><td>🟢 Green</td><td><em>Update venture stale (2026-04-27).</em> Sin <code>/vu</code> desde Investor Meeting Apr 30 / May 6. Tokenomics counterproposal Xavier (LAK3 retail + BGLD store-of-value) requería análisis Rene. <strong>Champion update requested.</strong></td><td>Rene confirma posición tokenomics + outcome de investor sessions.</td></tr><tr><td>Photonic Labs</td><td>Rene (Pillar 01) · Andres (Pillar 02 co-lead) · Mariano (Pillar 03 lead)</td><td>Explore</td><td>🟢 Green</td><td>Three-pillar architecture <strong>locked</strong> (decisión 14/05): Biotech · Quantum · AI/Data-Center. Photonic Labs (plural) = nombre canónico. Quantum + Photonic Lab archivados como predecesores. Substrate logic (photonics físico across pillars) es el frame unificador.</td><td>Operacionalizar Pillar 03 scoping (Mariano) → capex range antes que ronda cierre. Mantener Pillar 01 + 02 (sondeo · COMAP · letter). Draft unified business plan inicia esta semana.</td></tr><tr><td>La Chamana</td><td>Daiana / Andres</td><td>Explore</td><td>🟡 Yellow</td><td>Primer mes GTM completado. Christie's contrato (6m exclusividad, piso $9.5M, comisión 5%) listo para firma. <strong>Content sanitization approach</strong> locked (15/05): script Python — em-dashes, typos programados, dual-filter spam/human. <strong>Multi-persona writer strategy</strong> locked. <strong>Closing human-gated</strong> (Iru, end-to-end). Outreach machine empieza esta semana.</td><td>Christie's firma · ejecución outreach machine (sanitization + persona writers) · Daiana pingea integrante por integrante para review 1-mes vs. plan original.</td></tr><tr><td>Panambi</td><td>Andres</td><td>Explore</td><td>🟡 Yellow</td><td><em>Update venture stale (2026-05-06).</em> Quiet week. USD 25K next-cheque gap sigue pendiente sin presión de partners.</td><td>Track Gaston ↔ Mike interaction; activar Mike → Gaby intro chain post-Reshore.</td></tr><tr><td>Quantum</td><td>Andres</td><td>Explore</td><td>🟡 Yellow</td><td><strong>Status:</strong> ahora absorbido como Pillar 02 dentro de Photonic Labs (decisión 14/05). El archivo <code>quantum.md</code> se mantiene con <code>superseded_by: photonic-labs</code>. Update 17/05 confirma: legal structuring en marcha, sin developments.</td><td>Definir thesis inicial Pillar 02 (anclado en Photonic Labs unified plan).</td></tr><tr><td>Punta Cripto</td><td>Rene</td><td>Build</td><td>🟢 Green</td><td>Strong week — Foundation Phase en 4 frentes. <strong>Format V0.2 locked</strong>: Day 1 (Institutional + Regulators) en venue separado (probable Casa Manantial) · Day 3 = buildathon · verticales Regulation / Content / Building. Demi Brener (OpenZeppelin) <strong>locked</strong> en advisory board. 2-venue shortlist (Centro de Convenciones + Cipriani). Gastón Abigador (Virtuality) producer en conversación.</td><td>Convertir Demi en advisor agreement escrito · 10-name board outreach shortlist · abrir Cipriani · diligence Centro Convenciones · confirmar Casa Manantial como Day 1 venue.</td></tr><tr><td>B_V® \</td><td>OS</td><td>Mariano</td><td>Build</td><td>🟢 Green</td><td><strong>Synergy V3 inaugurada (16/05)</strong> — harness era. Worker V2.9 live (17/05), registry-driven routing (<code>config/ventures.json</code> replaces 5 hardcoded maps). NLAH harnesses publicadas (<code>tuesday-sync.md</code>, <code>meeting-miner.harness.md</code>). Contract headers en 4 agents core. Pre-week V3 test run verde.</td><td>Sincronización Synergy reunión <strong>2026-05-20</strong> — AVP institutional frame decision · Q2 roadmap (9 proyectos → 2) · mining quality P0.</td></tr></tbody></table>
+<hr>
+<h2>Area Summaries</h2>
+<h3>Capital — Gaston <em>(updated 2026-05-14)</em></h3>
+<p><strong>Focus:</strong> Tres frentes simultáneos donde BOTH actúa como <strong>allocator/governor, no como ejecutor</strong>: (1) <strong>Zenith Group Advisors</strong> — white-label trade-finance partnership con Reshore (USD 25M facility, off-balance-sheet, no recourse). (2) <strong>USD 1M LP de Guido Mitrani</strong> (Team #002, family office vía Lisandro) deployado a BOTH platform-level — confirmado verbalmente, papers en flight (Andres draftó, Lisandro review). De los USD 1M, <strong>USD 200K → Reshore</strong> dentro de ronda pre-seed; USD 800K para platform / cross-venture. (3) <strong>Manantial Casa estructural</strong> — habilitación hotel+restorán a nivel propiedad (no Suki) → reframea risk gastronómico aprobado 12/05.</p>
+<p><strong>Cross-venture patterns:</strong> Tres flagships activos (Manantial · Reshore · Photonic Labs) bajo tensión simultánea sobre el cash stack BOTH. <strong>Patrón emergente:</strong> decisiones de capital migran de <em>"BOTH pone cash"</em> a <em>"BOTH activa partners con cap risk-shared"</em> (Zenith → Reshore, UBS → Manantial). Vale articular como tesis explícita de governance.</p>
+<p><strong>Decisions / needs:</strong></p>
+<ul><li>✓ Zenith adoptada como wedge GTM Reshore (12/05).</li><li>✓ Pricing authority operativo = venture's Ops lead, no Capital (14/05) — aplica CM, La Chamana, Reshore.</li><li>⧗ <strong>BOTH → Reshore USD 200K:</strong> math en cola de Daiana, decisión final antes de cierre ronda.</li><li>⧗ <strong>Mitrani LP commitment:</strong> formalizar decision file + side letter + drawdown calendar.</li><li>⧗ <strong>Zenith terms:</strong> exclusividad + revenue share final + payment flow (call this week Gaston + Mike).</li><li>⚠️ <strong>Mike fundraising call pendiente</strong> (Asana due 09/05, vencida).</li><li>⚠️ <strong>Asana push falló en sesión actual</strong> — 5 tasks aprobados 14/05 viven en <code>vault/pending/</code> esperando push manual.</li></ul>
+<h3>Narrative &amp; Comms — Rene <em>(updated 2026-05-15)</em></h3>
+<p><strong>Focus:</strong> <strong>AVP (Agentic Venture Platform)</strong> frame proposed como Doctrine V2 — <em>"the architecture is the thesis."</em> Cinco-layer narrative stack lanzado 14/05: working paper · doctrine V2 patch · Medium long-form · one-pager · X post. <strong>Brand System Brief</strong> entregado a Rick's Studio (Awwwards-tier art-direction practice — library de 70 design systems × 10 sectores, Phase A de B_V parent brand identity ya entregada). <strong>Photonic Labs unified narrative locked.</strong> La Chamana <strong>marketing kits V1</strong> (4 audiences × ES/EN) + SEO brief V1 publicados. CM Collabs Q2 deck refreshed + UBS deck enviado al board.</p>
+<p><strong>Cross-venture patterns:</strong> AVP frame baja a ventures sin aplanar voces. Tres-flagship public framing necesita articulación escrita explícita. <strong>Content engine ("Kraken")</strong> = infra cross-venture con laser tuning per-venture — pilot La Chamana antes de generalizar. Rick's Studio cubre top-tier art-direction sin quemar bandwidth Rene.</p>
+<p><strong>Decisions / needs:</strong> AVP frame <strong>awaiting team consensus 2026-05-19</strong> (Tuesday Sync agenda item explícito). Pillar 02 / 03 framing necesita confirmación operativa de Andres + Mariano. Decisión Gaston sobre MEF / data-center en public focus (afecta timing narrativa Pillar 03).</p>
+<h3>Operations &amp; Finance — Daiana <em>(updated 2026-05-11)</em></h3>
+<p><strong>Focus:</strong> <strong>Skill financiera Daiana creada</strong> — primer caso de validación La Chamana (esta semana). <strong>Synergy Coach</strong> (skill nueva) — coaching de Synergy dentro de Cowork, experimentando con artifacts. QB Manantial en implementación; QB BOTH consolidado = decisión pendiente. Reporting BOTH al LP — cadencia + formato sin definir.</p>
+<p><strong>Cross-venture patterns:</strong> <strong>Skills por área lead emergen como patrón</strong> — Daiana finance · Rene diseño · Andy legal (pendiente). Vale nombrar el patrón antes que se vuelva tácito. <strong>Cost allocation cross-venture sin marco</strong> — agentes IA Chamana+Lucía pagados desde BOTH sin asignación formal. Falta política.</p>
+<p><strong>Decisions / needs:</strong> <strong>¿QB para BOTH consolidado?</strong> (decisión abierta). <strong>Synergy = activo / producto / capacidad?</strong> — conversación equipo pendiente, agendada 2026-05-20. Costo agentes IA Chamana+Lucía pagados desde BOTH → asignación a Chamana. <strong>Andy:</strong> legal update paquete BOTH sin novedades. <strong>Slot Mariano</strong> esta semana: costos IA · Notion Chamana · auditoría suscripciones.</p>
+<h3>Legal &amp; Governance — Andres <em>(no fresh update — last 2026-04-05)</em></h3>
+<p>[No <code>/au</code> esta semana.] Señales desde otras áreas: Mitrani docs en draft a Lisandro · trademark filings (BOTH UY · CM UY+AR · Punta Cripto UY+AR vía Ilus, max ~$3,480) · Christie's contrato La Chamana firma esta semana · La Chamana legal-content layer (sanitization, persona writers, human-gated closing) decisions taggadas Andres. **Asks champion: <code>/au</code> antes del meet o flag explícito.**</p>
+<h3>Tech &amp; Infrastructure — Mariano _(no fresh <code>/au</code> — last 2026-04-25; Both OS <code>/vu</code> 2026-05-17 cubre la mayor parte)_</h3>
+<p>Refer to Both OS row arriba. <strong>Synergy V3 live · Worker V2.9 · registry-driven routing · 4 agents con Contract headers.</strong> Open manual items: (1) <code>pipeline_runs</code> Supabase table — schema escrita, blocked por <code>DB_PASS</code> en <code>.env</code>; (2) dos pending approval files awaiting sign-off antes de push Asana. <strong>Tema crítico Tuesday:</strong> Daiana flag de Asana task bloat / "Synergy trust" (<code>vault/risks/2026-05-12-asana-task-bloat-synergy-trust.md</code>) — mining quality como P0 del 2026-05-20.</p>
+<h3>Executive — Gaston <em>(no fresh update — last 2026-04-28)</em></h3>
+<p>[No <code>/au</code> esta semana.] Capital memo del 14/05 cubre el eje estratégico ejecutivo (Zenith · Mitrani · Manantial habilitación) — ver Area Capital. **Falta <code>/au</code> Executive con la posición sobre AVP frame propuesto por Rene + la decisión three-flagship-public-framing.**</p>
+<hr>
+<h2>Recent Decisions (Past 7 Days)</h2>
+<ol><li><strong>Punta Cripto Format V0.2 — verticals + Day 1 split</strong> — 2026-05-18 — Rene — Punta Cripto</li><li><strong>Admin Token Finance Co-Stewardship</strong> <em>(governance / vault architecture)</em> — 2026-05-18 — Mariano — Both OS</li><li><strong>La Chamana Content Sanitization Approach</strong> <em>(script Python, em-dashes, typos programados)</em> — 2026-05-15 — Andres — La Chamana</li><li><strong>La Chamana Multi-Persona Writer Strategy</strong> <em>(Lara → ex-MBA + wellness + ex-corpo)</em> — 2026-05-15 — Andres — La Chamana</li><li><strong>La Chamana Human-Gated Closing</strong> <em>(Iru end-to-end, no automation)</em> — 2026-05-15 — Andres — La Chamana</li><li><strong>Photonic Labs Three-Pillar Architecture</strong> <em>(Biotech + Quantum + AI/DC)</em> — 2026-05-14 — Rene — Photonic Labs</li><li><strong>Synergy = Arquitectura de Información</strong> <em>(propuesta Daiana, under-discussion 20/05)</em> — 2026-05-14 — Daiana — Both OS</li><li><strong>Synergy Frame = Agentic Venture Platform</strong> <em>(propuesta Rene, under-discussion 20/05)</em> — 2026-05-14 — Rene — Both OS</li><li><strong>CM Pricing Authority = Daiana</strong> <em>(operational pricing inside venture owned by Ops lead)</em> — 2026-05-14 — Gaston — Manantial.Casa</li><li><strong>Long-Tail Content Strategy 80/20</strong> <em>(20% evergreen revisado, 80% live with it)</em> — 2026-05-13 — La Chamana</li><li><strong>Shopify vs. Payload CMS</strong> <em>(commerce → Shopify; long-form/SEO → Payload/WordPress)</em> — 2026-05-13 — Reshore / La Chamana</li><li><strong>Content Quality by Channel</strong> <em>(TikTok ephemeral · IG/blog moderate · landings mandatory human)</em> — 2026-05-13 — La Chamana</li><li><strong>Grow Button — No Clone</strong> <em>(BOTH builds own implementation, Synergy-native)</em> — 2026-05-13 — Both OS</li></ol>
+<hr>
+<h2>Active Risks</h2>
+<h3>New / Updated This Week</h3>
+<table><thead><tr><th>Risk</th><th>Severity</th><th>Venture</th><th>Owner</th><th>Status</th></tr></thead><tbody><tr><td>Outreach two-failure-mode (spam filter + human inauthenticity)</td><td>H/H</td><td>La Chamana</td><td>Andres</td><td>New 2026-05-15</td></tr><tr><td>Closing process undefined (no payment/cancellation/invoice protocol)</td><td>H/H</td><td>La Chamana</td><td>Daiana / Andres</td><td>New 2026-05-15</td></tr><tr><td>Manantial food-service permit <strong>REFRAME</strong> (riesgo cae si habilitación a nivel propiedad)</td><td>L/L (re-validar)</td><td>Manantial.Casa</td><td>Daiana / Gaston</td><td>Supersedes 2026-05-06 risk</td></tr><tr><td>Token cost explosion in multi-pass fact-checking</td><td>M/M</td><td>La Chamana / Both OS</td><td>Andres</td><td>Updated 2026-05-17</td></tr><tr><td>Content farm / spam-flag from over-iteration</td><td>M/H</td><td>La Chamana</td><td>Andres</td><td>Updated 2026-05-17</td></tr><tr><td>Content hallucinations in evergreen pages</td><td>H/H</td><td>La Chamana</td><td>Andres</td><td>Updated 2026-05-17</td></tr></tbody></table>
+<h3>Carried Forward (active, pre-2026-05-13)</h3>
+<table><thead><tr><th>Risk</th><th>Severity</th><th>Venture</th><th>Owner</th></tr></thead><tbody><tr><td>Reshore runway / CENI dependency</td><td>H/H</td><td>Reshore</td><td>Gaston</td></tr><tr><td>Quantum + Photonic plan not converged <em>(parcialmente resuelto vía 3-pillar arch.)</em></td><td>M/H</td><td>Photonic Labs</td><td>Rene</td></tr><tr><td>Polkadot–Tether misalignment</td><td>M/M</td><td>LAK3</td><td>Rene</td></tr><tr><td>La Chamana SEO AI-detection</td><td>M/H</td><td>La Chamana</td><td>Andres</td></tr><tr><td>Asana task bloat — Synergy trust</td><td>M/H</td><td>Both OS</td><td>Mariano</td></tr><tr><td>La Chamana analytics blocker</td><td>M/M</td><td>La Chamana</td><td>Daiana / Andres</td></tr><tr><td>Reshore × 8 (anchor buyer · contract · demo readiness · FX partner · Katerina conversion · matching engine · ops framework · revenue share)</td><td>varios</td><td>Reshore</td><td>Gaston</td></tr></tbody></table>
+<hr>
+<h2>Open Action Items</h2>
+<blockquote><p><strong>Pendiente:</strong> Mariano corre <code>/supabase-query</code> sobre <code>pending_actions</code> para popular Overdue / Due This Week / Completed antes del meet. Esta sección queda <strong>stub</strong> hasta entonces.</p></blockquote>
+<h3>Overdue (preview — from area-capital 2026-05-14)</h3>
+<table><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr></thead><tbody><tr><td>Mike fundraising call agendar</td><td>Gaston</td><td>2026-05-09 (vencida)</td><td>Reshore</td></tr><tr><td>Asana push manual de 5 tasks aprobados 14/05 (incluye <code>!!</code> SAS bank notify)</td><td>Mariano / Daiana</td><td>2026-05-14</td><td>Cross-venture</td></tr></tbody></table>
+<h3>Due This Week (preview — from pending 2026-05-12)</h3>
+<table><thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr></thead><tbody><tr><td>Follow up Gastón Silberman (sponsorship Punta Cripto) post-NZ</td><td>Rene</td><td>2026-05-20</td><td>Punta Cripto</td></tr><tr><td>Sincronización Synergy — AVP decision, Q2 roadmap, mining quality</td><td>All</td><td>2026-05-20</td><td>Both OS</td></tr></tbody></table>
+<h3>Awaiting Champion Approval</h3>
+<blockquote><p>Both pending files (<code>2026-05-12-tuesday-sync.md</code>, <code>2026-05-15-lc-ai-tools-sync.md</code>) están con <code>status: approved</code> ya — no hay items pendientes de aprobación esta semana.</p></blockquote>
+<hr>
+<h2>Cross-Cutting Themes</h2>
+<ol><li><strong>BOTH como originator de partnerships, no como balance sheet</strong> — Zenith → Reshore, UBS → Manantial, Mitrani LP → platform-level. La tesis de governance está migrando; conviene articularla explícitamente antes que se vuelva tácita.</li></ol>
+<ol><li><strong>Three flagships ↔ AVP frame en convergencia narrativa</strong> — Manantial · Reshore · Photonic Labs ya están en lengua interna; Rene propone AVP como Doctrine V2 para sostener el frame public-facing sin aplanar las voces de cada venture. Decisión 2026-05-20 (Synergy meeting), pero el Tuesday Sync 19/05 es el último filtro antes.</li></ol>
+<ol><li><strong>Skills por área lead emerge como patrón estructural del OS</strong> — Daiana finance · Rene diseño · Andy legal pendiente. Nombrar antes que se vuelva tácito (señal Daiana, area-operations).</li></ol>
+<ol><li><strong>Cost allocation cross-venture sin marco formal</strong> — agentes IA Chamana+Lucía pagados desde BOTH sin política. Mismo gap aplicará a Synergy / skills / agentes a medida que más ventures consuman infra compartida.</li></ol>
+<ol><li><strong>La Chamana funnel coherence as legal-content stack</strong> — sanitization (spam) + persona writers (autenticidad) + human-gated closing (conversión) son tres decisiones del mismo día (15/05) que articulan el mismo principio: <em>"AI generates volume; humans hold the touchpoints donde se gana o se pierde el deal."</em></li></ol>
+<ol><li><strong>Synergy adoption stress</strong> — Asana task bloat + mining quality + trust en outputs = P0 del 2026-05-20. El sistema está siendo usado activamente por todo el equipo y eso es lo que está exponiendo el problema (señal sana).</li></ol>
+<hr>
+<h2>This Week's Priorities</h2>
+<ol><li><strong>Cerrar posición Zenith + decisión BOTH → Reshore USD 200K</strong> — Owner: Gaston (Daiana modela) — Reshore / Capital.</li><li><strong>Christie's firma + lanzamiento outreach machine</strong> — Owners: Gaston (firma) · Andres (outreach) · Iru (closing) — La Chamana.</li><li><strong>Sincronización Synergy 2026-05-20 prep</strong> — AVP frame · Q2 roadmap (9 → 2) · mining quality P0 — Owner: equipo full — Both OS.</li><li>**<code>/au</code> faltantes:** Andres (Legal) · Gaston (Executive) — Owners: respectivos.</li><li><strong>Mitrani LP papering close-out</strong> — side letter + drawdown calendar — Owner: Andres + Daiana — Capital.</li></ol>
+<hr>
+<h2>Questions for Tuesday Meeting</h2>
+<ol><li><strong>AVP frame — ¿adopción como Doctrine V2 hoy, o esperamos al meet del 2026-05-20?</strong> (Rene)</li><li><strong>BOTH → Reshore USD 200K — ¿luz verde para que Daiana finalice el modelo y entremos a la ronda con el commit?</strong> (Gaston / Daiana)</li><li><strong>Three-flagship public framing — ¿lo escribimos explícitamente esta semana o lo dejamos implícito hasta AVP launch?</strong> (Gaston / Rene)</li><li><strong>QB para BOTH consolidado — ¿lo activamos esta semana o queda condicionado a la cadencia LP que se defina en el meet?</strong> (Daiana)</li><li><strong>Synergy = activo, producto, o capacidad interna?</strong> — pregunta abierta cross-area que afecta cost allocation, ownership y monetización futura. Llevarla al 20/05 con posición pre-acordada o discutirla acá. (Daiana / Mariano / Rene)</li><li>**<code>/au</code> cadencia** — Andres + Gaston no submitieron esta semana. ¿Endurecemos el viernes como deadline o mantenemos blandura monday?</li></ol>
+<hr>
+<blockquote><p><strong>Próximos pasos post-meet:</strong></p><ol><li>Daiana valida + corrige este draft Tuesday AM antes del meeting.</li><li>Read.ai bot graba la sesión → Worker V2.9 auto-mine → pending file → Asana + Slack DMs.</li><li>Next week's <code>/vu</code> + <code>/au</code> cycle reabre lunes 2026-05-26.</li></ol></blockquote>
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · weekly-digest · 2026-05-18</span>
+</footer>
+</body>
+</html>
