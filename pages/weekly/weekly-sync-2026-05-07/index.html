@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="W19 venture status grid, decisions, risks, and action items para el BOTH Ventures weekly sync de jueves 7-may.">
+<title>Weekly Sync Digest W19 — 2026-05-07 — Both_Ventures</title>
+<style>
+/*
+ * Weekly Digest — Editorial Design System
+ * Based on photonic-lab Swiss editorial base.
+ * Purpose: Tuesday Sync digest and executive reports.
+ *
+ * Governing principle: scannable in 5 minutes.
+ * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
+ * Section headings as hard dividers. Urgency signals visible at a glance.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals */
+  --white:    #ffffff;
+  --off:      #f5f4f0;
+  --rule:     #e0ddd8;
+  --rule2:    #c8c4bc;
+  --text:     #111110;
+  --text2:    #444440;
+  --text3:    #888880;
+
+  /* Primary accent — BOTH olive-gold */
+  --acc:      #939324;
+  --acc-lt:   #f5f4e0;
+  --acc-dk:   #5a5a14;
+
+  /* Status signals */
+  --urgent-bg:    #fdecea;
+  --urgent-bd:    #c0392b;
+  --warn-bg:      #fdf3e3;
+  --warn-bd:      #b06a00;
+  --info-bg:      #edf1f5;
+  --info-bd:      #3a4a58;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1280px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY — wider than photonic-lab for multi-column tables ── */
+article.notion-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 8px;
+}
+/* H2 acts as a hard section divider */
+article.notion-page h2 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  line-height: 1.2;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin: 52px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule2);
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 6px 0 16px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 4px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 18px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
+figure.code-block code {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); background: none;
+  border: none; padding: 0; white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px; font-weight: 400; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE — rendered as callout panel ── */
+article.notion-page blockquote {
+  background: var(--off);
+  border-left: 3px solid var(--acc);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+}
+article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
+article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
+
+/* ── URGENT / WARN SIGNAL CLASSES ── */
+.urgent-signal {
+  background: var(--urgent-bg);
+  border-left: 3px solid var(--urgent-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--urgent-bd);
+}
+.warn-signal {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--warn-bd);
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── TABLES — digest-optimized ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #f0efe8;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 300;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafaf8; }
+tr:hover td { background: var(--off); }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc-dk);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--text);
+  border-bottom-color: var(--acc);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 2px solid var(--text);
+  background: var(--off);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc-dk);
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta">2026-05-06</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+
+    <h1>BOTH Ventures — Weekly Sync W19 — 2026-05-07</h1>
+    <p><em>Reunión movida a jueves 7-may por Open House 3er aniversario Casa Manantial.</em></p>
+    <hr>
+
+    <h2>Venture Status Grid</h2>
+    <table>
+      <thead>
+        <tr><th>Venture</th><th>Champion</th><th>Stage</th><th>Health</th><th>Esta Semana</th><th>Next Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Manantial.Casa</td>
+          <td>Gaston / Daiana</td>
+          <td>Build</td>
+          <td>🟡</td>
+          <td><strong>Open House 7/5</strong> = aniversario 3 años + <strong>filter event del pipeline</strong> (4/6 leads se evalúan ahí). Cash USD 83.6K (ajuste contable, no inflow). 44 members (-1 WoW, coletazo aumento marzo). Ocupación 63.3% (+3.3pp). UBS martes ejecutado. <strong>Andy formalizado champion Mundial</strong> (con Tini). <strong>Reporte board listo, espera validación Gastón.</strong></td>
+          <td>(1) <strong>Gastón valida reporte del board</strong> (gate); (2) <strong>Gastón ↔ Silberman (Grateful)</strong> — sin cena, cierra sponsorship + define membresías Silberman+Matías + ofrece lugar Punta Cripto; (3) destrabar CAPEX con Gastón (molduras + Ikatu intermedia)</td>
+        </tr>
+        <tr>
+          <td>La Chamana</td>
+          <td>Daiana</td>
+          <td>Explore</td>
+          <td>🔴</td>
+          <td><strong>Cash USD 94.9K</strong> (primer trackeo). <strong>3 decisiones críticas a 24-72h por USD 62K</strong> (Lupe boda 27K · estadía mayo 6n 23K · Louis/Fora 12K). <strong>Spoto deep-read:</strong> -USD 3,554 abril, break-even 8.1n/mes, vinos 42% (quick win), butler 24/7 overdelivery sistemático. Productos 4n/8n live OTAs. lachamana.com comprado, GoDaddy transfer iniciado. The Muse FAM trip en armado. <strong>El Chaman OS W19:</strong> Lucia built, Airtable CRM live (57 contactos), Stress Test (8 msgs pending send). Iru no presente en demo — walkthrough urgente. <strong>Andy: call Christie's jueves 8/5</strong> — negociación contrato y forma de trabajo. Motivados, pero contrato corpo — libertad operativa fuera de manuales a definir antes de firmar.</td>
+          <td>(1) Track conversion 24-72h (3 deals); (2) Stress Test send Boris (IG sessionid ~10min) → CLEARED 8/5 → Lucia autónoma; (3) <strong>Decisión butler 24/7 vs turnos</strong>; (4) Walkthrough Iru sistema GTM (Daiana, urgente)</td>
+        </tr>
+        <tr>
+          <td>Reshore</td>
+          <td>Gaston</td>
+          <td>Build</td>
+          <td>🟡</td>
+          <td>Equity &amp; fundraise call 5/5 (Gaston + Mike + Sergio). Target: $400-500K · runway May-Jul sin raise. K-Fund más accionable. <strong>BOTH considerando $200K</strong> (Gaston discutir internamente). Katerina: $75K cash→equity a cap $12M (Sergio la llama 6/5). Antonio a salario full desde mayo. <strong>Mexico trip urgente</strong> — factories perdiendo traction.</td>
+          <td>Gaston: iniciar discusión interna $200K + ping Mike esta semana · Sergio: confirmar resultado Katerina call</td>
+        </tr>
+        <tr>
+          <td>LAK3</td>
+          <td>Rene</td>
+          <td>Build</td>
+          <td>🟢</td>
+          <td>Jean H track en frente. Qatar PM-level meeting confirmada. Sesión EN inversores 6-may. Contrapropuesta dos capas Xavier (LAK3+BGLD) bajo análisis.</td>
+          <td>Respuesta a Xavier dos capas + resultado sesión EN 6-may</td>
+        </tr>
+        <tr>
+          <td>Photonic Lab</td>
+          <td>Rene</td>
+          <td>Explore</td>
+          <td>⚪ Under Review</td>
+          <td>Archivo vault marcado <strong>inaccurate por Gastón</strong> (2026-04-28). Phase 2 1:1 con Gastón target 2026-05-01 — estado desconocido.</td>
+          <td>Rene confirma si Phase 2 1:1 ocurrió + actualiza archivo vault</td>
+        </tr>
+        <tr>
+          <td>Panambi</td>
+          <td>Andres</td>
+          <td>Explore</td>
+          <td>🔴</td>
+          <td><strong>25K gap sin resolución</strong> — sin presión activa, tied to próximo fondeo BOTH. <strong>Mike intro → Gaby (LP nativo americano) en secuencia</strong> — owner único confirmado: Gastón (post-Reshore con Mike → details → intro Gaby). <strong>Gaby + La Chamana venue downgrade</strong> — es lead regular Iru en pipeline Chamana, sale de Active Threads cross-portfolio. Resto stale (último update 2026-04-04).</td>
+          <td>Mike chain (Gastón) post-Reshore · status check Andres + portfolio map</td>
+        </tr>
+        <tr>
+          <td>Punta Cripto</td>
+          <td>Rene</td>
+          <td>Build</td>
+          <td>🟡</td>
+          <td>Landing page <strong>"Direction 01 — The Forum" live</strong> en GitHub Pages (v3, dark mode). Inaugural edition 2027. <strong>Recibe slot ofrecido a Grateful</strong> (cross-link Manantial Casa ↔ PC, Rene champion del slot).</td>
+          <td>Lock execution team (Dario/Chino/Marco) + arrancar outreach title sponsor</td>
+        </tr>
+        <tr>
+          <td>Quantum</td>
+          <td>Andres</td>
+          <td>Explore</td>
+          <td>🟢</td>
+          <td><strong>Carta BOTH×TQA a Presidencia ROU finalizada</strong> en español. Signatario TQA: Facundo Díaz (President, TQA Delaware). BOTH signatory: placeholder, pendiente lock Gastón CEO.</td>
+          <td>Lock signatory BOTH (Gastón CEO) + secuencia pre-brief ANII + Uruguay XXI</td>
+        </tr>
+        <tr>
+          <td>B_V® | OS</td>
+          <td>Boris</td>
+          <td>Build</td>
+          <td>🟡</td>
+          <td><strong>Andy live en Synergy</strong> — onboarding completo, ciclo <code>/vu</code> <code>/au</code> + Tuesday Sync funcionando. El Chaman OS (lc-chaman) W19: Lucia built, CRM live, Stress Test ready. Daiana git merge conflicts → Boris destraba. Asana consolidación en progreso. <strong>Hoy 6/5 — meet Daiana ↔ Boris:</strong> costos / accesos / infra (incluye CRM Chamana en infra IA común + acceso Iru).</td>
+          <td>(1) Rotar GitHub PAT pre-2026-05-11 (CRÍTICO); (2) Fix Daiana git conflicts; (3) Output meet costos/accesos/CRM Chamana</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+
+    <h2>Area Summaries</h2>
+
+    <h3>Capital — Gaston</h3>
+    <p><strong>Foco:</strong> La Chamana sale process activa — Cristis (exclusividad, $12M list, redes cerradas). TQA letter a Presidencia lista para firmar — sovereign capital positioning. Native-American-Reserve LP intro para Gaby (Panambi) secuenciada tras interacción Reshore con Mike. <strong>Casa Manantial — Grateful:</strong> conversación con Gastón Silberman cierra (a) sponsorship, (b) membresías Silberman + Matías, (c) oferta de lugar en Punta Cripto. <strong>Sin cena.</strong></p>
+    <p><strong>Reshore fundraise:</strong> $400-500K pre-seed target. Runway actual May-Jul. $400K extiende a Abril 2027. K-Fund más accionable. BOTH considerando $200K — Gastón pendiente discusión interna. Mike explorando ~$200K desde red de angels (contingente a que Gastón confirme). Cap table mejorando: equity Susana (7.5%) + Coco (1%) recuperados.</p>
+    <p><strong>Cross-venture:</strong> Quantum + Punta Cripto convergen en oportunidad de capital soberano / institucional en Q2.</p>
+    <p><strong>Pendiente esta semana:</strong></p>
+    <ul>
+      <li><strong>Validar reporte del board Casa Manantial</strong> — gate para enviarlo.</li>
+      <li><strong>Llamada Gastón Silberman (Grateful)</strong> — sponsorship + membresías + oferta Punta Cripto.</li>
+      <li><strong>Confirmar signatory carta Quantum</strong> (Gastón CEO).</li>
+      <li><strong>Iniciar discusión interna BOTH sobre $200K Reshore</strong> + ping Mike.</li>
+      <li><strong>Fam trip La Chamana + IA next steps</strong> — confirmar cierre.</li>
+      <li><strong>Mike → Gaby (Panambi)</strong> — secuencia post-Reshore con Mike.</li>
+    </ul>
+
+    <h3>Narrative &amp; Comms — Rene</h3>
+    <p><strong>Foco:</strong> La Chamana full GTM funnel narrative live. LAK3 sesión EN inversores 6-may + análisis tokenomics dos capas Xavier. Punta Cripto landing page Direction 01 publicada. Punta Cripto recibe slot ofrecido a Grateful (Rene champion del slot).</p>
+    <p><strong>Pendiente crítico:</strong> Photonic Lab vault revision — Gastón flagueó contenido como inaccurate. Sin esto, Phase 2 decision no puede cerrar en base correcta.</p>
+    <p><strong>Cross-venture:</strong> Rene holds 3 ventures en movimiento simultáneo (LAK3 / Photonic / Punta Cripto). Bandwidth riesgo activo.</p>
+
+    <h3>Operations &amp; Finance — Daiana</h3>
+    <p><strong>Foco esta semana:</strong></p>
+    <ol>
+      <li><strong>Casa Manantial — destrabar CAPEX con Gastón</strong> (molduras 2do presupuesto + Ikatu opción intermedia) + reporte board (espera validación Gastón).</li>
+      <li><strong>La Chamana — P&amp;L + gatekeeper Asana</strong> (sigue tu scope tras reasignaciones de hoy: fechas → Iru/Gaby, fam trip → Gastón, Guest Genie → Pato).</li>
+      <li><strong>CRM Chamana — pivote a infra IA común.</strong> Meet hoy 6/5 con Boris para costos / accesos / acceso Iru (operadora externa en ecosystem BOTH). Costo del ecosystem flagueado.</li>
+      <li><strong>Sesión con Tini</strong> — formalizar formato/scope/métricas updates (incluye proyecto Identificador CM para members).</li>
+      <li><strong>Walkthrough Iru sistema GTM Chamana</strong> — urgente.</li>
+    </ol>
+    <p><strong>Cross-venture patterns:</strong></p>
+    <ul>
+      <li><strong>CRM como decisión de arquitectura, no de stack.</strong> En lugar de adopción independiente por venture, evaluar plegado en infra IA común BOTH con accesos scoped. Trade-off: gobernanza unificada vs. costo del ecosystem + complejidad acceso operadores externos (Iru).</li>
+      <li><strong>Filter events en pipeline.</strong> Open House CM 7-may evolucionando de "evento de aniversario" a "filter event del pipeline" (4/6 leads se evalúan ahí). Modelo reproducible — barato, alta señal, frecuencia alta.</li>
+      <li><strong>Coco cerrado</strong> (factura + pago ejecutados 4-may). QB / Getnet avanzando post-cierre Abril.</li>
+    </ul>
+    <p><strong>Gap detectado:</strong> No existe reporte BOTH-consolidado para LP. Definir periodicidad es prioridad próxima semana.</p>
+    <p><strong>Pendiente:</strong> Auditoría suscripciones BOTH + handoff accesos a Daiana (sesión única con Boris — meet hoy 6/5 cubre parte).</p>
+
+    <h3>Legal &amp; Governance — Andres</h3>
+    <p><strong>Foco:</strong> Update legal paquete BOTH — Andy en Synergy, live. Quantum carta enviada a Facu Diaz y Gastón para firmar. Panambi: thread Gaby+Chamana venue downgraded a lead regular Iru. 25K gap sin presión activa — espera próximo fondeo BOTH.</p>
+    <p><strong>La Chamana — capital structure:</strong> Lisandro da luz verde para avanzar hoy con todos los docs excepto su aporte (espera traspaso LC). Nos pide última valuación de La Chamana para calcular capital gains. Andres avanza hoy — meta: tema del pasado la semana que viene.</p>
+    <p><strong>La Chamana — Christie's:</strong> Call jueves 8/5 para negociar contrato y forma de trabajo. Se los ve motivados, pero el contrato es corpo — falta definir cuánta libertad tienen para operar fuera de sus manuales.</p>
+    <p><strong>Trademarks:</strong> Presupuestos en mano. Equipo debe definir ceiling de inversión y proceder.</p>
+    <p><strong>LLC name change:</strong> Cambio a Both Ventures LLC iniciado — mail enviado a Fabian, esperando instrucciones.</p>
+    <p><strong>Standing:</strong> ZF structure para Photonic Lab en re-derivación (ANII inside ZF confirmada desde 2025).</p>
+    <p><strong>Nuevo rol cross-venture:</strong> <strong>Andy formalizado champion organización Mundial Casa Manantial</strong> (con Tini). Trae updates cadencia jueves. Primer reporte esperado <strong>jueves 7-may</strong> (mismo día del sync).</p>
+    <div class="warn-signal"><strong>⚠ TOP SECRET:</strong> Andres tiene tema de vital importancia para BOTH. Solicita abrir la reunión con este punto. Estima que la reunión va a ser larga y sugiere reservar horas del viernes (pre/post asado) como overflow.</div>
+
+    <h3>Tech &amp; Infrastructure — Boris</h3>
+    <p><strong>Foco:</strong> El Chaman OS W19 completo (Lucia, CRM Airtable, Stress Test). Fix Daiana git merge conflicts. Asana consolidation in progress. <strong>Andy live en Synergy.</strong></p>
+    <p><strong>Hoy 6/5 — meet con Daiana:</strong> costos / accesos / infra. Agenda: CRM Chamana en infra IA común + acceso Iru (operadora externa en ecosystem BOTH) + costos del ecosystem.</p>
+    <p><strong>CRÍTICO — GitHub PAT expira 2026-05-11 (en 4 días).</strong> Cloudflare Worker (toda la pipeline de transcripts) falla silenciosamente si no se rota. Acción: <code>npx wrangler secret put GITHUB_PAT</code>.</p>
+    <p><strong>Iru tooling onboarding:</strong> Slack / WhatsApp para Iru en test mode — pensando cómo onboardearla, fuera de accionables esta semana.</p>
+    <hr>
+
+    <h2>Decisiones Recientes (últimos 7 días)</h2>
+    <table>
+      <thead>
+        <tr><th>Decisión</th><th>Venture</th><th>Fecha</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>La Chamana capital docs: avanzar todo excepto aporte Lisandro</strong> — espera su traspaso LC; él avanza hoy mismo con resto de documentos</td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Cambio nombre LLC a Both Ventures LLC</strong> — proceso iniciado, mail enviado a Fabian, esperando instrucciones</td><td>BOTH</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Open House 7-may = filter event del pipeline de Casa Manantial</strong> (4/6 leads se evalúan ahí)</td><td>Casa Manantial</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Pignaro flag "recuperar" bajado</strong> (assigned Tomi Roggio + Delfi follow-up + OH)</td><td>Casa Manantial</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Mati Salom — status passive</strong> (no buscar follow-up nosotros, board sin entusiasmo)</td><td>Casa Manantial</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Andy formalizado champion Mundial</strong> (con Tini) — cadencia jueves</td><td>Casa Manantial</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Grateful — sin cena</strong>, conversación Gastón ↔ Silberman cierra sponsorship + membresías + oferta Punta Cripto</td><td>Casa Manantial</td><td>2026-05-06</td></tr>
+        <tr><td><strong>La Chamana — fechas/paquetes a Iru ↔ Gaby directo</strong> (sale del scope Daiana)</td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>La Chamana — fam trip + IA next steps a Gastón</strong></td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>La Chamana — Guest Genie (no "Víctor") a Pato</strong> — naming corregido + ownership operativa</td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>CRM Chamana — pivote a infra IA común</strong> (no stack independiente; meet Boris define ejecución)</td><td>La Chamana / Operations</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Productos diferenciados 4n y 8n live en OTAs</strong> (Airbnb · Vrbo · motor · Booking + pedido CasitaMX/Mayaluxe)</td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>lachamana.com comprado + transfer GoDaddy iniciado</strong></td><td>La Chamana</td><td>2026-05-06</td></tr>
+        <tr><td><strong>Panambi — Gaby + La Chamana venue downgrade</strong> — es lead Iru regular, no Active Thread Panambi</td><td>Panambi</td><td>2026-05-06</td></tr>
+        <tr><td>Airtable como CRM source of truth para funnel de outreach</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>Clay activado para data enrichment ($185/mo, Gastón aprobó)</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>Instantly AI para email outreach (Lucia engine)</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>ManyChat para IG DM outreach (única opción Meta-sanctioned)</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>Influencer strategy: 1 por mes, stay solo</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>Human in the Loop para primeras 3 conversiones</td><td>La Chamana</td><td>2026-05-05</td></tr>
+        <tr><td>Carta BOTH×TQA a Presidencia ROU finalizada — lista para firmar</td><td>Quantum</td><td>2026-05-05</td></tr>
+        <tr><td>Boris scope Reshore supersession ($5K retirado, TBD directo Boris↔Sergio)</td><td>Reshore</td><td>2026-04-28</td></tr>
+        <tr><td>Katerina: $75K en equity a cap $12M ($30K bonus + $45K salary) por 1hr/mes advisory</td><td>Reshore</td><td>2026-05-05</td></tr>
+        <tr><td>Antonio pasa a salario completo desde mayo 2026</td><td>Reshore</td><td>2026-05-05</td></tr>
+        <tr><td>Viaje Monterrey pospuesto — sin agenda confirmada</td><td>Reshore</td><td>2026-05-05</td></tr>
+        <tr><td>No revelar fundraise potencial a Katerina durante negociación equity</td><td>Reshore</td><td>2026-05-05</td></tr>
+      </tbody>
+    </table>
+    <hr>
+
+    <h2>Riesgos Activos</h2>
+    <table>
+      <thead>
+        <tr><th>Riesgo</th><th>Venture</th><th>Likelihood</th><th>Impact</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Booking velocity below target (3/9), cadencia 1/sem sin cumplirse</strong> — momento más concentrado del trimestre, 3 deals 24-72h por USD 62K</td><td>La Chamana</td><td>High</td><td>Critical</td></tr>
+        <tr><td><strong>Spoto break-even 8.1 noches/mes confirmado</strong> — pricing justo, problema es ocupación. Sin ≥9n vendidas en mayo, mes Red profundo</td><td>La Chamana</td><td>High</td><td>Critical</td></tr>
+        <tr><td><strong>Overdelivery operativo no priceado</strong> (butler 24/7 vendido como turnos) — leak silencioso</td><td>La Chamana</td><td>High</td><td>Medium</td></tr>
+        <tr><td>Iru no onboarded en sistema GTM antes de que el funnel se active</td><td>La Chamana</td><td>High</td><td>High</td></tr>
+        <tr><td>Instagram ban risk por DM automation</td><td>La Chamana</td><td>High</td><td>High</td></tr>
+        <tr><td><strong>GitHub PAT expira 2026-05-11</strong> — Worker pipeline falla silenciosamente</td><td>B_V OS</td><td>Critical</td><td>Critical</td></tr>
+        <tr><td>AI outreach accuracy 85-90% — personalización incorrecta daña marca</td><td>La Chamana</td><td>Medium</td><td>High</td></tr>
+        <tr><td><strong>Guest Genie — costo + scope sin claridad</strong> (corregido de "Víctor")</td><td>La Chamana</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Vinos al 42% margin vs estándar 60-70% — quick win pendiente</td><td>La Chamana</td><td>Low</td><td>Low</td></tr>
+        <tr><td>Generador y traslados extras a pérdida/break-even</td><td>La Chamana</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Costos LC paralelos sin cashflow tracking centralizado</td><td>La Chamana</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td><strong>Costo del ecosystem BOTH para operadores externos (Iru)</strong> — meet hoy 6/5 define gobernanza</td><td>Operations / La Chamana</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Reshore handover dependency — solo Boris+Coco entienden el setup</td><td>Reshore</td><td>Medium</td><td>High</td></tr>
+        <tr><td>Rene bandwidth — 3 ventures simultáneos (LAK3 / Photonic / Punta Cripto)</td><td>Cross-venture</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Photonic Lab vault inaccurate — Phase 2 decision en base incorrecta</td><td>Photonic Lab</td><td>Active</td><td>High</td></tr>
+        <tr><td>Runway Reshore — cash cubre May-Jul; $400K necesario ~agosto o shortfall crítico</td><td>Reshore</td><td>High</td><td>High</td></tr>
+        <tr><td>Factories Mexico perdiendo traction sin presencia in-person de Sergio; PO inminente</td><td>Reshore</td><td>High</td><td>High</td></tr>
+        <tr><td>Boris dual-engagement: 25% salary accruing → agency externa creciendo → riesgo desconexión</td><td>Reshore</td><td>Medium</td><td>High</td></tr>
+        <tr><td>Primer PO Reshore: si falla el primer pedido, daño irreversible a red de factories</td><td>Reshore</td><td>Low</td><td>High</td></tr>
+        <tr><td><strong>CAPEX Casa Manantial pendiente Gastón</strong> (molduras + Ikatu)</td><td>Casa Manantial</td><td>Medium</td><td>High</td></tr>
+        <tr><td><strong>Membresías Silberman + Matías sin definición</strong> (entran en conversación Grateful)</td><td>Casa Manantial</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Cadencia bajas members CM — coletazo aumento marzo (-1 WoW, +2 confirmadas 15/05)</td><td>Casa Manantial</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td><strong>Christie's contrato corpo</strong> — libertad operativa Chamana fuera de sus manuales a definir antes de firmar</td><td>La Chamana</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>Panambi 25K gap sin resolución — tied to próximo fondeo BOTH, sin timeline fijo</td><td>Panambi</td><td>Medium</td><td>Low</td></tr>
+        <tr><td><strong>[?] TOP SECRET — Andy: agenda de vital importancia para BOTH</strong>, naturaleza desconocida; reunión estimada larga, sugiere overflow viernes</td><td>Cross-venture</td><td>Unknown</td><td>High</td></tr>
+      </tbody>
+    </table>
+    <hr>
+
+    <h2>Action Items Abiertos</h2>
+
+    <p><strong>Casa Manantial — esta semana:</strong></p>
+    <ul>
+      <li><strong>Gastón valida reporte del board</strong> (gate para enviarlo) — <strong>Gastón · esta semana</strong></li>
+      <li><strong>Llamada Gastón ↔ Silberman (Grateful)</strong> — sin cena, cierra sponsorship + membresías + oferta Punta Cripto — <strong>Gastón · esta semana</strong></li>
+      <li>Destrabar CAPEX (molduras 2do presupuesto + Ikatu intermedia) — <strong>Daiana / Gastón · esta semana</strong></li>
+      <li>Open House 7-may — verificar gaps operativos + asistencia confirmada — <strong>Tini / Daiana · jueves 7/5</strong></li>
+      <li>Update Mundial — primer reporte cadencia jueves — <strong>Andy · jueves 7/5</strong></li>
+      <li>Sesión con Tini — formato/scope/métricas updates + Identificador CM — <strong>Daiana · esta semana</strong></li>
+    </ul>
+
+    <p><strong>La Chamana — GTM Sprint:</strong></p>
+    <ul>
+      <li><strong>Track conversion 3 deals 24-72h</strong> (Lupe boda 27K · estadía mayo 6n 23K · Louis/Fora 12K) — <strong>Daiana (gatekeeper) · esta semana</strong></li>
+      <li>Extraer IG sessionid → test DM a @boris.b0rg — <strong>Boris · HOY (desbloquea todo)</strong></li>
+      <li>Activar Clay para data enrichment ($185/mo) — <strong>Boris · ASAP</strong></li>
+      <li>Walkthrough profundo con Iru sobre sistema GTM — <strong>Daiana · URGENTE</strong></li>
+      <li>Documentar closing workflow (depósito, pago, contrato, cancelación) — <strong>Daiana</strong></li>
+      <li>Call Gesini + Iru pre-arrival y add-ons — <strong>Pato · target 2026-05-06</strong></li>
+      <li>Definir qualification scoring matrix — <strong>Boris</strong></li>
+      <li>Enviar outreach database + OS system doc a Pato — <strong>Boris</strong></li>
+      <li><strong>Decisión butler 24/7 vs turnos</strong> (paquete premium o ajuste) — <strong>Iru / Gastón · catch-up martes</strong></li>
+      <li><strong>Vinos markup 60-70%</strong> (quick win, +USD ~395 sin fricción comercial) — <strong>Iru · esta semana</strong></li>
+      <li><strong>Métrica primera semana OTAs 4n/8n</strong> — <strong>Iru · esta semana</strong></li>
+      <li>Renegociar generador + traslados extras — <strong>Iru · esta semana</strong></li>
+      <li><strong>Guest Genie — destrabar costo + scope</strong> — <strong>Pato · catch-up martes</strong></li>
+      <li><strong>Fam trip + IA next steps Chamana</strong> — <strong>Gastón · esta semana</strong></li>
+    </ul>
+
+    <p><strong>Reshore — Fundraise &amp; Ops:</strong></p>
+    <ul>
+      <li>Iniciar discusión interna BOTH sobre $200K investment en Reshore — <strong>Gaston · esta semana</strong></li>
+      <li>Ping Mike para sentar a hablar fundraise Reshore — <strong>Gaston · antes de 2026-05-09</strong></li>
+      <li>Confirmar resultado Katerina call (equity conversion $75K) — <strong>Sergio · 2026-05-06</strong></li>
+      <li>Actualizar cap table con todos los cambios (Susana, Coco, Katerina, Boris, Sharish) — <strong>Mike</strong></li>
+      <li>Reservar viaje Mexico — no demorar; factories perdiendo traction — <strong>Sergio · urgente</strong></li>
+      <li>Contactar board members de TradeShift (3 contactos conocidos) — <strong>Sergio</strong></li>
+      <li>Construir go-to-market engine agéntico outbound para outreach en Mexico — <strong>Sergio</strong></li>
+    </ul>
+
+    <p><strong>Cross-venture / Infra:</strong></p>
+    <ul>
+      <li><strong>Rotar GitHub PAT en Cloudflare Worker</strong> — <strong>Boris · antes de 2026-05-11 (CRÍTICO)</strong></li>
+      <li>Confirmar Boris↔Sergio scoping conversation (Reshore) — <strong>Gaston · esta semana</strong></li>
+      <li>Lock BOTH signatory en carta Quantum — <strong>Gaston</strong></li>
+      <li><strong>Mike → Gaby (Panambi LP)</strong> — secuencia post-Reshore — <strong>Gastón · cuando destrabe Reshore</strong></li>
+      <li><strong>Output meet Daiana ↔ Boris (costos/accesos/CRM Chamana)</strong> — <strong>Daiana / Boris · hoy 6/5</strong></li>
+      <li>Auditoría suscripciones BOTH + handoff accesos a Daiana — <strong>Boris + Daiana</strong></li>
+      <li>Fix Daiana git merge conflicts en Cowork — <strong>Boris</strong></li>
+      <li>Submit <code>/au</code> updates — <strong>Gastón, Rene, Andres · antes del jueves</strong></li>
+      <li><code>vault/pending/2026-04-28-gaston-followups.md</code> pendiente aprobación — <strong>Gastón</strong></li>
+    </ul>
+
+    <p><strong>Legal &amp; Governance — Andres:</strong></p>
+    <ul>
+      <li><strong>Enviar valuación La Chamana a Lisandro</strong> (capital gains calc) — <strong>unassigned · HOY URGENTE</strong></li>
+      <li>Avanzar capital docs La Chamana (excepto aporte Lisandro) — <strong>Andres · hoy 6/5</strong></li>
+      <li>Call Christie's — negociar contrato y forma de trabajo La Chamana — <strong>Andres · jueves 8/5</strong></li>
+      <li>Definir ceiling inversión trademarks + ejecutar — <strong>Gaston · esta semana</strong></li>
+      <li>Await instrucciones Fabian sobre cambio nombre LLC — <strong>Andres · en curso</strong></li>
+      <li><strong>Bookear horas viernes 10/5</strong> (pre/post asado) como overflow para punto TOP SECRET — <strong>Andres</strong></li>
+    </ul>
+    <hr>
+
+    <h2>Temas Transversales</h2>
+
+    <p><strong>1. La Chamana — momento de máxima concentración del trimestre.</strong> USD 62K en 3 decisiones a 24-72h. Spoto deep-read confirmó que el problema es <strong>funnel + ocupación, no pricing</strong>. Productos 4n/8n por fin live en OTAs (test del segmento empieza esta semana). Web target semana próxima. Si los 3 deals abiertos no cierran ≥1, mayo termina Red profundo. Si cierran ≥2, pivotea Yellow. Lucia + Stress Test desbloqueables con IG sessionid (~10min Boris). Iru walkthrough = gate humano final.</p>
+
+    <p><strong>2. Filter events como modelo reproducible.</strong> Open House CM 7-may evoluciona de evento de aniversario a <strong>filter event del pipeline</strong> (4/6 leads se evalúan ahí). Patrón a observar — barato, alta señal, frecuencia alta. Aplicable a otros ventures con pipeline difuso.</p>
+
+    <p><strong>3. Cross-link Manantial Casa ↔ Punta Cripto (Grateful).</strong> Sin cena. Conversación Gastón ↔ Silberman compone tres temas en una: sponsorship + membresías + oferta de lugar en Punta Cripto. Tracking dual obligatorio: ambos venture files.</p>
+
+    <p><strong>4. CRM como decisión de arquitectura, no de stack.</strong> La Chamana cataliza la conversación. En lugar de adopción independiente por venture (Airtable Chamana, otro CRM Reshore, otro CM), evaluar plegado en infra IA común BOTH con accesos scoped. Trade-off real: gobernanza unificada vs. costo del ecosystem + acceso para operadores externos (Iru). Output del meet de hoy 6/5 entre Daiana y Boris define la línea — anchor para el resto del portfolio.</p>
+
+    <p><strong>5. Quantum institutional move.</strong> Carta a Presidencia lista. Solo falta OK Gastón como signatory. Ventana corta antes de que el momentum se enfríe.</p>
+
+    <p><strong>6. GitHub PAT — cuenta regresiva de 4 días.</strong> Worker muere en silencio. No hay alertas. No admite demora.</p>
+
+    <p><strong>7. Reshore — ventana de fundraise abierta, decisiones urgentes.</strong> Runway May-Jul. $400K extiende a Abril 2027 pero se necesita ~agosto. K-Fund más accionable. Gastón tiene que resolver si BOTH entra con $200K — eso desbloquea el matching de Mike (~$200K de su red). Katerina call esta semana cierra una deuda de cap table. Mexico trip no puede esperar.</p>
+
+    <p><strong>8. Photonic Lab en limbo.</strong> Under review desde 28-abr. Phase 2 1:1 sin confirmación en vault. Si Rene no actualizó, la reunión no tiene datos confiables.</p>
+
+    <p><strong>9. Andy entra al ciclo operativo formal.</strong> Live en Synergy + champion del Mundial en CM con Tini. Primera responsabilidad operativa cross-venture. Cadence jueves para updates — primero llega 7-may.</p>
+    <p><strong>10. Lisandro / La Chamana capital: ventana abierta hoy.</strong> Luz verde para avanzar todo excepto su aporte (espera traspaso). Única fricción pendiente: enviar valuación LC para capital gains calc. Si fluye, semana que viene tema del pasado.</p>
+    <p><strong>11. TOP SECRET: agenda de vital importancia para BOTH.</strong> Andres pide abrir la reunión con este punto. Reunión estimada larga — sugiere overflow viernes 10/5 pre/post asado. Naturaleza no revelada. Llegar al sync con el tiempo bloqueado.</p>
+    <hr>
+
+    <h2>This Week's Top 3 Priorities</h2>
+    <ol>
+      <li><strong>Gastón: Cerrar conversación con Silberman (Grateful) + validar reporte del board CM</strong> — sin cena, cierra sponsorship + define membresías + oferta Punta Cripto + permite distribuir reporte board. Cierra threads abiertos desde mediados de abril, cross-link CM ↔ PC. — Venture: Casa Manantial</li>
+      <li><strong>Daiana (gatekeeper) + Iru: Cerrar al menos 1 de los 3 deals a 24-72h</strong> (Lupe boda 27K · estadía mayo 6n 23K · Louis/Fora 12K). Define si mayo cierra Red profundo o pivotea a Yellow en La Chamana. Paralelo: walkthrough Iru sistema GTM (urgente, gate humano del funnel). — Venture: La Chamana</li>
+      <li><strong>Boris: Rotar GitHub PAT antes 2026-05-11</strong> + <strong>definir CRM Chamana en infra IA común</strong> (output meet Daiana hoy 6/5). PAT bloquea pipeline crítica. CRM define arquitectura cross-portfolio. — Venture: B_V® OS / Operations</li>
+    </ol>
+    <hr>
+
+    <h2>Notas Pre-Meeting</h2>
+    <ul>
+      <li>Reunión jueves 7/5 en Casa Manantial — Open House 3er aniversario el mismo día. Coordinar timing con setup del evento.</li>
+      <li>Andres primer sync completo tras viaje a Canadá.</li>
+      <li>LAK3 sesión EN inversores 6-may: Rene trae resultado fresco.</li>
+      <li>La Chamana: considerar si walkthrough Iru ocurre antes o después de la reunión.</li>
+      <li>Andy trae primer reporte Mundial (cadencia jueves estrenada).</li>
+      <li><strong>TOP SECRET: Andres abre con este tema.</strong> Bookear overflow viernes 10/5 pre/post asado — reunión va a ser larga.</li>
+    </ul>
+    <hr>
+
+    <p><em>Fuentes: vault/ventures · vault/decisions · vault/risks · vault/pending · lc-chaman/ops/pulse.md.</em></p>
+
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · weekly-digest · 2026-05-06</span>
+</footer>
+</body>
+</html>

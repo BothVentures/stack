@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — V.B1 MONITOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — FlightRadar24 extracted via skillui v1.3.3
+   Applied: dark ops dashboard · BOTH Ventures Team OS Monitor
+══════════════════════════════════════════════════════════ */
+:root {
+  /* Surfaces — FR24 black base */
+  --bg:           #000000;
+  --surface-1:    #0d0d0d;
+  --surface-2:    #141414;
+  --surface-3:    #1e1e1e;
+
+  /* Borders — FR24 #222121 */
+  --border:       #222121;
+  --border-dim:   rgba(255,255,255,0.05);
+
+  /* Text */
+  --text:         #ffffff;
+  --text-muted:   #6d6d6d;   /* FR24 color-gray-900 */
+  --text-dim:     #414141;   /* FR24 color-gray-1200 */
+
+  /* Accent — FR24 color-yellow-500 */
+  --accent:       #f8c023;
+  --accent-dim:   rgba(248,192,35,0.12);
+  --accent-glow:  rgba(248,192,35,0.06);
+
+  /* Info — FR24 color-blue-500 */
+  --blue:         #327db6;
+  --blue-dim:     rgba(50,125,182,0.12);
+
+  /* Status */
+  --live:         #22c55e;
+  --live-dim:     rgba(34,197,94,0.12);
+  --manual:       #f8c023;
+  --planned:      #2a2a2a;
+
+  /* Venture status */
+  --build:        #f8c023;
+  --explore:      #327db6;
+
+  /* Typography — FR24 system */
+  --font:         'Roboto', system-ui, -apple-system, sans-serif;
+  --mono:         'Space Mono', 'Courier New', monospace;
+
+  /* Shadows — FR24 extracted */
+  --shadow-card:  0 2px 6px rgba(0,0,0,0.4);
+  --shadow-raise: 0 0 6px rgba(0,0,0,0.3);
+  --shadow-float: 0 0 20px rgba(0,0,0,0.3);
+
+  /* 4px spacing grid */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px;
+  --s5:20px; --s6:24px; --s8:32px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-width: 1100px;
+  display: grid;
+  grid-template-rows: 52px 1fr 78px;
+  grid-template-columns: 1fr 340px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════════════════ */
+.header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--s6);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-1);
+  position: relative;
+  z-index: 10;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot-fill {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.dot-ring {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+.header-div { color: var(--border); font-size: 16px; user-select: none; }
+.header-label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.header-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  border: 1px solid rgba(248,192,35,0.4);
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  background: var(--accent-dim);
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.header-right .sep { color: var(--border); }
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--live);
+  box-shadow: 0 0 6px rgba(34,197,94,0.8);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 5px rgba(34,197,94,0.8); }
+  50%       { box-shadow: 0 0 12px rgba(34,197,94,0.4); }
+}
+.stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.stat-chip strong { color: var(--text); font-weight: 700; }
+
+/* ══════════════════════════════════════════════════════════
+   MAP AREA
+══════════════════════════════════════════════════════════ */
+.map-area {
+  grid-row: 2;
+  grid-column: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Hexagonal dot grid — FR24 map aesthetic */
+.map-area::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 69.28px, 40px 69.28px;
+  background-position: 0 0, 20px 34.64px;
+  pointer-events: none;
+}
+
+/* Vignette: edges fade to black */
+.map-area::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(0,0,0,0.65) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Radar sweep — FR24 signature animation */
+.radar-sweep {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.radar-sweep::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 200%; height: 200%;
+  margin-top: -100%; margin-left: -100%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(248,192,35,0.04) 20deg,
+    rgba(248,192,35,0.015) 35deg,
+    transparent 55deg
+  );
+  animation: sweep 10s linear infinite;
+  transform-origin: center center;
+}
+@keyframes sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* SVG connections overlay */
+.connections-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ── Venture Nodes ── */
+.venture-node {
+  position: absolute;
+  z-index: 4;
+  transform: translate(-50%, -50%);
+}
+.node-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.node-dot {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  position: relative;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+}
+.node-dot:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 18px var(--accent-glow), var(--shadow-card);
+}
+
+/* Build node: yellow pulse rings (FR24 @keyframes pulse) */
+.node-dot.build {
+  border-color: rgba(248,192,35,0.45);
+}
+.node-dot.build::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(248,192,35,0.25);
+  animation: node-pulse 2.8s ease-out infinite;
+}
+.node-dot.build::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(248,192,35,0.1);
+  animation: node-pulse 2.8s ease-out infinite 0.7s;
+}
+@keyframes node-pulse {
+  0%   { transform: scale(0.9);  opacity: 1; }
+  80%  { transform: scale(1.08); opacity: 0; }
+  100% { transform: scale(0.9);  opacity: 0; }
+}
+
+/* Explore node: static blue ring */
+.node-dot.explore {
+  border-color: rgba(50,125,182,0.45);
+}
+.node-dot.explore::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px solid rgba(50,125,182,0.18);
+}
+
+/* Owner initial badge */
+.node-owner {
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.node-label {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+}
+.node-status {
+  font-size: 7.5px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1px 5px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+.node-status.build   { color: var(--build);   background: var(--accent-dim); border: 1px solid rgba(248,192,35,0.22); }
+.node-status.explore { color: var(--explore);  background: var(--blue-dim);   border: 1px solid rgba(50,125,182,0.22); }
+
+/* ── Map UI chrome ── */
+.map-legend {
+  position: absolute;
+  top: 16px; left: 18px;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.legend-pip {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid;
+}
+.legend-pip.build   { border-color: var(--build);   background: rgba(248,192,35,0.18); }
+.legend-pip.explore { border-color: var(--explore); background: rgba(50,125,182,0.18); }
+
+.map-footer {
+  position: absolute;
+  bottom: 14px; left: 18px;
+  z-index: 6;
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.map-footer::before {
+  content: '';
+  width: 18px; height: 1px;
+  background: var(--border);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════════════════════════ */
+.sidebar {
+  grid-row: 2;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--surface-1);
+  overflow: hidden;
+}
+
+/* Shared panel */
+.panel { padding: var(--s3) var(--s4); }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--s2);
+  margin-bottom: var(--s2);
+  border-bottom: 1px solid var(--border);
+}
+.panel-title {
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.panel-count {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--accent);
+}
+
+/* ── Agents panel ── */
+.agents-panel {
+  flex: 1;
+  border-bottom: 1px solid var(--border);
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--surface-3) transparent;
+}
+.agents-panel::-webkit-scrollbar { width: 3px; }
+.agents-panel::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 2px; }
+
+.agent-row {
+  display: grid;
+  grid-template-columns: 46px 1fr 20px;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.025);
+}
+.agent-row:last-of-type { border-bottom: none; }
+
+.agent-cmd {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.agent-name {
+  font-size: 10px;
+  color: var(--text);
+}
+.agent-owner {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 7.5px;
+  font-weight: 700;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.agent-owner.all {
+  color: var(--text-muted);
+  font-size: 9px;
+}
+
+/* Skills section */
+.skills-divider {
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 8px 0 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  margin-bottom: 2px;
+}
+.skill-row {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+.skill-cmd {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--blue);
+}
+.skill-desc {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+/* ── Human task force ── */
+.humans-panel {
+  flex-shrink: 0;
+}
+.person-row {
+  display: grid;
+  grid-template-columns: 30px 1fr auto;
+  align-items: center;
+  gap: var(--s2);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.025);
+}
+.person-row:last-child { border-bottom: none; }
+
+.person-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.person-info { min-width: 0; }
+.person-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.person-role {
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+.scope-badge {
+  font-size: 7px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-top: 2px;
+}
+.scope-badge.full    { color: var(--accent); border: 1px solid rgba(248,192,35,0.3); background: var(--accent-dim); }
+.scope-badge.founder { color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+.person-ventures {
+  font-size: 8px;
+  color: var(--text-dim);
+  text-align: right;
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOOLS STRIP
+══════════════════════════════════════════════════════════ */
+.tools-strip {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s4);
+  border-top: 1px solid var(--border);
+  background: var(--surface-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 0;
+}
+.tools-strip::-webkit-scrollbar { display: none; }
+
+.tools-label {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  white-space: nowrap;
+  padding-right: var(--s4);
+  border-right: 1px solid var(--border);
+  margin-right: var(--s3);
+  flex-shrink: 0;
+}
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 14px;
+  border-right: 1px solid var(--border-dim);
+  flex-shrink: 0;
+  height: 100%;
+}
+.tool-item:last-child { border-right: none; }
+.tool-top {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.tool-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+.tool-desc {
+  font-size: 8px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* Status dots */
+.sdot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.sdot.live     { background: var(--live);   box-shadow: 0 0 5px rgba(34,197,94,0.7); }
+.sdot.manual   { background: var(--manual); }
+.sdot.planned  { background: transparent;  border: 1px solid #444; }
+.sdot.inactive { background: #1a1a1a;      border: 1px solid #2a2a2a; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     HEADER
+════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <div class="dot-fill"></div>
+      <div class="dot-ring"></div>
+      <span class="wordmark">B_V® | OS</span>
+    </div>
+    <span class="header-div">·</span>
+    <span class="header-label">Team OS Monitor</span>
+    <span class="header-badge">V.B1 · Q-02.26</span>
+  </div>
+  <div class="header-right">
+    <div class="live-dot"></div>
+    <div class="stat-chip"><strong>9</strong>&nbsp;Ventures</div>
+    <span class="sep">·</span>
+    <div class="stat-chip"><strong>13</strong>&nbsp;Agents</div>
+    <span class="sep">·</span>
+    <div class="stat-chip"><strong>5</strong>&nbsp;Humans</div>
+    <span class="sep">·</span>
+    <span>PDE · 2026-04-18</span>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════
+     MAP AREA — Hex grid + venture nodes
+════════════════════════════════════════ -->
+<main class="map-area" id="mapArea">
+
+  <div class="radar-sweep"></div>
+
+  <!-- SVG connection lines (drawn by JS) -->
+  <svg class="connections-svg" id="connSvg"></svg>
+
+  <!-- Legend -->
+  <div class="map-legend">
+    <div class="legend-item"><div class="legend-pip build"></div>Build</div>
+    <div class="legend-item"><div class="legend-pip explore"></div>Explore</div>
+  </div>
+
+  <!-- ── VENTURE NODES ──
+       Positions: left/top as % of .map-area
+       Layout: ring pattern — HQ center · Build inner · Explore outer
+  -->
+
+  <!-- CENTER — HQ -->
+  <div class="venture-node" id="vn-manantial" style="left:50%;top:50%">
+    <div class="node-inner">
+      <div class="node-dot build">MC<div class="node-owner">G</div></div>
+      <div class="node-label">Manantial.Casa</div>
+      <div class="node-status build">Build · HQ</div>
+    </div>
+  </div>
+
+  <!-- BUILD RING — inner orbit -->
+  <div class="venture-node" id="vn-reshore" style="left:22%;top:34%">
+    <div class="node-inner">
+      <div class="node-dot build">RS<div class="node-owner">G</div></div>
+      <div class="node-label">Reshore</div>
+      <div class="node-status build">Build</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-lak3" style="left:36%;top:21%">
+    <div class="node-inner">
+      <div class="node-dot build">L3<div class="node-owner">R</div></div>
+      <div class="node-label">LAK3</div>
+      <div class="node-status build">Build</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-pcripto" style="left:64%;top:20%">
+    <div class="node-inner">
+      <div class="node-dot build">PC<div class="node-owner">R</div></div>
+      <div class="node-label">Punta Cripto</div>
+      <div class="node-status build">Build</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-bvos" style="left:77%;top:34%">
+    <div class="node-inner">
+      <div class="node-dot build">OS<div class="node-owner">B</div></div>
+      <div class="node-label">B_V® OS</div>
+      <div class="node-status build">Build</div>
+    </div>
+  </div>
+
+  <!-- EXPLORE RING — outer orbit -->
+  <div class="venture-node" id="vn-photonic" style="left:16%;top:66%">
+    <div class="node-inner">
+      <div class="node-dot explore">PL<div class="node-owner">R</div></div>
+      <div class="node-label">Photonic Lab</div>
+      <div class="node-status explore">Explore</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-chamana" style="left:39%;top:78%">
+    <div class="node-inner">
+      <div class="node-dot explore">LC<div class="node-owner">D</div></div>
+      <div class="node-label">La Chamana</div>
+      <div class="node-status explore">Explore</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-panambi" style="left:63%;top:76%">
+    <div class="node-inner">
+      <div class="node-dot explore">PA<div class="node-owner">A</div></div>
+      <div class="node-label">Panambi</div>
+      <div class="node-status explore">Explore</div>
+    </div>
+  </div>
+
+  <div class="venture-node" id="vn-quantum" style="left:80%;top:61%">
+    <div class="node-inner">
+      <div class="node-dot explore">QT<div class="node-owner">A</div></div>
+      <div class="node-label">Quantum</div>
+      <div class="node-status explore">Explore</div>
+    </div>
+  </div>
+
+  <!-- Map footer -->
+  <div class="map-footer">Venture Map &nbsp;·&nbsp; 9 active nodes &nbsp;·&nbsp; Synergy V4</div>
+
+</main>
+
+<!-- ════════════════════════════════════════
+     SIDEBAR — Agents + Humans
+════════════════════════════════════════ -->
+<aside class="sidebar">
+
+  <!-- Agentic Workforce -->
+  <div class="panel agents-panel">
+    <div class="panel-header">
+      <span class="panel-title">Agentic Workforce</span>
+      <span class="panel-count">13 agents</span>
+    </div>
+
+    <div class="agent-row">
+      <span class="agent-cmd">/mm</span>
+      <span class="agent-name">Meeting Miner</span>
+      <div class="agent-owner" title="Daiana">D</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/tc</span>
+      <span class="agent-name">Task Coordinator</span>
+      <div class="agent-owner" title="Daiana">D</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/vt</span>
+      <span class="agent-name">Venture Tracker</span>
+      <div class="agent-owner" title="Daiana">D</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/wr</span>
+      <span class="agent-name">Weekly Reporter</span>
+      <div class="agent-owner" title="Daiana">D</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/cs</span>
+      <span class="agent-name">Capital Strategist</span>
+      <div class="agent-owner" title="Daiana">D</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/vu</span>
+      <span class="agent-name">Venture Update</span>
+      <div class="agent-owner all" title="All champions">★</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/au</span>
+      <span class="agent-name">Area Update</span>
+      <div class="agent-owner all" title="All area leads">★</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/ir</span>
+      <span class="agent-name">Investor Researcher</span>
+      <div class="agent-owner" title="Gaston">G</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/dr</span>
+      <span class="agent-name">Deck Refiner</span>
+      <div class="agent-owner" title="Gaston">G</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/nw</span>
+      <span class="agent-name">Narrative Writer</span>
+      <div class="agent-owner" title="Rene">R</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/if</span>
+      <span class="agent-name">Intelligence Feed</span>
+      <div class="agent-owner" title="Rene">R</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/ad</span>
+      <span class="agent-name">Art Director</span>
+      <div class="agent-owner" title="Rene">R</div>
+    </div>
+    <div class="agent-row">
+      <span class="agent-cmd">/ga</span>
+      <span class="agent-name">Governance Advisor</span>
+      <div class="agent-owner" title="Andres">A</div>
+    </div>
+
+    <!-- Skills -->
+    <div class="skills-divider">Workflow Skills</div>
+    <div class="skill-row">
+      <span class="skill-cmd">/mine</span>
+      <span class="skill-desc">Meeting → vault</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/scan</span>
+      <span class="skill-desc">Document scanner</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/generate-pdf</span>
+      <span class="skill-desc">Branded PDF</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/notion-web</span>
+      <span class="skill-desc">Notion → Pages</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/print-to-drive</span>
+      <span class="skill-desc">md → PDF → Drive</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/transcribe</span>
+      <span class="skill-desc">Audio → text</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/supabase-q</span>
+      <span class="skill-desc">Direct DB query</span>
+    </div>
+    <div class="skill-row">
+      <span class="skill-cmd">/html-web</span>
+      <span class="skill-desc">HTML → Pages</span>
+    </div>
+  </div>
+
+  <!-- Human Task Force -->
+  <div class="panel humans-panel">
+    <div class="panel-header">
+      <span class="panel-title">Human Task Force</span>
+      <span class="panel-count">5 members</span>
+    </div>
+
+    <div class="person-row">
+      <div class="person-avatar">G</div>
+      <div class="person-info">
+        <div class="person-name">Gaston</div>
+        <div class="person-role">CEO &nbsp;·&nbsp; Capital &amp; Structure</div>
+        <span class="scope-badge full">full</span>
+      </div>
+      <div class="person-ventures">Manantial<br>Reshore</div>
+    </div>
+
+    <div class="person-row">
+      <div class="person-avatar">R</div>
+      <div class="person-info">
+        <div class="person-name">Rene</div>
+        <div class="person-role">Strategy + Comms</div>
+        <span class="scope-badge founder">founder</span>
+      </div>
+      <div class="person-ventures">LAK3 · Photonic<br>P.Cripto</div>
+    </div>
+
+    <div class="person-row">
+      <div class="person-avatar">D</div>
+      <div class="person-info">
+        <div class="person-name">Daiana</div>
+        <div class="person-role">Ops + Finance</div>
+        <span class="scope-badge full">full</span>
+      </div>
+      <div class="person-ventures">Manantial<br>La Chamana</div>
+    </div>
+
+    <div class="person-row">
+      <div class="person-avatar">A</div>
+      <div class="person-info">
+        <div class="person-name">Andres</div>
+        <div class="person-role">Co-founder / CLO</div>
+        <span class="scope-badge founder">founder</span>
+      </div>
+      <div class="person-ventures">Panambi<br>Quantum</div>
+    </div>
+
+    <div class="person-row">
+      <div class="person-avatar">B</div>
+      <div class="person-info">
+        <div class="person-name">Boris</div>
+        <div class="person-role">Context Engineer</div>
+        <span class="scope-badge full">full</span>
+      </div>
+      <div class="person-ventures">B_V® OS</div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- ════════════════════════════════════════
+     TOOLS STRIP
+════════════════════════════════════════ -->
+<footer class="tools-strip">
+  <div class="tools-label">Stack</div>
+
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">n8n</span></div>
+    <div class="tool-desc">Workflow automation</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Supabase</span></div>
+    <div class="tool-desc">PostgreSQL + pgvector</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Slack</span></div>
+    <div class="tool-desc">Approval flows</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Asana</span></div>
+    <div class="tool-desc">Task approval layer</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">GitHub</span></div>
+    <div class="tool-desc">both-os · both-private</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Read.ai</span></div>
+    <div class="tool-desc">Call recording</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Anthropic API</span></div>
+    <div class="tool-desc">claude-sonnet-4-6</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">OpenAI API</span></div>
+    <div class="tool-desc">text-embedding-3-small</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Google Drive</span></div>
+    <div class="tool-desc">Source of truth</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">Paperclip</span></div>
+    <div class="tool-desc">BOTH-branded AI UI</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot live"></div><span class="tool-name">evolution-api</span></div>
+    <div class="tool-desc">WhatsApp gateway</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot manual"></div><span class="tool-name">Notion</span></div>
+    <div class="tool-desc">Presentation layer</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot planned"></div><span class="tool-name">WhatsApp Bot</span></div>
+    <div class="tool-desc">Phase 2 — planned</div>
+  </div>
+  <div class="tool-item">
+    <div class="tool-top"><div class="sdot inactive"></div><span class="tool-name">Railway</span></div>
+    <div class="tool-desc">Not active</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function drawConnections() {
+    const svg = document.getElementById('connSvg');
+    const map = document.getElementById('mapArea');
+    const mr  = map.getBoundingClientRect();
+
+    function center(id) {
+      const el = document.getElementById(id);
+      if (!el) return null;
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width  / 2 - mr.left,
+               y: r.top  + r.height / 2 - mr.top };
+    }
+
+    // [from, to, color, dasharray]
+    const edges = [
+      ['vn-manantial', 'vn-reshore',  'rgba(248,192,35,0.18)',  '5 7'],
+      ['vn-manantial', 'vn-lak3',     'rgba(255,255,255,0.07)', '4 8'],
+      ['vn-manantial', 'vn-chamana',  'rgba(50,125,182,0.18)',  '5 7'],
+      ['vn-manantial', 'vn-bvos',     'rgba(248,192,35,0.13)',  '3 9'],
+      ['vn-lak3',      'vn-photonic', 'rgba(50,125,182,0.13)',  '4 8'],
+      ['vn-lak3',      'vn-pcripto',  'rgba(248,192,35,0.13)',  '4 8'],
+      ['vn-panambi',   'vn-quantum',  'rgba(50,125,182,0.18)',  '5 7'],
+      ['vn-bvos',      'vn-pcripto',  'rgba(255,255,255,0.05)', '3 10'],
+      ['vn-reshore',   'vn-photonic', 'rgba(255,255,255,0.04)', '2 12'],
+    ];
+
+    svg.innerHTML = '';
+    edges.forEach(([a, b, color, dash]) => {
+      const p1 = center(a), p2 = center(b);
+      if (!p1 || !p2) return;
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
+      line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+      line.setAttribute('stroke', color);
+      line.setAttribute('stroke-width', '1');
+      line.setAttribute('stroke-dasharray', dash);
+      svg.appendChild(line);
+    });
+  }
+
+  drawConnections();
+  window.addEventListener('resize', drawConnections);
+}());
+</script>
+
+</body>
+</html>

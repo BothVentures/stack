@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — Monitor Control Panel V2</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — FlightRadar24 · BOTH Ventures Monitor V2
+   Full system map rebuild — 2026-05-13
+══════════════════════════════════════════════════════════ */
+:root {
+  --bg:           #000000;
+  --surface-1:    #0d0d0d;
+  --surface-2:    #141414;
+  --surface-3:    #1e1e1e;
+  --border:       #222121;
+  --border-dim:   rgba(255,255,255,0.05);
+  --text:         #ffffff;
+  --text-muted:   #6d6d6d;
+  --text-dim:     #414141;
+  --accent:       #c8c8c8;
+  --accent-dim:   rgba(200,200,200,0.08);
+  --accent-glow:  rgba(200,200,200,0.04);
+  --blue:         #7dd3fc;
+  --blue-dim:     rgba(125,211,252,0.10);
+  --live:         #86efac;
+  --live-dim:     rgba(134,239,172,0.10);
+  --red:          #fca5a5;
+  --red-dim:      rgba(252,165,165,0.10);
+  --purple:       #d8b4fe;
+  --purple-dim:   rgba(216,180,254,0.10);
+  --teal:         #5eead4;
+  --teal-dim:     rgba(94,234,212,0.10);
+  --orange:       #fdba74;
+  --orange-dim:   rgba(253,186,116,0.10);
+  --font:         'Roboto', system-ui, -apple-system, sans-serif;
+  --mono:         'Space Mono', 'Courier New', monospace;
+  --shadow-card:  0 2px 6px rgba(0,0,0,0.4);
+  --border-hover: #3a3a3a;
+  --surface-hover:#161616;
+  --ease-out:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body {
+  font-family: var(--font);
+  background: var(--bg) url('./bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text);
+  min-width: 960px;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background:rgba(0,0,0,0.82);z-index:0;pointer-events:none;
+}
+.header,.nav-tabs,.page,.status-bar{position:relative;z-index:1;}
+
+/* ══ HEADER ══ */
+.header {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s6);height:52px;border-bottom:1px solid var(--border);
+  background:var(--surface-1);position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:var(--s4);}
+.logo{display:flex;align-items:center;gap:6px;}
+.dot-fill{width:10px;height:10px;border-radius:50%;background:var(--text);flex-shrink:0;}
+.dot-ring{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--text);flex-shrink:0;}
+.wordmark{font-size:13px;font-weight:700;letter-spacing:0.05em;}
+.header-div{color:var(--border);font-size:16px;user-select:none;}
+.header-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);}
+.header-badge{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid rgba(255,255,255,0.18);color:var(--text);letter-spacing:0.08em;border-radius:2px;background:rgba(255,255,255,0.06);}
+.header-right{display:flex;align-items:center;gap:var(--s3);font-size:10px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;}
+.header-right .sep{color:var(--border);}
+
+/* ══ NAV TABS ══ */
+.nav-tabs {
+  display:flex;gap:2px;padding:var(--s3) var(--s6) 0;
+  border-bottom:1px solid var(--border);background:var(--surface-1);
+  position:sticky;top:52px;z-index:99;overflow-x:auto;
+}
+.nav-tab {
+  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:6px 14px;cursor:pointer;border-radius:2px 2px 0 0;
+  color:var(--text-muted);border:1px solid transparent;border-bottom:none;
+  transition:color 0.15s var(--ease-out),background 0.15s var(--ease-out);
+  text-decoration:none;white-space:nowrap;
+}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--accent);border-color:var(--border);background:var(--surface-2);}
+
+/* ══ PAGE BODY ══ */
+.page{padding:var(--s8) var(--s6) 80px;max-width:1400px;margin:0 auto;}
+
+/* ══ SECTION ══ */
+.section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s6);padding-bottom:var(--s3);border-bottom:1px solid var(--border);}
+.section-label{font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:var(--text);}
+.section-label-sub{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--text-muted);}
+.section-desc{font-size:11px;color:var(--text-dim);letter-spacing:0.04em;margin-left:auto;}
+.section-count{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid var(--border);color:var(--text-dim);border-radius:2px;background:var(--surface-3);letter-spacing:0.06em;margin-left:auto;}
+
+/* ══ SKILLS GRID ══ */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:8px;}
+.skills-grid.single{grid-template-columns:1fr;}
+.skills-grid.triple{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));}
+
+/* ══ SKILL CARD ══ */
+.skill-card {
+  background:var(--surface-1);border:1px solid var(--border);padding:var(--s5);position:relative;
+  transition:border-color 0.2s var(--ease-out),background 0.2s var(--ease-out),box-shadow 0.2s var(--ease-out),transform 0.2s var(--ease-out);
+  animation:fadeUp 0.35s var(--ease-out) both;
+}
+.skill-card:hover{border-color:var(--border-hover);background:var(--surface-hover);box-shadow:var(--shadow-card);transform:translateY(-1px);}
+.skill-card.warn-card{border-color:rgba(252,165,165,0.20);background:rgba(252,165,165,0.03);}
+.skill-card-header{display:flex;align-items:flex-start;gap:var(--s3);margin:calc(-1*var(--s5)) calc(-1*var(--s5)) var(--s4);padding:var(--s5) var(--s5) var(--s4);background:var(--surface-3);border-bottom:1px solid var(--border);}
+.cmd-badge{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;flex-shrink:0;letter-spacing:0.04em;}
+.cmd-badge.yellow{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.20);}
+.cmd-badge.blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.35);}
+.cmd-badge.green{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.cmd-badge.purple{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(216,180,254,0.35);}
+.cmd-badge.muted{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.cmd-badge.red{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.skill-meta{flex:1;}
+.skill-name{font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.01em;margin-bottom:3px;}
+.skill-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.owner-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.owner-chip{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:1px 7px;border-radius:10px;font-weight:700;}
+.owner-chip.gaston{background:rgba(252,165,165,0.10);color:#fca5a5;border:1px solid rgba(252,165,165,0.25);}
+.owner-chip.rene{background:var(--purple-dim);color:#d8b4fe;border:1px solid rgba(216,180,254,0.25);}
+.owner-chip.daiana{background:rgba(94,234,212,0.10);color:#5eead4;border:1px solid rgba(94,234,212,0.25);}
+.owner-chip.andres{background:rgba(253,186,116,0.10);color:#fdba74;border:1px solid rgba(253,186,116,0.25);}
+.owner-chip.boris{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.15);}
+.owner-chip.all{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.owner-chip.live{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.owner-chip.pending{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.35);}
+.owner-chip.blocked{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.owner-chip.draft{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.owner-chip.parked{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+
+/* ══ FLOW ROW ══ */
+.flow-wrap{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s3);}
+.flow-mode-label{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;font-weight:700;}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.flow-arrow{color:var(--text-muted);font-size:11px;flex-shrink:0;font-family:var(--mono);}
+.node{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:0.04em;padding:3px 10px;border-radius:3px;white-space:nowrap;font-family:var(--mono);border:1px solid;}
+.node.in{background:var(--blue-dim);color:var(--blue);border-color:rgba(125,211,252,0.35);}
+.node.proc{background:var(--surface-3);color:#9a9a9a;border-color:var(--border);}
+.node.out{background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35);}
+.node.branch{background:rgba(255,255,255,0.06);color:#e8e8e8;border-color:rgba(255,255,255,0.22);}
+.node.tool{background:rgba(255,255,255,0.06);color:#d4d4d4;border-color:rgba(255,255,255,0.16);}
+.node.warn{background:var(--red-dim);color:var(--red);border-color:rgba(252,165,165,0.35);}
+.node.live-node{background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35);}
+.node-icon{font-size:9px;opacity:0.8;}
+.flow-sep{height:1px;background:var(--border);margin:var(--s3) 0;}
+
+/* ══ AGENTS GRID ══ */
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.agent-card{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4);display:flex;gap:var(--s3);align-items:flex-start;transition:border-color 0.2s var(--ease-out),background 0.2s var(--ease-out);animation:fadeUp 0.35s var(--ease-out) both;}
+.agent-card:hover{border-color:var(--border-hover);background:var(--surface-hover);}
+.agent-card.archived{border-color:rgba(252,165,165,0.15);background:rgba(252,165,165,0.02);opacity:0.7;}
+.agent-cmd{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text-muted);background:var(--surface-3);border:1px solid var(--border);padding:2px 8px;border-radius:2px;flex-shrink:0;letter-spacing:0.04em;}
+.agent-body{flex:1;}
+.agent-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.agent-desc{font-size:11px;color:var(--text-muted);line-height:1.45;}
+
+/* ══ WEEKLY RHYTHM ══ */
+.rhythm-flow{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:var(--s2);}
+.rhythm-step{display:flex;flex-direction:column;align-items:center;gap:var(--s2);flex-shrink:0;}
+.rhythm-node{background:var(--surface-2);border:1px solid var(--border);padding:var(--s3) var(--s4);border-radius:3px;text-align:center;min-width:110px;max-width:130px;}
+.rhythm-node .day{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;font-weight:700;}
+.rhythm-node .action{font-size:10px;color:var(--text);font-weight:500;line-height:1.4;}
+.rhythm-node .cmd{font-family:var(--mono);font-size:9px;color:var(--accent);margin-top:4px;display:block;}
+.rhythm-node.highlight{border-color:rgba(200,200,200,0.18);background:var(--accent-glow);}
+.rhythm-node.auto{border-color:rgba(134,239,172,0.3);background:var(--live-dim);}
+.rhythm-connector{display:flex;align-items:center;padding:0 4px;padding-top:28px;color:var(--text-dim);font-size:14px;font-family:var(--mono);}
+
+/* ══ LEGEND ══ */
+.legend{display:flex;gap:var(--s5);flex-wrap:wrap;padding:var(--s3) var(--s4);background:var(--surface-1);border:1px solid var(--border);margin-bottom:var(--s6);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted);}
+.legend-node{display:inline-block;padding:2px 8px;border-radius:3px;font-size:9px;font-family:var(--mono);border:1px solid;}
+
+/* ══ LOG TABLE ══ */
+.cl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:var(--s6);}
+.cl-stat{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4) var(--s5);}
+.cl-stat-label{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+.cl-stat-value{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);line-height:1;}
+.cl-log{background:var(--surface-1);border:1px solid var(--border);}
+.cl-log-row{display:grid;grid-template-columns:58px 68px 84px 1fr;align-items:center;padding:7px var(--s5);border-bottom:1px solid var(--border-dim);transition:background 0.15s;}
+.cl-log-row.wide{grid-template-columns:68px 84px 1fr 180px;}
+.cl-log-row:last-child{border-bottom:none;}
+.cl-log-row:hover{background:var(--surface-2);}
+.cl-log-row.header{border-bottom:1px solid var(--border);opacity:0.45;}
+.cl-log-date,.cl-log-hash{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:0.05em;}
+.cl-log-type{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;display:inline-block;width:fit-content;}
+.cl-log-type.feat{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.25);}
+.cl-log-type.fix{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.publish{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.25);}
+.cl-log-type.vault{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.15);}
+.cl-log-type.other{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.cl-log-type.high{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.medium{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(253,186,116,0.25);}
+.cl-log-type.low{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.cl-log-type.active{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.25);}
+.cl-log-type.superseded{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.unclear{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.cl-log-type.pending{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.25);}
+.cl-log-msg{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cl-log-note{font-size:10px;color:var(--text-dim);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ══ PIPELINE ══ */
+.pipeline-endpoints{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:var(--s6);}
+.endpoint-card{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4) var(--s5);}
+.endpoint-method{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;margin-bottom:6px;}
+.endpoint-method.post{color:var(--blue);}
+.endpoint-method.get{color:var(--live);}
+.endpoint-path{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.endpoint-desc{font-size:11px;color:var(--text-muted);line-height:1.4;}
+
+/* ══ SECRETS TABLE ══ */
+.secrets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:var(--s4);}
+.secret-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface-1);border:1px solid var(--border);padding:var(--s3) var(--s4);}
+.secret-name{font-family:var(--mono);font-size:11px;color:var(--text);}
+.secret-status{font-family:var(--mono);font-size:9px;font-weight:700;padding:1px 7px;border-radius:2px;}
+.secret-status.set{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.secret-status.pending{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.secret-note{font-size:10px;color:var(--text-dim);margin-top:2px;}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.skill-card:nth-child(1){animation-delay:0ms;}
+.skill-card:nth-child(2){animation-delay:60ms;}
+.skill-card:nth-child(3){animation-delay:120ms;}
+.skill-card:nth-child(4){animation-delay:180ms;}
+.skill-card:nth-child(n+5){animation-delay:240ms;}
+.agent-card:nth-child(1){animation-delay:0ms;}
+.agent-card:nth-child(2){animation-delay:40ms;}
+.agent-card:nth-child(3){animation-delay:80ms;}
+.agent-card:nth-child(4){animation-delay:120ms;}
+.agent-card:nth-child(5){animation-delay:160ms;}
+.agent-card:nth-child(6){animation-delay:200ms;}
+.agent-card:nth-child(7){animation-delay:240ms;}
+.agent-card:nth-child(8){animation-delay:280ms;}
+.agent-card:nth-child(n+9){animation-delay:320ms;}
+@media(prefers-reduced-motion:reduce){.skill-card,.agent-card{animation:none;}}
+
+/* ══ STATUS BAR ══ */
+.status-bar{position:fixed;bottom:0;left:0;right:0;height:30px;background:var(--surface-1);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 var(--s6);gap:var(--s4);font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);z-index:200;}
+.status-live{display:flex;align-items:center;gap:5px;color:var(--live);}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--live);animation:blink 2.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.status-sep{color:var(--border);}
+.status-val{color:var(--text-muted);}
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--surface-1);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--border-hover);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <div class="dot-fill"></div>
+      <div class="dot-ring"></div>
+      <span class="wordmark">B_V® | OS</span>
+    </div>
+    <span class="header-div">|</span>
+    <span class="header-label">Monitor Control Panel</span>
+    <span class="header-badge">SYNERGY V2</span>
+  </div>
+  <div class="header-right">
+    <span>17 skills</span>
+    <span class="sep">·</span>
+    <span>20 agents</span>
+    <span class="sep">·</span>
+    <span>Worker V2.5</span>
+    <span class="sep">·</span>
+    <span>Q-02.26</span>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <a href="#daily"    class="nav-tab active">Daily Session</a>
+  <a href="#rhythm"   class="nav-tab">Weekly Rhythm</a>
+  <a href="#skills"   class="nav-tab">Skills</a>
+  <a href="#agents"   class="nav-tab">Agents</a>
+  <a href="#pipeline" class="nav-tab">Pipeline</a>
+  <a href="#stack"    class="nav-tab">Stack</a>
+  <a href="#projects" class="nav-tab">Projects</a>
+</nav>
+
+<div class="page">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-node" style="background:var(--blue-dim);color:var(--blue);border-color:rgba(125,211,252,0.35)">INPUT</span><span>trigger or input</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--surface-3);color:#9a9a9a;border-color:var(--border)">PROC</span><span>processing step</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35)">OUTPUT</span><span>final output</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:rgba(255,255,255,0.06);color:#e8e8e8;border-color:rgba(255,255,255,0.22)">BRANCH</span><span>decision / condition</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:rgba(255,255,255,0.06);color:#d4d4d4;border-color:rgba(255,255,255,0.16)">SYSTEM</span><span>API / system call</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--red-dim);color:var(--red);border-color:rgba(252,165,165,0.35)">WARN</span><span>pending / issue</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: DAILY SESSION                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="daily">
+    <div class="section-header">
+      <span class="section-label">Daily Session</span>
+      <span class="section-desc">The three-step session loop — open, work, close</span>
+    </div>
+
+    <div class="skill-card" style="margin-bottom:8px;">
+      <div class="flow-wrap">
+        <div class="flow-mode-label">Every session — no exceptions</div>
+        <div class="flow" style="align-items:center;gap:12px;">
+          <span class="node in" style="font-size:13px;padding:6px 16px;font-weight:700;">/startup</span>
+          <span class="flow-arrow" style="font-size:18px;color:var(--text-dim);">→</span>
+          <span class="node branch" style="font-size:13px;padding:6px 16px;font-weight:700;">WORK</span>
+          <span class="flow-arrow" style="font-size:18px;color:var(--text-dim);">→</span>
+          <span class="node out" style="font-size:13px;padding:6px 16px;font-weight:700;">/upc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/startup</span>
+          <div class="skill-meta">
+            <div class="skill-name">Session Start</div>
+            <div class="skill-desc">Opens every session. Pulls latest from git, shows vault state and recent changes, flags pending approvals, orients Claude to current context.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> session opens</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">git pull</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">vault orient</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">flag pending</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">ready to work</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/upc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Update Push Commit</div>
+            <div class="skill-desc">Closes every session. Validates vault frontmatter, commits all changes, pushes to GitHub, syncs Supabase, updates memory.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> session ends</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">validate frontmatter</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">git commit + push</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">Supabase sync</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">vault synced</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: WEEKLY RHYTHM                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="rhythm">
+    <div class="section-header">
+      <span class="section-label">Weekly Rhythm</span>
+      <span class="section-desc">Tuesday Sync cadence — champion updates → digest → meeting → auto-mine loop</span>
+    </div>
+
+    <div class="rhythm-flow">
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon AM</div><div class="action">Each champion updates their venture</div><span class="cmd">/vu</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon AM</div><div class="action">Area leads update functional areas</div><span class="cmd">/au</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Mon PM</div><div class="action">Boris generates weekly digest</div><span class="cmd">/wr</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon PM</div><div class="action">Daiana validates. Digest distributed.</div><span class="cmd">pre-read</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Tuesday</div><div class="action">In-person sync. Decisions only. Gaston chairs. 60 min.</div><span class="cmd">meeting</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node auto"><div class="day">Auto</div><div class="action">Read.ai records → Worker V2.5 mines → vault + Asana + Slack DM</div><span class="cmd">no trigger needed</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Fallback</div><div class="action">Manual notes or audio → mine → approve</div><span class="cmd">/mine → /mine approve</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Loop closed</div><div class="action">Vault updated. Context evolves.</div><span class="cmd">auto-commit</span></div></div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Auto-mine path — Read.ai / Recall.ai (Worker V2.5)</span></div>
+      <div class="skill-card">
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> Read.ai bot joins call</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">call ends</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">webhook → Worker V2.5</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">Claude mines transcript</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">vault writes (auto)</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">Asana push</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">Slack DM to champion</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s4);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Manual fallback (no Read.ai)</span></div>
+      <div class="skill-card">
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> audio or text notes</span>
+            <span class="flow-arrow">→</span>
+            <span class="node branch">audio?</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">/transcribe {path}</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">/mine {transcript}</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">vault/pending/{file}</span>
+            <span class="flow-arrow">→</span>
+            <span class="node branch">champion reviews</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">/mine approve {file}</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">Asana push</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">vault committed</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: SKILLS                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <span class="section-label">Skills</span>
+      <span class="section-desc">Claude Code invocable skill files — .claude/skills/</span>
+      <span class="section-count">17 skills</span>
+    </div>
+
+    <!-- Knowledge Capture group -->
+    <div class="section-header" style="margin-bottom:var(--s4);margin-top:0;"><span class="section-label-sub">Knowledge Capture</span></div>
+    <div class="skills-grid" style="margin-bottom:var(--s6);">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/mine</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Miner</div>
+            <div class="skill-desc">Extract decisions, action items, risks and venture updates from meetings or audio. Two modes: mine and approve.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">Mode 1 — Mine</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> notes / file</span>
+            <span class="flow-arrow">→</span><span class="node branch">audio?</span>
+            <span class="flow-arrow">→</span><span class="node tool">Whisper API</span>
+            <span class="flow-arrow">→</span><span class="node proc">extract items</span>
+            <span class="flow-arrow">→</span><span class="node out">vault/pending/</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">Mode 2 — Approve</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /mine approve {file}</span>
+            <span class="flow-arrow">→</span><span class="node proc">read approved: true</span>
+            <span class="flow-arrow">→</span><span class="node proc">write vault files</span>
+            <span class="flow-arrow">→</span><span class="node tool">Asana push</span>
+            <span class="flow-arrow">→</span><span class="node out">vault committed</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">Auto path (Read.ai)</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> call ends</span>
+            <span class="flow-arrow">→</span><span class="node tool">Worker V2.5</span>
+            <span class="flow-arrow">→</span><span class="node proc">auto-mine</span>
+            <span class="flow-arrow">→</span><span class="node tool">Asana + Slack DM</span>
+            <span class="flow-arrow">→</span><span class="node out">no manual step</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/transcribe</span>
+          <div class="skill-meta">
+            <div class="skill-name">Audio Transcriber</div>
+            <div class="skill-desc">Convert any audio file (.opus, .mp3, .m4a, .wav, .ogg, .webm) to speaker-labeled transcript → vault/transcripts/.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> .opus / .mp3 / .m4a</span>
+            <span class="flow-arrow">→</span><span class="node tool">scripts/transcribe.sh</span>
+            <span class="flow-arrow">→</span><span class="node tool">OpenAI Whisper API</span>
+            <span class="flow-arrow">→</span><span class="node proc">speaker labels</span>
+            <span class="flow-arrow">→</span><span class="node out">vault/transcripts/*.md</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">Next step</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> vault/transcripts/*.md</span>
+            <span class="flow-arrow">→</span><span class="node proc">edit: attendees, ventures</span>
+            <span class="flow-arrow">→</span><span class="node out">/mine {file}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/vu</span>
+          <div class="skill-meta">
+            <div class="skill-name">Venture Update</div>
+            <div class="skill-desc">Weekly champion update. Scans transcripts, synthesizes activity, confirms with champion, writes to vault/ventures/.</div>
+            <div class="owner-chips"><span class="owner-chip all">All champions</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">Runs every Monday</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /vu</span>
+            <span class="flow-arrow">→</span><span class="node proc">scan vault/transcripts/</span>
+            <span class="flow-arrow">→</span><span class="node proc">synthesize activity</span>
+            <span class="flow-arrow">→</span><span class="node branch">champion confirms</span>
+            <span class="flow-arrow">→</span><span class="node out">vault/ventures/{slug}.md</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/au</span>
+          <div class="skill-meta">
+            <div class="skill-name">Area Update</div>
+            <div class="skill-desc">Weekly functional area update. Scans transcripts by area, synthesizes, confirms with area lead, writes to vault.</div>
+            <div class="owner-chips"><span class="owner-chip all">Area leads</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">Runs every Monday (same rhythm as /vu)</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /au</span>
+            <span class="flow-arrow">→</span><span class="node proc">scan vault/transcripts/</span>
+            <span class="flow-arrow">→</span><span class="node proc">synthesize by area</span>
+            <span class="flow-arrow">→</span><span class="node branch">area lead confirms</span>
+            <span class="flow-arrow">→</span><span class="node out">vault/areas/*.md</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Publishing group -->
+    <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Publishing</span></div>
+    <div class="skills-grid" style="margin-bottom:var(--s6);">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/md-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">Markdown Web Publisher</div>
+            <div class="skill-desc">Publish any .md file to GitHub Pages with theme injection. Themes: both-brand (dark), photonic-lab (Swiss editorial), weekly-digest (editorial).</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /md-web {file} --theme {name}</span>
+            <span class="flow-arrow">→</span><span class="node proc">parse frontmatter</span>
+            <span class="flow-arrow">→</span><span class="node proc">inject theme CSS</span>
+            <span class="flow-arrow">→</span><span class="node proc">convert markdown → HTML</span>
+            <span class="flow-arrow">→</span><span class="node proc">docs/pages/{slug}/</span>
+            <span class="flow-arrow">→</span><span class="node tool">git push</span>
+            <span class="flow-arrow">→</span><span class="node out">live URL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/html-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">HTML Page Publisher</div>
+            <div class="skill-desc">Publish any local HTML file to GitHub Pages. Copies to docs/pages/, updates index, commits, returns live URL.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span><span class="owner-chip rene">Rene</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /html-web {file}.html</span>
+            <span class="flow-arrow">→</span><span class="node proc">derive slug</span>
+            <span class="flow-arrow">→</span><span class="node proc">copy to docs/pages/</span>
+            <span class="flow-arrow">→</span><span class="node proc">update index</span>
+            <span class="flow-arrow">→</span><span class="node tool">git push</span>
+            <span class="flow-arrow">→</span><span class="node out">live URL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/notion-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">Notion Page Publisher</div>
+            <div class="skill-desc">Publish any Notion page as branded HTML on GitHub Pages. Fetches blocks via API, renders with BOTH theme.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> Notion URL / page ID</span>
+            <span class="flow-arrow">→</span><span class="node tool">Notion API</span>
+            <span class="flow-arrow">→</span><span class="node proc">scripts/notion-to-html.py</span>
+            <span class="flow-arrow">→</span><span class="node proc">docs/pages/{slug}/</span>
+            <span class="flow-arrow">→</span><span class="node tool">git push</span>
+            <span class="flow-arrow">→</span><span class="node out">bothventures.github.io/stack/pages/</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/print-to-drive</span>
+          <div class="skill-meta">
+            <div class="skill-name">Print to Drive</div>
+            <div class="skill-desc">Render any .md as branded HTML and save to the correct Google Drive folder via routing keyword.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /print-to-drive {file} --dest {kw}</span>
+            <span class="flow-arrow">→</span><span class="node proc">render branded HTML</span>
+            <span class="flow-arrow">→</span><span class="node branch">route by keyword</span>
+            <span class="flow-arrow">→</span><span class="node out">Google Drive folder</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">Keywords</div>
+          <div class="flow" style="flex-wrap:wrap;gap:4px;">
+            <span class="node proc">ops</span><span class="node proc">comms</span><span class="node proc">exec</span><span class="node proc">finance</span><span class="node proc">legal</span><span class="node proc">lak3</span><span class="node proc">manantial</span><span class="node proc">reshore</span><span class="node proc">lachamana</span><span class="node proc">panambi</span><span class="node proc">photonic</span><span class="node proc">puntacripto</span><span class="node proc">quantum</span><span class="node proc">bothos</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/generate-pdf</span>
+          <div class="skill-meta">
+            <div class="skill-name">Branded PDF Generator</div>
+            <div class="skill-desc">Generate professional branded PDF from HTML via two-pass Puppeteer pipeline. Requires puppeteer-core + Chrome.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /generate-pdf {file}.html</span>
+            <span class="flow-arrow">→</span><span class="node tool">Puppeteer pass 1</span>
+            <span class="flow-arrow">→</span><span class="node proc">measure page height</span>
+            <span class="flow-arrow">→</span><span class="node tool">Puppeteer pass 2</span>
+            <span class="flow-arrow">→</span><span class="node out">{Name}.pdf</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ops & Tools group -->
+    <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Ops, Comms &amp; Data</span></div>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/mp</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Prep</div>
+            <div class="skill-desc">Pre-meeting brief from vault. Pulls investor profiles, prior transcripts, open risks, and action items for any meeting.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /mp</span>
+            <span class="flow-arrow">→</span><span class="node proc">vault/investors/</span>
+            <span class="flow-arrow">→</span><span class="node proc">vault/transcripts/</span>
+            <span class="flow-arrow">→</span><span class="node proc">vault/risks/ + pending/</span>
+            <span class="flow-arrow">→</span><span class="node out">pre-meeting brief</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/mc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Closeout</div>
+            <div class="skill-desc">Close the loop after any meeting. Generates external email + internal Slack message. Auto-detects audience from vault/pending/.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /mc</span>
+            <span class="flow-arrow">→</span><span class="node proc">read vault/pending/</span>
+            <span class="flow-arrow">→</span><span class="node branch">detect audience</span>
+            <span class="flow-arrow">→</span><span class="node proc">draft external email</span>
+            <span class="flow-arrow">→</span><span class="node out">Slack internal message</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/sc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Synergy Coach</div>
+            <div class="skill-desc">Meta-agent that coaches team on Synergy usage. Recommends tools, captures gaps, conducts monthly skill audits.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /sc</span>
+            <span class="flow-arrow">→</span><span class="node proc">vault/agent_outputs/synergy-learnings/</span>
+            <span class="flow-arrow">→</span><span class="node proc">monthly audit</span>
+            <span class="flow-arrow">→</span><span class="node out">recommendations + synergy-plan.html</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/vault-notion</span>
+          <div class="skill-meta">
+            <div class="skill-name">Vault Notion Linker</div>
+            <div class="skill-desc">Surface vault assets onto Notion pages. Resolves source_documents from frontmatter to live Notion page URLs.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /vault-notion</span>
+            <span class="flow-arrow">→</span><span class="node proc">read vault frontmatter</span>
+            <span class="flow-arrow">→</span><span class="node tool">Notion API</span>
+            <span class="flow-arrow">→</span><span class="node out">assets surfaced on page</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/cookie-monster</span>
+          <div class="skill-meta">
+            <div class="skill-name">Knowledge Capture</div>
+            <div class="skill-desc">Store any document (PDF, DOCX, image, etc.) into the correct Google Drive folder using a routing keyword.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /cookie-monster {file} --dest {kw}</span>
+            <span class="flow-arrow">→</span><span class="node proc">scripts/cookie-monster.sh</span>
+            <span class="flow-arrow">→</span><span class="node branch">route by keyword</span>
+            <span class="flow-arrow">→</span><span class="node out">Google Drive folder</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/supabase-query</span>
+          <div class="skill-meta">
+            <div class="skill-name">Supabase Query</div>
+            <div class="skill-desc">Run any SQL query or natural language question against the live database. Alias: /sq.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /sq "question or SQL"</span>
+            <span class="flow-arrow">→</span><span class="node branch">NL or SQL?</span>
+            <span class="flow-arrow">→</span><span class="node proc">compose SQL</span>
+            <span class="flow-arrow">→</span><span class="node tool">psql → Supabase</span>
+            <span class="flow-arrow">→</span><span class="node out">formatted results</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">12 Tables</div>
+          <div class="flow" style="flex-wrap:wrap;gap:4px;">
+            <span class="node proc">user_profiles</span><span class="node proc">agent_registry</span><span class="node proc">vault_context</span><span class="node proc">conversations</span><span class="node proc">agent_memory</span><span class="node proc">usage_metrics</span><span class="node proc">venture_snapshots</span><span class="node proc">agent_outputs</span><span class="node proc">task_queue</span><span class="node proc">pending_actions</span><span class="node proc">access_grants</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/sec-audit</span>
+          <div class="skill-meta">
+            <div class="skill-name">Security Audit</div>
+            <div class="skill-desc">Structured local security scan: secrets detection via gitleaks, .env tracking, GitHub PAT status, n8n credential patterns, .gitignore health.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Boris</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /sec-audit</span>
+            <span class="flow-arrow">→</span><span class="node tool">gitleaks</span>
+            <span class="flow-arrow">→</span><span class="node proc">.env tracking</span>
+            <span class="flow-arrow">→</span><span class="node proc">PAT rotation check</span>
+            <span class="flow-arrow">→</span><span class="node proc">n8n patterns</span>
+            <span class="flow-arrow">→</span><span class="node out">vault/security/ report</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: AGENTS                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="agents">
+    <div class="section-header">
+      <span class="section-label">Agents</span>
+      <span class="section-desc">Full system-prompt agents — .claude/agents/</span>
+      <span class="section-count">20 active · 4 archived</span>
+    </div>
+
+    <div class="agents-grid">
+      <div class="agent-card"><span class="agent-cmd">/au</span><div class="agent-body"><div class="agent-name">Area Update</div><div class="agent-desc">Guide area leads through weekly functional area status updates.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip all">Area leads</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Art Director</div><div class="agent-desc">Apply BOTH visual identity across HTML, layouts, and AI image prompts.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Capital Strategist</div><div class="agent-desc">Portfolio financial models and capital allocation strategy across 8 ventures.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/cso</span><div class="agent-body"><div class="agent-name">Chief Security Officer</div><div class="agent-desc">Security posture Q&amp;A, incident triage, credential hygiene review.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/db</span><div class="agent-body"><div class="agent-name">Daily Brief</div><div class="agent-desc">Morning brief: priorities, live Gmail + Calendar, Asana cache, vault context. Runs auto 07:30 L–V.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/dr</span><div class="agent-body"><div class="agent-name">Deck Refiner</div><div class="agent-desc">Iterate pitch decks, mock Q&amp;A sessions, refine investor narrative and slide logic.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip gaston">Gaston</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/scan</span><div class="agent-body"><div class="agent-name">Document Scanner</div><div class="agent-desc">Transform any document type into structured knowledge. Extracts decisions, actions, risks.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/ga</span><div class="agent-body"><div class="agent-name">Governance Advisor</div><div class="agent-desc">Governance structures, legal compliance, org design across 4 jurisdictions.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip andres">Andres</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/if</span><div class="agent-body"><div class="agent-name">Intelligence Feed</div><div class="agent-desc">Curate external market signals, regulatory changes, and competitive moves.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/ir</span><div class="agent-body"><div class="agent-name">Investor Researcher</div><div class="agent-desc">Profile LP and co-investor prospects. Build lists, thesis alignment, warm intro paths.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip gaston">Gaston</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/ad-lc</span><div class="agent-body"><div class="agent-name">La Chamana Art Director</div><div class="agent-desc">La Chamana visual identity — ornate key, tagline system, space-specific colors.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/mine</span><div class="agent-body"><div class="agent-name">Meeting Miner</div><div class="agent-desc">Transform meetings into decisions, actions, risks, venture updates → vault + Asana. Also: /mm.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span><span class="owner-chip boris">Boris</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/nw</span><div class="agent-body"><div class="agent-name">Narrative Writer</div><div class="agent-desc">Investor memos, venture narratives, LP updates. Institutional voice — precise, not promotional.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/sc</span><div class="agent-body"><div class="agent-name">Synergy Coach</div><div class="agent-desc">Meta-agent for Synergy usage coaching and monthly skill audits. Also a skill wrapper.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/tc</span><div class="agent-body"><div class="agent-name">Task Coordinator</div><div class="agent-desc">Triage incoming requests, route to correct owner by venture, manage Asana approval layer.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/upc</span><div class="agent-body"><div class="agent-name">Update Push Commit</div><div class="agent-desc">Session wrap-up: validate vault, commit, push, sync Supabase. Calls scripts/session-wrap.sh.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/vt</span><div class="agent-body"><div class="agent-name">Venture Tracker</div><div class="agent-desc">Real-time status view across 8 ventures using Meaning/Action/Outcome taxonomy. Flags stale entries.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/vu</span><div class="agent-body"><div class="agent-name">Venture Update</div><div class="agent-desc">Guide champions through weekly venture status updates. Scans transcripts before asking.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip all">All champions</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/wr</span><div class="agent-body"><div class="agent-name">Weekly Reporter</div><div class="agent-desc">Generate Tuesday Sync digest: venture grid, area summaries, decisions, risks, cross-cutting themes.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card warn-card"><span class="agent-cmd" style="color:var(--red);border-color:rgba(252,165,165,0.2)">⚠</span><div class="agent-body"><div class="agent-name">Member Onboarding V0</div><div class="agent-desc">Placeholder — appears empty or minimal. No command trigger. Cleanup queue item.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip blocked">cleanup pending</span></div></div></div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Archived — Oracle Council (on hold)</span></div>
+      <div class="agents-grid">
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">/so</span><div class="agent-body"><div class="agent-name">Oracle Council</div><div class="agent-desc">Orchestrate 3 Oracle brains against strategic scenarios. Stress-test with Rene + Gaston required before reactivation.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Philosopher</div><div class="agent-desc">Strategic readings through philosophy, psychology, and anthropology. Hidden human dynamics.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Quant</div><div class="agent-desc">Model scenarios as systems: probabilities, feedback loops, phase transitions, optionality value.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Architect</div><div class="agent-desc">Translate strategic scenarios into concrete build proposals: agents, workflows, self-improving systems.</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PIPELINE                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="pipeline">
+    <div class="section-header">
+      <span class="section-label">Pipeline</span>
+      <span class="section-desc">Cloudflare Worker V2.5 — transcript mining, WhatsApp, daily cron</span>
+    </div>
+
+    <div class="pipeline-endpoints">
+      <div class="endpoint-card">
+        <div class="endpoint-method post">POST</div>
+        <div class="endpoint-path">/</div>
+        <div class="endpoint-desc">Read.ai + Recall.ai webhooks. Full transcript → Claude mining → vault writes → Asana → Slack DM to champions.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method post">POST</div>
+        <div class="endpoint-path">/whatsapp</div>
+        <div class="endpoint-desc">evolution-api group message webhook. Fetch 100 msgs → Claude mines → vault/pending + decisions/risks/ventures → Asana → Slack.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method get">GET</div>
+        <div class="endpoint-path">/</div>
+        <div class="endpoint-desc">Health check. Returns <code style="font-family:var(--mono);font-size:10px;color:var(--accent);">{ status: 'ok', version: 'v2.5' }</code></div>
+      </div>
+    </div>
+
+    <div class="skill-card" style="margin-bottom:var(--s5);">
+      <div class="flow-wrap">
+        <div class="flow-mode-label">Full pipeline — Read.ai / Recall.ai path</div>
+        <div class="flow">
+          <span class="node in"><span class="node-icon">▸</span> Read.ai / Recall.ai webhook</span>
+          <span class="flow-arrow">→</span><span class="node tool">Worker POST /</span>
+          <span class="flow-arrow">→</span><span class="node tool">Claude API (claude-sonnet-4-6)</span>
+          <span class="flow-arrow">→</span><span class="node proc">mine transcript</span>
+          <span class="flow-arrow">→</span><span class="node tool">GitHub API (vault writes)</span>
+          <span class="flow-arrow">→</span><span class="node tool">Asana API (dedup check)</span>
+          <span class="flow-arrow">→</span><span class="node out">Slack DM → champion</span>
+        </div>
+        <div class="flow-sep"></div>
+        <div class="flow-mode-label">WhatsApp path (pending Railway deploy)</div>
+        <div class="flow">
+          <span class="node warn"><span class="node-icon">▸</span> evolution-api webhook</span>
+          <span class="flow-arrow">→</span><span class="node tool">Worker POST /whatsapp</span>
+          <span class="flow-arrow">→</span><span class="node proc">fetch 100 group msgs</span>
+          <span class="flow-arrow">→</span><span class="node tool">Claude API → mine</span>
+          <span class="flow-arrow">→</span><span class="node tool">GitHub + Asana + Slack</span>
+          <span class="flow-arrow">→</span><span class="node warn">pending Railway deploy</span>
+        </div>
+        <div class="flow-sep"></div>
+        <div class="flow-mode-label">Daily cron — 23:00 UTC</div>
+        <div class="flow">
+          <span class="node in"><span class="node-icon">▸</span> cron 0 23 * * *</span>
+          <span class="flow-arrow">→</span><span class="node proc">count transcripts captured today</span>
+          <span class="flow-arrow">→</span><span class="node branch">Tuesday call present?</span>
+          <span class="flow-arrow">→</span><span class="node out">Slack summary → Boris</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s6);">
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Secrets — 5 set · 3 pending</span></div>
+        <div class="secrets-grid" style="grid-template-columns:1fr;">
+          <div class="secret-row"><span class="secret-name">ANTHROPIC_API_KEY</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">GITHUB_PAT</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">BOTH_SECRET</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SLACK_BOT_TOKEN</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">BOTH_ASANA_TOKEN</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">EVOLUTION_API_URL</span><span class="secret-status pending">PENDING</span></div>
+          <div class="secret-row"><span class="secret-name">EVOLUTION_API_KEY</span><span class="secret-status pending">PENDING</span></div>
+          <div class="secret-row"><span class="secret-name">EVOLUTION_WEBHOOK_SECRET</span><span class="secret-status pending">PENDING</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Version History</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row header" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">Ver</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;">Change</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.0</span><span class="cl-log-msg">Read.ai webhooks direct — n8n removed from pipeline</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.1</span><span class="cl-log-msg">Direct Asana push + Slack validation endpoint</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.2</span><span class="cl-log-msg">Champion notification routing; approval buttons removed</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.3</span><span class="cl-log-msg">Transcript metadata updates (mined flag + ventures_discussed)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.4</span><span class="cl-log-msg">Full auto-vault writes (decisions, risks, venture updates)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:48px 1fr;"><span class="cl-log-date">V2.5</span><span class="cl-log-msg">WhatsApp mining endpoint + Recall.ai payload parser</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: STACK                           -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <span class="section-label">Stack</span>
+      <span class="section-desc">n8n workflows + external integrations status</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s6);">
+
+      <!-- n8n Workflows -->
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">n8n Workflows — bothventures.app.n8n.cloud</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide header"><span class="cl-log-hash">ID</span><span class="cl-log-type other">Status</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Workflow</span><span class="cl-log-note">Replaced by</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">PxkNWA5G</span><span class="cl-log-type active">Active</span><span class="cl-log-msg">Mine Gap Detector — runs every 30 min</span><span class="cl-log-note">—</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">cbIQ0Ha4</span><span class="cl-log-type superseded">Superseded</span><span class="cl-log-msg">Read.ai → Auto-Mine → Slack Approval</span><span class="cl-log-note">Worker V2</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">lHaWYP0h</span><span class="cl-log-type superseded">Superseded</span><span class="cl-log-msg">Mine → Validate (Slack Button Handler)</span><span class="cl-log-note">Worker V2</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">cRN6KCt3</span><span class="cl-log-type superseded">Superseded</span><span class="cl-log-msg">Action Items to Asana</span><span class="cl-log-note">Worker direct push</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">bv-slack</span><span class="cl-log-type superseded">Superseded</span><span class="cl-log-msg">Slack Approval → Vault Write</span><span class="cl-log-note">Worker V2</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">2VFlynxa</span><span class="cl-log-type unclear">Inactive</span><span class="cl-log-msg">Calendar Watcher → Add Read.ai Bot</span><span class="cl-log-note">Not needed</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">bv-notion</span><span class="cl-log-type unclear">Parked</span><span class="cl-log-msg">Vault to Notion Sync</span><span class="cl-log-note">vault-to-notion.py</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">bv-digest</span><span class="cl-log-type unclear">Unclear</span><span class="cl-log-msg">Monday Digest Generator</span><span class="cl-log-note">audit needed</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">bv-mine</span><span class="cl-log-type unclear">Unclear</span><span class="cl-log-msg">Meeting Miner</span><span class="cl-log-note">audit needed</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">sec-001</span><span class="cl-log-type unclear">Unclear</span><span class="cl-log-msg">Security Daily Scan</span><span class="cl-log-note">audit needed</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash">err-001</span><span class="cl-log-type unclear">Unclear</span><span class="cl-log-msg">Workflow Error Handler</span><span class="cl-log-note">audit needed</span></div>
+        </div>
+      </div>
+
+      <!-- External Integrations -->
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">External Integrations — 17 services</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide header"><span class="cl-log-hash">Status</span><span class="cl-log-type other" style="visibility:hidden">x</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Service</span><span class="cl-log-note">Notes</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Claude API (Anthropic) — claude-sonnet-4-6</span><span class="cl-log-note">AI inference</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">OpenAI Whisper API</span><span class="cl-log-note">Audio transcription</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">GitHub — BothVentures/both_os</span><span class="cl-log-note">PAT next rotate: Jun 10</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Supabase — PostgreSQL + pgvector</span><span class="cl-log-note">12 tables, RLS</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Asana — BOTH Action Items</span><span class="cl-log-note">10 sections, 5 GIDs mapped</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Notion — Ventures DB + Digest</span><span class="cl-log-note">Manual sync Mondays</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Slack — champion DMs</span><span class="cl-log-note">BOTH Mine Bot A0AT72SLV96</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Read.ai — call recording + webhook</span><span class="cl-log-note">Per-user webhook required</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Cloudflare Workers — V2.5</span><span class="cl-log-note">Workers Paid $5/mo</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Google Drive — doc storage</span><span class="cl-log-note">Per-scope shared drives</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Google Calendar — gap detector</span><span class="cl-log-note">OAuth2 admin@both.ventures</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Gmail — investor comms (MCP)</span><span class="cl-log-note">mcp__claude_ai_Gmail__*</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">n8n Cloud — gap detector only</span><span class="cl-log-note">mostly parked</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type pending">Pending</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Recall.ai — alternative transcription</span><span class="cl-log-note">Parser ready, needs API key</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type pending">Pending</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">evolution-api — WhatsApp gateway</span><span class="cl-log-note">Needs Railway deploy</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type pending">Pending</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Railway — evolution-api hosting</span><span class="cl-log-note">Reactivating for WhatsApp</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type other">Local</span></span><span class="cl-log-type" style="display:none"></span><span class="cl-log-msg">Paperclip — BOTH-branded agent UI</span><span class="cl-log-note">Docker only; Railway inactive</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PROJECTS                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="projects">
+    <div class="section-header">
+      <span class="section-label">Projects</span>
+      <span class="section-desc">Living technical builds — projects/</span>
+      <span class="section-count">14 projects</span>
+    </div>
+
+    <div class="agents-grid" style="margin-bottom:var(--s6);">
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">ai-infra</span><div class="agent-body"><div class="agent-name">AI Infrastructure</div><div class="agent-desc">Living documentation of AI stack status and evolution — snapshots, decisions.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip live">Active</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">integrations</span><div class="agent-body"><div class="agent-name">Integrations</div><div class="agent-desc">Main automation hub: Worker, Asana, Notion, GitHub, Slack. See projects/integrations/status.md.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">notion-web</span><div class="agent-body"><div class="agent-name">Notion Web</div><div class="agent-desc">/notion-web skill — Notion → HTML → GitHub Pages.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">html-web</span><div class="agent-body"><div class="agent-name">HTML Web</div><div class="agent-desc">/html-web skill — local HTML file → GitHub Pages.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip rene">Rene</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">lc-paper</span><div class="agent-body"><div class="agent-name">LC Paperclip</div><div class="agent-desc">BOTH-branded Paperclip AI interface. Runs via Docker locally; Railway not active.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip live">Operational</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">calendar</span><div class="agent-body"><div class="agent-name">Calendar Integration</div><div class="agent-desc">Mine gap detector active (every 30 min). Team webhooks + Read.ai bot email pending.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Partial</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">asuntos</span><div class="agent-body"><div class="agent-name">Asuntos Internos</div><div class="agent-desc">Coherence agent (/ai): audits repo structure, CLAUDE.md drift, vault health. Architecture done; not started.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">bv-os-v2</span><div class="agent-body"><div class="agent-name">BV OS V2</div><div class="agent-desc">BOTH-branded Claude chat V0 (Next.js prototype). V1 adds auth + vault integration.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">graphify</span><div class="agent-body"><div class="agent-name">Graphify</div><div class="agent-desc">Interactive vault knowledge graph. Blocked on Python 3.10+.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">bandwidth</span><div class="agent-body"><div class="agent-name">Bandwidth Optimization</div><div class="agent-desc">Weekly /bw report from vault signals. Human + AI capacity monitor. No status.md yet.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">council</span><div class="agent-body"><div class="agent-name">Council of War</div><div class="agent-desc">AI advisory board (/cw): historical identities, fixed lenses, run in parallel vs key decisions.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip gaston">Gaston</span><span class="owner-chip boris">Boris</span><span class="owner-chip pending">Not started</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">telegram</span><div class="agent-body"><div class="agent-name">Telegram Agent</div><div class="agent-desc">Bot for team: vault search, calendar, tasks via Claude tool_use. Code complete but blocked.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip blocked">Blocked</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">lc-os</span><div class="agent-body"><div class="agent-name">La Chamana OS</div><div class="agent-desc">LC_OS_V1 = template exercise, not committed scope. No build until team defines needs.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Boris</span><span class="owner-chip draft">Draft</span></div></div></div>
+    </div>
+
+    <!-- Cleanup Queue -->
+    <div class="section-header" style="margin-bottom:var(--s4);margin-top:var(--s8);border-color:rgba(252,165,165,0.2);">
+      <span class="section-label" style="color:var(--red);">Cleanup Queue</span>
+      <span class="section-desc">Issues from 2026-05-13 audit — execute in next cleanup session</span>
+      <span class="section-count" style="border-color:rgba(252,165,165,0.2);color:var(--red);">13 items</span>
+    </div>
+
+    <div class="cl-log">
+      <div class="cl-log-row header" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-date">Priority</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Item</span><span class="cl-log-note">Action</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">scripts/chamana-bulk-cleanup.py (×3) + chamana-tier1/tier2-updates.py</span><span class="cl-log-note">Archive or delete</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">.env — N8N_WEBHOOK_ASANA variable</span><span class="cl-log-note">Remove — superseded</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">n8n: superseded workflows (cbIQ0Ha4, lHaWYP0h, cRN6KCt3, bv-slack-approval)</span><span class="cl-log-note">Delete from n8n cloud</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">n8n: status unclear workflows (bv-digest, bv-mine, sec-001, err-001)</span><span class="cl-log-note">Audit + delete or document</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">agents/member-onboarding-v0.md — appears empty, no trigger</span><span class="cl-log-note">Assess → archive if placeholder</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">projects/telegram-agent/ — code complete, indefinitely blocked</span><span class="cl-log-note">Park with status: blocked</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">scripts/setup-calendar-watcher.sh — mostly superseded</span><span class="cl-log-note">Deprecate or remove</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">n8n: Calendar Watcher (2VFlynxa06grDbHm) — not needed</span><span class="cl-log-note">Archive in n8n cloud</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">CLAUDE.md stack section — now redundant with this monitor</span><span class="cl-log-note">Trim to pointer + link</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type low">Low</span><span class="cl-log-msg">projects/ missing status.md (ai-infra, bandwidth, council, lc-os, lc-paperclip)</span><span class="cl-log-note">Add status.md to each</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type low">Low</span><span class="cl-log-msg">Oracle Council agents — confirm archive status is clear to team</span><span class="cl-log-note">Verify CLAUDE.md note</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type low">Low</span><span class="cl-log-msg">Team Read.ai webhook registration (Gaston, Rene, Daiana, Andres)</span><span class="cl-log-note">Update to Worker URL</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type low">Low</span><span class="cl-log-msg">GitHub PAT renewal reminder — next rotation: 2026-06-10</span><span class="cl-log-note">wrangler secret put GITHUB_PAT</span></div>
+    </div>
+
+    <!-- Recent Changelog -->
+    <div style="margin-top:var(--s8);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Recent Commits</span></div>
+      <div class="cl-stats">
+        <div class="cl-stat"><div class="cl-stat-label">Skills</div><div class="cl-stat-value">17</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Agents</div><div class="cl-stat-value">20</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Ventures</div><div class="cl-stat-value">09</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Worker</div><div class="cl-stat-value" style="font-size:20px;">V2.5</div></div>
+      </div>
+      <div class="cl-log">
+        <div class="cl-log-row header"><span class="cl-log-date">Date</span><span class="cl-log-hash">Hash</span><span class="cl-log-type other">Type</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Description</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 13</span><span class="cl-log-hash">1368e6e</span><span class="cl-log-type publish">publish</span><span class="cl-log-msg">Synergy System Map → GitHub Pages [both-brand]</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 13</span><span class="cl-log-hash">f19775a</span><span class="cl-log-type vault">vault</span><span class="cl-log-msg">vault(areas): synergy-system-map.md — full audit committed</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 13</span><span class="cl-log-hash">3059e2a</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">worker: V2.6 — auth hardening + channel posts + error visibility</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 12</span><span class="cl-log-hash">fddce3b</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">worker: V2.5 — WhatsApp endpoint + Recall.ai parser + daily cron</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 12</span><span class="cl-log-hash">8dd8fcf</span><span class="cl-log-type vault">vault</span><span class="cl-log-msg">vault(decisions): whatsapp-integration-active — pipeline live</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 06</span><span class="cl-log-hash">various</span><span class="cl-log-type vault">vault</span><span class="cl-log-msg">La Chamana GTM — full team session: 7 decisions, 5 risks mined</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Apr 27</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">worker: V2.4 — full auto-vault writes (decisions, risks, ventures)</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Apr 25</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">worker: V2.0-V2.2 — n8n removed, direct Asana push, champion routing</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Apr 20</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">/md-web skill + weekly-digest theme — weekly digest pipeline complete</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Apr 18</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">/startup + /upc skills + /transcribe — daily session loop complete</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-live"><div class="status-dot"></div><span>Live</span></div>
+  <span class="status-sep">·</span>
+  <span>Monitor V2 · May 13</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">17</span> skills</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">20</span> agents</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">9</span> ventures</span>
+  <span class="status-sep">·</span>
+  <span>Worker <span class="status-val">V2.5</span></span>
+  <span class="status-sep">·</span>
+  <span>SYNERGY</span>
+  <span class="status-sep">·</span>
+  <span>Q-02.26</span>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const tabs = document.querySelectorAll('.nav-tab');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+tabs.forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(tab.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOTH // INTEL-PILL-001 // RESHORE — CAPITAL ROUND INTELLIGENCE</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #080A08;
+    --bg-1:        #0D100D;
+    --bg-2:        #111411;
+    --bg-3:        #161916;
+    --border:      #1E231E;
+    --border-2:    #252B25;
+    --green:       #3DFF6E;
+    --green-dim:   #1A7A33;
+    --green-muted: #0F4A1F;
+    --green-glow:  rgba(61,255,110,0.06);
+    --amber:       #FFB84D;
+    --amber-dim:   #7A5220;
+    --red:         #FF4D4D;
+    --red-dim:     #7A2020;
+    --red-accent:  #CC2222;
+    --text:        #C8D4C8;
+    --text-2:      #8A9E8A;
+    --text-3:      #506050;
+    --text-4:      #2E3A2E;
+    --white:       #E8F0E8;
+    --scanline:    rgba(0,0,0,0.08);
+    --mono:        'IBM Plex Mono', monospace;
+    --sans:        'IBM Plex Sans', sans-serif;
+  }
+
+  html.light {
+    --bg:          #F2F0E8;
+    --bg-1:        #ECEAE0;
+    --bg-2:        #E4E2D8;
+    --bg-3:        #DEDAD0;
+    --border:      #CCCAB8;
+    --border-2:    #C0BEA8;
+    --green:       #1A6E32;
+    --green-dim:   #2A8A44;
+    --green-muted: #C8E8CE;
+    --green-glow:  rgba(26,110,50,0.06);
+    --amber:       #8A5A10;
+    --amber-dim:   #B87820;
+    --red:         #A02020;
+    --red-dim:     #C84040;
+    --red-accent:  #CC2222;
+    --text:        #2C342C;
+    --text-2:      #506050;
+    --text-3:      #8A9A8A;
+    --text-4:      #B0C0B0;
+    --white:       #141A14;
+    --scanline:    rgba(0,0,0,0.025);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      var(--scanline) 2px,
+      var(--scanline) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .glow { text-shadow: 0 0 8px rgba(61,255,110,0.4); }
+  html.light .glow { text-shadow: none; }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1px solid var(--border-2);
+    color: var(--text-3);
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--green); border-color: var(--green-dim); }
+
+  .terminal { max-width: 960px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .sys-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.25s ease, border-color 0.25s ease;
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -40px;
+  }
+  .sys-bar-left { display: flex; align-items: center; gap: 24px; }
+  .sys-id { color: var(--green); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; }
+  .sys-sep { color: var(--text-3); }
+  .sys-path { color: var(--text-3); font-size: 11px; }
+  .sys-right { display: flex; align-items: center; gap: 20px; }
+  .sys-status { font-size: 10px; color: var(--text-3); letter-spacing: 0.1em; }
+  .status-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* RESHORE IDENTITY STRIPE */
+  .reshore-stripe {
+    background: var(--red-accent);
+    padding: 6px 40px;
+    margin: 0 -40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .reshore-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: #fff;
+  }
+  .reshore-tagline { font-size: 10px; color: rgba(255,255,255,0.7); letter-spacing: 0.1em; }
+
+  .boot { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .boot-lines { margin-bottom: 48px; }
+  .boot-line { color: var(--text-3); font-size: 11px; letter-spacing: 0.08em; line-height: 2; }
+  .boot-line.active { color: var(--green-dim); }
+  .boot-line .ok { color: var(--green); margin-right: 8px; }
+  .boot-line .warn { color: var(--amber); margin-right: 8px; }
+  .boot-line .err { color: var(--red); margin-right: 8px; }
+
+  .doc-class {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--red-dim);
+    background: rgba(255,77,77,0.05);
+    padding: 4px 12px; margin-bottom: 32px;
+  }
+  .doc-class-label { color: var(--red); font-size: 10px; font-weight: 600; letter-spacing: 0.25em; }
+
+  .doc-title {
+    font-family: var(--mono); font-weight: 300;
+    font-size: clamp(22px, 3.5vw, 36px);
+    color: var(--white); line-height: 1.25;
+    letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .doc-title .hl { color: var(--green); font-weight: 400; }
+  .doc-title .red { color: var(--red); font-weight: 400; }
+  .doc-title .dim { color: var(--text-2); }
+
+  .doc-subtitle {
+    color: var(--text-2); font-size: 13px; font-weight: 300;
+    max-width: 560px; line-height: 1.7; margin-top: 16px;
+  }
+
+  .meta-block {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 48px; border: 1px solid var(--border);
+  }
+  .meta-cell { padding: 16px 20px; border-right: 1px solid var(--border); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-key { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-val { font-size: 12px; color: var(--text); font-weight: 400; }
+  .meta-val.green { color: var(--green); }
+  .meta-val.amber { color: var(--amber); }
+  .meta-val.red { color: var(--red); }
+
+  .toc-block { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .cmd-prompt { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--text-3); font-size: 12px; }
+  .cmd-prompt .ps { color: var(--green); }
+  .cmd-prompt .cmd { color: var(--white); }
+  .toc-row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    text-decoration: none; color: var(--text-2);
+    transition: color 0.15s; font-size: 12px;
+  }
+  .toc-row:hover { color: var(--green); }
+  .toc-row:hover .toc-n { color: var(--green); }
+  .toc-n { color: var(--text-3); width: 32px; flex-shrink: 0; font-size: 11px; }
+  .toc-dots { flex: 1; border-bottom: 1px dotted var(--border-2); margin-bottom: 3px; }
+  .toc-pg { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+
+  .section { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .section-head { display: flex; align-items: flex-start; gap: 0; margin-bottom: 40px; }
+  .section-bracket { color: var(--green-dim); font-size: 12px; margin-right: 4px; margin-top: 1px; }
+  .section-id { color: var(--text-3); font-size: 11px; letter-spacing: 0.15em; margin-right: 16px; margin-top: 2px; flex-shrink: 0; width: 56px; }
+  .section-title-wrap { flex: 1; }
+  .section-tag { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-family: var(--mono); font-weight: 300; font-size: clamp(18px, 2.5vw, 26px); color: var(--white); line-height: 1.3; }
+  .section-title .hl { color: var(--green); }
+  .section-title .red { color: var(--red); }
+
+  .body-text { font-size: 13px; line-height: 1.85; color: var(--text); margin-bottom: 20px; max-width: 760px; font-weight: 300; }
+  .body-text strong { color: var(--white); font-weight: 500; }
+  .body-text em { color: var(--text-2); font-style: italic; }
+
+  .callout { margin: 32px 0; padding: 20px 24px; background: var(--bg-2); border-left: 2px solid var(--green-dim); max-width: 760px; }
+  .callout p { font-size: 14px; line-height: 1.75; color: var(--text); font-style: italic; font-weight: 300; }
+  .callout cite { display: block; margin-top: 10px; font-size: 10px; letter-spacing: 0.12em; color: var(--text-3); font-style: normal; }
+
+  .callout.red { border-left-color: var(--red-dim); }
+  .callout.amber { border-left-color: var(--amber-dim); }
+
+  /* STAT GRID */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin: 32px 0; border: 1px solid var(--border); max-width: 760px; }
+  .stat-cell { padding: 24px 20px; border-right: 1px solid var(--border); }
+  .stat-cell:last-child { border-right: none; }
+  .stat-num { font-size: 32px; font-weight: 300; color: var(--white); line-height: 1; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .stat-unit { font-size: 18px; color: var(--green); }
+  .stat-label { font-size: 11px; color: var(--text-3); line-height: 1.55; max-width: 160px; }
+
+  .stat-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 32px 0; border: 1px solid var(--border); max-width: 760px; }
+  .stat-grid-4 .stat-cell { border-right: 1px solid var(--border); }
+  .stat-grid-4 .stat-cell:last-child { border-right: none; }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; max-width: 760px; border-collapse: collapse; margin: 32px 0; font-size: 12px; }
+  .data-table th { text-align: left; padding: 8px 16px; font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; border-bottom: 1px solid var(--border); font-weight: 400; }
+  .data-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  .td-key { color: var(--white); font-weight: 500; white-space: nowrap; padding-right: 24px; }
+
+  .tag-green { background: var(--green-muted); color: var(--green); font-size: 9px; letter-spacing: 0.15em; padding: 2px 8px; display: inline-block; }
+  .tag-amber { background: rgba(255,184,77,0.08); color: var(--amber); font-size: 9px; letter-spacing: 0.15em; padding: 2px 8px; display: inline-block; }
+  .tag-red { background: rgba(255,77,77,0.08); color: var(--red); font-size: 9px; letter-spacing: 0.15em; padding: 2px 8px; display: inline-block; }
+  .tag-dim { background: var(--bg-3); color: var(--text-3); font-size: 9px; letter-spacing: 0.15em; padding: 2px 8px; display: inline-block; }
+
+  /* INVESTOR CARD GRID */
+  .investor-list { max-width: 760px; margin: 32px 0; }
+  .inv-card { border: 1px solid var(--border); margin-bottom: -1px; padding: 20px; background: var(--bg-1); transition: background 0.2s; }
+  .inv-card:hover { background: var(--bg-2); }
+  .inv-card.highlight { border-color: var(--green-dim); background: var(--green-muted); }
+  .inv-card.highlight:hover { background: rgba(61,255,110,0.1); }
+  .inv-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .inv-id { font-size: 10px; color: var(--text-3); letter-spacing: 0.15em; flex-shrink: 0; }
+  .inv-name { font-size: 14px; color: var(--white); font-weight: 500; }
+  .inv-geo { font-size: 11px; color: var(--text-3); margin-left: auto; }
+  .inv-meta { font-size: 11px; color: var(--text-3); margin-bottom: 10px; }
+  .inv-thesis { font-size: 12px; color: var(--text); line-height: 1.7; margin-bottom: 12px; font-weight: 300; }
+  .inv-thesis strong { color: var(--green); font-weight: 500; }
+  .inv-footer { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .inv-fit { font-size: 10px; color: var(--text-3); letter-spacing: 0.1em; }
+  .fit-bar { display: inline-flex; gap: 3px; margin-left: 6px; }
+  .dot-f { width: 6px; height: 6px; border-radius: 50%; background: var(--green); display: inline-block; }
+  .dot-e { width: 6px; height: 6px; border-radius: 50%; background: var(--border-2); display: inline-block; }
+
+  /* RISK TABLE */
+  .risk-list { max-width: 760px; margin: 32px 0; }
+  .risk-row { display: grid; grid-template-columns: 180px 1fr 80px; gap: 0; border-bottom: 1px solid var(--border); }
+  .risk-row-head { display: grid; grid-template-columns: 180px 1fr 80px; gap: 0; border-bottom: 1px solid var(--border); padding: 6px 0; }
+  .risk-col { padding: 12px 16px; font-size: 12px; }
+  .risk-col-h { padding: 6px 16px; font-size: 9px; color: var(--text-3); letter-spacing: 0.2em; text-transform: uppercase; }
+  .risk-name { color: var(--white); font-weight: 500; }
+  .risk-body { color: var(--text); font-weight: 300; line-height: 1.6; }
+
+  /* RECOMMENDATION BLOCK */
+  .rec-block {
+    position: relative; border: 1px solid var(--green-dim);
+    background: var(--green-muted); padding: 28px 24px;
+    max-width: 760px; margin: 40px 0;
+  }
+  .rec-block::before {
+    content: '// STRATEGIC DIRECTIVE';
+    position: absolute; top: -1px; left: 20px;
+    background: var(--bg-1); padding: 0 8px;
+    font-size: 9px; color: var(--green-dim);
+    letter-spacing: 0.2em; transform: translateY(-50%);
+    transition: background 0.25s ease;
+  }
+  html.light .rec-block::before { background: var(--bg-1); }
+  .rec-block p { font-size: 14px; line-height: 1.85; color: var(--text); font-weight: 300; }
+  .rec-block strong { color: var(--green); font-weight: 500; }
+
+  /* SIGNAL GRID */
+  .signal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; max-width: 760px; margin: 32px 0; border: 1px solid var(--border); }
+  .signal-cell { padding: 20px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .signal-cell:nth-child(2n) { border-right: none; }
+  .signal-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .signal-head { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 8px; }
+  .signal-val { font-size: 13px; color: var(--text); line-height: 1.65; font-weight: 300; }
+  .signal-val strong { color: var(--white); font-weight: 500; }
+
+  /* BULLET LIST */
+  ul.t-list { list-style: none; margin: 20px 0; max-width: 760px; }
+  ul.t-list li { display: flex; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 12px; color: var(--text); line-height: 1.65; }
+  ul.t-list li::before { content: '>'; color: var(--green-dim); flex-shrink: 0; padding-top: 1px; font-weight: 500; }
+  ul.t-list li strong { color: var(--white); font-weight: 500; }
+  ul.t-list.red li::before { color: var(--red-dim); }
+  ul.t-list.amber li::before { color: var(--amber-dim); }
+
+  /* TIMELINE */
+  .timeline { max-width: 760px; margin: 32px 0; }
+  .tl-row { display: grid; grid-template-columns: 100px 1fr; gap: 0; border-bottom: 1px solid var(--border); }
+  .tl-week { padding: 14px 16px; font-size: 11px; color: var(--green); letter-spacing: 0.1em; border-right: 1px solid var(--border); }
+  .tl-content { padding: 14px 20px; }
+  .tl-title { font-size: 12px; color: var(--white); font-weight: 500; margin-bottom: 4px; }
+  .tl-body { font-size: 12px; color: var(--text-2); line-height: 1.6; font-weight: 300; }
+
+  /* FOOTER */
+  .doc-footer { padding: 40px 0 60px; display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--border); }
+  .df-left { color: var(--text-3); font-size: 10px; line-height: 2; letter-spacing: 0.08em; }
+  .df-left .df-id { color: var(--green-dim); }
+  .df-right { text-align: right; color: var(--text-3); font-size: 10px; line-height: 2; }
+
+  code { background: var(--bg-2); border: 1px solid var(--border); padding: 1px 6px; font-size: 11px; color: var(--amber); }
+
+  .cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); margin-left: 2px; vertical-align: middle; animation: blink 1.1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  @media (max-width: 640px) {
+    .terminal { padding: 0 20px 60px; }
+    .sys-bar { padding: 10px 20px; margin: 0 -20px; }
+    .reshore-stripe { padding: 6px 20px; margin: 0 -20px; }
+    .meta-block { grid-template-columns: 1fr 1fr; }
+    .stat-grid { grid-template-columns: 1fr; }
+    .stat-grid-4 { grid-template-columns: 1fr 1fr; }
+    .signal-grid { grid-template-columns: 1fr; }
+    .signal-cell { border-right: none; }
+    .toc-dots { display: none; }
+    .inv-geo { display: none; }
+    .risk-row { grid-template-columns: 1fr; }
+    .risk-row-head { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SYS BAR -->
+<div class="sys-bar">
+  <div class="sys-bar-left">
+    <span class="sys-id glow">BOTH//INTEL</span>
+    <span class="sys-sep">/</span>
+    <span class="sys-path">ventures / reshore / INTELL-PILL-001</span>
+  </div>
+  <div class="sys-right">
+    <span class="sys-status"><span class="status-dot"></span>SESSION ACTIVE</span>
+    <span class="sys-status">2026-04-01</span>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+      <span class="toggle-icon" id="toggleIcon">◐</span>
+      <span id="toggleLabel">LIGHT</span>
+    </button>
+  </div>
+</div>
+
+<!-- RESHORE RED STRIPE -->
+<div class="reshore-stripe">
+  <span class="reshore-badge">◀ RESHORE ▶</span>
+  <span class="reshore-tagline">THE TRUSTED OPERATING SYSTEM FOR TRADE IN THE AMERICAS</span>
+</div>
+
+<div class="terminal">
+
+  <!-- BOOT -->
+  <div class="boot">
+    <div class="boot-lines">
+      <div class="boot-line"><span class="ok">[OK]</span> BOTH Intelligence Program — secure session initialized</div>
+      <div class="boot-line"><span class="ok">[OK]</span> venture file loaded — Reshore / portfolio ID RS-001</div>
+      <div class="boot-line"><span class="ok">[OK]</span> source corpus verified — landing page audit, fundraising strategy, market research, BOTH doctrine</div>
+      <div class="boot-line"><span class="ok">[OK]</span> existing investors confirmed — Latitud VC, Both_Ventures</div>
+      <div class="boot-line active"><span class="warn">[!]</span> round status: active — $2–4M seed extension in process</div>
+      <div class="boot-line"><span class="err">[!]</span> this document is restricted — BOTH principals + Reshore founding team only</div>
+    </div>
+
+    <div class="doc-class">
+      <span class="doc-class-label">// restricted — internal //</span>
+    </div>
+
+    <h1 class="doc-title">
+      <span class="dim">INTELL-PILL-001 //</span><br>
+      <span class="red">Reshore</span> — <span class="hl">Capital Round</span><br>
+      Strategic Intelligence &amp; Execution Framework<span class="cursor"></span>
+    </h1>
+    <p class="doc-subtitle">A full-stack intelligence assessment of Reshore's current capital raise: market dynamics, structural positioning, investor targeting, narrative architecture, and a 90-day execution protocol — synthesized for BOTH portfolio decision-making and founder operational use.</p>
+
+    <div class="meta-block">
+      <div class="meta-cell">
+        <div class="meta-key">doc_id</div>
+        <div class="meta-val green">INTELL-PILL-001</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">venture</div>
+        <div class="meta-val">Reshore / RS-001</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">round target</div>
+        <div class="meta-val amber">$2M — $4M</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">issued</div>
+        <div class="meta-val">2026-04-01</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-block">
+    <div class="cmd-prompt">
+      <span class="ps">$</span>
+      <span class="cmd">cat index.md</span>
+    </div>
+    <div class="toc-list">
+      <a href="#s1" class="toc-row"><span class="toc-n">01</span><span>The Macro Case — Why Now Is Real</span><span class="toc-dots"></span><span class="toc-pg">§01</span></a>
+      <a href="#s2" class="toc-row"><span class="toc-n">02</span><span>What Reshore Is — Structural Assessment</span><span class="toc-dots"></span><span class="toc-pg">§02</span></a>
+      <a href="#s3" class="toc-row"><span class="toc-n">03</span><span>Fundraising Environment — Honest Read</span><span class="toc-dots"></span><span class="toc-pg">§03</span></a>
+      <a href="#s4" class="toc-row"><span class="toc-n">04</span><span>Investor Target Matrix</span><span class="toc-dots"></span><span class="toc-pg">§04</span></a>
+      <a href="#s5" class="toc-row"><span class="toc-n">05</span><span>Narrative Architecture</span><span class="toc-dots"></span><span class="toc-pg">§05</span></a>
+      <a href="#s6" class="toc-row"><span class="toc-n">06</span><span>Round Structure &amp; Milestones</span><span class="toc-dots"></span><span class="toc-pg">§06</span></a>
+      <a href="#s7" class="toc-row"><span class="toc-n">07</span><span>Risk Register</span><span class="toc-dots"></span><span class="toc-pg">§07</span></a>
+      <a href="#s8" class="toc-row"><span class="toc-n">08</span><span>90-Day Execution Protocol</span><span class="toc-dots"></span><span class="toc-pg">§08</span></a>
+      <a href="#s9" class="toc-row"><span class="toc-n">09</span><span>Strategic Directive</span><span class="toc-dots"></span><span class="toc-pg">§09</span></a>
+    </div>
+  </div>
+
+  <!-- S1: MACRO CASE -->
+  <div id="s1" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 01</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// market assessment</div>
+        <h2 class="section-title">The Macro Case —<br><span class="hl">Why Now Is Real</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The structural conditions for Reshore's thesis are not cyclical. They are the product of <strong>four simultaneous, reinforcing forces</strong> that have been building since 2018 and have now reached a point where companies must act — not plan, not evaluate — act. The window for positioning is open. It will not remain open indefinitely.</p>
+
+    <p class="body-text">The US-China decoupling is no longer a policy debate. It is an operational reality. Tariffs on Chinese goods now exceed <strong>55%</strong> on many product categories. The result: a company manufacturing in China for US consumption is paying a structural tax that cannot be engineered away. The only solution is geographic.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">$315<span class="stat-unit">B</span></div>
+        <div class="stat-label">Projected additional US–Mexico trade by 2033 (BCG, 4% CAGR)</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">55<span class="stat-unit">%</span></div>
+        <div class="stat-label">Effective US tariff on broad Chinese goods categories, 2026</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">100<span class="stat-unit">+d</span></div>
+        <div class="stat-label">Average lead time from China vs. 2-day ground delivery from Mexico</div>
+      </div>
+    </div>
+
+    <p class="body-text">Mexico's structural position is strengthening. Its share of US imports is projected to grow from <strong>16.4% to 19% by 2028</strong> (COMCE). The USMCA review in 2026 is creating both urgency and noise — companies need to move now before renegotiation introduces new uncertainty. Reshore operates precisely in this transition window.</p>
+
+    <div class="callout">
+      <p>"Only 20% of companies plan full reshoring to the US, making Mexico the more cost-efficient alternative."</p>
+      <cite>— Bank of America Global Research, 2025</cite>
+    </div>
+
+    <p class="body-text">The nearshoring wave is real but <strong>structurally disorganized</strong>. Over $170B in FDI commitments to Mexico were announced in the last 18 months. But only 13% was new greenfield investment. The rest was reinvestment or acquisitions — companies moving carefully, not boldly. What they need is infrastructure for trust, discovery, and execution. That infrastructure does not yet exist at scale. That gap is Reshore.</p>
+
+    <div class="signal-grid">
+      <div class="signal-cell">
+        <div class="signal-head">// demand signal</div>
+        <div class="signal-val"><strong>84%</strong> of retail supply chain leaders report difficulty aligning IT infrastructure for nearshore multinode fulfillment (WSI/TrendCandy, 2025)</div>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-head">// structural shift signal</div>
+        <div class="signal-val">Mexico + Taiwan both eclipsed China as top sources of US advanced technology product imports in 2025 (US Census Bureau)</div>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-head">// policy signal</div>
+        <div class="signal-head" style="margin-top:12px;">// investment signal</div>
+        <div class="signal-val"><strong>Mexico's EMS market</strong> projected to grow from $53.2B (2025) to $97.4B by 2031 — CAGR 10.6%</div>
+      </div>
+      <div class="signal-cell">
+        <div class="signal-head">// competitive signal</div>
+        <div class="signal-val">No platform yet owns the end-to-end reshoring OS layer. Nuvocargo (logistics), Solvento (payments), Flexport (freight) solve adjacent problems. <strong>The coordination layer is unclaimed.</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: WHAT RESHORE IS -->
+  <div id="s2" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 02</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// venture assessment</div>
+        <h2 class="section-title">What Reshore Is —<br><span class="hl">Structural Assessment</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Reshore is not a supplier directory. It is not a logistics company. It is not a sourcing agent with software. It is — structurally — an <strong>operating system for trust and commerce in Americas manufacturing</strong>. That distinction is the investment thesis. The category has never been built. The conditions for building it exist now.</p>
+
+    <p class="body-text">The product architecture reflects this: three interconnected modules (Reshore / Buy / Manufacture), a proprietary 7-step relocation protocol, embedded escrow and financing, and an Intelligence Core that compounds with every transaction. This is not a feature set. It is a learning system — the more it is used, the harder it becomes to replicate.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>product layer</th>
+          <th>function</th>
+          <th>moat dimension</th>
+          <th>status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-key">Reshoring Protocol</td>
+          <td>7-step coordinated relocation — machines, tooling, suppliers, assembly. Proprietary branded framework.</td>
+          <td>Proprietary methodology + first-mover brand</td>
+          <td><span class="tag-green">operational</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">Buyer Copilot</td>
+          <td>AI-powered sourcing: text/image to structured RFQ, manufacturer matching, transaction management.</td>
+          <td>Data flywheel — improves with each RFQ</td>
+          <td><span class="tag-green">operational</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">Manufacturer Command Center</td>
+          <td>RFQ pipeline, quote builder, production tracker, payment infrastructure for Mexican manufacturers.</td>
+          <td>Switching cost — ops embedded in platform</td>
+          <td><span class="tag-green">operational</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">Intelligence Core</td>
+          <td>Cross-transaction AI learning: pricing accuracy, supplier matching, QA prediction, fraud detection.</td>
+          <td>Proprietary dataset — structurally unique</td>
+          <td><span class="tag-amber">maturing</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">Embedded Finance</td>
+          <td>Smart escrow, automated milestone releases, early pay and net-30 for both sides of the market.</td>
+          <td>Revenue multiplier + retention driver</td>
+          <td><span class="tag-amber">active</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="body-text">The correct mental model for this platform is not "marketplace" — it is <strong>infrastructure</strong>. Stripe built the payment trust layer for e-commerce. Reshore is building the sourcing and production trust layer for Americas manufacturing. That reframe changes the valuation model, the investor thesis, and the exit story.</p>
+
+    <div class="callout">
+      <p>The founding team has operated sourcing systems at Alibaba and Mercado Libre. They have seen this model built at scale — for a different geography. They are now building it for the geography that geopolitics has made necessary. The structural insight is direct and earned.</p>
+    </div>
+
+    <div class="stat-grid-4">
+      <div class="stat-cell">
+        <div class="stat-num" style="font-size:22px;">Latitud</div>
+        <div class="stat-label">VC — existing backer — validates LatAm thesis</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" style="font-size:22px;">BOTH</div>
+        <div class="stat-label">Ventures — existing backer — structural design + intelligence</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" style="font-size:22px;">6K<span class="stat-unit">+</span></div>
+        <div class="stat-label">Maquiladora manufacturers in Reshore's addressable supply network</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num" style="font-size:22px;">$5–100<span class="stat-unit">M</span></div>
+        <div class="stat-label">Primary ICP — US manufacturers by revenue currently sourcing from China</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3: FUNDING ENVIRONMENT -->
+  <div id="s3" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 03</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// capital environment</div>
+        <h2 class="section-title">Fundraising Environment —<br><span class="hl">Honest Read</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">LatAm venture is in recovery. 2025 saw a <strong>14.3% increase in total funding</strong> ($4.1B across seed through growth), the first significant rebound after three years of correction. But the recovery is structural, not speculative. Capital has returned — but on fundamentally different terms.</p>
+
+    <p class="body-text">The dominant dynamic: <strong>capital is priced on execution, not narrative</strong>. The 2021 model — vision-first, traction-secondary — no longer works. Investors are running shorter conviction cycles, demanding evidence of repeatability, and requiring governance clarity before committing. For Reshore, this means the pitch must lead with proof, not potential.</p>
+
+    <div class="callout class amber">
+      <p>"Capital availability has recovered, but it is driven by execution quality and governance maturity, rather than by growth narratives alone. Fewer speculative bets, greater concentration around performing companies with a proven business model."</p>
+      <cite>— LatamList Venture in LatAm Enters 2026, Feb 2026</cite>
+    </div>
+
+    <p class="body-text">The specific advantage for Reshore: it sits at the intersection of two investment theses that are both active in the current market — <strong>supply chain / industrial tech</strong> (US-focused, with Dynamo Fund III freshly deployed) and <strong>LatAm B2B infrastructure</strong> (NXTP Fund III at $98M, Magma active, 500 LatAm bullish on Mexico). Few companies can credibly claim both. Reshore can.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>factor</th>
+          <th>direction</th>
+          <th>implication for reshore</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-key">LatAm VC volume</td>
+          <td>↑ +14.3% in 2025</td>
+          <td><span class="tag-green">positive</span> — capital is available, especially at seed/early</td>
+        </tr>
+        <tr>
+          <td class="td-key">Investor filters</td>
+          <td>Execution-first, proof-required</td>
+          <td><span class="tag-amber">neutral</span> — requires traction proof before major rounds; addressable with pilots</td>
+        </tr>
+        <tr>
+          <td class="td-key">US supply chain VC</td>
+          <td>Active — Dynamo Fund III just closed</td>
+          <td><span class="tag-green">positive</span> — Dynamo explicitly published Reshore's thesis as their RFS</td>
+        </tr>
+        <tr>
+          <td class="td-key">Mexico tariff uncertainty</td>
+          <td>USMCA review 2026, tariff volatility</td>
+          <td><span class="tag-amber">manageable</span> — requires direct handling in pitch; Reshore wins in both tariff scenarios</td>
+        </tr>
+        <tr>
+          <td class="td-key">Follow-on readiness</td>
+          <td>Existing investors (Latitud, BOTH)</td>
+          <td><span class="tag-green">positive</span> — follow-on signal from existing investors unlocks most new investor conversations</td>
+        </tr>
+        <tr>
+          <td class="td-key">Corporate VC expansion</td>
+          <td>CVCs active in LatAm industrial by late 2025</td>
+          <td><span class="tag-green">positive</span> — strategic capital pathway via Mexican industrial groups (FINSA, OHT)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- S4: INVESTOR MATRIX -->
+  <div id="s4" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 04</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// target intelligence</div>
+        <h2 class="section-title">Investor <span class="hl">Target Matrix</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The investor target list is filtered for three criteria simultaneously: <strong>thesis alignment</strong> (does nearshore manufacturing / B2B supply chain trade infrastructure sit inside their published mandate?), <strong>check size fit</strong> ($250K–$2M range for the current round), and <strong>network value</strong> (what does this investor unlock beyond capital?). Warm intro paths are noted where they exist.</p>
+
+    <div class="investor-list">
+
+      <div class="inv-card highlight">
+        <div class="inv-head">
+          <span class="inv-id">T1-001</span>
+          <span class="inv-name">Dynamo Ventures</span>
+          <span class="tag-green">LEAD CANDIDATE</span>
+          <span class="inv-geo">Chattanooga, TN</span>
+        </div>
+        <div class="inv-meta">Pre-seed / Seed · $500K–$2.5M checks · Fund III $54M closed May 2025 · North America + LatAm + Europe</div>
+        <div class="inv-thesis">Their published <strong>Request for Startups explicitly identifies this thesis</strong>: "We see a similar opportunity to connect Mexico's fragmented manufacturing sector, where 90% of manufacturers are SMBs struggling to attract large customers." They name the maquiladora system, nearshoring trends, and adjacent working capital and insurance plays as priority targets. Reshore is the answer to their stated question. Fund III just closed — they are actively deploying.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">thesis fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span></span></span>
+          <span class="inv-fit">check fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <span class="tag-green">warm intro via Latitud</span>
+          <code>info@dynamo.vc</code>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T1-002</span>
+          <span class="inv-name">NXTP Ventures</span>
+          <span class="tag-green">TIER 1</span>
+          <span class="inv-geo">Buenos Aires / Mexico City</span>
+        </div>
+        <div class="inv-meta">Pre-seed to Series A · $500K–$3M checks · Fund III $98M · B2B Marketplaces + Logistics</div>
+        <div class="inv-thesis">LatAm's premier B2B-focused early fund. Backed logistics unicorns Cobli, Frete.com. Explicit focus on B2B Marketplaces and logistics infrastructure. Co-invests alongside a16z, Greylock, Tiger Global — presence in Reshore's cap table increases Series A optionality significantly.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">thesis fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <span class="tag-green">warm intro via Latitud</span>
+          <code>nxtp.vc</code>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T1-003</span>
+          <span class="inv-name">Latitud VC</span>
+          <span class="tag-amber">FOLLOW-ON PRIORITY</span>
+          <span class="inv-geo">São Paulo / Pan-LatAm</span>
+        </div>
+        <div class="inv-meta">Existing investor · Follow-on / pro-rata signal required</div>
+        <div class="inv-thesis">Securing Latitud's follow-on participation or written support statement is the <strong>single highest-priority pre-round action</strong>. In a proof-first market, existing investor follow-on is the strongest possible signal for new investors. Without it, the round opens with a credibility gap. With it, Tier 1 conversations open immediately.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">signal value <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span></span></span>
+          <span class="tag-red">secure before outreach to others</span>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T2-001</span>
+          <span class="inv-name">FJ Labs</span>
+          <span class="tag-dim">TIER 2</span>
+          <span class="inv-geo">NYC / Global</span>
+        </div>
+        <div class="inv-meta">Seed to Series A · $100K–$500K · World's most active marketplace investor · 48-hour decisions</div>
+        <div class="inv-thesis">FJ Labs backs B2B marketplaces with embedded fintech globally. Co-invested with Magma and NXTP in multiple LatAm rounds. Reshore's model — marketplace + escrow + embedded financing + data flywheel — is their thesis. Known for fast processes.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">thesis fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <code>fjlabs.com</code>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T2-002</span>
+          <span class="inv-name">Magma Partners</span>
+          <span class="tag-dim">TIER 2</span>
+          <span class="inv-geo">Santiago / Mexico City / Miami</span>
+        </div>
+        <div class="inv-meta">Seed to Series A · B2B marketplaces, logistics, fintech · Backed Nuvocargo (US-Mexico logistics, $36.5M)</div>
+        <div class="inv-thesis">Direct precedent: Magma backed Nuvocargo — cross-border US-Mexico logistics digitization — which raised $36.5M led by QED. Reshore is an adjacent and more comprehensive play. High thesis alignment. Nathan Lustig is the relevant partner.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">thesis fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <code>magmapartners.com</code>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T2-003</span>
+          <span class="inv-name">ALLVP</span>
+          <span class="tag-dim">TIER 2</span>
+          <span class="inv-geo">Mexico City</span>
+        </div>
+        <div class="inv-meta">Seed to Series A · Mexico-native B2B tech + logistics · Deep Mexican corporate network</div>
+        <div class="inv-thesis">Mexico's leading early-stage VC with deep relationships in Mexican manufacturing and supply chain. Their network directly accelerates manufacturer onboarding on Reshore's supply side — a structural advantage beyond capital.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">thesis fit <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <code>allvp.vc</code>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T3-001</span>
+          <span class="inv-name">Supply chain operator angels</span>
+          <span class="tag-dim">TIER 3</span>
+          <span class="inv-geo">US / Global</span>
+        </div>
+        <div class="inv-meta">$25K–$200K individual checks · Former CPOs/VPs at Walmart Sourcing, Amazon APAC, Li &amp; Fung, Nike Mfg, Hasbro, Mattel</div>
+        <div class="inv-thesis">Operator angels who have lived the exact pain Reshore solves. Their presence on the cap table is a trust signal to institutional investors — it de-risks the product thesis. Target via LinkedIn. Priority: secure 2–3 recognizable names before institutional close.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">signal value <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-e"></span></span></span>
+          <span class="tag-amber">LinkedIn outreach</span>
+        </div>
+      </div>
+
+      <div class="inv-card">
+        <div class="inv-head">
+          <span class="inv-id">T3-002</span>
+          <span class="inv-name">Mexican industrial family offices</span>
+          <span class="tag-dim">TIER 3 / STRATEGIC</span>
+          <span class="inv-geo">Monterrey / Guadalajara / CDMX</span>
+        </div>
+        <div class="inv-meta">$250K–$1M+ checks · Industrial park operators: FINSA, OHT, Vesta · Highest-quality strategic capital</div>
+        <div class="inv-thesis">Groups that own or operate manufacturing parks have direct incentive to back Reshore as both investors and supply-side distribution partners. Their checks are larger, their network is the platform's supply side, and their participation signals deep operational legitimacy. Not a standard VC path — but potentially the most strategically valuable capital available.</div>
+        <div class="inv-footer">
+          <span class="inv-fit">strategic value <span class="fit-bar"><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span><span class="dot-f"></span></span></span>
+          <span class="tag-amber">requires warm intro</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- S5: NARRATIVE -->
+  <div id="s5" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 05</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// pitch architecture</div>
+        <h2 class="section-title">Narrative <span class="hl">Architecture</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The narrative problem Reshore faces in fundraising is a framing problem, not a product problem. The product is built. The market is real. What is missing is a story architecture that <strong>lands the urgency before the product, and the moat before the market size</strong>. Current pitch materials lead with geography rather than pain. That needs to change.</p>
+
+    <div class="callout">
+      <p>One-liner: "The $315 billion shift of US manufacturing to the Americas is running on spreadsheets and WhatsApp. We are building the operating system for it."</p>
+    </div>
+
+    <p class="body-text">The correct pitch arc moves through <strong>five beats in sequence</strong>, each one earning the right to the next:</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>beat</th>
+          <th>what it establishes</th>
+          <th>current status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-key">01</td>
+          <td>The Moment — 3 numbers, 30 seconds</td>
+          <td>Urgency. Why this must happen now. Tariffs, lead times, trade volume shift.</td>
+          <td><span class="tag-amber">underweighted</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">02</td>
+          <td>The Team — early, with credentials</td>
+          <td>Trust. Ex-Alibaba + Mercado Libre + JP Morgan. Post-exit founders. This unlocks everything.</td>
+          <td><span class="tag-red">buried</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">03</td>
+          <td>The Problem — in dollars and days</td>
+          <td>Pain specificity. 6+ months to rebuild tooling. 35% TCO premium. 100-day lead times.</td>
+          <td><span class="tag-amber">present but weak</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">04</td>
+          <td>The Protocol + Platform — proof of system</td>
+          <td>Credibility. A proprietary 7-step process + product demo. Shows it's real, it works.</td>
+          <td><span class="tag-green">strong</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">05</td>
+          <td>The Moat — Intelligence Core explained plainly</td>
+          <td>Long-term defensibility. Every transaction improves the next. Data compounds.</td>
+          <td><span class="tag-red">undefined in pitch</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="body-text">Three critical framing shifts required in current materials:</p>
+
+    <ul class="t-list">
+      <li><strong>Infrastructure, not marketplace.</strong> Reshore is the trust layer for Americas manufacturing. Marketplace = 3–5x revenue multiple. Infrastructure = 15–20x. The distinction is not semantic. It is the exit story.</li>
+      <li><strong>Team slide needs to be slide 3.</strong> Post-exit founders with inside experience at Alibaba and Mercado Libre — the two platforms that defined China-Americas sourcing — is a top-tier credential for this exact thesis. It is currently being undersold.</li>
+      <li><strong>The tariff objection must be pre-empted, not answered.</strong> Build a slide that says: "If tariffs stay — companies that haven't moved lose 35%+ margin. If tariffs come down — companies that already moved still save on TCO, lead times, and geopolitical risk. Reshore wins either way."</li>
+    </ul>
+  </div>
+
+  <!-- S6: ROUND STRUCTURE -->
+  <div id="s6" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 06</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// capital architecture</div>
+        <h2 class="section-title">Round Structure<br>&amp; <span class="hl">Milestones</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The round should be structured to close in a single process, not rolled. Runway management and investor signaling both argue against an open-ended raise. Target a <strong>firm commitment of $2.5M</strong>, with documented capacity to accept up to $4M in oversubscription if investor demand exceeds the floor.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>parameter</th>
+          <th>structure</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-key">Instrument</td>
+          <td>SAFE (MFN + pro-rata) preferred for speed; priced round if institutional lead requires it</td>
+        </tr>
+        <tr>
+          <td class="td-key">Floor / ceiling</td>
+          <td>$2.5M firm close / $4M maximum with oversubscription</td>
+        </tr>
+        <tr>
+          <td class="td-key">Lead investor</td>
+          <td>One institutional lead (Dynamo or NXTP) writing $750K–$1.5M, setting terms for remaining participants</td>
+        </tr>
+        <tr>
+          <td class="td-key">Round composition</td>
+          <td>Lead + Latitud follow-on + 1–2 Tier 2 VCs ($250–500K each) + 3–5 operator angels ($50–200K each)</td>
+        </tr>
+        <tr>
+          <td class="td-key">Use of funds</td>
+          <td>40% product/engineering (Intelligence Core) · 35% GTM / US buyer acquisition · 25% ops / manufacturer onboarding</td>
+        </tr>
+        <tr>
+          <td class="td-key">Valuation anchor</td>
+          <td>Nuvocargo raised at ~$30–40M post-seed (comparable US-Mexico trade infrastructure). Reshore has broader platform scope.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="body-text"><strong>Three milestones that unlock the round</strong> — in order of impact:</p>
+
+    <ul class="t-list">
+      <li><strong>2–3 paying buyer contracts.</strong> Even $10–30K ARR with named companies transforms "promising" to "traction." One real paying customer outweighs ten LOIs in the current investor environment.</li>
+      <li><strong>One documented completed relocation.</strong> A single full-cycle story — company X moved Y SKUs from China to Mexico in Z weeks, saving $W/month — told in numbers is worth 10 slides of product features. Build this case study now.</li>
+      <li><strong>10+ verified manufacturers on the platform.</strong> Demonstrates supply-side liquidity. Make it visually demonstrable in pitch — live demo or screenshots showing an active, searchable, vetted network.</li>
+    </ul>
+  </div>
+
+  <!-- S7: RISK REGISTER -->
+  <div id="s7" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 07</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// risk assessment</div>
+        <h2 class="section-title">Risk <span class="hl">Register</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Risks are assessed for probability, investor perception (how likely are investors to raise this?), and mitigation readiness. The goal is not to eliminate risk — it is to have a prepared, specific, confident answer for each one before it is raised in a meeting.</p>
+
+    <div class="risk-list">
+      <div class="risk-row-head">
+        <div class="risk-col-h">risk</div>
+        <div class="risk-col-h">investor concern + mitigation</div>
+        <div class="risk-col-h">severity</div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">USMCA / tariff policy reversal</div>
+        <div class="risk-col risk-body">Investors will ask: "What if tariffs come down?" Answer: TCO from Mexico is 35% lower even without tariffs (proximity, lead times, labor). The strategic case holds independent of tariff policy. Reshore wins in both scenarios. Pre-empt with a dedicated "what if" slide.</div>
+        <div class="risk-col"><span class="tag-amber">managed</span></div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">Traction gap — insufficient proof</div>
+        <div class="risk-col risk-body">In a proof-first capital market, launching a round without paying customers is the primary execution risk. Mitigation: prioritize converting 2–3 active pilots to paid contracts before the first institutional meeting. Even partial, documented GMV changes the conversation.</div>
+        <div class="risk-col"><span class="tag-red">primary</span></div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">Audience fragmentation — buyer vs. manufacturer</div>
+        <div class="risk-col risk-body">Pitching both US buyers and Mexican manufacturers to the same investor in the same meeting creates confusion. The pitch must choose a primary audience (US buyers) and present manufacturers as the supply-side infrastructure, not a co-equal customer.</div>
+        <div class="risk-col"><span class="tag-amber">addressable</span></div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">Jargon / undefined brand terms</div>
+        <div class="risk-col risk-body">"Intelligence Core," "Agentic OS," "agentic-commerce lifecycle" are internal terms without plain-language anchors. In investor meetings, undefined technical terms create distance. Every term must have a one-sentence definition before first use in any pitch material.</div>
+        <div class="risk-col"><span class="tag-amber">fixable now</span></div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">No social proof / trust infrastructure</div>
+        <div class="risk-col risk-body">Zero customer testimonials, case studies, or named references. For a product asking companies to trust it with production relocation, this is the most significant credibility gap. Priority: convert one pilot customer to a reference willing to speak with investors.</div>
+        <div class="risk-col"><span class="tag-red">primary</span></div>
+      </div>
+      <div class="risk-row">
+        <div class="risk-col risk-name">Mexico infrastructure constraints</div>
+        <div class="risk-col risk-body">Power, water, permitting bottlenecks in Mexico are real and documented. Investors aware of the market will raise this. Reshore's answer: the platform routes buyers to manufacturers in the most infrastructure-ready zones (Chihuahua, Coahuila, Nuevo León, Baja California). This is a curation advantage, not a risk.</div>
+        <div class="risk-col"><span class="tag-dim">known</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8: EXECUTION PROTOCOL -->
+  <div id="s8" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 08</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// operational protocol</div>
+        <h2 class="section-title">90-Day Execution <span class="hl">Protocol</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The round should be treated as a structured sales process with a defined pipeline, parallel tracks, and a hard close date. Urgency is manufactured through parallel investor conversations, not by waiting for one to finish before starting the next.</p>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-week">W01–02</div>
+        <div class="tl-content">
+          <div class="tl-title">Internal preparation + existing investor alignment</div>
+          <div class="tl-body">Lock Latitud + BOTH on follow-on stance. Update pitch deck — team slide to position 3, traction slide front-loaded. Build data room (cap table, financial model, product demo video, customer evidence). Define SAFE terms or round structure. Identify 1 reference customer willing to take calls with investors.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">W03–04</div>
+        <div class="tl-content">
+          <div class="tl-title">Warm intro sourcing + angel outreach</div>
+          <div class="tl-body">Request warm intros from Latitud → Dynamo, NXTP, FJ Labs. Request warm intros from BOTH → co-investor relationships. Begin LinkedIn outreach to 5 target supply chain operator angels. Identify 1–2 Mexican industrial family offices for strategic capital track (parallel, longer process).</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">W05–07</div>
+        <div class="tl-content">
+          <div class="tl-title">Tier 1 first meetings — parallel tracks</div>
+          <div class="tl-body">Run first meetings with Dynamo and NXTP simultaneously — do not wait for one to complete before starting the other. Goal: second meeting / product demo by end of week 7 for both. Angel meetings run in parallel — target 2–3 per week. Present traction data in first meeting, not second.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">W08–10</div>
+        <div class="tl-content">
+          <div class="tl-title">Term sheet + Tier 2 parallel close</div>
+          <div class="tl-body">Use Tier 1 interest to open Tier 2 conversations with urgency ("we have a term sheet in discussion, filling the round"). Open Magma, FJ Labs, ALLVP conversations. Confirm angel commitments in writing. First close target: $1.5M committed. Begin legal prep for SAFE docs.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-week">W11–13</div>
+        <div class="tl-content">
+          <div class="tl-title">Final close + announcement</div>
+          <div class="tl-body">Close on $2.5–4M. Announce strategically — leverage Latitud + BOTH brand in announcement copy. Publish "The Reshoring Protocol" as a full SEO guide simultaneously — create inbound press momentum that reinforces the raise announcement. This is the content moat activation moment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S9: STRATEGIC DIRECTIVE -->
+  <div id="s9" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 09</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// BOTH assessment</div>
+        <h2 class="section-title">Strategic <span class="hl">Directive</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">From BOTH's structural perspective, Reshore sits squarely on-model. It operates at the intersection of multiple logics — technology infrastructure, physical trade, geopolitical realignment, and institutional trust architecture. It benefits from the specific market moment created by US-China decoupling. Its founding team carries domain experience that is structurally rare and directly relevant. Its Intelligence Core represents a genuine data moat that compounds.</p>
+
+    <p class="body-text">The current challenge is not structural — the venture is architecturally sound. The challenge is <strong>proof sequencing</strong>: the capital market requires traction evidence that the team has not yet made visible. This is a solvable problem. It requires deliberate short-term prioritization of two things above all others: converting active relationships to paid contracts, and building one documented, quantified customer story that can be used as a reference.</p>
+
+    <div class="rec-block">
+      <p>BOTH's directive: <strong>Close 2 paying pilots before the first institutional pitch meeting.</strong> Simultaneously, secure Latitud's follow-on signal in writing. These two actions — traction proof and existing investor endorsement — are the structural prerequisites for a successful raise in the current market. Everything else — deck refinement, investor targeting, narrative optimization — is secondary to these two facts on the ground. The round is winnable. It requires disciplined execution sequencing, not more product or more strategy.</p>
+    </div>
+
+    <p class="body-text">The macro is Reshore's ally. The product is Reshore's asset. The team is Reshore's credential. The only missing element is the proof layer — and it is within reach in 30 days if the founding team treats it as the singular operational priority right now.</p>
+
+    <ul class="t-list">
+      <li><strong>P0 this week:</strong> Secure Latitud follow-on position in writing. Update hero CTA on website (remove "Join Waitlist"). Fix page title tag for SEO.</li>
+      <li><strong>P0 within 30 days:</strong> Convert 2 active relationships to signed paying contracts, any size. Build one case study with real numbers from a completed relocation. Identify and brief 1 investor-reference customer.</li>
+      <li><strong>P1 within 30 days:</strong> Restructure pitch deck with team slide at position 3. Add "tariff scenario" slide. Define Intelligence Core in plain language. Remove undefined jargon from all materials.</li>
+      <li><strong>P1 within 45 days:</strong> Request warm intros from Latitud → Dynamo + NXTP. Begin angel outreach to 5 supply chain operator targets. Open Magma + FJ Labs as parallel Tier 2.</li>
+      <li><strong>P2 within 60 days:</strong> First close on minimum $1.5M committed. Publish Reshoring Protocol as SEO guide. Begin Mexican family office track (FINSA / OHT).</li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="df-left">
+      <div class="df-id">INTELL-PILL-001 // RESHORE</div>
+      <div>BOTH Intelligence Program · P.003 Intelligence</div>
+      <div>issued: 2026-04-01 · classification: restricted</div>
+    </div>
+    <div class="df-right">
+      <div>: [ BOTH ] :</div>
+      <div>Both_Ventures · Strategic Intelligence</div>
+      <div>Q2 2026</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isLight = html.classList.toggle('light');
+  document.getElementById('toggleLabel').textContent = isLight ? 'DARK' : 'LIGHT';
+  document.getElementById('toggleIcon').textContent = isLight ? '●' : '◐';
+  document.querySelectorAll('.rec-block::before').forEach(el => {});
+}
+</script>
+</body>
+</html>

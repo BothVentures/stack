@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOTH // INTEL-004 // LAK3 · WATER ASSET INTELLIGENCE</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── DARK (default) ── */
+  :root {
+    --bg:          #080A08;
+    --bg-1:        #0D100D;
+    --bg-2:        #111411;
+    --bg-3:        #161916;
+    --border:      #1E231E;
+    --border-2:    #252B25;
+    --green:       #3DFF6E;
+    --green-dim:   #1A7A33;
+    --green-muted: #0F4A1F;
+    --green-glow:  rgba(61,255,110,0.06);
+    --amber:       #FFB84D;
+    --amber-dim:   #7A5220;
+    --red:         #FF4D4D;
+    --red-dim:     #7A2020;
+    --text:        #C8D4C8;
+    --text-2:      #8A9E8A;
+    --text-3:      #506050;
+    --text-4:      #2E3A2E;
+    --white:       #E8F0E8;
+    --scanline:    rgba(0,0,0,0.08);
+    --mono:        'IBM Plex Mono', monospace;
+  }
+  /* ── LIGHT ── */
+  html.light {
+    --bg:          #F2F0E8;
+    --bg-1:        #ECEAE0;
+    --bg-2:        #E4E2D8;
+    --bg-3:        #DEDAD0;
+    --border:      #CCCAB8;
+    --border-2:    #C0BEA8;
+    --green:       #1A6E32;
+    --green-dim:   #2A8A44;
+    --green-muted: #C8E8CE;
+    --green-glow:  rgba(26,110,50,0.06);
+    --amber:       #8A5A10;
+    --amber-dim:   #B87820;
+    --red:         #A02020;
+    --red-dim:     #C84040;
+    --text:        #2C342C;
+    --text-2:      #506050;
+    --text-3:      #8A9A8A;
+    --text-4:      #B0C0B0;
+    --white:       #141A14;
+    --scanline:    rgba(0,0,0,0.025);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    cursor: default;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scanline) 2px, var(--scanline) 4px);
+    pointer-events: none; z-index: 9999;
+  }
+  .glow { text-shadow: 0 0 8px rgba(61,255,110,0.4); }
+  html.light .glow { text-shadow: none; }
+
+  /* TOGGLE */
+  .theme-toggle {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: 1px solid var(--border-2);
+    color: var(--text-3); font-family: var(--mono);
+    font-size: 10px; letter-spacing: 0.12em;
+    padding: 4px 10px; cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--green); border-color: var(--green-dim); }
+
+  /* LAYOUT */
+  .terminal { max-width: 960px; margin: 0 auto; padding: 0 40px 80px; }
+
+  /* SYS BAR */
+  .sys-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    transition: background 0.25s, border-color 0.25s;
+    padding: 10px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin: 0 -40px;
+  }
+  .sys-bar-left { display: flex; align-items: center; gap: 24px; }
+  .sys-id { color: var(--green); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; }
+  .sys-sep, .sys-path { color: var(--text-3); font-size: 11px; }
+  .sys-right { display: flex; align-items: center; gap: 20px; }
+  .sys-status { font-size: 10px; color: var(--text-3); letter-spacing: 0.1em; }
+  .status-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+  /* BOOT */
+  .boot { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .boot-lines { margin-bottom: 48px; }
+  .boot-line { color: var(--text-3); font-size: 11px; letter-spacing: 0.08em; line-height: 2.1; }
+  .boot-line.active { color: var(--green-dim); }
+  .boot-line .ok   { color: var(--green);  margin-right: 8px; }
+  .boot-line .warn { color: var(--amber);  margin-right: 8px; }
+  .boot-line .err  { color: var(--red);    margin-right: 8px; }
+  .doc-class {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--red-dim);
+    background: rgba(255,77,77,0.05);
+    padding: 4px 12px; margin-bottom: 32px;
+  }
+  .doc-class-label { color: var(--red); font-size: 10px; font-weight: 600; letter-spacing: 0.25em; }
+  .doc-title {
+    font-family: var(--mono); font-weight: 300;
+    font-size: clamp(22px, 3.5vw, 36px);
+    color: var(--white); line-height: 1.25;
+    letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .doc-title .hl    { color: var(--green);  font-weight: 400; }
+  .doc-title .dim   { color: var(--text-2); }
+  .doc-title .amber { color: var(--amber);  font-weight: 400; }
+  .doc-title .red   { color: var(--red);    font-weight: 400; }
+  .doc-subtitle {
+    color: var(--text-2); font-size: 13px; font-weight: 300;
+    max-width: 580px; line-height: 1.7; margin-top: 16px;
+  }
+  .meta-block {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 0; margin-top: 48px; border: 1px solid var(--border);
+  }
+  .meta-cell { padding: 16px 20px; border-right: 1px solid var(--border); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-key { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-val { font-size: 12px; color: var(--text); }
+  .meta-val.green { color: var(--green); }
+  .meta-val.amber { color: var(--amber); }
+  .meta-val.red   { color: var(--red); }
+
+  /* TOC */
+  .toc-block { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .cmd-prompt { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--text-3); font-size: 12px; }
+  .cmd-prompt .ps  { color: var(--green); }
+  .cmd-prompt .cmd { color: var(--white); }
+  .toc-row {
+    display: flex; align-items: baseline; gap: 12px;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+    text-decoration: none; color: var(--text-2);
+    transition: color 0.15s; font-size: 12px;
+  }
+  .toc-row:hover { color: var(--green); }
+  .toc-row:hover .toc-n { color: var(--green); }
+  .toc-n    { color: var(--text-3); width: 32px; flex-shrink: 0; font-size: 11px; }
+  .toc-dots { flex:1; border-bottom: 1px dotted var(--border-2); margin-bottom: 3px; }
+  .toc-pg   { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+
+  /* SECTIONS */
+  .section { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .section-head { display: flex; align-items: flex-start; gap: 0; margin-bottom: 40px; }
+  .section-id { color: var(--text-3); font-size: 11px; letter-spacing: 0.15em; margin-right: 16px; margin-top: 2px; flex-shrink: 0; width: 56px; }
+  .section-title-wrap { flex: 1; }
+  .section-tag { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-family: var(--mono); font-weight: 300; font-size: clamp(18px,2.5vw,26px); color: var(--white); line-height: 1.3; }
+  .section-title .hl    { color: var(--green); }
+  .section-title .amber { color: var(--amber); }
+  .section-title .red   { color: var(--red); }
+
+  /* TEXT */
+  .body-text { font-size: 13px; line-height: 1.85; color: var(--text); margin-bottom: 20px; max-width: 760px; font-weight: 300; }
+  .body-text strong { color: var(--white); font-weight: 500; }
+  .body-text em     { color: var(--text-2); font-style: italic; }
+
+  /* CALLOUT */
+  .callout {
+    margin: 32px 0; padding: 20px 24px;
+    background: var(--bg-2); border-left: 2px solid var(--green-dim);
+    max-width: 760px;
+  }
+  .callout.amber { border-left-color: var(--amber-dim); background: rgba(255,184,77,0.04); }
+  .callout.red   { border-left-color: var(--red-dim);   background: rgba(255,77,77,0.04); }
+  .callout p { font-size: 14px; line-height: 1.75; color: var(--text); font-style: italic; font-weight: 300; }
+  .callout cite { display: block; margin-top: 10px; font-size: 10px; letter-spacing: 0.12em; color: var(--text-3); font-style: normal; }
+
+  /* DATA TABLE */
+  .data-table { width: 100%; max-width: 760px; border-collapse: collapse; margin: 32px 0; font-size: 12px; }
+  .data-table th { text-align: left; padding: 8px 16px; font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; border-bottom: 1px solid var(--border); font-weight: 400; }
+  .data-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  .data-table tr:hover td { background: var(--bg-2); }
+  .data-table .td-key   { color: var(--green); white-space: nowrap; font-weight: 500; width: 180px; }
+  .data-table .td-amber { color: var(--amber); white-space: nowrap; font-weight: 500; width: 180px; }
+  .data-table .td-red   { color: var(--red);   white-space: nowrap; font-weight: 500; width: 180px; }
+
+  /* TAGS */
+  .tag-green { display:inline-block; padding:2px 8px; background:var(--green-muted); color:var(--green); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; }
+  .tag-amber { display:inline-block; padding:2px 8px; background:rgba(255,184,77,0.08); color:var(--amber); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; }
+  .tag-red   { display:inline-block; padding:2px 8px; background:rgba(255,77,77,0.08);  color:var(--red);   font-size:9px; letter-spacing:0.12em; text-transform:uppercase; }
+  .tag-dim   { display:inline-block; padding:2px 8px; background:var(--bg-2); border:1px solid var(--border-2); color:var(--text-3); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; }
+
+  /* STAT GRID */
+  .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin:32px 0; max-width:760px; }
+  .stat-grid.g4 { grid-template-columns:repeat(4,1fr); }
+  .stat-grid.g2 { grid-template-columns:repeat(2,1fr); }
+  .stat-cell { background:var(--bg-1); padding:24px 20px; }
+  .stat-num  { font-size:32px; font-weight:300; color:var(--white); line-height:1; letter-spacing:-0.02em; }
+  .stat-unit { font-size:13px; color:var(--green); margin-left:2px; }
+  .stat-unit.a { color:var(--amber); }
+  .stat-unit.r { color:var(--red); }
+  .stat-label { font-size:11px; color:var(--text-3); margin-top:8px; line-height:1.5; }
+
+  /* PLAYER / ACTOR RECORDS */
+  .player-list { margin:32px 0; max-width:760px; }
+  .player-rec { border:1px solid var(--border); background:var(--bg-1); margin-bottom:1px; }
+  .player-rec.highlight  { border-color:var(--green-dim); }
+  .player-rec.amber-hl   { border-color:var(--amber-dim); }
+  .player-rec.red-hl     { border-color:var(--red-dim); }
+  .player-rec-head {
+    display:flex; align-items:center; gap:16px;
+    padding:12px 20px; border-bottom:1px solid var(--border);
+  }
+  .player-rec.highlight .player-rec-head { background:var(--green-glow); }
+  .player-rec.amber-hl  .player-rec-head { background:rgba(255,184,77,0.04); }
+  .player-rec.red-hl    .player-rec-head { background:rgba(255,77,77,0.04); }
+  .prec-id   { color:var(--text-3); font-size:10px; width:48px; flex-shrink:0; }
+  .prec-name { color:var(--white);  font-size:13px; font-weight:500; flex:1; }
+  .prec-arch { color:var(--text-3); font-size:11px; flex:1; }
+  .player-rec-body { padding:16px 20px; display:grid; grid-template-columns:140px 1fr; gap:8px 24px; font-size:12px; }
+  .prec-field { color:var(--text-3); letter-spacing:0.05em; line-height:1.9; }
+  .prec-val   { color:var(--text);   line-height:1.9; }
+  .prec-val.hl    { color:var(--green); }
+  .prec-val.amber { color:var(--amber); }
+  .prec-val.red   { color:var(--red); }
+
+  /* TIMELINE */
+  .tl { margin:32px 0; max-width:760px; }
+  .tl-row { display:grid; grid-template-columns:88px 1px 1fr; gap:0 24px; position:relative; }
+  .tl-year-col { text-align:right; padding:16px 0; font-size:11px; color:var(--text-3); letter-spacing:0.08em; }
+  .tl-year-col.now { color:var(--green); }
+  .tl-pipe { position:relative; display:flex; flex-direction:column; align-items:center; }
+  .tl-pipe-line { position:absolute; top:0; bottom:0; left:0; width:1px; background:var(--border-2); }
+  .tl-node { position:relative; z-index:1; margin-top:18px; width:7px; height:7px; border:1px solid var(--text-3); background:var(--bg); flex-shrink:0; }
+  .tl-node.now { border-color:var(--green); background:var(--green); box-shadow:0 0 8px rgba(61,255,110,0.5); }
+  .tl-node.amber { border-color:var(--amber); background:var(--amber); }
+  .tl-content-col { padding:12px 0 24px; }
+  .tl-event       { color:var(--white);  font-size:12px; font-weight:500; margin-bottom:4px; }
+  .tl-event.now   { color:var(--green); }
+  .tl-event.amber { color:var(--amber); }
+  .tl-detail      { font-size:11px; color:var(--text-3); line-height:1.7; }
+
+  /* OPTIONALITY */
+  .opt-matrix { margin:32px 0; max-width:760px; }
+  .opt-row-head { display:grid; grid-template-columns:180px 1fr 80px; gap:16px; padding:8px 0; border-bottom:1px solid var(--border-2); }
+  .opt-row { display:grid; grid-template-columns:180px 1fr 80px; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); align-items:start; font-size:12px; }
+  .opt-vec       { color:var(--text-3); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; padding-top:2px; }
+  .opt-body-text { color:var(--text); line-height:1.7; }
+  .opt-score     { text-align:right; }
+  .score-bar { display:flex; gap:2px; justify-content:flex-end; margin-top:4px; }
+  .score-pip { width:8px; height:8px; background:var(--border-2); }
+  .score-pip.on { background:var(--green); }
+  .score-pip.on.a { background:var(--amber); }
+  .score-pip.on.r { background:var(--red); }
+
+  /* REC BLOCK */
+  .rec-block {
+    margin:40px 0 0; padding:32px;
+    background:var(--bg-1); border:1px solid var(--green-dim);
+    max-width:760px; position:relative;
+  }
+  .rec-block::before {
+    content:'// STRATEGIC DIRECTIVE';
+    position:absolute; top:-1px; left:20px;
+    background:var(--bg-1); padding:0 8px;
+    font-size:9px; color:var(--green-dim); letter-spacing:0.2em;
+    transform:translateY(-50%); transition:background 0.25s;
+  }
+  html.light .rec-block::before { background:var(--bg-1); }
+  .rec-block p { font-size:14px; line-height:1.85; color:var(--text); font-weight:300; }
+  .rec-block strong { color:var(--green); font-weight:500; }
+
+  /* BULLET LIST */
+  ul.t-list { list-style:none; margin:20px 0; max-width:760px; }
+  ul.t-list li { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); font-size:12px; color:var(--text); line-height:1.65; }
+  ul.t-list li::before { content:'>'; color:var(--green-dim); flex-shrink:0; padding-top:1px; font-weight:500; }
+  ul.t-list li strong { color:var(--white); font-weight:500; }
+
+  /* VERSUS */
+  .versus { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); margin:32px 0; max-width:760px; }
+  .vs-col { background:var(--bg-1); padding:24px; }
+  .vs-col.bad  { background:rgba(255,77,77,0.04); }
+  .vs-col.good { background:rgba(61,255,110,0.03); }
+  .vs-label     { font-size:9px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:16px; }
+  .vs-label.bad  { color:var(--red); }
+  .vs-label.good { color:var(--green); }
+  .vs-title { font-size:12px; font-weight:500; color:var(--white); margin-bottom:16px; line-height:1.4; }
+  .vs-list { list-style:none; font-size:11px; color:var(--text-3); line-height:2.1; }
+  .vs-list li::before  { content:'— '; opacity:0.5; }
+  .vs-list.ok li::before { content:'✓  '; color:var(--green); opacity:1; }
+
+  /* FOOTER */
+  .doc-footer { padding:40px 0 60px; display:flex; justify-content:space-between; align-items:flex-end; border-top:1px solid var(--border); }
+  .df-left { color:var(--text-3); font-size:10px; line-height:2; letter-spacing:0.08em; }
+  .df-left .df-id { color:var(--green-dim); }
+  .df-right { text-align:right; color:var(--text-3); font-size:10px; line-height:2; }
+
+  code { background:var(--bg-2); border:1px solid var(--border); padding:1px 6px; font-size:11px; color:var(--amber); }
+  .cursor { display:inline-block; width:8px; height:14px; background:var(--green); margin-left:2px; vertical-align:middle; animation:blink 1.1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:0} }
+
+  @media(max-width:640px){
+    .terminal{padding:0 20px 60px;}
+    .sys-bar{padding:10px 20px;margin:0 -20px;}
+    .meta-block{grid-template-columns:1fr 1fr;}
+    .stat-grid,.stat-grid.g4,.stat-grid.g2{grid-template-columns:1fr;}
+    .versus{grid-template-columns:1fr;}
+    .opt-row,.opt-row-head{grid-template-columns:1fr;}
+    .player-rec-body{grid-template-columns:1fr;}
+    .toc-dots{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- SYS BAR -->
+<div class="sys-bar">
+  <div class="sys-bar-left">
+    <span class="sys-id glow">BOTH//INTEL</span>
+    <span class="sys-sep">/</span>
+    <span class="sys-path">reports / water / INTEL-004</span>
+  </div>
+  <div class="sys-right">
+    <span class="sys-status"><span class="status-dot"></span>SESSION ACTIVE</span>
+    <span class="sys-status">2026-03-26</span>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()">
+      <span class="toggle-icon" id="toggleIcon">◐</span>
+      <span id="toggleLabel">LIGHT</span>
+    </button>
+  </div>
+</div>
+
+<div class="terminal">
+
+  <!-- BOOT -->
+  <div class="boot">
+    <div class="boot-lines">
+      <div class="boot-line"><span class="ok">[OK]</span> BOTH Intelligence Program — secure session initialized</div>
+      <div class="boot-line"><span class="ok">[OK]</span> document classification: internal — restricted to BOTH principals</div>
+      <div class="boot-line"><span class="ok">[OK]</span> source corpus loaded — 9 LAK3 project documents cross-referenced</div>
+      <div class="boot-line"><span class="ok">[OK]</span> market feeds verified — RWA / water / Web3 / ESG signal channels</div>
+      <div class="boot-line active"><span class="warn">[!]</span> project status: distressed — active decision window open</div>
+      <div class="boot-line active"><span class="warn">[!]</span> two scenarios under simultaneous evaluation — Option B takeover vs Nasar spinout</div>
+      <div class="boot-line active"><span class="err">[ALERT]</span> no external distribution — deliberation in progress</div>
+    </div>
+
+    <div class="doc-class">
+      <span class="doc-class-label">// classified — internal deliberation — both principals only //</span>
+    </div>
+
+    <h1 class="doc-title">
+      <span class="dim">INTEL-004 //</span><br>
+      <span class="hl">LAK3</span> Water Asset —<br>
+      Full Status & <span class="amber">Nasar</span> Spinout<br>
+      Strategic Assessment<span class="cursor"></span>
+    </h1>
+    <p class="doc-subtitle">Complete intelligence brief on the LAK3 project — what failed, what the market is doing, where the opportunity actually lives, and the emerging Nasar/JB spinout as a structurally superior alternative to the Option B takeover.</p>
+
+    <div class="meta-block">
+      <div class="meta-cell">
+        <div class="meta-key">doc_id</div>
+        <div class="meta-val green">INTEL-004</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">unit</div>
+        <div class="meta-val">P.003 Intelligence</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">classification</div>
+        <div class="meta-val red">internal only</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">issued</div>
+        <div class="meta-val">2026-03-26</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-block">
+    <div class="cmd-prompt">
+      <span class="ps">$</span>
+      <span class="cmd">cat index.md</span>
+    </div>
+    <div class="toc-list">
+      <a href="#s1" class="toc-row"><span class="toc-n">01</span><span>LAK3 — What Actually Happened</span><span class="toc-dots"></span><span class="toc-pg">§01</span></a>
+      <a href="#s2" class="toc-row"><span class="toc-n">02</span><span>BOTH's Position & Track Record</span><span class="toc-dots"></span><span class="toc-pg">§02</span></a>
+      <a href="#s3" class="toc-row"><span class="toc-n">03</span><span>Market Signals — Water + RWA Convergence</span><span class="toc-dots"></span><span class="toc-pg">§03</span></a>
+      <a href="#s4" class="toc-row"><span class="toc-n">04</span><span>The Two Paths — Takeover vs Nasar Spinout</span><span class="toc-dots"></span><span class="toc-pg">§04</span></a>
+      <a href="#s5" class="toc-row"><span class="toc-n">05</span><span>Nasar — What the Spinout Actually Is</span><span class="toc-dots"></span><span class="toc-pg">§05</span></a>
+      <a href="#s6" class="toc-row"><span class="toc-n">06</span><span>BOTH's Role in Nasar — What We Bring, What We Get</span><span class="toc-dots"></span><span class="toc-pg">§06</span></a>
+      <a href="#s7" class="toc-row"><span class="toc-n">07</span><span>Risk Register — Open Questions Before Deciding</span><span class="toc-dots"></span><span class="toc-pg">§07</span></a>
+      <a href="#s8" class="toc-row"><span class="toc-n">08</span><span>Optionality Assessment</span><span class="toc-dots"></span><span class="toc-pg">§08</span></a>
+      <a href="#s9" class="toc-row"><span class="toc-n">09</span><span>Strategic Directive</span><span class="toc-dots"></span><span class="toc-pg">§09</span></a>
+    </div>
+  </div>
+
+  <!-- § 01 — WHAT HAPPENED -->
+  <div id="s1" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 01</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// project post-mortem</div>
+        <h2 class="section-title">LAK3 — What<br>Actually <span class="red">Happened</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">LAK3 was structured as a water-backed ReFi token on Ethereum — a governance and utility instrument linked to physical water rights and spring sources. The thesis was architecturally sound. The execution was not. The token has collapsed to near-zero value. Every OTC private investor (~50) has suffered losses. Management trust is broken. The company is insolvent.</p>
+
+    <div class="callout red">
+      <p>This is not a market failure. The water-RWA thesis is validated by 2026 market conditions. This is an execution, governance, and architecture failure — every one of which BOTH identified in writing, raised formally, and was ignored.</p>
+    </div>
+
+    <div class="stat-grid g4">
+      <div class="stat-cell">
+        <div class="stat-num">≈$0<span class="stat-unit r">value</span></div>
+        <div class="stat-label">Current LAK3 token price. Collapsed from OTC entry. All private investors underwater.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">~50<span class="stat-unit">OTC</span></div>
+        <div class="stat-label">Private OTC investors. No retail tail. Tightly controlled cap table — a feature, not a liability.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$0<span class="stat-unit r">cash</span></div>
+        <div class="stat-label">Company is near-insolvent. No operational runway. Dependent on investor group decision.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">2<span class="stat-unit a">options</span></div>
+        <div class="stat-label">Investor ultimatum: Option A (lawsuit) vs Option B (structured takeover). CEO leaning B.</div>
+      </div>
+    </div>
+
+    <p class="body-text" style="margin-top:32px;">The failure cascade followed a predictable sequence. Tokens were distributed via private OTC sale with no market structure, no market maker, and no liquidity support. Vesting schedules were not designed for market conditions — unlocks hit a token with zero buy-side demand. Each sell event produced disproportionate price collapse. The utility layer was narrative: no oracle, no proof-of-delivery, no enforceable link between token and physical water. The governance layer was decorative: no binding holder rights, no treasury controls. Management retained unilateral authority with no accountability mechanism.</p>
+
+    <table class="data-table">
+      <thead><tr><th>failure vector</th><th>root cause</th><th>status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-red">Vesting design</td>
+          <td>Unlocks not calibrated to liquidity conditions. No market maker. Zero buy-side support at any unlock event.</td>
+          <td><span class="tag-red">structural</span></td>
+        </tr>
+        <tr>
+          <td class="td-red">Token architecture</td>
+          <td>No demand mechanic, no emissions model, no staking utility, no yield. Holder had no reason to hold beyond speculation.</td>
+          <td><span class="tag-red">architectural</span></td>
+        </tr>
+        <tr>
+          <td class="td-red">Zero market structure</td>
+          <td>Entirely private OTC distribution. First sell event = last price discovery event. No DEX liquidity, no CEX listing, no community.</td>
+          <td><span class="tag-red">market</span></td>
+        </tr>
+        <tr>
+          <td class="td-red">RWA layer — narrative only</td>
+          <td>Water-RWA claim was never operationalized. No SPV, no oracle, no legal wrapper, no enforceable link to physical springs.</td>
+          <td><span class="tag-red">technical</span></td>
+        </tr>
+        <tr>
+          <td class="td-red">Legal exposure</td>
+          <td>No token classification opinion. No MiCA posture. No jurisdictional strategy. Token floated in regulatory gray space from day one.</td>
+          <td><span class="tag-red">regulatory</span></td>
+        </tr>
+        <tr>
+          <td class="td-red">Governance vacuum</td>
+          <td>Founders retained unilateral control. No accountability mechanism. Advisor warnings (including BOTH's) were noted and ignored.</td>
+          <td><span class="tag-red">governance</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="body-text">The investor group has now forced a binary decision. A lawsuit coalition (Option A) is being organized. Option B — a structured takeover — would bring in a new operational lead for the crypto layer. Both_Ventures has been identified as that lead. But a third scenario has emerged in parallel deliberation that may render Option B unnecessary.</p>
+  </div>
+
+  <!-- § 02 — BOTH's POSITION -->
+  <div id="s2" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 02</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// our record</div>
+        <h2 class="section-title">BOTH's Position<br>&amp; <span class="hl">Track Record</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">BOTH entered LAK3 as an OTC investor, then formally joined as strategic advisor. Before the collapse, every material structural risk was raised on record. None were acted upon. This matters — not as grievance, but as positioning: BOTH is the only party in this situation with a documented advisory track record and zero operational liability for the failure.</p>
+
+    <div class="callout">
+      <p>BOTH did not fail at LAK3. BOTH was failed by LAK3. The distinction is the foundation of our negotiating position in any path forward.</p>
+    </div>
+
+    <p class="body-text">The following concerns were raised formally by BOTH, documented, and either dismissed or deferred by management:</p>
+
+    <ul class="t-list">
+      <li><strong>Vesting risk:</strong> unlock structure was not designed for market conditions. Proposed graduated vesting with market maker conditions precedent. Rejected.</li>
+      <li><strong>Market structure absence:</strong> no buy-side, no MM, no DEX liquidity, no retail community. Raised as existential pre-launch risk. No action taken.</li>
+      <li><strong>Token architecture:</strong> no demand mechanic, no utility engine. Flagged that the token would have no reason to hold value past initial hype. Not addressed.</li>
+      <li><strong>RWA operationalization:</strong> water rights claim was narrative. Proposed SPV structure + oracle design. Founders deferred indefinitely.</li>
+      <li><strong>Regulatory exposure:</strong> no legal framework on token classification. Raised multiple times. No external counsel engaged.</li>
+      <li><strong>Governance accountability:</strong> no binding investor rights, no multisig treasury, no accountability mechanism for founders. Noted. Ignored.</li>
+    </ul>
+
+    <p class="body-text" style="margin-top:24px;">BOTH's current position: we hold LAK3 tokens (underwater), a formal advisory relationship on record, and the standing to either lead the Option B reconstruction or align with JB on the Nasar spinout. Both paths are open. One is structurally cleaner than the other.</p>
+  </div>
+
+  <!-- § 03 — MARKET SIGNALS -->
+  <div id="s3" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 03</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// market intelligence</div>
+        <h2 class="section-title">Water + RWA —<br>The <span class="hl">Convergence</span> Signal</h2>
+      </div>
+    </div>
+
+    <p class="body-text">The most important contextual fact for this entire decision: LAK3 failed as a company. The thesis it was built on did not fail. Two of the strongest macro trends in institutional finance — RWA tokenization and water as a financial asset — are converging in 2026. The infrastructure that LAK3 needed and didn't have is now being built by BlackRock, JPMorgan, and the UN.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">$12<span class="stat-unit">B+</span></div>
+        <div class="stat-label">Total RWA tokenized on-chain, March 2026. More than doubled from $5B at start of 2025.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$735<span class="stat-unit">B</span></div>
+        <div class="stat-label">Investment required by 2030 to meet global water and sanitation goals — UN estimate.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">Dec<span class="stat-unit a">2026</span></div>
+        <div class="stat-label">UN Water Conference, UAE. Single largest institutional alignment event for water finance this decade.</div>
+      </div>
+    </div>
+
+    <p class="body-text">RWA tokenization is no longer experimental. BlackRock's BUIDL fund holds $1.9B in tokenized assets. Franklin Templeton and Ondo Finance are operational at scale. JPMorgan's Onyx platform has processed over $900B in tokenized repo transactions. The market LAK3 was too early for is now real and institutionally validated.</p>
+
+    <table class="data-table">
+      <thead><tr><th>signal</th><th>what it means for water token positioning</th><th>status</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-key">UN "Water Bankruptcy" Declaration — Jan 2026</td>
+          <td>UN formally declared irreversible water system failures across critical global basins. Water is now a systemic financial risk — which means institutional investment mandates, not just ESG preferences.</td>
+          <td><span class="tag-red">urgent</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">OECD Water-Financial Risk Framework — 2025</td>
+          <td>OECD embedded water risk in financial stability frameworks. Drought events in 2025 up to 6× more costly than 2000. High-income countries face 8% GDP decline under business-as-usual. Water is now priced as macroeconomic risk.</td>
+          <td><span class="tag-amber">pricing in</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">$12B+ On-Chain RWA (Mar 2026)</td>
+          <td>Precedent established for institutional-grade tokenized real assets. Legal structures, custody solutions, and compliance frameworks now exist that didn't in 2022. A water-RWA token launches into proven infrastructure.</td>
+          <td><span class="tag-green">confirmed</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">40% of Investors Prioritizing Water — White &amp; Case 2025</td>
+          <td>Senior water-sector decision makers now treat water investment as top portfolio priority. Sovereign wealth funds from Middle East, Singapore, and Norway actively allocating. Institutional buyer pool exists and is growing.</td>
+          <td><span class="tag-green">active</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">2026 UN Water Conference — UAE, Dec 2026</td>
+          <td>Highest-profile global water finance alignment event of the decade. Creates a natural public moment for launching a credible water-RWA instrument. Window is 9 months away.</td>
+          <td><span class="tag-amber">window open</span></td>
+        </tr>
+        <tr>
+          <td class="td-key">MiCA — Fully Operational Dec 2024</td>
+          <td>EU crypto framework now provides a viable compliance pathway for token issuance that didn't exist during LAK3's original launch. Regulatory risk is now manageable, not existential.</td>
+          <td><span class="tag-green">enabled</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <p>The single most important market insight: <strong>pristine, documented, legally-clean water sources are the scarcest input in this entire value chain.</strong> Technology, compliance, tokenomics, market structure — all of these can be bought or built. Pristine water sources at scale cannot. Whoever controls that asset controls the category.</p>
+    </div>
+  </div>
+
+  <!-- § 04 — TWO PATHS -->
+  <div id="s4" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 04</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// decision fork</div>
+        <h2 class="section-title">Two Paths —<br>Takeover <span class="amber">vs</span> Nasar Spinout</h2>
+      </div>
+    </div>
+
+    <p class="body-text">BOTH currently has two viable forward paths. They are mutually exclusive. Each must be evaluated on its own merits — not as a hierarchy but as a genuine choice between structurally different positions.</p>
+
+    <div class="versus">
+      <div class="vs-col bad">
+        <div class="vs-label bad">Path A — Option B Takeover</div>
+        <div class="vs-title">Lead LAK3 Reconstruction</div>
+        <ul class="vs-list">
+          <li>Inherit broken cap table and investor anger</li>
+          <li>Work within founding team's legal exposure</li>
+          <li>$150k bridge fee secured, but uncertain equity</li>
+          <li>Founders retain water business — BOTH gets crypto layer only</li>
+          <li>Recovery success dependent on founder cooperation</li>
+          <li>Timeline pressure: bridge phase before ICO, months of risk</li>
+          <li>Legacy token (LAK3) must be migrated — complex, costly</li>
+          <li>No clean slate — every design decision inherits baggage</li>
+        </ul>
+      </div>
+      <div class="vs-col good">
+        <div class="vs-label good">Path B — Nasar Spinout</div>
+        <div class="vs-title">Co-Found with JB from Zero</div>
+        <ul class="vs-list ok">
+          <li>Zero legacy liability — no broken cap table, no founder conflict</li>
+          <li>JB leads operations — seasoned commodity trader, highest motivation</li>
+          <li>BOTH enters as large shareholder, not service provider</li>
+          <li>Full tech stack ownership and system architecture mandate</li>
+          <li>Direct access to water sources — the actual thesis asset</li>
+          <li>Clean legal structure from day one — no inherited exposure</li>
+          <li>BGLD or new token designed from blank slate</li>
+          <li>LAK3 litigation proceeds independently — BOTH not a party</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout amber">
+      <p>The core question is not which path is easier. It is which path gives BOTH the greatest long-term ownership of the thing we actually wanted from this project: mass-scale pristine water sources as a financial infrastructure asset. Framed that way, the answer leans strongly toward Nasar.</p>
+    </div>
+  </div>
+
+  <!-- § 05 — NASAR -->
+  <div id="s5" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 05</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// spinout architecture</div>
+        <h2 class="section-title"><span class="amber">Nasar</span> —<br>What the Spinout Actually Is</h2>
+      </div>
+    </div>
+
+    <p class="body-text">Nasar (name TBD) is not a LAK3 reboot. It is a new company — incorporated clean, structured correctly from inception, with JB as operational CEO and BOTH as the tech and architecture lead. It inherits the thesis (pristine water sources as a tokenized real-world asset) without inheriting the failure mechanics.</p>
+
+    <p class="body-text">The actor map for Nasar is deliberately small and high-alignment. Three principals. Three distinct domains of expertise. Zero overlap of authority. No legacy founder conflict.</p>
+
+    <div class="player-list">
+      <div class="player-rec amber-hl">
+        <div class="player-rec-head">
+          <span class="prec-id">ACT-001</span>
+          <span class="prec-name">JB</span>
+          <span class="prec-arch">Proposed CEO · Most-Damaged LAK3 Investor · Commodity Trader</span>
+          <span class="tag-amber">key partner</span>
+        </div>
+        <div class="player-rec-body">
+          <span class="prec-field">background</span><span class="prec-val">Seasoned institutional commodity trader. Understands physical asset pricing, logistics, and market structure at professional depth. Not a crypto native — and that is an asset, not a liability.</span>
+          <span class="prec-field">motivation</span><span class="prec-val amber">Largest individual loss in LAK3. Pursuing lawsuit independently. Has the highest personal incentive of any actor to ensure Nasar succeeds — recovery of reputation and capital simultaneously.</span>
+          <span class="prec-field">what he brings</span><span class="prec-val">Commodity market credibility. Physical asset sourcing and due diligence experience. Investor network in commodity and traditional finance. Water source access — TBD but likely the most important variable.</span>
+          <span class="prec-field">domain</span><span class="prec-val">Water company operations: sourcing, land acquisition, spring licensing, ESG partnerships, commercial relationships. Full authority. No crypto layer interference.</span>
+          <span class="prec-field">open question</span><span class="prec-val amber">Legal status of water source access: do JB's rights or knowledge of sources survive a LAK3 corporate separation cleanly? This must be diligenced before any commitment.</span>
+        </div>
+      </div>
+
+      <div class="player-rec highlight">
+        <div class="player-rec-head">
+          <span class="prec-id">ACT-002</span>
+          <span class="prec-name">Both_Ventures</span>
+          <span class="prec-arch">Tech Stack Lead · System Architect · Large Shareholder</span>
+          <span class="tag-green">our position</span>
+        </div>
+        <div class="player-rec-body">
+          <span class="prec-field">entry</span><span class="prec-val">Co-founder position. Large equity shareholder from inception. Not an advisor or service vendor — an owner with design authority over the entire technical infrastructure.</span>
+          <span class="prec-field">mandate</span><span class="prec-val hl">Full ownership of: token architecture, smart contracts, RWA layer, oracle/proof-of-delivery, governance design, ICO/IDO strategy, market structure, liquidity, and institutional positioning.</span>
+          <span class="prec-field">what we bring</span><span class="prec-val">Web3 architecture depth. Tokenomics design. RWA legal structuring experience. Institutional investor network. Prior LAK3 diligence files as negative reference. Speed — we know every failure point already.</span>
+          <span class="prec-field">what we want</span><span class="prec-val hl">Large shareholder position in Nasar. Token allocation (BGLD equivalent). Access to the water source asset base as the long-term thesis. Operational control of the tech layer with no founder override.</span>
+        </div>
+      </div>
+
+      <div class="player-rec">
+        <div class="player-rec-head">
+          <span class="prec-id">ACT-003</span>
+          <span class="prec-name">LAK3 OTC Investor Group</span>
+          <span class="prec-arch">Potential Nasar Anchor Investors · Currently Pursuing Litigation</span>
+          <span class="tag-dim">conditional</span>
+        </div>
+        <div class="player-rec-body">
+          <span class="prec-field">position</span><span class="prec-val">50 private OTC investors who lost money in LAK3. Organized around JB. Pursuing or supporting lawsuit against LAK3 founders.</span>
+          <span class="prec-field">opportunity</span><span class="prec-val">If Nasar is structured with a well-designed migration or compensation mechanic, a subset of the OTC group converts from lawsuit participants into Nasar anchor investors. Their existing water thesis conviction — plus loss recovery motivation — makes them the most pre-qualified investor cohort possible.</span>
+          <span class="prec-field">risk</span><span class="prec-val amber">Litigation timing: if the lawsuit is active and LAK3 assets are frozen or contested, the timeline for clean water source separation may be delayed.</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="body-text">The Nasar company structure needs to be designed from first principles — correct legal entity from day one, clean IP ownership, proper SPV structure for water asset backing, and a governance framework that prevents the specific failures that destroyed LAK3.</p>
+
+    <table class="data-table">
+      <thead><tr><th>design layer</th><th>nasar specification</th><th>LAK3 comparison</th></tr></thead>
+      <tbody>
+        <tr><td class="td-key">Legal entity</td><td>New co — clean incorporation, no legacy liability. SPV for water asset backing. Jurisdiction TBD (CH/UY/BVI most likely).</td><td><span class="tag-red">no SPV, no clean structure</span></td></tr>
+        <tr><td class="td-key">Water asset backing</td><td>Springs and water rights legally linked to token via enforceable SPV from day one. Oracle layer for proof-of-delivery.</td><td><span class="tag-red">narrative only, never built</span></td></tr>
+        <tr><td class="td-key">Token (BGLD or new)</td><td>Blank-slate design. Utility + governance + yield mechanics tied to water infrastructure. Vesting designed for market conditions.</td><td><span class="tag-red">no demand mechanic, no yield</span></td></tr>
+        <tr><td class="td-key">Market structure</td><td>Market maker contracted before any public distribution. DEX liquidity pool seeded at launch. No OTC-only cap table.</td><td><span class="tag-red">zero market structure</span></td></tr>
+        <tr><td class="td-key">Governance</td><td>Multisig treasury from week one. DAO-lite for token holders. Founder override explicitly prohibited by charter.</td><td><span class="tag-red">unilateral founder control</span></td></tr>
+        <tr><td class="td-key">Regulatory</td><td>Legal opinion on token classification in Month 1. MiCA compliance pathway. KYC/AML designed in from start.</td><td><span class="tag-red">no legal framework ever</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 06 — BOTH IN NASAR -->
+  <div id="s6" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 06</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// our position in the new co</div>
+        <h2 class="section-title">BOTH in Nasar —<br>What We <span class="hl">Bring</span>, What We <span class="amber">Get</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">In the Nasar scenario, BOTH is not a service provider, an advisor, or a contractor. BOTH is a co-founder with equity. The following maps our contribution and our return, both of which must be negotiated explicitly before any commitment.</p>
+
+    <table class="data-table">
+      <thead><tr><th>domain</th><th>BOTH contribution</th></tr></thead>
+      <tbody>
+        <tr><td class="td-key">Token Architecture</td><td>Full BGLD (or new token) design from zero — supply model, vesting, emissions, utility mechanics, yield structure, governance rights. The document of record for the entire token economy.</td></tr>
+        <tr><td class="td-key">Smart Contracts</td><td>ERC-20 or equivalent token contract, vesting module, staking module, governance module, SPV interface layer. All audited before deployment.</td></tr>
+        <tr><td class="td-key">RWA Oracle Layer</td><td>Proof-of-delivery and water allocation tracking infrastructure. The on-chain bridge between physical water sources and token value — what LAK3 never built.</td></tr>
+        <tr><td class="td-key">Treasury + Governance</td><td>Gnosis Safe multisig from week one. Treasury policy. DAO-lite governance design. On-chain transparency dashboard.</td></tr>
+        <tr><td class="td-key">ICO / IDO Strategy</td><td>Venue selection, launchpad negotiation, market maker sourcing, institutional investor relations, raise structure. $8M–$12M target, MiCA-compliant.</td></tr>
+        <tr><td class="td-key">Legal Coordination</td><td>Lead coordination of token legal counsel, SPV structuring, MiCA compliance, jurisdictional strategy. Not legal advice — strategic direction of external counsel.</td></tr>
+        <tr><td class="td-key">System Architecture</td><td>End-to-end infrastructure design: on-chain + off-chain layers, node infrastructure, oracle feeds, DeFi integrations, interoperability strategy.</td></tr>
+      </tbody>
+    </table>
+
+    <p class="body-text" style="margin-top:32px;">In exchange, BOTH's minimum acceptable return in the Nasar structure:</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">Large<span class="stat-unit a">equity</span></div>
+        <div class="stat-label">Significant equity shareholding in Nasar (the water company). Not a token allocation substitute. Real ownership of the underlying asset vehicle. Percentage TBD in negotiation.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">10<span class="stat-unit">%+</span></div>
+        <div class="stat-label">Token supply allocation (BGLD or Nasar token). Vesting aligned with project lifecycle. Non-dilutable through public raise.</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">Full<span class="stat-unit">control</span></div>
+        <div class="stat-label">Absolute authority over the entire tech stack. No JB override on technical decisions. Clean separation: JB owns water operations, BOTH owns tech architecture.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- § 07 — RISK REGISTER -->
+  <div id="s7" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 07</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// open questions</div>
+        <h2 class="section-title">Risk Register —<br>What We <span class="red">Don't Know Yet</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The Nasar scenario has a stronger structural profile than the LAK3 takeover. But several open questions must be answered before committing. These are not hypothetical risks — they are information gaps that could change the decision.</p>
+
+    <table class="data-table">
+      <thead><tr><th>risk</th><th>level</th><th>assessment + mitigant</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-red">Water source legal separation</td>
+          <td><span class="tag-red">critical</span></td>
+          <td>The most important unanswered question. Do the spring sources, water licenses, and land rights legally reside in LAK3 the company — or are they separable? If they're locked inside a company under active litigation, Nasar's asset base is a claim, not a reality. <strong>Must be diligenced before any commitment.</strong></td>
+        </tr>
+        <tr>
+          <td class="td-red">JB's operational depth</td>
+          <td><span class="tag-red">high</span></td>
+          <td>Commodity trading expertise is highly relevant. But leading a Web3 company — dealing with smart contracts, token dynamics, DeFi integrations, community — is a different operating environment. BOTH needs to assess JB's ability to manage the non-commodity domains without reverting to founder-style unilateral control. One reference check required minimum.</td>
+        </tr>
+        <tr>
+          <td class="td-amber">LAK3 litigation timing</td>
+          <td><span class="tag-amber">medium</span></td>
+          <td>If JB pursues a LAK3 lawsuit simultaneously with launching Nasar, there is potential for legal complications — particularly if LAK3 founders argue that Nasar uses proprietary water source intelligence developed under the LAK3 umbrella. Mitigant: clean legal opinion on IP separation before incorporating Nasar.</td>
+        </tr>
+        <tr>
+          <td class="td-amber">OTC investor alignment</td>
+          <td><span class="tag-amber">medium</span></td>
+          <td>Converting angry LAK3 investors into Nasar anchor investors requires a credible migration or compensation narrative. Some will refuse regardless. The question is whether enough of the 50 can be converted to provide early-stage capital momentum for Nasar. Mitigant: JB-led outreach to OTC group before public announcement.</td>
+        </tr>
+        <tr>
+          <td class="td-amber">Nasar capital raise</td>
+          <td><span class="tag-amber">medium</span></td>
+          <td>Nasar has no operational cash at founding. Unlike the LAK3 Option B path (which has a $300k committed bridge from the investor group), Nasar's initial funding is unfunded at this stage. BOTH needs to understand JB's ability to anchor the initial raise and what timeline that implies. Mitigant: model a lean $150–$200k founding round with JB and 3–5 OTC converts before external capital.</td>
+        </tr>
+        <tr>
+          <td class="td-key">BOTH resource commitment</td>
+          <td><span class="tag-green">manageable</span></td>
+          <td>Co-founding a company is a different level of commitment than leading a bridge phase engagement. BOTH needs to explicitly model the time and resource allocation required — and confirm capacity alongside any other active engagements. Mitigant: scope-of-work agreement before any Nasar decision.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- § 08 — OPTIONALITY -->
+  <div id="s8" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 08</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// optionality index</div>
+        <h2 class="section-title">Optionality<br><span class="hl">Assessment</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Applying BOTH's optionality framework to both paths. Scored 1–5 across five vectors. The question is not just which path is better — it is which path preserves the most future range while delivering the core thesis.</p>
+
+    <div class="opt-matrix">
+      <div class="opt-row opt-row-head">
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;">vector</span>
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;">nasar assessment</span>
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;text-align:right;">score</span>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Asset Access</span>
+        <span class="opt-body-text">Nasar's entire premise is direct access to pristine water sources — the actual underlying thesis. If water source legal separation is confirmed, this is the highest-value asset position possible in this category. No token mechanics substitute for owning the source.<br><em style="color:var(--text-3);font-size:11px;">⚠ Score contingent on water source diligence outcome.</em></span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on a"></div><div class="score-pip on a"></div><div class="score-pip on a"></div><div class="score-pip on a"></div><div class="score-pip on a"></div></div>
+          <span style="font-size:10px;color:var(--amber);">5/5 ★</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Structural Cleanliness</span>
+        <span class="opt-body-text">No inherited cap table, no broken investor relationships, no legacy token migration, no founder override risk. Nasar is a blank slate. Every governance and technical decision can be made correctly from inception — not retrofitted onto a failed structure.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div></div>
+          <span style="font-size:10px;color:var(--text-3);">5/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Ownership Position</span>
+        <span class="opt-body-text">Nasar: large equity shareholder + token allocation. Option B: $150k fee + 10% BGLD + equity TBD. In Nasar, BOTH's equity is co-founder level — not a negotiated recovery fee. The upside is structurally larger and not contingent on successful reconstruction of someone else's failure.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--text-3);">4/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Market Timing</span>
+        <span class="opt-body-text">Both paths face the same market window: 2026 UN Water Conference (Dec), RWA market at institutional scale, MiCA operational. Neither path has a timing advantage per se. But Nasar's clean-start allows faster architecture decisions — no legacy token migration adds 2–3 months to Option B's timeline.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--text-3);">4/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Execution Risk</span>
+        <span class="opt-body-text">Nasar's execution risk is concentrated in two early decisions: water source legal separation + JB operational assessment. If both resolve positively, execution risk drops significantly. Option B's execution risk is chronic — founder interference, cap table friction, migration complexity — and doesn't fully resolve at any point in the timeline.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip on"></div><div class="score-pip"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--text-3);">3/5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl" style="margin-top:40px;">
+      <div class="tl-row">
+        <div class="tl-year-col">Now</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node now"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event now">Internal deliberation — Nasar vs Option B</div>
+          <div class="tl-detail">Water source legal diligence. JB assessment. OTC investor mapping. Decision before CEO forces Option B commitment.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year-col">Week 2–4</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node amber"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event amber">Nasar co-founding decision</div>
+          <div class="tl-detail">If diligence confirms water source access: BOTH and JB execute Nasar co-founding agreement. Initial $150–200k founding round from JB + 3–5 OTC converts. Legal entity incorporated.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year-col">Month 1–2</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event">Architecture & legal foundation</div>
+          <div class="tl-detail">Token architecture design. SPV structure. Legal opinion on token classification. Gnosis Safe treasury. Engineering team contracted. Water source SPV structuring begins.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year-col">Month 3–5</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event">Build + audit phase</div>
+          <div class="tl-detail">Smart contract suite deployed. RWA oracle layer built. Security audit (Hacken/Certik). Tokenomics document published. Whitepaper. Launchpad shortlist finalized.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year-col">Month 6–8</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event">ICO / IDO preparation</div>
+          <div class="tl-detail">$8M–$12M raise. Market maker contracted. Exchange listing strategy. Institutional investor roadshow. MiCA-compliant public offering structure.</div>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-year-col">Dec 2026</div>
+        <div class="tl-pipe"><div class="tl-pipe-line"></div><div class="tl-node amber"></div></div>
+        <div class="tl-content-col">
+          <div class="tl-event amber">UN Water Conference — UAE</div>
+          <div class="tl-detail">Natural public launch moment. Nasar/BGLD positioned as the first institutional-grade water RWA token at the single largest water finance alignment event of the decade.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- § 09 — STRATEGIC DIRECTIVE -->
+  <div id="s9" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 09</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// conclusion</div>
+        <h2 class="section-title">Strategic<br><span class="hl">Directive</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">The LAK3 project failed because of identifiable, fixable structural errors — not because the thesis was wrong. The water-RWA market that LAK3 needed is now real, institutionally validated, and accelerating. BOTH's original instinct — that pristine water sources at scale are the highest-value underlying asset in this emerging category — was correct.</p>
+
+    <p class="body-text">The question is no longer whether to engage. The question is which vehicle gives BOTH the most direct, cleanest, and most structurally durable access to that asset. The Nasar spinout, subject to water source diligence, is that vehicle.</p>
+
+    <div class="rec-block">
+      <p><strong>Pursue the Nasar path</strong> — subject to two preconditions resolving positively: (1) water source legal separation is confirmed clean and separable from LAK3's corporate estate, and (2) JB's operational profile confirms sufficient non-commodity domain adaptability. If both confirm: BOTH co-founds Nasar, executes the full tech stack, enters as large shareholder, and positions the company for launch at the 2026 UN Water Conference window. <strong>The LAK3 Option B reconstruction is the fallback</strong> — not the primary path — and only if Nasar diligence fails on the water source question. Do not commit to Option B before Nasar diligence is complete. The two-week deliberation window is sufficient.</p>
+    </div>
+
+    <ul class="t-list" style="margin-top:32px;">
+      <li><strong>Immediate:</strong> Commission water source legal diligence. Identify which springs, licenses, and land rights are held by LAK3 the corporate entity vs. personally held or separately accessible by JB. This is the single most consequential question.</li>
+      <li><strong>Immediate:</strong> Conduct a structured assessment of JB — not a reference check, a working session. Understand his operational model, capital relationships, water source knowledge, and how he handles domain boundaries. 2–3 hours, direct conversation.</li>
+      <li><strong>Week 2:</strong> Map OTC investor group by stance. Identify who is lawsuit-first, who is recovery-focused, who is both. The recovery-focused subset are Nasar's natural first-close anchor investors. JB should lead that outreach — BOTH provides the materials.</li>
+      <li><strong>Week 2:</strong> Draft Nasar co-founding term sheet — equity split, token allocation, domain authority separation, governance charter, funding requirements. Get to paper before the CEO's Option B pressure forces a premature decision.</li>
+      <li><strong>Ongoing:</strong> Do not signal Option B rejection to the CEO yet. Keep both paths open until Nasar diligence confirms. Premature closure of Option B removes negotiating leverage if Nasar terms require adjustment.</li>
+    </ul>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="df-left">
+      <div class="df-id">BOTH // INTEL-004</div>
+      <div>P.003 Intelligence Program</div>
+      <div>Issued: 2026-03-26 // Internal Only</div>
+    </div>
+    <div class="df-right">
+      <div>LAK3 · Water Asset Intelligence · Nasar Spinout Assessment</div>
+      <div>Both_Ventures // Punta del Este, UY</div>
+      <div style="color:var(--text-4);margin-top:4px;">end of document</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isLight = html.classList.toggle('light');
+    document.getElementById('toggleIcon').textContent = isLight ? '●' : '◐';
+    document.getElementById('toggleLabel').textContent = isLight ? 'DARK' : 'LIGHT';
+    try { localStorage.setItem('both-intel-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  }
+  try {
+    if (localStorage.getItem('both-intel-theme') === 'light') {
+      document.documentElement.classList.add('light');
+      document.getElementById('toggleIcon').textContent = '●';
+      document.getElementById('toggleLabel').textContent = 'DARK';
+    }
+  } catch(e) {}
+</script>
+</body>
+</html>

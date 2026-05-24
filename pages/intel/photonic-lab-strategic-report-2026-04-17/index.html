@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photonic Lab — Strategic Intelligence Report 2026</title>
+<style>
+/* ── SYSTEM STACK: Helvetica Neue → Helvetica → Arial → sans-serif ── */
+:root {
+  --ff: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Palette — Swiss editorial: white ground, black type, one green accent */
+  --white:   #ffffff;
+  --off:     #f5f5f3;
+  --rule:    #e0e0dc;
+  --rule2:   #c8c8c4;
+  --text:    #111110;
+  --text2:   #555550;
+  --text3:   #999990;
+  --acc:     #0a8c5a;   /* Photonic green */
+  --acc-lt:  #e6f5ee;
+  --acc-dk:  #065c3a;
+  --amber:   #b06a00;
+  --amb-lt:  #fdf3e3;
+  --coral:   #c0392b;
+  --cor-lt:  #fdecea;
+  --blue:    #1a4fa0;
+  --blu-lt:  #e8effa;
+  --slate:   #3a4a58;
+  --slt-lt:  #edf1f5;
+
+  --radius:  3px;
+  --shadow:  0 1px 4px rgba(0,0,0,.08);
+  --shadow2: 0 2px 12px rgba(0,0,0,.10);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ─────────────────────────────────────────────────────────── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--text);
+  display: flex; align-items: stretch;
+}
+.nav-inner {
+  max-width: 1160px; margin: 0 auto; width: 100%;
+  display: flex; align-items: center;
+  padding: 0 32px; height: 52px; gap: 0;
+  overflow-x: auto;
+}
+.nav-logo {
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text);
+  margin-right: 32px; flex-shrink: 0; white-space: nowrap;
+  border-right: 1px solid var(--rule2); padding-right: 32px;
+}
+.nav-logo span { color: var(--acc); }
+.nb {
+  background: none; border: none; border-bottom: 2px solid transparent;
+  font-family: var(--ff); font-size: 11px; font-weight: 400;
+  letter-spacing: .05em; text-transform: uppercase;
+  color: var(--text2); padding: 0 14px; height: 52px;
+  cursor: pointer; white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.nb:hover { color: var(--text); }
+.nb.on { color: var(--acc); border-bottom-color: var(--acc); font-weight: 700; }
+
+/* ─── LAYOUT ──────────────────────────────────────────────────────── */
+.shell { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+.panel { display: none; padding: 56px 0 80px; animation: fadeUp .3s ease both; }
+.panel.on { display: block; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+/* ─── HERO ────────────────────────────────────────────────────────── */
+.hero-eyebrow {
+  font-size: 10px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--acc);
+  margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before {
+  content: ''; width: 24px; height: 1.5px; background: var(--acc);
+}
+.hero-h1 {
+  font-size: clamp(48px, 6.5vw, 80px);
+  font-weight: 300; letter-spacing: -.03em; line-height: .95;
+  margin-bottom: 24px; color: var(--text);
+}
+.hero-h1 strong { font-weight: 700; display: block; }
+.hero-sub {
+  font-size: 15px; font-weight: 300; color: var(--text2);
+  max-width: 520px; line-height: 1.75; margin-bottom: 52px;
+}
+
+.kpi-row {
+  display: flex; border: 1.5px solid var(--text);
+  width: fit-content; margin-bottom: 48px;
+}
+.kpi {
+  padding: 20px 36px; border-right: 1.5px solid var(--text);
+}
+.kpi:last-child { border-right: none; }
+.kpi-v {
+  font-size: 28px; font-weight: 700; color: var(--text);
+  line-height: 1; margin-bottom: 4px; letter-spacing: -.02em;
+}
+.kpi-v span { color: var(--acc); }
+.kpi-l {
+  font-size: 9px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text3);
+}
+
+/* ─── SEC HEADERS ─────────────────────────────────────────────────── */
+.sec-eye {
+  font-size: 9px; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--acc); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-eye::after { content:''; flex:1; max-width:48px; height:1px; background:var(--acc); }
+.sec-h {
+  font-size: clamp(26px, 3.5vw, 40px); font-weight: 300;
+  letter-spacing: -.025em; line-height: 1.1; margin-bottom: 14px;
+}
+.sec-h strong { font-weight: 700; }
+.sec-p {
+  font-size: 14px; font-weight: 300; color: var(--text2);
+  max-width: 580px; line-height: 1.8; margin-bottom: 48px;
+}
+
+/* ─── DIVIDERS ────────────────────────────────────────────────────── */
+.div {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 9px; font-weight: 700; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--text3);
+  margin: 48px 0 20px;
+}
+.div::after { content:''; flex:1; height:1px; background:var(--rule); }
+
+/* ─── CALLOUT ─────────────────────────────────────────────────────── */
+.callout {
+  border-left: 3px solid var(--acc);
+  padding: 18px 20px; background: var(--acc-lt);
+  font-size: 13px; line-height: 1.75; color: var(--text2);
+  margin-bottom: 36px;
+}
+.callout strong { color: var(--text); font-weight: 700; }
+.callout-warn { border-color: var(--amber); background: var(--amb-lt); }
+.callout-warn strong { color: var(--amber); }
+
+/* ─── GRIDS ───────────────────────────────────────────────────────── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-bottom: 28px; background: var(--rule); }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; margin-bottom: 28px; background: var(--rule); }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; margin-bottom: 28px; background: var(--rule); }
+
+/* ─── CARDS ───────────────────────────────────────────────────────── */
+.card {
+  background: var(--white); padding: 24px;
+  transition: background .15s;
+}
+.card:hover { background: var(--off); }
+.card-lbl {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text3); margin-bottom: 10px;
+}
+.card-bigval {
+  font-size: 34px; font-weight: 700; letter-spacing: -.03em;
+  color: var(--acc); margin-bottom: 8px; line-height: 1;
+}
+.card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+.card-body { font-size: 13px; font-weight: 300; color: var(--text2); line-height: 1.7; }
+.card-accent { border-top: 3px solid var(--acc); }
+.card-amber  { border-top: 3px solid var(--amber); }
+.card-coral  { border-top: 3px solid var(--coral); }
+.card-blue   { border-top: 3px solid var(--blue); }
+.card-slate  { border-top: 3px solid var(--slate); }
+
+/* ─── BADGES ──────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 2px 7px;
+}
+.b-g { background: var(--acc-lt); color: var(--acc-dk); }
+.b-a { background: var(--amb-lt); color: var(--amber); }
+.b-c { background: var(--cor-lt); color: var(--coral); }
+.b-b { background: var(--blu-lt); color: var(--blue); }
+.b-s { background: var(--slt-lt); color: var(--slate); }
+.b-x { background: var(--off); color: var(--text3); }
+.tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+
+/* ─── TABLE ───────────────────────────────────────────────────────── */
+.tbl-wrap { overflow-x: auto; margin-bottom: 36px; border: 1px solid var(--rule); }
+table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 680px; }
+thead { background: var(--off); }
+th {
+  text-align: left; padding: 10px 14px;
+  font-size: 9px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text3);
+  border-bottom: 1.5px solid var(--rule2); white-space: nowrap;
+}
+td {
+  padding: 11px 14px; border-bottom: 1px solid var(--rule);
+  vertical-align: top; color: var(--text2); line-height: 1.5;
+}
+td strong { color: var(--text); font-weight: 700; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--off); }
+.hlr td { background: var(--acc-lt); }
+.hlr td:first-child { border-left: 3px solid var(--acc); }
+
+/* ─── SCORE BARS ──────────────────────────────────────────────────── */
+.bar-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 11px 0; border-bottom: 1px solid var(--rule);
+}
+.bar-row:last-child { border-bottom: none; }
+.bar-lbl { font-size: 12px; font-weight: 400; color: var(--text); width: 195px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 3px; background: var(--rule); overflow: hidden; }
+.bar-fill { height: 100%; transition: width 1.1s cubic-bezier(.4,0,.2,1); width: 0; }
+.bar-note { font-size: 10px; color: var(--text3); width: 72px; text-align: right; font-weight: 700; letter-spacing:.02em; }
+
+/* ─── MODEL CARDS ─────────────────────────────────────────────────── */
+.model-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: var(--rule); margin-bottom: 2px;
+}
+.mc {
+  background: var(--white); padding: 20px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: background .15s;
+  border-top: 2px solid transparent;
+}
+.mc:hover { background: var(--off); }
+.mc.sel { background: var(--acc-lt); border-top-color: var(--acc); }
+.mc-num { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.mc-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.35; }
+.mc-capex { font-size: 18px; font-weight: 300; letter-spacing: -.02em; color: var(--amber); margin-bottom: 10px; }
+
+.model-detail {
+  display: none; background: var(--acc-lt);
+  border: 1px solid var(--acc); padding: 32px;
+  animation: fadeUp .2s ease both; margin-bottom: 2px;
+}
+.model-detail.vis { display: block; }
+.md-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 20px; }
+.md-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; margin-bottom: 12px;
+}
+.md-label.pro { color: var(--acc); }
+.md-label.con { color: var(--coral); }
+.md-list li {
+  list-style: none; padding-left: 16px; position: relative;
+  margin-bottom: 5px; font-size: 12px; font-weight: 300;
+  color: var(--text2); line-height: 1.65;
+}
+.md-list.pro li::before { content: '✓'; position: absolute; left: 0; color: var(--acc); font-weight: 700; }
+.md-list.con li::before { content: '×'; position: absolute; left: 0; color: var(--coral); font-weight: 700; }
+.md-verdict {
+  margin-top: 20px; padding: 16px;
+  background: var(--white); border-left: 3px solid var(--acc);
+  font-size: 12px; font-weight: 300; color: var(--text2); line-height: 1.75;
+}
+.md-verdict strong { color: var(--text); font-weight: 700; }
+
+/* ─── REVENUE PHASE BAR ───────────────────────────────────────────── */
+.ph-row {
+  display: flex; gap: 0; border: 1.5px solid var(--text);
+  width: fit-content; margin-bottom: 18px;
+}
+.ph-btn {
+  background: none; border: none; border-right: 1px solid var(--text);
+  font-family: var(--ff); font-size: 10px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 9px 20px; cursor: pointer; color: var(--text2);
+  transition: background .15s, color .15s;
+}
+.ph-btn:last-child { border-right: none; }
+.ph-btn.on { background: var(--text); color: var(--white); }
+.rev-outer {
+  display: flex; height: 8px; border: 1px solid var(--rule2);
+  overflow: hidden; margin-bottom: 14px;
+}
+.rv { height: 100%; transition: flex .6s cubic-bezier(.4,0,.2,1); }
+.rev-key { display: flex; flex-wrap: wrap; gap: 18px; font-size: 11px; color: var(--text2); margin-bottom: 8px; }
+.rev-dot { display: inline-block; width: 8px; height: 8px; margin-right: 5px; vertical-align: middle; }
+.ph-note { font-size: 11px; color: var(--text3); font-weight: 300; min-height: 18px; }
+
+/* ─── CAPITAL ACCORDION ───────────────────────────────────────────── */
+.cap-item { border-bottom: 1px solid var(--rule); }
+.cap-head {
+  display: flex; align-items: center; gap: 16px; padding: 18px 0;
+  cursor: pointer; user-select: none;
+  transition: background .1s;
+}
+.cap-head:hover { background: var(--off); margin: 0 -8px; padding-left: 8px; padding-right: 8px; }
+.cap-n { font-size: 9px; font-weight: 700; letter-spacing: .12em; color: var(--text3); width: 28px; flex-shrink: 0; }
+.cap-info { flex: 1; min-width: 0; }
+.cap-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.cap-sub { font-size: 10px; font-weight: 400; color: var(--text3); letter-spacing: .04em; text-transform: uppercase; }
+.cap-amt { font-size: 18px; font-weight: 300; letter-spacing: -.02em; flex-shrink: 0; }
+.cap-arr { color: var(--text3); font-size: 12px; flex-shrink: 0; transition: transform .25s; width: 14px; }
+.cap-item.open .cap-arr { transform: rotate(180deg); }
+.cap-body { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+.cap-body-in {
+  padding: 0 0 24px 44px;
+  font-size: 12px; font-weight: 300; color: var(--text2);
+  line-height: 1.85;
+}
+.cap-body-in strong { font-weight: 700; color: var(--text); }
+
+/* ─── ZF TABLE FILTER ─────────────────────────────────────────────── */
+.zf-row { display: flex; gap: 0; border: 1.5px solid var(--text); width: fit-content; margin-bottom: 18px; }
+.zf-btn {
+  background: none; border: none; border-right: 1px solid var(--text);
+  font-family: var(--ff); font-size: 10px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 8px 18px; cursor: pointer; color: var(--text2);
+  transition: background .15s, color .15s;
+}
+.zf-btn:last-child { border-right: none; }
+.zf-btn.on { background: var(--text); color: var(--white); }
+
+/* ─── TIMELINE ────────────────────────────────────────────────────── */
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before {
+  content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px;
+  width: 1px; background: var(--rule2);
+}
+.tl-item { position: relative; margin-bottom: 36px; }
+.tl-item::before {
+  content: ''; position: absolute; left: -26px; top: 5px;
+  width: 8px; height: 8px; background: var(--acc); border-radius: 50%;
+  border: 2px solid var(--white); outline: 1px solid var(--acc);
+}
+.tl-phase {
+  font-size: 9px; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--acc); margin-bottom: 5px;
+}
+.tl-title { font-size: 14px; font-weight: 700; margin-bottom: 7px; }
+.tl-body { font-size: 12px; font-weight: 300; color: var(--text2); line-height: 1.75; }
+
+/* ─── RISK CARDS ──────────────────────────────────────────────────── */
+.risk-item {
+  display: flex; gap: 16px; padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.risk-item:last-child { border-bottom: none; }
+.risk-lvl {
+  width: 52px; flex-shrink: 0; text-align: center;
+  padding-top: 2px;
+}
+.risk-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  margin: 0 auto 4px;
+}
+.risk-lvl-lbl {
+  font-size: 8px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text3);
+}
+.risk-body {}
+.risk-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.risk-desc { font-size: 12px; font-weight: 300; color: var(--text2); line-height: 1.65; }
+
+/* ─── FOOTER ──────────────────────────────────────────────────────── */
+footer {
+  border-top: 1.5px solid var(--text);
+  background: var(--off); padding: 20px 32px;
+}
+.fi {
+  max-width: 1160px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10px; font-weight: 400; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text3);
+}
+.fi strong { color: var(--acc); font-weight: 700; }
+
+/* ─── RESPONSIVE ──────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .shell, nav, footer { padding-left: 18px; padding-right: 18px; }
+  .nav-inner { padding: 0 18px; }
+  .g2, .g3, .g4, .model-grid, .md-grid { grid-template-columns: 1fr; }
+  .kpi-row { flex-direction: column; width: 100%; }
+  .kpi { border-right: none; border-bottom: 1px solid var(--rule); }
+  .kpi:last-child { border-bottom: none; }
+  .bar-lbl { width: 140px; }
+}
+
+
+/* ─── TEAM CARDS ──────────────────────────────────────────────────── */
+.team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--rule); margin-bottom: 28px; }
+.team-card { background: var(--white); padding: 24px; border-top: 3px solid transparent; transition: background .15s; }
+.team-card:hover { background: var(--off); }
+.team-card.lead { border-top-color: var(--acc); }
+.team-card.ops  { border-top-color: var(--amber); }
+.team-card.legal{ border-top-color: var(--blue); }
+.team-card.creative { border-top-color: var(--slate); }
+.team-num { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+.team-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.team-role { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--acc); margin-bottom: 10px; }
+.team-bio { font-size: 12px; font-weight: 300; color: var(--text2); line-height: 1.65; }
+
+/* ─── CAPEX TABLE EXTRAS ──────────────────────────────────────────── */
+.capex-section { margin-bottom: 48px; }
+.capex-section-title { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text); border-bottom: 1.5px solid var(--text); padding-bottom: 8px; margin-bottom: 18px; }
+.sourcing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 28px; }
+.src-card { background: var(--white); padding: 20px; }
+.src-flag { font-size: 18px; margin-bottom: 8px; }
+.src-country { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 12px; }
+.src-item { border-bottom: 1px solid var(--rule); padding: 8px 0; }
+.src-item:last-child { border-bottom: none; }
+.src-name { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.src-desc { font-size: 11px; font-weight: 300; color: var(--text2); line-height: 1.5; }
+.src-hot { border-left: 3px solid var(--acc); padding-left: 8px; }
+
+/* ─── INTEL PANEL ─────────────────────────────────────────────────── */
+.intel-card { border: 1px solid var(--rule); padding: 24px; margin-bottom: 16px; position: relative; }
+.intel-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--acc); }
+.intel-date { font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+.intel-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.intel-body { font-size: 13px; font-weight: 300; color: var(--text2); line-height: 1.75; }
+.intel-body strong { color: var(--text); font-weight: 700; }
+.intel-pending { background: var(--amb-lt); border-color: var(--amber); }
+.intel-pending::before { background: var(--amber); }
+.intel-confirmed { background: var(--acc-lt); border-color: var(--acc); }
+.intel-confirmed::before { background: var(--acc); }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); margin-bottom: 28px; }
+.contact-card { background: var(--white); padding: 20px; }
+.contact-org { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; }
+.contact-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.contact-topic { font-size: 12px; font-weight: 300; color: var(--text2); line-height: 1.55; }
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+
+/* ─── BUSINESS CASE PANEL ────────────────────────────────────────── */
+.bc-kpi-row { display:flex; border:1.5px solid var(--text); width:fit-content; margin-bottom:36px; }
+.bc-kpi { padding:18px 28px; border-right:1.5px solid var(--text); }
+.bc-kpi:last-child { border-right:none; }
+.bc-kpi-v { font-size:26px; font-weight:700; line-height:1; margin-bottom:4px; letter-spacing:-.02em; }
+.bc-kpi-v span { color:var(--acc); }
+.bc-kpi-v.neg { color:var(--coral); }
+.bc-kpi-l { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); }
+.warn-box { border-left:3px solid var(--coral); background:var(--cor-lt); padding:16px 20px; font-size:13px; color:var(--text2); line-height:1.75; margin-bottom:24px; }
+.warn-box strong { color:var(--coral); }
+.gate-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); margin-bottom:36px; }
+.gate-card { background:var(--white); padding:22px; border-top:3px solid var(--coral); }
+.gate-card.done { border-top-color:var(--acc); }
+.gate-num { font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text3); margin-bottom:8px; }
+.gate-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:6px; }
+.gate-body { font-size:12px; font-weight:300; color:var(--text2); line-height:1.65; }
+.scenario-table-wrap { overflow-x:auto; margin-bottom:36px; border:1px solid var(--rule); }
+.sc-hdr-bear { background:#fdecea !important; }
+.sc-hdr-base { background:var(--off) !important; }
+.sc-hdr-bull { background:var(--acc-lt) !important; }
+/* ─── RADAR CANVAS ────────────────────────────────────────────────── */
+#radarWrap { position: relative; max-width: 520px; margin-bottom: 32px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">Photonic <span>Lab</span></div>
+    <button class="nb on"  onclick="go('p0',this)">Overview</button>
+    <button class="nb"     onclick="go('p1',this)">Global Benchmark</button>
+    <button class="nb"     onclick="go('p2',this)">Regional</button>
+    <button class="nb"     onclick="go('p3',this)">Infra Models</button>
+    <button class="nb"     onclick="go('p4',this)">Business Model</button>
+    <button class="nb"     onclick="go('p5',this)">Funding</button>
+    <button class="nb"     onclick="go('p6',this)">Roadmap</button>
+    <button class="nb"     onclick="go('p7',this)">CAPEX</button>
+    <button class="nb"     onclick="go('p9',this)">Business Case</button>
+    <button class="nb"     onclick="go('p8',this)">Intel</button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 0 — OVERVIEW
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p0" class="panel on">
+<div class="shell">
+
+  <div class="hero-eyebrow">Strategic Intelligence Report · Abril 2026</div>
+  <h1 class="hero-h1">Benchmark &amp;<br><strong>Strategy</strong></h1>
+  <p class="hero-sub">Regional &amp; global analysis of biotech infrastructure models, business architectures, and funding strategies to make Photonic Lab a reality in LATAM.</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-v"><span>$500B</span>+</div><div class="kpi-l">Global biotech market</div></div>
+    <div class="kpi"><div class="kpi-v"><span>0</span></div><div class="kpi-l">Accessible GMP hubs in LATAM</div></div>
+    <div class="kpi"><div class="kpi-v">100<span>+</span></div><div class="kpi-l">Startups in pipeline</div></div>
+    <div class="kpi"><div class="kpi-v"><span>4</span></div><div class="kpi-l">Integrated pillars</div></div>
+  </div>
+
+  <div class="callout">
+    <strong>Core thesis:</strong> Biotech in LATAM does not fail due to lack of science — it fails due to lack of infrastructure to scale. Photonic Lab is the missing layer: the only platform integrating infrastructure, scale-up capability, embedded capital, and ecosystem design in a single operating model. No global benchmark does all four.
+  </div>
+
+  <div class="div">The four pillars</div>
+  <div class="g4">
+    <div class="card card-accent">
+      <div class="card-lbl">Pillar 01</div>
+      <div class="card-title">Infrastructure</div>
+      <div class="card-body">GMP &amp; non-GMP labs, BSL-2, cleanrooms, HVAC, utilities, QA systems. The physical platform that makes everything else possible.</div>
+    </div>
+    <div class="card card-amber">
+      <div class="card-lbl">Pillar 02</div>
+      <div class="card-title">Scale-up</div>
+      <div class="card-body">Bioreactors, downstream processing, GMP-ready design. TRL 5 → 8 transition without leaving the continent.</div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-lbl">Pillar 03</div>
+      <div class="card-title">Capital</div>
+      <div class="card-body">Integrated with Both Ventures®. Deal flow and investment pipeline built into operations from day one.</div>
+    </div>
+    <div class="card card-slate">
+      <div class="card-lbl">Pillar 04</div>
+      <div class="card-title">Ecosystem</div>
+      <div class="card-body">Regulatory, IP, go-to-market, talent. Startups graduate — they don't just rent benches.</div>
+    </div>
+  </div>
+
+  <div class="div">What global benchmarks reveal</div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-lbl">LabCentral model</div>
+      <div class="card-title">Anchor pharma sponsor</div>
+      <div class="card-body">Pfizer's $50M anchor made LabCentral viable from launch. Photonic Lab equivalent: regional biotech anchor tenant with minimum-use contract. Structure is replicable.</div>
+      <div class="tags"><span class="badge b-g">Replicable</span></div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">IndieBio model</div>
+      <div class="card-title">Equity + accelerator</div>
+      <div class="card-body">SOSV funds cohort, takes equity, exits through portfolio. Photonic Lab adapts this via Both Ventures® — without the time-limited cohort pressure on startups.</div>
+      <div class="tags"><span class="badge b-a">Adapted</span></div>
+    </div>
+    <div class="card">
+      <div class="card-lbl">The Engine (MIT) model</div>
+      <div class="card-title">Long-cycle infrastructure</div>
+      <div class="card-body">MIT endowment + $200M patient capital. Photonic Lab version: blended grants + impact VCs + development banks. Equivalent function, no endowment required.</div>
+      <div class="tags"><span class="badge b-a">Adapted</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 1 — GLOBAL BENCHMARK
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p1" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">01 · Global Benchmark</div>
+  <h2 class="sec-h">The world's leading<br><strong>biotech infrastructure platforms</strong></h2>
+  <p class="sec-p">Eight global references mapped against the dimensions that matter. The white space for Photonic Lab is clear: no single player integrates all four pillars in one model anywhere in the world.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Reference</th><th>Location</th><th>Type</th><th>GMP</th><th>VC Link</th><th>Scale</th><th>Funding Model</th><th>Key Differentiator</th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>LabCentral</strong></td><td>Cambridge, MA</td><td>Shared hub</td><td><span class="badge b-a">Partial</span></td><td><span class="badge b-g">Pfizer anchor</span></td><td>28k → 200k+ ft²</td><td>Pharma anchor + grants</td><td>R&amp;D → GMP transition</td></tr>
+        <tr><td><strong>IndieBio</strong></td><td>SF / NYC</td><td>Accelerator + lab</td><td><span class="badge b-c">No</span></td><td><span class="badge b-g">SOSV equity</span></td><td>~12k ft²</td><td>VC-led ($250K/cohort)</td><td>12-week sprint, equity model</td></tr>
+        <tr><td><strong>The Engine (MIT)</strong></td><td>Cambridge, MA</td><td>Tough-tech hub</td><td><span class="badge b-a">Partial</span></td><td><span class="badge b-g">MIT / $200M fund</span></td><td>200k ft²</td><td>Institutional endowment</td><td>Long-cycle deeptech capital</td></tr>
+        <tr><td><strong>BioLabs</strong></td><td>US (multi-site)</td><td>Wet lab network</td><td><span class="badge b-c">No</span></td><td><span class="badge b-a">Indirect</span></td><td>11 cities</td><td>Subscriptions + real estate</td><td>Flexible, equity-preserving</td></tr>
+        <tr><td><strong>SmartLabs</strong></td><td>Europe</td><td>Managed lab ops</td><td><span class="badge b-a">Partial</span></td><td><span class="badge b-c">No</span></td><td>Multi-site</td><td>PE-backed</td><td>Outsourced lab management</td></tr>
+        <tr><td><strong>Planet B.io</strong></td><td>Delft, NL</td><td>Industrial scale-up</td><td><span class="badge b-g">Yes</span></td><td><span class="badge b-c">No</span></td><td>Pilot plant</td><td>Public + industrial</td><td>Shared bioprocess scale-up</td></tr>
+        <tr><td><strong>Lonza / Samsung</strong></td><td>Global</td><td>CDMO</td><td><span class="badge b-g">Full GMP</span></td><td><span class="badge b-c">No</span></td><td>Industrial</td><td>Revenue / listed</td><td>End-to-end clinical/commercial</td></tr>
+        <tr><td><strong>mAbxience</strong></td><td>Argentina</td><td>Regional CDMO</td><td><span class="badge b-g">Full GMP</span></td><td><span class="badge b-c">No</span></td><td>3–200L</td><td>Strategic investment</td><td>ANMAT/EMA/COFEPRIS</td></tr>
+        <tr class="hlr"><td><strong>Photonic Lab</strong></td><td>Uruguay (LATAM hub)</td><td>Hybrid platform</td><td><span class="badge b-g">GMP-ready path</span></td><td><span class="badge b-g">Both Ventures®</span></td><td>TRL 5→8</td><td>Grants + VC + equity</td><td><strong>Infra + Scale + Capital + Ecosystem</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="div">Pillar coverage radar</div>
+  <div id="radarWrap">
+    <canvas id="radarChart" width="520" height="320"></canvas>
+  </div>
+
+  <div class="callout">
+    <strong>The LATAM gap:</strong> LabCentral has infrastructure but no embedded VC and no LATAM presence. IndieBio has capital but no GMP. Planet B.io has GMP but no ecosystem. mAbxience has GMP but doesn't serve early-stage startups. No one integrates all four — and no one is building for the region.
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 2 — REGIONAL
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p2" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">02 · Regional Analysis</div>
+  <h2 class="sec-h">LATAM: strong science,<br><strong>absent infrastructure</strong></h2>
+  <p class="sec-p">Country by country, the gap is the same: science exists, GMP scale-up accessible to startups does not. Uruguay is the optimal hub node for the Southern Cone.</p>
+
+  <div class="g3">
+    <div class="card card-accent">
+      <div class="card-lbl">Uruguay</div>
+      <div class="card-bigval">62</div>
+      <div class="card-body">Active biotech companies. Strong IP protection. Institut Pasteur LAB+ ($25M fund). Portfolio: Guska, B4RNA, Scaffold, LoCBio. GMP infrastructure: near zero.</div>
+      <div class="tags"><span class="badge b-g">Hub opportunity</span></div>
+    </div>
+    <div class="card card-amber">
+      <div class="card-lbl">Argentina</div>
+      <div class="card-bigval">100+</div>
+      <div class="card-body">Deeptech startups (~67% biotech). mAbxience, Biosidus as refs. Accessible CDMO capacity for small startups: very limited. Macro instability drives founder migration.</div>
+      <div class="tags"><span class="badge b-a">Primary client base</span></div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-lbl">Brazil</div>
+      <div class="card-bigval">Largest</div>
+      <div class="card-body">Biggest LATAM ecosystem. High installed capacity — costly, bureaucratic, inaccessible for early-stage. Startups seek agile alternatives.</div>
+      <div class="tags"><span class="badge b-b">Strategic client</span></div>
+    </div>
+  </div>
+
+  <div class="div">Infrastructure gap by country</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Country</th><th>Ecosystem</th><th>CDMO Access</th><th>GMP for Startups</th><th>Photonic Lab Opportunity</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Uruguay</strong></td><td>62 cos, strong PI, low scale</td><td>Not registered</td><td><span class="badge b-c">Absent</span></td><td><span class="badge b-g">Regional GMP hub</span></td></tr>
+        <tr><td><strong>Argentina</strong></td><td>Robust, consolidated</td><td>Limited for small startups</td><td><span class="badge b-a">Partial</span></td><td><span class="badge b-g">Direct regional clients</span></td></tr>
+        <tr><td><strong>Brazil</strong></td><td>Largest in LATAM</td><td>Costly + bureaucratic</td><td><span class="badge b-a">Expensive</span></td><td><span class="badge b-g">Agile alternative</span></td></tr>
+        <tr><td><strong>Chile</strong></td><td>Emerging, fast growth</td><td>Practically absent</td><td><span class="badge b-c">Absent</span></td><td><span class="badge b-g">Clear unmet demand</span></td></tr>
+        <tr><td><strong>Colombia</strong></td><td>Emerging biotech</td><td>Practically absent</td><td><span class="badge b-c">Absent</span></td><td><span class="badge b-g">Clear unmet demand</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="div">Uruguay competitive advantage</div>
+  <div class="g2">
+    <div id="barsBox">
+      <div class="bar-row"><div class="bar-lbl">Regulatory stability</div><div class="bar-track"><div class="bar-fill" data-w="92" style="background:var(--acc)"></div></div><div class="bar-note">Very high</div></div>
+      <div class="bar-row"><div class="bar-lbl">IP protection</div><div class="bar-track"><div class="bar-fill" data-w="90" style="background:var(--acc)"></div></div><div class="bar-note">Very high</div></div>
+      <div class="bar-row"><div class="bar-lbl">Political stability</div><div class="bar-track"><div class="bar-fill" data-w="95" style="background:var(--acc)"></div></div><div class="bar-note">Very high</div></div>
+      <div class="bar-row"><div class="bar-lbl">Cono Sur logistics</div><div class="bar-track"><div class="bar-fill" data-w="82" style="background:var(--acc)"></div></div><div class="bar-note">High</div></div>
+      <div class="bar-row"><div class="bar-lbl">Scientific talent</div><div class="bar-track"><div class="bar-fill" data-w="60" style="background:var(--amber)"></div></div><div class="bar-note">Medium</div></div>
+      <div class="bar-row"><div class="bar-lbl">Construction costs</div><div class="bar-track"><div class="bar-fill" data-w="28" style="background:var(--coral)"></div></div><div class="bar-note">⚠ High risk</div></div>
+    </div>
+    <div>
+      <div class="card card-accent" style="margin-bottom:1px">
+        <div class="card-lbl">Institutional anchors</div>
+        <div style="display:flex;flex-direction:column;gap:0;margin-top:12px">
+          <div style="padding:11px 0;border-bottom:1px solid var(--rule)"><div class="card-title" style="font-size:12px;margin-bottom:2px">Institut Pasteur / LAB+</div><div class="card-body" style="font-size:11px">$25M fund · Guska, B4RNA, Scaffold, LoCBio</div></div>
+          <div style="padding:11px 0;border-bottom:1px solid var(--rule)"><div class="card-title" style="font-size:12px;margin-bottom:2px">KhemBIO — Pando, Canelones</div><div class="card-body" style="font-size:11px">Biotech incubator · same territory as Photonic Lab</div></div>
+          <div style="padding:11px 0;border-bottom:1px solid var(--rule)"><div class="card-title" style="font-size:12px;margin-bottom:2px">PCTP Pando (UdelaR / LATU)</div><div class="card-body" style="font-size:11px">Science park · no ZF friction · I+D collaboration</div></div>
+          <div style="padding:11px 0"><div class="card-title" style="font-size:12px;margin-bottom:2px">ANII</div><div class="card-body" style="font-size:11px">Non-reimbursable grants · disponible en ZF y fuera de ZF desde 2025 (confirmado Uruguay XXI)</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-warn">
+    <strong>Critical construction risk:</strong> 80% cost overrun rate documented in Uruguay (Esteban Guerra, CEO Benten Biotech). All financial models must embed a 30% contingency buffer. Facility design must be modular and phased — never a single large-footprint bet.
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 3 — INFRA MODELS
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p3" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">03 · Infrastructure Models</div>
+  <h2 class="sec-h">Eight models evaluated.<br><strong>Two recommended.</strong></h2>
+  <p class="sec-p">Click any model card to see the full breakdown — pros, cons, CAPEX range, and strategic verdict. Model 3 is the entry point. Model 5 is the strategic target.</p>
+
+  <div class="model-grid" id="modelGrid"></div>
+  <div class="model-detail" id="modelDetail"></div>
+
+  <div class="div">International cleanroom benchmarks</div>
+  <div class="g3">
+    <div class="card"><div class="card-lbl">LabCentral · Cambridge MA</div><div class="card-title">28k → 200k+ ft²</div><div class="card-body">Pfizer-backed shared hub. R&amp;D to GMP transition. Gold standard for shared biotech infrastructure. Demonstrates pharma anchor model working at scale.</div></div>
+    <div class="card"><div class="card-lbl">Planet B.io · Delft NL</div><div class="card-title">Shared pilot plant</div><div class="card-body">Industrial bioprocess scale-up shared since 2019. Government + industrial partnership. Closest structural analog to Photonic Lab's Model 5 Hybrid.</div></div>
+    <div class="card"><div class="card-lbl">mAbxience · Argentina</div><div class="card-title">3–200L GMP</div><div class="card-body">ANMAT/EMA/COFEPRIS. Regional CDMO reference — but not accessible for early-stage startups needing small runs without full CDMO commitments.</div></div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 4 — BUSINESS MODEL
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p4" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">04 · Business Model</div>
+  <h2 class="sec-h">Five revenue streams.<br><strong>One integrated platform.</strong></h2>
+  <p class="sec-p">No single stream is sufficient. The value is in the stack — each layer reduces dependency on the others and creates compounding leverage as the platform scales.</p>
+
+  <div class="div">Revenue mix by phase</div>
+  <div class="ph-row">
+    <button class="ph-btn on" onclick="setPhase(0,this)">Phase 1 · Y1</button>
+    <button class="ph-btn"    onclick="setPhase(1,this)">Phase 2 · Y2</button>
+    <button class="ph-btn"    onclick="setPhase(2,this)">Phase 3 · Y4</button>
+    <button class="ph-btn"    onclick="setPhase(3,this)">Phase 4 · Y6+</button>
+  </div>
+  <div class="rev-outer">
+    <div class="rv" id="rv0" style="background:var(--acc)"></div>
+    <div class="rv" id="rv1" style="background:var(--amber)"></div>
+    <div class="rv" id="rv2" style="background:var(--blue)"></div>
+    <div class="rv" id="rv3" style="background:var(--slate)"></div>
+    <div class="rv" id="rv4" style="background:var(--rule2)"></div>
+  </div>
+  <div class="rev-key">
+    <span><span class="rev-dot" style="background:var(--acc)"></span>Subscriptions</span>
+    <span><span class="rev-dot" style="background:var(--amber)"></span>EaaS / Pay-per-use</span>
+    <span><span class="rev-dot" style="background:var(--blue)"></span>GMP services</span>
+    <span><span class="rev-dot" style="background:var(--slate)"></span>Equity / Exits</span>
+    <span><span class="rev-dot" style="background:var(--rule2)"></span>Grants</span>
+  </div>
+  <div class="ph-note" id="phNote"></div>
+
+  <div class="div">Five revenue streams</div>
+  <div class="g2">
+    <div class="card card-accent">
+      <div class="card-lbl">Stream 01 · Core recurring</div>
+      <div class="card-title">Infrastructure subscriptions</div>
+      <div class="card-body">Monthly/annual memberships for lab access, bench space, shared equipment. Target: 8–15 resident startups at $8K–$20K/month. Anchors operational break-even from day one.</div>
+      <div class="tags"><span class="badge b-g">Predictable</span><span class="badge b-g">Recurring</span></div>
+    </div>
+    <div class="card card-amber">
+      <div class="card-lbl">Stream 02 · Transactional</div>
+      <div class="card-title">Equipment-as-a-Service (EaaS)</div>
+      <div class="card-body">Bioreactors, downstream processing, cleanroom hours, analytics on demand. High margin on specialized equipment. CRO-style pricing for non-resident regional clients.</div>
+      <div class="tags"><span class="badge b-a">Variable</span><span class="badge b-g">High margin</span></div>
+    </div>
+    <div class="card card-blue">
+      <div class="card-lbl">Stream 03 · Strategic</div>
+      <div class="card-title">GMP services + tech transfer</div>
+      <div class="card-body">Fee-for-service GMP lots, regulatory dossier support, CMC packages, tech transfer to CDMOs. Premium pricing. Transforms the platform from lab to development partner.</div>
+      <div class="tags"><span class="badge b-b">Premium</span><span class="badge b-a">Phase 2+</span></div>
+    </div>
+    <div class="card card-slate">
+      <div class="card-lbl">Stream 04 · Long-term value</div>
+      <div class="card-title">Equity participation</div>
+      <div class="card-body">Warrants or stakes in resident startups in exchange for subsidized access or co-development. Removed from base case financial model — LATAM biotech exit timelines 10–15yr make near-term revenue speculative. Modeled as zero-cost upside option (5% probability of $500K+ in 7yr horizon). The business is viable on Streams 01–03 alone.</div>
+      <div class="tags"><span class="badge b-s">Asymmetric</span><span class="badge b-s">Long-term</span></div>
+    </div>
+    <div class="card card-coral">
+      <div class="card-lbl">Stream 05 · Non-dilutive</div>
+      <div class="card-title">Grants &amp; public funding</div>
+      <div class="card-body">ANII, IDB Lab, CAF, Fondo Sectorial. Non-reimbursable capital. De-risks early phases, reduces equity pressure on founders and investors.</div>
+      <div class="tags"><span class="badge b-c">Non-dilutive</span><span class="badge b-a">Competitive</span></div>
+    </div>
+    <div class="card" style="border-top:2px dashed var(--rule2)">
+      <div class="card-lbl">Optional · Phase 2+</div>
+      <div class="card-title">Anchor tenant contract</div>
+      <div class="card-body">Minimum-use contract with a regional biotech (Eywa, B4RNA, or equivalent). Guaranteed base revenue that de-risks the Model 5 hybrid. Critical if pursuing GMP MVP early.</div>
+      <div class="tags"><span class="badge b-x">Phase 2+</span><span class="badge b-g">Risk reducer</span></div>
+    </div>
+  </div>
+
+  <div class="div">Revenue by infrastructure phase</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>Infra Model</th><th>Primary Revenue</th><th>Secondary</th><th>Break-even Target</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-g">Phase 1 · 0–12m / Y1</span></td><td>Model 0 + M3 partial</td><td>Subscriptions, analytics</td><td>ANII grants, seed equity</td><td><strong>$394K revenue · EBITDA -$187K</strong></td></tr>
+        <tr><td><span class="badge b-a">Phase 2 · 12–36m / Y2–Y3</span></td><td>Model 3 full</td><td>EaaS, CRO, subscriptions</td><td>GMP services (Month 18+)</td><td><strong>Y2 $1.05M · Y3 $1.80M</strong></td></tr>
+        <tr><td><span class="badge b-b">Phase 3 · 36–60m / Y4</span></td><td>Model 5 hybrid</td><td>GMP services, anchor fees</td><td>Both Ventures® Series B</td><td><strong>$2.18M · EBITDA 18%</strong></td></tr>
+        <tr><td><span class="badge b-s">Phase 4 · 5–8yr</span></td><td>Model 6/7 evolution</td><td>Commercial lots, int'l clients</td><td>Portfolio exits, licensing</td><td>$3M+/yr</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 5 — FUNDING
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p5" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">05 · Funding Strategy</div>
+  <h2 class="sec-h">Capital stack architecture.<br><strong>Non-dilutive first.</strong></h2>
+  <p class="sec-p">A blended, sequenced strategy. Grants first — they require no dilution. ANII disponible en ZF y fuera de ZF desde 2025. Then strategic anchors and equipment partners. Then impact VCs. Then Both Ventures® once revenue is demonstrated.</p>
+
+  <div class="div">Capital layers — click each to expand</div>
+  <div id="capStack"></div>
+
+  <div class="div">Zona Franca vs. outside ZF — fiscal decision matrix</div>
+  <div class="zf-row">
+    <button class="zf-btn on" onclick="filterZF('all',this)">All factors</button>
+    <button class="zf-btn"    onclick="filterZF('pro',this)">ZF wins</button>
+    <button class="zf-btn"    onclick="filterZF('con',this)">Outside ZF wins</button>
+  </div>
+  <div class="tbl-wrap">
+    <table id="zfTable">
+      <thead><tr><th>Factor</th><th>Zona Franca</th><th>Outside ZF (Ley Inversiones)</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr data-t="pro"><td><strong>IRAE tax</strong></td><td><span class="badge b-g">0%</span></td><td>25% (reducible via Ley 16.906)</td><td><span class="badge b-g">ZF wins if profitable</span></td></tr>
+        <tr data-t="pro"><td><strong>Import duties on equipment</strong></td><td><span class="badge b-g">0%</span></td><td>Reducible via Ley Inversiones</td><td><span class="badge b-g">ZF wins at scale</span></td></tr>
+        <tr data-t="pro"><td><strong>Regional exports (60%+)</strong></td><td><span class="badge b-g">0% IVA + IRAE</span></td><td>Standard taxes apply</td><td><span class="badge b-g">ZF optimal at scale</span></td></tr>
+        <tr data-t="pro"><td><strong>ANII grants access</strong></td><td><span class="badge b-g">✓ Disponible desde 2025</span></td><td><span class="badge b-g">Disponible</span></td><td><span class="badge b-s">Neutro — ya no diferenciador</span></td></tr>
+        <tr data-t="con"><td><strong>INEFOP capacitación</strong></td><td><span class="badge b-c">Generalmente no aplica</span></td><td><span class="badge b-g">Acceso normal</span></td><td><span class="badge b-a">Fuera de ZF ★ confirmar post-2025</span></td></tr>
+        <tr data-t="con"><td><strong>Costo cliente UY (Ley 19.566)</strong></td><td><span class="badge b-c">Más caro — no deducible IRAE</span></td><td><span class="badge b-g">Normal — deducible</span></td><td><span class="badge b-a">Fuera de ZF si mercado local importa</span></td></tr>
+        <tr data-t="con"><td><strong>Compras públicas (ASSE/MSP)</strong></td><td><span class="badge b-c">Fricción — introducción a plaza</span></td><td><span class="badge b-g">Acceso directo</span></td><td><span class="badge b-a">Fuera de ZF si salud pública es cliente</span></td></tr>
+        <tr data-t="con"><td><strong>Uruguay market access</strong></td><td><span class="badge b-c">Complex (import tariff)</span></td><td><span class="badge b-g">Direct</span></td><td><span class="badge b-a">Outside ZF if selling locally</span></td></tr>
+        <tr data-t="con"><td><strong>International team %</strong></td><td><span class="badge b-a">75% UY rule (50% w/ permit)</span></td><td><span class="badge b-g">Flexible</span></td><td><span class="badge b-a">Outside ZF for int'l team</span></td></tr>
+        <tr data-t="con"><td><strong>UdelaR / PCTP collaboration</strong></td><td><span class="badge b-a">Complex (perimeter rules)</span></td><td><span class="badge b-g">Direct</span></td><td><span class="badge b-a">Outside ZF for research</span></td></tr>
+        <tr data-t="con"><td><strong>IP patent income (Ley 19.637)</strong></td><td>Standard</td><td><span class="badge b-g">5% IRAE on IP income</span></td><td><span class="badge b-a">Outside ZF for IP-heavy ops</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <strong>Recommended structure:</strong> Entity 1 (outside ZF) for Year 1–3 — full ANII access, PCTP/UdelaR collaboration, flexible international team, Ley Inversiones benefits. Entity 2 (ZF — Parque de las Ciencias or Zonamerica) activated in Year 3–4 when export revenue exceeds 60% and IRAE savings become material. Two-entity structure adds ~15% admin overhead but maximizes both early public funding access and long-term fiscal efficiency.
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 6 — ROADMAP
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p6" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">06 · Execution Roadmap</div>
+  <h2 class="sec-h">Phase-gated milestones.<br><strong>Capital unlocks infrastructure.</strong></h2>
+  <p class="sec-p">Each phase is self-validating before committing to the next. Capital is raised against demonstrated traction, not projections alone.</p>
+
+  <div class="g2">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-phase">Phase 0 · Now → Month 3</div>
+        <div class="tl-title">Strategic definition + fundraising prep</div>
+        <div class="tl-body">Close Qualia+ Phase 1. Finalize financial model with 30% construction contingency. Define facility location (PCTP Pando vs alternatives). File ANII grants. Map anchor tenant candidates. Build investor deck. Pipeline: 20+ startups in UY/AR/BR.</div>
+        <div class="tags" style="margin-top:10px"><span class="badge b-g">Qualia+ Phase 1</span><span class="badge b-g">Financial model</span><span class="badge b-a">ANII application</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 1 · Month 3–12</div>
+        <div class="tl-title">Model 0 buildout + first revenue</div>
+        <div class="tl-body">Secure location. Build transversal base: BSL-2, HVAC, utilities, QA system. Onboard first 3–5 resident startups. Launch subscriptions. First ANII grant received. Equipment partnerships (Sartorius/Cytiva in-kind). Anchor tenant LOI if achievable.</div>
+        <div class="tags" style="margin-top:10px"><span class="badge b-g">Model 0 live</span><span class="badge b-a">$300K–$600K raised</span><span class="badge b-g">First revenue</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 2 · Month 12–36</div>
+        <div class="tl-title">Model 3 — R&amp;D + GMP-Ready</div>
+        <div class="tl-body">GMP-compatible layout upgrade. QMS formal implementation. Bioreactor suite (2–50L). Downstream processing (chromatography, TFF). CRO services launched. Series A ($500K–$1.5M). 8–12 resident startups. International clients from AR/BR/CL begin.</div>
+        <div class="tags" style="margin-top:10px"><span class="badge b-b">Model 3 live</span><span class="badge b-b">Series A</span><span class="badge b-g">Regional clients</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 3 · Month 36–60</div>
+        <div class="tl-title">Model 5 Hybrid — GMP MVP + anchor</div>
+        <div class="tl-body">GMP modular cell activated (Phase I lots). Anchor tenant contract operational. Mixed revenue: subs + EaaS + GMP fees + rev-share. Both Ventures® Series B ($1.5M–$3M). ZF entity established. First equity crystallization in 2–3 portfolio startups.</div>
+        <div class="tags" style="margin-top:10px"><span class="badge b-s">Model 5 live</span><span class="badge b-s">GMP Phase I</span><span class="badge b-s">$1M+ ARR</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-phase">Phase 4 · Year 5–8</div>
+        <div class="tl-title">Regional CMO evolution + exits</div>
+        <div class="tl-body">Scale toward Model 6/7. ANMAT/ANVISA/FDA certifications. Multi-product industrial capacity. First portfolio exits. Photonic Lab becomes LATAM's definitive biotech infrastructure node.</div>
+        <div class="tags" style="margin-top:10px"><span class="badge b-x">Model 6/7</span><span class="badge b-x">Exits</span><span class="badge b-x">Regional leadership</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="div" style="margin-top:0">Risk register</div>
+      <div class="risk-item">
+        <div class="risk-lvl"><div class="risk-dot" style="background:var(--coral)"></div><div class="risk-lvl-lbl">High</div></div>
+        <div class="risk-body"><div class="risk-title">CAPEX overruns</div><div class="risk-desc">80% overrun rate in Uruguay. <strong>Mitigation:</strong> modular phasing, prefab cleanroom modules, fixed-price contracts, 30% contingency buffer in all models.</div></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-lvl"><div class="risk-dot" style="background:var(--coral)"></div><div class="risk-lvl-lbl">High</div></div>
+        <div class="risk-body"><div class="risk-title">Pipeline density</div><div class="risk-desc">Not enough TRL 5–8 startups in UY alone. <strong>Mitigation:</strong> regional model from Day 1, active deal sourcing via Both Ventures® ecosystem.</div></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-lvl"><div class="risk-dot" style="background:var(--amber)"></div><div class="risk-lvl-lbl">Medium</div></div>
+        <div class="risk-body"><div class="risk-title">GMP certification timeline</div><div class="risk-desc">Unpredictable regulatory timelines. <strong>Mitigation:</strong> start GMP-ready (not certified), hire QA Director early, engage LATU/MSP from design phase.</div></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-lvl"><div class="risk-dot" style="background:var(--amber)"></div><div class="risk-lvl-lbl">Medium</div></div>
+        <div class="risk-body"><div class="risk-title">Anchor tenant dependency</div><div class="risk-desc">Model 5 requires anchor. <strong>Mitigation:</strong> Model 3 is viable without anchor — treat anchor as accelerator, not prerequisite.</div></div>
+      </div>
+      <div class="risk-item">
+        <div class="risk-lvl"><div class="risk-dot" style="background:var(--acc)"></div><div class="risk-lvl-lbl">Low-med</div></div>
+        <div class="risk-body"><div class="risk-title">Scientific talent scarcity</div><div class="risk-desc">Smaller pool in UY. <strong>Mitigation:</strong> regional hiring from AR/BR, international hires under 50% exception, UdelaR partnership pipeline.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:40px">
+    <strong>Strategic summary:</strong> Photonic Lab is the infrastructure thesis for LATAM biotech. Market conditions are confirmed. The gap is structural and persistent. The entry model is defensible without an anchor. The funding path is correctly sequenced. The question is not whether this should be built — the question is how fast.
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 7 — CAPEX REFERENCE
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p7" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">07 · CAPEX Reference</div>
+  <h2 class="sec-h">Equipamiento de laboratorio.<br><strong>Referencias de mercado.</strong></h2>
+  <p class="sec-p">Precios en USD obtenidos de LabX, EquipNet, fabricantes y distribuidores regionales (marzo 2026). Precios lista — precio real negociado puede ser 10–25% menor. Fuente: Qualia+ / borrador interno.</p>
+
+  <div class="callout">
+    <strong>Decisión estratégica adoptada:</strong> Single-use (SU) como formato principal para laboratorio multicliente — elimina validación de limpieza entre corridas, anula contaminación cruzada entre proyectos, reduce tiempo de cambio de días a horas. Arquitectura de controlador dual (SU + vidrio) para máxima flexibilidad. Validado con Eleonora Scoseria.
+  </div>
+
+  <div class="capex-section">
+    <div class="capex-section-title">01 — Biorreactores · Controladores (CAPEX Tramo 1)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Equipo / Modelo</th><th>Volumen SU</th><th>Precio nuevo (USD)</th><th>Precio usado/refurb (USD)</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Eppendorf BioFlo 320</strong> (dual SU + vidrio)</td><td>0.65L–40L</td><td>~$40,000–60,000</td><td>~$15,000–30,000</td><td>LabX / PNW Scientific</td></tr>
+          <tr><td><strong>Eppendorf BioFlo 320 ×2</strong> (5L + 20L SU) — par Tramo 1</td><td>Par</td><td>~$80,000–110,000</td><td>~$30,000–55,000</td><td>LabX</td></tr>
+          <tr><td><strong>Sartorius BIOSTAT B</strong> (dual SU + vidrio)</td><td>2L–30L</td><td>~$50,000–80,000</td><td>~$20,000–40,000</td><td>LabX / EquipNet</td></tr>
+          <tr><td><strong>Sartorius Ambr 250 Modular</strong> (8 vessels SU)</td><td>100–250mL screening</td><td>~$150,000–250,000</td><td>~$50,000–100,000</td><td>EquipNet / LabX</td></tr>
+          <tr class="hlr"><td><strong>Equipo Inox do Brasil</strong> · San Pablo · fabricante a medida SS 316L GMP</td><td>100–10.000L</td><td><strong>Por cotización directa</strong></td><td>N/A — nuevo</td><td>equipoinox.net · contacto: Hugo (vía Eleonora)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <strong>Consumibles SU — OPEX pass-through:</strong> El costo del vaso single-use se carga directamente al cliente por proyecto. No es CAPEX. Rango: $200–900 por vaso según volumen. Proveedores: Eppendorf Argentina, Sartorius Argentina, Tecnofrom UY.
+    </div>
+  </div>
+
+  <div class="capex-section">
+    <div class="capex-section-title">02 — Downstream Processing · Purificación (ÄKTA / Cytiva)</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Equipo / Modelo</th><th>Flujo máx.</th><th>Precio nuevo (USD)</th><th>Precio usado/refurb (USD)</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ÄKTA Start</strong> (entry level)</td><td>10 mL/min</td><td>~$25,000–35,000</td><td>~$10,000–15,000</td><td>LabX / ALT</td></tr>
+          <tr class="hlr"><td><strong>ÄKTA Pure 25</strong> (standard — recomendado Model 3)</td><td>25 mL/min</td><td>~$80,000–120,000</td><td>~$30,000–55,000</td><td>LabX / GMI</td></tr>
+          <tr><td><strong>ÄKTA Pure 150</strong></td><td>150 mL/min</td><td>~$100,000–140,000</td><td>~$40,000–70,000</td><td>LabX</td></tr>
+          <tr><td><strong>ÄKTA Crossflow TFF</strong></td><td>—</td><td>~$30,000–50,000</td><td>~$14,000–20,000</td><td>sibgene / LabX</td></tr>
+          <tr><td><strong>ÄKTA Pilot</strong> (proceso)</td><td>100 mL/min</td><td>~$120,000–180,000</td><td>~$18,000–22,000</td><td>sibgene / ALT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="capex-section">
+    <div class="capex-section-title">03 — Analítica · QA/QC</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Equipo</th><th>Precio nuevo (USD)</th><th>Precio usado/refurb (USD)</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td><strong>HPLC completo</strong> (Agilent 1260 / Waters / Shimadzu)</td><td>$20,000–100,000</td><td>$5,000–30,000</td><td>LabX / Arc Scientific</td></tr>
+          <tr><td><strong>UPLC/UHPLC</strong> (Agilent 1290 / Waters Acquity)</td><td>$50,000–110,000</td><td>$15,000–50,000</td><td>LabX / AmpTech</td></tr>
+          <tr><td><strong>NanoDrop / UV-Vis</strong> (Thermo NanoDrop One)</td><td>$5,000–15,000</td><td>$2,000–5,000</td><td>Thermo Fisher</td></tr>
+          <tr><td><strong>qPCR</strong> (QuantStudio / Bio-Rad CFX)</td><td>$15,000–40,000</td><td>$5,000–15,000</td><td>LabX</td></tr>
+          <tr><td><strong>Electroforesis completa</strong></td><td>$3,000–8,000</td><td>$800–2,500</td><td>Bio-Rad / LabX</td></tr>
+          <tr><td><strong>LIMS / ELN</strong> (Benchling / LabWare / IDBS)</td><td>$10,000–50,000/año SaaS</td><td>—</td><td>Proveedores directos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="capex-section">
+    <div class="capex-section-title">04 — BSL-2 y Equipamiento Base</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Equipo</th><th>Precio nuevo (USD)</th><th>Precio usado (USD)</th><th>Fuente</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Cabina BSC Clase II Tipo A2 — 4ft</strong></td><td>$8,000–14,000</td><td>$3,000–7,000</td><td>GLE Sales / LabX</td></tr>
+          <tr><td><strong>Cabina BSC Clase II Tipo A2 — 6ft</strong></td><td>$12,000–20,000</td><td>$5,000–10,000</td><td>GLE Sales / Fisher</td></tr>
+          <tr><td><strong>Autoclave 100–150L</strong> (ciclos validables)</td><td>$8,000–18,000</td><td>$3,000–8,000</td><td>LabX</td></tr>
+          <tr><td><strong>ULT Freezer -80°C</strong></td><td>$8,000–15,000</td><td>$3,000–7,000</td><td>LabX / Thermo</td></tr>
+          <tr><td><strong>Centrífuga alta velocidad</strong> (hasta 20,000 rpm)</td><td>$8,000–20,000</td><td>$3,000–8,000</td><td>LabX</td></tr>
+          <tr><td><strong>Incubadora CO₂</strong> cultivo celular</td><td>$5,000–12,000</td><td>$2,000–5,000</td><td>LabX</td></tr>
+          <tr><td><strong>pHmetro de precisión</strong></td><td>$1,500–4,000</td><td>$500–1,500</td><td>Sartorius / OneLab AR</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="capex-section">
+    <div class="capex-section-title">05 — Distribuidores en Uruguay y Región</div>
+    <div class="sourcing-grid">
+      <div class="src-card">
+        <div class="src-flag">🇺🇾</div>
+        <div class="src-country">Uruguay — Distribuidor directo</div>
+        <div class="src-item src-hot">
+          <div class="src-name">Tecnofrom S.A.</div>
+          <div class="src-desc">Thermo Fisher (distribuidor oficial UY). Biorreactores HyPerforma, analítica, freezers, cabinas BSC. José Ellauri 715, Montevideo. +598 2716 2716.</div>
+        </div>
+      </div>
+      <div class="src-card">
+        <div class="src-flag">🇦🇷</div>
+        <div class="src-country">Argentina — Canal MERCOSUR (arancel 0%)</div>
+        <div class="src-item">
+          <div class="src-name">Sartorius Argentina</div>
+          <div class="src-desc">BIOSTAT, Ambr, consumibles SU, TFF. Despacho a Montevideo en días.</div>
+        </div>
+        <div class="src-item">
+          <div class="src-name">Eppendorf Argentina</div>
+          <div class="src-desc">BioFlo 320, centrífugas, ULT freezers.</div>
+        </div>
+        <div class="src-item">
+          <div class="src-name">Cytiva / GE Healthcare Argentina</div>
+          <div class="src-desc">ÄKTA, columnas, resinas, TFF — todo el downstream.</div>
+        </div>
+        <div class="src-item">
+          <div class="src-name">OneLab · Biodynamics · ETC Int'l</div>
+          <div class="src-desc">Consumibles Sartorius, Corning, equipamiento menor.</div>
+        </div>
+      </div>
+      <div class="src-card">
+        <div class="src-flag">🇧🇷</div>
+        <div class="src-country">Brasil — Fabricante a medida (MERCOSUR)</div>
+        <div class="src-item src-hot">
+          <div class="src-name">Equipo Inox do Brasil ★</div>
+          <div class="src-desc">San Pablo. Biorreactores SS 316L GMP a medida, 100–10.000L. ASME-BPE, ISO, FDA, EMEA. Contacto activo: Hugo (vía Eleonora Scoseria). contato@equipoinox.net · (14) 3500-1932.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 8 — INTEL
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p8" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">08 · Intel &amp; Equipo</div>
+  <h2 class="sec-h">Reporte semanal Qualia+<br><strong>y mapa de actores.</strong></h2>
+  <p class="sec-p">Inteligencia operacional actualizada · Abril 2026. Equipo Both Ventures® + Qualia+ + contactos externos clave.</p>
+
+  <div class="div">Equipo Both Ventures®</div>
+  <div class="team-grid">
+    <div class="team-card lead">
+      <div class="team-num">001</div>
+      <div class="team-name">Gastón Frydlewski</div>
+      <div class="team-role">Co-founder · Liderazgo estratégico</div>
+      <div class="team-bio">Serial entrepreneur, investor, company builder · 20+ años en tech, ecommerce, retail, finance, hospitality y venture capital.</div>
+    </div>
+    <div class="team-card lead">
+      <div class="team-num">002</div>
+      <div class="team-name">Guido Mitrani</div>
+      <div class="team-role">Co-founder · Infraestructura y capital</div>
+      <div class="team-bio">Private equity investor, infrastructure strategist · 20+ años en finance, energy, industrials, telecom y venture capital.</div>
+    </div>
+    <div class="team-card ops">
+      <div class="team-num">003</div>
+      <div class="team-name">Daiana Goldenberg</div>
+      <div class="team-role">COO / CFO</div>
+      <div class="team-bio">15+ años en venture capital, high-growth startups y cross-border financial structuring. Firmante del contrato Qualia+.</div>
+    </div>
+    <div class="team-card creative">
+      <div class="team-num">004</div>
+      <div class="team-name">René Labarthe</div>
+      <div class="team-role">Venture Building &amp; Institutional Design</div>
+      <div class="team-bio">Creative strategist, regenerative entrepreneur · 20+ años en frontier tech, blockchain, biotech y AI.</div>
+    </div>
+    <div class="team-card legal">
+      <div class="team-num">005</div>
+      <div class="team-name">Andrés Burecovics</div>
+      <div class="team-role">Legal · Cross-border governance</div>
+      <div class="team-bio">International corporate lawyer especializado en VC y cross-border governance en mercados emergentes y desarrollados. Autor del análisis ZF estructural.</div>
+    </div>
+    <div class="team-card" style="border-top-color:var(--rule2); background:var(--off)">
+      <div class="team-num">Qualia+</div>
+      <div class="team-name">Alejandro San Juan &amp; Juan Eduardo Cierini</div>
+      <div class="team-role">Socio estratégico externo</div>
+      <div class="team-bio">Contratados por Both Ventures® para validar la tesis + preparar el binder de fundraising. USD 15,000 · 6 meses · firmado 2/2/2026.</div>
+    </div>
+  </div>
+
+  <div class="div">Intel semanal Qualia+ — Abril 2026</div>
+
+  <div class="intel-card intel-confirmed">
+    <div class="intel-date">✅ Confirmado · Cristina Montero (ANII / Uruguay XXI)</div>
+    <div class="intel-title">ANII disponible en ZF desde 2025</div>
+    <div class="intel-body">Instrumento: <strong>Implementación de la Innovación</strong> — cofinanciamiento no reembolsable 70%, tope UYU 4M (sube a UYU 5M con impacto climático). Empresa pone 30%. Aguardamos documento formal de confirmación por escrito.</div>
+  </div>
+
+  <div class="intel-card intel-pending">
+    <div class="intel-date">⏳ Pendiente · Respuesta tributarista</div>
+    <div class="intel-title">¿El servicio de laboratorio se considera "venta al mercado uruguayo" desde ZF?</div>
+    <div class="intel-body">Qualia+ identificó la <strong>Ley 19.566</strong> como el instrumento que habilita a usuarios ZF a prestar servicios a territorio nacional no franco (a contribuyentes gravados por IRAE). Implicancia: el gasto del cliente UY <strong>no sería deducible de su IRAE</strong> → servicio desde ZF les sale más caro que contratar un lab fuera de ZF. Cristina Montero consultando a abogado tributarista. <strong>Andrés Burecovics puede facilitar contacto directo.</strong></div>
+  </div>
+
+  <div class="intel-card">
+    <div class="intel-date">🆕 Nuevo contacto identificado</div>
+    <div class="intel-title">Enrique Buero — Gerente del Parque de las Ciencias</div>
+    <div class="intel-body">Qualia+ lo identifica como contacto prioritario para evaluar la operación en ZF desde la perspectiva operativa del parque. Pendiente primer contacto.</div>
+  </div>
+
+  <div class="intel-card intel-confirmed">
+    <div class="intel-date">✅ Contacto activo · vía Eleonora Scoseria</div>
+    <div class="intel-title">Equipo Inox do Brasil — biorreactores GMP a medida</div>
+    <div class="intel-body">Fabricante en <strong>San Pablo, Brasil</strong> (no Argentina — corrección del doc de CAPEX). SS 316L, 100–10.000L, estándares ASME-BPE / ISO / FDA / EMEA. Contacto: Hugo · contato@equipoinox.net · (14) 3500-1932. Ingresa vía MERCOSUR, arancel 0%. Cotización pendiente.</div>
+  </div>
+
+  <div class="intel-card">
+    <div class="intel-date">📊 En proceso</div>
+    <div class="intel-title">CAB survey — resultados adicionales</div>
+    <div class="intel-body">Qualia+ recibió nuevas respuestas de la encuesta CAB. Análisis en curso — resultados se envían próxima semana.</div>
+  </div>
+
+  <div class="div">Contactos externos clave</div>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-org">ANII / Uruguay XXI</div>
+      <div class="contact-name">Cristina Montero</div>
+      <div class="contact-topic">Instrumentos ZF + grant strategy. Consulta realizada abril 2026. Aguardamos doc confirmación ANII en ZF. Puede gestionar contacto con ejecutivo/a área empresas.</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-g">Contactada</span><span class="badge b-a">Seguimiento</span></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-org">Parque de las Ciencias</div>
+      <div class="contact-name">Enrique Buero (Gerente)</div>
+      <div class="contact-topic">Opinión clave sobre operación en ZF desde perspectiva del parque. Identificado por Qualia+ como contacto prioritario.</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-c">Pendiente</span></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-org">Equipo Inox do Brasil (San Pablo)</div>
+      <div class="contact-name">Hugo</div>
+      <div class="contact-topic">Fabricante biorreactores GMP a medida. Contacto activo vía Eleonora Scoseria. contato@equipoinox.net · (14) 3500-1932.</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-g">Activo</span><span class="badge b-a">Cotización pendiente</span></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-org">Tecnofrom S.A. — Uruguay</div>
+      <div class="contact-name">—</div>
+      <div class="contact-topic">Distribuidor oficial Thermo Fisher en Uruguay. José Ellauri 715, Montevideo. tecnofrom@tecnofrom.com · +598 2716 2716.</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-a">A cotizar</span></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-org">Institut Pasteur / LAB+</div>
+      <div class="contact-name">TBD</div>
+      <div class="contact-topic">Co-investor candidato, pipeline source. $25M fund. Portfolio: Guska, B4RNA, Scaffold, LoCBio.</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-c">Por iniciar</span></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-org">Eleonora Scoseria</div>
+      <div class="contact-name">—</div>
+      <div class="contact-topic">FDA + ANVISA + ANMAT structure. Nexo con Hugo (Equipo Inox do Brasil).</div>
+      <div class="tags" style="margin-top:10px"><span class="badge b-a">Por agendar</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL 9 — BUSINESS CASE
+══════════════════════════════════════════════════════════════════════ -->
+<div id="p9" class="panel">
+<div class="shell">
+
+  <div class="sec-eye">09 · Business Case</div>
+  <h2 class="sec-h">The honest numbers.<br><strong>Stress-tested.</strong></h2>
+  <p class="sec-p">Full financial architecture validated abril 2026. Built to survive due diligence — not to impress a deck. Model viable on Streams 01–03 alone. Equity participation excluded from base case.</p>
+
+  <div class="bc-kpi-row">
+    <div class="bc-kpi"><div class="bc-kpi-v">$<span>2.1M</span></div><div class="bc-kpi-l">CAPEX all-in (midpoint)</div></div>
+    <div class="bc-kpi"><div class="bc-kpi-v"><span>$420K</span></div><div class="bc-kpi-l">ARR break-even</div></div>
+    <div class="bc-kpi"><div class="bc-kpi-v"><span>M22</span></div><div class="bc-kpi-l">Cash break-even month</div></div>
+    <div class="bc-kpi"><div class="bc-kpi-v neg">-$380K</div><div class="bc-kpi-l">Cash trough (Month 10)</div></div>
+    <div class="bc-kpi"><div class="bc-kpi-v"><span>72%</span></div><div class="bc-kpi-l">EaaS gross margin</div></div>
+  </div>
+
+  <div class="warn-box">
+    <strong>⚠ Three non-negotiables before committing any CAPEX.</strong> None are optional. All three must close in parallel — not sequentially. A project that starts construction before these are in place is not de-risked; it is speculative.
+  </div>
+
+  <div class="gate-grid">
+    <div class="gate-card">
+      <div class="gate-num">Gate 01 · Pipeline</div>
+      <div class="gate-title">5 LOIs signed</div>
+      <div class="gate-body">From TRL 5–8 startups willing to pay $8K–$15K/month. Non-binding acceptable. Strategy: launch a virtual lab now — sell regulatory advisory before the facility exists. Convert those clients into residents. Zero LOIs = zero ground break.</div>
+      <div class="tags" style="margin-top:12px"><span class="badge b-c">🔲 0 / 5</span></div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-num">Gate 02 · Capital</div>
+      <div class="gate-title">$600K bridge closed</div>
+      <div class="gate-body">SAFE with 20% discount to Series A. Must be raised BEFORE construction starts. ANII takes 3–9 months to disburse — cannot cover the Month 4–14 cash trough. Pre-revenue equity is the only bridge that works.</div>
+      <div class="tags" style="margin-top:12px"><span class="badge b-c">🔲 $0 raised</span></div>
+    </div>
+    <div class="gate-card">
+      <div class="gate-num">Gate 03 · Team</div>
+      <div class="gate-title">QA Director hired</div>
+      <div class="gate-body">On payroll before opening day — not a consultant. This single hire activates Stream 03 (GMP services), the highest-margin business line ($45K/project at 68% margin). Without a QA Director, Photonic Lab is a shared wet lab, not a scale-up platform.</div>
+      <div class="tags" style="margin-top:12px"><span class="badge b-c">🔲 Not hired</span></div>
+    </div>
+  </div>
+
+  <div class="div">Revenue projection — base case</div>
+  <div id="bcRevLegend" class="rev-key" style="margin-bottom:10px"></div>
+  <div style="position:relative;height:280px;margin-bottom:8px"><canvas id="bcRevChart" role="img" aria-label="Stacked bar chart of Photonic Lab revenue Y1-Y6">Revenue grows from $394K in Y1 to $3.2M in Y6.</canvas></div>
+  <p class="ph-note">Base case: 5 residents Y1 → 14 Y3. EaaS from Month 1. GMP services from Month 18 (requires QA Director). Grants front-loaded Y1–Y2. Equity participation excluded.</p>
+
+  <div class="div">CAPEX stress test — all-in Model 3</div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Low (USD)</th><th>Base (USD)</th><th>High (USD)</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Equipment</strong> (biorreactores + downstream + analítica + BSL-2)</td><td>$370K</td><td>$470K</td><td>$640K</td><td>Mix refurb/new. Equipo Inox pilot incl.</td></tr>
+        <tr><td><strong>Civil works + fit-out</strong></td><td>$220K</td><td>$320K</td><td>$480K</td><td class="badge b-c" style="display:block;margin-top:4px">HIGH VARIANCE — 80% overrun documented</td></tr>
+        <tr><td><strong>HVAC + utilities</strong> (BSL-2 spec)</td><td>$160K</td><td>$210K</td><td>$290K</td><td>Specialized contractor required</td></tr>
+        <tr><td><strong>IQ/OQ/PQ validation</strong></td><td>$80K</td><td>$110K</td><td>$160K</td><td>Mandatory for GMP-compatible claim (~15–20% of equipment)</td></tr>
+        <tr><td><strong>LIMS / QMS + logistics</strong></td><td>$70K</td><td>$95K</td><td>$135K</td><td>Benchling + MERCOSUR shipping</td></tr>
+        <tr><td><strong>Pre-revenue working capital</strong> (14 mo)</td><td>$220K</td><td>$300K</td><td>$380K</td><td>Salaries, rent, utilities before revenue</td></tr>
+        <tr style="background:var(--off)"><td><strong>Subtotal before contingency</strong></td><td>$1.12M</td><td>$1.50M</td><td>$2.09M</td><td></td></tr>
+        <tr style="background:var(--off)"><td><strong>+ 30% contingency</strong> (civil + equipment)</td><td>$177K</td><td>$237K</td><td>$332K</td><td></td></tr>
+        <tr class="hlr"><td><strong>TOTAL ALL-IN</strong></td><td><strong>$1.52M</strong></td><td><strong>$2.1M</strong></td><td><strong>$2.72M</strong></td><td>Fundable with grant stack + seed equity</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="div">Scenario comparison</div>
+  <div class="scenario-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th class="sc-hdr-bear">Bear Y1</th><th class="sc-hdr-bear">Bear Y3</th>
+          <th class="sc-hdr-base">Base Y1</th><th class="sc-hdr-base">Base Y3</th>
+          <th class="sc-hdr-bull">Bull Y1</th><th class="sc-hdr-bull">Bull Y3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Resident startups</strong></td><td>3</td><td>10</td><td>5</td><td>14</td><td>8</td><td>16</td></tr>
+        <tr><td><strong>Total Revenue</strong></td><td>$72K</td><td>$360K</td><td>$394K</td><td>$1.80M</td><td>$660K</td><td>$2.87M</td></tr>
+        <tr><td><strong>EBITDA</strong></td><td style="color:var(--coral)">-$330K</td><td style="color:var(--coral)">-$80K</td><td style="color:var(--coral)">-$187K</td><td style="color:var(--acc)">+$230K</td><td style="color:var(--coral)">-$100K</td><td style="color:var(--acc)">+$520K</td></tr>
+        <tr><td><strong>Cash break-even</strong></td><td>Month 36+</td><td>—</td><td>Month 22</td><td>—</td><td>Month 16</td><td>—</td></tr>
+        <tr><td><strong>EBITDA margin Y3</strong></td><td colspan="2" style="color:var(--coral)">negative</td><td colspan="2" style="color:var(--acc)">13%</td><td colspan="2" style="color:var(--acc)">18%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <strong>Bottom line:</strong> The business is fundable and viable on the conservative case. Streams 01–03 alone reach break-even at 8 residents + 8 EaaS runs/month. The bear case is survivable — it reaches break-even by Year 3 even without grants. The three non-negotiables (LOIs, bridge, QA Director) are what separates a plan from a speculation.
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <div class="fi">
+    <span>Photonic Lab · Strategic Intelligence Report · Abril 2026</span>
+    <span><strong>Qualia+</strong> · Internal · Do not distribute</span>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ── NAV ───────────────────────────────────────────────────────────────
+function go(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'p1') drawRadar();
+  if (id === 'p2') setTimeout(animBars, 200);
+  if (id === 'p9') initBcCharts();
+}
+
+// ── RADAR ─────────────────────────────────────────────────────────────
+let radarDone = false;
+function drawRadar() {
+  if (radarDone) return; radarDone = true;
+  const ctx = document.getElementById('radarChart');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Infrastructure','Scale-up GMP','Embedded Capital','Ecosystem Design','LATAM Focus','Startup Accessible'],
+      datasets: [
+        { label: 'LabCentral',    data: [95,70,60,50,10,80], fill: true, backgroundColor: 'rgba(10,140,90,.06)',  borderColor: 'rgba(10,140,90,.35)',  pointBackgroundColor: 'rgba(10,140,90,.6)',  pointRadius: 3, borderWidth: 1.5 },
+        { label: 'IndieBio',      data: [60,20,90,70,10,90], fill: true, backgroundColor: 'rgba(176,106,0,.06)', borderColor: 'rgba(176,106,0,.35)', pointBackgroundColor: 'rgba(176,106,0,.6)', pointRadius: 3, borderWidth: 1.5 },
+        { label: 'The Engine',    data: [90,65,85,75, 5,50], fill: true, backgroundColor: 'rgba(26,79,160,.06)',  borderColor: 'rgba(26,79,160,.35)',  pointBackgroundColor: 'rgba(26,79,160,.6)',  pointRadius: 3, borderWidth: 1.5 },
+        { label: 'Photonic Lab',  data: [80,76,85,80,100,90],fill: true, backgroundColor: 'rgba(10,140,90,.12)', borderColor: 'rgba(10,140,90,.9)',   pointBackgroundColor: '#0a8c5a', pointRadius: 4, borderWidth: 2 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#555550', font: { family: '"Helvetica Neue",Helvetica,Arial,sans-serif', size: 11 }, boxWidth: 10, padding: 16 } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 100,
+          ticks: { display: false },
+          grid: { color: 'rgba(0,0,0,.08)' },
+          angleLines: { color: 'rgba(0,0,0,.08)' },
+          pointLabels: { color: '#555550', font: { family: '"Helvetica Neue",Helvetica,Arial,sans-serif', size: 10 } }
+        }
+      }
+    }
+  });
+}
+
+// ── BARS ──────────────────────────────────────────────────────────────
+let barsDone = false;
+function animBars() {
+  if (barsDone) return; barsDone = true;
+  document.querySelectorAll('.bar-fill[data-w]').forEach(el => {
+    el.style.width = el.dataset.w + '%';
+  });
+}
+
+// ── MODEL CARDS ───────────────────────────────────────────────────────
+const MODELS = [
+  { num:'00', name:'Transversal Base Platform', capex:'$500K–$800K', gmp:'No GMP', vc:'bg',
+    verdict:'Required baseline — invest regardless of path chosen.',
+    pros:['Enables all other models without wasted investment','Defensible to investors without confirmed pipeline','Attracts regional startups for analytics services','Serves 60–70% of LATAM biotech project types'],
+    cons:['No commercial production','No GMP certification','No clinical lot capability','Cannot bill for manufacturing'],
+    note:'The <em>piso inteligente</em>. This investment makes sense in every scenario, independent of strategic decisions not yet taken. Always build this first.' },
+  { num:'01', name:'Research Lab (Pure I)', capex:'$300K–$600K', gmp:'No GMP', vc:'bc',
+    verdict:'Not recommended as primary model.',
+    pros:['Basic science + proof of concept','Attracts scientific talent','Generates IP and publications','Lower OPEX'],
+    cons:['No process scale-up','No serious process engineering','No transferable pilot batches','Does not resolve the manufacturing gap'],
+    note:'Could function as a complementary service layer within another model, never the core. Does not justify Photonic Lab\'s existence on its own.' },
+  { num:'02', name:'Development Lab (D Strong)', capex:'$700K–$1.2M', gmp:'No GMP', vc:'ba',
+    verdict:'Viable complement to core model.',
+    pros:['Applied R&D and pilot batches','Process engineering focus','Transferable technical data','Bridge to GMP-ready models'],
+    cons:['No GMP certification','Cannot produce clinical lots','Limited regulatory defensibility','May require full rebuild for GMP upgrade'],
+    note:'Viable entry if pipeline is early-stage. Key risk: may require costly rebuild when GMP is eventually needed. Model 3 pays slightly more upfront but avoids this rebuild cost.' },
+  { num:'03', name:'R&D + GMP-Ready', capex:'$1M–$1.8M', gmp:'GMP-compatible', vc:'bg',
+    verdict:'★ Recommended entry point.',
+    pros:['GMP-compatible design from day one: flows, materials, surfaces','Formal incremental QMS and environmental control','Robust technical data for regulatory dossiers','Positions to jump to GMP without rebuilding infrastructure','Defendable to investors even without confirmed pipeline'],
+    cons:['No commercial lots','No Phase I–III production','No full GMP certification yet','Cannot sell direct to market'],
+    note:'The most defensible entry point when the regional pipeline is not yet fully confirmed. Pay for GMP-compatible design today to avoid a costly rebuild tomorrow. <strong>Recommended as Phase 1 target.</strong>' },
+  { num:'04', name:'GMP MVP', capex:'$1.5M–$2.5M', gmp:'Phase I GMP', vc:'ba',
+    verdict:'Viable only with confirmed anchor tenant.',
+    pros:['Phase I lot production capability','Clinical-grade output for regulatory submissions','First real GMP service revenue','Regulatory dossier viable from operations'],
+    cons:['Requires confirmed anchor tenant — high risk without','High CAPEX risk without demand certainty','Operational complexity increases sharply','Full-time QA Director needed from day one'],
+    note:'Only pursue before Model 3 if an anchor tenant has signed a minimum-use contract. Do not build on speculation.' },
+  { num:'05', name:'Hybrid (I+D + GMP MVP + Anchor)', capex:'$2M–$3.5M', gmp:'Modular GMP', vc:'bg',
+    verdict:'★★ Strategic long-term target.',
+    pros:['Anchor tenant guarantees base demand','Mixed revenue: subscription + CRO + GMP fees + royalties','Modular — grow as demand is confirmed','Resilient to single-customer risk','Royalties activate when portfolio products reach market'],
+    cons:['Cannot operate without anchor without elefante blanco risk','No mass production from launch','Cannot compete on price with large industrial CDMOs for FDA/EMA commercial lots'],
+    note:'The equilibrium model. Structurally most balanced under uncertainty. Pursue after Model 3 validates the platform and anchor tenant relationship is established. <strong>This is the steady-state design.</strong>' },
+  { num:'5B', name:'Weizmann LATAM Node', capex:'$1.5M–$3M', gmp:'Partial', vc:'ba',
+    verdict:'Conditional viability — depends on partnership terms.',
+    pros:['Institutional credibility signal','Academic network access','Potential long-term funding support','Research publication pipeline'],
+    cons:['Dependent on institutional partner alignment','Slower decision-making','Academic priorities may conflict with commercial timelines','Limited operational autonomy'],
+    note:'Viable if the partnership is genuinely bilateral and non-controlling. Not viable as a subordinate arrangement where Photonic Lab loses strategic flexibility.' },
+  { num:'06', name:'Small Commercial GMP', capex:'$3M–$6M', gmp:'Full GMP', vc:'bc',
+    verdict:'Only viable after 3–5 years of Model 3/5 track record.',
+    pros:['Commercial lot production capability','Direct market revenue at premium pricing','Attracts global clients','Full CDMO positioning in region'],
+    cons:['Very high CAPEX','Requires consolidated client base first','Complex regulatory pathway','Needs proven 3–5yr operational track record'],
+    note:'Not a starting point. An evolutionary step from successful Model 5 operations. Pursue only after ARR exceeds $1M and anchor tenant relationship is proven over multiple batches.' },
+  { num:'07', name:'Regional CMO (Complete)', capex:'$8M–$20M+', gmp:'Multi-cert', vc:'bx',
+    verdict:'5–8 year horizon minimum.',
+    pros:['Industrial multiproduct capacity','FDA/EMA/ANVISA/ANMAT certifications','Competes with mAbxience and Brazilian CDMOs','Enables full global export revenue'],
+    cons:['Requires 5–8yr evolution from earlier models','Non-linear CAPEX escalation','Cannot be viable without multi-year client history','Requires extensive regulatory and operational track record'],
+    note:'The 10-year vision. Build toward it by executing Models 3 → 5 → 6 successfully. Not a leap — a graduation.' }
+];
+
+let selMod = -1;
+function initModels() {
+  const grid = document.getElementById('modelGrid');
+  if (!grid) return;
+  MODELS.forEach((m, i) => {
+    const el = document.createElement('div');
+    el.className = 'mc';
+    el.innerHTML = `<div class="mc-num">Model ${m.num}</div><div class="mc-name">${m.name}</div><div class="mc-capex">${m.capex}</div><div class="tags"><span class="badge ${m.vc}">${m.gmp}</span></div>`;
+    el.onclick = () => selectModel(i, el);
+    grid.appendChild(el);
+  });
+}
+
+function selectModel(i, el) {
+  const detail = document.getElementById('modelDetail');
+  const cards = document.querySelectorAll('.mc');
+  if (selMod === i) {
+    selMod = -1;
+    cards.forEach(c => c.classList.remove('sel'));
+    detail.classList.remove('vis');
+    return;
+  }
+  selMod = i;
+  cards.forEach(c => c.classList.remove('sel'));
+  el.classList.add('sel');
+  const m = MODELS[i];
+  detail.innerHTML = `
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px">
+      <div>
+        <div style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:4px">Model ${m.num}</div>
+        <div style="font-size:17px;font-weight:700;color:var(--text)">${m.name}</div>
+      </div>
+      <div style="font-size:22px;font-weight:300;letter-spacing:-.02em;color:var(--amber)">${m.capex}</div>
+    </div>
+    <div class="md-grid">
+      <div><div class="md-label pro">What it does</div><ul class="md-list pro">${m.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+      <div><div class="md-label con">What it doesn't do</div><ul class="md-list con">${m.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>
+    </div>
+    <div class="md-verdict"><strong>Strategic verdict:</strong> ${m.note}</div>`;
+  detail.classList.add('vis');
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 60);
+}
+
+// ── REVENUE PHASES ────────────────────────────────────────────────────
+const PHASES = [
+  { mix:[50,20,0,0,30], note:'Year 1 — Subscriptions anchor the model. Grants cover most non-recurring costs. EaaS starting. No GMP revenue yet.' },
+  { mix:[40,30,15,0,15], note:'Year 2 — EaaS + CRO services growing. GMP-adjacent services begin. Grant dependency reducing.' },
+  { mix:[30,25,30,10,5],  note:'Year 4 — GMP services dominant. Equity stakes crystallizing. Grants minimal — revenue-driven.' },
+  { mix:[20,20,35,23,2],  note:'Year 6+ — Portfolio equity events, commercial lots, anchor fees. Platform is self-sustaining.' }
+];
+function setPhase(i, btn) {
+  document.querySelectorAll('.ph-btn').forEach((b, j) => b.classList.toggle('on', j === i));
+  PHASES[i].mix.forEach((v, j) => { const el = document.getElementById('rv'+j); if (el) el.style.flex = v; });
+  const n = document.getElementById('phNote'); if (n) n.textContent = PHASES[i].note;
+}
+
+// ── CAPITAL STACK ─────────────────────────────────────────────────────
+const CAPS = [
+  { n:'01', name:'Public grants & institutional funding', sub:'Layer 1 · Non-dilutive · Year 0–1', amt:'$300K–$600K', clr:'var(--acc)',
+    body:'<strong>Sources:</strong> ANII Fondo Sectorial, IDB Lab, CAF, Fondo Emprender Uruguay, EU Horizon (via partner institution), CYTED regional program.<br><br><strong>Use:</strong> Build Model 0 transversal base without equity cost. Fund initial QMS and regulatory mapping.<br><br><strong>Key insight:</strong> ANII requires Entity 1 outside Zona Franca — this is a structural reason to start outside ZF. File applications in parallel to facility scouting; grant timelines are 3–9 months.' },
+  { n:'02', name:'Strategic anchors & equipment partners', sub:'Layer 2 · Non-cash + contracts · Year 0–2', amt:'$400K–$800K', clr:'var(--amber)',
+    body:'<strong>Sources:</strong> Anchor tenant minimum-use contract (Eywa, B4RNA, or equivalent). In-kind partnerships: Sartorius, Cytiva, Eppendorf (all have LATAM emerging-lab programs). Real estate facility partner.<br><br><strong>Use:</strong> Guarantees base revenue floor. Reduces effective CAPEX via in-kind. Provides credibility signal to VC investors.<br><br><strong>Key insight:</strong> An anchor tenant LOI (even non-binding) changes the risk profile of every subsequent capital layer. Pursue simultaneously with grants — not sequentially.' },
+  { n:'03', name:'Impact VCs & regional funds', sub:'Layer 3 · Equity / Convertible · Year 1–2', amt:'$500K–$1.5M', clr:'var(--blue)',
+    body:'<strong>Sources:</strong> NXTP Ventures, Kairos, Quadia (impact), Pymwymic, Betatransfer, Qualcomm Ventures LATAM, family offices in UY/AR with biotech exposure, IDB Invest equity window, FOMIN co-investment facility.<br><br><strong>Use:</strong> Fund Model 3 buildout once Model 0 is operational and first revenue demonstrated. SAFE or convertible note preferred to avoid premature valuation.<br><br><strong>Key insight:</strong> Impact investors (Quadia, Pymwymic) have longer return horizons than standard VC. Approach them with the scientific sovereignty and public health capacity narrative.' },
+  { n:'04', name:'Both Ventures® led round', sub:'Layer 4 · Series A · Year 2–4', amt:'$1.5M–$3M', clr:'var(--slate)',
+    body:'<strong>Structure:</strong> Both Ventures® leads or co-leads once Model 3 is operational, anchor tenant engaged, and $400K+ ARR is demonstrable. Bring in specialized deeptech co-investors.<br><br><strong>Terms:</strong> Equity or SAFE with pro-rata rights tied to deal flow commitments — Both Ventures® gets first look at all portfolio startups from Photonic Lab. Explicit incentive alignment.<br><br><strong>Use:</strong> Fund Model 5 Hybrid buildout (GMP modular cell + anchor tenant infra) + 3 key hires: QA Director, Business Development (regional), Scientific Director.' },
+  { n:'05', name:'Series B / ZF entity + scale', sub:'Layer 5 · Growth capital · Year 4–6', amt:'$3M–$8M', clr:'var(--text)',
+    body:'<strong>Structure:</strong> Growth round once GMP operational and ARR exceeds $1M. Activate ZF entity (Parque de las Ciencias or Zonamerica) for export optimization. Strategic investors: regional pharma, IDB Invest equity, CAF equity arm, international deeptech fund with LATAM presence.<br><br><strong>Use:</strong> Scale toward Model 6. Full regulatory affairs team. Pursue ANMAT/ANVISA certifications. International client acquisition beyond Southern Cone.<br><br><strong>Key insight:</strong> At this stage Photonic Lab itself becomes an investable asset. Strategic acquirers (regional pharma, CDMO roll-ups) will show interest.' }
+];
+
+function initCaps() {
+  const ct = document.getElementById('capStack'); if (!ct) return;
+  CAPS.forEach(c => {
+    const d = document.createElement('div'); d.className = 'cap-item';
+    d.innerHTML = `<div class="cap-head" onclick="toggleCap(this)"><div class="cap-n">${c.n}</div><div class="cap-info"><div class="cap-name">${c.name}</div><div class="cap-sub">${c.sub}</div></div><div class="cap-amt" style="color:${c.clr}">${c.amt}</div><div class="cap-arr">▾</div></div><div class="cap-body"><div class="cap-body-in">${c.body}</div></div>`;
+    ct.appendChild(d);
+  });
+}
+function toggleCap(head) {
+  const item = head.parentElement;
+  const body = item.querySelector('.cap-body');
+  const open = item.classList.contains('open');
+  document.querySelectorAll('.cap-item').forEach(ci => { ci.classList.remove('open'); ci.querySelector('.cap-body').style.maxHeight = '0'; });
+  if (!open) { item.classList.add('open'); body.style.maxHeight = body.scrollHeight + 'px'; }
+}
+
+// ── ZF FILTER ─────────────────────────────────────────────────────────
+function filterZF(type, btn) {
+  document.querySelectorAll('.zf-btn').forEach(b => b.classList.remove('on')); btn.classList.add('on');
+  document.querySelectorAll('#zfTable tbody tr').forEach(r => { r.style.display = (type === 'all' || r.dataset.t === type) ? '' : 'none'; });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+function initBcCharts() {
+  const isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+  const GRID = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.06)';
+  const TICK = isDark ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)';
+  const FONT = { family: '"Helvetica Neue",Helvetica,Arial,sans-serif', size: 11 };
+
+  const years = ['Y1','Y2','Y3','Y4','Y5','Y6'];
+  const subs  = [132, 480, 672, 806, 968, 1161];
+  const eaas  = [102, 324, 609, 756, 945, 1134];
+  const gmp   = [0,   90,  360, 540, 720, 900];
+  const grants= [160, 160,  80,  40,  20,  0];
+
+  const canvas = document.getElementById('bcRevChart');
+  if (!canvas) return;
+
+  new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: years,
+      datasets: [
+        { label: 'Subscriptions', data: subs,   backgroundColor: 'rgba(10,140,90,.85)',  stack: 's' },
+        { label: 'EaaS',          data: eaas,   backgroundColor: 'rgba(176,106,0,.85)', stack: 's' },
+        { label: 'GMP services',  data: gmp,    backgroundColor: 'rgba(26,79,160,.85)',  stack: 's' },
+        { label: 'Grants',        data: grants, backgroundColor: 'rgba(58,74,88,.6)',    stack: 's' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => ' $' + c.raw + 'K' } }
+      },
+      scales: {
+        x: { grid: { color: GRID }, ticks: { color: TICK, font: FONT }, stacked: true },
+        y: { grid: { color: GRID }, ticks: { color: TICK, font: FONT, callback: v => '$' + v + 'K' }, stacked: true }
+      }
+    }
+  });
+
+  const leg = document.getElementById('bcRevLegend');
+  if (leg) {
+    const items = [
+      ['rgba(10,140,90,.85)','Subscriptions'],
+      ['rgba(176,106,0,.85)','EaaS / pay-per-use'],
+      ['rgba(26,79,160,.85)','GMP services (Month 18+)'],
+      ['rgba(58,74,88,.6)','Grants'],
+    ];
+    leg.innerHTML = items.map(([c,l]) =>
+      `<span><span class="rev-dot" style="background:${c}"></span>${l}</span>`
+    ).join('');
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initModels();
+  initCaps();
+  const n = document.getElementById('phNote'); if (n) n.textContent = PHASES[0].note;
+  PHASES[0].mix.forEach((v, j) => { const el = document.getElementById('rv'+j); if (el) el.style.flex = v; });
+});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOTH // INTEL-004 // LA CHAMANA — MARKET INTELLIGENCE</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:          #080A08;
+    --bg-1:        #0D100D;
+    --bg-2:        #111411;
+    --bg-3:        #161916;
+    --border:      #1E231E;
+    --border-2:    #252B25;
+    --green:       #3DFF6E;
+    --green-dim:   #1A7A33;
+    --green-muted: #0F4A1F;
+    --green-glow:  rgba(61,255,110,0.06);
+    --amber:       #FFB84D;
+    --amber-dim:   #7A5220;
+    --red:         #FF4D4D;
+    --red-dim:     #7A2020;
+    --text:        #C8D4C8;
+    --text-2:      #8A9E8A;
+    --text-3:      #506050;
+    --text-4:      #2E3A2E;
+    --white:       #E8F0E8;
+    --scanline:    rgba(0,0,0,0.08);
+    --mono:        'IBM Plex Mono', monospace;
+    --sans:        'IBM Plex Sans', sans-serif;
+  }
+  html.light {
+    --bg: #F2F0E8; --bg-1: #ECEAE0; --bg-2: #E4E2D8; --bg-3: #DEDAD0;
+    --border: #CCCAB8; --border-2: #C0BEA8;
+    --green: #1A6E32; --green-dim: #2A8A44; --green-muted: #C8E8CE; --green-glow: rgba(26,110,50,0.06);
+    --amber: #8A5A10; --amber-dim: #B87820;
+    --red: #A02020; --red-dim: #C84040;
+    --text: #2C342C; --text-2: #506050; --text-3: #8A9A8A; --text-4: #B0C0B0;
+    --white: #141A14; --scanline: rgba(0,0,0,0.025);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: var(--mono); font-size: 13px; line-height: 1.7;
+    -webkit-font-smoothing: antialiased; cursor: default;
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scanline) 2px,var(--scanline) 4px);
+    pointer-events: none; z-index: 9999;
+  }
+  .glow { text-shadow: 0 0 8px rgba(61,255,110,0.4); }
+  html.light .glow { text-shadow: none; }
+
+  .theme-toggle {
+    display: flex; align-items: center; gap: 8px;
+    background: none; border: 1px solid var(--border-2);
+    color: var(--text-3); font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.12em; padding: 4px 10px; cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--green); border-color: var(--green-dim); }
+
+  .terminal { max-width: 960px; margin: 0 auto; padding: 0 40px 80px; }
+
+  .sys-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    transition: background 0.25s ease, border-color 0.25s ease;
+    padding: 10px 40px; display: flex; justify-content: space-between; align-items: center;
+    margin: 0 -40px;
+  }
+  .sys-bar-left { display: flex; align-items: center; gap: 24px; }
+  .sys-id { color: var(--green); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; }
+  .sys-sep { color: var(--text-3); }
+  .sys-path { color: var(--text-3); font-size: 11px; }
+  .sys-right { display: flex; align-items: center; gap: 20px; }
+  .sys-status { font-size: 10px; color: var(--text-3); letter-spacing: 0.1em; }
+  .status-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green); margin-right: 6px; animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .boot { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .boot-lines { margin-bottom: 48px; }
+  .boot-line { color: var(--text-3); font-size: 11px; letter-spacing: 0.08em; line-height: 2; }
+  .boot-line.active { color: var(--green-dim); }
+  .boot-line .ok { color: var(--green); margin-right: 8px; }
+  .boot-line .warn { color: var(--amber); margin-right: 8px; }
+  .boot-line .err { color: var(--red); margin-right: 8px; }
+
+  .doc-class {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--red-dim); background: rgba(255,77,77,0.05);
+    padding: 4px 12px; margin-bottom: 32px;
+  }
+  .doc-class-label { color: var(--red); font-size: 10px; font-weight: 600; letter-spacing: 0.25em; }
+
+  .doc-title {
+    font-family: var(--mono); font-weight: 300;
+    font-size: clamp(22px, 3.5vw, 36px);
+    color: var(--white); line-height: 1.25; letter-spacing: -0.01em; margin-bottom: 8px;
+  }
+  .doc-title .hl { color: var(--green); font-weight: 400; }
+  .doc-title .dim { color: var(--text-2); }
+
+  .doc-subtitle {
+    color: var(--text-2); font-size: 13px; font-weight: 300;
+    max-width: 560px; line-height: 1.7; margin-top: 16px;
+  }
+
+  .meta-block {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0; margin-top: 48px; border: 1px solid var(--border);
+  }
+  .meta-cell { padding: 16px 20px; border-right: 1px solid var(--border); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-key { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 6px; }
+  .meta-val { font-size: 12px; color: var(--text); font-weight: 400; }
+  .meta-val.green { color: var(--green); }
+  .meta-val.amber { color: var(--amber); }
+  .meta-val.red { color: var(--red); }
+
+  .toc-block { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  .cmd-prompt { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--text-3); font-size: 12px; }
+  .cmd-prompt .ps { color: var(--green); }
+  .cmd-prompt .cmd { color: var(--white); }
+  .toc-row {
+    display: flex; align-items: baseline; gap: 12px; padding: 6px 0;
+    border-bottom: 1px solid var(--border); text-decoration: none;
+    color: var(--text-2); transition: color 0.15s; font-size: 12px;
+  }
+  .toc-row:hover { color: var(--green); }
+  .toc-row:hover .toc-n { color: var(--green); }
+  .toc-n { color: var(--text-3); width: 32px; flex-shrink: 0; font-size: 11px; }
+  .toc-dots { flex: 1; border-bottom: 1px dotted var(--border-2); margin-bottom: 3px; }
+  .toc-pg { color: var(--text-3); font-size: 11px; flex-shrink: 0; }
+
+  .section { padding: 64px 0 48px; border-bottom: 1px solid var(--border); }
+  .section-head { display: flex; align-items: flex-start; gap: 0; margin-bottom: 40px; }
+  .section-id { color: var(--text-3); font-size: 11px; letter-spacing: 0.15em; margin-right: 16px; margin-top: 2px; flex-shrink: 0; width: 56px; }
+  .section-title-wrap { flex: 1; }
+  .section-tag { font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; margin-bottom: 8px; }
+  .section-title { font-family: var(--mono); font-weight: 300; font-size: clamp(18px, 2.5vw, 26px); color: var(--white); line-height: 1.3; }
+  .section-title .hl { color: var(--green); }
+
+  .body-text { font-size: 13px; line-height: 1.85; color: var(--text); margin-bottom: 20px; max-width: 760px; font-weight: 300; }
+  .body-text strong { color: var(--white); font-weight: 500; }
+  .body-text em { color: var(--text-2); font-style: italic; }
+
+  .callout { margin: 32px 0; padding: 20px 24px; background: var(--bg-2); border-left: 2px solid var(--green-dim); max-width: 760px; transition: background 0.25s ease; }
+  .callout p { font-size: 14px; line-height: 1.75; color: var(--text); font-style: italic; font-weight: 300; }
+  .callout.amber { border-left-color: var(--amber-dim); }
+  .callout.amber p { color: var(--text); }
+  .callout.red { border-left-color: var(--red-dim); }
+  .callout cite { display: block; margin-top: 10px; font-size: 10px; letter-spacing: 0.12em; color: var(--text-3); font-style: normal; }
+
+  .data-table { width: 100%; max-width: 760px; border-collapse: collapse; margin: 32px 0; font-size: 12px; }
+  .data-table th { text-align: left; padding: 8px 16px; font-size: 9px; letter-spacing: 0.2em; color: var(--text-3); text-transform: uppercase; border-bottom: 1px solid var(--border); font-weight: 400; }
+  .data-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  .data-table tr:hover td { background: var(--bg-2); }
+  .data-table .td-key { color: var(--green); white-space: nowrap; font-weight: 500; width: 180px; }
+  .data-table .td-amber { color: var(--amber); white-space: nowrap; font-weight: 500; width: 180px; }
+  .data-table .td-red { color: var(--red); white-space: nowrap; font-weight: 500; width: 180px; }
+  .data-table .td-note { color: var(--text-3); font-size: 11px; }
+
+  .tag-green { display: inline-block; padding: 2px 8px; background: var(--green-muted); color: var(--green); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .tag-amber { display: inline-block; padding: 2px 8px; background: rgba(255,184,77,0.08); color: var(--amber); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .tag-red { display: inline-block; padding: 2px 8px; background: rgba(255,77,77,0.08); color: var(--red); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin: 32px 0; max-width: 760px; }
+  .stat-cell { background: var(--bg-1); padding: 24px 20px; transition: background 0.25s ease; }
+  .stat-num { font-size: 32px; font-weight: 300; color: var(--white); line-height: 1; letter-spacing: -0.02em; }
+  .stat-unit { font-size: 13px; color: var(--green); margin-left: 2px; }
+  .stat-unit.amber { color: var(--amber); }
+  .stat-unit.red { color: var(--red); }
+  .stat-label { font-size: 11px; color: var(--text-3); margin-top: 8px; line-height: 1.5; }
+
+  .opt-matrix { max-width: 760px; margin: 32px 0; border: 1px solid var(--border); }
+  .opt-row { display: grid; grid-template-columns: 160px 1fr 80px; gap: 24px; padding: 14px 20px; border-bottom: 1px solid var(--border); align-items: start; }
+  .opt-row:last-child { border-bottom: none; }
+  .opt-row-head { background: var(--bg-2); }
+  .opt-vec { color: var(--green); font-size: 12px; font-weight: 500; padding-top: 2px; }
+  .opt-body-text { font-size: 12px; color: var(--text); line-height: 1.6; }
+  .opt-score { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+  .score-bar { display: flex; gap: 3px; }
+  .score-pip { width: 8px; height: 8px; border: 1px solid var(--border-2); background: var(--bg-3); }
+  .score-pip.on { background: var(--green); border-color: var(--green-dim); }
+  .score-pip.on.amber { background: var(--amber); border-color: var(--amber-dim); }
+  .score-pip.on.red { background: var(--red); border-color: var(--red-dim); }
+
+  .rec-block {
+    margin: 32px 0; padding: 24px; border: 1px solid var(--green-dim);
+    background: var(--green-glow); max-width: 760px;
+  }
+  .rec-block p { font-size: 13px; line-height: 1.85; color: var(--text); }
+  .rec-block p strong { color: var(--white); font-weight: 500; }
+
+  .signal-block {
+    margin: 24px 0; padding: 20px 24px; background: var(--bg-2);
+    border-left: 2px solid var(--amber-dim); max-width: 760px;
+  }
+  .signal-block p { font-size: 13px; line-height: 1.75; color: var(--text); font-weight: 300; }
+  .signal-block strong { color: var(--amber); font-weight: 500; }
+
+  .t-list { list-style: none; padding: 0; max-width: 760px; margin: 24px 0; }
+  .t-list li { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); line-height: 1.7; padding-left: 20px; position: relative; }
+  .t-list li::before { content: '→'; position: absolute; left: 0; color: var(--green-dim); }
+  .t-list li strong { color: var(--white); font-weight: 500; }
+
+  .audience-shift {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--border); margin: 32px 0; max-width: 760px;
+  }
+  .aud-panel { background: var(--bg-1); padding: 24px; }
+  .aud-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 16px; }
+  .aud-label.gone { color: var(--red); }
+  .aud-label.arriving { color: var(--green); }
+  .aud-item { font-size: 12px; color: var(--text-2); line-height: 1.8; padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .aud-item:last-child { border-bottom: none; }
+  .aud-item .aud-tag { float: right; }
+
+  .lc-position {
+    border: 1px solid var(--border); max-width: 760px; margin: 32px 0;
+    background: var(--bg-1);
+  }
+  .lc-pos-head { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .lc-pos-id { color: var(--text-3); font-size: 10px; }
+  .lc-pos-name { color: var(--white); font-size: 13px; font-weight: 500; flex: 1; }
+  .lc-pos-body { display: grid; grid-template-columns: 160px 1fr; gap: 0; }
+  .lc-pos-row { display: contents; }
+  .lc-pos-key { padding: 10px 20px; color: var(--text-3); font-size: 11px; border-bottom: 1px solid var(--border); letter-spacing: 0.05em; }
+  .lc-pos-val { padding: 10px 20px; color: var(--text); font-size: 12px; border-bottom: 1px solid var(--border); border-left: 1px solid var(--border); }
+  .lc-pos-val.green { color: var(--green); }
+  .lc-pos-val.amber { color: var(--amber); }
+
+  .doc-footer { margin-top: 64px; padding: 32px 0; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; font-size: 11px; }
+  .df-left { color: var(--text-3); line-height: 2; }
+  .df-id { color: var(--green); font-weight: 500; margin-bottom: 4px; }
+  .df-right { color: var(--text-3); line-height: 2; text-align: right; }
+</style>
+</head>
+<body>
+
+<div class="sys-bar">
+  <div class="sys-bar-left">
+    <span class="sys-id glow">BOTH</span>
+    <span class="sys-sep">//</span>
+    <span class="sys-path">intel / ventures / la-chamana / market-assessment</span>
+  </div>
+  <div class="sys-right">
+    <span class="sys-status"><span class="status-dot"></span>LIVE ANALYSIS</span>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <span id="toggleIcon">◐</span>
+      <span id="toggleLabel">LIGHT</span>
+    </button>
+  </div>
+</div>
+
+<div class="terminal">
+
+  <div class="boot">
+    <div class="boot-lines">
+      <div class="boot-line active"><span class="ok">✓</span>venture_context.load → La Chamana // Tulum, MX // ADR $4,500/night</div>
+      <div class="boot-line active"><span class="ok">✓</span>market_data.fetch → Tulum TQO airport + real estate + tourism 2024–2026</div>
+      <div class="boot-line active"><span class="ok">✓</span>audience_shift.analyze → budget_traveler vs HNWI demographic migration</div>
+      <div class="boot-line active"><span class="ok">✓</span>global_luxury_hospitality.scan → private villa segment / boutique supply</div>
+      <div class="boot-line active"><span class="warn">⚠</span>tulum_macro.status → CRISIS_2025 detected — structural re-read required</div>
+      <div class="boot-line active"><span class="ok">✓</span>lachamana_positioning.cross_reference → GTM_APR2026 + brand_manifesto</div>
+      <div class="boot-line active"><span class="ok">✓</span>BOTH_lens.apply → optionality_index + strategic_recommendation</div>
+    </div>
+
+    <div class="doc-class"><span class="doc-class-label">RESTRICTED</span></div>
+
+    <h1 class="doc-title">
+      La Chamana —<br>
+      <span class="hl">Market Intelligence</span> <span class="dim">Assessment</span>
+    </h1>
+    <p class="doc-subtitle">Tulum at inflection. Airport paradox. Audience inversion. Why the crisis is the signal — and why La Chamana is precisely positioned for what comes next.</p>
+
+    <div class="meta-block">
+      <div class="meta-cell">
+        <div class="meta-key">Document</div>
+        <div class="meta-val">BOTH // INTEL-004</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">Venture</div>
+        <div class="meta-val green">La Chamana</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">Issued</div>
+        <div class="meta-val">April 2026</div>
+      </div>
+      <div class="meta-cell">
+        <div class="meta-key">Status</div>
+        <div class="meta-val amber">active GTM Q2 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc-block">
+    <div class="cmd-prompt">
+      <span class="ps">both@intel:~$</span>
+      <span class="cmd">cat intel-004.toc</span>
+    </div>
+    <a href="#s1" class="toc-row"><span class="toc-n">§ 01</span>The Tulum Paradox<span class="toc-dots"></span><span class="toc-pg">market context</span></a>
+    <a href="#s2" class="toc-row"><span class="toc-n">§ 02</span>The Airport: Quantitative Assessment<span class="toc-dots"></span><span class="toc-pg">TQO data</span></a>
+    <a href="#s3" class="toc-row"><span class="toc-n">§ 03</span>The Audience Inversion<span class="toc-dots"></span><span class="toc-pg">demographic shift</span></a>
+    <a href="#s4" class="toc-row"><span class="toc-n">§ 04</span>The Real Estate Signal<span class="toc-dots"></span><span class="toc-pg">villa segment</span></a>
+    <a href="#s5" class="toc-row"><span class="toc-n">§ 05</span>Global Luxury Hospitality Context<span class="toc-dots"></span><span class="toc-pg">macro positioning</span></a>
+    <a href="#s6" class="toc-row"><span class="toc-n">§ 06</span>La Chamana — Strategic Position<span class="toc-dots"></span><span class="toc-pg">venture read</span></a>
+    <a href="#s7" class="toc-row"><span class="toc-n">§ 07</span>Risks & Open Questions<span class="toc-dots"></span><span class="toc-pg">optionality</span></a>
+    <a href="#s8" class="toc-row"><span class="toc-n">§ 08</span>Strategic Recommendation<span class="toc-dots"></span><span class="toc-pg">BOTH lens</span></a>
+  </div>
+
+  <!-- S1 -->
+  <div id="s1" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 01</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// market context</div>
+        <h2 class="section-title">The Tulum <span class="hl">Paradox</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Tulum in 2025 experienced something rare in the history of tourism destinations: a crisis that was simultaneously self-inflicted and structurally clarifying. Hotel occupancy in the coastal zone collapsed to <strong>30% in summer 2025</strong>. Archaeological site visits fell 75% year-over-year. Airlines pulled routes. Sargassum blanketed beaches. The municipal security secretary was killed. Residents protested military-controlled beach access.</p>
+
+    <p class="body-text">The surface reading is decline. The structural reading is different. What Tulum experienced was a <strong>violent audience filter</strong> — an involuntary purge of the price-sensitive, experience-indifferent traveler who had colonized the destination after 2020, inflated prices past what the infrastructure could justify, and then departed when the experience no longer matched the premium charged.</p>
+
+    <p class="body-text">What remains — and what is actively arriving through TQO, the Tren Maya, and the luxury villa circuit — is a different traveler entirely. One who never came to Tulum for the beaches. Who comes for the Mayan heritage, the architectural design ecosystem, the wellness and ceremony culture, the sense of belonging to a knowing few. This traveler does not care about sargassum. Does not care about public beach fees. Does not leave when the mass market leaves. They were never part of the mass market.</p>
+
+    <div class="callout">
+      <p>The 2025 Tulum crisis is not evidence of a destination in terminal decline. It is a destination completing its first major demographic transition — from volume tourism to filtered luxury. The question is not whether Tulum survives. It is who captures the destination's next chapter, and who understands what is actually happening.</p>
+    </div>
+
+    <p class="body-text">La Chamana sits at the exact center of this transition — built for the traveler who arrives on the other side of the filter, priced and positioned beyond the noise, designed as a signal to people who read signals.</p>
+  </div>
+
+  <!-- S2 -->
+  <div id="s2" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 02</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// TQO data // quantitative + qualitative</div>
+        <h2 class="section-title">The Airport: <span class="hl">Two-Phase Assessment</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Felipe Carrillo Puerto International Airport (IATA: TQO) opened December 1, 2023. Its first 28 months have been misread by almost every analyst covering Tulum. The standard narrative — that airline pullbacks and passenger declines signal failure — confuses the ramp-up pattern of a maturing leisure airport with structural dysfunction.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">1.24<span class="stat-unit">M</span></div>
+        <div class="stat-label">Passengers handled 2025 — exceeded all initial projections in year one</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">~1.7<span class="stat-unit amber">M</span></div>
+        <div class="stat-label">2025 projection per ASUR earnings call — captured from Cancún's network</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">5.5<span class="stat-unit">M</span></div>
+        <div class="stat-label">Annual passenger capacity — runway designed for wide-body aircraft</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">−23<span class="stat-unit red">%</span></div>
+        <div class="stat-label">Scheduled capacity Dec 2025 vs Dec 2024 — airline rationalization phase</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">40<span class="stat-unit">min</span></div>
+        <div class="stat-label">Transfer time from TQO to Tulum town — vs 2hr+ from Cancún</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">2027<span class="stat-unit amber">+</span></div>
+        <div class="stat-label">Target year for capacity doubling — expansion confirmed</div>
+      </div>
+    </div>
+
+    <p class="body-text">The airline pullbacks of 2024–2025 follow a textbook pattern for new leisure airports: <strong>over-capacity launch → route rationalization → stable core network formation</strong>. Spirit, United, and American over-indexed routes in the launch euphoria; weaker routes (Charlotte, Denver, Fort Lauderdale) were discontinued. What remains are routes with proven load factors: Atlanta (Delta), Miami (AA), Houston (United), Mexico City (Aeroméxico). These are the corridors that matter for La Chamana's audience.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Dimension</th><th>Quantitative Effect</th><th>Qualitative Effect on La Chamana</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-key">Friction elimination</td>
+          <td>2hr+ Cancún transfer → 40min TQO transfer</td>
+          <td>HNWI travelers who previously avoided Tulum due to transfer complexity now accessible. This unlocks a segment that always preferred the destination's proposition but not its logistics.</td>
+        </tr>
+        <tr>
+          <td class="td-key">Audience filter</td>
+          <td>Spirit, JetBlue, ULCC exits removed budget traveler supply</td>
+          <td>ULCCs brought price-sensitive spring-break traffic. Their departure leaves remaining routes serving US hub cities — NY, Miami, Houston, Atlanta — with demographics that overlap directly with La Chamana's HNWI segment.</td>
+        </tr>
+        <tr>
+          <td class="td-key">Direct EU access</td>
+          <td>Frankfurt route (seasonal) — Frankfurt–Tulum now operational</td>
+          <td>Opens European HNWI segment that previously routed through Cancún + transfer. EU audience is La Chamana's long-cycle PR target: Wallpaper*, Tatler, Condé Nast Traveler. Arrival infrastructure now exists.</td>
+        </tr>
+        <tr>
+          <td class="td-key">LATAM connectivity</td>
+          <td>Avianca (Bogotá), regional LATAM expansion in progress</td>
+          <td>Brazil, Colombia, Argentina connectivity growing. La Chamana's LATAM HNWI segment — particularly Brazilian — is currently underserved by direct air; improving. Matches influencer and agency target geography.</td>
+        </tr>
+        <tr>
+          <td class="td-key">Ground connectivity</td>
+          <td>Tren Maya station at TQO — connects to Tulum town and north</td>
+          <td>Reduces transfer cost friction further. Enables longer-stay patterns. Guests can arrive, settle, stay without renting cars. This supports La Chamana's multi-night minimum model ($4,500/night ADR requires 3-night min).</td>
+        </tr>
+        <tr>
+          <td class="td-key">Real estate signal</td>
+          <td>Luxury villa yields stable at ~8% net — condo segment collapsed</td>
+          <td>Airport brought the right tier of traveler while pricing out the wrong tier. This is precisely La Chamana's supply-demand thesis: luxury villa supply constrained, airport-delivered HNWI demand increasing.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout amber">
+      <p>The airport's current "underperformance" narrative is a mass-market reading of a luxury-market event. TQO is not failing to bring travelers to Tulum. It is succeeding at bringing the right travelers — while the wrong travelers, who never needed a dedicated airport to reach their Cancún all-inclusive, stopped coming anyway.</p>
+    </div>
+  </div>
+
+  <!-- S3 -->
+  <div id="s3" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 03</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// demographic shift // qualitative + structural</div>
+        <h2 class="section-title">The Audience <span class="hl">Inversion</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Tulum's tourism composition has undergone the most consequential audience shift of any major destination in the western hemisphere in the last decade. The transition is structural, accelerating, and largely invisible to analysts measuring aggregate volume. It is not a crisis of decline — it is a crisis of <strong>replacement</strong>.</p>
+
+    <div class="audience-shift">
+      <div class="aud-panel">
+        <div class="aud-label gone">// EXITING — 2022–2025</div>
+        <div class="aud-item">Budget backpackers and yoga retreaters <span class="aud-tag"><span class="tag-red">gone</span></span></div>
+        <div class="aud-item">Spring break ULCC travelers (Spirit, JetBlue) <span class="aud-tag"><span class="tag-red">gone</span></span></div>
+        <div class="aud-item">Social media influencers chasing "boho-chic" <span class="aud-tag"><span class="tag-red">declining</span></span></div>
+        <div class="aud-item">Price-sensitive European package tourists <span class="aud-tag"><span class="tag-red">declining</span></span></div>
+        <div class="aud-item">Brazilian/Colombian mid-market leisure travelers <span class="aud-tag"><span class="tag-red">restricted visas</span></span></div>
+        <div class="aud-item">Day-trip archaeological tourists <span class="aud-tag"><span class="tag-red">−75% YoY</span></span></div>
+      </div>
+      <div class="aud-panel">
+        <div class="aud-label arriving">// ARRIVING — 2025–2027</div>
+        <div class="aud-item">US hub-city HNWI (NY, Miami, Houston, Atlanta) <span class="aud-tag"><span class="tag-green">growing</span></span></div>
+        <div class="aud-item">European design + culture travelers (EU direct TQO) <span class="aud-tag"><span class="tag-green">new access</span></span></div>
+        <div class="aud-item">Wellness economy participants: retreat, ceremony <span class="aud-tag"><span class="tag-green">stable</span></span></div>
+        <div class="aud-item">Remote-work semi-permanents (US/EU professionals) <span class="aud-tag"><span class="tag-green">growing</span></span></div>
+        <div class="aud-item">Corporate offsite / leadership retreat groups <span class="aud-tag"><span class="tag-green">emerging</span></span></div>
+        <div class="aud-item">Architecture + design tourism (global creatives) <span class="aud-tag"><span class="tag-green">intentional</span></span></div>
+      </div>
+    </div>
+
+    <p class="body-text">The structural driver of this inversion is pricing. <strong>Tulum's average nightly rate reached $450 in 2025 — a 25% increase from 2023</strong> — but service quality, infrastructure, and beach experience declined simultaneously. This combination is catastrophic for volume tourism, which requires price-value alignment, and <em>irrelevant</em> for luxury hospitality, which operates on different value logic entirely.</p>
+
+    <p class="body-text">The HNWI traveler choosing La Chamana at $4,500/night does not compare the experience to a $450/night boutique hotel. They compare it to a private villa in Ibiza, a riad in Marrakech, a compound in Mykonos. On that comparison set, Tulum's architecture, ceremony culture, and Mayan heritage represent a genuinely differentiated proposition — one that the mass-market crisis has not damaged. It has, in fact, <strong>clarified</strong> it: the noise left. The signal remains.</p>
+
+    <div class="signal-block">
+      <p><strong>The audience that La Chamana targets never read Tulum as a party destination.</strong> They read it as a design destination, a spiritual destination, a status-encoding destination. The same architectural DNA — Barragán lineage, Zapotec materials, sacred geometry — that makes La Chamana legible to a Wallpaper* editor is entirely invisible to a Spring Break traveler. These were never the same market. The crisis separated them. The GTM now operates in a cleaner signal environment.</p>
+    </div>
+
+    <table class="data-table">
+      <thead><tr><th>Segment</th><th>Pre-Crisis Tulum Read</th><th>Post-Crisis Tulum Read</th><th>La Chamana Relevance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-key">US HNWI</td>
+          <td>Mixed — had to navigate mass-market noise</td>
+          <td>Cleaner — private villa circuit now dominant frame</td>
+          <td><span class="tag-green">high</span> — $4,500 ADR operates in cleared market</td>
+        </tr>
+        <tr>
+          <td class="td-key">European tastemaker</td>
+          <td>Limited — long transfer from Cancún, unclear positioning</td>
+          <td>Growing — TQO Frankfurt route opens direct access</td>
+          <td><span class="tag-green">high</span> — PR targets (AD, Wallpaper*, Tatler) now reachable</td>
+        </tr>
+        <tr>
+          <td class="td-key">LATAM HNWI (Brazil)</td>
+          <td>Strong — Brazilian market historically key to Tulum</td>
+          <td>Partial recovery — visa restrictions easing, LATAM routes returning</td>
+          <td><span class="tag-amber">medium</span> — watch visa policy; influencer strategy targets this segment</td>
+        </tr>
+        <tr>
+          <td class="td-key">Wellness economy</td>
+          <td>Core driver — retreat organizers, ceremony leaders</td>
+          <td>Stable and growing — crisis filtered casual wellness tourists, serious practitioners remain</td>
+          <td><span class="tag-green">high</span> — Temazcal, cacao, ceremonies are La Chamana's product core</td>
+        </tr>
+        <tr>
+          <td class="td-key">Corporate offsite</td>
+          <td>Nascent — not a structured market</td>
+          <td>Emerging — executive teams seeking non-standard venues post-pandemic</td>
+          <td><span class="tag-green">high</span> — Gastón's vertical; $4,500/night for 16 pax = ~$280/person/night, competitive with premium corporate venues</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- S4 -->
+  <div id="s4" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 04</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// real estate signal // villa segment</div>
+        <h2 class="section-title">The Real Estate <span class="hl">Signal</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Tulum's real estate market in 2025 bifurcated with unusual clarity. The condo segment — oversupplied by speculative development that peaked in 2021–2023 — experienced a 10–20% price correction from peak, with rental yields collapsing to near-zero for most units. The luxury villa segment behaved differently: <strong>net rental yields held at approximately 8%</strong>, demand from HNWI buyers remained stable, and supply stayed constrained by structural factors.</p>
+
+    <div class="stat-grid">
+      <div class="stat-cell">
+        <div class="stat-num">−15<span class="stat-unit red">%</span></div>
+        <div class="stat-label">Condo price correction from 2023 peak — oversupply-driven</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">+8<span class="stat-unit">%</span></div>
+        <div class="stat-label">Net rental yield on high-end villas — resilient through crisis</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">60<span class="stat-unit">%</span></div>
+        <div class="stat-label">International buyers as % of Tulum transactions — stable demand floor</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$10<span class="stat-unit">M</span></div>
+        <div class="stat-label">La Chamana list price — entering a market with very limited comparable supply</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">$5K<span class="stat-unit amber">/m²</span></div>
+        <div class="stat-label">Prime villa pricing in Tulum — La Chamana's 1,600m² implies structural scarcity premium</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">85<span class="stat-unit">%</span></div>
+        <div class="stat-label">New hotel projects meeting eco-friendly standards — sustainability is now baseline, not premium</div>
+      </div>
+    </div>
+
+    <p class="body-text">The divergence between condo and villa performance reveals the structural logic of La Chamana's positioning. Condos are a commodity market; when supply exceeds demand, yields collapse uniformly. Villas — particularly architecturally significant, experientially differentiated villas — are not commodities. They are <strong>singular assets in a category with no meaningful supply</strong>.</p>
+
+    <div class="callout">
+      <p>There is no comparable property to La Chamana in Tulum. 1,600m², 8 bedrooms, $10MM sale price, $4,500/night rental — this is a market of one. The crisis that destroyed condo yields created the conditions for La Chamana's market to clear: less noise, less competition for HNWI attention, a rental market where the only functioning yield plays are exactly this product type.</p>
+    </div>
+
+    <p class="body-text">The sale track ($10MM list, $8MM target close) operates in an even thinner market. ASUR's own analysts project that TQO's infrastructure benefits will "become more pronounced in 2026–2027, potentially catalyzing the next growth cycle." A buyer acquiring La Chamana in mid-2026 does so at the trough of a correction cycle, with the airport's full integration effect not yet priced into the market. The structural case for the sale is as strong as the rental case — arguably stronger from a timing perspective.</p>
+  </div>
+
+  <!-- S5 -->
+  <div id="s5" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 05</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// macro // global luxury hospitality</div>
+        <h2 class="section-title">Global Luxury Hospitality <span class="hl">Context</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">La Chamana operates within a global luxury private villa market that has fundamentally restructured since 2020. Three macro shifts define the current landscape and directly shape La Chamana's positioning opportunity.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Macro Shift</th><th>Global Evidence</th><th>La Chamana Relevance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="td-key">The Group Travel Surge</td>
+          <td>Post-pandemic HNWI travel shifted decisively toward group formats — multi-generational families, friend cohorts, corporate teams. Platforms like onefinestay, Plum Guide, and Airbnb Luxe report that group bookings ($5K+/night) are the fastest growing segment in private hospitality globally.</td>
+          <td>La Chamana's 8-bedroom, 16-guest format is optimized for this. The group rental thesis is not a niche play — it is the direction of the market. $4,500/night for 16 people = $281/person, which is competitive with premium resort pricing while delivering exclusive, private experience.</td>
+        </tr>
+        <tr>
+          <td class="td-key">The Ritual Economy</td>
+          <td>The global wellness economy is now a $6.3 trillion market (GWI, 2023). The fastest-growing subsegment is "transformational travel" — journeys explicitly organized around ceremony, spiritual experience, and psychological shift. Retreat.guru, Bookretreats, and bespoke ceremony operators report sustained 20%+ YoY growth since 2021.</td>
+          <td>La Chamana's Temazcal, cacao ceremony, mirror temple, and wellness coach are not amenities. They are the product. This positions it as infrastructure for the ritual economy — not a hotel with a spa, but a purpose-built ceremony venue that also sleeps 16. This is a fundamentally different product category.</td>
+        </tr>
+        <tr>
+          <td class="td-key">Architecture as Social Capital</td>
+          <td>The rise of design-led travel — driven by Design Hotels, Dezeen travel, Architectural Digest's travel content — has created a segment of HNWI travelers for whom a property's architectural credentials are a primary booking criterion. Barragán, Tadao Ando, Kengo Kuma properties command 40–80% premiums over comparable non-architectural alternatives.</td>
+          <td>La Chamana's Barragán lineage, Zapotec materials, and codified spatial intentionality are legible to this audience. The property functions as cultural capital for its guests — photographed, shared, discussed in the circles that matter. This is the mechanism behind the influencer strategy: not reach, but signal quality.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="body-text">The convergence of these three shifts — group travel, ritual economy, architecture as capital — describes La Chamana's product with unusual precision. The property was not designed to benefit from one of these trends. It sits at their exact intersection. This is not a coincidence of market timing. It is a structural thesis about what luxury hospitality means in 2026 and what it will mean for the next decade.</p>
+  </div>
+
+  <!-- S6 -->
+  <div id="s6" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 06</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// venture read // strategic position</div>
+        <h2 class="section-title">La Chamana — <span class="hl">Strategic Position</span></h2>
+      </div>
+    </div>
+
+    <div class="lc-position">
+      <div class="lc-pos-head">
+        <span class="lc-pos-id">VENTURE // LC-001</span>
+        <span class="lc-pos-name">La Chamana · Tulum, MX</span>
+        <span class="tag-green">active GTM</span>
+      </div>
+      <div class="lc-pos-body">
+        <div class="lc-pos-key">Product</div>
+        <div class="lc-pos-val">8-room private architectural sanctuary · 1,600m² · capacity 16 · ritual + design + transformation</div>
+        <div class="lc-pos-key">Rental</div>
+        <div class="lc-pos-val green">$4,500/night ADR · 3-night min · target: 9 bookings in 90 days · $1MM+ Year 1</div>
+        <div class="lc-pos-key">Sale</div>
+        <div class="lc-pos-val amber">$10MM list · $8MM target close · parallel track · Andy / BOTH</div>
+        <div class="lc-pos-key">Market timing</div>
+        <div class="lc-pos-val green">Entering at correction trough · airport integration benefit not yet priced · audience filter completed</div>
+        <div class="lc-pos-key">Competitive set</div>
+        <div class="lc-pos-val green">No direct comparable in Tulum · nearest competition is international (Ibiza, Mykonos, Marrakech)</div>
+        <div class="lc-pos-key">Demand drivers</div>
+        <div class="lc-pos-val">US hub HNWI · EU design traveler · LATAM affluent (Brazil/Arg) · corporate offsite · wellness economy</div>
+        <div class="lc-pos-key">Supply dynamic</div>
+        <div class="lc-pos-val green">Structurally constrained · condo oversupply irrelevant · luxury villa pipeline near-zero</div>
+        <div class="lc-pos-key">GTM status</div>
+        <div class="lc-pos-val amber">Week 2 of 90-day activation · channels live · pipeline active · AI agent WS1 underway</div>
+      </div>
+    </div>
+
+    <p class="body-text">La Chamana's current market position is stronger than its launch timing suggests. The property enters an audience-cleared market with no structural competitor, an improving airport infrastructure, a global luxury hospitality trend running directly toward its product format, and a GTM framework that correctly reads the situation: the goal is not to compete for Tulum's mass-market visitors, but to make the property visible and legible to the thin slice of global travelers for whom it is the obvious choice.</p>
+
+    <p class="body-text">The 90-day rental objective — 9 bookings at $4,500/night minimum — is achievable not despite the Tulum crisis but partly because of it. The crisis reduced inbound OTA competition for HNWI attention. The properties that survived the crisis are, by definition, the ones worth surviving. La Chamana entering the market now is entering a cleared field.</p>
+  </div>
+
+  <!-- S7 -->
+  <div id="s7" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 07</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// optionality analysis</div>
+        <h2 class="section-title">Risks &amp; <span class="hl">Open Questions</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">Reading this market correctly means not suppressing the genuine risks. Four vectors require active monitoring. These are not reasons to pause — they are reasons to build decision protocols now, before they become crises.</p>
+
+    <div class="opt-matrix">
+      <div class="opt-row opt-row-head">
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;">risk vector</span>
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;">assessment</span>
+        <span style="font-size:9px;letter-spacing:0.15em;color:var(--text-3);text-transform:uppercase;text-align:right;">severity</span>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Security perception</span>
+        <span class="opt-body-text">The killing of Tulum's municipal security secretary in March 2025 created a media narrative that is disproportionately damaging relative to actual risk to private villa guests. HNWI travelers in private compounds are not the exposed population. However, perception risk for corporate clients and US family groups is real and requires a proactive communications protocol. The GTM's concierge positioning — private transfers, airport pickup, no public exposure — partially addresses this operationally.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on red"></div><div class="score-pip on red"></div><div class="score-pip on red"></div><div class="score-pip"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--red);">3/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Sargassum &amp; beach access</span>
+        <span class="opt-body-text">2025's record sargassum bloom is an environmental variable, not a structural one. La Chamana's product is interior-focused: the Mirror Temple, Temazcal, pools, ceremonies, Pensatorium. The architecture is the experience. Beach proximity is a secondary feature, not the value proposition. This is a genuine structural advantage in a year when beach quality collapsed across Tulum's hotel zone. The Jaguar Park access fees affect hotels — not private villa guests.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on amber"></div><div class="score-pip on amber"></div><div class="score-pip"></div><div class="score-pip"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--amber);">2/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Infrastructure fragility</span>
+        <span class="opt-body-text">Tulum's power, water, and road infrastructure is stressed. Frequent outages affect the hotel zone. This is a known operational risk for any Tulum property. Mitigation requires on-site redundancy (generators, water storage), and the GTM should not promise infrastructure quality it cannot guarantee. Verify what the property's independent infrastructure capacity is before any corporate or high-expectations client is booked.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on amber"></div><div class="score-pip on amber"></div><div class="score-pip on amber"></div><div class="score-pip"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--amber);">3/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">Visa / LATAM access</span>
+        <span class="opt-body-text">Mexico's 2024–2025 visa restrictions on Brazil, Colombia, Ecuador, and Peru reduced a historically key segment for Tulum luxury. Brazilian HNWIs are a target segment for La Chamana (influencer strategy, agency partnerships). Easing of restrictions is underway but uncertain in timeline. This is a macro policy risk — uncontrollable, but monitorable. The Brazil influencer and direct HNWI outreach should be paced against visa normalization signals.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on amber"></div><div class="score-pip on amber"></div><div class="score-pip on amber"></div><div class="score-pip"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--amber);">3/5</span>
+        </div>
+      </div>
+      <div class="opt-row">
+        <span class="opt-vec">90-day booking velocity</span>
+        <span class="opt-body-text">The 9-booking target in 90 days at $4,500/night is achievable but requires active channel activation and fast pipeline conversion. The current open pipeline (Loco Luxury, Panambi, LOURDES, Berger) represents meaningful near-term revenue if closed correctly. The risk is not market demand — it is internal execution speed and the pricing decision on media villa / per-room (still pending from Week 1). Unresolved pricing blocks channel activation.</span>
+        <div class="opt-score">
+          <div class="score-bar"><div class="score-pip on red"></div><div class="score-pip on red"></div><div class="score-pip on red"></div><div class="score-pip on red"></div><div class="score-pip"></div></div>
+          <span style="font-size:10px;color:var(--red);">4/5</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S8 -->
+  <div id="s8" class="section">
+    <div class="section-head">
+      <span class="section-id">§ 08</span>
+      <div class="section-title-wrap">
+        <div class="section-tag">// BOTH lens // conclusion</div>
+        <h2 class="section-title">Strategic <span class="hl">Recommendation</span></h2>
+      </div>
+    </div>
+
+    <p class="body-text">La Chamana is a BOTH-type venture in the clearest sense: a multi-domain intersection opportunity — architecture, ritual economy, luxury hospitality, Tulum's demographic transition — that requires structural understanding before the market makes it legible to everyone. The window to establish La Chamana's position as the canonical luxury private sanctuary in Tulum is 2026. Not because competition will arrive imminently, but because the narrative formation period for this product category is now. The stories told about La Chamana in the next six months will define how it is perceived for years.</p>
+
+    <p class="body-text">The market intelligence consolidates to five strategic conclusions:</p>
+
+    <ul class="t-list">
+      <li><strong>The crisis is the context, not the risk.</strong> Tulum's 2025 tourism collapse removed La Chamana's noise floor. The GTM now operates in a destination that has been stripped of mass-market competition for HNWI attention. This is an advantage to be activated aggressively, not a condition to apologize for.</li>
+      <li><strong>TQO's rationalization phase is almost complete.</strong> The airline pullbacks of 2025 are not a signal of demand failure — they are the selection process producing a core network serving La Chamana's exact audience geographies: NY, Miami, Houston, Atlanta, Frankfurt. Route stabilization in 2026 means the infrastructure now works for the right people.</li>
+      <li><strong>The audience inversion is irreversible.</strong> Tulum will not return to being a budget-backpacker destination. The price floor is set, the infrastructure investment is committed, and the audience that has arrived in its place — HNWI, design-conscious, experience-seeking, wellness-oriented — is the audience La Chamana was built for. The GTM does not need to overcome the destination's reputation. It needs to claim the destination's new identity.</li>
+      <li><strong>The 90-day window is execution, not strategy.</strong> The strategic case is made. The pricing decision (half-villa, per-room, experience unbundling) is the only remaining strategic gate. Once that is resolved, the GTM can execute at full speed. Every week of pricing ambiguity is a week of blocked channel activation.</li>
+      <li><strong>The sale and the rental are not separate stories.</strong> A property that demonstrates strong rental demand at $4,500/night — with 9+ bookings in 90 days — is a fundamentally more attractive acquisition at $10MM than one that is still warming up channels. The rental GTM is the sale's best marketing. They should be run as a unified narrative.</li>
+    </ul>
+
+    <div class="rec-block">
+      <p>Tulum is not in terminal decline. It is in the most interesting phase of its evolution — shedding the audience that was always the wrong fit and making space for the one it was always capable of serving. La Chamana is not a bet on Tulum's recovery. It is a bet on Tulum's <strong>transformation</strong> — and on the proposition that a private architectural sanctuary, built with intention and priced with confidence, is exactly what the destination's next chapter requires. <strong>The irreversible decisions — positioning, pricing, channel architecture, narrative — are being made now. BOTH exists precisely for this moment.</strong></p>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <div class="df-left">
+      <div class="df-id">BOTH // INTEL-004</div>
+      <div>P.004 Intelligence Program</div>
+      <div>Issued: 2026-04-14 // Restricted</div>
+    </div>
+    <div class="df-right">
+      <div>La Chamana — Market Intelligence Assessment</div>
+      <div>BOTH Ventures // Punta del Este, UY</div>
+      <div style="color: var(--text-4); margin-top: 4px;">end of document</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isLight = html.classList.toggle('light');
+    document.getElementById('toggleIcon').textContent = isLight ? '●' : '◐';
+    document.getElementById('toggleLabel').textContent = isLight ? 'DARK' : 'LIGHT';
+    try { localStorage.setItem('both-intel-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  }
+  try {
+    if (localStorage.getItem('both-intel-theme') === 'light') {
+      document.documentElement.classList.add('light');
+      document.getElementById('toggleIcon').textContent = '●';
+      document.getElementById('toggleLabel').textContent = 'DARK';
+    }
+  } catch(e) {}
+</script>
+</body>
+</html>

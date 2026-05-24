@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — V1 MONITOR</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:     #0A0A08;
+    --white:     #FFFFFF;
+    --warm-gray: #D4D0C8;
+    --cream:     #E8E4DC;
+    --mid-gray:  #4A4845;
+    --text-dim:  #888880;
+    --text-dark: #1C1C1A;
+    --teal:      #939324;
+    --mono:      'Space Mono', 'Courier New', monospace;
+    --border-d:  rgba(255,255,255,0.10);
+    --border-faint: rgba(255,255,255,0.04);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--mono);
+    background: var(--black);
+    color: var(--warm-gray);
+    min-height: 100vh;
+    padding: 28px 28px 56px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 0.5px solid var(--border-d);
+    max-width: 1400px;
+  }
+  .header-left { display: flex; flex-direction: column; gap: 6px; }
+  .mark { display: flex; align-items: center; gap: 7px; }
+  .circle-filled {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--white);
+    flex-shrink: 0;
+  }
+  .circle-outline {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    border: 1px solid var(--white);
+    flex-shrink: 0;
+  }
+  .wordmark {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.02em;
+  }
+  .doc-label {
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    line-height: 1.9;
+  }
+  .header-right .ver { color: var(--teal); }
+
+  /* ── DIAGRAM GRID ── */
+  .diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    max-width: 1400px;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    grid-column: span 3;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 20px;
+    margin-bottom: 2px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border-d);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label .s-num { color: var(--teal); }
+
+  /* ── CARDS ── */
+  .card {
+    background: #111110;
+    border: 0.5px solid var(--border-d);
+    padding: 18px 20px;
+    position: relative;
+  }
+  .card-title {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    letter-spacing: 0.03em;
+    border: 0.5px solid;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .t-live  { color: var(--teal);      border-color: rgba(147,147,36,0.40); background: rgba(147,147,36,0.07); }
+  .t-warm  { color: var(--warm-gray); border-color: rgba(212,208,200,0.20); background: rgba(212,208,200,0.03); }
+  .t-dim   { color: var(--text-dim);  border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); }
+  .t-ghost { color: #3a3a38;          border-color: rgba(255,255,255,0.04); background: transparent; }
+
+  /* ── AGENT LIST ── */
+  .agent-list { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .agent-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 8px;
+    border: 0.5px solid var(--border-d);
+    background: rgba(255,255,255,0.02);
+    font-size: 10px;
+  }
+  .agent-cmd  { color: var(--teal); font-weight: 700; font-size: 10px; min-width: 28px; }
+  .agent-name { color: var(--text-dim); }
+
+  /* ── SKILL GRID ── */
+  .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    border: 0.5px solid var(--border-d);
+    background: rgba(255,255,255,0.02);
+  }
+  .skill-name { color: var(--warm-gray); font-weight: 700; font-size: 10px; }
+  .skill-desc { color: var(--text-dim); font-size: 9px; line-height: 1.3; }
+
+  /* ── FLOW ── */
+  .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 0; }
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid var(--border-d);
+    text-align: center;
+    min-width: 82px;
+  }
+  .step-label { color: var(--warm-gray); font-size: 10px; line-height: 1.3; }
+  .step-tool  { color: var(--text-dim); font-size: 8px; letter-spacing: 0.04em; margin-top: 2px; }
+  .flow-arrow { color: rgba(255,255,255,0.15); font-size: 12px; padding: 0 3px; flex-shrink: 0; }
+
+  /* ── VAULT DIRS ── */
+  .vault-dirs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .vault-dir {
+    font-size: 10px;
+    padding: 5px 8px;
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid var(--border-d);
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .vault-dir span { color: var(--teal); }
+
+  /* ── INFO ROW ── */
+  .info-row {
+    margin-top: 10px;
+    font-size: 9px;
+    color: #3a3a38;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.02em;
+  }
+  .info-row::before { content: '→'; color: rgba(255,255,255,0.12); }
+
+  /* ── PROJECT LIST ── */
+  .project-list { display: flex; flex-direction: column; gap: 9px; }
+  .project-name { font-size: 10px; color: var(--warm-gray); margin-bottom: 2px; }
+  .project-desc { font-size: 9px; color: var(--text-dim); line-height: 1.4; }
+  .project-desc .live { color: var(--teal); }
+
+  /* ── PERSON GRID ── */
+  .tier-label {
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #3a3a38;
+    margin-bottom: 7px;
+  }
+  .person-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+  .person-card {
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid var(--border-d);
+    padding: 10px;
+  }
+  .person-name { font-size: 11px; color: var(--white); font-weight: 700; margin-bottom: 3px; }
+  .person-role { font-size: 8px; color: var(--text-dim); margin-bottom: 5px; letter-spacing: 0.03em; }
+  .person-desc { font-size: 9px; color: #3a3a38; line-height: 1.4; }
+  .person-scope { margin-top: 8px; display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+  .scope-badge {
+    font-size: 8px;
+    padding: 1px 6px;
+    border: 0.5px solid;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .scope-badge.full     { color: var(--teal);      border-color: rgba(147,147,36,0.40); background: rgba(147,147,36,0.07); }
+  .scope-badge.founder  { color: var(--warm-gray); border-color: rgba(212,208,200,0.20); background: transparent; }
+  .scope-badge.restrict { color: var(--text-dim);  border-color: var(--border-faint); background: transparent; }
+  .scope-note { font-size: 8px; color: #333330; letter-spacing: 0.02em; }
+
+  /* ── SPAN HELPERS ── */
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+
+  /* ── FOOTER ── */
+  .footer {
+    max-width: 1400px;
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 0.5px solid var(--border-d);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 9px;
+    color: #2e2e2c;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer-left { display: flex; flex-direction: column; gap: 3px; }
+  .axis-tags   { display: flex; align-items: center; gap: 10px; }
+  .axis-tag    { font-size: 8px; color: #252523; letter-spacing: 0.12em; }
+  .axis-sep    { font-size: 10px; color: #252523; opacity: 0.5; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="mark">
+      <div class="circle-filled"></div>
+      <div class="circle-outline"></div>
+      <span class="wordmark">Both_Ventures</span>
+    </div>
+    <div class="doc-label">[Stack Monitor] &nbsp;·&nbsp; Agent Architecture &nbsp;·&nbsp; Workflow Map &nbsp;·&nbsp; Knowledge Vault</div>
+  </div>
+  <div class="header-right">
+    <div class="ver">V0.3.0</div>
+    <div>Q-02.26 &nbsp;·&nbsp; PDE</div>
+    <div>Updated 2026-04-16</div>
+  </div>
+</div>
+
+<div class="diagram">
+
+  <!-- ════════════════════════════════════════
+       01 — INTERFACES
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">01</span> Interfaces</div>
+
+  <div class="card">
+    <div class="card-title">Claude Interfaces</div>
+    <div class="tags">
+      <span class="tag t-warm">Claude Cowork</span>
+      <span class="tag t-warm">Claude Code (CLI)</span>
+      <span class="tag t-warm">Claude API</span>
+    </div>
+    <div class="info-row">claude-sonnet-4-6 · per-agent model selection</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Team Interfaces</div>
+    <div class="tags">
+      <span class="tag t-dim">Paperclip (BOTH-branded)</span>
+      <span class="tag t-live">Slack (approval flows)</span>
+      <span class="tag t-dim">WhatsApp Bot</span>
+      <span class="tag t-dim">Telegram Agent</span>
+      <span class="tag t-dim">WhatsApp (native)</span>
+      <span class="tag t-dim">Google Drive</span>
+      <span class="tag t-dim">Email (LP comms)</span>
+    </div>
+    <div class="info-row">Paperclip: Docker local · evolution-api: self-hosted · Railway: not active</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Automation Inputs</div>
+    <div class="tags">
+      <span class="tag t-live">Read.ai (call recording)</span>
+      <span class="tag t-live">n8n (transcript ingest + workflows)</span>
+      <span class="tag t-live">Slack (approval flows)</span>
+      <span class="tag t-dim">Asana (approval layer)</span>
+    </div>
+    <div class="info-row">Read.ai → webhook → n8n → auto-mine → vault + Asana + Slack DM (✓ Validar for post-hoc sign-off)</div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       02 — INTELLIGENCE LAYER
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">02</span> Intelligence Layer</div>
+
+  <div class="card span-2">
+    <div class="card-title">Agents (13 active — .claude/agents/)</div>
+    <div class="agent-list">
+      <div class="agent-item"><span class="agent-cmd">/mm</span><span class="agent-name">Meeting Miner</span></div>
+      <div class="agent-item"><span class="agent-cmd">/tc</span><span class="agent-name">Task Coordinator</span></div>
+      <div class="agent-item"><span class="agent-cmd">/vt</span><span class="agent-name">Venture Tracker</span></div>
+      <div class="agent-item"><span class="agent-cmd">/vu</span><span class="agent-name">Venture Update</span></div>
+      <div class="agent-item"><span class="agent-cmd">/au</span><span class="agent-name">Area Update</span></div>
+      <div class="agent-item"><span class="agent-cmd">/wr</span><span class="agent-name">Weekly Reporter</span></div>
+      <div class="agent-item"><span class="agent-cmd">/ir</span><span class="agent-name">Investor Researcher</span></div>
+      <div class="agent-item"><span class="agent-cmd">/nw</span><span class="agent-name">Narrative Writer</span></div>
+      <div class="agent-item"><span class="agent-cmd">/cs</span><span class="agent-name">Capital Strategist</span></div>
+      <div class="agent-item"><span class="agent-cmd">/if</span><span class="agent-name">Intelligence Feed</span></div>
+      <div class="agent-item"><span class="agent-cmd">/ga</span><span class="agent-name">Governance Advisor</span></div>
+      <div class="agent-item"><span class="agent-cmd">/dr</span><span class="agent-name">Deck Refiner</span></div>
+      <div class="agent-item"><span class="agent-cmd">/ad</span><span class="agent-name">Art Director</span></div>
+      <div class="agent-item"><span class="agent-cmd">—</span><span class="agent-name">La Chamana Art Dir.</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Skills (Cowork + Repo)</div>
+    <div class="skill-grid">
+      <div class="skill-item"><span class="skill-name">pptx</span><span class="skill-desc">Presentations, decks</span></div>
+      <div class="skill-item"><span class="skill-name">docx</span><span class="skill-desc">Word docs, reports</span></div>
+      <div class="skill-item"><span class="skill-name">pdf</span><span class="skill-desc">PDF generation</span></div>
+      <div class="skill-item"><span class="skill-name">xlsx</span><span class="skill-desc">Spreadsheets, financials</span></div>
+      <div class="skill-item"><span class="skill-name">schedule</span><span class="skill-desc">Recurring automation</span></div>
+      <div class="skill-item"><span class="skill-name">skill-creator</span><span class="skill-desc">Build + optimize skills</span></div>
+      <div class="skill-item"><span class="skill-name">/mine</span><span class="skill-desc">Meeting → vault extract</span></div>
+      <div class="skill-item"><span class="skill-name">/vu /au</span><span class="skill-desc">Champion update flows</span></div>
+      <div class="skill-item"><span class="skill-name">gen-pdf</span><span class="skill-desc">Branded PDF from md</span></div>
+      <div class="skill-item"><span class="skill-name">supabase-q</span><span class="skill-desc">Direct DB query</span></div>
+      <div class="skill-item"><span class="skill-name">/notion-web</span><span class="skill-desc">Notion → GitHub Pages</span></div>
+      <div class="skill-item"><span class="skill-name">/print-to-drive</span><span class="skill-desc">md → branded PDF → Drive</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       03 — WORKFLOWS
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">03</span> Workflows</div>
+
+  <div class="card span-3">
+    <div class="card-title">Weekly Operating Rhythm — Tuesday Sync</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-label">Champion<br>work</div>
+        <div class="step-tool">all week</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">/vu · /au<br>updates</div>
+        <div class="step-tool">Monday</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">/wr digest<br>generated</div>
+        <div class="step-tool">Mon eve / Tue AM</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Tuesday<br>meeting</div>
+        <div class="step-tool">decisions only · 60 min</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Read.ai<br>auto-mines</div>
+        <div class="step-tool">automatic · no trigger</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">vault + Asana<br>updated</div>
+        <div class="step-tool">immediate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Slack DM<br>to champion</div>
+        <div class="step-tool">✓ Validar for sign-off</div>
+      </div>
+    </div>
+    <div class="info-row">AI generates · auto-commits · champion validates post-hoc via Slack</div>
+  </div>
+
+  <div class="card span-2">
+    <div class="card-title">Auto-Mine Pipeline V4 (primary — all Read.ai calls)</div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-label">Read.ai<br>webhook</div>
+        <div class="step-tool">call ends → POST</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Build Mine<br>Prompt</div>
+        <div class="step-tool">speaker_blocks → text</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Mine via<br>Claude</div>
+        <div class="step-tool">sonnet-4-6 · 8k tokens</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Commit<br>pending/</div>
+        <div class="step-tool">GitHub API</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Push to<br>Asana</div>
+        <div class="step-tool">approved: true items</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-label">Slack DM<br>champion</div>
+        <div class="step-tool">Quick Scan + ✓ Validar</div>
+      </div>
+    </div>
+    <div class="info-row">Manual fallback: /mine → vault/pending/ → /mine approve → vault + Asana</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">n8n Workflows (bothventures.app.n8n.cloud)</div>
+    <div class="tags" style="gap:5px; flex-direction:column; align-items:flex-start;">
+      <span class="tag t-live">readai-autominer V4 &nbsp;· cbIQ0Ha4ZqU9z4UT ✓</span>
+      <span class="tag t-live">mine-validate (✓ Validar handler) &nbsp;· lHaWYP0hU2Llxkl0 ✓</span>
+      <span class="tag t-live">action-items-to-asana &nbsp;· cRN6KCt3kYKwact3 ✓</span>
+      <span class="tag t-dim">vault-to-notion (manual script active)</span>
+      <span class="tag t-ghost">Monday Digest Generator (planned)</span>
+      <span class="tag t-ghost">WhatsApp Bot Core (Phase 2)</span>
+    </div>
+    <div class="info-row">Slack interactivity: BOTH Mine Bot A0AT72SLV96 → /webhook/mine-validate</div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       04 — DATA LAYER
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">04</span> Data Layer</div>
+
+  <div class="card">
+    <div class="card-title">Knowledge Vault (vault/)</div>
+    <div class="vault-dirs">
+      <div class="vault-dir"><span>decisions/</span> — Type-1/2</div>
+      <div class="vault-dir"><span>strategy/</span> — Theses</div>
+      <div class="vault-dir"><span>ventures/</span> — 8 files</div>
+      <div class="vault-dir"><span>investors/</span> — LP profiles</div>
+      <div class="vault-dir"><span>risks/</span> — Risk register</div>
+      <div class="vault-dir"><span>transcripts/</span> — Raw archive</div>
+      <div class="vault-dir"><span>pending/</span> — Awaiting approval</div>
+      <div class="vault-dir"><span>agent_outputs/</span> — Saved runs</div>
+      <div class="vault-dir"><span>archive/</span> — Retired notes</div>
+    </div>
+    <div class="info-row">YAML frontmatter required · draft → active → archived</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Supabase (PostgreSQL + pgvector)</div>
+    <div class="tags" style="gap:4px;">
+      <span class="tag t-dim">user_profiles</span>
+      <span class="tag t-dim">agent_registry</span>
+      <span class="tag t-dim">vault_context</span>
+      <span class="tag t-dim">conversations</span>
+      <span class="tag t-dim">conversation_messages</span>
+      <span class="tag t-dim">agent_memory</span>
+      <span class="tag t-dim">usage_metrics</span>
+      <span class="tag t-dim">venture_snapshots</span>
+      <span class="tag t-dim">agent_outputs</span>
+      <span class="tag t-dim">task_queue</span>
+      <span class="tag t-dim">pending_actions</span>
+      <span class="tag t-dim">access_grants</span>
+    </div>
+    <div class="info-row">RLS policies enforce access scopes per user</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Infrastructure</div>
+    <div class="tags" style="gap:4px;">
+      <span class="tag t-warm">GitHub (both-os / both-private)</span>
+      <span class="tag t-warm">Anthropic API (Claude)</span>
+      <span class="tag t-warm">OpenAI API (embeddings)</span>
+      <span class="tag t-warm">Read.ai (call recording)</span>
+      <span class="tag t-warm">Asana (task approval)</span>
+      <span class="tag t-warm">Slack (meeting approval flows)</span>
+      <span class="tag t-warm">Notion (presentation layer)</span>
+      <span class="tag t-dim">evolution-api (WhatsApp GW)</span>
+      <span class="tag t-ghost">Railway (not active)</span>
+    </div>
+    <div class="info-row">text-embedding-3-small · budget cap enforced</div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       05 — PROJECTS + ACCESS
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">05</span> Active Projects &amp; Access Control</div>
+
+  <div class="card">
+    <div class="card-title">Active Projects (projects/)</div>
+    <div class="project-list">
+      <div class="project-item">
+        <div class="project-name">lc-paperclip</div>
+        <div class="project-desc">BOTH-branded Paperclip AI · Docker · <span class="live">Operational</span></div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">notion-web</div>
+        <div class="project-desc">Notion → HTML publisher · GitHub Pages · <span class="live">Live</span></div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">ai-infrastructure</div>
+        <div class="project-desc">Living AI stack docs · snapshots + decisions · <span class="live">Active</span></div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">integrations</div>
+        <div class="project-desc">n8n + Asana + Notion · V4 pipeline live · <span class="live">Active</span></div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">telegram-agent</div>
+        <div class="project-desc">Vault search + tasks · Code complete · Paused</div>
+      </div>
+      <div class="project-item">
+        <div class="project-name">calendar-integration</div>
+        <div class="project-desc">Google Calendar via Claude → n8n · Planned</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Access Control -->
+  <div class="card span-2">
+    <div class="card-title">Team Structure &amp; System Access</div>
+
+    <!-- Tier 1 -->
+    <div class="tier-label" style="margin-bottom:8px;">Tier 1 — Founding Team &nbsp;·&nbsp; equal organizational standing</div>
+    <div class="person-grid" style="margin-bottom:16px;">
+      <div class="person-card">
+        <div class="person-name">Gaston</div>
+        <div class="person-role">CEO</div>
+        <div class="person-desc">Capital · exits · structure · LP comms</div>
+        <div class="person-scope">
+          <span class="scope-badge full">full scope</span>
+          <span class="scope-note">investor data · LP comms</span>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-name">Rene</div>
+        <div class="person-role">Head of Strategy + Comms</div>
+        <div class="person-desc">Narrative · positioning · content</div>
+        <div class="person-scope">
+          <span class="scope-badge founder">founder scope</span>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-name">Andres</div>
+        <div class="person-role">Co-founder / CLO</div>
+        <div class="person-desc">Legal · due diligence · compliance</div>
+        <div class="person-scope">
+          <span class="scope-badge founder">founder scope</span>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-name">Daiana</div>
+        <div class="person-role">Ops + Finance</div>
+        <div class="person-desc">Finance tracking · ops · process</div>
+        <div class="person-scope">
+          <span class="scope-badge full">full scope</span>
+          <span class="scope-note">finance gatekeeper</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tier 2 -->
+    <div class="tier-label" style="margin-bottom:8px;">Tier 2 — Technical Staff &nbsp;·&nbsp; infrastructure operator</div>
+    <div style="display:grid; grid-template-columns:1fr 3fr; gap:6px; margin-bottom:14px;">
+      <div class="person-card">
+        <div class="person-name">Boris</div>
+        <div class="person-role">Context Engineer / Tools Admin</div>
+        <div class="person-desc">Tool config · infra · documentation</div>
+        <div class="person-scope">
+          <span class="scope-badge full">full scope</span>
+          <span class="scope-note">system operator only</span>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,0.01); border:0.5px solid rgba(255,255,255,0.04); padding:10px 14px; display:flex; align-items:center;">
+        <div style="font-size:9px; color:#2e2e2c; line-height:1.8; letter-spacing:0.02em;">
+          full scope reflects infrastructure responsibility only — access to investor data and LP comms exists to operate the system, not to hold organizational authority over founders
+          <br>scopes = data sensitivity, not rank
+        </div>
+      </div>
+    </div>
+
+    <!-- External -->
+    <div class="tier-label" style="margin-bottom:6px;">External Collaborators</div>
+    <div style="background:rgba(255,255,255,0.01); border:0.5px solid rgba(255,255,255,0.04); padding:7px 12px; font-size:10px;">
+      <span style="color:var(--text-dim);">restricted scope</span>
+      <span style="color:#2e2e2c;"> &nbsp;·&nbsp; only explicitly granted items via access_grants table &nbsp;·&nbsp; optional expiry &nbsp;·&nbsp; no repo access</span>
+    </div>
+
+    <div class="info-row">RLS enforced at Supabase · Paperclip agents filtered by department · Google Drive: separate shared drives per scope</div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       06 — HOOKS + SCRIPTS
+  ════════════════════════════════════════ -->
+  <div class="section-label"><span class="s-num">06</span> Hooks &amp; Sync Scripts (.claude/hooks/ &nbsp;·&nbsp; scripts/)</div>
+
+  <div class="card span-3">
+    <div class="card-title">Automation Scripts</div>
+    <div class="tags">
+      <span class="tag t-live">session-orient.sh — vault state on session start</span>
+      <span class="tag t-live">write-validate.sh — frontmatter validation on write</span>
+      <span class="tag t-live">auto-commit.sh — auto-stage + commit vault changes</span>
+      <span class="tag t-live">vault-sync.sh — vault → Supabase (hourly, launchd)</span>
+      <span class="tag t-live">sync-agents.sh — agents → Supabase agent_registry</span>
+      <span class="tag t-live">backup-supabase.sh — full DB dump (daily 3AM · 30-day retention)</span>
+      <span class="tag t-dim">transcribe.sh — audio → text (Whisper API · requires OPENAI_API_KEY)</span>
+      <span class="tag t-dim">save-output.sh — agent output → vault/agent_outputs/ with frontmatter</span>
+      <span class="tag t-live">asana-push.py — approved action items → Asana via n8n webhook</span>
+      <span class="tag t-dim">vault-to-notion.py — vault ventures + areas → Notion (Monday manual run)</span>
+    </div>
+  </div>
+
+</div><!-- /diagram -->
+
+<div class="footer">
+  <div class="footer-left">
+    <span>Both_Ventures &nbsp;·&nbsp; [Stack Monitor] &nbsp;·&nbsp; Q-02.26 &nbsp;·&nbsp; PDE</span>
+    <span>©Both_Ventures 2026</span>
+  </div>
+  <div class="axis-tags">
+    <span class="axis-tag">STRUCTURED AND EMERGENT</span>
+    <span class="axis-sep">→</span>
+    <span class="axis-tag">DICIPLINED AND ADAPTATIVE</span>
+  </div>
+</div>
+
+</body>
+</html>
