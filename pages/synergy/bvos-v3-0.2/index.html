@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — V3.0.2 / ATLAS</title>
+<meta name="description" content="Synergy Atlas — a navigable node-graph of B_V® | OS. Ventures, agents, harnesses, infrastructure. One canvas, three layers of tone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   B_V® | OS · V3.0.2 / ATLAS
+   Synergy as a navigable graph. One canvas. Three tonal layers:
+     • Default = operating console (chrome live, graph breathes)
+     • Node selected = product detail (right drawer)
+     • Manifesto open = doctrine (full-screen editorial overlay)
+═══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ff-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --ff-mono:    'Space Mono', 'Courier New', monospace;
+  --ff-glyph:   'VT323', 'Courier New', monospace;
+
+  /* All entities white — accent is the only color */
+  --o-gaston:  oklch(96% 0 0);
+  --o-rene:    oklch(96% 0 0);
+  --o-daiana:  oklch(96% 0 0);
+  --o-andres:  oklch(96% 0 0);
+  --o-mariano: oklch(96% 0 0);
+
+  /* Bot strokes — all white; distinction stays in labels and edges */
+  --bot-claude:  oklch(96% 0 0);
+  --bot-synergy: oklch(96% 0 0);
+  --bot-mine:    oklch(70% 0 0);
+
+  /* B&W + OLIVE — single palette for V3.0.2 */
+  --bg:        oklch(8% 0 0);
+  --bg-soft:   oklch(4% 0 0);
+  --bg-card:   oklch(14% 0 0);
+  --bg-deep:   oklch(0% 0 0);
+  --fg:        oklch(94% 0 0);
+  --fg-bright: oklch(100% 0 0);
+  --fg-dim:    oklch(64% 0 0 / 0.7);
+  --rule:      oklch(94% 0 0 / 0.4);
+  --rule-soft: oklch(94% 0 0 / 0.14);
+  --accent:    oklch(62% 0.11 115);
+  --accent-soft: oklch(62% 0.11 115 / 0.18);
+  --accent-glow: oklch(62% 0.11 115 / 0.45);
+  --build:     oklch(62% 0.11 115);
+  --explore:   oklch(94% 0 0);
+  --hold:      oklch(56% 0 0);
+  --grid-color: oklch(94% 0 0 / 0.045);
+
+  --ease:      cubic-bezier(0.7, 0, 0.2, 1);
+  --swap:      280ms var(--ease);
+}
+
+html, body { height: 100%; width: 100%; }
+body {
+  overflow: hidden;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--fg);
+  position: relative;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain texture overlay (lifted from V3) */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0;
+  mix-blend-mode: multiply;
+}
+
+/* ════════════════════════════════════════════════════════════
+   CUSTOM CURSOR (lifted from V3, refined)
+════════════════════════════════════════════════════════════ */
+#cursor-dot {
+  position: fixed;
+  width: 7px; height: 7px;
+  background: var(--accent);
+  outline: 1px solid var(--fg-bright);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: width 180ms var(--ease), height 180ms var(--ease);
+  border-radius: 50%;
+}
+#cursor-bracket {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  font-family: var(--ff-mono);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 180ms var(--ease);
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+body.cursor-hover #cursor-dot { width: 2px; height: 2px; }
+body.cursor-hover #cursor-bracket { opacity: 1; }
+
+/* ════════════════════════════════════════════════════════════
+   TOPBAR — operating-console readout
+════════════════════════════════════════════════════════════ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 44px;
+  z-index: 110;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tb-left, .tb-right { display: flex; align-items: center; gap: 16px; }
+.tb-brand { display: flex; align-items: center; gap: 9px; }
+.brand-fill {
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border: 1px solid var(--fg-bright);
+  border-radius: 50%;
+}
+.brand-ring {
+  width: 13px; height: 13px;
+  border: 1px solid var(--fg);
+  border-radius: 50%;
+  margin-left: -5px;
+}
+.brand-word {
+  font-family: var(--ff-display);
+  font-size: 18px;
+  letter-spacing: 0.04em;
+  color: var(--fg-bright);
+}
+.brand-slug {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  letter-spacing: 0.18em;
+  margin-left: 6px;
+}
+.tb-stat { display: flex; align-items: center; gap: 5px; }
+.tb-stat .lbl { color: var(--fg-dim); }
+.tb-stat .val {
+  font-family: var(--ff-glyph);
+  font-size: 16px;
+  color: var(--fg-bright);
+}
+.tb-sep { color: var(--fg-dim); opacity: 0.5; }
+.live-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 9px;
+  padding: 4px 9px;
+  border: 1px solid var(--rule);
+  color: var(--fg-bright);
+}
+.live-dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ════════════════════════════════════════════════════════════
+   FILTER RAIL — left edge
+════════════════════════════════════════════════════════════ */
+.filter-rail {
+  position: fixed;
+  top: 44px; left: 0; bottom: 28px;
+  width: 188px;
+  z-index: 100;
+  background: var(--bg);
+  border-right: 1px solid var(--rule);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.fr-heading {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  letter-spacing: 0.2em;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.fr-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 11px;
+  border: 1px solid var(--rule-soft);
+  color: var(--fg);
+  cursor: none;
+  user-select: none;
+  background: transparent;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease), color 160ms var(--ease);
+}
+.fr-chip:hover { border-color: var(--fg); color: var(--fg-bright); }
+.fr-chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-deep);
+}
+.fr-chip .fr-glyph {
+  font-family: var(--ff-glyph);
+  font-size: 14px;
+  margin-right: 8px;
+  width: 14px;
+  text-align: center;
+}
+.fr-chip .fr-count {
+  font-family: var(--ff-glyph);
+  font-size: 13px;
+  color: var(--fg-dim);
+}
+.fr-chip.active .fr-count { color: var(--bg-deep); opacity: 0.7; }
+.fr-divider {
+  height: 1px;
+  background: var(--rule-soft);
+  margin: 10px 0;
+}
+.fr-foot {
+  margin-top: auto;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-soft);
+}
+.fr-foot strong { color: var(--fg); font-weight: 400; }
+
+/* ════════════════════════════════════════════════════════════
+   ATLAS CANVAS
+════════════════════════════════════════════════════════════ */
+.atlas {
+  position: fixed;
+  top: 44px; left: 188px; right: 0; bottom: 28px;
+  z-index: 1;
+  overflow: hidden;
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: 0 0;
+}
+.atlas-marks {
+  position: absolute;
+  top: 18px; left: 24px; right: 24px;
+  display: flex; justify-content: space-between;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+  pointer-events: none;
+  z-index: 5;
+}
+.atlas-marks strong {
+  font-family: var(--ff-glyph);
+  font-size: 13px;
+  color: var(--fg-bright);
+  font-weight: 400;
+}
+
+/* Corner brackets on the canvas */
+.canvas-corner {
+  position: absolute;
+  width: 22px; height: 22px;
+  border: 1px solid var(--rule);
+  z-index: 5;
+  pointer-events: none;
+}
+.canvas-corner.tl { top: 16px; left: 16px; border-right: none; border-bottom: none; }
+.canvas-corner.tr { top: 16px; right: 16px; border-left: none; border-bottom: none; }
+.canvas-corner.bl { bottom: 16px; left: 16px; border-right: none; border-top: none; }
+.canvas-corner.br { bottom: 16px; right: 16px; border-left: none; border-top: none; }
+
+#graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Edges */
+.edge {
+  stroke: var(--rule-soft);
+  stroke-width: 1;
+  fill: none;
+  transition: stroke 220ms var(--ease), stroke-width 220ms var(--ease), opacity 220ms var(--ease);
+}
+.edge.champ { stroke: var(--rule); }
+.edge.harness { stroke: var(--accent); stroke-dasharray: 3 4; opacity: 0.5; }
+.edge.bot { stroke: var(--rule); opacity: 0.45; }
+.edge.tool { stroke: var(--rule-soft); stroke-dasharray: 1 3; }
+.edge.highlight {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  opacity: 1;
+}
+.edge.dim { opacity: 0.08; }
+
+/* Nodes */
+.node {
+  cursor: none;
+}
+.node .shape {
+  fill: var(--bg);
+  stroke: var(--fg);
+  stroke-width: 1.2;
+  transition: fill 220ms var(--ease), stroke 220ms var(--ease), stroke-width 220ms var(--ease), transform 220ms var(--ease);
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.node .label {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  fill: var(--fg);
+  text-anchor: middle;
+  pointer-events: none;
+  transition: fill 220ms var(--ease);
+}
+.node .sublabel {
+  font-family: var(--ff-glyph);
+  font-size: 11px;
+  fill: var(--fg-dim);
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* Node — core */
+.node[data-type="core"] .shape {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+.node[data-type="core"] .core-inner { fill: var(--accent); }
+.node[data-type="core"] .label {
+  font-family: var(--ff-display);
+  font-size: 13px;
+  fill: var(--fg-bright);
+  letter-spacing: 0.04em;
+}
+
+/* Node — person */
+.node[data-type="person"] .shape { stroke-width: 1.4; }
+.node[data-type="person"][data-owner="gaston"] .shape  { stroke: var(--o-gaston); }
+.node[data-type="person"][data-owner="rene"] .shape    { stroke: var(--o-rene); }
+.node[data-type="person"][data-owner="daiana"] .shape  { stroke: var(--o-daiana); }
+.node[data-type="person"][data-owner="andres"] .shape  { stroke: var(--o-andres); }
+.node[data-type="person"][data-owner="mariano"] .shape { stroke: var(--o-mariano); }
+.node[data-type="person"] .initial {
+  font-family: var(--ff-display);
+  font-size: 14px;
+  text-anchor: middle;
+  pointer-events: none;
+  fill: var(--fg-bright);
+}
+
+/* Node — venture (BUILD = filled accent; EXPLORE = dashed) */
+.node[data-type="venture"][data-status="build"] .shape {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+.node[data-type="venture"][data-status="explore"] .shape {
+  fill: var(--bg);
+  stroke: var(--explore);
+  stroke-dasharray: 3 3;
+}
+
+/* Node — worker */
+.node[data-type="worker"] .shape {
+  fill: var(--bg-card);
+  stroke: var(--fg-bright);
+  stroke-width: 1.6;
+}
+
+/* Node — bot */
+.node[data-type="bot"] .shape { stroke-width: 1.4; }
+.node[data-type="bot"][data-bot="claude"]  .shape { stroke: var(--bot-claude); }
+.node[data-type="bot"][data-bot="synergy"] .shape { stroke: var(--bot-synergy); }
+.node[data-type="bot"][data-bot="mine"]    .shape { stroke: var(--bot-mine); }
+
+/* Node — harness (hexagon polygon) */
+.node[data-type="harness"] .shape {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 1.3;
+}
+
+/* Node — agent registry (diamond) */
+.node[data-type="agents"] .shape {
+  fill: var(--bg-card);
+  stroke: var(--fg);
+  stroke-width: 1.4;
+}
+
+/* Node — tool (small diamond) */
+.node[data-type="tool"] .shape {
+  fill: var(--bg);
+  stroke: var(--fg-dim);
+  stroke-width: 1;
+}
+.node[data-type="tool"][data-status="hold"] .shape { stroke-dasharray: 2 2; opacity: 0.55; }
+.node[data-type="tool"] .label { fill: var(--fg-dim); font-size: 8px; }
+
+/* Node hover/active */
+.node:hover .shape {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.node:hover .label { fill: var(--accent); }
+.node:hover .initial { fill: var(--bg-deep); }
+.node.selected .shape {
+  fill: var(--accent);
+  stroke: var(--fg-bright);
+  stroke-width: 1.8;
+}
+.node.selected .label { fill: var(--fg-bright); }
+.node.selected .initial { fill: var(--bg-deep); }
+
+/* Cluster visibility (filter rail control) */
+.atlas-stage[data-hide-tools="true"] .node[data-type="tool"],
+.atlas-stage[data-hide-tools="true"] .edge[data-tool="true"] { display: none; }
+.atlas-stage[data-hide-bots="true"] .node[data-type="bot"],
+.atlas-stage[data-hide-bots="true"] .edge[data-bot="true"] { display: none; }
+.atlas-stage[data-hide-harnesses="true"] .node[data-type="harness"],
+.atlas-stage[data-hide-harnesses="true"] .edge[data-harness="true"] { display: none; }
+.atlas-stage[data-hide-people="true"] .node[data-type="person"],
+.atlas-stage[data-hide-people="true"] .edge[data-person="true"] { display: none; }
+.atlas-stage[data-hide-ventures="true"] .node[data-type="venture"],
+.atlas-stage[data-hide-ventures="true"] .edge[data-venture="true"] { display: none; }
+.atlas-stage[data-hide-agents="true"] .node[data-type="agents"],
+.atlas-stage[data-hide-agents="true"] .edge[data-agents="true"] { display: none; }
+
+/* Subtle breath animation on the whole nodes group */
+@keyframes breath {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(0, -2px); }
+}
+.atlas-stage #nodes-layer { animation: breath 9s ease-in-out infinite; transform-origin: center; }
+
+/* ════════════════════════════════════════════════════════════
+   DRAWER — right slide-in node detail
+════════════════════════════════════════════════════════════ */
+.drawer {
+  position: fixed;
+  top: 44px; right: 0; bottom: 28px;
+  width: 420px;
+  z-index: 200;
+  background: var(--bg-soft);
+  border-left: 1px solid var(--rule);
+  transform: translateX(102%);
+  transition: transform 360ms var(--ease);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 26px 26px 18px;
+  border-bottom: 1px solid var(--rule);
+  gap: 16px;
+}
+.drawer-head .dh-meta {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--fg-dim);
+  margin-bottom: 8px;
+}
+.drawer-head .dh-title {
+  font-family: var(--ff-display);
+  font-size: 38px;
+  line-height: 0.92;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--fg-bright);
+}
+.drawer-head .dh-sub {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--fg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 8px;
+}
+.drawer-close {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  padding: 6px 10px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: none;
+  flex-shrink: 0;
+}
+.drawer-close:hover { border-color: var(--accent); color: var(--accent); }
+.drawer-body {
+  padding: 20px 26px 28px;
+  overflow-y: auto;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--fg);
+  line-height: 1.6;
+  flex: 1;
+}
+.drawer-body::-webkit-scrollbar { width: 4px; }
+.drawer-body::-webkit-scrollbar-track { background: transparent; }
+.drawer-body::-webkit-scrollbar-thumb { background: var(--rule); }
+.drawer-section {
+  margin-bottom: 22px;
+}
+.drawer-section h4 {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--rule-soft);
+  font-weight: 400;
+}
+.drawer-section p { margin-bottom: 8px; }
+.drawer-section ul { list-style: none; padding-left: 0; }
+.drawer-section li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex; justify-content: space-between; gap: 12px;
+}
+.drawer-section li:last-child { border-bottom: none; }
+.drawer-section li .li-l { color: var(--fg-dim); flex-shrink: 0; min-width: 88px; text-transform: uppercase; letter-spacing: 0.06em; font-size: 9.5px; }
+.drawer-section li .li-r { color: var(--fg); flex: 1; text-align: right; }
+.drawer-section li .li-r strong { color: var(--fg-bright); font-weight: 400; }
+.drawer-section code {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--bg-deep);
+  padding: 1px 5px;
+}
+.drawer-tag {
+  display: inline-block;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  margin: 0 5px 5px 0;
+}
+.drawer-tag.live { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+.drawer-tag.hold { color: var(--fg-dim); border-color: var(--rule-soft); }
+.drawer-tag.warn { color: var(--accent); border-color: var(--accent); }
+
+/* ════════════════════════════════════════════════════════════
+   MANIFESTO TRIGGER + LEGEND (bottom corners of canvas)
+════════════════════════════════════════════════════════════ */
+.manifesto-trigger {
+  position: fixed;
+  left: 208px; bottom: 48px;
+  z-index: 50;
+  background: var(--bg);
+  border: 1px solid var(--fg);
+  padding: 9px 14px;
+  font-family: var(--ff-display);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-bright);
+  cursor: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 180ms var(--ease), color 180ms var(--ease);
+}
+.manifesto-trigger:hover { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+.manifesto-trigger .mt-arrow {
+  font-family: var(--ff-glyph);
+  font-size: 18px;
+  color: var(--accent);
+}
+.manifesto-trigger:hover .mt-arrow { color: var(--bg-deep); }
+.manifesto-trigger .mt-sub {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+  padding-left: 10px;
+  border-left: 1px solid var(--rule);
+  text-transform: uppercase;
+}
+
+.legend {
+  position: fixed;
+  right: 20px; bottom: 48px;
+  z-index: 50;
+  width: 252px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
+.legend-title {
+  font-family: var(--ff-display);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--fg-bright);
+  padding-bottom: 7px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--rule);
+}
+.legend-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 2px 0;
+}
+.legend-row .l-glyph {
+  width: 14px; height: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.legend-row .l-glyph svg { width: 14px; height: 14px; }
+.legend-row .l-name { flex: 1; }
+.legend-row .l-count { font-family: var(--ff-glyph); font-size: 12px; color: var(--fg-bright); }
+.drawer.open ~ .legend { opacity: 0.35; transition: opacity 240ms; }
+
+/* When the drawer is open, dim the manifesto trigger so focus stays on detail */
+.drawer.open ~ .manifesto-trigger { opacity: 0.5; }
+
+/* ════════════════════════════════════════════════════════════
+   STATUS BAR — bottom marquee (ticker)
+════════════════════════════════════════════════════════════ */
+.status-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 28px;
+  background: var(--fg);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: 110;
+  border-top: 1px solid var(--rule);
+}
+.status-tape {
+  display: flex; align-items: center;
+  white-space: nowrap;
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  animation: tape 90s linear infinite;
+  padding-left: 20px;
+}
+.status-tape span {
+  padding: 0 16px;
+  border-right: 1px solid var(--bg);
+  color: var(--bg);
+}
+.status-tape .pulse {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  animation: blink 1.4s ease-in-out infinite;
+  margin: 0 4px;
+}
+@keyframes tape { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ════════════════════════════════════════════════════════════
+   MANIFESTO LAYER — full-screen editorial overlay
+════════════════════════════════════════════════════════════ */
+.manifesto-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: var(--bg-deep);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 400ms var(--ease);
+  display: grid;
+  grid-template-rows: 44px 1fr 28px;
+}
+.manifesto-layer.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.manifesto-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.manifesto-head .m-title { color: var(--fg-bright); font-family: var(--ff-display); font-size: 16px; letter-spacing: 0.08em; }
+.manifesto-close {
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  padding: 6px 12px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: none;
+}
+.manifesto-close:hover { border-color: var(--accent); color: var(--accent); }
+.manifesto-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+}
+
+.manifesto-body {
+  overflow-y: auto;
+  padding: 64px 8vw 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-content: start;
+}
+.manifesto-body::-webkit-scrollbar { width: 4px; }
+.manifesto-body::-webkit-scrollbar-thumb { background: var(--rule); }
+.m-lead {
+  grid-column: 1 / -1;
+  font-family: var(--ff-display);
+  font-size: clamp(56px, 8vw, 124px);
+  line-height: 0.86;
+  letter-spacing: -0.018em;
+  text-transform: uppercase;
+  color: var(--fg-bright);
+  margin-bottom: 32px;
+}
+.m-lead .accent { color: var(--accent); }
+.m-lead .dim { color: var(--fg-dim); }
+.m-lead .outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--fg);
+}
+.m-stanza {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.7;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+}
+.m-stanza h3 {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-bright);
+  margin-bottom: 14px;
+  font-weight: 400;
+}
+.m-stanza p { margin-bottom: 10px; }
+.m-stanza p strong { color: var(--fg-bright); font-weight: 400; }
+.m-stanza .pull {
+  font-family: var(--ff-display);
+  font-size: 28px;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin: 18px 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--accent);
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE GUARD
+════════════════════════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .small-screen-veil { display: flex !important; }
+}
+.small-screen-veil {
+  display: none;
+  position: fixed; inset: 0;
+  z-index: 12000;
+  background: var(--bg-deep);
+  color: var(--fg);
+  align-items: center; justify-content: center;
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  padding: 40px;
+  line-height: 1.7;
+}
+.small-screen-veil strong { color: var(--accent); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-bracket">[ ]</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     TOPBAR
+════════════════════════════════════════════════════════════ -->
+<div class="topbar">
+  <div class="tb-left">
+    <div class="tb-brand">
+      <div class="brand-fill"></div>
+      <div class="brand-ring"></div>
+      <div class="brand-word">B_V® | OS</div>
+      <div class="brand-slug">V3.0.2 / ATLAS</div>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="tb-stat"><span class="lbl">WORKER</span><span class="val">V2.11</span></div>
+    <span class="tb-sep">·</span>
+    <div class="tb-stat"><span class="lbl">VENTURES</span><span class="val">10</span></div>
+    <span class="tb-sep">·</span>
+    <div class="tb-stat"><span class="lbl">HARNESSES</span><span class="val">3</span></div>
+    <span class="tb-sep">·</span>
+    <div class="tb-stat"><span class="lbl">DECISIONS</span><span class="val">175</span></div>
+    <span class="tb-sep">·</span>
+    <div class="tb-stat"><span class="lbl">LAST COMMIT</span><span class="val" id="last-commit">2026-05-25</span></div>
+    <div class="live-chip"><span class="live-dot"></span>SYNERGY</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     FILTER RAIL
+════════════════════════════════════════════════════════════ -->
+<aside class="filter-rail">
+  <div class="fr-heading">FILTERS / TOGGLE</div>
+
+  <button class="fr-chip active" data-filter="ventures">
+    <span><span class="fr-glyph">○</span>VENTURES</span>
+    <span class="fr-count">10</span>
+  </button>
+  <button class="fr-chip active" data-filter="people">
+    <span><span class="fr-glyph">●</span>PEOPLE</span>
+    <span class="fr-count">5</span>
+  </button>
+  <button class="fr-chip active" data-filter="harnesses">
+    <span><span class="fr-glyph">⬡</span>HARNESSES</span>
+    <span class="fr-count">3</span>
+  </button>
+  <button class="fr-chip active" data-filter="bots">
+    <span><span class="fr-glyph">▣</span>SLACK BOTS</span>
+    <span class="fr-count">3</span>
+  </button>
+  <button class="fr-chip active" data-filter="agents">
+    <span><span class="fr-glyph">◆</span>AGENT REG.</span>
+    <span class="fr-count">23</span>
+  </button>
+  <button class="fr-chip" data-filter="tools">
+    <span><span class="fr-glyph">◇</span>TOOLS</span>
+    <span class="fr-count">8</span>
+  </button>
+
+  <div class="fr-divider"></div>
+
+  <div class="fr-foot">
+    <strong>Click a node</strong> to inspect.<br>
+    <strong>Click ABOUT</strong> for the doctrine layer.<br>
+    Atlas = single canvas, three tones.
+  </div>
+</aside>
+
+<!-- ════════════════════════════════════════════════════════════
+     ATLAS CANVAS
+════════════════════════════════════════════════════════════ -->
+<main class="atlas">
+  <div class="atlas-marks">
+    <div>ATLAS / <strong>0</strong> · NODES <strong id="node-count">31</strong> · EDGES <strong id="edge-count">42</strong></div>
+    <div>BUILD: <strong>2026-05-25</strong> · COBALT</div>
+  </div>
+  <div class="canvas-corner tl"></div>
+  <div class="canvas-corner tr"></div>
+  <div class="canvas-corner bl"></div>
+  <div class="canvas-corner br"></div>
+
+  <svg id="graph" class="atlas-stage" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="core-glow">
+        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g id="glow-layer"></g>
+    <g id="edges-layer"></g>
+    <g id="nodes-layer"></g>
+  </svg>
+</main>
+
+<!-- ════════════════════════════════════════════════════════════
+     MANIFESTO TRIGGER + LEGEND
+════════════════════════════════════════════════════════════ -->
+<button class="manifesto-trigger" id="manifesto-open">
+  <span>ABOUT</span>
+  <span class="mt-arrow">→</span>
+  <span class="mt-sub">DOCTRINE</span>
+</button>
+
+<div class="legend">
+  <div class="legend-title">LEGEND</div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><circle r="5" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/></svg></span>
+    <span class="l-name">BUILD venture</span>
+    <span class="l-count">6</span>
+  </div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><circle r="5" fill="none" stroke="var(--explore)" stroke-width="1.2" stroke-dasharray="3 3"/></svg></span>
+    <span class="l-name">EXPLORE venture</span>
+    <span class="l-count">4</span>
+  </div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><circle r="5" fill="var(--bg)" stroke="var(--o-rene)" stroke-width="1.4"/></svg></span>
+    <span class="l-name">person · owner color</span>
+    <span class="l-count">5</span>
+  </div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><polygon points="0,-6 5,-3 5,3 0,6 -5,3 -5,-3" fill="var(--bg)" stroke="var(--accent)" stroke-width="1.3"/></svg></span>
+    <span class="l-name">harness spec</span>
+    <span class="l-count">3</span>
+  </div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><rect x="-5" y="-5" width="10" height="10" fill="var(--bg)" stroke="var(--fg)" stroke-width="1.3"/></svg></span>
+    <span class="l-name">infra · worker / bot</span>
+    <span class="l-count">4</span>
+  </div>
+  <div class="legend-row">
+    <span class="l-glyph"><svg viewBox="-7 -7 14 14"><polygon points="0,-5 5,0 0,5 -5,0" fill="var(--bg-card)" stroke="var(--fg)" stroke-width="1.4"/></svg></span>
+    <span class="l-name">agent registry</span>
+    <span class="l-count">1</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     DRAWER
+════════════════════════════════════════════════════════════ -->
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div>
+      <div class="dh-meta" id="dh-meta">NODE · <span id="dh-type">—</span></div>
+      <div class="dh-title" id="dh-title">—</div>
+      <div class="dh-sub" id="dh-sub">—</div>
+    </div>
+    <button class="drawer-close" id="drawer-close">CLOSE ×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<!-- ════════════════════════════════════════════════════════════
+     MANIFESTO LAYER
+════════════════════════════════════════════════════════════ -->
+<div class="manifesto-layer" id="manifesto">
+  <div class="manifesto-head">
+    <div class="m-title">DOCTRINE / SYNERGY</div>
+    <button class="manifesto-close" id="manifesto-close">CLOSE ×</button>
+  </div>
+  <div class="manifesto-body">
+    <div class="m-lead">
+      <span>CONTRADICTION</span><br>
+      <span class="outline">IS NOT A</span><br>
+      <span class="accent">BUG.</span>
+    </div>
+
+    <div class="m-stanza">
+      <h3>WHAT BOTH IS</h3>
+      <p><strong>BOTH Ventures</strong> is a venture platform designed to operate where single-logic strategies no longer suffice. We build and accelerate companies at the intersection of capital, technology, culture, and governance — structured for complexity, not despite it.</p>
+      <p>Base: Punta del Este, Uruguay. Operating globally.</p>
+      <p class="pull">Holding multiple logics produces more resilient institutions than optimizing for any single logic.</p>
+      <p>Capital and meaning. Speed and depth. Structure and emergence. Discipline and creativity. False binaries rejected.</p>
+    </div>
+
+    <div class="m-stanza">
+      <h3>WHAT SYNERGY IS</h3>
+      <p><strong>Synergy is the entity</strong> that lives inside B_V® | OS. Not a nickname for tooling. The ever-evolving spirit through which the team's efforts, skills, and talents articulate with the system's agents, automations, and ever-growing capabilities.</p>
+      <p>Synergy speaks in Slack. It mines transcripts. It briefs the morning. It tracks every commit. It carries the team's voice across surfaces it never directly meets.</p>
+      <p class="pull">AI generates. The vault captures. The team decides.</p>
+      <p>The post-harness era began 2026-05-16: every pipeline has a readable spec, every routing decision a single source of truth, every script run leaves a trace. <em>The system describes itself.</em></p>
+    </div>
+
+    <div class="m-stanza">
+      <h3>HOW WE OPERATE</h3>
+      <p><strong>Tuesday Sync</strong> is the rhythm. Champions update ventures and areas through the week. Mariano generates the digest. Daiana validates. The team gathers Tuesday — decisions only — and Read.ai records. The Cloudflare Worker mines the transcript. The vault closes the loop.</p>
+      <p>Precise, not promotional. Structured, not inflated. Institutional, not corporate.</p>
+      <p>Never "innovative." Never "disruptive." Prefer: <span style="color:var(--accent)">structural · optionality · both/and · becoming · permanent beta</span>.</p>
+    </div>
+
+    <div class="m-stanza">
+      <h3>POST-HARNESS DESIGN</h3>
+      <p>Two research frameworks underwrite the architecture: <strong>NLAH</strong> (every agent is a portable, executable natural-language spec) and the <strong>Meta-Harness</strong> (full execution traces enable causal debugging — 47% accuracy gap over summaries).</p>
+      <p>Three harnesses are live: <code style="color:var(--accent);background:var(--bg-deep);padding:1px 5px;">auto-miner.md</code>, <code style="color:var(--accent);background:var(--bg-deep);padding:1px 5px;">synergy-slack.md</code>, <code style="color:var(--accent);background:var(--bg-deep);padding:1px 5px;">tuesday-sync.md</code>. Each one a complete map of its pipeline — roles, stages, state artifacts, failure handling.</p>
+      <p>When something breaks: read the harness, not the source.</p>
+    </div>
+  </div>
+  <div class="manifesto-foot">
+    <div>B_V® | OS · DOCTRINE · V3.0.2</div>
+    <div>BUILD 2026-05-25 · COBALT · ATLAS</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     STATUS TICKER
+════════════════════════════════════════════════════════════ -->
+<div class="status-bar">
+  <div class="status-tape">
+    <span><span class="pulse"></span>SYNERGY · LIVE IN SLACK · 1:1 DM + #SYNERGY</span>
+    <span>WORKER V2.11 · DEPLOYED 2026-05-22</span>
+    <span>3 HARNESSES · NLAH ERA</span>
+    <span>10 VENTURES · 5 FOUNDERS · 1 OS</span>
+    <span>CONTENT FACTORY · ADDED 2026-05-18</span>
+    <span>SYNERGY COACH /sc · NEW AGENT</span>
+    <span>PIPELINE TRACES · SUPABASE · pipeline_runs</span>
+    <span>VAULT · 175 DECISIONS · 112 RISKS · 92 TRANSCRIPTS</span>
+    <span>SYNC-DAEMON · LAUNCHAGENT · OUTSIDE SANDBOX</span>
+    <span>TUESDAY SYNC · DECISIONS ONLY · MAX 60 MIN</span>
+    <span>READ.AI HMAC · SLACK HMAC · BOTH SECRET</span>
+    <span>PUNTA DEL ESTE · GLOBAL</span>
+    <span><span class="pulse"></span>SYNERGY · LIVE IN SLACK · 1:1 DM + #SYNERGY</span>
+    <span>WORKER V2.11 · DEPLOYED 2026-05-22</span>
+    <span>3 HARNESSES · NLAH ERA</span>
+    <span>10 VENTURES · 5 FOUNDERS · 1 OS</span>
+    <span>CONTENT FACTORY · ADDED 2026-05-18</span>
+    <span>SYNERGY COACH /sc · NEW AGENT</span>
+    <span>PIPELINE TRACES · SUPABASE · pipeline_runs</span>
+    <span>VAULT · 175 DECISIONS · 112 RISKS · 92 TRANSCRIPTS</span>
+    <span>SYNC-DAEMON · LAUNCHAGENT · OUTSIDE SANDBOX</span>
+    <span>TUESDAY SYNC · DECISIONS ONLY · MAX 60 MIN</span>
+    <span>READ.AI HMAC · SLACK HMAC · BOTH SECRET</span>
+    <span>PUNTA DEL ESTE · GLOBAL</span>
+  </div>
+</div>
+
+<!-- Small-screen guard -->
+<div class="small-screen-veil">
+  ATLAS is a <strong>desktop-first canvas</strong>.<br><br>
+  Please view at <strong>≥ 1100px</strong> width.<br><br>
+  Mobile layout will arrive in V3.0.3.
+</div>
+
+<script>
+/* ═════════════════════════════════════════════════════════════
+   DATA — Single source of truth for the graph.
+   Positions are hand-tuned, not auto-layout.
+   viewBox is 1400×900; (700, 450) is canvas center.
+═════════════════════════════════════════════════════════════ */
+
+const NODES = [
+  /* ── Core ── */
+  { id:'os-core', type:'core', x:700, y:450, label:'B_V® | OS', sub:'CORE', radius:42 },
+
+  /* ── People (inner ring, r=140 from (700,450), 5 equidistant points at 72°) ── */
+  { id:'gaston',  type:'person', x:700, y:310, label:'GASTON',  initial:'G', owner:'gaston',  radius:22 },
+  { id:'rene',    type:'person', x:833, y:407, label:'RENE',    initial:'R', owner:'rene',    radius:22 },
+  { id:'daiana',  type:'person', x:782, y:563, label:'DAIANA',  initial:'D', owner:'daiana',  radius:22 },
+  { id:'andres',  type:'person', x:618, y:563, label:'ANDRES',  initial:'A', owner:'andres',  radius:22 },
+  { id:'mariano', type:'person', x:567, y:407, label:'MARIANO', initial:'M', owner:'mariano', radius:22 },
+
+  /* ── Ventures (outer ring, r=320 from (700,450), 10 equidistant points at 36°) ── */
+  /* Champions clustered loosely near their owner's angular position. */
+  { id:'photonic',  type:'venture', status:'explore', owner:'rene',    x:700,  y:130, label:'PHOTONIC LAB',  radius:24 }, /*   0° */
+  { id:'lak3',      type:'venture', status:'build',   owner:'rene',    x:888,  y:191, label:'LAK3',          radius:24 }, /*  36° */
+  { id:'punta',     type:'venture', status:'build',   owner:'rene',    x:1004, y:351, label:'PUNTA CRIPTO',  radius:24 }, /*  72° */
+  { id:'reshore',   type:'venture', status:'build',   owner:'gaston',  x:1004, y:549, label:'RESHORE',       radius:24 }, /* 108° */
+  { id:'manantial', type:'venture', status:'build',   owner:'gaston',  x:888,  y:709, label:'MANANTIAL',     radius:26 }, /* 144° */
+  { id:'chamana',   type:'venture', status:'explore', owner:'daiana',  x:700,  y:770, label:'LA CHAMANA',    radius:24 }, /* 180° */
+  { id:'panambi',   type:'venture', status:'explore', owner:'andres',  x:512,  y:709, label:'PANAMBI',       radius:24 }, /* 216° */
+  { id:'quantum',   type:'venture', status:'explore', owner:'andres',  x:396,  y:549, label:'QUANTUM',       radius:24 }, /* 252° */
+  { id:'content',   type:'venture', status:'build',   owner:'andres',  x:396,  y:351, label:'CONTENT FACTORY', radius:26, new:true }, /* 288° */
+  { id:'punta-os',  type:'venture', status:'build',   owner:'mariano', x:512,  y:191, label:'BOTH OS',       radius:26 }, /* 324° */
+
+  /* ── Infrastructure (clustered around OS core, south + west of center) ── */
+  { id:'worker',   type:'worker', x:700, y:580, label:'CF WORKER', sub:'V2.11', radius:22 },
+  { id:'bot-claude',  type:'bot', bot:'claude',  x:635, y:640, label:'BOTH CLAUDE',   radius:13 },
+  { id:'bot-synergy', type:'bot', bot:'synergy', x:765, y:640, label:'SYNERGY',       radius:13, new:true },
+  { id:'bot-mine',    type:'bot', bot:'mine',    x:700, y:695, label:'MINE BOT',      radius:11, status:'legacy' },
+
+  /* ── Harnesses (cluster west of worker) ── */
+  { id:'h-tuesday', type:'harness', x:560, y:510, label:'TUESDAY-SYNC', radius:20 },
+  { id:'h-mine',    type:'harness', x:520, y:580, label:'AUTO-MINER',   radius:20 },
+  { id:'h-slack',   type:'harness', x:560, y:650, label:'SYNERGY-SLACK',radius:20 },
+
+  /* ── Agent registry (diamond, west of OS core) ── */
+  { id:'agents', type:'agents', x:450, y:450, label:'AGENT REG.', sub:'23', radius:22 },
+
+  /* ── Tools (outer ring, off by default) ── */
+  { id:'t-asana',    type:'tool', x:1320, y:200, label:'ASANA' },
+  { id:'t-notion',   type:'tool', x:1340, y:680, label:'NOTION' },
+  { id:'t-supabase', type:'tool', x:1340, y:430, label:'SUPABASE' },
+  { id:'t-github',   type:'tool', x:60,   y:200, label:'GITHUB' },
+  { id:'t-readai',   type:'tool', x:60,   y:680, label:'READ.AI' },
+  { id:'t-gdrive',   type:'tool', x:60,   y:430, label:'GDRIVE' },
+  { id:'t-n8n',      type:'tool', status:'hold', x:80,  y:560, label:'N8N (HOLD)' },
+  { id:'t-railway',  type:'tool', x:1340, y:560, label:'RAILWAY' },
+];
+
+const EDGES = [
+  /* People → OS core */
+  ['gaston','os-core','person'], ['rene','os-core','person'], ['daiana','os-core','person'],
+  ['andres','os-core','person'], ['mariano','os-core','person'],
+
+  /* People → ventures they champion */
+  ['gaston','manantial','champ'],  ['gaston','reshore','champ'],
+  ['rene','lak3','champ'],         ['rene','photonic','champ'], ['rene','punta','champ'],
+  ['daiana','chamana','champ'],
+  ['andres','panambi','champ'],    ['andres','quantum','champ'], ['andres','content','champ'],
+  ['mariano','punta-os','champ'],
+  /* Manantial joint champ */
+  ['daiana','manantial','champ'],
+
+  /* Worker → bots, Worker → harnesses (the routes) */
+  ['worker','bot-claude','bot'], ['worker','bot-synergy','bot'], ['worker','bot-mine','bot'],
+  ['worker','h-mine','harness'], ['worker','h-slack','harness'],
+  ['os-core','worker','infra'],
+  ['os-core','agents','agents'],
+
+  /* Harness → relevant routes */
+  ['h-tuesday','os-core','harness'],
+  ['h-mine','t-readai','harness'],
+  ['h-slack','bot-synergy','harness'],
+
+  /* OS-core → ventures (faint edges showing the OS touches everything) */
+  ['os-core','photonic','venture'], ['os-core','lak3','venture'], ['os-core','punta','venture'],
+  ['os-core','reshore','venture'], ['os-core','manantial','venture'], ['os-core','chamana','venture'],
+  ['os-core','panambi','venture'], ['os-core','quantum','venture'], ['os-core','content','venture'],
+  ['os-core','punta-os','venture'],
+
+  /* Tools — only render when filter on */
+  ['worker','t-supabase','tool'], ['worker','t-github','tool'], ['worker','t-readai','tool'],
+  ['os-core','t-asana','tool'], ['os-core','t-notion','tool'], ['os-core','t-gdrive','tool'],
+  ['worker','t-railway','tool'], ['os-core','t-n8n','tool'],
+];
+
+/* ═════════════════════════════════════════════════════════════
+   DRAWER CONTENT — Highest-signal nodes first.
+═════════════════════════════════════════════════════════════ */
+const DRAWERS = {
+  'os-core': {
+    meta: 'CORE · SYNERGY',
+    title: 'B_V® | OS',
+    sub: 'Synergy · the entity inside the operating system',
+    body: `
+      <div class="drawer-section">
+        <h4>WHAT IT IS</h4>
+        <p>The internal operating system that runs BOTH Ventures. Vault, agents, harnesses, automations — orchestrated so the team's effort articulates with the system's capabilities.</p>
+        <p><strong>Synergy</strong> is the entity that lives in here. Not a nickname for tooling. The spirit through which everything connects.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>POSTURE</h4>
+        <p><span class="drawer-tag live">LIVE</span><span class="drawer-tag">V3.0.2</span><span class="drawer-tag">COBALT</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>FACTS</h4>
+        <ul>
+          <li><span class="li-l">VENTURES</span><span class="li-r"><strong>10</strong> active</span></li>
+          <li><span class="li-l">PEOPLE</span><span class="li-r"><strong>5</strong> founders</span></li>
+          <li><span class="li-l">AGENTS</span><span class="li-r"><strong>23</strong> in registry</span></li>
+          <li><span class="li-l">HARNESSES</span><span class="li-r"><strong>3</strong> NLAH specs</span></li>
+          <li><span class="li-l">BASE</span><span class="li-r">Punta del Este, UY</span></li>
+          <li><span class="li-l">SCOPE</span><span class="li-r">Global</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>PRINCIPLE</h4>
+        <p>Contradiction is not a bug. Holding multiple logics simultaneously — capital and meaning, speed and depth, structure and emergence — produces more resilient institutions than optimizing for any single logic.</p>
+      </div>`
+  },
+
+  'worker': {
+    meta: 'INFRA · CLOUDFLARE WORKER',
+    title: 'CF WORKER',
+    sub: 'both-transcript-miner · V2.11 · three routes',
+    body: `
+      <div class="drawer-section">
+        <h4>STATUS</h4>
+        <p><span class="drawer-tag live">V2.11 LIVE</span><span class="drawer-tag">2026-05-22</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>THREE ROUTES, ONE DEPLOY</h4>
+        <ul>
+          <li><span class="li-l">POST /</span><span class="li-r">Read.ai webhook · transcript pipeline</span></li>
+          <li><span class="li-l">POST /whatsapp</span><span class="li-r">WhatsApp group mining</span></li>
+          <li><span class="li-l">POST /slack/events</span><span class="li-r"><strong>Synergy chat surface</strong></span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>AUTH</h4>
+        <p>Read.ai: HMAC-SHA256 via <code>READAI_SIGNING_KEY</code> + <code>BOTH_SECRET</code> fallback.<br>
+        Slack: HMAC-SHA256 via <code>SYNERGY_SLACK_SIGNING_SECRET</code>.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>SECRETS</h4>
+        <p><code>ANTHROPIC_API_KEY</code> · <code>GITHUB_PAT</code> · <code>BOTH_SECRET</code> · <code>SLACK_BOT_TOKEN</code> · <code>SYNERGY_SLACK_BOT_TOKEN</code> · <code>BOTH_ASANA_TOKEN</code> · <code>SUPABASE_*</code></p>
+        <p>PAT rotation: <strong>2026-06-10</strong>.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>SPECS</h4>
+        <p><code>harnesses/auto-miner.md</code><br><code>harnesses/synergy-slack.md</code></p>
+      </div>`
+  },
+
+  'h-tuesday': {
+    meta: 'HARNESS · NLAH',
+    title: 'TUESDAY SYNC',
+    sub: 'Weekly cycle · decisions only · max 60 min',
+    body: `
+      <div class="drawer-section">
+        <h4>SPEC</h4>
+        <p><code>harnesses/tuesday-sync.md</code> · <span class="drawer-tag live">ACTIVE</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>ROLES</h4>
+        <ul>
+          <li><span class="li-l">ORCHESTRATOR</span><span class="li-r">Daiana</span></li>
+          <li><span class="li-l">SOLVERS</span><span class="li-r">Champions: each venture lead</span></li>
+          <li><span class="li-l">VERIFIER</span><span class="li-r">Mariano · pipeline traces</span></li>
+          <li><span class="li-l">RECORDER</span><span class="li-r">Read.ai · auto-join</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>WEEKLY LOOP</h4>
+        <p>1 · Champions run <code>/vu</code> + <code>/au</code> through the week.<br>
+        2 · Monday: Mariano generates digest via <code>/wr</code>. Daiana validates.<br>
+        3 · Tuesday: decisions only · in-person · Gaston chairs.<br>
+        4 · Read.ai records. Worker mines. Vault closes the loop.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>PRINCIPLE</h4>
+        <p>AI generates. Vault captures. All paths auto-approve.</p>
+      </div>`
+  },
+
+  'h-mine': {
+    meta: 'HARNESS · NLAH',
+    title: 'AUTO-MINER',
+    sub: '9-stage pipeline · three trigger paths · V2.12 sweeper',
+    body: `
+      <div class="drawer-section">
+        <h4>SPEC</h4>
+        <p><code>harnesses/auto-miner.md</code> · <span class="drawer-tag live">ACTIVE</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>TRIGGER PATHS</h4>
+        <ul>
+          <li><span class="li-l">PATH A</span><span class="li-r">Read.ai webhook → Worker</span></li>
+          <li><span class="li-l">PATH B</span><span class="li-r">WhatsApp audio → /transcribe → /mine</span></li>
+          <li><span class="li-l">PATH C</span><span class="li-r">Notes paste → /mine</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>OUTPUT</h4>
+        <p>vault + Asana + Slack DM to champion(s) · all paths auto-approve · no review gate</p>
+      </div>
+      <div class="drawer-section">
+        <h4>WATCHDOG</h4>
+        <p>V2.12 mine-sweeper · hourly cron for failed pipeline traces.</p>
+      </div>`
+  },
+
+  'h-slack': {
+    meta: 'HARNESS · NLAH',
+    title: 'SYNERGY · SLACK',
+    sub: 'Conversational surface · 1:1 DM + #synergy',
+    body: `
+      <div class="drawer-section">
+        <h4>SPEC</h4>
+        <p><code>harnesses/synergy-slack.md</code> · <span class="drawer-tag live">ACTIVE 2026-05-22</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>PIPELINE</h4>
+        <p>Slack event → HMAC verify → allowlist check → identity load → Anthropic (cached) → Supabase persist → reply.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>CACHE</h4>
+        <ul>
+          <li><span class="li-l">SHARED</span><span class="li-r"><strong>1 h</strong> · ~5k tokens</span></li>
+          <li><span class="li-l">PER-USER</span><span class="li-r"><strong>5 min</strong></span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>ALLOWLIST</h4>
+        <p>5 team members · <code>config/ventures.json[team]</code> · auto-adapts tone from <code>vault/profiles/{slug}.golem.md</code></p>
+      </div>`
+  },
+
+  'bot-claude': {
+    meta: 'INFRA · SLACK BOT',
+    title: 'BOTH CLAUDE',
+    sub: 'Outbound mining bot · used by the Worker',
+    body: `
+      <div class="drawer-section">
+        <h4>ROLE</h4>
+        <p>Outbound only. Posts DMs to venture champions after auto-mine. Posts to per-venture channels.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>APP</h4>
+        <ul>
+          <li><span class="li-l">APP ID</span><span class="li-r">A0ASS88NN2D</span></li>
+          <li><span class="li-l">BOT USER</span><span class="li-r">U0ASDBP8WMQ</span></li>
+          <li><span class="li-l">TOKEN</span><span class="li-r"><code>SLACK_BOT_TOKEN</code> (CF secret)</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>WARNING</h4>
+        <p><span class="drawer-tag warn">ROUTING</span> Channel invites must target <strong>BOTH Claude</strong> — not Mine Bot. Collision burned a trial-gate 2026-05-24.</p>
+      </div>`
+  },
+
+  'bot-synergy': {
+    meta: 'INFRA · SLACK BOT',
+    title: 'SYNERGY',
+    sub: 'Bidirectional chat · the new surface',
+    body: `
+      <div class="drawer-section">
+        <h4>ROLE</h4>
+        <p>Inbound + outbound. Receives DMs and <code>#synergy</code> @-mentions, replies via Anthropic. Live since 2026-05-22.</p>
+        <p><span class="drawer-tag live">NEW SINCE V3</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>APP</h4>
+        <ul>
+          <li><span class="li-l">APP ID</span><span class="li-r">A0B5G9XLSBC</span></li>
+          <li><span class="li-l">BOT USER</span><span class="li-r">U0ASDBP8WMQ</span></li>
+          <li><span class="li-l">TOKEN</span><span class="li-r"><code>SYNERGY_SLACK_BOT_TOKEN</code></span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>WHO TALKS TO IT</h4>
+        <p>Allowlisted to the 5 team members. Auto-adapts tone per speaker via golem profiles.</p>
+      </div>`
+  },
+
+  'bot-mine': {
+    meta: 'INFRA · SLACK BOT',
+    title: 'BOTH MINE BOT',
+    sub: 'Legacy · local scripts only',
+    body: `
+      <div class="drawer-section">
+        <h4>ROLE</h4>
+        <p>Legacy local-script bot. Used by <code>scripts/slack-notify.py</code> and local probes. <strong>Not</strong> used by the Worker.</p>
+        <p><span class="drawer-tag hold">LEGACY</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>APP</h4>
+        <ul>
+          <li><span class="li-l">APP ID</span><span class="li-r">A0AT725LV96</span></li>
+          <li><span class="li-l">BOT USER</span><span class="li-r">U0ASAMRU6NA</span></li>
+          <li><span class="li-l">TOKEN</span><span class="li-r"><code>SLACK_BOT_TOKEN</code> (local .env)</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>WHY KEPT</h4>
+        <p>Three separate Slack apps live in the workspace. Mine Bot remains for local fallback when the Worker can't post (or for ad-hoc scripts).</p>
+      </div>`
+  },
+
+  'agents': {
+    meta: 'REGISTRY',
+    title: 'AGENT REGISTRY',
+    sub: '23 active · markdown specs · NLAH portability',
+    body: `
+      <div class="drawer-section">
+        <h4>PRINCIPLE</h4>
+        <p>Every agent is a portable, executable natural-language spec. The registry lives in <code>.claude/agents/</code>. Reference via <code>@agents/{name}.md</code>.</p>
+      </div>
+      <div class="drawer-section">
+        <h4>SELECTED COMMANDS</h4>
+        <ul>
+          <li><span class="li-l">/db</span><span class="li-r">Daily Brief (Pulse)</span></li>
+          <li><span class="li-l">/mp</span><span class="li-r">Meeting Prep</span></li>
+          <li><span class="li-l">/mc</span><span class="li-r">Meeting Closeout</span></li>
+          <li><span class="li-l">/vu</span><span class="li-r">Venture Update</span></li>
+          <li><span class="li-l">/au</span><span class="li-r">Area Update</span></li>
+          <li><span class="li-l">/wr</span><span class="li-r">Weekly Reporter</span></li>
+          <li><span class="li-l">/mine</span><span class="li-r">Meeting Miner</span></li>
+          <li><span class="li-l">/sc</span><span class="li-r"><strong>Synergy Coach</strong> · NEW</span></li>
+          <li><span class="li-l">/upc</span><span class="li-r">Update Push Commit</span></li>
+          <li><span class="li-l">/id</span><span class="li-r">Identity lens (tone)</span></li>
+          <li><span class="li-l">/POV</span><span class="li-r">Roleplay emulation</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>NEW SINCE V3</h4>
+        <p><strong>/sc Synergy Coach</strong> — Daiana's meta-coaching agent. Anti-proliferation checks, weekly Friday + monthly review.</p>
+      </div>`
+  },
+
+  'content': {
+    meta: 'VENTURE · BUILD',
+    title: 'CONTENT FACTORY',
+    sub: 'Andres · cross-venture distribution',
+    body: `
+      <div class="drawer-section">
+        <h4>WHAT</h4>
+        <p>Automated multiplatform content engine. Cross-venture distribution: traffic + conversion (sales), reputation + narrative control.</p>
+        <p><span class="drawer-tag live">BUILD</span><span class="drawer-tag">NEW VENTURE</span></p>
+      </div>
+      <div class="drawer-section">
+        <h4>FACTS</h4>
+        <ul>
+          <li><span class="li-l">OWNER</span><span class="li-r">Andres</span></li>
+          <li><span class="li-l">STATUS</span><span class="li-r">Build · Hands-on</span></li>
+          <li><span class="li-l">FORMALIZED</span><span class="li-r">2026-05-18</span></li>
+          <li><span class="li-l">SCOPE</span><span class="li-r">Cross-portfolio infra</span></li>
+        </ul>
+      </div>
+      <div class="drawer-section">
+        <h4>WHY NEW IN V2</h4>
+        <p>V3 page predates this. Content Factory was missing from the venture roster shown in DROP V3. V3.0.2 surfaces it as the 10th venture.</p>
+      </div>`
+  },
+
+  'gaston':  { meta:'PERSON · CEO',                 title:'GASTON FRYDLEWSKI', sub:'Ultimate decision maker',
+    body:`<div class="drawer-section"><h4>OWNS</h4><p>Casa Manantial, Reshore</p></div>
+    <div class="drawer-section"><h4>SOLE DECISIONS</h4><p>Capital allocation · new projects · exits · corporate structure · investor comms.</p></div>
+    <div class="drawer-section"><h4>OPERATING</h4><p>Projector · Emotional. Give options + overnight on big decisions. Wait for invitation. Drains: execution tasks, purposeless meetings.</p></div>`},
+  'rene':    { meta:'PERSON · STRATEGY + COMMS',    title:'RENE LABARTHE', sub:'Narrative direction · positioning',
+    body:`<div class="drawer-section"><h4>OWNS</h4><p>LAK3, Photonic Lab, Punta Cripto</p></div>
+    <div class="drawer-section"><h4>SOLE DECISIONS</h4><p>Narrative direction · positioning · content sign-off.</p></div>
+    <div class="drawer-section"><h4>OPERATING</h4><p>Manifestor · Emotional. Space to initiate and inform. Do not require consensus.</p></div>`},
+  'daiana':  { meta:'PERSON · OPS + FINANCE',       title:'DAIANA GOLDENBERG', sub:'Ops priorities · process design',
+    body:`<div class="drawer-section"><h4>OWNS</h4><p>Casa Manantial (joint), La Chamana</p></div>
+    <div class="drawer-section"><h4>SOLE DECISIONS</h4><p>Ops priorities · finance tracking · process design.</p></div>
+    <div class="drawer-section"><h4>OPERATING</h4><p>Generator 5/1 · Sacral. Binary "this or that?" — fast gut response. No Friday calls.</p></div>`},
+  'andres':  { meta:'PERSON · CO-FOUNDER / CLO',    title:'ANDRES BURECOVICS', sub:'Legal · governance · content',
+    body:`<div class="drawer-section"><h4>OWNS</h4><p>Panambi, Quantum, Content Factory</p></div>
+    <div class="drawer-section"><h4>SOLE DECISIONS</h4><p>Legal structuring · due diligence · compliance.</p></div>
+    <div class="drawer-section"><h4>OPERATING</h4><p>Generator 1/4 · Sacral. Research time first. Then sacral check on findings.</p></div>`},
+  'mariano': { meta:'PERSON · CONTEXT ENGINEER',    title:'MARIANO BORIS', sub:'Tools admin · tech lead',
+    body:`<div class="drawer-section"><h4>OWNS</h4><p>BOTH OS</p></div>
+    <div class="drawer-section"><h4>SOLE DECISIONS</h4><p>Tool configuration · documentation protocols.</p></div>
+    <div class="drawer-section"><h4>OPERATING</h4><p>Generator 6/3 · Sacral. Something to respond to. Observer/architect work. Drains: spotlight, lack of structure.</p></div>`},
+
+  /* Venture short cards (lightweight) */
+  'manantial': { meta:'VENTURE · BUILD', title:'MANANTIAL CASA', sub:'Physical HQ · events · retreats',
+    body:`<div class="drawer-section"><h4>OWNERS</h4><p>Gaston · Daiana (joint)</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Build + Daily. Institutional base.</p></div>`},
+  'reshore': { meta:'VENTURE · BUILD', title:'RESHORE', sub:'Re-localizing production · resilient supply',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Gaston</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Build + Hands-on.</p></div>`},
+  'lak3': { meta:'VENTURE · BUILD', title:'LAK3', sub:'Tokenized water and real-world assets',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Rene</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Build + Hands-on. Liquidity + transparent ownership.</p></div>`},
+  'photonic': { meta:'VENTURE · EXPLORE', title:'PHOTONIC LAB', sub:'Venture-scale biotech lab',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Rene</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Explore + Hands-on. Research to impact.</p></div>`},
+  'chamana': { meta:'VENTURE · EXPLORE', title:'LA CHAMANA', sub:'Luxury private villa · Tulum',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Daiana</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Explore + Ops. High-trust founder retreat.</p></div>`},
+  'panambi': { meta:'VENTURE · EXPLORE', title:'PANAMBI', sub:'Mental health investment fund · LatAm',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Andres</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Explore + Observational.</p></div>`},
+  'quantum': { meta:'VENTURE · EXPLORE', title:'QUANTUM', sub:'New venture · legal structuring in progress',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Andres</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Explore + Hands-on.</p></div>`},
+  'punta': { meta:'VENTURE · BUILD', title:'PUNTA CRIPTO', sub:'Crypto · BOTH financial self-sufficiency',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Rene</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Build + Strategic. Key income source.</p></div>`},
+  'punta-os': { meta:'VENTURE · BUILD', title:'BOTH OS', sub:'Internal operating system · this thing you are reading',
+    body:`<div class="drawer-section"><h4>OWNER</h4><p>Mariano</p></div>
+    <div class="drawer-section"><h4>ROLE</h4><p>Build + Hands-on. n8n · Supabase · Claude agents · Asana · infra.</p></div>`},
+
+  /* Tools (terse) */
+  't-asana':    { meta:'TOOL', title:'ASANA', sub:'Task approval layer · live',
+    body:`<div class="drawer-section"><h4>USE</h4><p>BOTH Action Items project, 10 sections (one per venture + cross-cutting). Action items pushed by Worker auto-mine and <code>asana-push.py</code>. Daiana is gatekeeper.</p></div>`},
+  't-notion':   { meta:'TOOL', title:'NOTION', sub:'Presentation layer · read-only',
+    body:`<div class="drawer-section"><h4>USE</h4><p>Ventures DB + area pages + Weekly Digest. Synced from vault every Monday by <code>vault-to-notion.py</code>. Never edit in Notion.</p></div>`},
+  't-supabase': { meta:'TOOL', title:'SUPABASE', sub:'Database · pgvector · 12 tables',
+    body:`<div class="drawer-section"><h4>USE</h4><p>Vault context, agent registry, memory, pipeline traces. RLS by access scope.</p></div>`},
+  't-github':   { meta:'TOOL', title:'GITHUB', sub:'Vault storage · version control',
+    body:`<div class="drawer-section"><h4>USE</h4><p>two-repo split: <code>both-os</code> (this) + <code>both-private</code> (LP/strategy).</p></div>`},
+  't-readai':   { meta:'TOOL', title:'READ.AI', sub:'Call recording + webhook',
+    body:`<div class="drawer-section"><h4>USE</h4><p>Auto-joins calls via Google Calendar. Fires webhook to Worker on meeting end with full transcript.</p></div>`},
+  't-gdrive':   { meta:'TOOL', title:'GOOGLE DRIVE', sub:'Source of truth for documents',
+    body:`<div class="drawer-section"><h4>USE</h4><p>Separate shared drives per access scope.</p></div>`},
+  't-n8n':      { meta:'TOOL', title:'N8N', sub:'Workflows on hold',
+    body:`<div class="drawer-section"><h4>STATUS</h4><p><span class="drawer-tag hold">HOLD</span> Live at bothventures.app.n8n.cloud but all workflows parked. Automation handled by the Cloudflare Worker.</p></div>`},
+  't-railway':  { meta:'TOOL', title:'RAILWAY', sub:'Hosting · Paperclip + evolution-api',
+    body:`<div class="drawer-section"><h4>STATUS</h4><p>Not currently active. Kept available for Paperclip + evolution-api when reactivated.</p></div>`},
+};
+
+/* ═════════════════════════════════════════════════════════════
+   RENDER
+═════════════════════════════════════════════════════════════ */
+
+const svg = document.getElementById('graph');
+const edgesLayer = document.getElementById('edges-layer');
+const nodesLayer = document.getElementById('nodes-layer');
+const glowLayer = document.getElementById('glow-layer');
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function el(name, attrs={}) {
+  const e = document.createElementNS(SVG_NS, name);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+function hexPoints(cx, cy, r) {
+  let pts = [];
+  for (let i=0; i<6; i++) {
+    const a = (Math.PI/3) * i - Math.PI/2;
+    pts.push((cx + r*Math.cos(a)).toFixed(1)+','+(cy + r*Math.sin(a)).toFixed(1));
+  }
+  return pts.join(' ');
+}
+function diamondPoints(cx, cy, r) {
+  return `${cx},${cy-r} ${cx+r},${cy} ${cx},${cy+r} ${cx-r},${cy}`;
+}
+
+/* Edges */
+const nodeById = {};
+NODES.forEach(n => nodeById[n.id] = n);
+
+EDGES.forEach(([a, b, kind]) => {
+  const na = nodeById[a], nb = nodeById[b];
+  if (!na || !nb) return;
+  const line = el('line', {
+    x1: na.x, y1: na.y, x2: nb.x, y2: nb.y,
+    class: `edge ${kind}`,
+    'data-from': a, 'data-to': b,
+    'data-kind': kind,
+  });
+  // Set hide attrs for filter targeting
+  if (kind === 'tool') line.setAttribute('data-tool','true');
+  if (kind === 'bot') line.setAttribute('data-bot','true');
+  if (kind === 'harness') line.setAttribute('data-harness','true');
+  if (kind === 'person') line.setAttribute('data-person','true');
+  if (kind === 'champ') line.setAttribute('data-person','true');
+  if (kind === 'venture') line.setAttribute('data-venture','true');
+  if (kind === 'agents') line.setAttribute('data-agents','true');
+  edgesLayer.appendChild(line);
+});
+
+/* Glow under core */
+glowLayer.appendChild(el('circle', { cx:700, cy:450, r:120, fill:'url(#core-glow)' }));
+
+/* Nodes */
+NODES.forEach(n => {
+  const g = el('g', {
+    class: 'node',
+    'data-id': n.id,
+    'data-type': n.type,
+    transform: `translate(${n.x}, ${n.y})`,
+  });
+  if (n.owner) g.setAttribute('data-owner', n.owner);
+  if (n.status) g.setAttribute('data-status', n.status);
+  if (n.bot)    g.setAttribute('data-bot', n.bot);
+
+  if (n.type === 'core') {
+    g.appendChild(el('circle', { class:'shape', r:n.radius }));
+    g.appendChild(el('circle', { class:'core-inner', r:6 }));
+    const label1 = el('text', { class:'label', x:0, y: n.radius + 22 });
+    label1.textContent = n.label;
+    g.appendChild(label1);
+    const label2 = el('text', { class:'sublabel', x:0, y: n.radius + 38 });
+    label2.textContent = n.sub;
+    g.appendChild(label2);
+  } else if (n.type === 'person') {
+    g.appendChild(el('circle', { class:'shape', r:n.radius }));
+    const init = el('text', { class:'initial', y:5 });
+    init.textContent = n.initial;
+    g.appendChild(init);
+    const label = el('text', { class:'label', x:0, y: n.radius + 16 });
+    label.textContent = n.label;
+    g.appendChild(label);
+  } else if (n.type === 'venture') {
+    g.appendChild(el('circle', { class:'shape', r:n.radius }));
+    const label = el('text', { class:'label', x:0, y: n.radius + 18 });
+    label.textContent = n.label;
+    g.appendChild(label);
+    if (n.new) {
+      const newTag = el('text', { class:'sublabel', x:0, y: n.radius + 32 });
+      newTag.setAttribute('fill', 'var(--accent)');
+      newTag.textContent = '+ NEW';
+      g.appendChild(newTag);
+    }
+  } else if (n.type === 'worker') {
+    g.appendChild(el('rect', { class:'shape', x:-n.radius, y:-n.radius, width:n.radius*2, height:n.radius*2 }));
+    const init = el('text', { class:'initial', y:5, 'text-anchor':'middle' });
+    init.setAttribute('fill', 'var(--fg-bright)');
+    init.setAttribute('font-family', 'var(--ff-display)');
+    init.setAttribute('font-size', '12');
+    init.textContent = 'CF';
+    g.appendChild(init);
+    const label = el('text', { class:'label', x:0, y: n.radius + 16 });
+    label.textContent = n.label;
+    g.appendChild(label);
+    const sub = el('text', { class:'sublabel', x:0, y: n.radius + 30 });
+    sub.textContent = n.sub;
+    g.appendChild(sub);
+  } else if (n.type === 'bot') {
+    g.appendChild(el('rect', { class:'shape', x:-n.radius, y:-n.radius, width:n.radius*2, height:n.radius*2 }));
+    const label = el('text', { class:'label', x:0, y: n.radius + 14 });
+    label.textContent = n.label;
+    g.appendChild(label);
+  } else if (n.type === 'harness') {
+    g.appendChild(el('polygon', { class:'shape', points: hexPoints(0, 0, n.radius) }));
+    const label = el('text', { class:'label', x:0, y: n.radius + 16 });
+    label.textContent = n.label;
+    g.appendChild(label);
+  } else if (n.type === 'agents') {
+    g.appendChild(el('polygon', { class:'shape', points: diamondPoints(0, 0, n.radius) }));
+    const init = el('text', { class:'initial', y:5 });
+    init.setAttribute('fill', 'var(--fg-bright)');
+    init.setAttribute('font-family', 'var(--ff-display)');
+    init.setAttribute('font-size', '14');
+    init.textContent = n.sub;
+    g.appendChild(init);
+    const label = el('text', { class:'label', x:0, y: n.radius + 18 });
+    label.textContent = n.label;
+    g.appendChild(label);
+  } else if (n.type === 'tool') {
+    g.appendChild(el('polygon', { class:'shape', points: diamondPoints(0, 0, 9) }));
+    const label = el('text', { class:'label', x:0, y: 24 });
+    label.textContent = n.label;
+    g.appendChild(label);
+  }
+
+  nodesLayer.appendChild(g);
+});
+
+/* Node counts in top marks */
+document.getElementById('node-count').textContent = NODES.length;
+document.getElementById('edge-count').textContent = EDGES.length;
+
+/* ═════════════════════════════════════════════════════════════
+   INTERACTIONS — cursor, hover, filter, drawer, manifesto
+═════════════════════════════════════════════════════════════ */
+
+/* Custom cursor */
+const dot = document.getElementById('cursor-dot');
+const bracket = document.getElementById('cursor-bracket');
+window.addEventListener('mousemove', (e) => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top = e.clientY + 'px';
+  bracket.style.left = (e.clientX + 18) + 'px';
+  bracket.style.top = e.clientY + 'px';
+});
+
+const hoverables = 'button, .node, .fr-chip, .drawer-close, .manifesto-trigger, .manifesto-close';
+document.addEventListener('mouseover', (e) => {
+  if (e.target.closest && e.target.closest(hoverables)) {
+    document.body.classList.add('cursor-hover');
+  }
+});
+document.addEventListener('mouseout', (e) => {
+  if (e.target.closest && e.target.closest(hoverables)) {
+    document.body.classList.remove('cursor-hover');
+  }
+});
+
+/* Filter chips */
+const stage = svg;
+const FILTERS = {
+  ventures: true, people: true, harnesses: true, bots: true, agents: true, tools: false,
+};
+function applyFilters() {
+  stage.dataset.hideVentures  = (!FILTERS.ventures).toString();
+  stage.dataset.hidePeople    = (!FILTERS.people).toString();
+  stage.dataset.hideHarnesses = (!FILTERS.harnesses).toString();
+  stage.dataset.hideBots      = (!FILTERS.bots).toString();
+  stage.dataset.hideAgents    = (!FILTERS.agents).toString();
+  stage.dataset.hideTools     = (!FILTERS.tools).toString();
+}
+applyFilters();
+
+document.querySelectorAll('.fr-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const f = chip.dataset.filter;
+    FILTERS[f] = !FILTERS[f];
+    chip.classList.toggle('active', FILTERS[f]);
+    applyFilters();
+  });
+});
+
+/* Drawer */
+const drawer = document.getElementById('drawer');
+const dhMeta = document.getElementById('dh-meta');
+const dhTitle = document.getElementById('dh-title');
+const dhSub = document.getElementById('dh-sub');
+const dhBody = document.getElementById('drawer-body');
+let selectedNodeId = null;
+
+function openDrawer(id) {
+  const data = DRAWERS[id];
+  if (!data) {
+    // No drawer content for this node — fallback minimal card
+    const n = nodeById[id];
+    dhMeta.textContent = (n?.type || 'NODE').toUpperCase();
+    dhTitle.textContent = n?.label || id;
+    dhSub.textContent = n?.sub || '';
+    dhBody.innerHTML = '<div class="drawer-section"><p>No detail card yet. Surfacing in next iteration.</p></div>';
+  } else {
+    dhMeta.textContent = data.meta;
+    dhTitle.textContent = data.title;
+    dhSub.textContent = data.sub;
+    dhBody.innerHTML = data.body;
+  }
+  drawer.classList.add('open');
+
+  // Highlight selected node + connected edges
+  document.querySelectorAll('.node.selected').forEach(n => n.classList.remove('selected'));
+  const node = document.querySelector(`.node[data-id="${id}"]`);
+  if (node) node.classList.add('selected');
+  selectedNodeId = id;
+
+  // Highlight edges connected to this node
+  document.querySelectorAll('.edge').forEach(e => {
+    const from = e.getAttribute('data-from');
+    const to = e.getAttribute('data-to');
+    if (from === id || to === id) {
+      e.classList.add('highlight');
+      e.classList.remove('dim');
+    } else {
+      e.classList.add('dim');
+      e.classList.remove('highlight');
+    }
+  });
+}
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  selectedNodeId = null;
+  document.querySelectorAll('.node.selected').forEach(n => n.classList.remove('selected'));
+  document.querySelectorAll('.edge').forEach(e => {
+    e.classList.remove('highlight');
+    e.classList.remove('dim');
+  });
+}
+
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+
+document.querySelectorAll('.node').forEach(node => {
+  node.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openDrawer(node.dataset.id);
+  });
+});
+
+document.querySelector('.atlas').addEventListener('click', (e) => {
+  if (e.target.closest('.node')) return;
+  if (selectedNodeId) closeDrawer();
+});
+
+/* Manifesto layer */
+const manifesto = document.getElementById('manifesto');
+document.getElementById('manifesto-open').addEventListener('click', () => {
+  manifesto.classList.add('open');
+});
+document.getElementById('manifesto-close').addEventListener('click', () => {
+  manifesto.classList.remove('open');
+});
+
+/* Esc closes whatever is open */
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (manifesto.classList.contains('open')) {
+      manifesto.classList.remove('open');
+    } else if (drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+  }
+});
+
+</script>
+</body>
+</html>
