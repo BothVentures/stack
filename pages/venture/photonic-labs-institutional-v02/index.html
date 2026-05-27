@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* color tokens — anchor + neutral ramp + scarce accent */
+  /* color tokens — anchor + neutral ramp + scarce accent · LIGHT */
   --ink: oklch(18% 0.025 245);
   --ink-soft: oklch(32% 0.025 245);
   --ink-mute: oklch(52% 0.018 245);
@@ -36,6 +36,21 @@
   --gutter: clamp(1.25rem, 4vw, 4.5rem);
   --slide-pad: clamp(2rem, 6vw, 6rem);
 }
+
+/* DARK theme — applied at document root, flips every token; one swap, whole deck reskins */
+:root[data-theme="dark"] {
+  --ink:           oklch(94% 0.014 85);
+  --ink-soft:      oklch(78% 0.014 85);
+  --ink-mute:      oklch(58% 0.014 85);
+  --paper:         oklch(11% 0.012 250);
+  --paper-deep:    oklch(15% 0.014 250);
+  --paper-elev:    oklch(18% 0.014 250);
+  --hairline:      oklch(30% 0.018 250);
+  --hairline-soft: oklch(23% 0.014 250);
+  --accent:        oklch(72% 0.22 295);
+  --accent-faint:  oklch(72% 0.22 295 / 0.12);
+}
+html, body { transition: background-color 360ms var(--ease-comp), color 360ms var(--ease-comp); }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1203,34 +1218,36 @@ a:focus-visible {
 }
 .pl-bottom-bar > div { display: flex; gap: 18px; flex-wrap: wrap; }
 
-/* toggles pinned inside the stage so they scroll away with the hero */
+/* Global UI toggles — position:fixed, always visible. Uses deck tokens so they adapt to theme. */
 .pl-toggles {
-  position: absolute;
-  bottom: clamp(16px, 1.8vh, 24px);
-  right: clamp(16px, 1.8vw, 28px);
-  z-index: 50;
+  position: fixed;
+  bottom: clamp(14px, 1.6vh, 22px);
+  right: clamp(14px, 1.6vw, 22px);
+  z-index: 200;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--pl-ink);
+  color: var(--ink);
   pointer-events: auto;
   user-select: none;
+  transition: color 320ms var(--ease-comp);
 }
 .pl-toggles .pl-group {
   display: inline-flex;
   align-items: center;
   gap: 2px;
-  padding: 6px 8px;
-  border: 1px solid color-mix(in oklch, var(--pl-ink) 22%, transparent);
+  padding: 5px 7px;
+  border: 1px solid color-mix(in oklch, var(--ink) 22%, transparent);
   border-radius: 999px;
-  background: color-mix(in oklch, var(--pl-paper) 70%, transparent);
-  backdrop-filter: blur(10px) saturate(1.1);
-  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  background: color-mix(in oklch, var(--paper) 75%, transparent);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  transition: border-color 320ms var(--ease-comp), background 320ms var(--ease-comp);
 }
 .pl-toggles button {
   appearance: none;
@@ -1241,17 +1258,17 @@ a:focus-visible {
   padding: 4px 10px;
   cursor: pointer;
   border-radius: 999px;
-  transition: background 160ms ease, color 160ms ease;
+  transition: background 160ms var(--ease-diag), color 160ms var(--ease-diag);
   line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 28px;
 }
-.pl-toggles button:hover { color: var(--pl-rim-2); }
+.pl-toggles button:hover { color: var(--accent); }
 .pl-toggles button.on {
-  background: var(--pl-ink);
-  color: var(--pl-paper);
+  background: var(--ink);
+  color: var(--paper);
 }
 .pl-theme-icon { width: 12px; height: 12px; display: block; }
 
@@ -1281,19 +1298,19 @@ a:focus-visible {
 <body>
 
 <nav class="slide-nav" aria-label="Deck navigation">
-  <a href="#s01" data-slide="01">01 · OPEN</a>
-  <a href="#s02" data-slide="02">02 · THESIS</a>
-  <a href="#s03" data-slide="03">03 · GAP</a>
-  <a href="#s04" data-slide="04">04 · ZERO</a>
-  <a href="#s05" data-slide="05">05 · BUILD</a>
-  <a href="#s06" data-slide="06">06 · INFRA</a>
-  <a href="#s07" data-slide="07">07 · COMPUTE+AI</a>
-  <a href="#s08" data-slide="08">08 · URUGUAY</a>
-  <a href="#s09" data-slide="09">09 · TEAM</a>
-  <a href="#s10" data-slide="10">10 · SUBSTRATE</a>
-  <a href="#s12" data-slide="11">11 · ASK</a>
-  <a href="#s13" data-slide="12">12 · SEQUENCE</a>
-  <a href="#s14" data-slide="13">13 · CLOSE</a>
+  <a href="#s01" data-slide="01" data-es="01 · INICIO">01 · OPEN</a>
+  <a href="#s02" data-slide="02" data-es="02 · TESIS">02 · THESIS</a>
+  <a href="#s03" data-slide="03" data-es="03 · BRECHA">03 · GAP</a>
+  <a href="#s04" data-slide="04" data-es="04 · CERO">04 · ZERO</a>
+  <a href="#s05" data-slide="05" data-es="05 · QUÉ ES">05 · BUILD</a>
+  <a href="#s06" data-slide="06" data-es="06 · INFRA">06 · INFRA</a>
+  <a href="#s07" data-slide="07" data-es="07 · CÓMPUTO+IA">07 · COMPUTE+AI</a>
+  <a href="#s08" data-slide="08" data-es="08 · URUGUAY">08 · URUGUAY</a>
+  <a href="#s09" data-slide="09" data-es="09 · EQUIPO">09 · TEAM</a>
+  <a href="#s10" data-slide="10" data-es="10 · SUSTRATO">10 · SUBSTRATE</a>
+  <a href="#s12" data-slide="11" data-es="11 · PEDIDO">11 · ASK</a>
+  <a href="#s13" data-slide="12" data-es="12 · SECUENCIA">12 · SEQUENCE</a>
+  <a href="#s14" data-slide="13" data-es="13 · CIERRE">13 · CLOSE</a>
 </nav>
 
 <!-- ═════════════════════════════ 01 · HERO — BITMAP SPECTRAL ═════════════════════════════ -->
@@ -1335,57 +1352,58 @@ a:focus-visible {
 
     </div>
 
-    <div class="pl-toggles" id="pl-toggles" aria-label="Hero controls">
-      <div class="pl-group" role="group" aria-label="Language">
-        <button type="button" class="pl-lang on" data-lang="en" aria-label="English">EN</button>
-        <button type="button" class="pl-lang"   data-lang="es" aria-label="Español">ES</button>
-      </div>
-      <div class="pl-group" role="group" aria-label="Theme">
-        <button type="button" class="pl-theme on" data-theme="light" aria-label="Light">
-          <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1">
-            <circle cx="6" cy="6" r="2.4" fill="currentColor"/>
-            <g stroke-linecap="round">
-              <line x1="6" y1="0.6" x2="6" y2="2"/>
-              <line x1="6" y1="10" x2="6" y2="11.4"/>
-              <line x1="0.6" y1="6" x2="2" y2="6"/>
-              <line x1="10" y1="6" x2="11.4" y2="6"/>
-              <line x1="2.2" y1="2.2" x2="3.2" y2="3.2"/>
-              <line x1="8.8" y1="8.8" x2="9.8" y2="9.8"/>
-              <line x1="9.8" y1="2.2" x2="8.8" y2="3.2"/>
-              <line x1="3.2" y1="8.8" x2="2.2" y2="9.8"/>
-            </g>
-          </svg>
-        </button>
-        <button type="button" class="pl-theme" data-theme="dark" aria-label="Dark">
-          <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="currentColor">
-            <path d="M9.4 7.2A4.2 4.2 0 0 1 4.8 2.6c0-.4.05-.8.15-1.2A4.6 4.6 0 1 0 10.6 7.05c-.4.1-.8.15-1.2.15Z"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
     <div class="pl-cursor" id="pl-cursor"></div>
   </div>
 </section>
 
+<!-- Global UI — language + theme toggles. Position:fixed, always visible across all slides. -->
+<div class="pl-toggles" id="pl-toggles" aria-label="Deck controls">
+  <div class="pl-group" role="group" aria-label="Language">
+    <button type="button" class="pl-lang on" data-lang="en" aria-label="English">EN</button>
+    <button type="button" class="pl-lang"   data-lang="es" aria-label="Español">ES</button>
+  </div>
+  <div class="pl-group" role="group" aria-label="Theme">
+    <button type="button" class="pl-theme on" data-theme="light" aria-label="Light">
+      <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1">
+        <circle cx="6" cy="6" r="2.4" fill="currentColor"/>
+        <g stroke-linecap="round">
+          <line x1="6" y1="0.6" x2="6" y2="2"/>
+          <line x1="6" y1="10" x2="6" y2="11.4"/>
+          <line x1="0.6" y1="6" x2="2" y2="6"/>
+          <line x1="10" y1="6" x2="11.4" y2="6"/>
+          <line x1="2.2" y1="2.2" x2="3.2" y2="3.2"/>
+          <line x1="8.8" y1="8.8" x2="9.8" y2="9.8"/>
+          <line x1="9.8" y1="2.2" x2="8.8" y2="3.2"/>
+          <line x1="3.2" y1="8.8" x2="2.2" y2="9.8"/>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="pl-theme" data-theme="dark" aria-label="Dark">
+      <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="currentColor">
+        <path d="M9.4 7.2A4.2 4.2 0 0 1 4.8 2.6c0-.4.05-.8.15-1.2A4.6 4.6 0 1 0 10.6 7.05c-.4.1-.8.15-1.2.15Z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
 <!-- ═════════════════════════════ 02 · THESIS ═════════════════════════════ -->
 <section class="slide" id="s02">
   <span class="slide-num">02 / 13</span>
-  <span class="slide-kicker reveal">Thesis</span>
+  <span class="slide-kicker reveal" data-es="Tesis">Thesis</span>
 
   <div class="thesis-grid">
     <h2 class="thesis-quote reveal">
-      <span class="em-it">Science is not</span><br>
-      <span class="strike">the bottleneck.</span>
+      <span class="em-it" data-es="La ciencia no es">Science is not</span><br>
+      <span class="strike" data-es="el cuello de botella.">the bottleneck.</span>
     </h2>
     <div class="reveal-stagger" style="display:grid;gap:1.4rem;align-content:start;max-width:54ch;">
-      <p class="body body-loose">
+      <p class="body body-loose" data-es="Universidades, institutos de investigación y laboratorios en etapa temprana en Uruguay, Argentina y Brasil generan ciencia biotecnológica de calidad internacional. Patentes registradas en EE.UU., Europa y MERCOSUR. Sus fundadores presentan a inversores globales. La ciencia funciona.">
         Universities, research institutes, and early-stage labs across Uruguay, Argentina, and Brazil generate biotech science of international quality. Patents file in the US, EU, and across MERCOSUR. Founders pitch global investors. The bench science works.
       </p>
-      <p class="body body-loose">
+      <p class="body body-loose" data-es="Lo que colapsa es el paso siguiente. Entre la investigación validada en TRL 4 y la transferencia comercial en TRL 9 hay una capa de producción a escala piloto, lotes con calidad GMP, dossiers regulatorios y procesos transferibles. Esa capa no existe en la región en una forma accesible para un startup. Los fundadores envían moléculas a Europa o la India para escalar — pagando costos inflados, perdiendo control sobre la PI, aceptando ambigüedad regulatoria.">
         What collapses is the next step. Between validated research at TRL 4 and commercial transfer at TRL 9 sits a layer of pilot-scale production, GMP-grade lots, regulatory dossiers, and transferable processes. That layer does not exist in the region in any form a startup can access. Founders fly molecules to Europe or India to scale — paying inflated costs, losing IP control, accepting regulatory ambiguity.
       </p>
-      <p class="serif-aside">
+      <p class="serif-aside" data-es="Photonic Labs es esa capa.">
         Photonic Labs is the layer.
       </p>
     </div>
@@ -1395,53 +1413,53 @@ a:focus-visible {
 <!-- ═════════════════════════════ 03 · TRL GAP ═════════════════════════════ -->
 <section class="slide" id="s03">
   <span class="slide-num">03 / 13</span>
-  <span class="slide-kicker reveal">The gap, mapped</span>
-  <h2 class="display-lg reveal" style="max-width:18ch;">Where the region stops being self-sufficient.</h2>
+  <span class="slide-kicker reveal" data-es="La brecha, mapeada">The gap, mapped</span>
+  <h2 class="display-lg reveal" style="max-width:18ch;" data-es="Dónde la región deja de ser autosuficiente.">Where the region stops being self-sufficient.</h2>
 
   <div class="trl-grid reveal">
     <div class="trl-cell covered">
       <div>
         <div class="trl-range">TRL 1 — 4</div>
-        <div class="trl-label">Basic research<br>& proof of concept</div>
+        <div class="trl-label" data-es="Investigación básica<br>y prueba de concepto">Basic research<br>& proof of concept</div>
       </div>
       <div>
-        <div class="trl-status">Covered</div>
-        <div class="trl-note">Universities, Pasteur, UdelaR, INIA, regional institutes. Funded, productive, internationally connected.</div>
+        <div class="trl-status" data-es="Cubierto">Covered</div>
+        <div class="trl-note" data-es="Universidades, Pasteur, UdelaR, INIA, institutos regionales. Financiados, productivos, internacionalmente conectados.">Universities, Pasteur, UdelaR, INIA, regional institutes. Funded, productive, internationally connected.</div>
       </div>
     </div>
     <div class="trl-cell gap">
       <div>
         <div class="trl-range">TRL 5 — 6</div>
-        <div class="trl-label">Scale-up &<br>pilot production</div>
+        <div class="trl-label" data-es="Escalado y<br>producción piloto">Scale-up &<br>pilot production</div>
       </div>
       <div>
-        <div class="trl-status">— Critical gap</div>
-        <div class="trl-note">Near-zero accessible options across LATAM. Founders fly molecules abroad and lose months — or stop.</div>
+        <div class="trl-status" data-es="— Brecha crítica">— Critical gap</div>
+        <div class="trl-note" data-es="Casi nula oferta accesible en LATAM. Los fundadores envían moléculas afuera y pierden meses — o frenan.">Near-zero accessible options across LATAM. Founders fly molecules abroad and lose months — or stop.</div>
       </div>
     </div>
     <div class="trl-cell gap">
       <div>
         <div class="trl-range">TRL 7 — 8</div>
-        <div class="trl-label">GMP production<br>& tech transfer</div>
+        <div class="trl-label" data-es="Producción GMP<br>y transferencia tecnológica">GMP production<br>& tech transfer</div>
       </div>
       <div>
-        <div class="trl-status">— Critical gap</div>
-        <div class="trl-note">Existing regional GMP capacity (mAbxience, others) inaccessible to early-stage pipeline. Volume floors exclude.</div>
+        <div class="trl-status" data-es="— Brecha crítica">— Critical gap</div>
+        <div class="trl-note" data-es="La capacidad GMP regional existente (mAbxience, otros) es inaccesible al pipeline de etapa temprana. Los volúmenes mínimos excluyen.">Existing regional GMP capacity (mAbxience, others) inaccessible to early-stage pipeline. Volume floors exclude.</div>
       </div>
     </div>
     <div class="trl-cell unreachable">
       <div>
         <div class="trl-range">TRL 9</div>
-        <div class="trl-label">Commercial<br>manufacturing</div>
+        <div class="trl-label" data-es="Manufactura<br>comercial">Commercial<br>manufacturing</div>
       </div>
       <div>
-        <div class="trl-status">Out of reach</div>
-        <div class="trl-note">Minimum volume requirements structurally exclude startups, no matter how strong the science.</div>
+        <div class="trl-status" data-es="Fuera de alcance">Out of reach</div>
+        <div class="trl-note" data-es="Los volúmenes mínimos requeridos excluyen estructuralmente a los startups, por más fuerte que sea la ciencia.">Minimum volume requirements structurally exclude startups, no matter how strong the science.</div>
       </div>
     </div>
   </div>
 
-  <p class="trl-caption reveal">
+  <p class="trl-caption reveal" data-es="La ciencia sobrevive <strong>TRL 1—4</strong>. Después se topa con dos capas que la región no puede llenar y sale. Photonic Labs está construido para sostener esas dos capas — TRL 5—6 y TRL 7—8 — dentro de Uruguay, sobre suelo regulado, a precios que el pipeline regional efectivamente puede pagar.">
     The science survives <strong>TRL 1—4</strong>. It then meets two unfillable layers and exits the region. Photonic Labs is built to hold those two layers — TRL 5—6 and TRL 7—8 — inside Uruguay, on regulated soil, at price points the regional pipeline can actually pay.
   </p>
 </section>
@@ -1452,13 +1470,13 @@ a:focus-visible {
   <div class="zero-slide">
     <div class="zero-glyph reveal" aria-label="Zero">0</div>
     <div class="zero-aside reveal-stagger">
-      <span class="label">The number, isolated</span>
-      <p class="read">Accessible GMP scale-up hubs in Latin America that an early-stage biotech can actually use.</p>
-      <p class="serif-aside" style="font-size:1.1rem;">
+      <span class="label" data-es="El número, aislado">The number, isolated</span>
+      <p class="read" data-es="Hubs de escalado GMP en América Latina que un biotech en etapa temprana puede efectivamente utilizar.">Accessible GMP scale-up hubs in Latin America that an early-stage biotech can actually use.</p>
+      <p class="serif-aside" style="font-size:1.1rem;" data-es="100+ startups deep-tech mapeados en UY · AR · BR.<br>62 empresas biotech activas en Uruguay — 57% sin laboratorio propio.">
         100+ deeptech startups mapped across UY · AR · BR.<br>
         62 active biotech firms in Uruguay alone — 57% without their own lab.
       </p>
-      <span class="source">Census · Lilia Stubrin, Oct 2025 · 71% response · UY biotech registry</span>
+      <span class="source" data-es="Censo · Lilia Stubrin, Oct 2025 · 71% de respuesta · registro biotech UY">Census · Lilia Stubrin, Oct 2025 · 71% response · UY biotech registry</span>
     </div>
   </div>
 </section>
@@ -1466,29 +1484,29 @@ a:focus-visible {
 <!-- ═════════════════════════════ 05 · FOUR SURFACES ═════════════════════════════ -->
 <section class="slide" id="s05">
   <span class="slide-num">05 / 13</span>
-  <span class="slide-kicker reveal">What Photonic Labs is</span>
-  <h2 class="display-lg reveal" style="max-width:22ch;">A single facility, four operating surfaces.</h2>
+  <span class="slide-kicker reveal" data-es="Qué es Photonic Labs">What Photonic Labs is</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Una sola instalación, cuatro superficies operativas.">A single facility, four operating surfaces.</h2>
 
   <div class="surfaces reveal-stagger">
     <div class="surface-row">
       <span class="idx">— 01</span>
-      <h3 class="title">Bioproduction infrastructure</h3>
-      <p class="desc">Multi-platform: prokaryotes, yeasts, CHO, insect, fungi, microalgae. GMP-ready from origin, single-use architecture, 10—50 L Tramo&nbsp;1. Covers roughly two-thirds of the regional biotech pipeline without retooling.</p>
+      <h3 class="title" data-es="Infraestructura de bioproducción">Bioproduction infrastructure</h3>
+      <p class="desc" data-es="Multi-plataforma: procariotas, levaduras, CHO, insecto, hongos, microalgas. GMP-ready desde el origen, arquitectura single-use, 10—50 L Tramo&nbsp;1. Cubre aproximadamente dos tercios del pipeline biotech regional sin reconfigurar.">Multi-platform: prokaryotes, yeasts, CHO, insect, fungi, microalgae. GMP-ready from origin, single-use architecture, 10—50 L Tramo&nbsp;1. Covers roughly two-thirds of the regional biotech pipeline without retooling.</p>
     </div>
     <div class="surface-row">
       <span class="idx">— 02</span>
-      <h3 class="title">Computational + AI capabilities</h3>
-      <p class="desc">Analytical compute (HPLC, qPCR, NanoDrop, ELISA, electrophoresis). Process modeling and digital twin of bioreactor + downstream. In-silico candidate design and molecular ranking. A sovereign LLM stack — open-weight models, locally hosted, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Cryptographically protected custody of biological IP from day one.</p>
+      <h3 class="title" data-es="Capacidades computacionales + IA">Computational + AI capabilities</h3>
+      <p class="desc" data-es="Cómputo analítico (HPLC, qPCR, NanoDrop, ELISA, electroforesis). Modelado de proceso y gemelo digital del biorreactor + downstream. Diseño in-silico de candidatos y ranking molecular. Un stack LLM soberano — modelos open-weight, hospedados localmente, fine-tuneados sobre literatura biotech, corpora regulatorios y datos del pipeline residente. Custodia criptográfica de la PI biológica desde el día uno.">Analytical compute (HPLC, qPCR, NanoDrop, ELISA, electrophoresis). Process modeling and digital twin of bioreactor + downstream. In-silico candidate design and molecular ranking. A sovereign LLM stack — open-weight models, locally hosted, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Cryptographically protected custody of biological IP from day one.</p>
     </div>
     <div class="surface-row">
       <span class="idx">— 03</span>
-      <h3 class="title">Innovation &amp; development</h3>
-      <p class="desc">Frontier process work in gene therapy and CAR-T evaluations. Standalone analytical service for the 34% of surveyed startups that buy analytics only. Transferable dossiers — process, data, regulatory package — ready for client CDMO handoff.</p>
+      <h3 class="title" data-es="Innovación y desarrollo">Innovation &amp; development</h3>
+      <p class="desc" data-es="Trabajo de proceso de frontera en terapia génica y evaluaciones CAR-T. Servicio analítico independiente para el 34% de startups encuestados que compran solo analítica. Dossiers transferibles — proceso, datos, paquete regulatorio — listos para handoff a un CDMO cliente.">Frontier process work in gene therapy and CAR-T evaluations. Standalone analytical service for the 34% of surveyed startups that buy analytics only. Transferable dossiers — process, data, regulatory package — ready for client CDMO handoff.</p>
     </div>
     <div class="surface-row">
       <span class="idx">— 04</span>
-      <h3 class="title">Regulatory &amp; institutional layer</h3>
-      <p class="desc">ANII inside Zona Franca. Trajectory toward FDA (35%) and EMA (28%) of surveyed pipeline. MERCOSUR plus Ley de Inversiones regulatory moat. Uruguay XXI as institutional thread into sovereign and multilateral capital.</p>
+      <h3 class="title" data-es="Capa regulatoria e institucional">Regulatory &amp; institutional layer</h3>
+      <p class="desc" data-es="ANII dentro de Zona Franca. Trayectoria hacia FDA (35%) y EMA (28%) del pipeline encuestado. MERCOSUR más el marco de Ley de Inversiones como moat regulatorio. Uruguay XXI como hilo institucional hacia capital soberano y multilateral.">ANII inside Zona Franca. Trajectory toward FDA (35%) and EMA (28%) of surveyed pipeline. MERCOSUR plus Ley de Inversiones regulatory moat. Uruguay XXI as institutional thread into sovereign and multilateral capital.</p>
     </div>
   </div>
 </section>
@@ -1496,33 +1514,33 @@ a:focus-visible {
 <!-- ═════════════════════════════ 06 · BIOPRODUCTION DETAIL ═════════════════════════════ -->
 <section class="slide" id="s06">
   <span class="slide-num">06 / 13</span>
-  <span class="slide-kicker reveal">Surface 01 · in specification</span>
-  <h2 class="display-lg reveal" style="max-width:20ch;">Bioproduction, sized for the regional pipeline.</h2>
+  <span class="slide-kicker reveal" data-es="Superficie 01 · en especificación">Surface 01 · in specification</span>
+  <h2 class="display-lg reveal" style="max-width:20ch;" data-es="Bioproducción, dimensionada al pipeline regional.">Bioproduction, sized for the regional pipeline.</h2>
 
   <div class="spec-grid reveal-stagger">
     <div class="spec-block">
-      <span class="k">Platforms</span>
-      <span class="v">6 expression systems<small>Prokaryotes · yeasts · CHO · insect · fungi · microalgae — selected to cover the dominant LATAM pipeline without retooling.</small></span>
+      <span class="k" data-es="Plataformas">Platforms</span>
+      <span class="v" data-es="6 sistemas de expresión<small>Procariotas · levaduras · CHO · insecto · hongos · microalgas — seleccionados para cubrir el pipeline dominante de LATAM sin reconfigurar.</small>">6 expression systems<small>Prokaryotes · yeasts · CHO · insect · fungi · microalgae — selected to cover the dominant LATAM pipeline without retooling.</small></span>
     </div>
     <div class="spec-block">
-      <span class="k">Tramo 1 scale</span>
-      <span class="v">10 — 50 L<small>Single-use bioreactor architecture. Modular, fast turnover, compatible with iterative client workflows.</small></span>
+      <span class="k" data-es="Escala Tramo 1">Tramo 1 scale</span>
+      <span class="v" data-es="10 — 50 L<small>Arquitectura de biorreactor single-use. Modular, alto turnover, compatible con flujos iterativos del cliente.</small>">10 — 50 L<small>Single-use bioreactor architecture. Modular, fast turnover, compatible with iterative client workflows.</small></span>
     </div>
     <div class="spec-block">
-      <span class="k">Design grade</span>
-      <span class="v">GMP-ready from day one<small>Flows, materials, surfaces, drainage, QMS. Jump to full GMP without rebuilding the facility. Defensible to investors and to regulators.</small></span>
+      <span class="k" data-es="Grado de diseño">Design grade</span>
+      <span class="v" data-es="GMP-ready desde el día uno<small>Flujos, materiales, superficies, drenajes, QMS. Salto a GMP completo sin reconstruir la planta. Defendible ante inversores y reguladores.</small>">GMP-ready from day one<small>Flows, materials, surfaces, drainage, QMS. Jump to full GMP without rebuilding the facility. Defensible to investors and to regulators.</small></span>
     </div>
     <div class="spec-block">
-      <span class="k">Layout</span>
-      <span class="v">15-zone Tramo 1<small>Designed under Qualia+ engagement. BSL-2, cleanrooms, HVAC, utilities, QA — single coherent plan.</small></span>
+      <span class="k" data-es="Layout">Layout</span>
+      <span class="v" data-es="Tramo 1 de 15 zonas<small>BSL-2, cleanrooms, HVAC, utilities, QA — un único plan coherente.</small>">15-zone Tramo 1<small>Designed under Qualia+ engagement. BSL-2, cleanrooms, HVAC, utilities, QA — single coherent plan.</small></span>
     </div>
     <div class="spec-block">
-      <span class="k">Coverage</span>
-      <span class="v">~60 — 70%<small>Estimated share of the regional pipeline that Photonic Labs can scale without commissioning new lines. The cross-platform breadth is structural, not marketing.</small></span>
+      <span class="k" data-es="Cobertura">Coverage</span>
+      <span class="v" data-es="~60 — 70%<small>Participación estimada del pipeline regional que Photonic Labs puede escalar sin comisionar líneas nuevas. La amplitud multi-plataforma es estructural, no marketing.</small>">~60 — 70%<small>Estimated share of the regional pipeline that Photonic Labs can scale without commissioning new lines. The cross-platform breadth is structural, not marketing.</small></span>
     </div>
     <div class="spec-block">
-      <span class="k">Pipeline density</span>
-      <span class="v">5 — 8 anchor residents<small>Break-even target. 20+ named candidates mapped pre-launch across UY, AR, BR. Sondeo in motion.</small></span>
+      <span class="k" data-es="Densidad de pipeline">Pipeline density</span>
+      <span class="v" data-es="5 — 8 residentes ancla<small>Objetivo de break-even. 20+ candidatos identificados pre-launch en UY, AR, BR. Sondeo en curso.</small>">5 — 8 anchor residents<small>Break-even target. 20+ named candidates mapped pre-launch across UY, AR, BR. Sondeo in motion.</small></span>
     </div>
   </div>
 </section>
@@ -1530,18 +1548,18 @@ a:focus-visible {
 <!-- ═════════════════════════════ 07 · COMPUTATIONAL + AI ═════════════════════════════ -->
 <section class="slide" id="s07">
   <span class="slide-num">07 / 13</span>
-  <span class="slide-kicker reveal">Surface 02 · the integrated layer</span>
-  <h2 class="display-lg reveal" style="max-width:24ch;">Computational <em style="font-family:var(--font-serif);font-weight:300;letter-spacing:-0.025em;">+ AI</em> capabilities, embedded in the lab.</h2>
+  <span class="slide-kicker reveal" data-es="Superficie 02 · la capa integrada">Surface 02 · the integrated layer</span>
+  <h2 class="display-lg reveal" style="max-width:24ch;" data-es="Capacidades computacionales <em style='font-family:var(--font-serif);font-weight:300;letter-spacing:-0.025em;'>+ IA</em>, embebidas en el laboratorio.">Computational <em style="font-family:var(--font-serif);font-weight:300;letter-spacing:-0.025em;">+ AI</em> capabilities, embedded in the lab.</h2>
 
   <div class="computational">
     <ul class="comp-list reveal-stagger">
-      <li><span class="n">— 01</span><span class="t">Analytical instrumentation<small>HPLC, qPCR, NanoDrop, ELISA, electrophoresis — the substrate of standalone analytical service revenue (34% of surveyed startups buy this and only this).</small></span></li>
-      <li><span class="n">— 02</span><span class="t">Process modeling &amp; digital twin<small>Bioreactor and downstream modeled in advance. Iterations on screen before iterations in the wet lab. Compresses validation cycles by months.</small></span></li>
-      <li><span class="n">— 03</span><span class="t">In-silico candidate design<small>Generative protein design, molecular ranking, and advisory access to frontier computational resources. Decisions made before lots are produced.</small></span></li>
-      <li><span class="n">— 04</span><span class="t">Sovereign AI · domain LLM stack<small>Open-weight foundation models, locally hosted on regionally-sited compute, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Retrieval-augmented regulatory drafting, operator-grade lab assistants, and pipeline forecasting live inside the building — not behind a vendor's API.</small></span></li>
-      <li><span class="n">— 05</span><span class="t">Sovereign-aligned IP custody<small>Cryptographically protected MCB / WCB lineage. Biological IP defended at the storage layer, not just the contractual layer.</small></span></li>
+      <li><span class="n">— 01</span><span class="t" data-es="Instrumentación analítica<small>HPLC, qPCR, NanoDrop, ELISA, electroforesis — el sustrato del ingreso por servicio analítico independiente (34% de startups encuestados compra esto y solo esto).</small>">Analytical instrumentation<small>HPLC, qPCR, NanoDrop, ELISA, electrophoresis — the substrate of standalone analytical service revenue (34% of surveyed startups buy this and only this).</small></span></li>
+      <li><span class="n">— 02</span><span class="t" data-es="Modelado de proceso y gemelo digital<small>Biorreactor y downstream modelados por adelantado. Iteraciones en pantalla antes de iteraciones en el wet lab. Comprime ciclos de validación por meses.</small>">Process modeling &amp; digital twin<small>Bioreactor and downstream modeled in advance. Iterations on screen before iterations in the wet lab. Compresses validation cycles by months.</small></span></li>
+      <li><span class="n">— 03</span><span class="t" data-es="Diseño in-silico de candidatos<small>Diseño generativo de proteínas, ranking molecular y acceso consultivo a recursos computacionales de frontera. Decisiones tomadas antes de producir lotes.</small>">In-silico candidate design<small>Generative protein design, molecular ranking, and advisory access to frontier computational resources. Decisions made before lots are produced.</small></span></li>
+      <li><span class="n">— 04</span><span class="t" data-es="IA soberana · stack LLM de dominio<small>Modelos foundation open-weight, hospedados localmente sobre cómputo emplazado en la región, fine-tuneados sobre literatura biotech, corpora regulatorios y datos del pipeline residente. Redacción regulatoria asistida por retrieval, asistentes de laboratorio grado-operador y forecasting de pipeline viven dentro del edificio — no detrás de la API de un proveedor.</small>">Sovereign AI · domain LLM stack<small>Open-weight foundation models, locally hosted on regionally-sited compute, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Retrieval-augmented regulatory drafting, operator-grade lab assistants, and pipeline forecasting live inside the building — not behind a vendor's API.</small></span></li>
+      <li><span class="n">— 05</span><span class="t" data-es="Custodia de PI alineada soberanamente<small>Linaje MCB / WCB protegido criptográficamente. La PI biológica se defiende en la capa de almacenamiento, no solo en la capa contractual.</small>">Sovereign-aligned IP custody<small>Cryptographically protected MCB / WCB lineage. Biological IP defended at the storage layer, not just the contractual layer.</small></span></li>
     </ul>
-    <p class="comp-aside reveal">
+    <p class="comp-aside reveal" data-es="Bioproducción sin un piso computacional es trabajo de wet lab. Photonic Labs está construido para que el loop in-silico completo — instrumentos, gemelo digital, IA generativa, y el stack LLM soberano que los orquesta — sea parte del edificio, no una relación con un proveedor incorporada después.">
       Bioproduction without a computational floor is wet-lab labor. Photonic Labs is built so the full in-silico loop — instruments, digital twin, generative AI, and the sovereign LLM stack that orchestrates them — is part of the building, not a vendor relationship retrofitted later.
     </p>
   </div>
@@ -1550,86 +1568,80 @@ a:focus-visible {
 <!-- ═════════════════════════════ 08 · WHY URUGUAY ═════════════════════════════ -->
 <section class="slide" id="s08">
   <span class="slide-num">08 / 13</span>
-  <span class="slide-kicker reveal">Why Uruguay, structurally</span>
-  <h2 class="display-lg reveal" style="max-width:22ch;">A state that has already built the instruments.</h2>
+  <span class="slide-kicker reveal" data-es="Por qué Uruguay, estructuralmente">Why Uruguay, structurally</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Un Estado que ya construyó los instrumentos.">A state that has already built the instruments.</h2>
 
   <div class="uy-grid">
-    <p class="body body-loose reveal">
+    <p class="body body-loose reveal" data-es="Uruguay no es un destino por defecto — es uno deliberado. El país pasó dos décadas ensamblando la arquitectura legal, fiscal e institucional que la infraestructura biotech ahora necesita. Los instrumentos existen. Esperaban a un emprendimiento dimensionado para usarlos todos a la vez.">
       Uruguay is not a default destination — it is a deliberate one. The country has spent two decades assembling the legal, fiscal, and institutional architecture that biotech infrastructure now needs. The instruments exist. They were waiting for a venture sized to use them all at once.
     </p>
     <div class="uy-instruments reveal-stagger">
-      <div class="uy-row"><span class="n">— 01</span><span class="nm">ANII</span><span class="dx">National research agency. 70% non-reimbursable co-financing, cap UYU 4M. Confirmed available <em>inside Zona Franca</em> since 2025 — structurally changing the ZF calculus.</span></div>
-      <div class="uy-row"><span class="n">— 02</span><span class="nm">Zona Franca biotech</span><span class="dx">IRAE 0%, import duty savings, optimal for regional export operations. Ley 19.566 framework — multi-platform biotech specifically contemplated.</span></div>
-      <div class="uy-row"><span class="n">— 03</span><span class="nm">Ley de Inversiones</span><span class="dx">Tax credit framework for qualifying investment. Stackable with ZF and ANII. The reason a sub-$3M CAPEX clears regional thresholds for institutional capital.</span></div>
-      <div class="uy-row"><span class="n">— 04</span><span class="nm">Uruguay XXI</span><span class="dx">Sovereign investment promotion agency. Institutional thread into multilateral capital, embassy networks, and bilateral programs.</span></div>
-      <div class="uy-row"><span class="n">— 05</span><span class="nm">MERCOSUR + FDA / EMA</span><span class="dx">35% of surveyed pipeline targets FDA. 28% targets EMA. Photonic Labs is sequenced to graduate residents into both jurisdictions, not just regional registries.</span></div>
-      <div class="uy-row"><span class="n">— 06</span><span class="nm">Parque de las Ciencias</span><span class="dx">Bio-adapted ZF infrastructure already operational. Co-tenant ecosystem reduces commissioning risk and accelerates regulatory inspection cycles.</span></div>
+      <div class="uy-row"><span class="n">— 01</span><span class="nm">ANII</span><span class="dx" data-es="Agencia nacional de investigación. 70% de cofinanciamiento no reembolsable, tope UYU 4M. Confirmada disponible <em>dentro de Zona Franca</em> desde 2025 — cambiando estructuralmente el cálculo de ZF.">National research agency. 70% non-reimbursable co-financing, cap UYU 4M. Confirmed available <em>inside Zona Franca</em> since 2025 — structurally changing the ZF calculus.</span></div>
+      <div class="uy-row"><span class="n">— 02</span><span class="nm">Zona Franca biotech</span><span class="dx" data-es="IRAE 0%, ahorro en aranceles de importación, óptima para operaciones de exportación regional. Marco Ley 19.566 — biotech multi-plataforma específicamente contemplada.">IRAE 0%, import duty savings, optimal for regional export operations. Ley 19.566 framework — multi-platform biotech specifically contemplated.</span></div>
+      <div class="uy-row"><span class="n">— 03</span><span class="nm">Ley de Inversiones</span><span class="dx" data-es="Marco de crédito fiscal para inversión calificada. Apilable con ZF y ANII. La razón por la que un CAPEX sub-USD 3M supera los thresholds regionales del capital institucional.">Tax credit framework for qualifying investment. Stackable with ZF and ANII. The reason a sub-$3M CAPEX clears regional thresholds for institutional capital.</span></div>
+      <div class="uy-row"><span class="n">— 04</span><span class="nm">Uruguay XXI</span><span class="dx" data-es="Agencia soberana de promoción de inversiones. Hilo institucional hacia capital multilateral, redes de embajada y programas bilaterales.">Sovereign investment promotion agency. Institutional thread into multilateral capital, embassy networks, and bilateral programs.</span></div>
+      <div class="uy-row"><span class="n">— 05</span><span class="nm">MERCOSUR + FDA / EMA</span><span class="dx" data-es="35% del pipeline encuestado apunta a FDA. 28% a EMA. Photonic Labs está secuenciado para graduar residentes en ambas jurisdicciones, no solo registros regionales.">35% of surveyed pipeline targets FDA. 28% targets EMA. Photonic Labs is sequenced to graduate residents into both jurisdictions, not just regional registries.</span></div>
+      <div class="uy-row"><span class="n">— 06</span><span class="nm">Parque de las Ciencias</span><span class="dx" data-es="Infraestructura ZF bio-adaptada ya operativa. El ecosistema de co-tenants reduce el riesgo de comisionamiento y acelera los ciclos de inspección regulatoria.">Bio-adapted ZF infrastructure already operational. Co-tenant ecosystem reduces commissioning risk and accelerates regulatory inspection cycles.</span></div>
     </div>
   </div>
 </section>
 
-<!-- ═════════════════════════════ 09 · TEAM + ADVISORY ═════════════════════════════ -->
+<!-- ═════════════════════════════ 09 · TEAM ═════════════════════════════ -->
 <section class="slide" id="s09">
   <span class="slide-num">09 / 13</span>
-  <span class="slide-kicker reveal">Who is building it</span>
-  <h2 class="display-lg reveal" style="max-width:24ch;">A single-owner pattern, with pillar-level co-leadership.</h2>
+  <span class="slide-kicker reveal" data-es="Quién lo está construyendo">Who is building it</span>
+  <h2 class="display-lg reveal" style="max-width:24ch;" data-es="Un patrón de propietario único, con co-liderazgo a nivel de pilar.">A single-owner pattern, with pillar-level co-leadership.</h2>
 
   <div class="team-grid reveal-stagger">
     <div class="team-card">
-      <span class="role">— Founder · Primary owner</span>
+      <span class="role" data-es="— Fundador · Propietario primario">— Founder · Primary owner</span>
       <span class="name">René Labarthe</span>
-      <span class="bio">Holds the unified narrative, positioning, business plan and capital architecture. BOTH Ventures Head of Strategy + Comms. Accountable for institutional coherence across all four surfaces.</span>
+      <span class="bio" data-es="Sostiene la narrativa unificada, el posicionamiento, el business plan y la arquitectura de capital. Head of Strategy + Comms de BOTH Ventures. Responsable de la coherencia institucional a través de las cuatro superficies.">Holds the unified narrative, positioning, business plan and capital architecture. BOTH Ventures Head of Strategy + Comms. Accountable for institutional coherence across all four surfaces.</span>
     </div>
     <div class="team-card">
-      <span class="role">— External &amp; strategic capital</span>
+      <span class="role" data-es="— Capital externo y estratégico">— External &amp; strategic capital</span>
       <span class="name">Gastón Frydlewski</span>
-      <span class="bio">CEO of BOTH Ventures. Primary external face on sovereign, multilateral, and tier-1 capital threads. Decision authority on round structure, allocation, and exits.</span>
+      <span class="bio" data-es="CEO de BOTH Ventures. Cara externa primaria en los hilos de capital soberano, multilateral y tier-1. Autoridad de decisión sobre estructura de ronda, asignación y exits.">CEO of BOTH Ventures. Primary external face on sovereign, multilateral, and tier-1 capital threads. Decision authority on round structure, allocation, and exits.</span>
     </div>
     <div class="team-card">
-      <span class="role">— Legal &amp; governance</span>
+      <span class="role" data-es="— Legal y governance">— Legal &amp; governance</span>
       <span class="name">Andrés Burecovics</span>
-      <span class="bio">Co-founder, Chief Legal Officer. Sole authority on legal structuring, multi-jurisdictional governance, regulatory architecture, and due diligence.</span>
+      <span class="bio" data-es="Co-fundador, Chief Legal Officer. Autoridad única sobre estructuración legal, governance multi-jurisdiccional, arquitectura regulatoria y due diligence.">Co-founder, Chief Legal Officer. Sole authority on legal structuring, multi-jurisdictional governance, regulatory architecture, and due diligence.</span>
     </div>
     <div class="team-card">
-      <span class="role">— Operations &amp; finance</span>
+      <span class="role" data-es="— Operaciones y finanzas">— Operations &amp; finance</span>
       <span class="name">Daiana Goldenberg</span>
-      <span class="bio">Operations and finance lead. Independent validation of the financial model. Process design across the build-out and operating phases.</span>
+      <span class="bio" data-es="Lead de operaciones y finanzas. Validación independiente del modelo financiero. Diseño de procesos a través de las fases de build-out y operación.">Operations and finance lead. Independent validation of the financial model. Process design across the build-out and operating phases.</span>
     </div>
     <div class="team-card">
-      <span class="role">— Technical &amp; infrastructure</span>
+      <span class="role" data-es="— Técnico e infraestructura">— Technical &amp; infrastructure</span>
       <span class="name">Mariano Boris</span>
-      <span class="bio">Technical lead on the computational layer and integrated infrastructure stack. Scoping sovereign-aligned compute and local model deployment.</span>
+      <span class="bio" data-es="Lead técnico sobre la capa computacional y el stack de infraestructura integrada. Scoping de cómputo alineado soberanamente y despliegue de modelos locales.">Technical lead on the computational layer and integrated infrastructure stack. Scoping sovereign-aligned compute and local model deployment.</span>
     </div>
   </div>
 
-  <div class="qualia-band reveal">
-    <span class="lbl">Qualia+ Strategic Advisory</span>
-    <p class="qbody">
-      <strong>Alejandro San Juan</strong> — neurosurgeon, biotech-trained, from a multi-generational medical-scientific lineage. Co-author of the regulatory positioning. Public-facing on the project.<br><br>
-      <strong>Juan Eduardo Ceriani (JEC)</strong> — regional eminence in top-tier Pharma laboratory architecture and GMP operations. Currently President of AmegaLabs; former Director of the Argentine Cámara de Biotecnología. Brings the operating depth a young venture cannot manufacture.
-    </p>
-  </div>
+  <!-- Qualia+ advisory band removed per Rene 2026-05-21 — not for external surface at this stage. -->
 </section>
 
 <!-- ═════════════════════════════ 10 · SUBSTRATE / TRACTION ═════════════════════════════ -->
 <section class="slide" id="s10">
   <span class="slide-num">10 / 13</span>
-  <span class="slide-kicker reveal">What is already in place</span>
-  <h2 class="display-lg reveal" style="max-width:22ch;">Substrate, not slideware.</h2>
-  <p class="body body-loose reveal">
+  <span class="slide-kicker reveal" data-es="Lo que ya está en su lugar">What is already in place</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Sustrato, no slideware.">Substrate, not slideware.</h2>
+  <p class="body body-loose reveal" data-es="Photonic Labs entra a esta conversación con el sustrato de diseño, legal, mercado y operacional ya ensamblado. La presentación no introduce una tesis — resume una que el equipo viene construyendo, con socios identificados y entregables documentados, hace más de un año.">
     Photonic Labs enters this conversation with the design, legal, market, and operational substrate already assembled. The deck does not introduce a thesis — it summarises one that the team has been building, with named partners and documented deliverables, for over a year.
   </p>
 
   <div class="substrate-grid reveal-stagger">
-    <div class="sub-tile"><span class="num">15</span><span class="lbl">Zones in the<br>Tramo 1 lab design</span></div>
-    <div class="sub-tile"><span class="num">5</span><span class="lbl">Regulatory<br>instruments verified</span></div>
-    <div class="sub-tile"><span class="num">7</span><span class="lbl">Qualia+ source<br>documents in vault</span></div>
-    <div class="sub-tile"><span class="num">62</span><span class="lbl">Biotech firms<br>active in Uruguay</span></div>
-    <div class="sub-tile"><span class="num">74</span><span class="lbl">Demand survey<br>responses (AR · partial)</span></div>
-    <div class="sub-tile"><span class="num">20+</span><span class="lbl">Named resident<br>candidates mapped</span></div>
+    <div class="sub-tile"><span class="num">15</span><span class="lbl" data-es="Zonas en el<br>diseño Tramo 1">Zones in the<br>Tramo 1 lab design</span></div>
+    <div class="sub-tile"><span class="num">5</span><span class="lbl" data-es="Instrumentos<br>regulatorios verificados">Regulatory<br>instruments verified</span></div>
+    <div class="sub-tile"><span class="num">7</span><span class="lbl" data-es="Documentos fuente<br>en el vault">Qualia+ source<br>documents in vault</span></div>
+    <div class="sub-tile"><span class="num">62</span><span class="lbl" data-es="Empresas biotech<br>activas en Uruguay">Biotech firms<br>active in Uruguay</span></div>
+    <div class="sub-tile"><span class="num">74</span><span class="lbl" data-es="Respuestas a sondeo<br>de demanda (AR · parcial)">Demand survey<br>responses (AR · partial)</span></div>
+    <div class="sub-tile"><span class="num">20+</span><span class="lbl" data-es="Candidatos residentes<br>identificados">Named resident<br>candidates mapped</span></div>
   </div>
 
-  <p class="serif-aside reveal" style="margin-top:2.5rem;max-width:60ch;">
+  <p class="serif-aside reveal" style="margin-top:2.5rem;max-width:60ch;" data-es="El trabajo de los próximos doce meses es convertir este sustrato en un edificio, una licencia, una cohorte ancla y un primer dossier entregado a un socio CDMO regional.">
     The work of the next twelve months is to convert this substrate into a building, a license, an anchor cohort, and a first dossier handed to a regional CDMO partner.
   </p>
 </section>
@@ -1641,35 +1653,35 @@ a:focus-visible {
 <!-- ═════════════════════════════ 11 · THE FOUR ASKS ═════════════════════════════ -->
 <section class="slide" id="s12">
   <span class="slide-num">11 / 13</span>
-  <span class="slide-kicker reveal">What we are asking</span>
-  <h2 class="display-lg reveal" style="max-width:18ch;">Four asks, one architecture.</h2>
+  <span class="slide-kicker reveal" data-es="Lo que estamos pidiendo">What we are asking</span>
+  <h2 class="display-lg reveal" style="max-width:18ch;" data-es="Cuatro pedidos, una arquitectura.">Four asks, one architecture.</h2>
 
   <div class="ask-stack reveal-stagger">
     <div class="ask-row">
       <span class="n">— 01</span>
-      <h3 class="title">Sovereign endorsement</h3>
-      <p class="body">
+      <h3 class="title" data-es="Endoso soberano">Sovereign endorsement</h3>
+      <p class="body" data-es="De Presidencia ROU, MEF, MIEM, ANII y Uruguay XXI — carta de apoyo, posicionamiento ZF, alineación ministerial e inclusión en la narrativa industrial deep-tech del país. Photonic Labs está construido para ser un activo estratégico nacional. El Estado debe reconocerlo como tal.">
         From Presidencia ROU, MEF, MIEM, ANII, and Uruguay XXI — letter of support, ZF positioning, ministerial alignment, and inclusion in the country's deep-tech industrial narrative. Photonic Labs is built to be a national strategic asset. The state should recognise it as one.
       </p>
     </div>
     <div class="ask-row">
       <span class="n">— 02</span>
-      <h3 class="title">Anchor capital</h3>
-      <p class="body">
+      <h3 class="title" data-es="Capital ancla">Anchor capital</h3>
+      <p class="body" data-es="Compromiso cornerstone de <strong>USD 2 — 3 M</strong> en el CAPEX del Pilar 01. Abierto a co-inversión soberana, finanzas de desarrollo, family offices alineados con la misión, e in-kind estratégico de socios de equipamiento. El componente no reembolsable de ANII corre en paralelo — nunca en lugar de.">
         Cornerstone commitment of <strong>USD 2 — 3 M</strong> into the Pillar 01 CAPEX. Open to sovereign co-investment, development finance, mission-aligned family offices, and strategic in-kind from equipment partners. ANII non-reimbursable component runs in parallel — never instead of.
       </p>
     </div>
     <div class="ask-row">
       <span class="n">— 03</span>
-      <h3 class="title">Strategic partners</h3>
-      <p class="body">
+      <h3 class="title" data-es="Socios estratégicos">Strategic partners</h3>
+      <p class="body" data-es="Contrapartes pharma tier-1 como offtake de manufactura, socios de co-desarrollo de I+D o anclas de advisory científico. El dossier que ofrecemos es un punto de transferencia regional con calidad GMP que des-riesga los pipelines biotech deep-tech LATAM para fabricantes globales.">
         Tier-1 pharma counterparts as manufacturing offtake, R&amp;D co-development partners, or scientific advisory anchors. The dossier on offer is a regional GMP-grade transfer point that de-risks LATAM deeptech biotech pipelines for global manufacturers.
       </p>
     </div>
     <div class="ask-row">
       <span class="n">— 04</span>
-      <h3 class="title">Talent</h3>
-      <p class="body">
+      <h3 class="title" data-es="Talento">Talent</h3>
+      <p class="body" data-es="Un director de sitio con experiencia GMP y transferencia tecnológica. Liderazgo de operaciones y calidad formado en ambientes de manufactura regulada. Un board científico asesor con peso público en Uruguay, Argentina y Brasil — dimensionado para convocar una cohorte regional.">
         A site director with GMP and tech-transfer experience. Operations and quality leadership trained inside regulated manufacturing environments. A scientific advisory board with public weight in Uruguay, Argentina, and Brazil — sized to convene a regional cohort.
       </p>
     </div>
@@ -1679,14 +1691,14 @@ a:focus-visible {
 <!-- ═════════════════════════════ 12 · SEQUENCING ═════════════════════════════ -->
 <section class="slide" id="s13">
   <span class="slide-num">12 / 13</span>
-  <span class="slide-kicker reveal">How it sequences</span>
-  <h2 class="display-lg reveal" style="max-width:22ch;">Ahead of the regional capital cycle.</h2>
+  <span class="slide-kicker reveal" data-es="Cómo se secuencia">How it sequences</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Adelantado al ciclo regional de capital.">Ahead of the regional capital cycle.</h2>
 
   <div class="seq-grid reveal-stagger">
     <div class="seq-col">
-      <span class="period">— Year 0 — 1</span>
-      <h3 class="phase">Structure &amp; substrate</h3>
-      <ul>
+      <span class="period" data-es="— Año 0 — 1">— Year 0 — 1</span>
+      <h3 class="phase" data-es="Estructura y sustrato">Structure &amp; substrate</h3>
+      <ul data-es="<li>Carta de apoyo soberano asegurada</li><li>Estructura corporativa ZF + ANII activada</li><li>Capital ancla comprometido · cornerstone cerrado</li><li>Diseño de laboratorio congelado · construcción licitada</li><li>5—8 LOIs de residentes desde la cohorte del sondeo</li><li>QA Director y equipo de sitio en marcha</li>">
         <li>Sovereign letter of support secured</li>
         <li>ZF + ANII corporate structure activated</li>
         <li>Anchor capital committed · cornerstone closed</li>
@@ -1696,9 +1708,9 @@ a:focus-visible {
       </ul>
     </div>
     <div class="seq-col">
-      <span class="period">— Year 1 — 2</span>
-      <h3 class="phase">Build &amp; first cohort</h3>
-      <ul>
+      <span class="period" data-es="— Año 1 — 2">— Year 1 — 2</span>
+      <h3 class="phase" data-es="Construcción y primera cohorte">Build &amp; first cohort</h3>
+      <ul data-es="<li>Planta Tramo 1 operativa · 15 zonas activas</li><li>Primera cohorte de residentes incorporada</li><li>Ingresos analíticos y EaaS activos</li><li>Primer dossier de proyecto con calidad GMP entregado</li><li>Engagements de investigación cross-pillar activos</li><li>Cash trough cruzado en Mes 10 · break-even M22</li>">
         <li>Tramo 1 facility operational · 15 zones live</li>
         <li>First resident cohort onboarded</li>
         <li>Analytical and EaaS revenue active</li>
@@ -1708,9 +1720,9 @@ a:focus-visible {
       </ul>
     </div>
     <div class="seq-col">
-      <span class="period">— Year 2 — 4</span>
-      <h3 class="phase">GMP &amp; expansion</h3>
-      <ul>
+      <span class="period" data-es="— Año 2 — 4">— Year 2 — 4</span>
+      <h3 class="phase" data-es="GMP y expansión">GMP &amp; expansion</h3>
+      <ul data-es="<li>Entidad ZF activa · IRAE 0% sobre operaciones de exportación</li><li>Año 3 base: USD 1.80 M de ingresos · +13% EBITDA</li><li>Serie B / ronda de escala sobre datos operativos</li><li>Participación en equity activada · graduaciones de residentes</li><li>Partnerships regionales con CDMOs formalizados</li><li>Objetivo Modelo 5 híbrido — GMP completo a escala</li>">
         <li>ZF entity active · IRAE 0% on export operations</li>
         <li>Year 3 base: USD 1.80 M revenue · +13% EBITDA</li>
         <li>Series B / scale round on operating data</li>
@@ -1727,36 +1739,36 @@ a:focus-visible {
   <span class="slide-num">13 / 13</span>
 
   <div class="close-stage">
-    <h2 class="close-line reveal">
+    <h2 class="close-line reveal" data-es="Construido desde Uruguay,<br><span class='em-it'>secuenciado</span> antes<br>del ciclo.">
       Built from Uruguay,<br>
       <span class="em-it">sequenced</span> ahead<br>
       of the cycle.
     </h2>
-    <p class="close-coda reveal">
+    <p class="close-coda reveal" data-es="El ciclo regional de capital todavía está cargando. La capa de infraestructura que va a necesitar, no. Photonic Labs se está construyendo en la ventana entre esos dos hechos — y estamos invitando a Uruguay, a pharma tier-1, al capital de desarrollo y a operadores alineados a construirla con nosotros.">
       The regional capital cycle is still loading. The infrastructure layer it will need is not. Photonic Labs is being built in the window between those two facts — and we are inviting Uruguay, top-tier pharma, development capital, and aligned operators to build it with us.
     </p>
   </div>
 
   <div class="contact-footer reveal-stagger">
     <div class="blk">
-      <span>— Contact</span>
+      <span data-es="— Contacto">— Contact</span>
       <span class="v">René Labarthe</span>
       <span class="v lower">rene@both.ventures</span>
     </div>
     <div class="blk">
-      <span>— Sponsor</span>
+      <span data-es="— Sponsor">— Sponsor</span>
       <span class="v">BOTH Ventures</span>
       <span class="v lower">Punta del Este · Uruguay</span>
     </div>
     <div class="blk">
-      <span>— Document</span>
+      <span data-es="— Documento">— Document</span>
       <span class="v">Photonic Labs · V0.2.0</span>
-      <span class="v lower">Q-02.26 · Institutional</span>
+      <span class="v lower" data-es="Q-02.26 · Institucional">Q-02.26 · Institutional</span>
     </div>
     <div class="blk">
-      <span>— Status</span>
-      <span class="v">Pre-build · capital open</span>
-      <span class="v lower">Sovereign · Pharma · DFI</span>
+      <span data-es="— Estado">— Status</span>
+      <span class="v" data-es="Pre-construcción · capital abierto">Pre-build · capital open</span>
+      <span class="v lower" data-es="Soberano · Pharma · DFI">Sovereign · Pharma · DFI</span>
     </div>
   </div>
 </section>
@@ -1995,8 +2007,9 @@ a:focus-visible {
     togglesEl.addEventListener('mouseleave', () => { mouse.inControls = false; cursorEl.classList.remove('over-controls'); });
   }
 
-  // theme toggle — sets canvas palette + data attribute on the hero
+  // theme toggle — sets data-theme on the document root (whole deck reskins) AND on the hero (canvas palette)
   function setTheme(name) {
+    document.documentElement.setAttribute('data-theme', name);
     heroEl.setAttribute('data-pl-theme', name);
     PAPER = THEMES[name].paper; INK = THEMES[name].ink; INK_SOFT = THEMES[name].inkSoft;
     document.querySelectorAll('.pl-toggles .pl-theme').forEach(btn => btn.classList.toggle('on', btn.dataset.theme === name));
@@ -2004,8 +2017,8 @@ a:focus-visible {
   }
   document.querySelectorAll('.pl-toggles .pl-theme').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme)));
 
-  // language toggle
-  const I18N = {
+  // Hero-only translations (kept for hero-specific strings; deck-wide translation handled by setLang below)
+  const I18N_HERO = {
     en: {
       eyebrow: 'Built for the LATAM pipeline',
       headline: 'Uruguay’s first <em>Biotech</em> <em>scale‑up</em> facility',
@@ -2019,14 +2032,22 @@ a:focus-visible {
       cursorHint: '↳ MUEVE EL CURSOR PARA REFRACTAR · SCROLL PARA AVANZAR',
     }
   };
+  // Deck-wide translation: every element with data-es swaps innerHTML between cached EN (data-en) and data-es.
   function setLang(lang) {
-    const dict = I18N[lang] || I18N.en;
+    // hero-specific keys
+    const dict = I18N_HERO[lang] || I18N_HERO.en;
     heroEl.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.dataset.i18n;
       if (!(key in dict)) return;
       if (el.hasAttribute('data-i18n-html')) el.innerHTML = dict[key];
       else el.textContent = dict[key];
     });
+    // deck-wide [data-es]
+    document.querySelectorAll('[data-es]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML.trim();
+      el.innerHTML = lang === 'es' ? el.dataset.es : el.dataset.en;
+    });
+    document.documentElement.setAttribute('lang', lang);
     document.querySelectorAll('.pl-toggles .pl-lang').forEach(btn => btn.classList.toggle('on', btn.dataset.lang === lang));
     try { localStorage.setItem('pl-lang', lang); } catch (e) {}
   }
