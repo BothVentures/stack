@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — V4.0.0 / ATLAS</title>
+<meta name="description" content="Synergy Atlas V4 — L0 Doctrine · L1 Constellation · L2 Domain · L3 Pipeline. Every node clickable, self-describing. Data live from canonical sources.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=VT323&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   B_V® | OS · V4.0.0 / ATLAS
+   Four discrete zoom levels (L0 Doctrine · L1 Constellation · L2 Domain · L3 Pipeline)
+   Data loaded from atlas-data.json. Drawer reads source files live.
+═══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ff-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
+  --ff-mono:    'Space Mono', 'Courier New', monospace;
+  --ff-glyph:   'VT323', 'Courier New', monospace;
+
+  --bg:        oklch(8% 0 0);
+  --bg-soft:   oklch(4% 0 0);
+  --bg-card:   oklch(14% 0 0);
+  --bg-deep:   oklch(0% 0 0);
+  --fg:        oklch(94% 0 0);
+  --fg-bright: oklch(100% 0 0);
+  --fg-dim:    oklch(64% 0 0 / 0.7);
+  --rule:      oklch(94% 0 0 / 0.4);
+  --rule-soft: oklch(94% 0 0 / 0.14);
+  --accent:    oklch(62% 0.11 115);
+  --accent-soft: oklch(62% 0.11 115 / 0.18);
+  --accent-glow: oklch(62% 0.11 115 / 0.45);
+  --build:     oklch(62% 0.11 115);
+  --explore:   oklch(94% 0 0);
+  --hold:      oklch(56% 0 0);
+  --grid-color: oklch(94% 0 0 / 0.045);
+
+  --ease:      cubic-bezier(0.7, 0, 0.2, 1);
+  --swap:      280ms var(--ease);
+}
+
+html, body { height: 100%; width: 100%; }
+body {
+  overflow: hidden;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--fg);
+  position: relative;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain texture overlay (lifted from V3) */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Custom cursor ─────────────────────────────────────────────────── */
+.cursor-dot, .cursor-bracket {
+  position: fixed; pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 60ms linear;
+}
+.cursor-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--fg-bright); mix-blend-mode: difference;
+}
+.cursor-bracket {
+  font-family: var(--ff-glyph);
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: -0.05em;
+}
+.cursor-bracket::before { content: '['; }
+body.cursor-hover .cursor-dot { background: var(--accent); width: 10px; height: 10px; }
+body.cursor-hover .cursor-bracket::before { content: '[→'; color: var(--fg-bright); }
+
+/* ─── Top bar ───────────────────────────────────────────────────────── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 44px;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: 220px 1fr 220px;
+  align-items: center;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--rule-soft);
+  background: oklch(4% 0 0 / 0.7);
+  backdrop-filter: blur(6px);
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.tb-mark { color: var(--accent); font-family: var(--ff-display); font-size: 16px; letter-spacing: 0.04em; }
+.tb-mark span { color: var(--fg-dim); margin-left: 8px; font-family: var(--ff-mono); font-size: 9px; }
+.tb-tabs { display: flex; gap: 4px; justify-content: center; }
+.tb-tab {
+  cursor: none;
+  padding: 6px 14px;
+  border: 1px solid var(--rule-soft);
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  transition: all var(--swap);
+}
+.tb-tab:hover { color: var(--fg); border-color: var(--rule); }
+.tb-tab.active {
+  color: var(--bg-deep);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tb-meta { text-align: right; color: var(--fg-dim); font-size: 9px; }
+.tb-meta strong { color: var(--accent); font-weight: 400; }
+
+/* ─── Breadcrumb ────────────────────────────────────────────────────── */
+.breadcrumb {
+  position: fixed;
+  top: 56px; left: 18px;
+  z-index: 150;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.breadcrumb span { color: var(--fg); }
+.breadcrumb em { color: var(--accent); font-style: normal; }
+
+/* ─── Filter rail ───────────────────────────────────────────────────── */
+.filter-rail {
+  position: fixed;
+  top: 80px; left: 18px;
+  z-index: 100;
+  width: 196px;
+  border: 1px solid var(--rule-soft);
+  background: oklch(0% 0 0 / 0.55);
+  backdrop-filter: blur(4px);
+  padding: 14px;
+}
+.fr-title {
+  font-family: var(--ff-display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.fr-chip {
+  cursor: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  margin-bottom: 4px;
+  border: 1px solid var(--rule-soft);
+  background: transparent;
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all var(--swap);
+}
+.fr-chip:hover { color: var(--fg); border-color: var(--rule); }
+.fr-chip.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.fr-chip .glyph { color: var(--accent); margin-right: 6px; }
+.fr-chip .count { color: var(--fg-dim); font-size: 9px; }
+.fr-divider { height: 1px; background: var(--rule-soft); margin: 12px 0 10px; }
+.fr-foot { font-size: 9px; color: var(--fg-dim); line-height: 1.6; }
+.fr-foot strong { color: var(--accent); font-weight: 400; }
+
+/* ─── Atlas canvas ──────────────────────────────────────────────────── */
+.atlas {
+  position: fixed;
+  top: 44px; left: 232px; right: 0; bottom: 0;
+  background: radial-gradient(circle at 50% 50%, oklch(10% 0 0) 0%, var(--bg) 70%);
+  overflow: hidden;
+}
+.atlas-marks {
+  position: absolute;
+  top: 14px; left: 18px; right: 18px;
+  display: flex; justify-content: space-between;
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  z-index: 5;
+}
+.atlas-marks strong { color: var(--accent); font-weight: 400; }
+.atlas-stage {
+  width: 100%; height: 100%;
+  display: block;
+}
+
+/* ─── Nodes ─────────────────────────────────────────────────────────── */
+.node { cursor: none; transition: opacity var(--swap), transform var(--swap); transform-box: fill-box; transform-origin: center; }
+.node:hover { opacity: 1 !important; }
+.node:hover .shape { stroke-width: 2; }
+.node .shape {
+  fill: var(--bg);
+  stroke: var(--fg);
+  stroke-width: 1.2;
+  transition: all var(--swap);
+}
+.node .label {
+  fill: var(--fg);
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-anchor: middle;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+.node .sublabel {
+  fill: var(--fg-dim);
+  font-family: var(--ff-mono);
+  font-size: 8px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.node[data-type="venture"] .shape { fill: var(--accent-soft); stroke: var(--accent); }
+.node[data-type="agent"] .shape { stroke: var(--fg); }
+.node[data-type="skill"] .shape { stroke: var(--fg-dim); stroke-dasharray: 2 2; }
+.node[data-type="harness"] .shape { stroke: var(--accent); }
+.node[data-type="person"] .shape { fill: var(--bg-card); stroke: var(--fg-bright); stroke-width: 1.5; }
+.node[data-type="area"] .shape { fill: oklch(14% 0 0); stroke: var(--accent); stroke-dasharray: 4 2; }
+.node[data-type="infra"] .shape { fill: var(--bg); stroke: var(--fg); }
+.node[data-type="project"] .shape { fill: var(--bg-soft); stroke: var(--hold); stroke-dasharray: 1 3; }
+
+.node.selected .shape {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+.node.dim { opacity: 0.18; }
+
+/* Edges */
+.edge {
+  stroke: var(--rule-soft);
+  stroke-width: 0.6;
+  fill: none;
+  transition: all var(--swap);
+}
+.edge.highlight { stroke: var(--accent); stroke-width: 1.4; }
+.edge.dim { opacity: 0.05; }
+
+/* Cluster halos (L2) */
+.cluster-halo {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+  stroke-dasharray: 6 4;
+  opacity: 0;
+  transition: opacity var(--swap);
+}
+.cluster-halo.show { opacity: 0.4; }
+
+/* ─── Drawer (right side) ───────────────────────────────────────────── */
+.drawer {
+  position: fixed;
+  top: 44px; right: 0; bottom: 0;
+  width: 460px;
+  background: oklch(2% 0 0 / 0.97);
+  border-left: 1px solid var(--rule);
+  z-index: 250;
+  transform: translateX(100%);
+  transition: transform var(--swap);
+  display: flex;
+  flex-direction: column;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--rule-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+.dh-meta {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.dh-meta span { color: var(--accent); }
+.dh-title {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  letter-spacing: 0.02em;
+  color: var(--fg-bright);
+  line-height: 1.1;
+}
+.dh-sub {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--fg-dim);
+  margin-top: 6px;
+  word-break: break-all;
+}
+.dh-sub a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent-soft);
+}
+.dh-sub a:hover { color: var(--fg-bright); }
+.drawer-close {
+  cursor: none;
+  background: transparent;
+  border: 1px solid var(--rule-soft);
+  color: var(--fg-dim);
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  padding: 4px 8px;
+  text-transform: uppercase;
+}
+.drawer-close:hover { color: var(--accent); border-color: var(--accent); }
+
+.drawer-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.drawer-body h1, .drawer-body h2, .drawer-body h3 {
+  font-family: var(--ff-display);
+  letter-spacing: 0.02em;
+  color: var(--fg-bright);
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+.drawer-body h1 { font-size: 18px; }
+.drawer-body h2 { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+.drawer-body h3 { font-size: 12px; color: var(--fg); }
+.drawer-body p { margin-bottom: 10px; color: var(--fg); }
+.drawer-body code {
+  background: var(--bg-card);
+  padding: 1px 5px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid var(--rule-soft);
+}
+.drawer-body pre {
+  background: var(--bg-deep);
+  padding: 10px;
+  border: 1px solid var(--rule-soft);
+  overflow-x: auto;
+  margin-bottom: 12px;
+}
+.drawer-body pre code { background: transparent; border: none; padding: 0; color: var(--fg); }
+.drawer-body a { color: var(--accent); border-bottom: 1px dotted var(--accent-soft); text-decoration: none; }
+.drawer-body a:hover { color: var(--fg-bright); }
+.drawer-body ul, .drawer-body ol { margin: 8px 0 12px 20px; }
+.drawer-body li { margin-bottom: 4px; }
+.drawer-body blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  margin: 10px 0;
+  color: var(--fg-dim);
+  font-style: italic;
+}
+.drawer-body hr { border: none; border-top: 1px solid var(--rule-soft); margin: 16px 0; }
+.drawer-body table { border-collapse: collapse; margin: 10px 0; width: 100%; font-size: 11px; }
+.drawer-body th, .drawer-body td { border: 1px solid var(--rule-soft); padding: 4px 8px; text-align: left; }
+.drawer-body th { background: var(--bg-card); color: var(--fg-bright); }
+
+.drawer-loading { color: var(--fg-dim); font-style: italic; }
+.drawer-error { color: var(--hold); }
+
+.drawer-summary {
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+  margin-bottom: 16px;
+  color: var(--fg);
+  font-size: 12px;
+}
+
+/* ─── L0 — Doctrine overlay ─────────────────────────────────────────── */
+.doctrine {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: oklch(2% 0 0 / 0.98);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 320ms var(--ease);
+  overflow-y: auto;
+}
+.doctrine.open { opacity: 1; pointer-events: auto; }
+.doctrine-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 40px 80px;
+}
+.doctrine-meta {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.doctrine h1 {
+  font-family: var(--ff-display);
+  font-size: 48px;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  color: var(--fg-bright);
+  margin-bottom: 28px;
+  text-wrap: balance;
+}
+.doctrine h2 {
+  font-family: var(--ff-display);
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 36px;
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.doctrine p, .doctrine li {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--fg);
+  margin-bottom: 12px;
+  text-wrap: pretty;
+}
+.doctrine ul, .doctrine ol { margin: 8px 0 16px 22px; }
+.doctrine code { font-family: var(--ff-mono); color: var(--accent); }
+.doctrine blockquote { border-left: 2px solid var(--accent); padding-left: 14px; margin: 14px 0; color: var(--fg-dim); }
+.doctrine table { border-collapse: collapse; margin: 12px 0; width: 100%; font-size: 12px; }
+.doctrine th, .doctrine td { border: 1px solid var(--rule-soft); padding: 6px 10px; text-align: left; }
+.doctrine th { background: var(--bg-card); color: var(--fg-bright); }
+.doctrine a { color: var(--accent); border-bottom: 1px dotted var(--accent-soft); text-decoration: none; }
+
+.doctrine-close {
+  position: fixed;
+  top: 60px; right: 40px;
+  cursor: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  font: inherit;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+.doctrine-close:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ─── L3 — Pipeline overlay ─────────────────────────────────────────── */
+.pipeline-panel {
+  position: fixed;
+  top: 80px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 180;
+  width: 700px;
+  max-width: 90vw;
+  border: 1px solid var(--accent);
+  background: oklch(2% 0 0 / 0.96);
+  padding: 22px 30px;
+  display: none;
+}
+.pipeline-panel.open { display: block; }
+.pp-meta {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.pp-title {
+  font-family: var(--ff-display);
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  color: var(--fg-bright);
+  margin-bottom: 18px;
+}
+.pp-step {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--rule-soft);
+  cursor: none;
+  transition: all var(--swap);
+}
+.pp-step:first-of-type { border-top: none; }
+.pp-step:hover { background: var(--accent-soft); padding-left: 4px; }
+.pp-step-num {
+  font-family: var(--ff-display);
+  font-size: 18px;
+  color: var(--accent);
+  line-height: 1;
+}
+.pp-step-body { font-size: 11px; line-height: 1.5; }
+.pp-step-label { color: var(--fg); }
+.pp-step-ref { color: var(--fg-dim); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+/* ─── Empty state for fetch failure ─────────────────────────────────── */
+.boot-msg {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 10;
+  color: var(--fg-dim);
+  text-align: center;
+  padding: 40px;
+}
+.boot-msg h2 { font-family: var(--ff-display); font-size: 24px; color: var(--accent); margin-bottom: 12px; }
+.boot-msg p { font-size: 11px; line-height: 1.6; max-width: 480px; }
+.boot-msg code { color: var(--fg); background: var(--bg-card); padding: 2px 6px; }
+
+/* ─── Mobile fallback ───────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .filter-rail { display: none; }
+  .atlas { left: 0; }
+  .drawer { width: 100%; }
+  body { cursor: auto; }
+  .cursor-dot, .cursor-bracket { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div class="cursor-dot" id="cursor-dot"></div>
+<div class="cursor-bracket" id="cursor-bracket"></div>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="tb-mark">B_V® | OS<span>ATLAS V4.0.0</span></div>
+  <div class="tb-tabs">
+    <button class="tb-tab" data-level="0">L0 · DOCTRINE</button>
+    <button class="tb-tab active" data-level="1">L1 · CONSTELLATION</button>
+    <button class="tb-tab" data-level="2">L2 · DOMAIN</button>
+    <button class="tb-tab" data-level="3">L3 · PIPELINE</button>
+  </div>
+  <div class="tb-meta">
+    <span id="tb-stats">loading…</span><br>
+    BUILD <strong id="tb-build">—</strong>
+  </div>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb" id="breadcrumb">L1 · <em>constellation</em> · <span>all nodes</span></div>
+
+<!-- Filter rail -->
+<aside class="filter-rail">
+  <div class="fr-title">FILTER · L1</div>
+  <button class="fr-chip active" data-filter="venture">
+    <span><span class="glyph">●</span>VENTURES</span><span class="count" data-count="venture">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="agent">
+    <span><span class="glyph">◆</span>AGENTS</span><span class="count" data-count="agent">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="skill">
+    <span><span class="glyph">◇</span>SKILLS</span><span class="count" data-count="skill">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="harness">
+    <span><span class="glyph">⬡</span>HARNESSES</span><span class="count" data-count="harness">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="person">
+    <span><span class="glyph">○</span>PEOPLE</span><span class="count" data-count="person">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="area">
+    <span><span class="glyph">▢</span>AREAS</span><span class="count" data-count="area">—</span>
+  </button>
+  <button class="fr-chip active" data-filter="infra">
+    <span><span class="glyph">▣</span>INFRA</span><span class="count" data-count="infra">—</span>
+  </button>
+  <button class="fr-chip" data-filter="project">
+    <span><span class="glyph">▭</span>PROJECTS</span><span class="count" data-count="project">—</span>
+  </button>
+
+  <div class="fr-divider"></div>
+
+  <div class="fr-title">CLUSTERS · L2</div>
+  <div id="cluster-list"></div>
+
+  <div class="fr-divider"></div>
+
+  <div class="fr-foot">
+    <strong>Click a node</strong> to inspect.<br>
+    <strong>L0</strong> opens the doctrine.<br>
+    <strong>L2</strong> selects a cluster.<br>
+    <strong>L3</strong> walks a pipeline.<br>
+    <strong>Esc</strong> backs out one level.
+  </div>
+</aside>
+
+<!-- Atlas canvas -->
+<main class="atlas">
+  <div class="atlas-marks">
+    <div>ATLAS · L<strong id="lvl-mark">1</strong> · NODES <strong id="node-count">—</strong> · EDGES <strong id="edge-count">—</strong></div>
+    <div>GENERATED <strong id="gen-at">—</strong></div>
+  </div>
+  <svg id="graph" class="atlas-stage" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="core-glow">
+        <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <g id="glow-layer"></g>
+    <g id="halos-layer"></g>
+    <g id="edges-layer"></g>
+    <g id="nodes-layer"></g>
+  </svg>
+
+  <div class="boot-msg" id="boot-msg" style="display:none">
+    <h2>Atlas data missing</h2>
+    <p>Could not load <code>atlas-data.json</code>. Run <code>python3 scripts/atlas-data-build.py</code> from the repo root, then reload this page.</p>
+  </div>
+</main>
+
+<!-- Drawer -->
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div>
+      <div class="dh-meta">NODE · <span id="dh-type">—</span></div>
+      <div class="dh-title" id="dh-title">—</div>
+      <div class="dh-sub" id="dh-sub">—</div>
+    </div>
+    <button class="drawer-close" id="drawer-close">CLOSE ×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+</aside>
+
+<!-- L0 — Doctrine overlay -->
+<div class="doctrine" id="doctrine">
+  <button class="doctrine-close" id="doctrine-close">CLOSE ×</button>
+  <div class="doctrine-wrap" id="doctrine-body">
+    <div class="doctrine-meta">L0 · DOCTRINE · vault/soul.md</div>
+    <h1>Synergy</h1>
+    <p class="drawer-loading">Loading soul.md…</p>
+  </div>
+</div>
+
+<!-- L3 — Pipeline overlay -->
+<div class="pipeline-panel" id="pipeline-panel">
+  <div class="pp-meta">L3 · PIPELINE</div>
+  <div class="pp-title" id="pp-title">—</div>
+  <div id="pp-steps"></div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════
+   ATLAS V4 — runtime
+═══════════════════════════════════════════════════════════════════════ */
+
+const REPO_GITHUB_BASE = 'https://github.com/BothVentures/both_os/blob/main/';
+const REPO_RAW_BASE = 'https://raw.githubusercontent.com/BothVentures/both_os/main/';
+
+let DATA = null;
+let nodeById = {};
+let level = 1;           // 0,1,2,3
+let activeCluster = null; // cluster slug at L2
+let activePipeline = null; // pipeline slug at L3
+let selectedNodeId = null;
+
+const FILTERS = {
+  venture: true, agent: true, skill: true, harness: true,
+  person: true, area: true, infra: true, project: false,
+};
+
+/* ─── Custom cursor ─────────────────────────────────────────────────── */
+const dot = document.getElementById('cursor-dot');
+const bracket = document.getElementById('cursor-bracket');
+window.addEventListener('mousemove', (e) => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top = e.clientY + 'px';
+  bracket.style.left = (e.clientX + 16) + 'px';
+  bracket.style.top = e.clientY + 'px';
+});
+const hoverables = 'button, .node, .fr-chip, .tb-tab, .drawer-close, .doctrine-close, .pp-step, a';
+document.addEventListener('mouseover', (e) => {
+  if (e.target.closest && e.target.closest(hoverables)) document.body.classList.add('cursor-hover');
+});
+document.addEventListener('mouseout', (e) => {
+  if (e.target.closest && e.target.closest(hoverables)) document.body.classList.remove('cursor-hover');
+});
+
+/* ─── Polar layout — concentric rings by type ───────────────────────── */
+const CENTER = { x: 700, y: 460 };
+const RINGS = {
+  // [radius, types in this ring (in order)]
+  person:   { r: 70,  index: 0 },
+  area:     { r: 150, index: 1 },
+  venture:  { r: 250, index: 2 },
+  harness:  { r: 340, index: 3 },
+  infra:    { r: 340, index: 3 },
+  agent:    { r: 420, index: 4 },
+  skill:    { r: 530, index: 5 },
+  project:  { r: 600, index: 6 },
+};
+
+function layoutPolar(nodes) {
+  // group by ring index
+  const groups = {};
+  for (const n of nodes) {
+    const ring = RINGS[n.type] || { r: 480, index: 5 };
+    if (!groups[ring.index]) groups[ring.index] = { r: ring.r, nodes: [] };
+    groups[ring.index].nodes.push(n);
+  }
+  for (const idx of Object.keys(groups)) {
+    const g = groups[idx];
+    const N = g.nodes.length;
+    g.nodes.forEach((n, i) => {
+      const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+      n._x = CENTER.x + g.r * Math.cos(angle);
+      n._y = CENTER.y + g.r * Math.sin(angle);
+    });
+  }
+}
+
+function layoutCluster(cluster) {
+  // Place cluster members in a tight ring; non-members keep their L1 positions but dim
+  const members = (cluster.members || []).map(id => nodeById[id]).filter(Boolean);
+  const N = members.length;
+  members.forEach((n, i) => {
+    const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+    n._x = CENTER.x + 220 * Math.cos(angle);
+    n._y = CENTER.y + 220 * Math.sin(angle);
+  });
+}
+
+/* ─── SVG helpers ───────────────────────────────────────────────────── */
+const SVGNS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs = {}) {
+  const e = document.createElementNS(SVGNS, tag);
+  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+  return e;
+}
+
+function shapeFor(node) {
+  const r = node.type === 'person' ? 14 : (node.type === 'venture' ? 12 : 9);
+  switch (node.type) {
+    case 'person':
+    case 'venture':
+      return el('circle', { class: 'shape', r: r });
+    case 'area':
+      return el('rect', { class: 'shape', x: -r, y: -r, width: r*2, height: r*2 });
+    case 'harness':
+      return polygonHex(r);
+    case 'infra':
+      return el('rect', { class: 'shape', x: -r, y: -r, width: r*2, height: r*2, rx: 2 });
+    case 'agent':
+      return polygonDiamond(r);
+    case 'skill':
+      return polygonDiamond(r-1);
+    case 'project':
+      return el('rect', { class: 'shape', x: -r, y: -r, width: r*2, height: r*2*0.6 });
+    default:
+      return el('circle', { class: 'shape', r: r });
+  }
+}
+function polygonHex(r) {
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2 - Math.PI / 2;
+    pts.push((r * Math.cos(a)).toFixed(1) + ',' + (r * Math.sin(a)).toFixed(1));
+  }
+  return el('polygon', { class: 'shape', points: pts.join(' ') });
+}
+function polygonDiamond(r) {
+  return el('polygon', { class: 'shape', points: `0,${-r} ${r},0 0,${r} ${-r},0` });
+}
+
+/* ─── Render ────────────────────────────────────────────────────────── */
+const edgesLayer = () => document.getElementById('edges-layer');
+const nodesLayer = () => document.getElementById('nodes-layer');
+const halosLayer = () => document.getElementById('halos-layer');
+
+function clearLayers() {
+  edgesLayer().innerHTML = '';
+  nodesLayer().innerHTML = '';
+  halosLayer().innerHTML = '';
+}
+
+function renderEdges() {
+  const layer = edgesLayer();
+  for (const e of DATA.edges) {
+    const a = nodeById[e.from];
+    const b = nodeById[e.to];
+    if (!a || !b) continue;
+    if (a._x == null || b._x == null) continue;
+    const line = el('line', {
+      class: 'edge',
+      x1: a._x, y1: a._y, x2: b._x, y2: b._y,
+      'data-from': e.from, 'data-to': e.to, 'data-kind': e.kind,
+    });
+    layer.appendChild(line);
+  }
+}
+
+function renderNodes() {
+  const layer = nodesLayer();
+  for (const n of DATA.nodes) {
+    if (n._x == null) continue;
+    const g = el('g', { class: 'node', 'data-id': n.id, 'data-type': n.type,
+                        transform: `translate(${n._x.toFixed(1)}, ${n._y.toFixed(1)})` });
+    g.appendChild(shapeFor(n));
+    const label = el('text', { class: 'label', x: 0, y: 24 });
+    label.textContent = n.label.length > 22 ? n.label.slice(0, 20) + '…' : n.label;
+    g.appendChild(label);
+    g.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      openDrawer(n.id);
+    });
+    layer.appendChild(g);
+  }
+}
+
+function renderHalos() {
+  const layer = halosLayer();
+  if (level !== 2 || !activeCluster) return;
+  const cluster = DATA.clusters.find(c => c.slug === activeCluster);
+  if (!cluster) return;
+  // Compute bounding circle of cluster members
+  const members = cluster.members.map(id => nodeById[id]).filter(n => n && n._x != null);
+  if (!members.length) return;
+  const halo = el('circle', {
+    class: 'cluster-halo show',
+    cx: CENTER.x, cy: CENTER.y, r: 280,
+  });
+  layer.appendChild(halo);
+}
+
+function applyFilters() {
+  document.querySelectorAll('.node').forEach(g => {
+    const t = g.dataset.type;
+    g.style.display = FILTERS[t] ? '' : 'none';
+  });
+}
+
+/* ─── Drawer ────────────────────────────────────────────────────────── */
+const drawer = document.getElementById('drawer');
+const dhMeta = document.getElementById('dh-type');
+const dhTitle = document.getElementById('dh-title');
+const dhSub = document.getElementById('dh-sub');
+const dhBody = document.getElementById('drawer-body');
+
+async function openDrawer(id) {
+  const node = nodeById[id];
+  if (!node) return;
+  dhMeta.textContent = node.type.toUpperCase();
+  dhTitle.textContent = node.label;
+  const src = node.source || '';
+  const githubUrl = src ? REPO_GITHUB_BASE + src : '';
+  dhSub.innerHTML = src
+    ? `<a href="${githubUrl}" target="_blank" rel="noopener">${src}</a>`
+    : '—';
+
+  // Summary card
+  let html = '';
+  if (node.summary) html += `<div class="drawer-summary">${escapeHtml(node.summary)}</div>`;
+  html += `<p class="drawer-loading">Loading source…</p>`;
+  dhBody.innerHTML = html;
+
+  drawer.classList.add('open');
+
+  // Highlight selected
+  document.querySelectorAll('.node.selected').forEach(n => n.classList.remove('selected'));
+  const sel = document.querySelector(`.node[data-id="${cssEscape(id)}"]`);
+  if (sel) sel.classList.add('selected');
+  selectedNodeId = id;
+
+  // Highlight edges
+  document.querySelectorAll('.edge').forEach(e => {
+    const from = e.getAttribute('data-from');
+    const to = e.getAttribute('data-to');
+    if (from === id || to === id) { e.classList.add('highlight'); e.classList.remove('dim'); }
+    else { e.classList.add('dim'); e.classList.remove('highlight'); }
+  });
+
+  // Render embedded body (preferred — works offline + on GH Pages without auth)
+  const summaryHtml = node.summary ? `<div class="drawer-summary">${escapeHtml(node.summary)}</div>` : '';
+  if (node.body) {
+    const rendered = window.marked ? marked.parse(node.body) : '<pre>' + escapeHtml(node.body) + '</pre>';
+    dhBody.innerHTML = summaryHtml + rendered;
+    return;
+  }
+  // No embedded body — fall back to live fetch (works for local dev, may 404 on GH Pages)
+  if (!src) {
+    dhBody.innerHTML = summaryHtml + '<p class="drawer-loading">No source file for this node.</p>';
+    return;
+  }
+  try {
+    const rel = '../../../../' + src;
+    const r = await fetch(rel);
+    if (!r.ok) throw new Error('fetch failed');
+    const stripped = (await r.text()).replace(/^---[\s\S]*?---\s*\n/, '');
+    const rendered = window.marked ? marked.parse(stripped) : '<pre>' + escapeHtml(stripped.slice(0, 2000)) + '</pre>';
+    dhBody.innerHTML = summaryHtml + rendered;
+  } catch (err) {
+    dhBody.innerHTML = summaryHtml + `<div class="drawer-error">No embedded content; source not fetchable from this page.<br><a href="${githubUrl}" target="_blank" rel="noopener">Open in GitHub →</a></div>`;
+  }
+}
+
+function closeDrawer() {
+  drawer.classList.remove('open');
+  selectedNodeId = null;
+  document.querySelectorAll('.node.selected').forEach(n => n.classList.remove('selected'));
+  document.querySelectorAll('.edge').forEach(e => { e.classList.remove('highlight'); e.classList.remove('dim'); });
+}
+
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+document.querySelector('.atlas').addEventListener('click', (e) => {
+  if (e.target.closest('.node')) return;
+  if (selectedNodeId) closeDrawer();
+});
+
+/* ─── L0 — Doctrine overlay (soul.md) ───────────────────────────────── */
+const doctrine = document.getElementById('doctrine');
+const doctrineBody = document.getElementById('doctrine-body');
+
+async function openDoctrine() {
+  doctrine.classList.add('open');
+  // Render from data.soul or fetch
+  if (DATA && DATA.soul && DATA.soul.sections && DATA.soul.sections.length) {
+    let html = '<div class="doctrine-meta">L0 · DOCTRINE · vault/soul.md</div>';
+    html += '<h1>Synergy</h1>';
+    for (const s of DATA.soul.sections) {
+      html += `<h2>${escapeHtml(s.heading)}</h2>`;
+      if (window.marked) html += marked.parse(s.body);
+      else html += `<p>${escapeHtml(s.body)}</p>`;
+    }
+    doctrineBody.innerHTML = html;
+  } else {
+    // Fetch soul.md directly
+    try {
+      const r = await fetch('../../../../vault/soul.md');
+      const text = r.ok ? await r.text() : '';
+      const stripped = text.replace(/^---[\s\S]*?---\s*\n/, '');
+      doctrineBody.innerHTML = '<div class="doctrine-meta">L0 · DOCTRINE · vault/soul.md</div>' +
+        (window.marked ? marked.parse(stripped) : '<pre>' + escapeHtml(stripped) + '</pre>');
+    } catch {
+      doctrineBody.innerHTML = '<p class="drawer-error">Could not load soul.md</p>';
+    }
+  }
+}
+function closeDoctrine() {
+  doctrine.classList.remove('open');
+}
+document.getElementById('doctrine-close').addEventListener('click', () => { closeDoctrine(); gotoLevel(1); });
+
+/* ─── L3 — Pipeline overlay ─────────────────────────────────────────── */
+const pipelinePanel = document.getElementById('pipeline-panel');
+const ppTitle = document.getElementById('pp-title');
+const ppSteps = document.getElementById('pp-steps');
+
+function openPipeline(slug) {
+  const pl = DATA.pipelines.find(p => p.slug === slug);
+  if (!pl) return;
+  activePipeline = slug;
+  ppTitle.textContent = pl.name;
+  let html = '';
+  pl.steps.forEach((s, i) => {
+    const ref = nodeById[s.ref];
+    html += `<div class="pp-step" data-ref="${s.ref}">
+      <div class="pp-step-num">${i+1}</div>
+      <div class="pp-step-body">
+        <div class="pp-step-label">${escapeHtml(s.label)}</div>
+        <div class="pp-step-ref">${ref ? ref.type + ' · ' + ref.label : s.ref}</div>
+      </div>
+    </div>`;
+  });
+  ppSteps.innerHTML = html;
+  ppSteps.querySelectorAll('.pp-step').forEach(stepEl => {
+    stepEl.addEventListener('click', () => openDrawer(stepEl.dataset.ref));
+  });
+  pipelinePanel.classList.add('open');
+}
+function closePipeline() {
+  pipelinePanel.classList.remove('open');
+  activePipeline = null;
+}
+
+/* ─── Level navigation ──────────────────────────────────────────────── */
+function gotoLevel(lvl, opt = {}) {
+  level = lvl;
+  document.querySelectorAll('.tb-tab').forEach(t => {
+    t.classList.toggle('active', Number(t.dataset.level) === lvl);
+  });
+  document.getElementById('lvl-mark').textContent = lvl;
+
+  // Hide overlays we're leaving
+  if (lvl !== 0) closeDoctrine();
+  if (lvl !== 3) closePipeline();
+
+  let bc = '';
+  if (lvl === 0) {
+    bc = 'L0 · <em>doctrine</em>';
+    openDoctrine();
+  } else if (lvl === 1) {
+    bc = 'L1 · <em>constellation</em> · <span>all nodes</span>';
+    activeCluster = null;
+    layoutPolar(DATA.nodes);
+    clearLayers(); renderEdges(); renderHalos(); renderNodes(); applyFilters();
+  } else if (lvl === 2) {
+    const cluster = opt.cluster || activeCluster || (DATA.clusters[0] && DATA.clusters[0].slug);
+    activeCluster = cluster;
+    const c = DATA.clusters.find(x => x.slug === cluster);
+    bc = `L2 · <em>domain</em> · <span>${c ? c.name : cluster}</span>`;
+    layoutPolar(DATA.nodes);
+    layoutCluster(c);
+    clearLayers(); renderEdges(); renderHalos(); renderNodes(); applyFilters();
+    // Dim non-members
+    const memberSet = new Set(c ? c.members : []);
+    document.querySelectorAll('.node').forEach(g => {
+      g.classList.toggle('dim', !memberSet.has(g.dataset.id));
+    });
+  } else if (lvl === 3) {
+    const cluster = activeCluster;
+    const pl = DATA.pipelines.find(p => p.cluster === cluster) || DATA.pipelines[0];
+    if (pl) {
+      bc = `L3 · <em>pipeline</em> · <span>${pl.name}</span>`;
+      openPipeline(pl.slug);
+    } else {
+      bc = `L3 · <em>pipeline</em> · <span>no pipeline for cluster</span>`;
+    }
+  }
+  document.getElementById('breadcrumb').innerHTML = bc;
+}
+
+/* ─── Boot ──────────────────────────────────────────────────────────── */
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function cssEscape(s) {
+  if (window.CSS && CSS.escape) return CSS.escape(s);
+  return String(s).replace(/[^a-zA-Z0-9_-]/g, c => '\\' + c);
+}
+
+async function boot() {
+  let resp;
+  try {
+    resp = await fetch('atlas-data.json');
+    if (!resp.ok) throw new Error('not ok');
+  } catch {
+    document.getElementById('boot-msg').style.display = 'flex';
+    return;
+  }
+  DATA = await resp.json();
+  for (const n of DATA.nodes) nodeById[n.id] = n;
+
+  // Stats + counts
+  document.getElementById('node-count').textContent = DATA.stats.total_nodes;
+  document.getElementById('edge-count').textContent = DATA.stats.total_edges;
+  document.getElementById('tb-stats').textContent = `${DATA.stats.total_nodes} nodes · ${DATA.stats.total_edges} edges`;
+  document.getElementById('tb-build').textContent = (DATA.generated_at || '').slice(0, 10);
+  document.getElementById('gen-at').textContent = (DATA.generated_at || '').slice(0, 16).replace('T', ' ');
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const t = el.dataset.count;
+    el.textContent = DATA.stats[t + 's'] != null ? DATA.stats[t + 's'] : '0';
+  });
+
+  // Cluster list
+  const cl = document.getElementById('cluster-list');
+  cl.innerHTML = '';
+  for (const c of DATA.clusters) {
+    const btn = document.createElement('button');
+    btn.className = 'fr-chip';
+    btn.dataset.cluster = c.slug;
+    btn.innerHTML = `<span><span class="glyph">⌬</span>${c.name.toUpperCase()}</span><span class="count">${c.members.length}</span>`;
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-cluster]').forEach(b => b.classList.toggle('active', b === btn));
+      gotoLevel(2, { cluster: c.slug });
+    });
+    cl.appendChild(btn);
+  }
+
+  // Filter chips
+  document.querySelectorAll('.fr-chip[data-filter]').forEach(chip => {
+    chip.classList.toggle('active', FILTERS[chip.dataset.filter]);
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter;
+      FILTERS[f] = !FILTERS[f];
+      chip.classList.toggle('active', FILTERS[f]);
+      applyFilters();
+    });
+  });
+
+  // Level tabs
+  document.querySelectorAll('.tb-tab').forEach(tab => {
+    tab.addEventListener('click', () => gotoLevel(Number(tab.dataset.level)));
+  });
+
+  // Esc handler
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (doctrine.classList.contains('open')) { closeDoctrine(); gotoLevel(1); return; }
+      if (pipelinePanel.classList.contains('open')) { closePipeline(); gotoLevel(2); return; }
+      if (drawer.classList.contains('open')) { closeDrawer(); return; }
+      if (level === 2) { activeCluster = null; gotoLevel(1); return; }
+    }
+  });
+
+  // Initial render — L1
+  gotoLevel(1);
+}
+
+boot();
+</script>
+</body>
+</html>
