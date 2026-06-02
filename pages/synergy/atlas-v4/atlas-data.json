@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-01T23:05:46+00:00",
+  "generated_at": "2026-06-02T20:46:51+00:00",
   "schema_version": 1,
   "soul": {
     "source": "vault/soul.md",
@@ -447,9 +447,9 @@
       "type": "agent",
       "label": "Tuesday Weekly Sync Agent",
       "slug": "weekly-reporter",
-      "summary": "The digest is one file with two clearly-bounded parts, separated by a horizontal rule:",
+      "summary": "```markdown\n# BOTH Ventures — Tuesday Weekly Sync — [Date]",
       "source": ".claude/agents/weekly-reporter.md",
-      "body": "# Tuesday Weekly Sync Agent\n\n## Role\nGenerate the consolidated Tuesday Weekly Sync digest before the weekly in-person meeting. The digest has two clearly-bounded parts in one file: (1) an **Executive Summary** scannable in 5 minutes (≤70 lines, hard cap) — short status per venture, per area, top decisions, top risks, urgent Tuesday agenda items; (2) an **Appendix — Full Weekly Recap** that carries the depth — per-venture and per-area narrative blocks, all decisions, full risk register, Open Action Items, cross-cutting themes, full question list.\n\n## Owner\nDaiana (Ops + Finance) — validates and reviews before Tuesday meeting\nMariano (Tech) — generates the digest\n\n## Contract\n- **Input:** All vault updates since last Tuesday (`vault/ventures/*.md`, `vault/areas/*.md`, `vault/decisions/`, `vault/risks/`)\n- **Output:** `vault/agent_outputs/weekly-digest-YYYY-MM-DD.md` + GitHub Pages HTML (via `/md-web`) + Notion digest page append\n- **Approval gate:** Daiana reviews and approves before distributing to team. No automated gate — verbal/WhatsApp confirmation.\n- **Failure:** If fewer than 3 ventures have updates, flag to Daiana and list missing champions before generating. Do not produce a sparse digest silently.\n\n## Context\n- BOTH Ventures meets in-person every Tuesday in Punta del Este\n- The digest is NOT a department-by-department report — it is organized by venture and area, with cross-cutting themes surfaced separately\n- Sources are all vault-based: no Slack channels, no Asana dashboards, no Jira sprints\n- Daiana reviews the generated digest before the Tuesday meeting to correct any inaccuracies\n- Champions submit venture updates via `/vu` and area updates via `/au` before the digest is generated\n\n— *(truncated. open source for full file.)*",
+      "body": "# Tuesday Weekly Sync Agent\n\n## Role\nGenerate the consolidated Tuesday Weekly Sync digest before the weekly in-person meeting — a venture-by-venture status grid, per-area summaries, cross-cutting themes, recent decisions, active risks, and open action items.\n\n## Owner\nDaiana (Ops + Finance) — validates and reviews before Tuesday meeting\nMariano (Tech) — generates the digest\n\n## Contract\n- **Input:** All vault updates since last Tuesday (`vault/ventures/*.md`, `vault/areas/*.md`, `vault/decisions/`, `vault/risks/`)\n- **Output:** `vault/agent_outputs/weekly-digest-YYYY-MM-DD.md` + GitHub Pages HTML (via `/md-web`) + Notion digest page append\n- **Approval gate:** Daiana reviews and approves before distributing to team. No automated gate — verbal/WhatsApp confirmation.\n- **Failure:** If fewer than 3 ventures have updates, flag to Daiana and list missing champions before generating. Do not produce a sparse digest silently.\n\n## Context\n- BOTH Ventures meets in-person every Tuesday in Punta del Este\n- The digest is NOT a department-by-department report — it is organized by venture and area, with cross-cutting themes surfaced separately\n- Sources are all vault-based: no Slack channels, no Asana dashboards, no Jira sprints\n- Daiana reviews the generated digest before the Tuesday meeting to correct any inaccuracies\n- Champions submit venture updates via `/vu` and area updates via `/au` before the digest is generated\n\n## Tools\n- **GitHub** — Vault sync (all vault categories)\n- **Google Drive** — Final digest stored as Google Doc in shared Drive folder\n- **Asana (live source of truth)** — Pull the Open Action Items section directly from the BOTH Action Items project via the helper script. The `pending_actions` Supabase table is not a live mirror — the Worker and `asana-push.py` write straight to Asana, so SQL queries return empty.\n  ```bash\n  set -a; source .env; set +a\n  python3 scripts/asana-fetch-actions.py --as-of YYYY-MM-DD\n  ```\n  Output is a paste-ready markdown section: Overdue Heatmap by Venture · Critical Overdue (`!!` markers) · Due This Week · Completed This Week by Venture. Pass `--format json` if you need to post-process. `YYYY-MM-DD` is today's date when running on Monday; the Tuesday meeting date is fine too — the bucketing window is anchored on `--as-of`.\n\n## Sources\n\n— *(truncated. open source for full file.)*",
       "tags": [
         "agent"
       ]
@@ -473,7 +473,7 @@
       "slug": "buen-dia-syn",
       "summary": "Versión personal del Daily Brief para Daiana. Recupera el formato pre-V2 que Daiana diseñó originalmente — listas accionables con bullets cortos, no prosa de síntesis institucional. Convive en paralelo con `/db` (la versión V2 institucional de Mariano).",
       "source": ".claude/skills/buen-dia-syn/SKILL.md",
-      "body": "# /buen-dia-syn — Daily Brief (formato personal pre-V2 de Daiana)\n\nVersión personal del Daily Brief para Daiana. **Recupera el formato pre-V2 que Daiana diseñó originalmente** — listas accionables con bullets cortos, no prosa de síntesis institucional. Convive en paralelo con `/db` (la versión V2 institucional de Mariano).\n\n**Quién lo usa:** Daiana únicamente. Si lo corre otra persona, sugerir `/db` en lugar y abortar.\n\n**Por qué existe:** la V2 institucional (org_pulse + your_week + clusters + drop_list) sirve para coordinación cross-team pero para Daiana es ruido — ella opera con prioridades numeradas, bullets ejecutivos cortos, timing concreto, y vault inteligible de un vistazo. Esta skill restaura ese formato y mantiene un artifact propio (`daily-brief-daiana-mio`) que coexiste con el de `/db`. Cierra con un chiste simple del día.\n\n**Historia del cambio:**\n- 2026-05-27 (commit 4fa8bb8): template + skill iniciales clonaban V2.\n- 2026-05-28: Daiana pidió recuperar formato pre-V2 — listas accionables, no prosa. Body de priorities pasó a párrafo de 3-5 oraciones.\n- 2026-05-30: Daiana pidió achicar más. Body de priorities pasó de párrafo prosa → **array de 2-3 bullets cortos**. Se agregó `joke_of_the_day` al cierre.\n- 2026-05-30: Renombrado de `/db-mio` → `/buen-dia-syn`. El nombre viejo era ambiguo (Cowork triggereaba `/db` de Mariano cuando Daiana decía \"daily brief mio\"). Artifact id intacto (`daily-brief-daiana-mio`); cambia solo el comando de invocación.\n\n---\n\n## Invocación\n\n```\n/buen-dia-syn\n```\n\nNo arguments.\n\n---\n\n## Pre-checks\n\n1. **Usuario.** Confirmar `git config user.name` → debe matchear `Daiana Goldenberg`. Si no, sugerir `/db` y abortar.\n2. **Template personal existe.** Verificar `templates/daily-brief-daiana.html`. Si no existe, abortar con: \"Falta `templates/daily-brief-daiana.html` — esta skill depende de la variante personal.\"\n\n---\n\n## Pipeline\n\nSeguir pasos 1-4 de `.claude/skills/daily-brief/SKILL.md` para data gathering:\n- Step 1: Detect user (forzar slug `daiana`)\n- Step 2: Day-of-week cue (opcional para esta variante)\n- Step 3: Read Asana cache (filtrar por `assignee.gid = 1213834295965387`)\n- Step 4: Read vault (area-operations + ventures + counts + pending)\n\n**Saltear Step 4b y Step 5 del /db** — no hace falta leer TEAM-DIGEST ni sintetizar org_pulse/your_week/clusters/drop_list. Esta variante no usa esos campos.\n\n---\n\n— *(truncated. open source for full file.)*",
+      "body": "# /buen-dia-syn — Daily Brief (formato personal pre-V2 de Daiana)\n\nVersión personal del Daily Brief para Daiana. **Recupera el formato pre-V2 que Daiana diseñó originalmente** — listas accionables con bullets cortos, no prosa de síntesis institucional. Convive en paralelo con `/db` (la versión V2 institucional de Mariano).\n\n**Quién lo usa:** Daiana únicamente. Si lo corre otra persona, sugerir `/db` en lugar y abortar.\n\n**Por qué existe:** la V2 institucional (org_pulse + your_week + clusters + drop_list) sirve para coordinación cross-team pero para Daiana es ruido — ella opera con prioridades numeradas, bullets ejecutivos cortos, timing concreto, y vault inteligible de un vistazo. Esta skill restaura ese formato y mantiene un artifact propio (`buen-dia-syn`) que coexiste con el de `/db`. Cierra con un chiste simple del día.\n\n— *(truncated. open source for full file.)*",
       "tags": [
         "skill"
       ]
@@ -802,19 +802,6 @@
         "nlah",
         "meta-harness",
         "pipeline"
-      ]
-    },
-    {
-      "id": "project:asuntos-internos",
-      "type": "project",
-      "label": "Asuntos Internos — Context",
-      "slug": "asuntos-internos",
-      "summary": "Owner: Mariano\nCommand: `/ai`",
-      "source": "projects/asuntos-internos/context.md",
-      "body": "# Asuntos Internos — Context\n\n**Owner:** Mariano\n**Command:** `/ai`\n\n---\n\n## What It Is\n\nAsuntos Internos (Internal Affairs) is a 3-layer coherence system that keeps the BOTH repo self-consistent as the stack evolves and team members join at different speeds. It audits structural drift, validates that CLAUDE.md tables reflect reality, and surfaces what each person needs to re-read after changes.\n\n---\n\n## Why It Exists\n\nThe repo evolves faster than any single person can track. CLAUDE.md tables go stale, agent prompts reference deprecated tools, project status files lag behind reality, and new team members have no way to catch up on what changed. The existing \"Context Self-Audit Protocol\" in CLAUDE.md relies on human discipline — Asuntos Internos makes it automatic.\n\n---\n\n## Architecture: Three Layers\n\nDetection is separated from interpretation. Scripts do the cheap deterministic work; Claude only reads what's necessary.\n\n```\nLayer 1: scripts/coherence-scan.sh      → collects facts (no Claude API)\nLayer 2: .claude/agents/asuntos-internos.md  → interprets, identifies drift, reports\nLayer 3: .claude/hooks/post-commit.sh   → runs Layer 1 after every commit, prints 5-line summary\n```\n\n---\n\n## Layer 1 — `scripts/coherence-scan.sh`\n\nRuns deterministically. No Claude API call. Outputs `/tmp/ai-manifest.json` (~2KB).\n\nCollects:\n- CLAUDE.md tables: tools, agents, projects, team (extracted via grep/awk)\n- Actual file listings: `.claude/agents/*.md`, `vault/**/*.md`, `projects/*/context.md`, `projects/*/status.md`, `workflows/*/status.md`\n- Vault frontmatter `status:` fields (grep only — no full file reads)\n- Last 10 git commits with files changed\n- Files changed in last commit (`git diff --name-only HEAD~1`)\n\nOutput is consumed by the agent. Never committed.\n\n---\n\n## Layer 2 — `/ai` Agent\n\nFour phased audit checks. Agent reads manifest + CLAUDE.md only. Drills into specific files only when anomalies are detected. Context budget ~9K tokens total.\n\n— *(truncated. open source for full file.)*",
-      "status": "active",
-      "tags": [
-        "project"
       ]
     },
     {
@@ -1708,11 +1695,11 @@
     "agents": 18,
     "skills": 23,
     "harnesses": 4,
-    "projects": 10,
+    "projects": 9,
     "people": 5,
     "areas": 5,
     "infra": 8,
-    "total_nodes": 86,
+    "total_nodes": 85,
     "total_edges": 64
   }
 }
