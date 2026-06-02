@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BOTH Ventures Tuesday Weekly Sync — B-version: Executive Summary grouped by venture (snapshot + top risks + top decisions per venture).">
+<title>Tuesday Weekly Sync Digest — 2026-06-02 (B · venture-grouped) — Both_Ventures</title>
+<style>
+/*
+ * Weekly Digest — Editorial Design System
+ * Based on photonic-lab Swiss editorial base.
+ * Purpose: Tuesday Sync digest and executive reports.
+ *
+ * Governing principle: scannable in 5 minutes.
+ * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
+ * Section headings as hard dividers. Urgency signals visible at a glance.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals */
+  --white:    #ffffff;
+  --off:      #f5f4f0;
+  --rule:     #e0ddd8;
+  --rule2:    #c8c4bc;
+  --text:     #111110;
+  --text2:    #444440;
+  --text3:    #888880;
+
+  /* Primary accent — BOTH olive-gold */
+  --acc:      #939324;
+  --acc-lt:   #f5f4e0;
+  --acc-dk:   #5a5a14;
+
+  /* Status signals */
+  --urgent-bg:    #fdecea;
+  --urgent-bd:    #c0392b;
+  --warn-bg:      #fdf3e3;
+  --warn-bd:      #b06a00;
+  --info-bg:      #edf1f5;
+  --info-bd:      #3a4a58;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1280px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  background: #ede0c5;
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 2px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY — wider than photonic-lab for multi-column tables ── */
+article.notion-page {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 0 80px;
+}
+
+/* ── HEADINGS ── */
+/* H1 — 3-line masthead. Each <span class="h1-line"> is one segment,
+   stacked vertically with hairline rules above each (and below the last). */
+article.notion-page h1 {
+  margin: 0 0 32px;
+  padding: 0;
+  border: none;
+  font-weight: 700;
+  color: var(--text);
+}
+article.notion-page h1 .h1-line {
+  display: block;
+  font-size: clamp(22px, 3vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  padding: 14px 0;
+  border-top: 1px solid var(--text);
+}
+article.notion-page h1 .h1-line:last-child {
+  border-bottom: 1px solid var(--text);
+}
+
+/* ── SIGNAL BOARD — Executive Summary mini-dashboard ── */
+.signal-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 24px 0 36px;
+  padding: 24px 0 24px;
+  border-top: 1px solid var(--rule2);
+  border-bottom: 1px solid var(--rule2);
+}
+.signal-board > div { padding: 0 0 0 22px; }
+.signal-board > div:first-child { padding-left: 0; }
+.signal-board > div + div { border-left: 1px solid var(--rule2); }
+.sb-num {
+  display: block;
+  font-family: var(--mono);
+  font-size: 44px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+.sb-label {
+  display: block;
+  margin-top: 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.sb-sub {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  line-height: 1.45;
+}
+
+/* Venture snapshot — second line styling */
+article.notion-page table td .next {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+article.notion-page table td .next + span,
+article.notion-page table td .row2 {
+  display: block;
+  color: var(--text3);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+/* Area pulse — inline label + content on one line */
+article.notion-page ul li .pulse-next {
+  display: inline;
+  margin: 0 6px 0 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+article.notion-page ul li .pulse-next + span {
+  color: var(--text3);
+  font-size: 13px;
+}
+/* H2 — section anchor at moderate scale (section openers carry the larger title) */
+article.notion-page h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  text-transform: none;
+  margin: 48px 0 18px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule2);
+  text-wrap: balance;
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 20px 0 6px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 6px 0 16px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 4px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 18px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
+figure.code-block code {
+  font-size: 12px; line-height: 1.6;
+  color: var(--text); background: none;
+  border: none; padding: 0; white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px; font-weight: 400; color: var(--text3);
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE — rendered as callout panel ── */
+article.notion-page blockquote {
+  background: var(--off);
+  border-left: 3px solid var(--acc);
+  padding: 14px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+}
+article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
+article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
+
+/* ── URGENT / WARN SIGNAL CLASSES (for future HTML-aware paths) ── */
+.urgent-signal {
+  background: var(--urgent-bg);
+  border-left: 3px solid var(--urgent-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--urgent-bd);
+}
+.warn-signal {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn-bd);
+  padding: 12px 18px;
+  margin: 16px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--warn-bd);
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── TABLES — digest-optimized ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #f0efe8;
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 400;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:nth-child(even) td { background: #fafaf8; }
+tr:hover td { background: var(--off); }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc-dk);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--text);
+  border-bottom-color: var(--acc);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 2px solid var(--text);
+  background: var(--off);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc-dk);
+  letter-spacing: .06em;
+}
+
+/* ── APPENDIX DARK MODE ──
+   The Appendix is the long-tail reference layer. Render it on a dark canvas
+   to amplify the contrast against the Executive Summary above.
+   Source markdown wraps the Appendix in <section class="appendix-dark" markdown="1">. */
+
+article.notion-page section.appendix-dark {
+  /* Full-bleed dark brown band: break out of the 920px article max-width */
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-top: 56px;
+  padding: 64px 32px 96px;
+  background: #352819;
+  color: #D4D0C8;
+}
+/* Re-center inner content to the article reading width */
+article.notion-page section.appendix-dark > * {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Reverse typography inside the dark band */
+article.notion-page section.appendix-dark h2 {
+  color: #FFFFFF;
+  margin: 0 auto 32px;
+  border-top-color: rgba(255,255,255,0.22);
+}
+/* First h2 inside each context: skip the top rule (the H1's bottom rule or the
+   appendix-dark band edge already supplies the divider). */
+article.notion-page > h2:first-of-type,
+article.notion-page section.appendix-dark h2:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+article.notion-page section.appendix-dark h3 {
+  color: #FFFFFF;
+}
+article.notion-page section.appendix-dark h4 {
+  color: #D4D0C8;
+}
+article.notion-page section.appendix-dark p,
+article.notion-page section.appendix-dark li {
+  color: #D4D0C8;
+}
+article.notion-page section.appendix-dark li::marker { color: #c5c52a; }
+article.notion-page section.appendix-dark strong { color: #FFFFFF; }
+article.notion-page section.appendix-dark em { color: #c8c4bc; }
+/* Inline code, code blocks */
+article.notion-page section.appendix-dark code {
+  background: rgba(147,147,36,0.14);
+  color: #c5c52a;
+  border: 1px solid rgba(147,147,36,0.32);
+}
+article.notion-page section.appendix-dark figure.code-block {
+  background: #15140f;
+  border-color: rgba(255,255,255,0.10);
+  border-left-color: #c5c52a;
+}
+article.notion-page section.appendix-dark figure.code-block code {
+  color: #D4D0C8;
+  background: none;
+  border: none;
+}
+article.notion-page section.appendix-dark figure.code-block figcaption {
+  color: #888880;
+  border-top-color: rgba(255,255,255,0.08);
+}
+/* Blockquote callouts (e.g. dedup notes) */
+article.notion-page section.appendix-dark blockquote {
+  background: #1a1a14;
+  border-left-color: #c5c52a;
+  color: #D4D0C8;
+}
+article.notion-page section.appendix-dark blockquote strong { color: #FFFFFF; }
+article.notion-page section.appendix-dark blockquote p { color: #D4D0C8; }
+/* Tables — dark with subtle striping */
+article.notion-page section.appendix-dark table {
+  background: #15140f;
+  border-color: rgba(255,255,255,0.10);
+}
+article.notion-page section.appendix-dark th {
+  background: #22221a;
+  color: #888880;
+  border-bottom-color: rgba(255,255,255,0.12);
+}
+article.notion-page section.appendix-dark td {
+  color: #D4D0C8;
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+article.notion-page section.appendix-dark tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+article.notion-page section.appendix-dark tr:hover td { background: rgba(255,255,255,0.05); }
+/* Links */
+article.notion-page section.appendix-dark a {
+  color: #c5c52a;
+  border-bottom-color: rgba(197,197,42,0.35);
+}
+article.notion-page section.appendix-dark a:hover {
+  color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+}
+/* HR */
+article.notion-page section.appendix-dark hr {
+  border-top-color: rgba(255,255,255,0.18);
+}
+
+/* ───────────────────────────────────────────────────────────
+   EDITORIAL LAYER — appendix only
+   Direction: WIRED back-of-book × Pentagram folio system × Linear hairline
+   discipline × Sentry mono/sans pairing. Hairlines only — no filled cards,
+   no rounded corners, no box-shadows. Type does the work.
+   ─────────────────────────────────────────────────────────── */
+
+/* ── AT-A-GLANCE — portfolio summary as kicker prose ── */
+article.notion-page section.appendix-dark .portfolio-summary {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.85;
+  color: #a8a89c;
+  margin: 4px auto 0;
+  max-width: 920px;
+  text-wrap: pretty;
+  font-family: var(--sans);
+}
+article.notion-page section.appendix-dark .portfolio-summary strong {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-family: var(--mono);
+  letter-spacing: -0.01em;
+}
+article.notion-page section.appendix-dark .portfolio-summary .pulse {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+article.notion-page section.appendix-dark .portfolio-summary .pulse-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+/* ── SECTION OPENER (A.1 → A.7) — Pentagram folio system ── */
+article.notion-page section.appendix-dark .section-opener {
+  display: grid;
+  grid-template-columns: 88px 1fr;
+  gap: 24px;
+  margin: 64px auto 28px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.22);
+  align-items: baseline;
+}
+article.notion-page section.appendix-dark .section-opener:first-of-type {
+  margin-top: 40px;
+}
+article.notion-page section.appendix-dark .section-opener .folio {
+  font-family: var(--mono);
+  font-size: 40px;
+  font-weight: 300;
+  color: #c5c52a;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+article.notion-page section.appendix-dark .section-opener .head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+article.notion-page section.appendix-dark .section-opener .title {
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #FFFFFF;
+  line-height: 1.05;
+  margin: 0;
+  text-wrap: balance;
+}
+article.notion-page section.appendix-dark .section-opener .kicker {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888880;
+  margin: 0;
+}
+
+/* ── VENTURE HEADER — editorial composition, no boxes ── */
+article.notion-page section.appendix-dark .vh {
+  margin: 36px 0 14px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+article.notion-page section.appendix-dark .vh:first-of-type {
+  border-top: none;
+  padding-top: 8px;
+  margin-top: 8px;
+}
+article.notion-page section.appendix-dark .vh-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888880;
+  margin-bottom: 6px;
+  font-family: var(--mono);
+}
+article.notion-page section.appendix-dark .vh-name {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  color: #FFFFFF;
+  margin: 0 0 8px;
+  line-height: 1.05;
+  text-transform: none;
+  text-wrap: balance;
+}
+article.notion-page section.appendix-dark .vh-pulse {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+article.notion-page section.appendix-dark .vh-mark {
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+article.notion-page section.appendix-dark .vh-mark.green  { background: #6fda8a; }
+article.notion-page section.appendix-dark .vh-mark.yellow { background: #e3c060; }
+article.notion-page section.appendix-dark .vh-mark.red    { background: #ee8a8a; }
+article.notion-page section.appendix-dark .vh-mark.stale  { background: #555; }
+article.notion-page section.appendix-dark .vh-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c8c4bc;
+  font-family: var(--sans);
+}
+article.notion-page section.appendix-dark .vh-label .qual {
+  color: #888880;
+  font-weight: 400;
+}
+article.notion-page section.appendix-dark .vh-stats {
+  font-size: 12px;
+  color: #888880;
+  font-family: var(--mono);
+  letter-spacing: -0.005em;
+  line-height: 1.7;
+  margin: 4px 0 2px;
+}
+article.notion-page section.appendix-dark .vh-stats em {
+  font-style: normal;
+  color: #FFFFFF;
+  font-weight: 700;
+}
+
+/* ── THEME BLOCK (A6) — editorial feature, hairline only ── */
+article.notion-page section.appendix-dark .theme {
+  margin: 36px auto 0;
+  max-width: 920px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+article.notion-page section.appendix-dark .theme:first-of-type {
+  border-top: none;
+  padding-top: 4px;
+  margin-top: 8px;
+}
+article.notion-page section.appendix-dark .theme-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c5c52a;
+  margin-bottom: 4px;
+}
+article.notion-page section.appendix-dark .theme-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.018em;
+  color: #FFFFFF;
+  margin: 0 0 14px;
+  line-height: 1.15;
+  text-transform: none;
+  text-wrap: balance;
+}
+article.notion-page section.appendix-dark .theme-body {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #d4d0c8;
+  text-wrap: pretty;
+  margin-bottom: 10px;
+}
+article.notion-page section.appendix-dark .theme-tags {
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #888880;
+}
+article.notion-page section.appendix-dark .theme-tags .tlabel { color: #888880; }
+article.notion-page section.appendix-dark .theme-tags .tname {
+  color: #c5c52a;
+  margin: 0 4px;
+}
+
+/* ── INLINE HEALTH MARK (for use in tables / prose) ── */
+.hmark {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  vertical-align: 1px;
+  margin-right: 4px;
+}
+.hmark.green  { background: #6fda8a; }
+.hmark.yellow { background: #e3c060; }
+.hmark.red    { background: #ee8a8a; }
+.hmark.stale  { background: #555; }
+
+/* ── SEVERITY MARK (typographic, inline) — replaces filled pills ── */
+.sev {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  padding: 1px 5px;
+}
+.sev-HH { color: #ee8a8a; border-bottom: 2px solid #ee8a8a; }
+.sev-MH, .sev-HM { color: #e3a060; border-bottom: 2px solid #e3a060; }
+.sev-MM { color: #e3c060; border-bottom: 2px solid #e3c060; }
+.sev-LM, .sev-ML, .sev-LH, .sev-HL { color: #c8c4bc; border-bottom: 1px solid #888880; }
+.sev-LL { color: #888880; border-bottom: 1px solid #555; }
+
+/* ── CODE CHIP (RE-IND serial, pure text — brackets ARE the chip) ── */
+.code-chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5a5a14;
+  white-space: nowrap;
+}
+article.notion-page section.appendix-dark .code-chip { color: #c5c52a; }
+.vh-name .code-chip { margin-right: 14px; vertical-align: 0.22em; }
+
+/* ── VENTURE STATUS (inverse block, single instance per venture) ── */
+.vh-status {
+  display: inline-block;
+  margin-left: 14px;
+  padding: 3px 9px;
+  background: #c5c52a;
+  color: #0A0A08;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  vertical-align: 0.32em;
+}
+
+/* ── VENTURE BYLINE (mid-dots only; replaces .vh-meta + .vh-stats) ── */
+.vh-byline {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #888880;
+  margin: 8px 0 14px;
+}
+article.notion-page section.appendix-dark .vh-byline { color: #888880; }
+
+/* ── KAPLAN VENTURE HEADER (A.1 only — doctrine pivot 2026-05-25) ── */
+article.notion-page section.appendix-dark header.vh {
+  display: block;
+  margin: 56px auto 32px;
+  max-width: 920px;
+  padding-top: 36px;
+  border-top: 1px solid rgba(255,255,255,0.16);
+}
+article.notion-page section.appendix-dark header.vh:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+  margin-top: 28px;
+}
+.vh-folio {
+  font-family: var(--mono);
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #c5c52a;
+  margin: 0 0 12px;
+}
+article.notion-page section.appendix-dark header.vh .vh-name {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  margin: 0 0 24px;
+  text-transform: none;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.vh-tags { display: inline-flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.pill {
+  display: inline-block;
+  padding: 4px 12px 5px;
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #d4d0c8;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.pill--accent {
+  background: #c5c52a;
+  border-color: #c5c52a;
+  color: #0A0A08;
+}
+.pill--outline {
+  border-color: #c5c52a;
+  color: #c5c52a;
+  background: transparent;
+}
+.vh-kv {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 0;
+  margin: 0;
+  max-width: 760px;
+}
+.vh-kv dt,
+.vh-kv dd {
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+.vh-kv dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #888880;
+  padding-right: 16px;
+  align-self: center;
+}
+.vh-kv dd {
+  color: #d4d0c8;
+  font-family: var(--sans);
+}
+.vh-kv .vh-mark { margin-right: 8px; vertical-align: 1px; }
+
+/* ── VENTURE / AREA DETAIL LIST (Pass 3) ── */
+/* Replaces the run-on <p><strong>Label:</strong> ...</p> body prose pattern
+   with hairline-ruled per-topic horizontal bands. Same grammar as .vh-kv. */
+.vh-detail {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 0;
+  margin: 24px auto 40px;
+  max-width: 920px;
+}
+.vh-detail dt,
+.vh-detail dd {
+  padding: 14px 0;
+  border-top: 1px solid rgba(255,255,255,0.10);
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+.vh-detail dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #c5c52a;
+  padding-right: 24px;
+  align-self: start;
+}
+.vh-detail dd {
+  color: #d4d0c8;
+  font-family: var(--sans);
+}
+.vh-detail dd strong { color: #FFFFFF; }
+.vh-detail dd em { color: #c8c4bc; }
+.vh-detail dd code {
+  background: rgba(147,147,36,0.14);
+  color: #c5c52a;
+  padding: 1px 5px;
+  font-size: 12px;
+}
+
+/* ── DATE GROUP (A.3 decisions — Pass 6) ── */
+article.notion-page section.appendix-dark h4.date-group {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #c5c52a;
+  margin: 40px auto 0;
+  max-width: 920px;
+  padding: 0;
+  border: none;
+}
+article.notion-page section.appendix-dark h4.date-group:first-of-type {
+  margin-top: 16px;
+}
+
+/* ── HEAT STRIP (A.4 grid-break, type-only, hairline column rules) ── */
+.heat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 36px auto 32px;
+  max-width: 920px;
+}
+.heat-strip > div { padding: 6px 0 6px 22px; }
+.heat-strip > div:first-child { padding-left: 0; }
+.heat-strip > div + div { border-left: 1px solid rgba(255,255,255,0.10); }
+.hs-num {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 56px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  padding-bottom: 6px;
+  border-bottom: 2px solid currentColor;
+}
+.hs-num--crit { color: #ee8a8a; }
+.hs-num--high { color: #e3a060; }
+.hs-num--med  { color: #e3c060; }
+.hs-num--low  { color: #888880; }
+.hs-lbl {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #888880;
+}
+
+/* "Los Chistes de Synergy" lives below the appendix — keep it inside the dark band */
+article.notion-page section.appendix-dark + h2,
+article.notion-page section.appendix-dark + blockquote {
+  /* If the closing chistes block ends up outside the section, keep it visually attached */
+  margin-top: 24px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+  article.notion-page section.appendix-dark { padding: 48px 20px 72px; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta">2026-06-02</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+<h1>BOTH Ventures — Tuesday Weekly Sync — 2026-06-02 (B · venture-grouped)</h1>
+<blockquote>
+<p>Pre-read for the in-person meeting. Executive Summary reorganized by venture — same order the Tuesday meeting actually runs. Full recap in the Appendix below.
+<a href="#appendix--full-weekly-recap">Jump to Appendix ↓</a></p>
+</blockquote>
+<h2>Executive Summary</h2>
+<p><strong>Pattern this week.</strong> Three ships in seven days on the OS side cleared the rails the rest of the portfolio runs on (auto-miner Option C + V2.15.1 Workflows + Atlas v4) — the same week Quantum pivots structurally, Content Factory validates its MVP, and La Chamana takes its operational stack from broken to live. Infrastructure-clearing and structural-pivoting at the same time, with La Chamana's runway shortening underneath both.</p>
+<h3>001 · Manantial.Casa — Gaston / Daiana · 🟡</h3>
+<ul>
+<li><strong>Snapshot.</strong> Ocupación W22 66.7% (+17.4pp WoW) · 45 members · cash $74K (ops $60K) · cierre mayo + financials Daiana 02/06 · 4/4 eventos junio cerrados (1 TBD).</li>
+<li><strong>Top risks.</strong> Speaker 19/06 sin confirmar (único hueco) · cierre mayo pendiente para cuantificar gap mensual real.</li>
+<li><strong>Top decisions this week.</strong> Cobertor freezer Tiki Bar + arreglos estructurales (decide Gastón pre-viaje) · Estudio Manantial → pitch Gonza por equipos para piloto · Rafael Sotelo (UM) confirmado charla CM.</li>
+</ul>
+<h3>002 · Reshore — Gaston · 🟡</h3>
+<ul>
+<li><strong>Snapshot.</strong> Ronda restructurada a $400K (BOTH $200K + Mike $200K · valuación $12M) · GTM one-pager + reshore.com live · runway hoy julio · Sturgeon evaluation en marcha · 26 Asana overdue (concentración más alta).</li>
+<li><strong>Top risks.</strong> Runway BOTH llega a julio con ~$8K post-pagos · <strong>agosto sin entrada Guido = stress real</strong> · Mariano↔Sergio scoping pendiente 3+ semanas.</li>
+<li><strong>Top decisions this week.</strong> GO deployear segundos $200K BOTH a $12M val · ronda combinada redimensionada $500K → $400K · Reshore = próximo proyecto que recibe focus four-in-one.</li>
+</ul>
+<h3>003 · La Chamana — Daiana · 🔴</h3>
+<ul>
+<li><strong>Snapshot.</strong> Cash $70,674 (−$19,065 WoW) · burn $27,141/mes · runway <strong>2.6 meses</strong> · trigger plan B $60K cash (buffer $10.7K) · pipeline potencial ago-dic ≥ $110K · Shopify + Meta integrados 01/06.</li>
+<li><strong>Top risks.</strong> Piso costo mensual $60K en riesgo si deals no cierran · single point of failure: Business Manager depende de un solo recurso · ambigüedad fiscal Airbnb · lachamana.com infra incompleta (blog section, botones).</li>
+<li><strong>Top decisions this week.</strong> Soft-opening posture para early leads · priorizar Airbnb (jun 28–jul 1, $2.9K/noche) sobre GAIA · catch-ups Iru+Daiana 2x→1x/sem (Mon) · BOTH no entra a operativa interna ahora (Pato lidera).</li>
+</ul>
+<h3>004 · LAK3 — Rene · 🟡</h3>
+<ul>
+<li><strong>Snapshot.</strong> Wait-and-see continúa · documentación 20/05 ≠ pedida (1+ año pidiendo ICA4) · reframe V0.1.0 en draft (pending Rene + Gaston 1:1 — sliding past Gaston travel 28 May → 12 June).</li>
+<li><strong>Top risks.</strong> <strong>Water contracts (ICA4) sin mostrar después de un año pidiendo</strong> — token = nada (especulativo), valor real = water contracts.</li>
+<li><strong>Top decisions this week.</strong> Dual-track activado: Track A (empujar a SPV/Wyoming + cambiar narrativa "Legacy Token" → "Water Sale/Water Bank") · Track B (si vuelven a tokens sin estructura, romper el plan en mesa) · viernes 30/05 no boicotear, pedir versión cruda.</li>
+</ul>
+<h3>005 · Photonic Lab — Rene · 🟢</h3>
+<ul>
+<li><strong>Snapshot.</strong> Narrativa V02 doc B2 aprobada por equipo (Tuesday Sync 26/05) · 4 pilares mapeados · roadmap regulatorio cross-portfolio · confirmed flagship · 2 Asana overdue.</li>
+<li><strong>Top risks.</strong> BID Lab Uruguay node assignable to another actor (timing depende del proyecto regional) · ATGen positioning como competidor más que partner.</li>
+<li><strong>Top decisions this week.</strong> BID Lab × Photonic Lab = NOT eligible para VC direct; pivote a ecosystem track (Year 1 Argentina CAB con JEC warm intro → Year 2 Uruguay) · formato B2 a replicar para Punta Cripto + resto.</li>
+</ul>
+<h3>006 · Panambi — Andres · 🟢</h3>
+<ul>
+<li><strong>Snapshot.</strong> Holding pattern — USD 25K pendientes hasta entrar cash de Selfina. Sin movimiento operativo, sin presión externa.</li>
+<li><strong>Top risks.</strong> Ninguno activo esta semana.</li>
+<li><strong>Top decisions this week.</strong> Ninguna. Mike intro chain (Native American Reserve LP para Gaby) deferred hasta after Reshore interaction completes.</li>
+</ul>
+<h3>007 · Quantum — Andres (legal) / Gaston (Pillar 02) · 🟢</h3>
+<ul>
+<li><strong>Snapshot.</strong> <strong>Pivote estructural:</strong> 25% equity stake descartado → SPV uruguaya 100% TQA/Both compra 256-qubit ($20M capex / $50M+ PVP) · Uruguay first-mover regional · doc storytelling Uruguay Innova armado pre-Bruno-España (1-2 semanas).</li>
+<li><strong>Top risks.</strong> Cap-table mechanics estructura triangular sin modelar ("matemática cuántica" pendiente Gastón) · dependencia de Antel para infraestructura datacenter ralentiza · bottleneck global fabricación 256-qubits.</li>
+<li><strong>Top decisions this week.</strong> SPV uruguaya 100% TQA/Both compra máquina · pricing $20M costo / $50M+ PVP target · Uruguay first-mover hub LATAM · académicos IP-integration (Waisman/UM/ORT) · Q99 como fronting de licitación (evita Grupo ASA pattern) · Rafael Sotelo se suma al equipo.</li>
+</ul>
+<h3>008 · Punta Cripto — Rene · 🟡</h3>
+<ul>
+<li><strong>Snapshot.</strong> Format V0.2 + verticals lockeados · 1 board member locked (Demi Brener) + 3 en conversación · target 800 atendees · break-even ~$218K · Aviador in (Platino compensación, no cash) · sin sponsor cash todavía.</li>
+<li><strong>Top risks.</strong> <strong>Timing carta Uruguay Innova vs viaje Bruno Gilli a España (1-2 semanas)</strong> — sin firma se enfría momentum institucional cross-Quantum.</li>
+<li><strong>Top decisions this week.</strong> Rene drafts carta gobierno UY (Sara firma con Bruno pre-viaje) · path por Ministerio de Economía directo NO se reabre · Uruguay Innova → MEF a través de firma institucional = path validado · replicar formato narrativa V02 Photonic.</li>
+</ul>
+<h3>009 · B_V® | OS — Mariano · 🟢</h3>
+<ul>
+<li><strong>Snapshot.</strong> Tres ships en una semana: Auto-miner Option C (Worker <code>8f5bd2e</code>) + V2.15.1 Workflows (SHA <code>8044df4</code>) + Atlas v4 MVP (commit <code>530c82a</code>) · Hux Phase 1 launched · repo hygiene 26→19 agents · Sprint 1 día 6 de 14.</li>
+<li><strong>Top risks.</strong> Mining-quality criterios laxos residual (Daiana drafts definición) · sync-daemon silent-failure modes (auto-commits files outside scope + lies about push when no upstream) · <code>~/.zshrc</code> plaintext secrets · Option C aún en trial window (shipped not fixed).</li>
+<li><strong>Top decisions this week.</strong> Auto-miner Option C: Worker mina + GHA fanout (bypasa 1000-subrequest ceiling) · Reporte semanal V2 formato venture-blocks (este digest es el primero) · Sprint Synergy 1 lockeado 5 entregables a 2026-06-09 · altitud Epic/Task/Subtask cross-venture · Mining V2 no risk cap (cap aplica a tasks).</li>
+</ul>
+<h3>010 · Content Factory — Andres / Mariano técnico · 🟢</h3>
+<ul>
+<li><strong>Snapshot.</strong> MVP demo completada · sistema genera blog ~700w + IG carrusel + Twitter thread + LinkedIn · arquitectura keywords → trends → writer-persona → Sonnet+Opus chain · cero bugs críticos · presentación equipo 03/06.</li>
+<li><strong>Top risks.</strong> Calidad output degrada con múltiples generaciones (repetición) · scope creep automatización vs manual labor · costo automatización posting (API calls).</li>
+<li><strong>Top decisions this week.</strong> Scope MVP cerrado (blog + IG carrusel + Twitter thread + LinkedIn) · Sonnet base + Opus corrección (cadena multi-modelo) · writer "Lara Fuentes" (creador con backstory codificado) · Shopify = plataforma definitiva.</li>
+</ul>
+<hr>
+<h3>Area Pulse</h3>
+<ul>
+<li><strong>Capital</strong> — Gaston · [no /au this week · last 2026-05-14] · Implicit: ronda Reshore $400K + pivote Quantum SPV uruguaya + mandato bandwidth ratificado</li>
+<li><strong>Narrative</strong> — Rene · Quantum/Uruguay Nova one-pager pre-España; sensitivity-tiered surfacing becomes default; Rick's Studio portfolio-wide</li>
+<li><strong>Operations</strong> — Daiana · [no /au this week · last 2026-05-18] · Cierre mayo Casa Manantial 02/06; Sprint 1 entregable #2 (Risk/Decision definitions)</li>
+<li><strong>Legal</strong> — Andres · [no /au this week · last 2026-05-23] · Implicit: SPV uruguaya legal structuring + Christie's contract en hold + LAK3 review pending</li>
+<li><strong>Tech</strong> — Mariano · Tres ships: Option C + V2.15.1 + Atlas v4 · Sprint 1 día 6 · Hux Phase 1 entregando repo hygiene</li>
+<li><strong>Executive</strong> — Gaston · [no /au this week · last 2026-04-28 · 5+ weeks stale] · Travel window 28 May → 12 June gating de LAK3 1:1 + MEF + three-flagship validation</li>
+</ul>
+<hr>
+<h3>Tuesday Agenda — Decisions Needed</h3>
+<ol>
+<li><strong>La Chamana plan B trigger:</strong> ¿qué activamos cuando cash toque $60K (buffer $10.7K hoy)? (Daiana)</li>
+<li><strong>Quantum cap-table triangular:</strong> ¿Gastón modela "matemática cuántica" esta semana o pre-España? (Gastón)</li>
+<li><strong>Carta Uruguay Innova:</strong> ¿Rene drafta + Sara firma antes del viaje de Bruno? Yes/no this week (Rene)</li>
+<li><strong>Sprint Synergy 1 mid-sprint check:</strong> ¿algún entregable de 5 se retrasa? Reasignar bandwidth? (Daiana + Mariano)</li>
+<li><strong>Reshore agosto:</strong> ¿qué hace BOTH si Guido no manda capital en julio? (Gaston)</li>
+</ol>
+<hr>
+<section class="appendix-dark">
+<h2>Appendix — Full Weekly Recap</h2>
+<p class="portfolio-summary">
+The portfolio at this hour: <strong>10</strong> active ventures — <strong>1</strong> red, <strong>4</strong> yellow, <strong>5</strong> green. <strong>~30</strong> material decisions this week (after deduping <strong>67</strong> mined across pending). <strong>~36</strong> active risks of which <strong>~12</strong> are high/high. Asana shows <strong>68</strong> tasks overdue (Reshore concentrates <strong>26</strong>, Cross-cutting <strong>15</strong>, La Chamana <strong>9</strong>), <strong>28</strong> due this week, <strong>34</strong> closed in the past 7d. Three of the six area leads did not run <code>/au</code> this cycle — Capital, Operations, Legal, Executive are stale.
+</p>
+<div class="section-opener">
+<div class="folio">A.1</div>
+<div class="head">
+    <h3 class="title">Venture by Venture</h3>
+    <p class="kicker">10 reads · Champion verification expected</p>
+  </div>
+</div>
+<header class="vh">
+<div class="vh-folio">001</div>
+<h4 class="vh-name" id="manantial-casa">Manantial.Casa <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Gaston / Daiana</dd>
+    <dt>Outcome</dt><dd>Momentum</dd>
+    <dt>Health</dt><dd><span class="vh-mark yellow"></span>Yellow / sostenido — amarillo hasta break-even</dd>
+    <dt>Updated</dt><dd>2026 · 06 · 01</dd>
+    <dt>Key metric</dt><dd>45 members vs 70 break-even · Cash $74K (ops $60K) · Ocupación 66.7% (+17.4pp WoW) · 4/4 eventos junio cerrados (1 TBD) · Gap mensual real pendiente cierre 02/06</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd>Ocupación W22 (25-29/05) <strong>66.7%</strong> — reversión clara de las 3 semanas en baja previas. Jueves 28/05 = 86.7%, segundo día más activo del año. Crecimiento progresivo L→J, caída viernes a 60%. Members estables en 45 (Belén Mengen baja confirmada 15/06 → fin-junio 44). Cash on hand $74,015 (ops cash real ~$60K). Mercury Checkings $39.9K + Savings $19.9K + GF Cta Cte $14K + caja chica + crypto + Stripe $0.</dd>
+  <dt>Eventos junio</dt><dd>05/06 Lars Janson (4S Real Estate) + Nicolás Montaño (RMA Arquitectura) · 12/06 Mathias Parodi + Santiago Castillo (Akua, "Construir Fintech en la Era de la IA") · 19/06 speaker a confirmar (único hueco) · 26/06 Federico Ades + Federico Gir (Picante.fund). Calendario sin huecos salvo 19/06.</dd>
+  <dt>Workstreams Tini</dt><dd>Estudio Manantial "The Real Este" — reunión Marco + Yulissa por piloto, pitch a Gonza por equipos · Mundial en CM — comunicar propuesta a members, fixture con Andy, premio, mobiliario · Mantenimiento — evaluación cobertor freezer Tiki Bar + arreglos estructurales, masajista coordinando.</dd>
+  <dt>Blocked by</dt><dd>(1) Speaker 19/06 sin confirmar; (2) Decisión Dai + Gastón sobre cobertor freezer Tiki Bar + presupuestos arreglos estructurales; (3) Cierre mayo + datos burn/runway — necesarios para cuantificar gap; Daiana entrega 02/06.</dd>
+  <dt>Next priority</dt><dd>Cierre mayo + financials estructurados (Daiana 02/06) → recalcular gap + runway · Confirmar speaker 19/06 · Reunión Marco + Yulissa → pitch Gonza · Resolver presupuestos Tiki + arreglos · Tini Mundial · Asado 05/06 RMA + 4S.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">002</div>
+<h4 class="vh-name" id="reshore">Reshore <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Gaston</dd>
+    <dt>Outcome</dt><dd>Value</dd>
+    <dt>Health</dt><dd><span class="vh-mark yellow"></span>Yellow — ronda restructurada pero no cerrada · runway pressure julio</dd>
+    <dt>Updated</dt><dd>2026 · 05 · 26</dd>
+    <dt>Key metric</dt><dd>Ronda combinada $400K (BOTH $200K + Mike $200K) · valuación $12M · target close fin junio · Zenith $25M white-label facility (rotación 4x/año = $100M deployment capacity) · runway hoy julio · post-cierre abril 2027 · 26 Asana overdue (concentración más alta del portfolio)</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd>Ronda combinada redimensionada a <strong>$400K</strong> en Tuesday Sync 2026-05-26 (BOTH $200K + Mike $200K · valuación $12M mantenida). Bridge sigue viable a $400K — extiende runway a abril 2027 según modelo de Sergio. <strong>Decisión de deployear segundos $200K BOTH</strong> a valuación $12M para mantener stake cap-table ~10% (primeros $200K = 1.46% antes de devoluciones de Caterina). Operating + traspaso Casa Manantial firmados; subscription sale 2026-05-27 (último doc del pack legal). <strong>Reshore confirmado como próximo proyecto que recibe focus four-in-one</strong> del equipo (junto con Photonic Lab subiendo).</dd>
+  <dt>GTM concretado</dt><dd>Buyer-facing one-pager LIVE en reshore-trade-finance-scf.netlify.app — Embedded Supply Chain Finance para U.S. buyers ↔ Mexican manufacturers (24h supplier payment / 30-60-90d buyer terms / off-balance-sheet / $25M facility). Website LIVE en reshore.com. Sturgeon evaluation como ejecutor en marcha. Tagline: <em>Reshore — The Trusted Operating System for Trade in the Americas</em>.</dd>
+  <dt>Blocked by</dt><dd>Cierre ronda combinada antes fin junio (firmas Mike + BOTH) · Zenith partnership final terms pending Mike NY close · Mariano ↔ Sergio scoping conversation aún pendiente (carried 3+ semanas) · 3-way handover call sequence sin agendar · runway BOTH llega a julio con ~$8K post-pagos; <strong>agosto problemático</strong> sin entrada de Guido.</dd>
+  <dt>Next priority</dt><dd>Cerrar ronda $400K antes fin junio · Mike NY close de Zenith + terms finales · Launch outreach buyer-side con one-pager nuevo (US/CAN buyers $25M+ revenue, $1M+ annual PO program) · Sturgeon evaluation próximos pasos · Destrabar Mariano ↔ Sergio scoping + 3-way handover call.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">003</div>
+<h4 class="vh-name" id="la-chamana">La Chamana <span class="vh-tags"><span class="pill pill--outline">EXPLORE</span><span class="pill">SUPPORTIVE</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Daiana</dd>
+    <dt>Outcome</dt><dd>Momentum</dd>
+    <dt>Health</dt><dd><span class="vh-mark red"></span>Red — Tulum headwind macro · buffer al trigger plan B = $10.7K</dd>
+    <dt>Updated</dt><dd>2026 · 06 · 01</dd>
+    <dt>Key metric</dt><dd>Cash $70,674 · Runway 2.6 meses · Burn $27,141/mes · Deuda Pato $100K sin vencimiento · Trigger plan B $60K cash · Pipeline potencial ago-dic ≥ $110K · 9 Asana overdue · 11 closed this week</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd>Cash $70,674 (<strong>−$19,065 WoW</strong>), burn $27,141/mes (leve mejora vs $28,715), runway 2.6 meses sin nuevas reservas. <strong>Trigger plan B confirmado: $60K cash</strong> — restan ~$10.7K de buffer. Pipeline nuevo: <strong>Gaia</strong> (12-16 pax · 3 noches · $13K, Iru armando propuesta, validación Gastón pendiente); <strong>Airbnb lead</strong> 28 jun-1 jul ($9,925) + mismo huésped vía Luxury Haciendas ($12,796).</dd>
+  <dt>Operacional</dt><dd><strong>Shopify + Meta Business Manager integrados</strong> 2026-06-01 (pixel generado, en Meta review). Soft-opening posture adoptado para early leads ("estos no son precios estándares, stage particular Tulum, pricing real es [X–Y]"). Catch-up cadence reducido <strong>2x/sem (Mon+Thu) → 1x/sem (Mon)</strong>. FAM trip Gastón en curso ($3K loss, on-top cobrable).</dd>
+  <dt>Pipeline en seguimiento</dt><dd>Agosto 2 retiros de lectura $30K · Octubre en seguimiento · Diciembre Elli Travel/The Muse $15K + Josefine vía The Muse $29,950. Descartados: despedida soltera, boda noviembre, boda 2027.</dd>
+  <dt>B2B</dt><dd>Scott Dunn / Black Tomato / Jacada sin respuesta · Origin propuesta enviada · Journey Mexico form completado · onefinestay no incorpora propiedades MX · Carey Argentina conversando · Grupo 3 retomará al regresar.</dd>
+  <dt>Blocked by</dt><dd>Tulum como destino con headwind macro · Onefinestay no incorpora MX · Julio sin reservas pagas proyectadas · Claridad fiscal Airbnb + Excel de costos para GAIA decision.</dd>
+  <dt>Next priority</dt><dd>(1) Cerrar propuesta Gaia (validación Gastón → enviar); (2) Convertir Airbnb + Luxury Haciendas; (3) Ejecutar FAM trip Gastón sin overrun; (4) Monitorear cash diario vs trigger $60K plan B; (5) Empujar follow ups B2B fríos; (6) Materializar agosto ($30K retiros) — si cae, extiende runway 1+ mes.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">004</div>
+<h4 class="vh-name" id="lak3">LAK3 <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Rene</dd>
+    <dt>Outcome</dt><dd>Learning</dd>
+    <dt>Health</dt><dd><span class="vh-mark yellow"></span>Yellow — dual-track activado; reframe pendiente Rene + Gaston 1:1</dd>
+    <dt>Updated</dt><dd>2026 · 05 · 26</dd>
+    <dt>Key metric</dt><dd>6 artifacts producidos en la sesión 18-20/05 · Strategic position V0.1.0 en draft (pending Gaston) · UN Water Conference UAE Dic 2026 = time anchor · $2.5-6M cost-to-Conference-debut envelope modelado · 2 Asana overdue</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd><strong>Wait-and-see continúa</strong>. Documentación enviada 20-may <em>no es la pedida</em> (llevan un año pidiendo ICA4). Mike + Javi convencidos que existen — JB los habría visto en proceso con tribu canadiense. Equipo lee la opacidad como señal: <em>"no comunicación dice más que comunicación."</em></dd>
+  <dt>Estrategia dual-track activada (Rene)</dt><dd><strong>Track A</strong> — empujar a Lake/Shevia a pasar water rights a SPV/Wyoming LLC + intercast label + cambiar narrativa de "Legacy Token" a "Water Sale/Water Bank". <strong>Track B</strong> — si vuelven a tokens sin estructura, romper el plan en mesa. Token = nada (especulativo, no cap table). <strong>Valor real = water contracts.</strong></dd>
+  <dt>Strategic reframe V0.1.0 (carryforward)</dt><dd>Cinco moves: substrate acquisition · time architecture · failure as credential · launch platform (Punta Crypto Forum 2027 as activation) · decoupled capital architecture. Position walks out of token-wrapper frame entirely; supersedes Paths A/B/C.</dd>
+  <dt>Blocked by</dt><dd>Rene + Gaston 1:1 sobre el reframe (sliding past Gaston's travel 28 May → 12 June) · Independent water-rights diligence firm engagement · Swiss crypto counsel engagement ($80-150k) · Andres legal review · Mariano on sensitivity-tiered mining pipeline · Apr 30 + May 6 investor session outcomes still not in vault.</dd>
+  <dt>Next priority</dt><dd>Reunión viernes 30/05 — no boicotear; pedir versión cruda + sondear Nassar vía JB · Schedule Rene + Gaston 1:1 post viaje (gating de adopción) · Send dart questions a Xavier en schedule (credibility floor) · Run Rosental meeting per prep brief.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">005</div>
+<h4 class="vh-name" id="photonic-lab">Photonic Lab <span class="vh-tags"><span class="pill pill--outline">EXPLORE</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Rene</dd>
+    <dt>Outcome</dt><dd>Learning</dd>
+    <dt>Health</dt><dd><span class="vh-mark green"></span>Green — narrativa V0.2 aprobada · BID Lab path = ecosystem node</dd>
+    <dt>Updated</dt><dd>2026 · 05 · 28</dd>
+    <dt>Key metric</dt><dd>4 surfaces públicos · 3 TQA disclosure plays · visual standard locked · Confirmed flagship (Manantial + Reshore + Photonic Lab) · 2 Asana overdue</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd><strong>Documento B2 (narrativa V02) aprobado por equipo</strong> en Tuesday Sync 2026-05-26. Cuatro pilares mapeados: (1) bioproduction infrastructure GMP scale-up; (2) innovation + regulatory — Lani, EMA, Marcos Urplas, Ley de inversiones, Uruguay 21; (3) regional pipeline + Big Pharma access; (4) computational AI capabilities embedded in lab. Financials sacados deliberadamente (sensitivity-tiered, Daiana review first).</dd>
+  <dt>BID Lab × Photonic Lab</dt><dd>2026-05-28 — BID Lab confirmó Photonic Lab (como lab infrastructure entity) <strong>not eligible</strong> para BID Lab VC direct financing (category mismatch: lab infrastructure ≠ startup). <strong>Engagement pivota a ecosystem track</strong>: BID Lab tiene un proyecto regional biotech 3-3.5 años, Year 1 Argentina (CAB) → Year 2 Uruguay. BOTH/Photonic Lab = natural Uruguay node candidate. JEC (Qualia+) ex-Director CAB → warm intro.</dd>
+  <dt>Cross-portfolio</dt><dd>Roadmap regulatorio mapea todos los ventures — Andres puede usarlo como base para mapa regulatorio cross-portfolio. Versión bilingüe ES/EN. <strong>Formato a replicar para Punta Cripto y resto de ventures.</strong></dd>
+  <dt>Blocked by</dt><dd>TQA-disclosure escalation policy decision pendiente · Photonic Labs public one-pager V0.2.0 draft · CLAUDE.md + Notion + Asana sync for Pillar 02 champion shift.</dd>
+  <dt>Next priority</dt><dd>(1) Photonic Labs public one-pager V0.2.0 — Rene; (2) TQA-disclosure escalation policy filed; (3) Andres sync on legal-scope retention + cadence con Gaston; (4) Operationalize Pillar 03 scoping (Mariano).</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">006</div>
+<h4 class="vh-name" id="panambi">Panambi <span class="vh-tags"><span class="pill pill--outline">EXPLORE</span><span class="pill">OBSERVATIONAL</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Andres</dd>
+    <dt>Outcome</dt><dd>Learning</dd>
+    <dt>Health</dt><dd><span class="vh-mark green"></span>Green — holding pattern</dd>
+    <dt>Updated</dt><dd>2026 · 05 · 18</dd>
+    <dt>Key metric</dt><dd>USD 25K pendientes de pago · 0 Asana overdue</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd>Sin movimiento operativo. La venture está esperando el próximo desembolso de cash de Selfina. Tenemos USD 25K pendientes de pagar a Panambi (cheque acordado con Guido / Pujelo), pero el pago no se gatilla hasta que entre Selfina. Del otro lado no están apurando invoices ni pidiendo timing.</dd>
+  <dt>Blocked by</dt><dd>Timing de cash inflow de Selfina (externo, sin presión inmediata).</dd>
+  <dt>Next priority</dt><dd>Hacer el pago de USD 25K una vez que entre el cash de Selfina. Mientras tanto, holding pattern. Mike intro chain para Gaby (Native American Reserve LP) deferred until after Reshore interaction completes.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">007</div>
+<h4 class="vh-name" id="quantum">Quantum <span class="vh-tags"><span class="pill pill--outline">EXPLORE</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Andres (legal) / Gaston (Pillar 02)</dd>
+    <dt>Outcome</dt><dd>Learning</dd>
+    <dt>Health</dt><dd><span class="vh-mark green"></span>Green — pivote estructural en curso · momentum institucional fuerte</dd>
+    <dt>Updated</dt><dd>2026 · 06 · 01</dd>
+    <dt>Key metric</dt><dd>Pricing máquina 256-qubit: ~$20M capex / $50M+ PVP target · Uruguay confirmado first-mover hub LATAM (supply constraint 3+ años) · 0 anchors propios · TQA tiene 3 anchors firmados ($8.5M revenue contratado año 1) + $100M pipeline enterprise · 4 Asana due esta semana</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd><strong>Call TQA × BOTH 29/05</strong> (Facu + Guillermo + Gastón + Daiana) minada y aprobada. <strong>Pivote estructural: 25% equity stake descartado.</strong> Nueva estructura <strong>triangular</strong>: empresa uruguaya 100% Both/TQA compra máquina 256-qubit a TQA (~$20M cost → $50M+ PVP); finances vía non-equity paths (BID, Uruguay programs, JP Morgan debt option). Both swapea equity contra holding (~$250M pre-money). Uruguay confirmado jurisdicción principal first-mover 256-qubit LATAM.</dd>
+  <dt>Doc storytelling Uruguay Innova</dt><dd>Armado por Gastón (deadline EOW 31/05 cumplido). Review chain: <strong>Andy review → Daiana envía a Guillermo (TQA) → Rafael Sotelo (UM) → con feedback consolidado va a Bruno Gili antes de su viaje España</strong> (timing-sensitive, 1-2 semanas).</dd>
+  <dt>Cross-thread</dt><dd>Business plan unificado Quantum + Photonic Lab — Rene entregó doc. Risk H/M abierto desde abril → destrabado, pendiente validación team. Action items derivados: Waisman grant scope (Gastón → 05/06), slides Noam + specs técnicas (Facu → 31/05), Q99 como fronting de licitación confirmado (evita Grupo ASA pattern), cap table mechanics estructura triangular sin modelar — Gastón pensándolo (<em>"matemática cuántica"</em>).</dd>
+  <dt>Status closures (threads del call con Sara 12/05)</dt><dd>Ferrere + CPA → en cola hasta que el proyecto esté más avanzado · Tony Peña (Kamay Ventures) → no avanza por el momento · Isabella Antonaccio (DINAI/MEF) → no respondió mensajes; ruta vigente vía Sara Goldberg + Bruno Gilli + Uruguay Innova.</dd>
+  <dt>Blocked by</dt><dd>Cap table mechanics estructura triangular sin modelar · Ventana acotada Bruno Gili (viaja España 1-2 semanas) · Rafael Sotelo charla CM pendiente (Daiana hace contacto una vez circule el doc).</dd>
+  <dt>Next priority</dt><dd>(1) Andy review doc storytelling → Daiana envía a Guillermo (TQA); (2) Follow-up Sara 02/06 (carta gobierno UY para Punta Cripto); (3) Gastón cierra Waisman scope (05/06) + sigue modelando cap table triangular; (4) Daiana contacta Rafael Sotelo.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">008</div>
+<h4 class="vh-name" id="punta-cripto">Punta Cripto <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">SUPPORTIVE</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Rene</dd>
+    <dt>Outcome</dt><dd>Value</dd>
+    <dt>Health</dt><dd><span class="vh-mark yellow"></span>Yellow — carta institucional gating de primer sponsor cash</dd>
+    <dt>Updated</dt><dd>2026 · 05 · 26</dd>
+    <dt>Key metric</dt><dd>Format V0.2 + verticals lockeados · 1 board member locked (Demi Brener) + 3 en conversación · 2 producers en diálogo · target 800 atendees · ticket ~$350 · break-even ~$218K · 5 Asana overdue</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd><strong>Visita presencial Uruguay Innova 2026-05-25</strong>: Bruno Gilli (reporte directo a Presidencia) se comprometió a firmar carta del gobierno endorsando Día 1 (regulación) del summit — <strong>condicionado a que BOTH redacte la carta</strong> que se quiere recibir firmada. <strong>Rene drafts esta semana</strong> → Sara opera firma con Bruno antes de su viaje a España (1-2 semanas, timing-sensitive). Path por Ministerio de Economía directo NO se reabre. Uruguay Innova → MEF a través de la firma institucional es el path validado.</dd>
+  <dt>Sponsors</dt><dd>Sin sponsor de guita cerrado todavía. <strong>Aviador in (tier Platino — compensación, no cash)</strong>. Plat Tiag (Fernando) aún not closed. <strong>Carta Nexo pre-armada por Rene</strong> — Nexo hot para firmar tier Platino compensación rápido.</dd>
+  <dt>Cross-thread</dt><dd>Rafael Sotelo (UM) sumándose con charla Quantum en Casa Manantial — abre línea UM-BOTH; eventualmente plantear buildathon/hackathon dentro de Punta Cripto. Próximo entregable: <strong>replicar formato narrativa V02 Photonic (doc B2) para Punta Cripto.</strong> Daiana 2026-06-01 inició outreach a Presidencia de Innovación de Uruguay — respuesta inicial positiva, pending formal confirmation.</dd>
+  <dt>Format V0.2 locked</dt><dd>Día 1 (Institucional + Regulators) en Casa Manantial (TBD) · Día 2 venue (Centro de Convenciones Punta del Este, primary lead) blockchain/protocolos · Día 3 venue AI + buildathon (Darío validó 300 builders mín desde Aleph). Verticals: Regulation/Law · Content/Blockchain · Building/AI.</dd>
+  <dt>Blocked by</dt><dd>Carta Uruguay Innova vs viaje Bruno (1-2 semanas) — sin firma se enfría momentum · Cipriani engagement aún sin abrir · Día-1 venue (Casa Manantial?) requires Gaston/Daiana confirmation · Internal-vs-public vertical naming pending reconciliation pass.</dd>
+  <dt>Next priority</dt><dd>(1) Convertir Demi Brener's verbal lock en written advisor agreement; (2) Finalizar la 10-name board outreach shortlist; (3) Abrir Cipriani conversation; (4) Advance Centro de Convenciones diligence (rate card, availability windows Q4 2027 / Q1 2028); (5) Convertir Gastón Abigador's interest en producer scope-of-work proposal; (6) Confirmar Casa Manantial como Día 1 venue.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">009</div>
+<h4 class="vh-name" id="both-os">B_V® | OS <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Mariano</dd>
+    <dt>Outcome</dt><dd>Value</dd>
+    <dt>Health</dt><dd><span class="vh-mark green"></span>Green — tres ships en una semana</dd>
+    <dt>Updated</dt><dd>2026 · 06 · 01</dd>
+    <dt>Key metric</dt><dd>Worker SHA <code>8f5bd2e</code> (Option C live) · GHA fanout 3/3 validado · Atlas v4 86-node graph live · 26→19 agents · Hux Phase 1 activo · Sprint 1 día 6 de 14 · 6 Asana overdue · 17 closed this week (concentración más alta del portfolio)</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week — tres ships</dt><dd><strong>(1) Auto-miner Option C shipped 2026-06-01 (Worker SHA <code>8f5bd2e</code>)</strong> — Slack/Asana fanout movido del Worker a nuevo <code>.github/workflows/auto-mine-fanout.yml</code> GHA, bypaseando el ceiling de 1000-subrequest-per-invocation que silenciosamente fallaba el fanout para meetings con &gt;~7-10 items minados. Worker steps 5d/7/8 gated detrás de <code>FANOUT_VIA_GHA="true"</code>. Validated 3/3 in-session (TQA replay 62k, Content Factory replay 114k, real Mariano+Daiana call). Per discipline: <strong>shipped not fixed</strong> — Tuesday Sync 2026-06-02 es validación natural #2. <strong>(2) V2.15.1 Workflows landed 2026-05-29 (SHA <code>8044df4</code>)</strong> — F6 cerrado. Root cause: <code>waitUntil</code> cancellation (el <code>setMaxDuration(300)</code> call estaba envuelto en silent try/catch y nunca fue una API real). MiningWorkflow class + <code>[[workflows]]</code> binding deployed; 3 de 4 transcripts atascados recuperados. <strong>(3) Atlas v4 MVP shipped 2026-06-01 (commit <code>530c82a</code>)</strong> — L0 = <code>vault/soul.md</code> (Synergy doctrine extraída de CLAUDE.md con criterio editorial Gaston) + L1-L3 zoom canvas live. <code>scripts/atlas-data-build.py</code> emite 86-node JSON.</dd>
+  <dt>Hux launch + repo hygiene</dt><dd><strong>Hux (Agentic CTO) launched 2026-05-30</strong> — Phase 1 Mariano-only. 4 sub-agents (stress-tester, ux-critic, agent-auditor, qa-systemic). Weekly Sunday digest + on-demand <code>/hux</code>. First weekly run entregó repo hygiene 2026-06-01: Tier A entire + 7-agent subtract + archive graphify+telegram → <strong>26→19 agents · 31→26 CLAUDE.md rows · 16→14 projects</strong>. Re-audit cadence locked 2026-07-01. <strong>Understand-anything installed 2026-05-31</strong> — validated contra <code>workers/transcript-miner/</code> (58-node graph + 10-step grounded tour).</dd>
+  <dt>Sprint Synergy 1 locked</dt><dd>Tuesday Sync 2026-05-26 — 5 entregables a 2026-06-09: (1) Weekly Report V2 venture-blocks format (aplica primero 2026-06-02 = HOY); (2) Mining V2 criteria (Daiana drafts definición, Mariano implementa); (3) ENV/API key audit (Gaston ask); (4) Workflow norms doc + Notion access para Gaston; (5) Roadmap 8 semanas. Task/Epic/Subtask altitud nomenclature locked cross-venture 2026-06-01.</dd>
+  <dt>Blocked by</dt><dd>Option C trial window abierto — necesita 2 real meetings sin fallar antes de "fixed" · Sync-daemon silent-failure modes logged (auto-commits files outside requested change AND lies about push when branch has no upstream) — needs proper fix, currently belt-and-suspenders verify-before-trust · ENV audit pending · Mining V2 gated en Daiana's definition · Sync-daemon rollout a Dai/Rene/Andres aún blocked en 5 prereqs · <code>~/.zshrc</code> plaintext secrets.</dd>
+  <dt>Next priority</dt><dd>Tuesday Sync 2026-06-02 — first digest en V2 venture-blocks format con A.4 heat-strip move (este digest); natural Option C validation #2 · ENV/API key audit · Workflow norms doc + Notion access para Gaston · Mining V2 implementation post-Daiana criteria · Sync-daemon silent-failure fix proper.</dd>
+</dl>
+<header class="vh">
+<div class="vh-folio">010</div>
+<h4 class="vh-name" id="content-factory">Content Factory <span class="vh-tags"><span class="pill pill--accent">BUILD</span><span class="pill">HANDS-ON</span></span></h4>
+<dl class="vh-kv">
+    <dt>Champion</dt><dd>Andres (con Mariano técnico)</dd>
+    <dt>Outcome</dt><dd>Momentum</dd>
+    <dt>Health</dt><dd><span class="vh-mark green"></span>Green — MVP validado · cero bugs críticos en demo</dd>
+    <dt>Updated</dt><dd>2026 · 06 · 01</dd>
+    <dt>Key metric</dt><dd>MVP live · blog ~700 palabras + IG carousel + Twitter 5-tweet thread + LinkedIn · arquitectura Sonnet+Opus chain · 1 Asana overdue · presentación equipo 2026-06-03</dd>
+  </dl>
+</header>
+<dl class="vh-detail">
+<dt>This week</dt><dd><strong>MVP demo completada 2026-05-30 → 2026-06-01</strong>. Sistema genera contenido multi-channel coherente (blog ~700 palabras, Instagram carrusel, Twitter 5-tweet thread, LinkedIn con angle ejecutivo). Arquitectura: <strong>keywords (Claude pre-loaded) → trends (TikTok/Instagram/Google) → writer persona (Lara Fuentes, backstory + voice consistency) → topic generator (3 opciones) → content gen (Sonnet+Opus+anti-AI filters) → output</strong>. Cero bugs críticos. Calidad validada (<em>"esto está mucho mejor"</em>).</dd>
+  <dt>Decisions de la semana</dt><dd>Arquitectura Sonnet para escritura base + Opus para corrección (cadena multi-modelo). Writer personality Lara Fuentes — creador-backstory. Google Trends + TikTok Studio + Instagram como input. Biblioteca de imágenes curadas (200+). OpenAI medium quality por default.</dd>
+  <dt>Blocked by</dt><dd>Stress test de output quality pendiente · Historial persistente pendiente · Automatización de posteo pendiente (full automation scope deferred pending Gastón sign-off).</dd>
+  <dt>Next priority</dt><dd>(1) Presentación live al equipo (Iru, team) 2026-06-03 — walkthrough UI, arquitectura multi-modelo, share acceso a repo; (2) Completar integración repo Content Factory → interfaz web; cableado de blog en Shopify + botón postear con human check 2026-06-03; (3) Stress test + edge cases → phase 2.</dd>
+</dl>
+<div class="section-opener">
+<div class="folio">A.2</div>
+<div class="head">
+    <h3 class="title">Area by Area</h3>
+    <p class="kicker">Six leads · 4 ciclos stale</p>
+  </div>
+</div>
+<h4>Capital — Gaston <em>(updated 2026-05-14 · 18 days stale)</em></h4>
+<dl class="vh-detail">
+<dt>Focus</dt><dd>[no /au this week — last update pre-dates ronda restructurada Reshore + pivote estructural Quantum + Sprint Synergy 1]</dd>
+  <dt>Implicit moves visible from venture files</dt><dd>Ronda Reshore restructurada a $400K (BOTH $200K + Mike $200K) · GO decision deployear segundos $200K BOTH · Quantum pivote 25% equity → SPV uruguaya 100% Both/TQA buys 256-qubit ($20M capex / $50M target) · Mandato bandwidth ratificado en Tuesday Sync ("no abrir nuevos ventures") · Runway BOTH llega a julio post-pagos, agosto problemático.</dd>
+  <dt>Needs</dt><dd>/au capital next cycle should land the cap-table mechanics for the Uruguayan SPV ("matemática cuántica") + Reshore Q3 runway plan if Guido doesn't transfer in July.</dd>
+</dl>
+<h4>Narrative &amp; Comms — Rene <em>(updated 2026-05-27)</em></h4>
+<dl class="vh-detail">
+<dt>Focus this week</dt><dd>Quantum / Uruguay Nova one-pager — drafting pre-Andy's España trip (Barcelona Supercomputing Institute, depart days-not-weeks). Storytelling architecture agreed Tuesday Sync 2026-05-26: (a) LatAm precedent cases · (b) country-positioning scan · (c) academia + data-center angle · (d) sovereignty layer with España as subtle coyuntural positioning. Same template to replicate per-venture — Punta Crypto next.</dd>
+  <dt>Photonic Lab status interface</dt><dd>B2 with Rick's Studio screen-shared at Tuesday Sync — strong reception. Four pillars + regulatory map + regional pipeline land clean. Financials deliberately pulled for Daiana review first (sensitivity-tiered surface).</dd>
+  <dt>Cross-venture patterns</dt><dd>Sensitivity-tiered surfacing becoming a comms-area default. Quantum one-pager template is portfolio infrastructure. Bandwidth mandate ratified ("no abrir nuevos proyectos, aterrizar lo que tenemos"). Rick's Studio inside Synergy (commit <code>ee6cefd</code>) changes production architecture — Rene shifts from production to brief-and-review layer.</dd>
+  <dt>Decisions / needs</dt><dd>LAK3 reframe pending Rene + Gaston 1:1 (sliding past Gaston's travel 28 May → 12 June) · Nexo carta final + send · Synergy V2 risk-definition draft (per Boris + Daiana invitation).</dd>
+  <dt>Blocked by / needs</dt><dd>Andy's exact España departure date · Daiana review window on Photonic Lab financials · Mariano scope on sensitivity-tiered mining pipeline · <code>/wr</code> parser fix (until landed, every <code>/au</code> must be inserted at top of area file) · LAK3 contracts post-Friday.</dd>
+</dl>
+<h4>Operations &amp; Finance — Daiana <em>(updated 2026-05-18 · 14 days stale)</em></h4>
+<dl class="vh-detail">
+<dt>Focus</dt><dd>[no /au this week]</dd>
+  <dt>Implicit moves visible from venture files</dt><dd>Cierre mayo Casa Manantial entregable 02/06 (Daiana) — recién ahí se cuantifica gap mensual + runway · La Chamana ops: catch-up cadence reducido 2x/sem → 1x/sem (Mon) · Sprint Synergy 1 entregable #2 (definición canónica Decision + Risk) Daiana draftea esta semana · Sprint entregable #3 (ENV/API key audit) coordinación con Mariano · Investor report due 02/06.</dd>
+  <dt>Needs</dt><dd>/au operations next cycle should land cierre mayo + reconciliación La Chamana burn ($25.7K V7 vs $28.7K Iru 18-may, $3K gap a resolver) + plan trigger plan B para La Chamana cuando cash toque $60K.</dd>
+</dl>
+<h4>Legal &amp; Governance — Andres <em>(updated 2026-05-23 · 9 days stale)</em></h4>
+<dl class="vh-detail">
+<dt>Focus</dt><dd>[no /au this week]</dd>
+  <dt>Implicit moves visible from venture files</dt><dd>Quantum legal structuring para SPV uruguaya 100% (sustituye 25% equity scheme) · Christie's contrato La Chamana en hold — alineación interna pendiente · Cap table cleanup Reshore (Caterina devolvió 7%, Rene 1MM shares = 6%) · LAK3 legal review aún pendiente (carryover) · Trademark filings deferred for some ventures per bandwidth mandate.</dd>
+  <dt>Needs</dt><dd>/au legal next cycle should land LAK3 review delivery + Quantum SPV uruguaya legal scope + La Chamana Christie's contract status post-Gaston-return.</dd>
+</dl>
+<h4>Tech &amp; Infrastructure — Mariano <em>(updated 2026-06-01)</em></h4>
+<dl class="vh-detail">
+<dt>Focus this week</dt><dd>Tres ships estructurales en una semana — Auto-miner Option C (2026-06-01), V2.15.1 Workflows (2026-05-29), Atlas v4 MVP (2026-06-01) — plus Hux (Agentic CTO) launch con first weekly run shipping repo hygiene. Sprint Synergy 1 (2026-05-27 → 2026-06-09) día 6 de 14, 5 entregables locked.</dd>
+  <dt>Cross-venture patterns</dt><dd>Option C es el highest-leverage tech move del trimestre — la pipeline transcript-miner estaba silenciosamente dropeando fanout para cada meeting &gt;7-10 items. Fix lands la misma semana que Sprint 1 lockea Weekly Report V2 venture-blocks format (este digest), que depende de un fanout funcional. Atlas v4 doctrine extraction (soul.md as L0) + Hux launch ambos tiran en la misma dirección: <em>hacer que el sistema se describa solo lo suficientemente bien como para que el equipo se auto-oriente sin Mariano in the loop.</em></dd>
+  <dt>Decisions</dt><dd>Option C hybrid architecture chosen over full GHA migration (PR #2 kept as warm fallback; reactivation trigger = 2 Option C failures in 1 week) · Repo taxonomy 4-bucket principle adopted via Hux on-demand proposal · soul.md as L0 doctrine document · Multiple Worker deploys ratified as decisions (5 worker-deploy SHAs this week).</dd>
+  <dt>Blocked by / needs</dt><dd>Option C trial window open — needs 2 real meetings without failure before "fixed" claim · Sync-daemon silent-failure modes (auto-commits + lies about push) need proper fix · ENV/API key audit pending (Sprint 1 entregable #3) · Mining V2 gated on Daiana's definition · <code>~/.zshrc</code> plaintext secrets · Auto-miner haiku trial gate stalled at 1/3.</dd>
+</dl>
+<h4>Executive — Gaston <em>(updated 2026-04-28 · 34 days stale)</em></h4>
+<dl class="vh-detail">
+<dt>Focus</dt><dd>[no /au this week — 5+ weeks stale, area file needs full reset cycle]</dd>
+  <dt>Implicit posture from Tuesday Sync 2026-05-26 + venture files</dt><dd>Mandato bandwidth ratificado: no abrir nuevos ventures · GTM hands-on La Chamana técnico · Doc storytelling Uruguay Innova armado · Cap table modeling Quantum SPV pendiente · Reshore segundos $200K deployed · Viaje 28 May → 12 June (LAK3 1:1 + MEF/data-center + three-flagship validation todos gated en su return).</dd>
+  <dt>Needs</dt><dd>/au executive next cycle should land cap-table mechanics Quantum + Reshore runway-julio escalation + post-return roadmap for the 4 items gated on his travel window.</dd>
+</dl>
+<div class="section-opener">
+<div class="folio">A.3</div>
+<div class="head">
+    <h3 class="title">Decisions of the Week</h3>
+    <p class="kicker">30 material, after dedup</p>
+  </div>
+</div>
+<ol>
+<li><code>[ DEC / W23 / 001 ]</code> <strong>Crear SPV uruguaya 100% TQA/Both que compra la máquina 256-qubit</strong> — 2026-05-29 — Owner: Gaston / Andres — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 002 ]</code> <strong>Uruguay como hub regional first-mover 256-qubit LATAM</strong> — 2026-05-29 — Owner: Gaston — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 003 ]</code> <strong>Pricing máquina cuántica: $20M costo / $50M+ target PVP</strong> — 2026-05-29 — Owner: Facu (TQA) / Gaston — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 004 ]</code> <strong>Académicos como IP-integration Waisman/Weizmann/UM/ORT</strong> — 2026-06-01 — Owner: Gaston — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 005 ]</code> <strong>Posicionar 256-qubit en Uruguay como first-mover regional</strong> — 2026-06-01 — Owner: Gaston — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 006 ]</code> <strong>Auto-miner Option C: Worker mina + GHA fanout</strong> — 2026-06-01 — Owner: Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 007 ]</code> <strong>Worker deploy SHA <code>8f5bd2e</code> ratificado</strong> — 2026-06-01 — Owner: Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 008 ]</code> <strong>Reporte semanal V2 — formato por venture</strong> — 2026-05-26 — Owner: Daiana / Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 009 ]</code> <strong>Sprint Synergy 1 lockeado — 5 entregables a 2026-06-09</strong> — 2026-05-26 — Owner: Daiana / Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 010 ]</code> <strong>Mining V2 — no risk cap (cap aplica a tasks)</strong> — 2026-05-26 — Owner: Daiana / Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 011 ]</code> <strong>Reportes a Gaston — editorial criteria blindado (sin siglas sin explicar, sin resumen ejecutivo)</strong> — 2026-05-26 — Owner: Daiana — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 012 ]</code> <strong>Mantener 9 ventures independientes (no fusionar en 4 macroproyectos)</strong> — 2026-05-26 — Owner: Tuesday Sync — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 013 ]</code> <strong>Adoptar nomenclatura altitud Epic/Task/Subtask (visibility-based)</strong> — 2026-06-01 — Owner: Daiana / Mariano — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 014 ]</code> <strong>Decisiones vigentes cumplen 3 criterios</strong> (durability &gt; meeting, fixes pattern, scope &gt; 1 task) — 2026-06-01 — Owner: Daiana — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 015 ]</code> <strong>No borrar subtasks/subpasos — meterlas embebidas, no como tasks</strong> — 2026-06-01 — Owner: Daiana — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 016 ]</code> <strong>Definir "altitud" como nivel de visibilidad</strong> — 2026-06-01 — Owner: Daiana — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 017 ]</code> <strong>Synergy Slack experimental — útil send-only Daiana</strong> — 2026-05-26 — Owner: Tuesday Sync — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 018 ]</code> <strong>Épica vs iniciativa naming — usar "épica"</strong> — 2026-05-27 — Owner: Daiana — Venture: Cross-cutting</li>
+<li><code>[ DEC / W23 / 019 ]</code> <strong>Content Factory MVP scope cerrado (blog + IG + Twitter + LinkedIn)</strong> — 2026-05-30 — Owner: Andres — Venture: Content Factory</li>
+<li><code>[ DEC / W23 / 020 ]</code> <strong>Arquitectura Sonnet base + Opus corrección (cadena multi-modelo)</strong> — 2026-05-30 — Owner: Andres — Venture: Content Factory</li>
+<li><code>[ DEC / W23 / 021 ]</code> <strong>Writer personality "Lara Fuentes" — creador con backstory codificado</strong> — 2026-06-01 — Owner: Andres — Venture: Content Factory</li>
+<li><code>[ DEC / W23 / 022 ]</code> <strong>Shopify es la plataforma definitiva (Gaston, loop cerrado)</strong> — 2026-05-30 — Owner: Gaston — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 023 ]</code> <strong>La Chamana: Shopify + Meta Business Manager integrados</strong> — 2026-06-01 — Owner: Gaston / Mariano — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 024 ]</code> <strong>La Chamana: postura soft-opening ante leads tempranos</strong> — 2026-06-01 — Owner: Daiana — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 025 ]</code> <strong>La Chamana: priorizar deal Airbnb (jun 28-jul 1, $2.9K/noche) sobre GAIA</strong> — 2026-06-01 — Owner: Daiana — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 026 ]</code> <strong>La Chamana: reducir catch-ups Iru+Daiana 2x→1x/sem (Mon)</strong> — 2026-06-01 — Owner: Daiana — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 027 ]</code> <strong>La Chamana: no cleanup operativo ahora (Pato lidera)</strong> — 2026-05-26 — Owner: Tuesday Sync — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 028 ]</code> <strong>La Chamana: Gaston toma GTM hands-on técnico</strong> — 2026-05-26 — Owner: Gaston — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 029 ]</code> <strong>La Chamana: keep split de dominios (chamana.live emails / lachamana.com web)</strong> — 2026-05-26 — Owner: Mariano — Venture: La Chamana</li>
+<li><code>[ DEC / W23 / 030 ]</code> <strong>LAK3 dual-track activado (Track A SPV/Wyoming · Track B romper si vuelven a tokens)</strong> — 2026-05-26 — Owner: Rene — Venture: LAK3</li>
+<li><code>[ DEC / W23 / 031 ]</code> <strong>Reshore: GO deployear segundos $200K a $12M val</strong> — 2026-05-26 — Owner: Gaston — Venture: Reshore</li>
+<li><code>[ DEC / W23 / 032 ]</code> <strong>Photonic narrativa V02 doc B2 aprobado por equipo</strong> — 2026-05-26 — Owner: Rene — Venture: Photonic Lab</li>
+<li><code>[ DEC / W23 / 033 ]</code> <strong>Rafael Sotelo (UM) sumándose a equipo Quantum + charla Casa Manantial</strong> — 2026-05-26 — Owner: Daiana — Venture: Quantum / Manantial.Casa</li>
+<li><code>[ DEC / W23 / 034 ]</code> <strong>Carta gobierno Uruguay para Punta Cripto — Rene drafts</strong> — 2026-05-26 — Owner: Rene — Venture: Punta Cripto</li>
+<li><code>[ DEC / W23 / 035 ]</code> <strong>Quantum doc Uruguay Nova: España coyuntural, narrativa central Uruguay-from-Uruguay</strong> — 2026-05-26 — Owner: Gaston — Venture: Quantum</li>
+<li><code>[ DEC / W23 / 036 ]</code> <strong>BID Lab × Photonic Lab: NO eligible para VC; pivote a ecosystem track</strong> — 2026-05-28 — Owner: Rene — Venture: Photonic Lab</li>
+<li><code>[ DEC / W23 / 037 ]</code> <strong>Understand-anything adoption: code-only (vault deferred)</strong> — 2026-05-31 — Owner: Mariano — Venture: B_V® | OS</li>
+<li><code>[ DEC / W23 / 038 ]</code> <strong>Q99 como fronting de licitación Quantum (evita Grupo ASA pattern)</strong> — 2026-05-29 — Owner: Facu / Gaston — Venture: Quantum</li>
+</ol>
+<div class="section-opener">
+<div class="folio">A.4</div>
+<div class="head">
+    <h3 class="title">Risk Register</h3>
+    <p class="kicker">~36 active · ~12 high/high</p>
+  </div>
+</div>
+<div class="heat-strip">
+<div class="heat-col">
+<div class="hs-num hs-num--crit">12</div>
+<div class="hs-label">Critical · H/H</div>
+</div>
+<div class="heat-col">
+<div class="hs-num hs-num--high">10</div>
+<div class="hs-label">High · M/H or H/M</div>
+</div>
+<div class="heat-col">
+<div class="hs-num hs-num--med">11</div>
+<div class="hs-label">Medium · M/M</div>
+</div>
+<div class="heat-col">
+<div class="hs-num hs-num--low">3</div>
+<div class="hs-label">Low</div>
+</div>
+</div>
+<p><strong>New / Updated This Week — Critical (H/H)</strong></p>
+<ul>
+<li><code>[ RSK / W23 / 001 ]</code> <strong>La Chamana — runway crítico, $6K revenue confirmado, pipeline anémico</strong> · la-chamana · Daiana · New 2026-05-26 (refined 2026-06-01 con runway 2.6m + buffer $10.7K)</li>
+<li><code>[ RSK / W23 / 002 ]</code> <strong>Reshore — runway BOTH llega a julio con $8K post-pagos; agosto sin entrada Guido = stress real</strong> · reshore · Gaston · New 2026-05-26</li>
+<li><code>[ RSK / W23 / 003 ]</code> <strong>LAK3 — water contracts (ICA4) sin mostrar después de un año pidiendo</strong> · lak3 · Rene + Andres · New 2026-05-26</li>
+<li><code>[ RSK / W23 / 004 ]</code> <strong>Quantum — cap-table complexity estructura triangular Uruguayan SPV</strong> · quantum · Gaston · New 2026-06-01</li>
+<li><code>[ RSK / W23 / 005 ]</code> <strong>Quantum — partnership cap table mechanics 25% equity dilution holding</strong> · quantum · Gaston · New 2026-05-29 (superseded by triangular structure but still mechanics-pending)</li>
+<li><code>[ RSK / W23 / 006 ]</code> <strong>Quantum — dependencia de Antel para infraestructura datacenter ralentiza</strong> · quantum · Andres · New 2026-06-01</li>
+<li><code>[ RSK / W23 / 007 ]</code> <strong>La Chamana — piso de costo mensual $60K en riesgo si deals no cierran</strong> · la-chamana · Daiana · New 2026-06-01</li>
+<li><code>[ RSK / W23 / 008 ]</code> <strong>Cross-venture — desalineación de glosario entre miembros del equipo crea overhead</strong> · cross-venture · Daiana · New 2026-06-01</li>
+<li><code>[ RSK / W23 / 009 ]</code> <strong>Cross-venture — comercio agéntico ya está operando (2% de queries en Soapi N)</strong> · cross-venture · Rene · New 2026-05-29</li>
+<li><code>[ RSK / W23 / 010 ]</code> <strong>Cross-venture — sistemas de reputación on-chain pueden ser atacados</strong> · cross-venture · Rene · New 2026-05-29</li>
+<li><code>[ RSK / W23 / 011 ]</code> <strong>La Chamana — Content Factory puede caer en patrón de repetición</strong> · la-chamana · Andres · New 2026-05-29</li>
+<li><code>[ RSK / W23 / 012 ]</code> <strong>Cross-venture — pérdida de tracking/remarketing si email marketing se implementa fuera Meta</strong> · cross-venture · Mariano · New 2026-05-30</li>
+</ul>
+<p><strong>New / Updated This Week — High (M/H or H/M)</strong></p>
+<ul>
+<li><code>[ RSK / W23 / 013 ]</code> <strong>Punta Cripto — timing carta Uruguay Innova vs viaje Bruno Gilli a España</strong> · punta-cripto · Rene · M/H · New 2026-05-26</li>
+<li><code>[ RSK / W23 / 014 ]</code> <strong>B_V® | OS — mining-quality residual, criterios laxos task/decision/risk</strong> · both-os · Mariano · H/M · New 2026-05-26</li>
+<li><code>[ RSK / W23 / 015 ]</code> <strong>Quantum — Antel infraestructura datacenter pública impondría restricciones</strong> · quantum · Andres · H/M · New 2026-05-29</li>
+<li><code>[ RSK / W23 / 016 ]</code> <strong>Quantum — bottleneck global fabricación máquinas 256-qubits (solo TQA, IBM, IonQ)</strong> · quantum · Gaston · M/H · New 2026-05-29</li>
+<li><code>[ RSK / W23 / 017 ]</code> <strong>Content Factory — calidad output degrada con múltiples generaciones (repetición)</strong> · content-factory · Andres · M/H · New 2026-05-30</li>
+<li><code>[ RSK / W23 / 018 ]</code> <strong>Cross-venture — complejidad Shopify (ad managers, integraciones, PMAX) blanket-coverage</strong> · cross-venture · Mariano · M/H · New 2026-05-30</li>
+<li><code>[ RSK / W23 / 019 ]</code> <strong>La Chamana — lachamana.com infra incompleta (blog section no existe, botones rotos)</strong> · la-chamana · Mariano · M/H · New 2026-05-30</li>
+<li><code>[ RSK / W23 / 020 ]</code> <strong>Cross-venture — ownership del sitio Shopify actual es ambiguo (Cloud posible)</strong> · cross-venture · Gaston · M/H · New 2026-05-30</li>
+<li><code>[ RSK / W23 / 021 ]</code> <strong>Quantum — Antel partnership delay si hub depende de Antel datacenter</strong> · quantum · Gaston · M/H · New 2026-06-01</li>
+<li><code>[ RSK / W23 / 022 ]</code> <strong>La Chamana — single point of failure: Business Manager depende de un solo recurso</strong> · la-chamana · Daiana · M/H · New 2026-06-01</li>
+</ul>
+<p><strong>Carried Forward (active, pre-cutoff)</strong> — abbreviated</p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Severity</th>
+<th>Venture</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Business plan unificado Quantum + Photonic Lab — destrabado 2026-06-01, pending validación team</td>
+<td>H/M → resolved</td>
+<td>quantum / photonic-lab</td>
+<td>Rene</td>
+</tr>
+<tr>
+<td>Personal account dependency Mariano (Supabase off personal account)</td>
+<td>H/M</td>
+<td>both-os</td>
+<td>Mariano</td>
+</tr>
+<tr>
+<td>Premature optionality closure (irreversible decisions w/o info quality)</td>
+<td>M</td>
+<td>cross-venture</td>
+<td>Gaston</td>
+</tr>
+<tr>
+<td>zshrc plaintext secrets (Supabase + GitHub PAT exposed)</td>
+<td>H/H</td>
+<td>both-os</td>
+<td>Mariano</td>
+</tr>
+<tr>
+<td>BOTH × IonQ via TQA = exposición indirecta (concentración estructural)</td>
+<td>M/H</td>
+<td>quantum</td>
+<td>Gaston</td>
+</tr>
+</tbody>
+</table>
+<div class="section-opener">
+<div class="folio">A.5</div>
+<div class="head">
+    <h3 class="title">Open Action Items</h3>
+    <p class="kicker">Asana, live · 68 overdue</p>
+  </div>
+</div>
+<blockquote>
+<p><strong>Asana live snapshot — 2026-06-02:</strong> <strong>68 overdue · 28 due this week · 34 completed (past 7d).</strong> Source: BOTH Action Items project (GID 1214028740806876) via Asana API.</p>
+</blockquote>
+<h3>Overdue Heatmap by Venture</h3>
+<table>
+<thead>
+<tr>
+<th>Venture</th>
+<th>Overdue</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reshore</td>
+<td>26</td>
+</tr>
+<tr>
+<td>Cross-cutting</td>
+<td>15</td>
+</tr>
+<tr>
+<td>La Chamana</td>
+<td>9</td>
+</tr>
+<tr>
+<td>B_V® | OS</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Punta Cripto</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Photonic Lab</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Manantial Casa</td>
+<td>2</td>
+</tr>
+<tr>
+<td>LAK3</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Content Factory</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3>Due This Week</h3>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Owner</th>
+<th>Due</th>
+<th>Venture</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lanzar primer batch del Outreach Machine (67 contactos curados via Lara email + Instagram warm-up)</td>
+<td>Both Admin</td>
+<td>2026-06-02</td>
+<td>La Chamana</td>
+</tr>
+<tr>
+<td>Setup completo go-to-market La Chamana — abrir cuentas Meta + Google Analytics + Google Tag Manager + TikTok Ad Manager + conectar a Shopify</td>
+<td>Gaston</td>
+<td>2026-06-02</td>
+<td>La Chamana</td>
+</tr>
+<tr>
+<td>Reestructurar Executive Summary del weekly report: organizar por venture</td>
+<td>Both Admin</td>
+<td>2026-06-02</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Reescribir reporte weekly evitando siglas sin explicar (MAF+IVA, HANDI, TQA, MEF, etc.)</td>
+<td>Both Admin</td>
+<td>2026-06-02</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Reformatear reporte semanal V2 — un bloque por venture</td>
+<td>Both Admin</td>
+<td>2026-06-02</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Draftear definición compartida de qué constituye un riesgo (open input para equipo)</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-02</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Evaluar Klaviyo vs Mailchimp vs Instantly como email manager</td>
+<td>Both Admin</td>
+<td>2026-06-02</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Armar documento Quantum para Uruguay Nova (Andres lleva a España)</td>
+<td>Andres Burecovics</td>
+<td>2026-06-02</td>
+<td>Quantum</td>
+</tr>
+<tr>
+<td>Storytelling Quantum global — Gaston + Andres armar narrativa</td>
+<td>Andres Burecovics</td>
+<td>2026-06-02</td>
+<td>Quantum</td>
+</tr>
+<tr>
+<td>Escribir a Rafael Sotelo (UM) — invitar a Casa Manantial para charla Quantum</td>
+<td>Andres Burecovics</td>
+<td>2026-06-02</td>
+<td>Quantum</td>
+</tr>
+<tr>
+<td>Asegurar carta institucional (MEF / Banco Central / Ministro de Economía) para Día 1 de Punta Cripto</td>
+<td>Rene</td>
+<td>2026-06-02</td>
+<td>Punta Cripto</td>
+</tr>
+<tr>
+<td>Find a path into Banco Central + MEF for Punta Cripto Day 1</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-02</td>
+<td>Punta Cripto</td>
+</tr>
+<tr>
+<td>Reporte inversores</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-02</td>
+<td>Cross-cutting</td>
+</tr>
+<tr>
+<td>Call con Mariano — discutir definiciones canónicas Decision + Risk antes de presentar al equipo</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-03</td>
+<td>Manantial Casa</td>
+</tr>
+<tr>
+<td>Execute legal review of LAK3 token structure</td>
+<td>—</td>
+<td>2026-06-03</td>
+<td>LAK3</td>
+</tr>
+<tr>
+<td>Definición canónica de Risk — borrador para discusión y presentación al equipo</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-03</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Completar integración repo Content Factory → interfaz web + Shopify</td>
+<td>—</td>
+<td>2026-06-03</td>
+<td>Content Factory</td>
+</tr>
+<tr>
+<td>Presentar Content Factory live al equipo (Iru, team)</td>
+<td>—</td>
+<td>2026-06-03</td>
+<td>Content Factory</td>
+</tr>
+<tr>
+<td>Redactar documento de propuesta Uruguay (256-qubit, first-mover, Edge BsAs) para Bruno Schili → presidencia</td>
+<td>—</td>
+<td>2026-06-05</td>
+<td>Quantum</td>
+</tr>
+<tr>
+<td>Armar scope inicial del grant Waisman (quantum + biotech, scale-up plant, labs) + input TQA (Carlos)</td>
+<td>—</td>
+<td>2026-06-05</td>
+<td>Quantum</td>
+</tr>
+<tr>
+<td>Daiana viaja a La Chamana — leer la operación en vivo, traer feedback sobre Pato/Lalo/equipo</td>
+<td>Daiana Goldenberg</td>
+<td>2026-06-09</td>
+<td>La Chamana</td>
+</tr>
+<tr>
+<td>Sprint de 2 semanas de cleanup de Synergy (definiciones + weekly report + Notion para Gaston)</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Borrador inicial de roadmap Synergy hasta 14-julio (aniversario BOTH)</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Implementar criterios mining V2 en Synergy (cap tasks, anti-fragmentación, no duplicar entre owners)</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Auditar seguridad de ENV files / API keys compartidos del stack Synergy</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Documento de normas básicas de workflow para interactuar con Synergy + Notion access</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+<tr>
+<td>Roadmap Synergy próximas 8 semanas (al final del primer sprint)</td>
+<td>Both Admin</td>
+<td>2026-06-09</td>
+<td>B_V® | OS</td>
+</tr>
+</tbody>
+</table>
+<h3>Completed This Week — by Venture</h3>
+<table>
+<thead>
+<tr>
+<th>Venture</th>
+<th>Closed (past 7d)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B_V® | OS</td>
+<td>17</td>
+</tr>
+<tr>
+<td>La Chamana</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Quantum</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Manantial Casa</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Cross-cutting</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<div class="section-opener">
+<div class="folio">A.6</div>
+<div class="head">
+    <h3 class="title">Cross-Cutting Themes</h3>
+    <p class="kicker">The patterns under the week</p>
+  </div>
+</div>
+<article class="theme">
+<div class="theme-num">Theme 01 · Infrastructure-clearing meets structural-pivoting</div>
+<h4 class="theme-title">The OS finally clears its own rails the same week Quantum and La Chamana pivot beneath them</h4>
+<div class="theme-body">Three ships landed on the B_V® | OS side in seven days: <strong>Auto-miner Option C</strong> (Worker mines, GHA fanouts — the 1000-subrequest ceiling that silently swallowed fanout for any meeting &gt;7-10 items is now bypassed), <strong>V2.15.1 Workflows</strong> (the <code>waitUntil</code> cancellation that was wrapped in silent try/catch is now a real Cloudflare Workflows binding), and <strong>Atlas v4 MVP</strong> (soul.md as L0 doctrine; 86-node zoom canvas live). All in the same week <strong>Quantum discards the 25% equity stake model</strong> for a Uruguayan SPV that buys a $20M / $50M-PVP 256-qubit machine, <strong>Content Factory validates its MVP</strong> (Sonnet+Opus chain, multi-channel output, zero critical bugs), and <strong>La Chamana takes Shopify + Meta integrated stack from broken to live</strong>. Two layers moving at once — infrastructure unblocking + portfolio repositioning — without colliding, because the infrastructure ships made the repositioning trace-able instead of opaque.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· B_V® | OS</span><span class="tname">· Quantum</span><span class="tname">· La Chamana</span><span class="tname">· Content Factory</span></div>
+</article>
+<article class="theme">
+<div class="theme-num">Theme 02 · Discipline boundary</div>
+<h4 class="theme-title">"Shipped not fixed" becomes the dominant frame</h4>
+<div class="theme-body">Both Option C and the haiku swap before it now carry an explicit <strong>2-clean-validations rule</strong> before "fixed" can be claimed. Option C lands 3/3 in-session (TQA replay 62k, Content Factory replay 114k, real Mariano+Daiana call) but the discipline boundary is now codified: <em>shipped is not fixed; fixed requires sustained pattern across days, with Tuesday Sync 2026-06-02 as natural validation #2 and full-GHA migration (PR #2) waiting as warm fallback if 2 failures land within 1 week</em>. The same posture is now spreading to non-tech surfaces — La Chamana team-dynamics review postponed until pipeline actually activates; Christie's contract held until alignment lands; bandwidth mandate ratified ("no abrir nuevos proyectos, aterrizar lo que tenemos"). The system is learning to delay its own victory declarations.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· B_V® | OS</span><span class="tname">· La Chamana</span><span class="tname">· Photonic Lab</span><span class="tname">· Cross-cutting</span></div>
+</article>
+<article class="theme">
+<div class="theme-num">Theme 03 · Uruguay-from-Uruguay</div>
+<h4 class="theme-title">Three institutional doors open onto the same calendar window</h4>
+<div class="theme-body">Bruno Gilli (Uruguay Innova → direct line to Presidencia) opens three doors in one week: <strong>(a)</strong> commits to sign a Uruguay-government letter endorsing Día 1 of Punta Cripto Summit — conditional on Rene drafting the letter to be signed; <strong>(b)</strong> commits to carry the Quantum 256-qubit storytelling document to Presidencia before his trip to Spain (1-2 semanas, timing-sensitive); <strong>(c)</strong> Rafael Sotelo (Universidad de Montevideo) confirmed as Quantum team addition + Casa Manantial speaker (cross-venture narrative bridge). All three threads share a single calendar constraint: <strong>Bruno's pre-Spain window</strong>. The narrative architecture (LatAm precedent cases + country scan + sovereignty layer + academia + data-center hook) becomes a portfolio template — same two-section composition repeats for Punta Cripto, Photonic Lab, eventually every venture. The Quantum one-pager is portfolio infrastructure, not a Quantum artifact.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· Quantum</span><span class="tname">· Punta Cripto</span><span class="tname">· Manantial.Casa</span><span class="tname">· Narrative &amp; Comms</span></div>
+</article>
+<article class="theme">
+<div class="theme-num">Theme 04 · La Chamana under two clocks</div>
+<h4 class="theme-title">Runway compresses while the operational stack finally goes live</h4>
+<div class="theme-body">La Chamana sits on <strong>2.6 months of operational runway</strong> ($70.7K cash / $27.1K burn) with a <strong>$60K trigger plan B</strong> that has only $10.7K of buffer left. Same week, the GTM stack finally lands: Shopify + Meta Business Manager integrated, soft-opening posture adopted for early leads ("estos no son precios estándares, stage particular Tulum, pricing real es [X-Y]"), catch-up cadence reduced 2x→1x/sem, Airbnb deal Jun 28-Jul 1 ($2.9K/noche) prioritized over GAIA ($13K soft-opening that could set a precedent floor). The Tulum macro headwind is structural — onefinestay won't incorporate MX, Scott Dunn / Black Tomato / Jacada don't respond. <strong>Conversión es la única variable que mueve la aguja</strong>: agosto $30K retiros + Airbnb + Gaia + materializing pipeline ago-dic ≥ $110K. Pato leads operativa, BOTH stays out until pipeline activates — explicit decision at Tuesday Sync 2026-05-26.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· La Chamana</span><span class="tname">· Operations</span><span class="tname">· Capital</span></div>
+</article>
+<article class="theme">
+<div class="theme-num">Theme 05 · Synergy describes itself</div>
+<h4 class="theme-title">Atlas v4 + Hux + altitud nomenclature land as one move</h4>
+<div class="theme-body">Three pieces converge in the same week on a single thesis: <strong>make the system self-orientable</strong>. Atlas v4 ships <code>vault/soul.md</code> as the L0 doctrine document (Synergy extracted from CLAUDE.md with Gaston editorial criteria applied) + L1-L3 zoom canvas (86 nodes from canonical sources, ~2400 chars per node embedded so the drawer renders without live-fetch auth issues). <strong>Hux (Agentic CTO) launches</strong> Phase 1 Mariano-only — 4 sub-agents (stress-tester, ux-critic, agent-auditor, qa-systemic), weekly Sunday digest, first run delivers repo hygiene that drops 26→19 agents, 31→26 CLAUDE.md rows, 16→14 projects. <strong>Task/Epic/Subtask altitud nomenclature locks cross-venture</strong>: <em>"altitud" = nivel de visibilidad (subtask: owner-only; task: weekly reports; epic: monthly roadmaps)</em>. Three different mechanisms — doctrine, audit, vocabulary — pulling the same direction.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· B_V® | OS</span><span class="tname">· Tech</span><span class="tname">· Cross-cutting</span></div>
+</article>
+<article class="theme">
+<div class="theme-num">Theme 06 · Sensitivity-tiered surfacing</div>
+<h4 class="theme-title">Comms architecture quietly hardens around what doesn't go to standard vault</h4>
+<div class="theme-body">Started as a LAK3 fix (counterparty-sensitive token conversations were creating a 21-day vault blackout); now extends to <strong>Photonic Lab financials</strong> (pulled from B2 narrative pending Daiana review), <strong>Quantum partnership terms</strong> (TQA disclosure Plays A/B/C with default = silent), <strong>Reshore trade-finance partner terms</strong>. The pattern is becoming the comms-area default: private vault path → manual lead review → sanitized standard-vault promotion. Mining policy moves from infra question to comms-architecture question. Sprint Synergy 1 entregable #2 (Daiana's canonical Risk + Decision definitions, Mariano implements) is the technical layer that operationalizes this — without canonical definitions, mining can't tier sensitivity, and without tiered sensitivity, the comms surface either over-shares or goes blackout.</div>
+<div class="theme-tags"><span class="tlabel">Touches</span><span class="tname">· LAK3</span><span class="tname">· Photonic Lab</span><span class="tname">· Quantum</span><span class="tname">· Narrative &amp; Comms</span><span class="tname">· B_V® | OS</span></div>
+</article>
+<div class="section-opener">
+<div class="folio">A.7</div>
+<div class="head">
+    <h3 class="title">Tuesday Questions</h3>
+    <p class="kicker">The full list · 5 reach the agenda</p>
+  </div>
+</div>
+<ol>
+<li><strong>La Chamana plan B trigger:</strong> ¿qué activamos cuando cash toque $60K (buffer $10.7K hoy)? (Daiana)</li>
+<li><strong>Quantum cap-table triangular:</strong> ¿Gastón modela "matemática cuántica" esta semana o pre-España? (Gastón)</li>
+<li><strong>Carta Uruguay Innova:</strong> ¿Rene drafta + Sara firma antes del viaje de Bruno? Yes/no this week (Rene)</li>
+<li><strong>Sprint Synergy 1 mid-sprint check:</strong> ¿algún entregable de 5 se retrasa? Reasignar bandwidth? (Daiana + Mariano)</li>
+<li><strong>Reshore agosto:</strong> ¿qué hace BOTH si Guido no manda capital en julio? (Gaston)</li>
+<li><strong>La Chamana GAIA decision:</strong> ¿se acepta el $13K soft-opening con riesgo de sentar precedente, o se holds for Airbnb conversion + agosto retiros? (Daiana + Gastón)</li>
+<li><strong>Quantum doc storytelling chain:</strong> ¿Andy review → Daiana → Guillermo → Rafael Sotelo se cierra antes de Bruno's flight, o se acortan los pasos? (Gastón)</li>
+<li><strong>Punta Cripto sponsor cash:</strong> Aviador + Nexo son compensación; ¿qué hace falta para cerrar el primer sponsor cash (carta institucional como gate)? (Rene)</li>
+<li><strong>LAK3 reframe:</strong> Friday meet 30/05 ya pasó. ¿Qué leíste de la versión cruda, y se mantiene wait-and-see hasta Gaston's return 12 June? (Rene)</li>
+<li><strong>/wr parser fix:</strong> Rene flagueó que <code>/wr</code> lee primer Current Week Update no el latest. ¿Mariano patchea antes del próximo Tuesday Sync? (Mariano)</li>
+<li><strong>Photonic Lab BID Lab ecosystem:</strong> Year 1 Argentina (CAB con JEC warm intro) — ¿qué prioridad le damos vs Photonic Lab solo? (Rene)</li>
+<li><strong>Sync-daemon silent failures:</strong> auto-commits + lies-about-push pueden romper trabajo del equipo. ¿Mariano stop-the-line antes de team rollout? (Mariano)</li>
+<li><strong>Content Factory presentación 03/06:</strong> ¿se invita a Iru sí o no? La Chamana = piloto natural pero stress-test es phase 2. (Andres + Iru)</li>
+<li><strong>Cierre mayo Casa Manantial:</strong> Daiana entrega 02/06 — ¿hay un escalation path si los números muestran burn peor que esperado? (Daiana + Gaston)</li>
+</ol>
+<hr>
+<blockquote>
+<p><strong>Próximos pasos post-meet:</strong>
+1. Daiana valida + corrige este draft Tuesday AM antes del meeting.
+2. Read.ai bot graba la sesión → Worker auto-mine → vault + Asana + Slack DMs (Option C validation #2).
+3. Next week's <code>/vu</code> + <code>/au</code> cycle reabre lunes 2026-06-08.</p>
+</blockquote>
+<h2>Los Chistes de Synergy</h2>
+<blockquote>
+<p>Synergy aprendió esta semana que "shipped" y "fixed" son dos cosas distintas, y que el Tuesday Sync es la única validación que cuenta — todo lo demás es replay.</p>
+</blockquote>
+</section>
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · weekly-digest · 2026-06-02 · variant B</span>
+</footer>
+</body>
+</html>
