@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B_V® | OS — Monitor June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Roboto+Condensed:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   DESIGN SYSTEM — FlightRadar24 · BOTH Ventures Monitor
+   Monitor June — 2026-06-03
+══════════════════════════════════════════════════════════ */
+:root {
+  --bg:           #000000;
+  --surface-1:    #0d0d0d;
+  --surface-2:    #141414;
+  --surface-3:    #1e1e1e;
+  --border:       #222121;
+  --border-dim:   rgba(255,255,255,0.05);
+  --text:         #ffffff;
+  --text-muted:   #6d6d6d;
+  --text-dim:     #414141;
+  --accent:       #c8c8c8;
+  --accent-dim:   rgba(200,200,200,0.08);
+  --accent-glow:  rgba(200,200,200,0.04);
+  --blue:         #7dd3fc;
+  --blue-dim:     rgba(125,211,252,0.10);
+  --live:         #86efac;
+  --live-dim:     rgba(134,239,172,0.10);
+  --red:          #fca5a5;
+  --red-dim:      rgba(252,165,165,0.10);
+  --purple:       #d8b4fe;
+  --purple-dim:   rgba(216,180,254,0.10);
+  --teal:         #5eead4;
+  --teal-dim:     rgba(94,234,212,0.10);
+  --orange:       #fdba74;
+  --orange-dim:   rgba(253,186,116,0.10);
+  --font:         'Roboto', system-ui, -apple-system, sans-serif;
+  --mono:         'Space Mono', 'Courier New', monospace;
+  --shadow-card:  0 2px 6px rgba(0,0,0,0.4);
+  --border-hover: #3a3a3a;
+  --surface-hover:#161616;
+  --ease-out:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+
+body {
+  font-family: var(--font);
+  background: var(--bg) url('./bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text);
+  min-width: 960px;
+}
+body::before {
+  content:'';position:fixed;inset:0;
+  background:rgba(0,0,0,0.82);z-index:0;pointer-events:none;
+}
+.header,.nav-tabs,.page,.status-bar{position:relative;z-index:1;}
+
+/* ══ HEADER ══ */
+.header {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 var(--s6);height:52px;border-bottom:1px solid var(--border);
+  background:var(--surface-1);position:sticky;top:0;z-index:100;
+}
+.header-left{display:flex;align-items:center;gap:var(--s4);}
+.logo{display:flex;align-items:center;gap:6px;}
+.dot-fill{width:10px;height:10px;border-radius:50%;background:var(--text);flex-shrink:0;}
+.dot-ring{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--text);flex-shrink:0;}
+.wordmark{font-size:13px;font-weight:700;letter-spacing:0.05em;}
+.header-div{color:var(--border);font-size:16px;user-select:none;}
+.header-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);}
+.header-badge{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid rgba(255,255,255,0.18);color:var(--text);letter-spacing:0.08em;border-radius:2px;background:rgba(255,255,255,0.06);}
+.header-right{display:flex;align-items:center;gap:var(--s3);font-size:10px;color:var(--text-muted);letter-spacing:0.08em;text-transform:uppercase;}
+.header-right .sep{color:var(--border);}
+
+/* ══ NAV TABS ══ */
+.nav-tabs {
+  display:flex;gap:2px;padding:var(--s3) var(--s6) 0;
+  border-bottom:1px solid var(--border);background:var(--surface-1);
+  position:sticky;top:52px;z-index:99;overflow-x:auto;
+}
+.nav-tab {
+  font-size:10px;letter-spacing:0.12em;text-transform:uppercase;
+  padding:6px 14px;cursor:pointer;border-radius:2px 2px 0 0;
+  color:var(--text-muted);border:1px solid transparent;border-bottom:none;
+  transition:color 0.15s var(--ease-out),background 0.15s var(--ease-out);
+  text-decoration:none;white-space:nowrap;
+}
+.nav-tab:hover{color:var(--text);}
+.nav-tab.active{color:var(--accent);border-color:var(--border);background:var(--surface-2);}
+
+/* ══ PAGE BODY ══ */
+.page{padding:var(--s8) var(--s6) 80px;max-width:1400px;margin:0 auto;}
+
+/* ══ SECTION ══ */
+.section{margin-bottom:56px;}
+.section-header{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s6);padding-bottom:var(--s3);border-bottom:1px solid var(--border);}
+.section-label{font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:var(--text);}
+.section-label-sub{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--text-muted);}
+.section-desc{font-size:11px;color:var(--text-dim);letter-spacing:0.04em;margin-left:auto;}
+.section-count{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid var(--border);color:var(--text-dim);border-radius:2px;background:var(--surface-3);letter-spacing:0.06em;margin-left:auto;}
+
+/* ══ SKILLS GRID ══ */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:8px;}
+.skills-grid.single{grid-template-columns:1fr;}
+.skills-grid.triple{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));}
+
+/* ══ SKILL CARD ══ */
+.skill-card {
+  background:var(--surface-1);border:1px solid var(--border);padding:var(--s5);position:relative;
+  transition:border-color 0.2s var(--ease-out),background 0.2s var(--ease-out),box-shadow 0.2s var(--ease-out),transform 0.2s var(--ease-out);
+  animation:fadeUp 0.35s var(--ease-out) both;
+}
+.skill-card:hover{border-color:var(--border-hover);background:var(--surface-hover);box-shadow:var(--shadow-card);transform:translateY(-1px);}
+.skill-card.warn-card{border-color:rgba(252,165,165,0.20);background:rgba(252,165,165,0.03);}
+.skill-card-header{display:flex;align-items:flex-start;gap:var(--s3);margin:calc(-1*var(--s5)) calc(-1*var(--s5)) var(--s4);padding:var(--s5) var(--s5) var(--s4);background:var(--surface-3);border-bottom:1px solid var(--border);}
+.cmd-badge{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;flex-shrink:0;letter-spacing:0.04em;}
+.cmd-badge.yellow{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.20);}
+.cmd-badge.blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.35);}
+.cmd-badge.green{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.cmd-badge.purple{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(216,180,254,0.35);}
+.cmd-badge.muted{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.cmd-badge.red{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.cmd-badge.teal{background:var(--teal-dim);color:var(--teal);border:1px solid rgba(94,234,212,0.35);}
+.skill-meta{flex:1;}
+.skill-name{font-size:13px;font-weight:700;color:var(--text);letter-spacing:0.01em;margin-bottom:3px;}
+.skill-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
+.owner-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.owner-chip{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;padding:1px 7px;border-radius:10px;font-weight:700;}
+.owner-chip.gaston{background:rgba(252,165,165,0.10);color:#fca5a5;border:1px solid rgba(252,165,165,0.25);}
+.owner-chip.rene{background:var(--purple-dim);color:#d8b4fe;border:1px solid rgba(216,180,254,0.25);}
+.owner-chip.daiana{background:rgba(94,234,212,0.10);color:#5eead4;border:1px solid rgba(94,234,212,0.25);}
+.owner-chip.andres{background:rgba(253,186,116,0.10);color:#fdba74;border:1px solid rgba(253,186,116,0.25);}
+.owner-chip.boris{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.15);}
+.owner-chip.all{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.owner-chip.live{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.owner-chip.pending{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.35);}
+.owner-chip.blocked{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.owner-chip.draft{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.owner-chip.parked{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+
+/* ══ FLOW ROW ══ */
+.flow-wrap{display:flex;flex-direction:column;gap:var(--s3);margin-top:var(--s3);}
+.flow-mode-label{font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;font-weight:700;}
+.flow{display:flex;align-items:center;flex-wrap:wrap;gap:4px;}
+.flow-arrow{color:var(--text-muted);font-size:11px;flex-shrink:0;font-family:var(--mono);}
+.node{display:inline-flex;align-items:center;gap:5px;font-size:10px;letter-spacing:0.04em;padding:3px 10px;border-radius:3px;white-space:nowrap;font-family:var(--mono);border:1px solid;}
+.node.in{background:var(--blue-dim);color:var(--blue);border-color:rgba(125,211,252,0.35);}
+.node.proc{background:var(--surface-3);color:#9a9a9a;border-color:var(--border);}
+.node.out{background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35);}
+.node.branch{background:rgba(255,255,255,0.06);color:#e8e8e8;border-color:rgba(255,255,255,0.22);}
+.node.tool{background:rgba(255,255,255,0.06);color:#d4d4d4;border-color:rgba(255,255,255,0.16);}
+.node.warn{background:var(--red-dim);color:var(--red);border-color:rgba(252,165,165,0.35);}
+.node.live-node{background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35);}
+.node-icon{font-size:9px;opacity:0.8;}
+.flow-sep{height:1px;background:var(--border);margin:var(--s3) 0;}
+
+/* ══ AGENTS GRID ══ */
+.agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.agent-card{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4);display:flex;gap:var(--s3);align-items:flex-start;transition:border-color 0.2s var(--ease-out),background 0.2s var(--ease-out);animation:fadeUp 0.35s var(--ease-out) both;}
+.agent-card:hover{border-color:var(--border-hover);background:var(--surface-hover);}
+.agent-card.archived{border-color:rgba(252,165,165,0.15);background:rgba(252,165,165,0.02);opacity:0.7;}
+.agent-card.hux{border-color:rgba(94,234,212,0.18);}
+.agent-cmd{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text-muted);background:var(--surface-3);border:1px solid var(--border);padding:2px 8px;border-radius:2px;flex-shrink:0;letter-spacing:0.04em;}
+.agent-body{flex:1;}
+.agent-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.agent-desc{font-size:11px;color:var(--text-muted);line-height:1.45;}
+
+/* ══ WEEKLY RHYTHM ══ */
+.rhythm-flow{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:var(--s2);}
+.rhythm-step{display:flex;flex-direction:column;align-items:center;gap:var(--s2);flex-shrink:0;}
+.rhythm-node{background:var(--surface-2);border:1px solid var(--border);padding:var(--s3) var(--s4);border-radius:3px;text-align:center;min-width:110px;max-width:130px;}
+.rhythm-node .day{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:4px;font-weight:700;}
+.rhythm-node .action{font-size:10px;color:var(--text);font-weight:500;line-height:1.4;}
+.rhythm-node .cmd{font-family:var(--mono);font-size:9px;color:var(--accent);margin-top:4px;display:block;}
+.rhythm-node.highlight{border-color:rgba(200,200,200,0.18);background:var(--accent-glow);}
+.rhythm-node.auto{border-color:rgba(134,239,172,0.3);background:var(--live-dim);}
+.rhythm-connector{display:flex;align-items:center;padding:0 4px;padding-top:28px;color:var(--text-dim);font-size:14px;font-family:var(--mono);}
+
+/* ══ LEGEND ══ */
+.legend{display:flex;gap:var(--s5);flex-wrap:wrap;padding:var(--s3) var(--s4);background:var(--surface-1);border:1px solid var(--border);margin-bottom:var(--s6);}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text-muted);}
+.legend-node{display:inline-block;padding:2px 8px;border-radius:3px;font-size:9px;font-family:var(--mono);border:1px solid;}
+
+/* ══ LOG TABLE ══ */
+.cl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:var(--s6);}
+.cl-stat{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4) var(--s5);}
+.cl-stat-label{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px;}
+.cl-stat-value{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--text);line-height:1;}
+.cl-log{background:var(--surface-1);border:1px solid var(--border);}
+.cl-log-row{display:grid;grid-template-columns:58px 68px 84px 1fr;align-items:center;padding:7px var(--s5);border-bottom:1px solid var(--border-dim);transition:background 0.15s;}
+.cl-log-row.wide{grid-template-columns:68px 84px 1fr 180px;}
+.cl-log-row:last-child{border-bottom:none;}
+.cl-log-row:hover{background:var(--surface-2);}
+.cl-log-row.header{border-bottom:1px solid var(--border);opacity:0.45;}
+.cl-log-date,.cl-log-hash{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:0.05em;}
+.cl-log-type{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 6px;border-radius:2px;display:inline-block;width:fit-content;}
+.cl-log-type.feat{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.25);}
+.cl-log-type.fix{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.publish{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.25);}
+.cl-log-type.vault{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(200,200,200,0.15);}
+.cl-log-type.other{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.cl-log-type.high{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.medium{background:var(--orange-dim);color:var(--orange);border:1px solid rgba(253,186,116,0.25);}
+.cl-log-type.low{background:var(--surface-3);color:var(--text-dim);border:1px solid var(--border);}
+.cl-log-type.active{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.25);}
+.cl-log-type.superseded{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.25);}
+.cl-log-type.unclear{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.cl-log-type.pending{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.25);}
+.cl-log-type.parked{background:var(--surface-3);color:var(--text-muted);border:1px solid var(--border);}
+.cl-log-msg{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.cl-log-note{font-size:10px;color:var(--text-dim);font-family:var(--mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/* ══ PIPELINE ══ */
+.pipeline-endpoints{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:var(--s6);}
+.endpoint-card{background:var(--surface-1);border:1px solid var(--border);padding:var(--s4) var(--s5);}
+.endpoint-method{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.12em;margin-bottom:6px;}
+.endpoint-method.post{color:var(--blue);}
+.endpoint-method.get{color:var(--live);}
+.endpoint-path{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.endpoint-desc{font-size:11px;color:var(--text-muted);line-height:1.4;}
+
+/* ══ SECRETS TABLE ══ */
+.secrets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:var(--s4);}
+.secret-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface-1);border:1px solid var(--border);padding:var(--s3) var(--s4);}
+.secret-name{font-family:var(--mono);font-size:11px;color:var(--text);}
+.secret-status{font-family:var(--mono);font-size:9px;font-weight:700;padding:1px 7px;border-radius:2px;}
+.secret-status.set{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35);}
+.secret-status.pending{background:var(--red-dim);color:var(--red);border:1px solid rgba(252,165,165,0.35);}
+.secret-note{font-size:10px;color:var(--text-dim);margin-top:2px;}
+
+/* ══ ANIMATIONS ══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.skill-card:nth-child(1){animation-delay:0ms;}
+.skill-card:nth-child(2){animation-delay:60ms;}
+.skill-card:nth-child(3){animation-delay:120ms;}
+.skill-card:nth-child(4){animation-delay:180ms;}
+.skill-card:nth-child(n+5){animation-delay:240ms;}
+.agent-card:nth-child(1){animation-delay:0ms;}
+.agent-card:nth-child(2){animation-delay:40ms;}
+.agent-card:nth-child(3){animation-delay:80ms;}
+.agent-card:nth-child(4){animation-delay:120ms;}
+.agent-card:nth-child(5){animation-delay:160ms;}
+.agent-card:nth-child(6){animation-delay:200ms;}
+.agent-card:nth-child(7){animation-delay:240ms;}
+.agent-card:nth-child(8){animation-delay:280ms;}
+.agent-card:nth-child(n+9){animation-delay:320ms;}
+@media(prefers-reduced-motion:reduce){.skill-card,.agent-card{animation:none;}}
+
+/* ══ STATUS BAR ══ */
+.status-bar{position:fixed;bottom:0;left:0;right:0;height:30px;background:var(--surface-1);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 var(--s6);gap:var(--s4);font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-dim);z-index:200;}
+.status-live{display:flex;align-items:center;gap:5px;color:var(--live);}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--live);animation:blink 2.5s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.status-sep{color:var(--border);}
+.status-val{color:var(--text-muted);}
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:var(--surface-1);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--border-hover);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo">
+      <div class="dot-fill"></div>
+      <div class="dot-ring"></div>
+      <span class="wordmark">B_V® | OS</span>
+    </div>
+    <span class="header-div">|</span>
+    <span class="header-label">Monitor June</span>
+    <span class="header-badge">SYNERGY V3</span>
+  </div>
+  <div class="header-right">
+    <span>23 skills</span>
+    <span class="sep">·</span>
+    <span>21 agents</span>
+    <span class="sep">·</span>
+    <span>Worker V2.15.1</span>
+    <span class="sep">·</span>
+    <span>Q-02.26</span>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <a href="#daily"    class="nav-tab active">Daily Session</a>
+  <a href="#rhythm"   class="nav-tab">Weekly Rhythm</a>
+  <a href="#skills"   class="nav-tab">Skills</a>
+  <a href="#agents"   class="nav-tab">Agents</a>
+  <a href="#pipeline" class="nav-tab">Pipeline</a>
+  <a href="#stack"    class="nav-tab">Stack</a>
+  <a href="#projects" class="nav-tab">Projects</a>
+</nav>
+
+<div class="page">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><span class="legend-node" style="background:var(--blue-dim);color:var(--blue);border-color:rgba(125,211,252,0.35)">INPUT</span><span>trigger or input</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--surface-3);color:#9a9a9a;border-color:var(--border)">PROC</span><span>processing step</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--live-dim);color:var(--live);border-color:rgba(134,239,172,0.35)">OUTPUT</span><span>final output</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:rgba(255,255,255,0.06);color:#e8e8e8;border-color:rgba(255,255,255,0.22)">BRANCH</span><span>decision / condition</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:rgba(255,255,255,0.06);color:#d4d4d4;border-color:rgba(255,255,255,0.16)">SYSTEM</span><span>API / system call</span></div>
+    <div class="legend-item"><span class="legend-node" style="background:var(--red-dim);color:var(--red);border-color:rgba(252,165,165,0.35)">WARN</span><span>pending / issue</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: DAILY SESSION                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="daily">
+    <div class="section-header">
+      <span class="section-label">Daily Session</span>
+      <span class="section-desc">The three-step session loop — open, work, close</span>
+    </div>
+
+    <div class="skill-card" style="margin-bottom:8px;">
+      <div class="flow-wrap">
+        <div class="flow-mode-label">Every session — no exceptions</div>
+        <div class="flow" style="align-items:center;gap:12px;">
+          <span class="node in" style="font-size:13px;padding:6px 16px;font-weight:700;">/startup</span>
+          <span class="flow-arrow" style="font-size:18px;color:var(--text-dim);">→</span>
+          <span class="node branch" style="font-size:13px;padding:6px 16px;font-weight:700;">/db</span>
+          <span class="flow-arrow" style="font-size:18px;color:var(--text-dim);">→</span>
+          <span class="node branch" style="font-size:13px;padding:6px 16px;font-weight:700;">WORK</span>
+          <span class="flow-arrow" style="font-size:18px;color:var(--text-dim);">→</span>
+          <span class="node out" style="font-size:13px;padding:6px 16px;font-weight:700;">/upc</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/startup</span>
+          <div class="skill-meta">
+            <div class="skill-name">Session Start</div>
+            <div class="skill-desc">Opens every session. Pre-flight checks (no merge conflicts, daemon loaded), triggers daemon pull, shows vault state + recent changes + pending approvals.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> session opens</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">preflight.sh</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">sync-daemon pull</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">vault orient</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">flag pending</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">ready to work</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/db</span>
+          <div class="skill-meta">
+            <div class="skill-name">Daily Brief</div>
+            <div class="skill-desc">Morning pulse: priorities + live Calendar + live Gmail + Asana cache + vault signals. Renders artifact daily-brief-{user} and saves markdown.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> /db</span>
+            <span class="flow-arrow">→</span><span class="node tool">Calendar API</span>
+            <span class="flow-arrow">→</span><span class="node tool">Gmail MCP</span>
+            <span class="flow-arrow">→</span><span class="node tool">Asana cache</span>
+            <span class="flow-arrow">→</span><span class="node proc">vault scan</span>
+            <span class="flow-arrow">→</span><span class="node out">artifact + agent_outputs/</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/upc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Update Push Commit</div>
+            <div class="skill-desc">Closes every session. Validates vault frontmatter, drains journaled paths into one commit, triggers sync-daemon to push, updates memory.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> session ends</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">validate frontmatter</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">drain journal</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">sync-trigger push</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">daemon: commit + push</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">vault synced</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/id</span>
+          <div class="skill-meta">
+            <div class="skill-name">Identity Lens</div>
+            <div class="skill-desc">Session-persistent tone toggle. Adapts Synergy's framing to the keyboard user (auto-detected via git). Toggle off with bare /id.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/POV</span>
+          <div class="skill-meta">
+            <div class="skill-name">Point of View</div>
+            <div class="skill-desc">Roleplay mode. Synergy emulates a teammate's voice and perspective in the first person. Non-removable disclosure tag every turn. Bare /POV to clear.</div>
+            <div class="owner-chips"><span class="owner-chip all">Team only</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: WEEKLY RHYTHM                   -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="rhythm">
+    <div class="section-header">
+      <span class="section-label">Weekly Rhythm</span>
+      <span class="section-desc">Tuesday Sync cadence — champion updates → digest → meeting → auto-mine loop</span>
+    </div>
+
+    <div class="rhythm-flow">
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon AM</div><div class="action">Each champion updates their venture</div><span class="cmd">/vu</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon AM</div><div class="action">Area leads update functional areas</div><span class="cmd">/au</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Mon PM</div><div class="action">Mariano generates weekly digest</div><span class="cmd">/wr</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node"><div class="day">Mon PM</div><div class="action">Daiana validates. Digest distributed.</div><span class="cmd">pre-read</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Tuesday</div><div class="action">In-person sync. Decisions only. Gaston chairs. 60 min.</div><span class="cmd">meeting</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node auto"><div class="day">Auto</div><div class="action">Read.ai → Worker V2.15.1 mines → vault/pending</div><span class="cmd">no trigger</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node auto"><div class="day">Auto</div><div class="action">GHA fanout: Asana + Slack to venture channel</div><span class="cmd">auto-mine-fanout.yml</span></div></div>
+      <div class="rhythm-connector">→</div>
+      <div class="rhythm-step"><div class="rhythm-node highlight"><div class="day">Loop closed</div><div class="action">Vault updated. Context evolves.</div><span class="cmd">auto-commit</span></div></div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Path A — Read.ai auto-mine (Option C hybrid, since 2026-06-01)</span></div>
+      <div class="skill-card">
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> Read.ai bot joins call</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">webhook → Worker V2.15.1</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">Claude mines transcript</span>
+            <span class="flow-arrow">→</span>
+            <span class="node proc">vault writes (serialized)</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">push vault/pending/*.md</span>
+            <span class="flow-arrow">→</span>
+            <span class="node tool">GHA: auto-mine-fanout.yml</span>
+            <span class="flow-arrow">→</span>
+            <span class="node out">Asana + Slack channel post</span>
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:var(--text-dim);font-family:var(--mono);">Worker stays inside CF's 1000-subrequest budget. GHA owns fanout (no equivalent ceiling). ~90-110s end-to-end.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s4);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Path B — WhatsApp audio mine (Mariano ad-hoc)</span></div>
+      <div class="skill-card">
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> WhatsApp audio (.opus)</span>
+            <span class="flow-arrow">→</span><span class="node proc">/transcribe</span>
+            <span class="flow-arrow">→</span><span class="node proc">edit frontmatter</span>
+            <span class="flow-arrow">→</span><span class="node proc">/mine {file}</span>
+            <span class="flow-arrow">→</span><span class="node proc">auto-approve</span>
+            <span class="flow-arrow">→</span><span class="node tool">vault + Asana + Slack</span>
+            <span class="flow-arrow">→</span><span class="node out">channel post</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s4);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Path C — Manual fallback (no Read.ai, no audio)</span></div>
+      <div class="skill-card">
+        <div class="flow-wrap">
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> notes or text paste</span>
+            <span class="flow-arrow">→</span><span class="node proc">/mine</span>
+            <span class="flow-arrow">→</span><span class="node proc">raw archive</span>
+            <span class="flow-arrow">→</span><span class="node proc">auto-approve</span>
+            <span class="flow-arrow">→</span><span class="node tool">vault + Asana + Slack</span>
+            <span class="flow-arrow">→</span><span class="node out">all written</span>
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:var(--text-dim);font-family:var(--mono);">All paths auto-approve. /mine never gates on human approval. Pending file is a trace only.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: SKILLS                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="skills">
+    <div class="section-header">
+      <span class="section-label">Skills</span>
+      <span class="section-desc">Claude Code invocable skill files — .claude/skills/</span>
+      <span class="section-count">23 skills</span>
+    </div>
+
+    <!-- Session group -->
+    <div class="section-header" style="margin-bottom:var(--s4);margin-top:0;"><span class="section-label-sub">Session</span></div>
+    <div class="skills-grid" style="margin-bottom:var(--s6);">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/startup</span>
+          <div class="skill-meta">
+            <div class="skill-name">Session Start</div>
+            <div class="skill-desc">Pull latest, confirm sync status, orient Claude to vault state and pending approvals.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/upc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Update Push Commit</div>
+            <div class="skill-desc">Session wrap-up: validate frontmatter, batch-commit journaled changes, daemon push, memory update.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/db</span>
+          <div class="skill-meta">
+            <div class="skill-name">Daily Brief — Pulse</div>
+            <div class="skill-desc">V2 brief: priorities + live Calendar + live Gmail + Asana cache + vault. Auto 07:30 L–V. Renders artifact.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/buen-dia-syn</span>
+          <div class="skill-meta">
+            <div class="skill-name">Buen Día — Personal Format</div>
+            <div class="skill-desc">Daiana's personal pre-V2 brief format (renamed from /db-mio on 2026-05-30).</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/id</span>
+          <div class="skill-meta">
+            <div class="skill-name">Identity Lens</div>
+            <div class="skill-desc">Adapts Synergy's tone and framing to the keyboard user, auto-detected from git. Session-persistent.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge green">/POV</span>
+          <div class="skill-meta">
+            <div class="skill-name">Point of View</div>
+            <div class="skill-desc">Roleplay mode. Synergy emulates a teammate's voice with permanent disclosure tag. Bare /POV clears.</div>
+            <div class="owner-chips"><span class="owner-chip all">Team only</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Knowledge Capture group -->
+    <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Knowledge Capture</span></div>
+    <div class="skills-grid" style="margin-bottom:var(--s6);">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/mine</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Miner</div>
+            <div class="skill-desc">Extract decisions, action items, risks, venture updates from notes or audio. All paths auto-approve and write vault + Asana + Slack.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">Manual mine (Path B/C)</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> notes / file / audio</span>
+            <span class="flow-arrow">→</span><span class="node branch">audio?</span>
+            <span class="flow-arrow">→</span><span class="node tool">Whisper API</span>
+            <span class="flow-arrow">→</span><span class="node proc">extract items</span>
+            <span class="flow-arrow">→</span><span class="node proc">auto-approve</span>
+            <span class="flow-arrow">→</span><span class="node tool">vault + Asana + Slack</span>
+          </div>
+          <div class="flow-sep"></div>
+          <div class="flow-mode-label">Auto path (Read.ai — Path A)</div>
+          <div class="flow">
+            <span class="node in"><span class="node-icon">▸</span> call ends</span>
+            <span class="flow-arrow">→</span><span class="node tool">Worker V2.15.1</span>
+            <span class="flow-arrow">→</span><span class="node proc">mine + vault</span>
+            <span class="flow-arrow">→</span><span class="node tool">GHA fanout</span>
+            <span class="flow-arrow">→</span><span class="node out">no manual step</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/transcribe</span>
+          <div class="skill-meta">
+            <div class="skill-name">Audio Transcriber</div>
+            <div class="skill-desc">Convert audio file (.opus, .mp3, .m4a, .wav, .ogg, .webm) to speaker-labeled transcript → vault/transcripts/.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/vu</span>
+          <div class="skill-meta">
+            <div class="skill-name">Venture Update</div>
+            <div class="skill-desc">Weekly champion update. Scans transcripts, synthesizes activity, confirms with champion, writes to vault/ventures/.</div>
+            <div class="owner-chips"><span class="owner-chip all">All champions</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/au</span>
+          <div class="skill-meta">
+            <div class="skill-name">Area Update</div>
+            <div class="skill-desc">Weekly functional area update. Scans transcripts by area, synthesizes, confirms with area lead, writes vault/areas/.</div>
+            <div class="owner-chips"><span class="owner-chip all">Area leads</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/mp</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Prep</div>
+            <div class="skill-desc">Pre-meeting brief from vault: investor profiles, prior transcripts, open risks, action items.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge yellow">/mc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Meeting Closeout</div>
+            <div class="skill-desc">Post-meeting recap. Generates external email + internal Slack message from vault/pending/ file.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Publishing group -->
+    <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Publishing</span></div>
+    <div class="skills-grid" style="margin-bottom:var(--s6);">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/md-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">Markdown Web Publisher</div>
+            <div class="skill-desc">Publish any .md to GitHub Pages with theme injection. Themes: both-brand (dark), photonic-lab (Swiss editorial), weekly-digest.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/html-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">HTML Page Publisher</div>
+            <div class="skill-desc">Publish any local HTML to GitHub Pages. Copies to docs/pages/, commits, returns live URL.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span><span class="owner-chip rene">Rene</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/notion-web</span>
+          <div class="skill-meta">
+            <div class="skill-name">Notion Page Publisher</div>
+            <div class="skill-desc">Publish any Notion page as branded HTML on GitHub Pages. Fetches blocks via API, renders with BOTH theme.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/print-to-drive</span>
+          <div class="skill-meta">
+            <div class="skill-name">Print to Drive</div>
+            <div class="skill-desc">Render any .md as branded HTML and save to the correct Google Drive folder via routing keyword.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge blue">/generate-pdf</span>
+          <div class="skill-meta">
+            <div class="skill-name">Branded PDF Generator</div>
+            <div class="skill-desc">Generate professional branded PDF from HTML via two-pass Puppeteer pipeline.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ops, Data, Sec group -->
+    <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Ops, Data &amp; Security</span></div>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/sc</span>
+          <div class="skill-meta">
+            <div class="skill-name">Synergy Coach</div>
+            <div class="skill-desc">Daiana-facing operational coaching. Tool recommendations, gap capture, monthly skill audits.</div>
+            <div class="owner-chips"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/vault-notion</span>
+          <div class="skill-meta">
+            <div class="skill-name">Vault Notion Linker</div>
+            <div class="skill-desc">Surface vault assets onto Notion pages. Resolves source_documents from frontmatter to live page URLs.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/cookie-monster</span>
+          <div class="skill-meta">
+            <div class="skill-name">Knowledge Capture</div>
+            <div class="skill-desc">Store any document (PDF, DOCX, image, etc.) into the correct Google Drive folder via routing keyword. Optional /scan chain.</div>
+            <div class="owner-chips"><span class="owner-chip all">All</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/supabase-query</span>
+          <div class="skill-meta">
+            <div class="skill-name">Supabase Query</div>
+            <div class="skill-desc">Run any SQL query or NL question against the live database. Alias: /sq.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">12 Tables</div>
+          <div class="flow" style="flex-wrap:wrap;gap:4px;">
+            <span class="node proc">user_profiles</span><span class="node proc">agent_registry</span><span class="node proc">vault_context</span><span class="node proc">conversations</span><span class="node proc">agent_memory</span><span class="node proc">usage_metrics</span><span class="node proc">venture_snapshots</span><span class="node proc">agent_outputs</span><span class="node proc">task_queue</span><span class="node proc">pending_actions</span><span class="node proc">access_grants</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge purple">/sec-audit</span>
+          <div class="skill-meta">
+            <div class="skill-name">Security Audit</div>
+            <div class="skill-desc">Local security scan: gitleaks, .env tracking, PAT rotation status, .gitignore health.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-header">
+          <span class="cmd-badge teal">/hux</span>
+          <div class="skill-meta">
+            <div class="skill-name">Agentic CTO</div>
+            <div class="skill-desc">Zoom-out technical lead. Sub-agent orchestrator. Weekly Sunday digest + on-demand. Phase 1: Mariano-only.</div>
+            <div class="owner-chips"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Live</span></div>
+          </div>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-mode-label">Four sub-agents</div>
+          <div class="flow" style="flex-wrap:wrap;gap:4px;">
+            <span class="node proc">stress-tester</span><span class="node proc">ux-critic</span><span class="node proc">agent-auditor</span><span class="node proc">qa-systemic</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: AGENTS                          -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="agents">
+    <div class="section-header">
+      <span class="section-label">Agents</span>
+      <span class="section-desc">Full system-prompt agents — .claude/agents/</span>
+      <span class="section-count">21 active · 4 archived</span>
+    </div>
+
+    <div class="agents-grid">
+      <div class="agent-card hux"><span class="agent-cmd">/hux</span><div class="agent-body"><div class="agent-name">Hux — Agentic CTO</div><div class="agent-desc">Zoom-out technical lead. Sub-agent orchestrator. Weekly Sunday digest. Launched 2026-05-30.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card hux"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Hux Stress-Tester</div><div class="agent-desc">Surfaces failure modes against current systems. Surfaced 20 FMs on auto-miner Option C; 2 URGENT shipped same day.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card hux"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Hux Agent-Auditor</div><div class="agent-desc">Audits .claude/agents/ + .claude/skills/ + CLAUDE.md drift. Supersedes the killed Asuntos Internos project.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card hux"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Hux UX-Critic</div><div class="agent-desc">Reviews published surfaces (briefs, digests, monitor pages) for compositional surprise and editorial pass.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card hux"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Hux QA-Systemic</div><div class="agent-desc">Systemic QA across pipelines: trace integrity, no-binary-verdicts discipline, status-card production.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/au</span><div class="agent-body"><div class="agent-name">Area Update</div><div class="agent-desc">Guide area leads through weekly functional area status updates.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip all">Area leads</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Art Director</div><div class="agent-desc">Apply BOTH visual identity across HTML, layouts, and AI image prompts.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/cso</span><div class="agent-body"><div class="agent-name">Chief Security Officer</div><div class="agent-desc">Security posture Q&amp;A, incident triage, credential hygiene review.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/db</span><div class="agent-body"><div class="agent-name">Daily Brief</div><div class="agent-desc">Morning brief: priorities, live Gmail + Calendar, Asana cache, vault context. Runs auto 07:30 L–V.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/scan</span><div class="agent-body"><div class="agent-name">Document Scanner</div><div class="agent-desc">Transform any document type into structured knowledge. Extracts decisions, actions, risks.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/ad-lc</span><div class="agent-body"><div class="agent-name">La Chamana Art Director</div><div class="agent-desc">La Chamana visual identity — ornate key, tagline system, space-specific colors.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/mine</span><div class="agent-body"><div class="agent-name">Meeting Miner</div><div class="agent-desc">Transform meetings into decisions, actions, risks, venture updates → vault + Asana + Slack. All paths auto-approve.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span><span class="owner-chip all">All</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">—</span><div class="agent-body"><div class="agent-name">Meeting Miner Harness</div><div class="agent-desc">Approval contract spec. Defines when auto-approve applies vs pending. 4-field causal audit trail per pipeline run.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/nw</span><div class="agent-body"><div class="agent-name">Narrative Writer</div><div class="agent-desc">Investor memos, venture narratives, LP updates. Institutional voice — precise, not promotional.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/rick-prime</span><div class="agent-body"><div class="agent-name">Rick Prime</div><div class="agent-desc">Cross-project creative direction. Rene gatekeeper. Replaced legacy /rick agent (Hux subtraction).</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip rene">Rene</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/sc</span><div class="agent-body"><div class="agent-name">Synergy Coach</div><div class="agent-desc">Meta-agent for Synergy usage coaching and monthly skill audits. Also a skill wrapper.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/upc</span><div class="agent-body"><div class="agent-name">Update Push Commit</div><div class="agent-desc">Session wrap-up: validate vault, journal-drain commit, daemon push, memory update.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip all">All</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/vu</span><div class="agent-body"><div class="agent-name">Venture Update</div><div class="agent-desc">Guide champions through weekly venture status updates. Scans transcripts before asking.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip all">All champions</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd">/wr</span><div class="agent-body"><div class="agent-name">Weekly Reporter</div><div class="agent-desc">Generate Tuesday Sync digest: venture grid, area summaries, decisions, risks, cross-cutting themes.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip daiana">Daiana</span></div></div></div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Archived — Oracle Council (on hold)</span></div>
+      <div class="agents-grid">
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">/so</span><div class="agent-body"><div class="agent-name">Oracle Council</div><div class="agent-desc">Orchestrate 3 Oracle brains against strategic scenarios. Stress-test with Rene + Gaston required before reactivation.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Philosopher</div><div class="agent-desc">Strategic readings through philosophy, psychology, anthropology.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Quant</div><div class="agent-desc">Model scenarios as systems: probabilities, feedback loops, phase transitions, optionality value.</div></div></div>
+        <div class="agent-card archived"><span class="agent-cmd muted" style="font-size:9px;">—</span><div class="agent-body"><div class="agent-name">The Architect</div><div class="agent-desc">Translate strategic scenarios into concrete build proposals.</div></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:var(--s6);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Subtracted by Hux (2026-06-01 hygiene pass)</span></div>
+      <div style="background:var(--surface-1);border:1px solid var(--border);padding:var(--s4) var(--s5);font-size:11px;color:var(--text-muted);line-height:1.7;">
+        7 agents removed: <span style="font-family:var(--mono);color:var(--text-dim);">capital-strategist</span>, <span style="font-family:var(--mono);color:var(--text-dim);">governance-advisor</span>, <span style="font-family:var(--mono);color:var(--text-dim);">intelligence-feed</span>, <span style="font-family:var(--mono);color:var(--text-dim);">investor-researcher</span>, <span style="font-family:var(--mono);color:var(--text-dim);">deck-refiner</span>, <span style="font-family:var(--mono);color:var(--text-dim);">task-coordinator</span>, <span style="font-family:var(--mono);color:var(--text-dim);">venture-tracker</span>, <span style="font-family:var(--mono);color:var(--text-dim);">member-onboarding-v0</span>. 26→19 base agents (plus 5 Hux family = 24 visible). 4-bucket taxonomy adopted. Re-audit 2026-07-01.
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PIPELINE                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="pipeline">
+    <div class="section-header">
+      <span class="section-label">Pipeline</span>
+      <span class="section-desc">Cloudflare Worker V2.15.1 + GitHub Actions — Option C hybrid live 2026-06-01</span>
+    </div>
+
+    <div class="pipeline-endpoints">
+      <div class="endpoint-card">
+        <div class="endpoint-method post">POST</div>
+        <div class="endpoint-path">/</div>
+        <div class="endpoint-desc">Read.ai webhook. HMAC-SHA256 auth. Mines transcript → writes vault → pushes vault/pending/*.md. Fanout delegated to GHA.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method post">POST</div>
+        <div class="endpoint-path">/whatsapp</div>
+        <div class="endpoint-desc">evolution-api group message webhook. Fetch 100 msgs → Claude mines → vault + Asana + Slack.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method post">POST</div>
+        <div class="endpoint-path">/slack/events</div>
+        <div class="endpoint-desc">Synergy chat surface. 1:1 DMs + #synergy channel @-mentions. Allowlisted to 5 team members. Prompt-cached.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method get">GET</div>
+        <div class="endpoint-path">/version</div>
+        <div class="endpoint-desc">Returns git SHA. Used by deploy gate to refuse dirty trees.</div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method get">GET</div>
+        <div class="endpoint-path">/</div>
+        <div class="endpoint-desc">Health check. Returns <code style="font-family:var(--mono);font-size:10px;color:var(--accent);">{ status: 'ok', version: 'v2.15' }</code></div>
+      </div>
+      <div class="endpoint-card">
+        <div class="endpoint-method get">GET</div>
+        <div class="endpoint-path">gate-status</div>
+        <div class="endpoint-desc">Trial gate query — scripts/gate-status.sh. F5 of V2.15.1 radical-fix bundle.</div>
+      </div>
+    </div>
+
+    <div class="skill-card" style="margin-bottom:var(--s5);">
+      <div class="flow-wrap">
+        <div class="flow-mode-label">Full pipeline — Read.ai path (Option C hybrid)</div>
+        <div class="flow">
+          <span class="node in"><span class="node-icon">▸</span> Read.ai webhook</span>
+          <span class="flow-arrow">→</span><span class="node tool">Worker POST /</span>
+          <span class="flow-arrow">→</span><span class="node tool">HMAC verify</span>
+          <span class="flow-arrow">→</span><span class="node tool">Claude API (sonnet-4-6 → haiku-4-5)</span>
+          <span class="flow-arrow">→</span><span class="node proc">mine transcript</span>
+          <span class="flow-arrow">→</span><span class="node tool">vault writes (serialized)</span>
+          <span class="flow-arrow">→</span><span class="node tool">push vault/pending/*.md</span>
+          <span class="flow-arrow">→</span><span class="node tool">GHA: auto-mine-fanout.yml</span>
+          <span class="flow-arrow">→</span><span class="node tool">asana-push.py + slack-notify.py</span>
+          <span class="flow-arrow">→</span><span class="node out">channel post</span>
+        </div>
+        <div class="flow-sep"></div>
+        <div class="flow-mode-label">Synergy Slack chat — bidirectional loop</div>
+        <div class="flow">
+          <span class="node in"><span class="node-icon">▸</span> 1:1 DM or #synergy @-mention</span>
+          <span class="flow-arrow">→</span><span class="node tool">Worker POST /slack/events</span>
+          <span class="flow-arrow">→</span><span class="node tool">HMAC verify (signing secret)</span>
+          <span class="flow-arrow">→</span><span class="node tool">Claude API</span>
+          <span class="flow-arrow">→</span><span class="node proc">1h shared + 5m per-user cache</span>
+          <span class="flow-arrow">→</span><span class="node out">Slack reply</span>
+        </div>
+        <div class="flow-sep"></div>
+        <div class="flow-mode-label">Crash recovery — Cloudflare Workflows (V2.15.1)</div>
+        <div class="flow">
+          <span class="node in"><span class="node-icon">▸</span> MiningWorkflow class</span>
+          <span class="flow-arrow">→</span><span class="node tool">[[workflows]] binding</span>
+          <span class="flow-arrow">→</span><span class="node proc">retries 2→0 (kill retry-amp)</span>
+          <span class="flow-arrow">→</span><span class="node tool">KV MINING_DEDUP (10min TTL)</span>
+          <span class="flow-arrow">→</span><span class="node out">session-id idempotency</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s6);">
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Worker Secrets — 10 set</span></div>
+        <div class="secrets-grid" style="grid-template-columns:1fr;">
+          <div class="secret-row"><span class="secret-name">ANTHROPIC_API_KEY</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">GITHUB_PAT</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">BOTH_SECRET</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">READAI_SIGNING_KEY</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SLACK_BOT_TOKEN <span style="color:var(--text-dim);font-size:9px;">(BOTH Claude — parked fallback)</span></span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SYNERGY_SLACK_BOT_TOKEN</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SYNERGY_SLACK_SIGNING_SECRET</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">BOTH_ASANA_TOKEN <span style="color:var(--text-dim);font-size:9px;">(parked under Option C)</span></span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SUPABASE_URL</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">SUPABASE_SERVICE_KEY</span><span class="secret-status set">SET</span></div>
+          <div class="secret-row"><span class="secret-name">FANOUT_VIA_GHA="true"</span><span class="secret-status set">SET</span></div>
+        </div>
+        <div class="secret-note" style="margin-top:var(--s3);">⚠ GitHub PAT next rotation: 2026-06-10 (fine-grained, BothVentures/both_os Contents R+W)</div>
+      </div>
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Worker Version History</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row header" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">Ver</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;">Change</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.5</span><span class="cl-log-msg">WhatsApp mining endpoint + Recall.ai parser</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.6</span><span class="cl-log-msg">Auth hardening + channel posts + error visibility</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.11</span><span class="cl-log-msg">Synergy Slack chat surface (1:1 DMs + #synergy)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.12</span><span class="cl-log-msg">F1 traces + F4 deploy gate + F5 gate-status (8365f1e)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.13</span><span class="cl-log-msg">Streaming bypass — got_headers in &lt;1s</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.14</span><span class="cl-log-msg">Granular logging revealed waitUntil cancellation</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">V2.15.1</span><span class="cl-log-msg">Cloudflare Workflows fix — F6 closed (8044df4)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">Option C</span><span class="cl-log-msg">Hybrid: vault/pending → GHA fanout (8f5bd2e, 2026-06-01)</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">+08924fb</span><span class="cl-log-msg">Serialize vault writes — fix 409 cascade silent drops</span></div>
+          <div class="cl-log-row" style="grid-template-columns:64px 1fr;"><span class="cl-log-date">+444534f</span><span class="cl-log-msg">FM-1A/B retry-amp kill + KV dedup + slack-notify fanout</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: STACK                           -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <span class="section-label">Stack</span>
+      <span class="section-desc">Integrations + automation surfaces</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s6);">
+
+      <!-- GitHub Actions -->
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">GitHub Actions — .github/workflows/</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide header"><span class="cl-log-hash">Status</span><span class="cl-log-type other">—</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Workflow</span><span class="cl-log-note">Trigger</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">auto-mine-fanout.yml — Asana + Slack from pending</span><span class="cl-log-note">push vault/pending/**.md</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">deploy-diagram.yml — Pages deploy</span><span class="cl-log-note">push docs/</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Parked</span></span><span></span><span class="cl-log-msg">auto-mine.yml (trial/auto-mine-inbox) — warm fallback</span><span class="cl-log-note">PR #2 superseded</span></div>
+        </div>
+
+        <div class="section-header" style="margin-top:var(--s6);margin-bottom:var(--s4);"><span class="section-label-sub">n8n — bothventures.app.n8n.cloud (on hold)</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide header"><span class="cl-log-hash">Status</span><span class="cl-log-type other">—</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Workflow</span><span class="cl-log-note">Replaced by</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Parked</span></span><span></span><span class="cl-log-msg">All workflows — automation moved to Worker + GHA + scripts</span><span class="cl-log-note">Worker V2.15.1 + GHA</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Parked</span></span><span></span><span class="cl-log-msg">Calendar Watcher (2VFlynxa)</span><span class="cl-log-note">needs GCP SA creds</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Parked</span></span><span></span><span class="cl-log-msg">Mine Gap Detector (PxkNWA5G)</span><span class="cl-log-note">needs GCP SA creds</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Parked</span></span><span></span><span class="cl-log-msg">Security Daily Scan</span><span class="cl-log-note">scripts/sec-audit</span></div>
+        </div>
+
+        <div class="section-header" style="margin-top:var(--s6);margin-bottom:var(--s4);"><span class="section-label-sub">Harnesses — pipelines as NLAH specs</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Spec</span></span><span></span><span class="cl-log-msg">harnesses/tuesday-sync.md — full pipeline NLAH</span><span class="cl-log-note">first stop on failure</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Spec</span></span><span></span><span class="cl-log-msg">harnesses/auto-miner.md — 3 trigger paths</span><span class="cl-log-note">V2.15.1 + Option C</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Spec</span></span><span></span><span class="cl-log-msg">harnesses/synergy-slack.md — chat surface</span><span class="cl-log-note">deferred tools</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Spec</span></span><span></span><span class="cl-log-msg">harnesses/hux-weekly.md — Sunday digest</span><span class="cl-log-note">Mariano-only</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Spec</span></span><span></span><span class="cl-log-msg">harnesses/publishing-library.md — shared HTML/PDF utils</span><span class="cl-log-note">md-web + html-web</span></div>
+        </div>
+      </div>
+
+      <!-- External Integrations -->
+      <div>
+        <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">External Integrations</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide header"><span class="cl-log-hash">Status</span><span class="cl-log-type other">—</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Service</span><span class="cl-log-note">Notes</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Claude API — claude-haiku-4-5 (default)</span><span class="cl-log-note">Worker mining + Synergy</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">OpenAI Whisper API</span><span class="cl-log-note">/transcribe</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">GitHub — BothVentures/both_os</span><span class="cl-log-note">PAT next rotate: Jun 10</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Cloudflare Workers — V2.15.1</span><span class="cl-log-note">Workers Paid $5/mo</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Cloudflare Workflows — MiningWorkflow</span><span class="cl-log-note">crash recovery</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Cloudflare KV — MINING_DEDUP</span><span class="cl-log-note">session-id idempotency</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Supabase — Postgres + pgvector</span><span class="cl-log-note">12 tables, RLS</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Asana — BOTH Action Items</span><span class="cl-log-note">10 sections, dedup'd</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Notion — Ventures DB + Digest</span><span class="cl-log-note">Manual sync Mondays</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Slack — 3 apps</span><span class="cl-log-note">BOTH Mine · Synergy · BOTH Claude</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Read.ai — call recording + webhook</span><span class="cl-log-note">HMAC signed</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Google Drive — doc storage</span><span class="cl-log-note">Per-scope shared drives</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Google Calendar — /db live read</span><span class="cl-log-note">admin@both.ventures</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">Gmail MCP — investor comms</span><span class="cl-log-note">mcp__claude_ai_Gmail__*</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Live</span></span><span></span><span class="cl-log-msg">sync-daemon — LaunchAgent</span><span class="cl-log-note">git outside CC sandbox</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">On hold</span></span><span></span><span class="cl-log-msg">n8n Cloud — all workflows parked</span><span class="cl-log-note">kept for future</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Inactive</span></span><span></span><span class="cl-log-msg">Railway — not currently active</span><span class="cl-log-note">no deployments</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Frozen</span></span><span></span><span class="cl-log-msg">evolution-api / WhatsApp</span><span class="cl-log-note">Worker code ready, no host</span></div>
+        </div>
+
+        <div class="section-header" style="margin-top:var(--s6);margin-bottom:var(--s4);"><span class="section-label-sub">Slack apps — three distinct surfaces</span></div>
+        <div class="cl-log">
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Primary</span></span><span></span><span class="cl-log-msg">BOTH Mine Bot (A0AT725LV96) — auto-mine notifications</span><span class="cl-log-note">GHA outbound</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type active">Bi-dir</span></span><span></span><span class="cl-log-msg">Synergy (A0B5G9XLSBC) — 1:1 + #synergy chat surface</span><span class="cl-log-note">5 team allowlist</span></div>
+          <div class="cl-log-row wide"><span class="cl-log-hash"><span class="cl-log-type parked">Fallback</span></span><span></span><span class="cl-log-msg">BOTH Claude (A0ASS88NN2D) — pre-Option C outbound</span><span class="cl-log-note">if FANOUT_VIA_GHA=false</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- SECTION: PROJECTS                        -->
+  <!-- ══════════════════════════════════════════ -->
+  <section class="section" id="projects">
+    <div class="section-header">
+      <span class="section-label">Projects</span>
+      <span class="section-desc">Living technical builds — projects/</span>
+      <span class="section-count">14 projects</span>
+    </div>
+
+    <div class="agents-grid" style="margin-bottom:var(--s6);">
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">synergy</span><div class="agent-body"><div class="agent-name">Synergy</div><div class="agent-desc">Project-level home of the entity. Doctrine in vault/soul.md. Atlas V4 live. Pre-read 2026-05-14, reunión 2026-05-20.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip daiana">Daiana</span><span class="owner-chip live">Active</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">integrations</span><div class="agent-body"><div class="agent-name">Integrations</div><div class="agent-desc">Main automation hub: Worker, GHA, Asana, Notion, Slack. Option C live since 2026-06-01.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">notion-web</span><div class="agent-body"><div class="agent-name">Notion Web</div><div class="agent-desc">/notion-web skill — Notion → HTML → GitHub Pages.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">html-web</span><div class="agent-body"><div class="agent-name">HTML Web</div><div class="agent-desc">/html-web skill — local HTML → GitHub Pages.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip rene">Rene</span><span class="owner-chip live">Live</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">ai-infra</span><div class="agent-body"><div class="agent-name">AI Infrastructure</div><div class="agent-desc">Living documentation of AI stack status and evolution.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Active</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">lc-paper</span><div class="agent-body"><div class="agent-name">LC Paperclip</div><div class="agent-desc">BOTH-branded Paperclip AI interface. Docker local only; Railway not active.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip live">Operational</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">la-chamana-gtm</span><div class="agent-body"><div class="agent-name">La Chamana GTM</div><div class="agent-desc">Andres-owned content + outreach engine. Mariano = infra. Outreach started 2026-05-19.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip andres">Andres</span><span class="owner-chip live">Active</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">la-chamana-os</span><div class="agent-body"><div class="agent-name">La Chamana OS</div><div class="agent-desc">LC_OS_V1 template exercise. No build until team defines needs.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip draft">Draft</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">cybersecurity</span><div class="agent-body"><div class="agent-name">Cybersecurity</div><div class="agent-desc">/cso agent + /sec-audit skill. 1Password planned. Phase 1 = rotate exposed creds first.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">calendar</span><div class="agent-body"><div class="agent-name">Calendar Integration</div><div class="agent-desc">/db pulls live. Mine Gap Detector parked (needs GCP SA creds). Read.ai bot email pending.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip pending">Partial</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">bv-os-v2</span><div class="agent-body"><div class="agent-name">BV OS V2</div><div class="agent-desc">BOTH-branded Claude chat V0 (Next.js prototype). V1 adds auth + vault integration.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">bandwidth</span><div class="agent-body"><div class="agent-name">Bandwidth Optimization</div><div class="agent-desc">Weekly /bw report from vault signals. No status.md yet.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip pending">Planned</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">council</span><div class="agent-body"><div class="agent-name">Council of War</div><div class="agent-desc">AI advisory board (/cw): historical identities, fixed lenses, parallel runs vs decisions.</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip gaston">Gaston</span><span class="owner-chip boris">Mariano</span><span class="owner-chip pending">Not started</span></div></div></div>
+      <div class="agent-card"><span class="agent-cmd" style="font-size:9px;padding:2px 5px;">whatsapp</span><div class="agent-body"><div class="agent-name">WhatsApp Integration</div><div class="agent-desc">Worker code complete + MCP server. Frozen — needs evolution-api host (Railway inactive).</div><div class="owner-chips" style="margin-top:6px"><span class="owner-chip boris">Mariano</span><span class="owner-chip blocked">Frozen</span></div></div></div>
+    </div>
+
+    <!-- Frozen / Killed -->
+    <div class="section-header" style="margin-bottom:var(--s4);margin-top:var(--s8);">
+      <span class="section-label-sub">Subtracted in this cycle (2026-06-01 to 2026-06-02)</span>
+    </div>
+    <div class="cl-log">
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type superseded">Killed</span><span class="cl-log-msg">Asuntos Internos — /ai planned 2026-04-11, 52 days zero implementation</span><span class="cl-log-note">Hux agent-auditor supersedes</span></div>
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type superseded">Frozen</span><span class="cl-log-msg">Telegram Agent — code complete but indefinitely blocked</span><span class="cl-log-note">vault/initiatives/2026-06-01</span></div>
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type superseded">Frozen</span><span class="cl-log-msg">Graphify — blocked on Python 3.10+</span><span class="cl-log-note">vault/initiatives/2026-06-01</span></div>
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type parked">Parked</span><span class="cl-log-msg">Understand-Anything — plugin disabled 2026-06-02, used once</span><span class="cl-log-note">enable + re-symlink to revive</span></div>
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type parked">Cancel</span><span class="cl-log-msg">Mission Control — 3 integration conflicts with Asana/Worker/Synergy</span><span class="cl-log-note">2026-05-30</span></div>
+      <div class="cl-log-row" style="grid-template-columns:80px 1fr 200px;"><span class="cl-log-type parked">Parked</span><span class="cl-log-msg">Terminal-accessible both.ventures (curl both.ventures)</span><span class="cl-log-note">2026-05-25 research</span></div>
+    </div>
+
+    <!-- Cleanup Queue -->
+    <div class="section-header" style="margin-bottom:var(--s4);margin-top:var(--s8);border-color:rgba(252,165,165,0.2);">
+      <span class="section-label" style="color:var(--red);">Open Items</span>
+      <span class="section-desc">Carry-over from Hux 2026-06-01 audit + sync-daemon rollout</span>
+      <span class="section-count" style="border-color:rgba(252,165,165,0.2);color:var(--red);">8 items</span>
+    </div>
+
+    <div class="cl-log">
+      <div class="cl-log-row header" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-date">Priority</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Item</span><span class="cl-log-note">Action</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">Sync-daemon rollout to Dai / Rene / Andres — 5 prereqs before next walkthrough</span><span class="cl-log-note">Blocked since 2026-05-21</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">GitHub PAT rotation — due 2026-06-10</span><span class="cl-log-note">wrangler secret put GITHUB_PAT</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type high">High</span><span class="cl-log-msg">~/.zshrc plaintext secrets — defeats PAT rotation cadence</span><span class="cl-log-note">Move to keychain</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">Auto-miner Option C trial gate — 0/3 (reset 2026-06-02)</span><span class="cl-log-note">Need 3 clean real meetings</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">docs/pages/ cleanup — 29 redirect stubs loose alongside 8 typed subdirs</span><span class="cl-log-note">Migrate Notion links → delete</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">Synergy 2-week roadmap — parked for Daiana review</span><span class="cl-log-note">2026-05-27</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type medium">Med</span><span class="cl-log-msg">Hux open buckets — B1, B3, B5 + sync-daemon stress</span><span class="cl-log-note">Re-audit 2026-07-01</span></div>
+      <div class="cl-log-row" style="grid-template-columns:60px 1fr 200px;"><span class="cl-log-type low">Low</span><span class="cl-log-msg">Weekly Digest V2 — compositional-surprise push pending (CP4: 6/10 vs 7/10 floor)</span><span class="cl-log-note">Grid-break move next</span></div>
+    </div>
+
+    <!-- Recent Changelog -->
+    <div style="margin-top:var(--s8);">
+      <div class="section-header" style="margin-bottom:var(--s4);"><span class="section-label-sub">Stats &amp; Recent Commits</span></div>
+      <div class="cl-stats">
+        <div class="cl-stat"><div class="cl-stat-label">Skills</div><div class="cl-stat-value">23</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Agents</div><div class="cl-stat-value">21</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Ventures</div><div class="cl-stat-value">10</div></div>
+        <div class="cl-stat"><div class="cl-stat-label">Worker</div><div class="cl-stat-value" style="font-size:18px;">V2.15.1</div></div>
+      </div>
+      <div class="cl-log">
+        <div class="cl-log-row header"><span class="cl-log-date">Date</span><span class="cl-log-hash">Hash</span><span class="cl-log-type other">Type</span><span class="cl-log-msg" style="color:var(--text-dim);font-family:var(--mono);font-size:9px;text-transform:uppercase;">Description</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 03</span><span class="cl-log-hash">422a6f1</span><span class="cl-log-type vault">session</span><span class="cl-log-msg">session(2026-06-03): wrap-up — sync-daemon</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 03</span><span class="cl-log-hash">f9b4c43</span><span class="cl-log-type vault">vault</span><span class="cl-log-msg">vault: LAK3 internal strategic memo — BOTH principals only</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 02</span><span class="cl-log-hash">8e4b58c</span><span class="cl-log-type vault">vault</span><span class="cl-log-msg">lak3 anchor investor framework + meeting agenda</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 02</span><span class="cl-log-hash">444534f</span><span class="cl-log-type fix">fix</span><span class="cl-log-msg">stress-tester findings + 08924fb deploy decision</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 02</span><span class="cl-log-hash">6271c1f</span><span class="cl-log-type fix">fix</span><span class="cl-log-msg">auto-miner FM-1+FM-2 — kill retry duplicates + per-venture Slack fanout</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 02</span><span class="cl-log-hash">08924fb</span><span class="cl-log-type fix">fix</span><span class="cl-log-msg">worker: serialize vault writes — fix silent drop on 409 cascades</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 01</span><span class="cl-log-hash">8f5bd2e</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">Option C hybrid — Worker writes pending, GHA owns fanout</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">Jun 01</span><span class="cl-log-hash">530c82a</span><span class="cl-log-type publish">publish</span><span class="cl-log-msg">Atlas V4 MVP — L0 doctrine + L1–L3 zoom canvas</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 30</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">Hux launched — Agentic CTO + 4 sub-agents</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 29</span><span class="cl-log-hash">8044df4</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">worker V2.15.1 — Cloudflare Workflows fix (F6 closed)</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 22</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">Synergy Slack chat surface live (1:1 + #synergy)</span></div>
+        <div class="cl-log-row"><span class="cl-log-date">May 20</span><span class="cl-log-hash">various</span><span class="cl-log-type feat">feat</span><span class="cl-log-msg">sync-daemon LaunchAgent — git outside CC sandbox</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- STATUS BAR -->
+<div class="status-bar">
+  <div class="status-live"><div class="status-dot"></div><span>Live</span></div>
+  <span class="status-sep">·</span>
+  <span>Monitor June · 2026-06-03</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">23</span> skills</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">21</span> agents</span>
+  <span class="status-sep">·</span>
+  <span><span class="status-val">10</span> ventures</span>
+  <span class="status-sep">·</span>
+  <span>Worker <span class="status-val">V2.15.1</span></span>
+  <span class="status-sep">·</span>
+  <span>SYNERGY V3</span>
+  <span class="status-sep">·</span>
+  <span>Q-02.26</span>
+</div>
+
+<script>
+const sections = document.querySelectorAll('section[id]');
+const tabs = document.querySelectorAll('.nav-tab');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      tabs.forEach(t => t.classList.toggle('active', t.getAttribute('href') === '#' + id));
+    }
+  });
+}, { rootMargin: '-30% 0px -60% 0px' });
+sections.forEach(s => observer.observe(s));
+tabs.forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.querySelector(tab.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+</script>
+</body>
+</html>
