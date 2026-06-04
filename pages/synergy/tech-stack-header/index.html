@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Stack — Synergy · B_V® | OS</title>
+<style>
+  :root {
+    --bg:            #0F0F0F;
+    --panel:         #1A1A1A;
+    --panel-2:       #232323;
+    --line:          rgba(255,255,255,0.10);
+    --line-dim:      rgba(255,255,255,0.06);
+    --text:          #ECECEC;
+    --text-dim:      #9A9A9A;
+    --text-muted:    #6F6F6F;
+    --orange:        #E07B3D;
+    --orange-dim:    #4A2A18;
+    --sky:           #6FA8DC;
+    --sky-dim:       #243846;
+    --green:         #38744F;
+    --green-dim:     #1B2E22;
+    --blue:          #3F6FBC;
+    --blue-dim:      #1B2A45;
+    --purple:        #8B6FBC;
+    --purple-dim:    #2C2340;
+    --amber:         #B8893C;
+    --amber-dim:     #382818;
+    --shadow:        0 6px 24px rgba(0,0,0,0.45);
+    --radius:        10px;
+    --radius-sm:     6px;
+    --mono:          'SF Mono','JetBrains Mono','Menlo',monospace;
+    --sans:          'Inter','SF Pro Text',system-ui,-apple-system,sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    padding: 48px 32px 64px;
+    min-height: 100vh;
+  }
+
+  .canvas {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* APEX */
+  .apex {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 22px;
+  }
+  .apex-box {
+    background: var(--orange);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 320px;
+  }
+  .apex-box .title {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .apex-box .sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    margin-top: 4px;
+  }
+
+  /* CONDUCTOR */
+  .conductor {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .conductor::before {
+    content: '';
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    width: 1px;
+    height: 22px;
+    background: var(--line);
+  }
+  .conductor-box {
+    background: var(--sky);
+    color: #0E1A22;
+    padding: 18px 36px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    min-width: 380px;
+  }
+  .conductor-box .title {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .conductor-box .sub {
+    font-size: 13px;
+    margin-top: 4px;
+    color: rgba(0,0,0,0.65);
+  }
+  .conductor-box .sub em {
+    font-style: italic;
+    color: rgba(0,0,0,0.55);
+    display: block;
+    margin-top: 2px;
+    font-size: 12px;
+  }
+
+  /* CONNECTORS to columns */
+  .fanout {
+    position: relative;
+    height: 28px;
+    margin-bottom: 14px;
+  }
+  .fanout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: var(--line);
+  }
+  .fanout::after {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 12%;
+    right: 12%;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* GRID OF COLUMNS */
+  .columns {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }
+  .col::before {
+    content: '';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    width: 1px;
+    height: 14px;
+    background: var(--line);
+  }
+
+  .col-head {
+    color: #fff;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .col-head .title {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .col-head .sub {
+    font-size: 12px;
+    margin-top: 4px;
+    color: rgba(255,255,255,0.78);
+  }
+
+  .col-tag {
+    color: #fff;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+  }
+
+  .col-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .col-item {
+    background: var(--panel);
+    border: 1px solid var(--line-dim);
+    color: var(--text);
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-family: var(--mono);
+    letter-spacing: 0.2px;
+  }
+
+  /* COLUMN VARIANTS */
+  .col.vault       .col-head, .col.vault       .col-tag { background: var(--green); }
+  .col.operations  .col-head, .col.operations  .col-tag { background: var(--green); }
+  .col.agents      .col-head, .col.agents      .col-tag { background: var(--blue); }
+  .col.ventures    .col-head, .col.ventures    .col-tag { background: var(--blue); }
+  .col.infra       .col-head, .col.infra       .col-tag {
+    background: transparent;
+    border: 1.5px dashed var(--purple);
+    color: var(--purple);
+  }
+  .col.infra .col-head .sub,
+  .col.infra .col-tag { color: var(--purple); }
+  .col.infra .col-item {
+    background: transparent;
+    border: 1px dashed rgba(139,111,188,0.35);
+    color: rgba(236,236,236,0.62);
+  }
+
+  /* AUTOMATION strip */
+  .automation {
+    border: 1.5px solid var(--orange);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    background: rgba(224,123,61,0.05);
+  }
+  .automation-title {
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .automation-flows {
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: var(--mono);
+    text-align: center;
+    line-height: 1.7;
+  }
+  .automation-flows .arrow { color: var(--orange); padding: 0 6px; }
+  .automation-flows .em { color: var(--text); font-weight: 600; }
+  .automation-flows .row { display: block; }
+  .automation-flows .row + .row { margin-top: 2px; }
+
+  /* WEEKLY RHYTHM */
+  .rhythm {
+    background: #FAF9F6;
+    color: #1A1A1A;
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    box-shadow: var(--shadow);
+  }
+  .rhythm-head {
+    margin-bottom: 16px;
+  }
+  .rhythm-head .title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+  }
+  .rhythm-head .sub {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+  }
+  .rhythm-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    align-items: stretch;
+    position: relative;
+  }
+  .rhythm-step {
+    background: #fff;
+    border: 1px solid #E2DFD8;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    position: relative;
+  }
+  .rhythm-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 14px;
+    z-index: 1;
+  }
+  .rhythm-step .step-num {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #444;
+    margin-bottom: 4px;
+  }
+  .rhythm-step .step-cmd {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #1A1A1A;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .rhythm-step .step-who {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.45;
+  }
+
+  /* meta caption */
+  .caption {
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 1.2px;
+    margin-top: 28px;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1100px) {
+    .columns, .rhythm-steps { grid-template-columns: repeat(2, 1fr); }
+    .rhythm-step:not(:last-child)::after { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+
+  <!-- APEX: Team -->
+  <div class="apex">
+    <div class="apex-box">
+      <div class="title">TEAM · CLIENTS · LPs</div>
+      <div class="sub">Gaston · Rene · Daiana · Andres · Mariano</div>
+    </div>
+  </div>
+
+  <!-- CONDUCTOR -->
+  <div class="conductor">
+    <div class="conductor-box">
+      <div class="title">CLAUDE CODE · COWORK</div>
+      <div class="sub">
+        the conductor
+        <em>Synergy · B_V® | OS</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fan-out connector -->
+  <div class="fanout"></div>
+
+  <!-- 5 COLUMNS -->
+  <div class="columns">
+
+    <!-- VAULT -->
+    <div class="col vault">
+      <div class="col-head">
+        <div class="title">VAULT</div>
+        <div class="sub">institutional memory</div>
+      </div>
+      <div class="col-tag">vault/ (GitHub)</div>
+      <div class="col-items">
+        <div class="col-item">decisions/ · initiatives/</div>
+        <div class="col-item">ventures/ · investors/</div>
+        <div class="col-item">risks/ · transcripts/</div>
+        <div class="col-item">pending/ · auto-approved</div>
+        <div class="col-item">agent_outputs/ · archive/</div>
+        <div class="col-item">profiles/ · areas/</div>
+        <div class="col-item">CLAUDE.md → context</div>
+      </div>
+    </div>
+
+    <!-- OPERATIONS -->
+    <div class="col operations">
+      <div class="col-head">
+        <div class="title">OPERATIONS</div>
+        <div class="sub">day-to-day stack</div>
+      </div>
+      <div class="col-tag">team tooling</div>
+      <div class="col-items">
+        <div class="col-item">Google Drive → source of truth</div>
+        <div class="col-item">WhatsApp → primary comms</div>
+        <div class="col-item">Asana → action items (live)</div>
+        <div class="col-item">Notion → read-only layer</div>
+        <div class="col-item">Slack ×3 → Synergy / Mine / Claude</div>
+        <div class="col-item">Gmail → LP comms only</div>
+        <div class="col-item">Read.ai → call transcripts</div>
+      </div>
+    </div>
+
+    <!-- AGENTS -->
+    <div class="col agents">
+      <div class="col-head">
+        <div class="title">AGENTS</div>
+        <div class="sub">30+ specialized prompts</div>
+      </div>
+      <div class="col-tag">slash commands</div>
+      <div class="col-items">
+        <div class="col-item">/db /sc → daily ops</div>
+        <div class="col-item">/mp /mc /mine → meetings</div>
+        <div class="col-item">/vu /au /wr → updates</div>
+        <div class="col-item">/hux → agentic CTO</div>
+        <div class="col-item">/id /POV → tone modes</div>
+        <div class="col-item">/scan /transcribe → capture</div>
+        <div class="col-item">/upc /startup → session</div>
+      </div>
+    </div>
+
+    <!-- VENTURES -->
+    <div class="col ventures">
+      <div class="col-head">
+        <div class="title">VENTURES</div>
+        <div class="sub">10 active portfolio</div>
+      </div>
+      <div class="col-tag">portfolio (10)</div>
+      <div class="col-items">
+        <div class="col-item">Manantial · Reshore</div>
+        <div class="col-item">LAK3 · Punta Cripto</div>
+        <div class="col-item">Photonic Lab · Panambi</div>
+        <div class="col-item">La Chamana · Quantum</div>
+        <div class="col-item">Content Factory · B_V® | OS</div>
+        <div class="col-item">each → champion · status</div>
+      </div>
+    </div>
+
+    <!-- INFRASTRUCTURE -->
+    <div class="col infra">
+      <div class="col-head">
+        <div class="title">INFRASTRUCTURE</div>
+        <div class="sub">cloud · APIs · MCPs</div>
+      </div>
+      <div class="col-tag">cloud + APIs</div>
+      <div class="col-items">
+        <div class="col-item">Cloudflare Worker → auto-mine + Synergy</div>
+        <div class="col-item">GitHub Actions → fanout</div>
+        <div class="col-item">Supabase → 12 tables · RLS</div>
+        <div class="col-item">sync-daemon → LaunchAgent</div>
+        <div class="col-item">GitHub → both-os · both-private</div>
+        <div class="col-item">Anthropic · OpenAI APIs</div>
+        <div class="col-item">n8n → parked (workflows on hold)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- AUTOMATION STRIP -->
+  <div class="automation">
+    <div class="automation-title">AUTOMATION LAYER</div>
+    <div class="automation-flows">
+      <span class="row">
+        <span class="em">Read.ai webhook</span><span class="arrow">→</span><span class="em">CF Worker</span><span class="arrow">→</span>vault writes<span class="arrow">→</span><span class="em">GitHub Actions</span><span class="arrow">→</span>Asana + Slack venture channels
+      </span>
+      <span class="row">
+        Cowork commits<span class="arrow">→</span><span class="em">sync-daemon</span> (LaunchAgent, outside Cowork sandbox)<span class="arrow">→</span>GitHub push
+      </span>
+      <span class="row">
+        cron: vault-sync (hourly) · supabase-backup (daily) · weekly digest (Monday) · session-orient (every Cowork start)
+      </span>
+    </div>
+  </div>
+
+  <!-- WEEKLY RHYTHM -->
+  <div class="rhythm">
+    <div class="rhythm-head">
+      <div class="title">Weekly Operating Rhythm — Tuesday Sync</div>
+      <div class="sub">the single source of truth loop</div>
+    </div>
+    <div class="rhythm-steps">
+      <div class="rhythm-step">
+        <div class="step-num">1 · MONDAY</div>
+        <div class="step-cmd">/vu · /au</div>
+        <div class="step-who">champions update vault</div>
+      </div>
+      <div class="rhythm-step">
+        <div class="step-num">2 · MON PM</div>
+        <div class="step-cmd">/wr → digest</div>
+        <div class="step-who">Daiana validates · distributes</div>
+      </div>
+      <div class="rhythm-step">
+        <div class="step-num">3 · TUESDAY</div>
+        <div class="step-cmd">decisions · 60 min</div>
+        <div class="step-who">Gaston chairs · in-person</div>
+      </div>
+      <div class="rhythm-step">
+        <div class="step-num">4 · AUTO-MINE</div>
+        <div class="step-cmd">Read.ai → CFW → GHA</div>
+        <div class="step-who">vault + Asana + Slack channels</div>
+      </div>
+      <div class="rhythm-step">
+        <div class="step-num">5 · LOOP CLOSED</div>
+        <div class="step-cmd">vault evolves</div>
+        <div class="step-who">context = truth</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption">Synergy · B_V® | OS — Tech Stack — 2026-06-03</div>
+
+</div>
+</body>
+</html>
