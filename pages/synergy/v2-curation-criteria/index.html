@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="synergy, v2, curaduria, tareas, decisiones, riesgos, mining, equipo">
+<title>Synergy V2 — Tareas, Decisiones y Riesgos — Both Ventures</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --white: #ffffff; --off: #f5f5f3; --rule: #e0e0dc; --rule2: #c8c8c4;
+    --text: #111110; --text2: #555550; --text3: #999990;
+    --green: #1a7a50; --green-lt: #e8f5ef;
+    --amber: #b06a00; --amb-lt: #fdf3e3;
+    --blue: #1a4fa0; --blu-lt: #e8effa;
+    --radius: 3px;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  html { font-size: 14px; }
+  body { font-family: var(--sans); font-weight: 300; background: var(--white); color: var(--text2); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  .site-header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1.5px solid var(--text); height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; }
+  .header-mark { display: flex; align-items: center; gap: 8px; }
+  .circle-filled { width: 10px; height: 10px; border-radius: 50%; background: var(--text); flex-shrink: 0; }
+  .circle-outline { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--text); flex-shrink: 0; }
+  .wordmark { font-size: 12px; font-weight: 700; color: var(--text); letter-spacing: .08em; text-transform: uppercase; }
+  .header-meta { font-size: 9px; font-weight: 400; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; }
+
+  .page-wrap { max-width: 800px; margin: 0 auto; padding: 56px 40px 100px; }
+
+  .eyebrow { font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text3); display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .eyebrow::before { content: ''; display: block; width: 24px; height: 1px; background: var(--text3); flex-shrink: 0; }
+
+  h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 700; color: var(--text); line-height: 1.05; letter-spacing: -.025em; margin-bottom: 10px; }
+  .doc-subtitle { font-size: 15px; font-weight: 300; color: var(--text3); margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--rule2); }
+  h2 { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -.01em; margin: 52px 0 16px; }
+  h3 { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: .16em; text-transform: uppercase; margin: 32px 0 10px; }
+
+  p { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.8; margin-bottom: 14px; }
+  a { color: var(--green); text-decoration: none; border-bottom: 1px solid var(--green-lt); }
+  a:hover { color: #065c3a; border-bottom-color: var(--green); }
+  strong { font-weight: 700; color: var(--text); }
+  code { font-family: "SFMono-Regular","Consolas",monospace; font-size: 12px; background: var(--off); color: #065c3a; padding: 1px 5px; border-radius: var(--radius); border: 1px solid var(--rule2); }
+  pre { background: var(--off); border: 1px solid var(--rule2); border-left: 3px solid var(--text); border-radius: var(--radius); padding: 18px 22px; margin: 20px 0; overflow-x: auto; }
+  pre code { background: none; border: none; padding: 0; font-size: 12px; line-height: 1.7; color: var(--text); }
+  blockquote { border-left: 3px solid var(--text); padding: 12px 0 12px 20px; margin: 24px 0; font-size: 15px; color: var(--text2); }
+  hr { border: none; border-top: 1px solid var(--rule2); margin: 44px 0; }
+  ul, ol { margin: 8px 0 18px 22px; }
+  li { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.75; margin-bottom: 5px; }
+  li::marker { color: var(--text3); }
+
+  table { width: 100%; border-collapse: collapse; margin: 20px 0 28px; font-size: 13px; border: 1px solid var(--rule2); border-radius: var(--radius); overflow: hidden; }
+  th { background: var(--off); color: var(--text3); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--rule2); }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--rule); color: var(--text2); font-weight: 300; vertical-align: top; line-height: 1.5; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--off); }
+
+  .callout { display: flex; gap: 14px; align-items: flex-start; background: var(--off); border-left: 3px solid var(--text); padding: 16px 20px; margin: 24px 0; border-radius: 0 var(--radius) var(--radius) 0; }
+  .callout p { margin-bottom: 0; font-size: 13px; }
+
+  .section-rule { font-size: 9px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--text3); display: flex; align-items: center; gap: 16px; margin: 52px 0 0; }
+  .section-rule::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .site-footer { border-top: 1.5px solid var(--text); background: var(--off); padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); margin-top: 80px; }
+  .footer-brand { font-weight: 700; color: var(--text); letter-spacing: .08em; }
+
+  @media (max-width: 680px) {
+    .site-header, .site-footer { padding: 0 20px; }
+    .page-wrap { padding: 36px 20px 80px; }
+    h1 { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both Ventures</span>
+  </div>
+  <span class="header-meta">Both OS · 2026-06-07</span>
+</header>
+
+<main class="page-wrap">
+  <div class="eyebrow">Both OS</div>
+  <h1>Synergy V2 — Tareas, Decisiones y Riesgos</h1>
+  <p class="doc-subtitle">Criterios de curaduría para lo que entra al vault y cómo se consume. Diseño cerrado, todavía no implementado.</p>
+
+  <blockquote>
+    <strong>Estado (importante):</strong> esto es un <strong>diseño cerrado, todavía NO implementado</strong>. El pipeline en vivo (Cloudflare Worker + miner) no cambió. Este documento explica qué decidimos y por qué, para que el equipo lo entienda y lo comente antes de construirlo. — 7 jun 2026
+  </blockquote>
+
+  <hr>
+
+  <h2>1. El problema</h2>
+  <p>Synergy mina cada reunión y la convierte en tres tipos de ítems en el vault: <strong>tareas</strong>, <strong>decisiones</strong> y <strong>riesgos</strong>.</p>
+  <p>Hoy el miner <strong>captura todo, a nivel de frase, sin altitud ni ciclo de vida.</strong> Eso produce tres síntomas:</p>
+  <ul>
+    <li><strong>Decisiones:</strong> 264 archivos en 6 semanas. Nadie los consulta. Lo que de verdad gobierna un venture queda enterrado entre eventos de calendario.</li>
+    <li><strong>Tareas:</strong> se fragmentan en micro-pasos ("mandar el mail", "preguntarle a X") en vez de capturar el entregable que importa.</li>
+    <li><strong>Riesgos:</strong> sin puntaje y mezclados con problemas ya ocurridos y supuestos sin validar — ruido plano donde un riesgo grave suena igual que uno trivial.</li>
+  </ul>
+  <p>Daiana arrancó la solución por <strong>tareas</strong> (épica/tarea/sub-paso) y <strong>decisiones</strong> (Vigente/Log). Faltaba <strong>riesgos</strong> y faltaba unir todo bajo un mismo principio. Eso es lo que cierra V2.</p>
+
+  <h2>2. La idea central — zonas de curaduría</h2>
+  <p>En vez de "todo entra al mismo lugar para siempre", la información se ordena por <strong>cuánta confianza/curaduría tiene</strong>. Tres zonas:</p>
+  <table>
+    <thead><tr><th>Zona</th><th>Qué es</th><th>Confianza</th><th>Dónde se ve</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Curada</strong></td><td>Lo que el equipo usa sin re-chequear. Tiene que ser exacta.</td><td>Garantizada</td><td><code>/vu</code> <code>/au</code> <code>/db</code> (+ Notion por venture, solo lectura)</td></tr>
+      <tr><td><strong>Log</strong></td><td>Archivo histórico, para auditar.</td><td>Ninguna</td><td>en ningún lado (solo búsqueda)</td></tr>
+      <tr><td><strong>Recap efímero</strong></td><td>Cajón por reunión para lo que no califica.</td><td>n/a</td><td>el recap de la reunión; reaparece si importa</td></tr>
+    </tbody>
+  </table>
+  <p><strong>La regla que ordena todo:</strong> <em>capturar lo que <strong>gobierna</strong>, no lo que se <strong>mencionó</strong>.</em> El trabajo del miner no es transcribir la reunión — es <strong>actualizar el modelo vigente del negocio</strong>.</p>
+  <p><strong>Clave:</strong> que algo falle un filtro <strong>no significa que se borre.</strong> Baja al recap. Si importaba de verdad, va a volver a aparecer en la próxima reunión y se vuelve a capturar. Nada se pierde; casi todo simplemente se puede olvidar sin costo.</p>
+
+  <h2>3. Cómo se gana la confianza (el modelo híbrido)</h2>
+  <p>La zona curada "no puede ser inexacta". Pero un miner automático a veces se equivoca. Lo resolvemos así:</p>
+  <ul>
+    <li>Cada ítem trae un <strong>nivel de confianza</strong> + una <strong>cita textual de la transcripción</strong> (el ancla que prueba de dónde salió — evita inventos).</li>
+    <li><strong>Confianza alta</strong> → entra directo a la zona <strong>curada</strong>.</li>
+    <li><strong>Confianza baja</strong> → entra como <strong>candidato</strong> (no confiable todavía) y espera una confirmación de un toque del champion.</li>
+    <li><strong>La confirmación vive donde el champion ya trabaja:</strong> dentro de <code>/vu</code> (venture update), <code>/au</code> (area update) y <code>/db</code> (daily brief). Curás como subproducto de correr tu update — <strong>no hay que abrir otra herramienta. (No usamos Slack para esto.)</strong></li>
+    <li><strong>Silencio = baja.</strong> Si el candidato se le mostró al champion en su update y no lo confirmó, baja a Log. El silencio degrada, pero solo después de que realmente lo vio.</li>
+    <li><strong>"La decisión nueva siempre gobierna."</strong> Cuando una decisión nueva contradice a una vieja, la nueva manda y la vieja queda marcada como <em>superada</em> (con link, nunca se borra).</li>
+    <li><strong>No se duplica, se actualiza.</strong> Antes de escribir, el sistema compara semánticamente contra lo que ya existe. Si es lo mismo dicho de otra forma, refuerza el ítem existente en vez de crear uno nuevo. (Esto mata el caso real de Daiana: la misma decisión minada dos veces el mismo día.)</li>
+  </ul>
+
+  <h2>4. Qué cambia para cada quien</h2>
+  <table>
+    <thead><tr><th>Rol</th><th>Antes</th><th>Con V2</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Champion de venture</strong></td><td>La pila crece sola; nadie cura</td><td>Curás con un toque al correr tu <code>/vu</code>/<code>/au</code>; ves solo lo vigente</td></tr>
+      <tr><td><strong>Daiana</strong></td><td>Curadora de facto de todo</td><td><strong>Backup</strong>, no curadora primaria — solo revisa lo que queda en limbo +2 semanas</td></tr>
+      <tr><td><strong>Todos</strong></td><td>264 decisiones, ninguna consultable</td><td>Ven el conjunto chico que <strong>sigue gobernando</strong>, no el archivo entero</td></tr>
+      <tr><td><strong>Gastón / founders</strong></td><td>Reportes con ruido</td><td>Reportes que muestran marcos vigentes + riesgos que superan umbral</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Las tres categorías, en criollo</h2>
+  <h3>Tarea — tres altitudes</h3>
+  <ul>
+    <li><strong>Épica:</strong> contenedor grande, avanza por hitos, tiene champion, dura meses (ej: "Implementar Quickbooks en La Chamana"). Vive en <code>vault/initiatives/</code>.</li>
+    <li><strong>Tarea:</strong> trabajo con cierre observable, días a semanas, un owner. Vive en Asana.</li>
+    <li><strong>Sub-paso:</strong> los pasos chicos. Van <strong>dentro</strong> de la tarea (checklist), nunca como ítem propio.</li>
+    <li>Owner y deadline son <strong>flags, no requisitos</strong>: si faltan, entra igual con <code>pendiente</code> y se asigna al champion.</li>
+  </ul>
+  <h3>Decisión — dos niveles</h3>
+  <ul>
+    <li><strong>Vigente:</strong> rige cómo se ejecuta el venture hacia adelante (ej: "Shopify es la plataforma de La Chamana"). Zona curada → vault + Notion + reportes.</li>
+    <li><strong>Log:</strong> se tomó, se ejecutó, no rige nada más (ej: "Julia arranca el 15 de junio"). Archivo.</li>
+    <li>Test pivote: <em>"¿En 30 días alguien necesita conocer esto para no contradecirlo?"</em> Sí → Vigente. No → Log.</li>
+  </ul>
+  <h3>Riesgo — primero separar (RAID), después puntuar</h3>
+  <ul>
+    <li>Solo entran al registro los riesgos <strong>a futuro y probabilísticos.</strong>
+      <ul>
+        <li>Un riesgo que <strong>ya ocurrió</strong> → se convierte en <strong>tarea</strong> (con owner y acción).</li>
+        <li>Un <strong>supuesto sin validar</strong> → lista de observación liviana.</li>
+        <li>Una <strong>dependencia</strong> → precondición de una tarea.</li>
+      </ul>
+    </li>
+    <li>Cada riesgo lleva <strong>probabilidad × impacto</strong> (Alto/Medio/Bajo) + <strong>owner</strong> + <strong>fecha de revisión</strong>. Solo surge a los reportes si supera el umbral (impacto o probabilidad alta). El resto queda silencioso en el registro.</li>
+  </ul>
+
+  <h2>6. Qué sigue + estado honesto</h2>
+  <p><strong>Esto es diseño, no producto.</strong> Nada se implementó todavía; el Worker en vivo no cambió. La construcción es por fases y con trial gate:</p>
+  <ol>
+    <li><strong>Orden de entrega:</strong> <strong>decisiones primero</strong> (el peor síntoma, y es solo vault), después tareas, después riesgos.</li>
+    <li><strong>Fase 0 (precondición):</strong> hoy los criterios viven en <strong>5 lugares distintos que ya divergieron</strong> — y el Worker que escribe el 41% del vault no lee el archivo que creemos "oficial". Hay que <strong>unificar a una sola fuente antes de tocar criterios</strong>, o el cambio no tiene efecto donde importa.</li>
+    <li><strong>Trial gate:</strong> no se declara "funciona" hasta ver <strong>3 reuniones reales</strong> salir bien clasificadas. (Disciplina del equipo: nada de victorias prematuras.)</li>
+  </ol>
+
+  <h2>7. Cómo llegamos acá</h2>
+  <p>Este diseño salió de tres frentes que <strong>convergieron en el mismo lugar</strong>: una sesión de interrogatorio (<code>grill-me</code>) entre Mariano y Daiana para fijar los criterios; un mapa de impacto en el repo (agente <code>Hux</code>) que mostró dónde viven y cómo divergieron las definiciones; y una investigación de casos análogos que ya funcionan (Architecture Decision Records, Shape Up de Basecamp, GTD, RAID logs, ISO 31000, evergreen notes, PARA). Los tres apuntaron al mismo modelo: <strong>filtro de altitud + estado de ciclo de vida + barrido periódico</strong>, ajustado por tipo.</p>
+
+  <hr>
+
+  <div class="section-rule">Apéndice de referencia (técnico)</div>
+
+  <h2>A. Esquemas de campos (frontmatter)</h2>
+  <p>Diseñados livianos (Daiana: <em>"schema chico que se llena, antes que rico que se ignora"</em>). 🆕 = nuevo en V2. Se descartaron los campos con &lt;12% de uso real (<code>category</code>, <code>assumptions</code>, <code>depends_on</code>, <code>trigger_signals</code>, etc.).</p>
+  <p><strong>Comunes a los tres:</strong> <code>title</code> · <code>type</code> · <code>venture</code> · <code>owner|pendiente</code> · <code>created/updated</code> · <code>tier</code>🆕 · <code>confidence</code>🆕 · <code>source_meeting</code> · <code>source_quote</code>🆕 (cita textual, el ancla) · <code>author</code></p>
+  <p><strong>DECISIÓN</strong></p>
+  <pre><code>type: decision
+tier: vigente | log
+reversibility: type-1 | type-2          # type-1 → siempre confirma explícito
+confidence: high | low                  # low → candidato, espera confirmación
+status: proposed | accepted | superseded | reversed | archived   # AUTOMÁTICO
+supersedes / superseded_by: [slug] | null
+owner: name | pendiente
+venture: slug
+rationale: text | pendiente             # único campo "rico" que se conserva
+source_meeting / source_quote / created / updated / author</code></pre>
+  <p><strong>TAREA</strong> — Épica (<code>vault/initiatives/</code>) vs Tarea (Asana)</p>
+  <pre><code># ÉPICA
+type: epic
+champion: name
+status: active | paused | closed
+venture: slug
+milestones: [ ... ]
+# TAREA
+type: task
+owner: name | pendiente
+deadline: date | pendiente
+epic: [initiative-slug] | null
+status: captured | owned | in-progress | done | dropped
+venture: slug
+asana_gid: ...
+# Sub-paso = checklist dentro de la tarea, NUNCA un archivo</code></pre>
+  <p><strong>RIESGO</strong> (RAID)</p>
+  <pre><code>type: risk
+raid_routing: risk                      # issue→tarea · assumption→watchlist · dependency→precondición
+likelihood: high | med | low
+impact: high | med | low
+detectability: high | med | low | null  # opcional, para riesgos "ciegos"
+tier: curated | log
+status: open | mitigating | closed      # closed: realized | retired | context-irrelevant
+owner: name | pendiente
+review_date: date
+venture: slug
+source_meeting / source_quote / created / updated</code></pre>
+
+  <h2>B. Rollout por fases</h2>
+  <ul>
+    <li><strong>Fase 0</strong> — Unificar las 5 definiciones dispersas en una sola fuente. (Precondición.)</li>
+    <li><strong>Fase 1</strong> — Sincerar el ciclo de vida (el campo <code>status</code> actual está muerto: 258/264 en <code>active</code>).</li>
+    <li><strong>Fase 2</strong> — Agregar campos nuevos (<code>tier</code>, <code>confidence</code>, <code>source_quote</code>) sin backfill (default-on-read).</li>
+    <li><strong>Fase 3</strong> — Deploy del Worker por el gate (rechaza árbol sucio).</li>
+    <li><strong>Fase 4</strong> — Trial gate: 3 reuniones reales bien clasificadas.</li>
+    <li><strong>Fase 5</strong> — Contenedor de épicas + motor de dedup + cableado del confirm-flow en <code>/vu</code>·<code>/au</code>·<code>/db</code>.</li>
+  </ul>
+
+  <h2>C. Documentos fuente</h2>
+  <ul>
+    <li>Spec canónico (vault): <code>vault/initiatives/2026-06-05-v2-curation-criteria-tasks-decisions-risks.md</code></li>
+    <li>Draft de decisión de Daiana (registrado): <code>vault/initiatives/2026-06-05-definicion-de-decision-vigente-log.md</code></li>
+    <li>Draft de tareas de Daiana: <code>vault/agent_outputs/2026-05-27-task-definition-working-doc.md</code></li>
+    <li>Drafts originales en Drive: <code>Definicion-de-tarea</code> · <code>Definicion-de-decision</code></li>
+  </ul>
+
+</main>
+
+<footer class="site-footer">
+  <span class="footer-brand">Both Ventures®</span>
+  <span>Both OS · 2026-06-07</span>
+  <span>Synergy · Q-02.26</span>
+</footer>
+
+</body>
+</html>
