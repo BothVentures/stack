@@ -6,49 +6,93 @@
 <meta name="description" content="Cómo medimos el pulso y el avance de cada venture: sprints quincenales con un win por venture y un tablero de control en Notion.">
 <title>Sprints Quincenales + Tablero de Control A — Both_Ventures</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+/*
+ * Photonic Lab — Swiss Editorial Design System
+ * Source of truth for all Photonic Lab visual output.
+ * Edit here; notion-to-html.py inlines this at build time.
+ *
+ * Governing principle: light-brown paper (#ebe1cd) is the material.
+ * Regular weight (400) for prose — never light. BOTH web standard.
+ * One accent (#0a8c5a). Weight contrast over size contrast.
+ * Uppercase for metadata, never prose. Borders do structural work.
+ * Every page carries a .read-time line under the title.
+ */
 
-:root {
-  --black:      #0A0A08;
-  --white:      #FFFFFF;
-  --warm-gray:  #D4D0C8;
-  --text-dim:   #888880;
-  --text-muted: #555550;
-  --accent:     #939324;
-  --accent-lt:  #2a2a10;
-  --border-d:   rgba(255,255,255,0.10);
-  --border-dd:  rgba(255,255,255,0.04);
-  --mono:       'Space Mono','Courier New',monospace;
-  --radius:     3px;
-  --shadow:     0 1px 4px rgba(0,0,0,.40);
-}
-
+/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals — light-brown paper (BOTH web standard) */
+  --white:    #ebe1cd;   /* page background — paper, absolute */
+  --off:      #e2d7bf;   /* hover, footer, table headers */
+  --rule:     #d6cbb1;   /* hairline dividers, card gaps */
+  --rule2:    #c2b696;   /* heavier rules, active borders */
+  --text:     #111110;   /* primary text, nav/footer borders */
+  --text2:    #555550;   /* secondary / body copy */
+  --text3:    #999990;   /* tertiary / metadata / labels */
+
+  /* Primary accent — Photonic green */
+  --acc:      #0a8c5a;
+  --acc-lt:   #e6f5ee;
+  --acc-dk:   #065c3a;
+
+  /* Categorical — functional only, never decorative */
+  --amber:    #b06a00;
+  --amb-lt:   #fdf3e3;
+  --coral:    #c0392b;
+  --cor-lt:   #fdecea;
+  --blue:     #1a4fa0;
+  --blu-lt:   #e8effa;
+  --slate:    #3a4a58;
+  --slt-lt:   #edf1f5;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1160px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.08);
+  --shadow-m: 0 2px 12px rgba(0,0,0,.10);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ── BASE ── */
 html { font-size: 14px; }
 
 body {
-  font-family: var(--mono);
-  background: var(--black);
-  color: var(--warm-gray);
-  line-height: 1.7;
+  font-family: var(--sans);
+  font-weight: 400;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── LAYOUT ── */
+/* ── READ TIME (BOTH web standard — sits under the title) ── */
+.read-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: -4px 0 28px;
+}
+
+/* ── LAYOUT SHELL ── */
 .page-wrap {
-  max-width: 1160px;
+  max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 32px;
 }
 
-/* ── SITE HEADER ── */
+/* ── SITE HEADER (notion-web output) ── */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--black);
-  border-bottom: 0.5px solid var(--border-d);
+  background: var(--white);
+  border-bottom: 1.5px solid var(--text);
   height: 52px;
   display: flex;
   align-items: center;
@@ -60,15 +104,33 @@ body {
   align-items: center;
   gap: 8px;
 }
-.circle-filled { width:10px;height:10px;border-radius:50%;background:var(--white);flex-shrink:0; }
-.circle-outline { width:10px;height:10px;border-radius:50%;border:1px solid var(--white);flex-shrink:0; }
-.wordmark { font-size:13px;font-weight:700;color:var(--white);letter-spacing:.04em; }
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
 .header-meta {
-  font-size:9px;font-weight:400;color:var(--text-dim);
-  letter-spacing:.10em;text-transform:uppercase;
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
 }
 
-/* ── ARTICLE ── */
+/* ── ARTICLE BODY ── */
 article.notion-page {
   max-width: 760px;
   margin: 0 auto;
@@ -77,53 +139,43 @@ article.notion-page {
 
 /* ── HEADINGS ── */
 article.notion-page h1 {
-  font-size: clamp(24px,3.5vw,40px);
+  font-size: clamp(28px, 4vw, 48px);
   font-weight: 700;
-  color: var(--white);
-  line-height: 1.1;
-  letter-spacing: -.02em;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
   margin: 0 0 24px;
 }
-.read-time {
-  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--accent); margin: -12px 0 28px;
-}
 article.notion-page h2 {
-  font-size: clamp(16px,2vw,22px);
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1.2;
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -.01em;
   margin: 48px 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 0.5px solid var(--border-d);
+}
+article.notion-page h2 strong {
+  font-weight: 700;
 }
 article.notion-page h3 {
   font-size: 13px;
   font-weight: 700;
-  color: var(--white);
+  color: var(--text);
   line-height: 1.4;
-  letter-spacing: .06em;
+  letter-spacing: .04em;
   text-transform: uppercase;
   margin: 32px 0 10px;
-}
-article.notion-page h4 {
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--text-dim);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin: 24px 0 8px;
 }
 
 /* ── BODY TEXT ── */
 article.notion-page p {
   font-size: 14px;
-  color: var(--warm-gray);
+  font-weight: 400;
+  color: var(--text2);
   line-height: 1.8;
   margin-bottom: 16px;
 }
+article.notion-page p.spacer { height: 10px; margin: 0; }
 
 /* ── LISTS ── */
 article.notion-page ul,
@@ -132,29 +184,30 @@ article.notion-page ol {
 }
 article.notion-page li {
   font-size: 14px;
-  color: var(--warm-gray);
+  font-weight: 400;
+  color: var(--text2);
   line-height: 1.75;
   margin-bottom: 5px;
 }
-article.notion-page li::marker { color: var(--accent); }
+article.notion-page li::marker { color: var(--acc); }
 
 /* ── INLINE CODE ── */
 article.notion-page code {
-  font-family: var(--mono);
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
   font-size: 12px;
-  background: rgba(147,147,36,0.12);
-  color: var(--accent);
+  background: var(--off);
+  color: var(--acc-dk);
   padding: 1px 5px;
   border-radius: var(--radius);
-  border: 1px solid rgba(147,147,36,0.25);
+  border: 1px solid var(--rule2);
 }
 
 /* ── CODE BLOCKS ── */
 figure.code-block {
   margin: 20px 0;
-  background: #111110;
-  border: 0.5px solid var(--border-d);
-  border-left: 3px solid var(--accent);
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -165,36 +218,37 @@ figure.code-block pre {
 figure.code-block code {
   font-size: 12px;
   line-height: 1.6;
-  color: var(--warm-gray);
+  color: var(--text);
   background: none;
   border: none;
   padding: 0;
   white-space: pre;
 }
 figure.code-block figcaption {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--text-dim);
-  letter-spacing: .10em;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .08em;
   text-transform: uppercase;
-  padding: 6px 24px 8px;
-  border-top: 0.5px solid var(--border-d);
+  padding: 7px 24px 10px;
+  border-top: 1px solid var(--rule);
 }
 
 /* ── BLOCKQUOTE ── */
 article.notion-page blockquote {
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--acc);
   padding: 12px 0 12px 20px;
   margin: 24px 0;
   font-size: 15px;
-  color: var(--text-dim);
+  font-weight: 400;
+  color: var(--text2);
   line-height: 1.8;
 }
 
 /* ── HR ── */
 article.notion-page hr {
   border: none;
-  border-top: 0.5px solid var(--border-d);
+  border-top: 1px solid var(--rule2);
   margin: 40px 0;
 }
 
@@ -204,70 +258,66 @@ table {
   border-collapse: collapse;
   margin: 24px 0;
   font-size: 13px;
-  border: 0.5px solid var(--border-d);
+  border: 1px solid var(--rule2);
   border-radius: var(--radius);
   overflow: hidden;
 }
 th {
-  background: #111110;
-  color: var(--text-dim);
+  background: var(--off);
+  color: var(--text3);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: .12em;
   text-transform: uppercase;
   padding: 10px 14px;
   text-align: left;
-  border-bottom: 0.5px solid var(--border-d);
+  border-bottom: 1px solid var(--rule2);
 }
 td {
   padding: 10px 14px;
-  border-bottom: 0.5px solid var(--border-dd);
-  color: var(--warm-gray);
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 400;
   vertical-align: top;
   line-height: 1.5;
 }
 tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(255,255,255,0.02); }
+tr:hover td { background: var(--off); }
 
 /* ── LINKS ── */
 article.notion-page a {
-  color: var(--accent);
+  color: var(--acc);
   text-decoration: none;
-  border-bottom: 1px solid rgba(147,147,36,0.3);
-  transition: border-color .15s, color .15s;
+  border-bottom: 1px solid var(--acc-lt);
+  transition: border-color .15s linear, color .15s linear;
 }
 article.notion-page a:hover {
-  color: var(--white);
-  border-bottom-color: var(--white);
-}
-
-/* ── IMAGES ── */
-article.notion-page img {
-  max-width: 100%;
-  height: auto;
-  border: 0.5px solid var(--border-d);
-  border-radius: var(--radius);
-  display: block;
-  margin: 20px 0;
+  color: var(--acc-dk);
+  border-bottom-color: var(--acc);
 }
 
 /* ── SITE FOOTER ── */
 .site-footer {
-  border-top: 0.5px solid var(--border-d);
-  padding: 24px 32px;
+  border-top: 1.5px solid var(--text);
+  background: var(--off);
+  padding: 28px 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 400;
   letter-spacing: .10em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--text3);
   margin-top: 80px;
 }
-.footer-brand { font-weight: 700; color: var(--accent); letter-spacing: .06em; }
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: .06em;
+}
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE — single fold at 860px ── */
 @media (max-width: 860px) {
   .site-header { padding: 0 20px; }
   .page-wrap   { padding: 0 20px; }
@@ -445,7 +495,7 @@ Tuesday Sync semana 3  → CERRAR SPRINT   el champion dice si fue hit/miss/carr
 </div>
 <footer class="site-footer">
   <span class="footer-brand">Both_Ventures</span>
-  <span>md-web · both-brand · 2026-06-07</span>
+  <span>md-web · photonic-lab · 2026-06-07</span>
 </footer>
 </body>
 </html>
