@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Cómo medimos el pulso y el avance de cada venture: sprints quincenales con un win por venture y un tablero de control en Notion.">
+<title>Sprints Quincenales + Tablero de Control A — Both_Ventures</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+  --black:      #0A0A08;
+  --white:      #FFFFFF;
+  --warm-gray:  #D4D0C8;
+  --text-dim:   #888880;
+  --text-muted: #555550;
+  --accent:     #939324;
+  --accent-lt:  #2a2a10;
+  --border-d:   rgba(255,255,255,0.10);
+  --border-dd:  rgba(255,255,255,0.04);
+  --mono:       'Space Mono','Courier New',monospace;
+  --radius:     3px;
+  --shadow:     0 1px 4px rgba(0,0,0,.40);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 14px; }
+
+body {
+  font-family: var(--mono);
+  background: var(--black);
+  color: var(--warm-gray);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.page-wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--black);
+  border-bottom: 0.5px solid var(--border-d);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.circle-filled { width:10px;height:10px;border-radius:50%;background:var(--white);flex-shrink:0; }
+.circle-outline { width:10px;height:10px;border-radius:50%;border:1px solid var(--white);flex-shrink:0; }
+.wordmark { font-size:13px;font-weight:700;color:var(--white);letter-spacing:.04em; }
+.header-meta {
+  font-size:9px;font-weight:400;color:var(--text-dim);
+  letter-spacing:.10em;text-transform:uppercase;
+}
+
+/* ── ARTICLE ── */
+article.notion-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(24px,3.5vw,40px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  margin: 0 0 24px;
+}
+.read-time {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); margin: -12px 0 28px;
+}
+article.notion-page h2 {
+  font-size: clamp(16px,2vw,22px);
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1.2;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 48px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--border-d);
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.4;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+article.notion-page h4 {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin: 24px 0 8px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  color: var(--warm-gray);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 8px 0 18px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  color: var(--warm-gray);
+  line-height: 1.75;
+  margin-bottom: 5px;
+}
+article.notion-page li::marker { color: var(--accent); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: rgba(147,147,36,0.12);
+  color: var(--accent);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(147,147,36,0.25);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 20px 0;
+  background: #111110;
+  border: 0.5px solid var(--border-d);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre {
+  padding: 20px 24px;
+  overflow-x: auto;
+}
+figure.code-block code {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--warm-gray);
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  padding: 6px 24px 8px;
+  border-top: 0.5px solid var(--border-d);
+}
+
+/* ── BLOCKQUOTE ── */
+article.notion-page blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 12px 0 12px 20px;
+  margin: 24px 0;
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.8;
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 0.5px solid var(--border-d);
+  margin: 40px 0;
+}
+
+/* ── TABLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+  border: 0.5px solid var(--border-d);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: #111110;
+  color: var(--text-dim);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 0.5px solid var(--border-d);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 0.5px solid var(--border-dd);
+  color: var(--warm-gray);
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(147,147,36,0.3);
+  transition: border-color .15s, color .15s;
+}
+article.notion-page a:hover {
+  color: var(--white);
+  border-bottom-color: var(--white);
+}
+
+/* ── IMAGES ── */
+article.notion-page img {
+  max-width: 100%;
+  height: auto;
+  border: 0.5px solid var(--border-d);
+  border-radius: var(--radius);
+  display: block;
+  margin: 20px 0;
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 0.5px solid var(--border-d);
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 80px;
+}
+.footer-brand { font-weight: 700; color: var(--accent); letter-spacing: .06em; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 40px 0 60px; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta">2026-06-07</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+<h1>Sprints Quincenales + Tablero de Control A</h1>
+<p class="read-time">Lectura · 5 min</p>
+
+<p><strong>Cómo medimos el pulso y el avance de cada venture — explicado para todo el equipo.</strong></p>
+
+<blockquote>Estado: <strong>BORRADOR para ratificar en el Tuesday Sync.</strong> Esto cambia un poco el ritual semanal y pone una métrica de avance sobre los ventures, así que la decisión final es de Gastón + Daiana. Todo lo que está armado es reversible hasta que el equipo lo apruebe.</blockquote>
+
+<hr>
+
+<h2>1. Qué es, en una frase</h2>
+
+<p>Cada venture declara <strong>un logro concreto ("win") cada dos semanas</strong>, atado a hacia dónde va ese venture, y todo eso se ve de un vistazo en <strong>un tablero en Notion</strong>. La cadencia genera el dato; el tablero lo muestra. Nada más.</p>
+
+<p>No es una herramienta nueva ni una reunión nueva. Se monta sobre lo que ya hacemos: el update semanal de cada venture y el Tuesday Sync.</p>
+
+<hr>
+
+<h2>2. De dónde sale</h2>
+
+<p>Dos pedidos que son la misma cosa vista de dos lados:</p>
+
+<ul>
+<li><strong>Gastón</strong> — quería traer una métrica al pulso y la performance del equipo: un "win" recurrente por venture, conectado al destino (endgame) de cada uno y a los objetivos de BOTH.</li>
+<li><strong>Daiana</strong> — quería pensar en <strong>sprints de dos semanas</strong>, priorizando calidad sobre cantidad: arrancar humilde, con expectativas chicas, y subir el listón de a poco, con buen movimiento y buen momentum.</li>
+<li><strong>Mariano</strong> — quería un <strong>tablero</strong> para ver todos los ventures y su estado, mostrando los <strong>épicas</strong> (los frentes de trabajo de varias semanas; las tareas sueltas siguen en Asana).</li>
+</ul>
+
+<p>Las tres cosas se resuelven con un solo sistema.</p>
+
+<hr>
+
+<h2>3. La escalera (la idea central)</h2>
+
+<p>Cada venture tiene una escalera de cuatro escalones. Arriba = más durable, abajo = más frecuente:</p>
+
+<figure class="code-block"><pre><code>ENDGAME            Hacia dónde va el venture. Durable. Se revisa cada trimestre.
+   ↑ alimenta a
+OBJETIVO MENSUAL   La apuesta del mes (4 semanas).
+   ↑ alimenta a
+WIN QUINCENAL      El compromiso de 2 semanas. Dos por mes. ← este es el pulso.
+   ↑ se mide con
+KPI (indicador)    El número que seguimos en el tiempo. (Llega en una fase posterior.)</code></pre><figcaption>la escalera</figcaption></figure>
+
+<p><strong>Ejemplo (B_V | OS, el venture de Mariano):</strong></p>
+<ul>
+<li><strong>Endgame:</strong> que Synergy sea el tejido operativo confiable del equipo.</li>
+<li><strong>Objetivo mensual:</strong> que la capa de registro (decisiones/riesgos/tareas) sea confiable de punta a punta.</li>
+<li><strong>Win de este sprint:</strong> dejar este sistema de sprints ratificado y el Tablero A funcionando en Notion.</li>
+<li><strong>KPI:</strong> ventures en el Tablero A: 0 → 3.</li>
+</ul>
+
+<hr>
+
+<h2>4. Qué cuenta como "win"</h2>
+
+<p>Un win es:</p>
+
+<ol>
+<li><strong>Un resultado, no un esfuerzo.</strong> "Primer parcela tokenizada en testnet" ✅ — "trabajé en la tokenización" ❌.</li>
+<li><strong>Verificable y binario.</strong> Se logró o no se logró. No existe el "70% hecho".</li>
+<li><strong>Atribuible a este sprint.</strong> Pasó en estas dos semanas.</li>
+<li><strong>Conectado al objetivo del mes.</strong></li>
+</ol>
+
+<p>Al cierre del sprint, el veredicto es uno de tres: <strong>logrado (hit) · no logrado (miss) · arrastrado (carry)</strong>. Un "no logrado parcial" cuenta como no logrado — sin medias tintas. Un win se puede arrastrar al siguiente sprint <strong>una vez</strong>; si se arrastra <strong>dos veces seguidas</strong>, el tablero lo marca como <strong>trabado</strong> para repensarlo o escalarlo.</p>
+
+<hr>
+
+<h2>5. El ritmo — sin reunión nueva</h2>
+
+<p>El Tuesday Sync es semanal. El sprint es de dos semanas. Entonces <strong>un Tuesday Sync de cada dos es el borde del sprint</strong> (se cierra el anterior y se abre el siguiente), y el del medio es un chequeo liviano.</p>
+
+<figure class="code-block"><pre><code>Tuesday Sync semana 1  → ABRIR SPRINT   el champion declara el win (y el objetivo del mes si arranca mes)
+   ...trabajo...        → PULSO          el brief diario muestra el win y cualquier riesgo que lo amenace
+Tuesday Sync semana 2  → PULSO          chequeo a mitad de sprint
+   ...trabajo...
+Tuesday Sync semana 3  → CERRAR SPRINT   el champion dice si fue hit/miss/carry → se abre el próximo
+                                          + el Tablero A se actualiza en Notion</code></pre><figcaption>el ritmo</figcaption></figure>
+
+<hr>
+
+<h2>6. Qué cambia para vos (champion de un venture)</h2>
+
+<p>Cuando hacés tu update de venture (<code>/vu</code>), en los Tuesday Sync que son borde de sprint, el sistema además te va a preguntar:</p>
+
+<ul>
+<li><strong>Al cerrar:</strong> "¿Tu win de este sprint se logró? hit, miss o carry — y en una línea, ¿con qué criterio lo decís?"</li>
+<li><strong>Al abrir:</strong> "¿Cuál es el único win de [venture] para este sprint?"</li>
+</ul>
+
+<p>Eso es todo. Lo escribís hablando normal; Synergy lo ordena en tu archivo del venture. <strong>Vos certificás tu propio veredicto</strong> — nadie te lo corrige ni te lo aprueba. La transparencia sale de que contás con qué criterio lo decidiste, no de un control.</p>
+
+<hr>
+
+<h2>7. Quién decide qué — humanos y la IA</h2>
+
+<ul>
+<li><strong>Los humanos declaran la intención y el veredicto.</strong> El champion dice cuál es el win y, al cierre, si se logró.</li>
+<li><strong>La IA junta la evidencia</strong> (decisiones de la reunión, tareas cerradas en Asana, commits) y la muestra al lado del veredicto — <strong>nunca declara un win por su cuenta.</strong> (Esto último llega en una fase posterior.)</li>
+<li>El <strong>Endgame</strong> lo redacta el champion y lo <strong>ratifica Gastón</strong> una vez, porque es el punto donde el venture se conecta con la estrategia de BOTH.</li>
+</ul>
+
+<hr>
+
+<h2>8. Qué ventures juegan (por ahora)</h2>
+
+<p>Para no fabricar "wins" de relleno, el compromiso es solo para los ventures <strong>en construcción (Build) o con BOTH metido a fondo (Hands-on)</strong>:</p>
+
+<ul>
+<li><strong>Declaran un win cada sprint:</strong> Manantial Casa, Reshore, LAK3, Photonic Lab, Quantum, Punta Crypto, B_V | OS, Content Factory.</li>
+<li><strong>Solo muestran estado + endgame (sin win forzado):</strong> La Chamana, Panambi. Para estos, "sin win este sprint" es un estado honesto, no un fracaso.</li>
+</ul>
+
+<hr>
+
+<h2>9. El Tablero de Control A (en Notion)</h2>
+
+<p>Es la pantalla donde se ve todo, de solo lectura (Notion nunca se edita a mano — la fuente siempre es el vault). Por cada venture muestra: <strong>salud · win del sprint (hit/miss) · épicas activas · endgame.</strong></p>
+
+<p>Ya está <strong>funcionando en vivo</strong>: la base de Ventures en Notion ahora tiene las cinco columnas nuevas y los diez ventures cargados.</p>
+
+<p>La "A" implica que habrá una "B" más adelante (una versión visual en la web). Las gráficas de indicadores (KPI) y la vista de riesgos llegan en la fase 2.</p>
+
+<hr>
+
+<h2>10. Arrancamos humilde (el criterio de Daiana)</h2>
+
+<ul>
+<li><strong>Fase 1 — piloto:</strong> solo <strong>LAK3 + Photonic Lab + B_V | OS</strong> durante un mes (dos sprints). Probamos el ritual y el tablero con tres ventures antes de abrirlo a todos.</li>
+<li><strong>Fase 1b:</strong> se suma el resto de los ventures elegibles.</li>
+<li><strong>Fase 2:</strong> la IA muestra evidencia al lado del veredicto + indicadores (KPI) en vivo.</li>
+<li><strong>Fase 3:</strong> sprints también para las áreas (no solo ventures) + el Tablero B visual.</li>
+</ul>
+
+<p>La regla: no agrandamos nada hasta tener <strong>un mes limpio</strong> corriendo.</p>
+
+<hr>
+
+<h2>11. Qué falta — y qué decidimos juntos</h2>
+
+<ul>
+<li>☐ <strong>Ratificar esto en el Tuesday Sync.</strong> Recién ahí queda firme.</li>
+<li>☐ <strong>Rene</strong> redacta el endgame y el primer win de LAK3 y Photonic (hoy figuran como borrador en el tablero).</li>
+<li>☐ <strong>Gastón</strong> ratifica los endgames del piloto.</li>
+<li>☐ Primer ejercicio real del ritual: Tuesday Sync del 2026-06-09.</li>
+</ul>
+
+<hr>
+
+<p><em>Detalle técnico completo: <code>vault/initiatives/2026-06-07-biweekly-sprint-and-control-panel.md</code> · <code>harnesses/sprint-cycle.md</code>. Conecta con el trabajo de curaduría V2 (cómo entendemos Tareas, Decisiones y Riesgos).</em></p>
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · both-brand · 2026-06-07</span>
+</footer>
+</body>
+</html>
