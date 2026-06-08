@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Qué cuenta como riesgo dentro de Synergy, qué se va al RAID, cómo se prioriza y cuándo se jubila. Documento hermano de decisions.md y tasks.md.">
+<title>Criterios de Curaduría — RIESGOS (V2) — Both_Ventures</title>
+<style>
+/*
+ * Photonic Lab — Swiss Editorial Design System
+ * Source of truth for all Photonic Lab visual output.
+ * Edit here; notion-to-html.py inlines this at build time.
+ *
+ * Governing principle: light-brown paper (#ebe1cd) is the material.
+ * Regular weight (400) for prose — never light. BOTH web standard.
+ * One accent (#0a8c5a). Weight contrast over size contrast.
+ * Uppercase for metadata, never prose. Borders do structural work.
+ * Every page carries a .read-time line under the title.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals — light-brown paper (BOTH web standard) */
+  --white:    #ebe1cd;   /* page background — paper, absolute */
+  --off:      #e2d7bf;   /* hover, footer, table headers */
+  --rule:     #d6cbb1;   /* hairline dividers, card gaps */
+  --rule2:    #c2b696;   /* heavier rules, active borders */
+  --text:     #111110;   /* primary text, nav/footer borders */
+  --text2:    #555550;   /* secondary / body copy */
+  --text3:    #999990;   /* tertiary / metadata / labels */
+
+  /* Primary accent — Photonic green */
+  --acc:      #0a8c5a;
+  --acc-lt:   #e6f5ee;
+  --acc-dk:   #065c3a;
+
+  /* Categorical — functional only, never decorative */
+  --amber:    #b06a00;
+  --amb-lt:   #fdf3e3;
+  --coral:    #c0392b;
+  --cor-lt:   #fdecea;
+  --blue:     #1a4fa0;
+  --blu-lt:   #e8effa;
+  --slate:    #3a4a58;
+  --slt-lt:   #edf1f5;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1160px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.08);
+  --shadow-m: 0 2px 12px rgba(0,0,0,.10);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── READ TIME (BOTH web standard — sits under the title) ── */
+.read-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: -4px 0 28px;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER (notion-web output) ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY ── */
+article.notion-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 24px;
+}
+article.notion-page h2 {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin: 48px 0 16px;
+}
+article.notion-page h2 strong {
+  font-weight: 700;
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+article.notion-page p.spacer { height: 10px; margin: 0; }
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 8px 0 18px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 5px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 20px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre {
+  padding: 20px 24px;
+  overflow-x: auto;
+}
+figure.code-block code {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 7px 24px 10px;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE ── */
+article.notion-page blockquote {
+  border-left: 3px solid var(--acc);
+  padding: 12px 0 12px 20px;
+  margin: 24px 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.8;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--acc-lt);
+  border-left: 3px solid var(--acc);
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.callout-body {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+}
+.callout-body strong { font-weight: 700; color: var(--text); }
+
+/* ── TOGGLE ── */
+article.notion-page details {
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  margin: 10px 0;
+  overflow: hidden;
+}
+article.notion-page summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 14px 18px;
+  list-style: none;
+  background: var(--off);
+  border-bottom: 1px solid transparent;
+  transition: background .15s linear;
+}
+article.notion-page details[open] summary {
+  border-bottom-color: var(--rule);
+}
+article.notion-page summary:hover { background: var(--rule); }
+article.notion-page summary::before {
+  content: '+ ';
+  color: var(--acc);
+  font-weight: 700;
+}
+article.notion-page details[open] summary::before { content: '− '; }
+article.notion-page details > *:not(summary) {
+  padding: 16px 18px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── IMAGES ── */
+figure.image-block {
+  margin: 28px 0;
+}
+figure.image-block img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+}
+figure.image-block figcaption {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .05em;
+  margin-top: 10px;
+}
+
+/* ── TABLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: var(--off);
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 400;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--off); }
+
+/* ── COLUMN LAYOUT ── */
+.column-list {
+  display: grid;
+  gap: 24px;
+  margin: 20px 0;
+}
+.column { min-width: 0; }
+
+/* ── CHILD PAGE REFERENCE ── */
+.child-page-ref {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--acc);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  letter-spacing: .02em;
+}
+
+/* ── EMBED / BOOKMARK ── */
+.embed-block {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.embed-block a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--blue);
+  text-decoration: none;
+}
+.embed-block a:hover { text-decoration: underline; }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc);
+  text-decoration: none;
+  border-bottom: 1px solid var(--acc-lt);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--acc-dk);
+  border-bottom-color: var(--acc);
+}
+
+/* ── SECTION EYEBROW (reused in content) ── */
+.eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--acc);
+  flex-shrink: 0;
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 48px 0 32px;
+}
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 1.5px solid var(--text);
+  background: var(--off);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: .06em;
+}
+
+/* ── MOTION ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.fade-up {
+  animation: fadeUp .3s ease forwards;
+}
+
+/* ── RESPONSIVE — single fold at 860px ── */
+@media (max-width: 860px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 40px 0 60px; }
+  .column-list { grid-template-columns: 1fr !important; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta author">Mariano</span>
+    <span class="header-meta">2026-06-08</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+    <h1>Criterios de Curaduría — Riesgos</h1>
+<p class="read-time">Lectura · 4 min</p>
+<blockquote><strong>Para qué es este documento.</strong> Que el equipo entienda qué cuenta como <strong>riesgo</strong> dentro de Synergy, qué se va a otro lado (RAID), cómo se prioriza y cuándo se jubila. Documento hermano de <a href="../curation-criteria-decisions/">decisions.md</a> y <a href="../curation-criteria-tasks/">tasks.md</a>. Spec canónico: <code>vault/initiatives/2026-06-05-v2-curation-criteria-tasks-decisions-risks.md</code>.</blockquote>
+<blockquote><strong>Estado honesto (8 jun 2026).</strong><br>
+- 🟢 <strong>Vigente hoy:</strong> el criterio de extracción (riesgo = likelihood + impact concretos, el venture ya existe en el vault; "me preocupa el mercado" no es riesgo) ya vive en <code>.claude/skills/mine/SKILL.md</code>, reforzado por <code>vault/decisions/2026-05-18-risk-criteria-tightening.md</code>.<br>
+- 🟡 <strong>Diseñado, en rollout (Fases 1-2):</strong> el routing <strong>RAID</strong>, el campo <strong>`tier`</strong>, el <strong>umbral de surfacing</strong>, el <strong>`review_date`</strong> con auto-archive y el ciclo de vida automático están especificados pero <strong>no construidos</strong>.<br>
+Los marcadores 🟢/🟡 te dicen qué ya corre.</blockquote>
+<hr>
+<h2>1. Qué es un riesgo</h2>
+<p>Un riesgo es un <strong>evento futuro, probabilístico, que si ocurre daña a un venture.</strong> Solo los items <strong>hacia adelante</strong> llegan acá. Lo que ya pasó, lo que es una tarea o lo que es un supuesto <strong>no</strong> son riesgos — el RAID los rutea a otro lado.</p>
+<p><strong>Regla de oro (altitud):</strong> un riesgo se captura al nivel del venture que afecta, no como un log temporal ni como un status update.</p>
+<hr>
+<h2>2. El gate de captura 🟢 <em>(vigente)</em></h2>
+<p>Algo entra como riesgo <strong>solo si tiene likelihood + impact concretos Y el venture ya está mapeado en el vault.</strong></p>
+<ul>
+<li>✅ "Un cambio regulatorio esperado en Q2 podría bloquear la estructura del fondo en Argentina" → riesgo (probabilidad + impacto + venture).</li>
+<li>❌ "Me preocupa el mercado" → preocupación, no riesgo (no hay probabilidad ni impacto concreto).</li>
+<li>❌ Logs temporales, status updates, tareas operativas → <strong>NO son riesgos</strong> (ver <code>risk-criteria-tightening</code>).</li>
+</ul>
+<hr>
+<h2>3. RAID routing 🟡 <em>(diseñado)</em></h2>
+<p>RAID = <strong>R</strong>isks · <strong>A</strong>ssumptions · <strong>I</strong>ssues · <strong>D</strong>ependencies. Solo la <strong>R</strong> aterriza en <code>risks/</code>. Lo demás se rutea:</p>
+<table>
+<thead>
+<tr><th>Categoría</th><th>Qué es</th><th>A dónde va</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Risk</strong></td><td>evento futuro probabilístico</td><td>→ <code>risks/</code></td></tr>
+<tr><td><strong>Issue</strong></td><td>algo que <strong>ya</strong> está pasando / ya se materializó</td><td>→ se convierte en <strong>tarea</strong> (ver <a href="../curation-criteria-tasks/">tasks.md</a>)</td></tr>
+<tr><td><strong>Assumption</strong></td><td>un supuesto no verificado</td><td>→ watchlist</td></tr>
+<tr><td><strong>Dependency</strong></td><td>algo que debe pasar antes que otra cosa</td><td>→ precondición de una tarea</td></tr>
+</tbody>
+</table>
+<p>Punto clave: <strong>ninguna de A/I/D aterriza en <code>risks/</code>.</strong> Eso mantiene el registro de riesgos limpio y accionable.</p>
+<hr>
+<h2>4. Sesgo de captura: el punto de operación</h2>
+<table>
+<thead>
+<tr><th></th><th>Sesgo</th><th>Por qué</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Riesgo de alto impacto</strong></td><td><strong>Recall</strong> (no perder ninguno)</td><td>el miss catastrófico es el caro — más vale capturar de más arriba del umbral</td></tr>
+<tr><td><strong>Riesgo bajo el umbral</strong></td><td><strong>Precisión</strong> (capturar menos)</td><td>un riesgo menor que se multiplica es ruido que entierra al importante</td></tr>
+</tbody>
+</table>
+<hr>
+<h2>5. Schema completo</h2>
+<figure class="code-block"><pre><code class="language-yaml">type: risk                       # 🟢 solo items forward/probabilísticos
+raid_routing: risk               # 🟡 issue→tarea · assumption→watchlist · dependency→precondición
+likelihood: high | med | low     # 🟢 se mantiene — 95% de fill, sin migración
+impact: high | med | low         # 🟢 se mantiene
+detectability: high | med | low | null   # 🟡 tiebreaker opcional para riesgos ciegos
+tier: curated | log              # 🟡 curated = activo & ≥ umbral; log = cerrado/bajo umbral
+status: open | mitigating | closed       # 🟡 closed: realized | retired | context-irrelevant
+owner: name | pendiente          # 🟢
+review_date: date                # 🟡 vencido + sin dueño → auto-archive en el sweep
+venture: slug                    # 🟢
+source_meeting / source_quote / created / updated   # 🟢 (source_quote 🟡)</code></pre><figcaption>yaml</figcaption></figure>
+<p>Cuerpo del archivo: <code>## Risk</code> · <code>## Mitigation</code>.</p>
+<p><strong>Campos descartados (frontmatter):</strong> <code>category</code>, <code>trigger_signals</code>, <code>contingency</code>.</p>
+<h3>Por qué cada campo</h3>
+<ul>
+<li><strong><code>likelihood</code> × <code>impact</code></strong> — el corazón de la priorización. Se mantienen High/Med/Low porque ya están 95% llenos (cero migración).</li>
+<li><strong><code>detectability</code></strong> — desempate opcional. Un riesgo de impacto medio pero <strong>invisible hasta que explota</strong> puede merecer surfacing igual.</li>
+<li><strong><code>tier</code></strong> — curated sube a los rituales; log queda silencioso en el registro.</li>
+<li><strong><code>review_date</code></strong> — el mecanismo de auto-jubilación. Sin fecha de revisión, los riesgos se acumulan para siempre (hoy hay 173).</li>
+<li><strong><code>source_quote</code></strong> — la cita textual, anti-alucinación.</li>
+</ul>
+<hr>
+<h2>6. Umbral de surfacing 🟡 <em>(diseñado)</em></h2>
+<p>Un riesgo <strong>sube</strong> a <code>/vu</code>·<code>/au</code>·<code>/db</code> si:</p>
+<blockquote><code>impact: high</code> <strong>OR</strong> <code>likelihood: high</code> (o <code>detectability: low</code>).</blockquote>
+<p>Por debajo del umbral → queda <strong>silencioso</strong> en el registro (<code>tier: log</code>). Esto evita que el riesgo catastrófico quede enterrado bajo veinte riesgos menores.</p>
+<hr>
+<h2>7. Ciclo de vida 🟡 <em>(diseñado)</em></h2>
+<figure class="code-block"><pre><code>open → mitigating → closed</code></pre><figcaption>code</figcaption></figure>
+<p><code>closed</code> tiene tres razones explícitas:</p>
+<ul>
+<li><strong>realized</strong> — el riesgo ocurrió (y probablemente generó tareas).</li>
+<li><strong>retired</strong> — ya no aplica.</li>
+<li><strong>context-irrelevant</strong> — el contexto cambió y dejó de tener sentido.</li>
+</ul>
+<p><strong>Sweep semanal (Hux, domingo):</strong> los riesgos con <code>review_date</code> vencido y <strong>sin dueño</strong> se auto-archivan. Hux reporta qué barrió — sin truncado silencioso.</p>
+<hr>
+<h2>8. Conexión con tareas y decisiones</h2>
+<ul>
+<li>Un <strong>issue</strong> (riesgo materializado) → se convierte en <strong>tarea</strong> (ver <a href="../curation-criteria-tasks/">tasks.md</a>).</li>
+<li>Un riesgo abierto de alto impacto que toca el <strong>Win</strong> de un venture → en el Sprint Board del <code>/wr</code> ese Win se marca ⚠ (at-risk).</li>
+<li>La <strong>mitigación</strong> de un riesgo suele ser una decisión o una tarea — esas viven en sus propios tipos, el riesgo solo las referencia.</li>
+</ul>
+<hr>
+<h2>9. Ejemplos</h2>
+<p><strong>Bien (riesgo):</strong></p>
+<figure class="code-block"><pre><code class="language-yaml">- risk: "Cambio regulatorio en Q2 podría bloquear la estructura del fondo en Argentina"
+  likelihood: med
+  impact: high
+  venture: panambi
+  mitigation: "Andres monitorea el proyecto de ley; estructura alternativa en Uruguay como plan B."</code></pre><figcaption>yaml</figcaption></figure>
+<p><strong>Mal:</strong></p>
+<ul>
+<li>"Me preocupa que no lleguemos." → preocupación vaga, sin L×I → nota o descarte.</li>
+<li>"El proveedor ya nos canceló." → eso <strong>ya pasó</strong> = issue → se convierte en tarea, no en riesgo.</li>
+<li>"Asumimos que el cliente firma en julio." → assumption → watchlist, no riesgo.</li>
+</ul>
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · photonic-lab · 2026-06-08</span>
+</footer>
+</body>
+</html>
