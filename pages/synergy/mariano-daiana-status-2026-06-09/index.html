@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BOTH Ventures — Estado de la colaboración Mariano × Daiana: capa de Ops + estrategia AI de Synergy. Tres piezas: métrica de pulso por venture, datos curados (V2), y monitor del reporte semanal.">
+<title>Ops + AI Strategy · Status — Both_Ventures</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   Ops + AI Strategy · Status 1-pager — FR24 dark · BOTH Ventures
+   Mariano × Daiana — Synergy Ops Layer
+══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#000000; --surface-1:#0d0d0d; --surface-2:#141414; --surface-3:#1e1e1e;
+  --border:#222121; --border-dim:rgba(255,255,255,0.05); --border-hover:#3a3a3a;
+  --surface-hover:#161616;
+  --text:#ffffff; --text-muted:#9a958c; --text-dim:#6d6d6d; --text-faint:#414141;
+  --accent:#c8c8c8; --accent-dim:rgba(200,200,200,0.08);
+  --live:#86efac;  --live-dim:rgba(134,239,172,0.10);
+  --yellow:#fcd34d;--yellow-dim:rgba(252,211,77,0.10);
+  --orange:#fdba74;--orange-dim:rgba(253,186,116,0.10);
+  --red:#fca5a5;   --red-dim:rgba(252,165,165,0.10);
+  --blue:#7dd3fc;  --blue-dim:rgba(125,211,252,0.10);
+  --font:'Roboto',system-ui,-apple-system,sans-serif;
+  --mono:'Space Mono','Courier New',monospace;
+  --shadow-card:0 2px 6px rgba(0,0,0,0.4);
+  --ease-out:cubic-bezier(0.25,0.46,0.45,0.94);
+  --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:20px;--s6:24px;--s8:32px;
+  --maxw:1320px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;
+     padding-bottom:60px;min-height:100vh;position:relative;
+     background:radial-gradient(1200px 600px at 78% -8%,#211f1c 0%,#0a0908 46%,#000 100%) fixed}
+
+/* ══ HEADER ══ */
+.header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+     padding:0 var(--s6);height:52px;border-bottom:1px solid var(--border);
+     background:rgba(13,13,13,0.92)}
+.header-left{display:flex;align-items:center;gap:var(--s4)}
+.logo{display:flex;align-items:center;gap:6px}
+.dot-fill{width:10px;height:10px;border-radius:50%;background:var(--text)}
+.dot-ring{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--text)}
+.wordmark{font-size:13px;font-weight:700;letter-spacing:0.05em}
+.header-div{color:var(--border);font-size:16px}
+.header-label{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted)}
+.header-badge{font-family:var(--mono);font-size:9px;padding:2px 8px;border:1px solid rgba(255,255,255,0.18);
+     color:var(--text);letter-spacing:0.08em;border-radius:2px;background:rgba(255,255,255,0.06)}
+.header-right{display:flex;align-items:center;gap:var(--s3);font-size:10px;color:var(--text-dim);
+     letter-spacing:0.08em;text-transform:uppercase}
+.header-right .sep{color:var(--border)}
+
+/* ══ PAGE ══ */
+.page{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:var(--s8) var(--s6)}
+
+/* ══ HERO ══ */
+.hero{padding:var(--s6) 0 var(--s8)}
+.hero .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:var(--s4)}
+h1{font-family:var(--font);font-size:38px;font-weight:700;letter-spacing:-0.02em;line-height:1.05}
+h1 .amp{color:var(--text-muted);font-weight:400}
+.hero .sub{color:var(--text-muted);font-size:14px;margin-top:var(--s4);max-width:820px;line-height:1.65}
+.hero .sub b{color:var(--text);font-weight:500}
+.who{display:inline-flex;gap:8px;align-items:center;font-family:var(--mono);font-size:10px;color:var(--accent);
+     background:var(--accent-dim);border:1px solid var(--border);padding:3px 10px;border-radius:2px;
+     letter-spacing:0.06em;text-transform:uppercase;margin-top:var(--s4)}
+
+/* ══ KPI STRIP ══ */
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--s2);margin-bottom:var(--s8)}
+.kpi{background:rgba(13,13,13,0.82);border:1px solid var(--border);padding:var(--s4) var(--s5)}
+.kpi .l{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:var(--s2)}
+.kpi .n{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--text);line-height:1;letter-spacing:-0.01em}
+.kpi .x{font-family:var(--mono);font-size:9px;color:var(--text-faint);margin-top:8px;letter-spacing:0.04em}
+
+/* ══ SECTION LABEL ══ */
+.sec-label{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s5);padding-bottom:var(--s3);
+     border-bottom:1px solid var(--border)}
+.sec-label .t{font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:var(--text)}
+.sec-label .d{font-size:11px;color:var(--text-dim);letter-spacing:0.04em;margin-left:auto;font-family:var(--mono)}
+
+/* ══ PILLARS ══ */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s2)}
+.pillar{background:rgba(13,13,13,0.84);border:1px solid var(--border);display:flex;flex-direction:column;
+     transition:border-color 0.2s var(--ease-out),background 0.2s var(--ease-out),transform 0.2s var(--ease-out);
+     animation:fadeUp 0.35s var(--ease-out) both}
+.pillar:hover{border-color:var(--border-hover);background:var(--surface-hover);transform:translateY(-1px)}
+.pillar .top{padding:var(--s4) var(--s5);background:var(--surface-3);border-bottom:1px solid var(--border)}
+.pillar .num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:0.1em}
+.pillar .tt{font-size:14px;font-weight:700;color:var(--text);letter-spacing:0.01em;margin-top:5px;line-height:1.25}
+.pillar .src{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:0.06em;text-transform:uppercase;margin-top:6px}
+.pillar .body{padding:var(--s5);display:flex;flex-direction:column;gap:var(--s4);flex:1}
+.pillar p{font-size:12.5px;color:#cfcbc3;line-height:1.55}
+.pillar p b{color:var(--text);font-weight:700}
+
+/* ladder / inline diagram */
+.ladder{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-family:var(--mono);font-size:10px}
+.ladder .step{padding:3px 8px;border:1px solid var(--border);background:var(--surface-1);border-radius:2px;color:#d8d4cd;letter-spacing:0.02em}
+.ladder .step.dim{color:var(--text-faint);border-style:dashed}
+.ladder .arr{color:var(--text-faint)}
+
+/* labelled mini-rows */
+.lab{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.deflist{display:flex;flex-direction:column;gap:9px}
+.deflist .d-row{font-size:12px;color:#cfcbc3;line-height:1.45}
+.deflist .d-row .k{font-family:var(--mono);font-size:10px;color:var(--text);font-weight:700;letter-spacing:0.02em}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--mono);font-size:9.5px;padding:2px 8px;border-radius:2px;letter-spacing:0.03em;
+     background:var(--surface-1);border:1px solid var(--border);color:#d8d4cd}
+.tag.acc{color:var(--blue);border-color:rgba(125,211,252,0.30);background:var(--blue-dim)}
+
+/* status chip */
+.chip{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:2px;
+     letter-spacing:0.04em;display:inline-flex;align-items:center;gap:7px;line-height:1.35;margin-top:auto}
+.chip .d{width:6px;height:6px;border-radius:50%;flex:none}
+.chip.green{background:var(--live-dim);color:var(--live);border:1px solid rgba(134,239,172,0.35)}.chip.green .d{background:var(--live)}
+.chip.yellow{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(252,211,77,0.35)}.chip.yellow .d{background:var(--yellow)}
+.chip.blue{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(125,211,252,0.30)}.chip.blue .d{background:var(--blue)}
+
+/* ══ ASSEMBLE LINE ══ */
+.assemble{margin-top:var(--s8);background:var(--surface-1);border:1px solid var(--border);border-left:2px solid var(--accent);
+     padding:var(--s5) var(--s6)}
+.assemble .lab{margin-bottom:var(--s4)}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:var(--s2)}
+.flow .node{flex:1;min-width:200px;background:rgba(13,13,13,0.6);border:1px solid var(--border);padding:var(--s4) var(--s4)}
+.flow .node .nk{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);letter-spacing:0.06em}
+.flow .node .nt{font-size:12px;color:#cfcbc3;margin-top:6px;line-height:1.45}
+.flow .arr{display:flex;align-items:center;color:var(--text-faint);font-family:var(--mono);font-size:16px;padding:0 2px}
+
+/* ══ FOOTER STATUS ══ */
+.foot{margin-top:var(--s8);display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)}
+.foot .col{background:rgba(13,13,13,0.82);border:1px solid var(--border);padding:var(--s5)}
+.foot .col.ok{border-left:2px solid var(--live)}
+.foot .col.pend{border-left:2px solid var(--yellow)}
+.foot .col .h{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--s3)}
+.foot .col.ok .h{color:var(--live)}.foot .col.pend .h{color:var(--yellow)}
+.foot li{font-size:12px;color:#cfcbc3;line-height:1.5;list-style:none;padding-left:16px;position:relative;margin:7px 0}
+.foot li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%}
+.foot .col.ok li::before{background:var(--live)}.foot .col.pend li::before{background:var(--yellow)}
+.foot li b{color:var(--text);font-weight:700}
+
+/* ══ STATUS BAR ══ */
+.status-bar{position:fixed;bottom:0;left:0;right:0;height:30px;z-index:200;background:rgba(13,13,13,0.94);
+     border-top:1px solid var(--border);display:flex;align-items:center;padding:0 var(--s6);gap:var(--s4);
+     font-family:var(--mono);font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint)}
+.status-live{display:flex;align-items:center;gap:5px;color:var(--live)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--live);animation:blink 2.5s ease-in-out infinite}
+.status-sep{color:var(--border)}.status-val{color:var(--text-dim)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.pillar:nth-child(1){animation-delay:0ms}.pillar:nth-child(2){animation-delay:60ms}.pillar:nth-child(3){animation-delay:120ms}
+@media(prefers-reduced-motion:reduce){.pillar{animation:none}}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--surface-1)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+@media(max-width:980px){
+  .pillars{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .foot{grid-template-columns:1fr}
+  h1{font-size:28px}
+  .page{padding:var(--s6) var(--s4) var(--s8)}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo"><div class="dot-fill"></div><div class="dot-ring"></div><span class="wordmark">B_V® | OS</span></div>
+    <span class="header-div">|</span>
+    <span class="header-label">Ops + AI Strategy · Status</span>
+    <span class="header-badge">2026-06-09</span>
+  </div>
+  <div class="header-right">
+    <span>Mariano × Daiana</span><span class="sep">·</span>
+    <span>Synergy V3</span><span class="sep">·</span>
+    <span>Q-02.26</span>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="eyebrow">[ Synergy Ops Layer ] · Pre-read Tuesday Sync</div>
+    <h1>Ops + AI Strategy <span class="amp">&amp;</span> Synergy Setup</h1>
+    <p class="sub"><b>Tres piezas que se ensamblan</b> en una sola capa operativa: una métrica de pulso por venture
+      (input de Gaston), una redefinición de los datos que el sistema captura (tasks, decisions, risks),
+      y un monitor que lee esos datos curados. Cada pieza alimenta a la siguiente — no son tres proyectos,
+      es un mismo circuito. Esto es un <b>estado</b>, no una propuesta: abajo, qué está desplegado y qué falta validar.</p>
+    <span class="who">◢ Mariano (tools / técnica) × Daiana (ops / finanzas)</span>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi"><div class="l">Sprint-eligible</div><div class="n">8 / 2</div><div class="x">8 sí · 2 status-only</div></div>
+    <div class="kpi"><div class="l">Pilot ventures</div><div class="n">3</div><div class="x">LAK3 · Photonic · B_V OS</div></div>
+    <div class="kpi"><div class="l">Decisions curated</div><div class="n">261</div><div class="x">de 290 · 30 en log</div></div>
+    <div class="kpi"><div class="l">Risks curated</div><div class="n">113</div><div class="x">de 182 · 70 en log</div></div>
+    <div class="kpi"><div class="l">Validation gate</div><div class="n">0 / 3</div><div class="x">reuniones reales limpias</div></div>
+  </div>
+
+  <div class="sec-label"><span class="t">Tres Pilares</span><span class="d">a · b · c — cada uno con su estado real</span></div>
+
+  <div class="pillars">
+
+    <!-- 001 -->
+    <div class="pillar">
+      <div class="top">
+        <div class="num">001</div>
+        <div class="tt">Métrica de venture / Sprint</div>
+        <div class="src">Input · Gaston</div>
+      </div>
+      <div class="body">
+        <p>Gaston pidió <b>una métrica de pulso y performance por venture</b>, anclada al endgame de cada uno
+          y sincronizada con las metas de BOTH. Lo realizamos como una escalera "OKR-ish":</p>
+        <div class="ladder">
+          <span class="step">Endgame</span><span class="arr">→</span>
+          <span class="step">Monthly Obj.</span><span class="arr">→</span>
+          <span class="step">Biweekly Win</span><span class="arr">→</span>
+          <span class="step dim">KPI</span>
+        </div>
+        <p>El <b>Win</b> es la unidad viva: outcome (no esfuerzo), binario, atribuible al sprint, ladder al objetivo.
+          Veredicto <b>hit · miss · carry</b> — el champion se auto-certifica, sin gatekeeper. Cadencia flexible:
+          sprint de <b>14 días</b> sobre el Tuesday Sync semanal. Gaston <b>ratifica el endgame</b>; el resto fluye solo.</p>
+        <div>
+          <div class="lab">Cadencia</div>
+          <div class="tags"><span class="tag">sprint 14d</span><span class="tag">ancla 2026-06-09</span><span class="tag">flexible · no manual-trigger</span></div>
+        </div>
+        <span class="chip yellow"><span class="d"></span>SHIPPED (DRAFT) · pending Tue-Sync ratify · primer boundary 06-09</span>
+      </div>
+    </div>
+
+    <!-- 002 -->
+    <div class="pillar">
+      <div class="top">
+        <div class="num">002</div>
+        <div class="tt">Redefinición: Tasks · Decisions · Risks</div>
+        <div class="src">Pre-requisito · V2 Curation</div>
+      </div>
+      <div class="body">
+        <p>El trabajo previo necesario: antes de medir, hay que <b>limpiar qué captura el sistema</b>.
+          Tres tipos acotados, con definición precisa y lifecycle automático:</p>
+        <div class="deflist">
+          <div class="d-row"><span class="k">DECISION</span> — compromiso del equipo que gobierna la operación; consultable sin re-discutir.</div>
+          <div class="d-row"><span class="k">RISK</span> — evento futuro y probabilístico que, si ocurre, daña un venture (gate RAID).</div>
+          <div class="d-row"><span class="k">TASK</span> — entregable concreto y shippable, con dueño y compromiso → Asana.</div>
+        </div>
+        <p>Modelo de confianza: <b>confidence → tier</b>. Alta confianza entra como <b>vigente / curated</b> (sale en
+          <span class="tag" style="display:inline">/wr</span> ·vu ·db); baja entra como <b>log / candidate</b>, a la espera de un
+          confirm de 1 click. Cada item lleva <b>source_quote</b> — cita textual del transcript, ancla anti-alucinación.</p>
+        <div>
+          <div class="lab">Backfill aplicado</div>
+          <div class="tags"><span class="tag">290 decisions</span><span class="tag">182 risks</span><span class="tag acc">Asana = source of truth (tasks)</span></div>
+        </div>
+        <span class="chip green"><span class="d"></span>DEPLOYED + backfilled · gate 0/3 reuniones reales</span>
+      </div>
+    </div>
+
+    <!-- 003 -->
+    <div class="pillar">
+      <div class="top">
+        <div class="num">003</div>
+        <div class="tt">Dashboard / Monitor</div>
+        <div class="src">Output · Reporte semanal (/wr)</div>
+      </div>
+      <div class="body">
+        <p>El impacto de las dos piezas anteriores: el reporte semanal deja de ser texto y pasa a ser un
+          <b>command-center</b> tipo monitor. Una grilla por venture, leída de un vistazo:</p>
+        <div>
+          <div class="lab">Venture Status Grid</div>
+          <div class="tags"><span class="tag">Venture</span><span class="tag">Champion</span><span class="tag">Health</span><span class="tag">Last / This-week</span><span class="tag">Endgame</span><span class="tag">Risks</span></div>
+        </div>
+        <p>Clave: <b>lee datos ya curados (V2)</b> y rankea por <b>estado</b>, no por timestamp — sólo sube lo vigente.
+          El sprint (001) llena la columna "This-week"; la curación (002) llena Risks y Decisions sin ruido.
+          Referencias de diseño: Finsera · Celoxis · FR24.</p>
+        <div>
+          <div class="lab">Lo que renderiza</div>
+          <div class="tags"><span class="tag">grid + risks column</span><span class="tag">KPI strip</span><span class="tag">apéndice plegable</span></div>
+        </div>
+        <span class="chip blue"><span class="d"></span>Proof standalone live (dashboard-2026-06-09) · aún no es theme reusable</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ASSEMBLE -->
+  <div class="assemble">
+    <div class="lab">Cómo se ensamblan — un mismo circuito</div>
+    <div class="flow">
+      <div class="node"><div class="nk">001 · DEFINE</div><div class="nt">La métrica de sprint fija el <b>objetivo</b> de cada venture (anclado al endgame de Gaston).</div></div>
+      <div class="arr">→</div>
+      <div class="node"><div class="nk">002 · FEED</div><div class="nt">La curación V2 entrega <b>señal limpia</b>: decisions, risks y tasks acotados, con confianza y fuente.</div></div>
+      <div class="arr">→</div>
+      <div class="node"><div class="nk">003 · RENDER</div><div class="nt">El monitor <b>lee y muestra</b> objetivo + señal como un panel vivo del portfolio.</div></div>
+    </div>
+  </div>
+
+  <!-- FOOTER STATUS -->
+  <div class="foot">
+    <div class="col ok">
+      <div class="h">✓ Verificado / Desplegado</div>
+      <ul>
+        <li>V2 curation <b>desplegada</b> en el Worker (decisions + risks + tasks), Phase 1+2, deploy-verified.</li>
+        <li>Backfill aplicado: <b>261 vigente / 30 log</b> en decisions, <b>113 curated / 70 log</b> en risks (idempotente, reversible por git).</li>
+        <li>Escalera de sprint + harness shipped; <code style="font-family:var(--mono);font-size:11px;color:var(--accent)">config/ventures.json</code> con 8 sprint-eligible + pilot de 3.</li>
+        <li>Dashboard command-center como <b>prueba standalone</b> publicada para el 06-09.</li>
+      </ul>
+    </div>
+    <div class="col pend">
+      <div class="h">◷ Pendiente / A validar</div>
+      <ul>
+        <li>El sprint <b>nunca corrió en un boundary real</b> — primero es el Tuesday Sync 2026-06-09. Queda DRAFT hasta ratificar Gaston + Daiana.</li>
+        <li>V2 curation <b>no validada en reuniones reales: gate 0/3</b>. Necesita 3 reuniones limpias seguidas antes de declararla estable.</li>
+        <li>El dashboard aún <b>no es un theme reusable</b> — hay que sistematizarlo tras el feedback del equipo.</li>
+        <li>Endgames definidos: <b>1 de 10</b>. Rene a redactar LAK3 + Photonic.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="status-bar">
+  <span class="status-live"><span class="status-dot"></span>Synergy Ops</span>
+  <span class="status-sep">·</span><span>Status snapshot</span>
+  <span class="status-sep">·</span><span class="status-val">2026-06-08</span>
+  <span class="status-sep">·</span><span>Mariano × Daiana</span>
+  <span class="status-sep">·</span><span class="status-val">Pre-read · Tuesday Sync 06-09</span>
+</div>
+
+</body>
+</html>
