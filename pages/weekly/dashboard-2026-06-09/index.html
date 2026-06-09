@@ -42,9 +42,12 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--font);color:var(--t-1);line-height:1.55;-webkit-font-smoothing:antialiased;
   min-height:100vh;position:relative;padding:52px 52px 72px;
-  background:#0a0a0c url('./bg.jpg') no-repeat center top fixed;background-size:cover}
-/* ambient: glow cálido abajo-izq + frío arriba-der, velo oscuro encima del grafito */
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:#0a0a0c url('./bg.jpg') no-repeat center top;background-size:cover}
+/* ambient glow. NOTE: NOT fixed — a fixed background (background-attachment:fixed
+   or position:fixed) forces main-thread scrolling and breaks Chromium's repaint
+   invalidation for the sticky rail, leaving ghost-trail artifacts. Both the bg
+   image and this gradient layer now scroll with content. */
+body::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
   background:
     radial-gradient(1200px 700px at 80% 4%, rgba(125,211,252,0.16), transparent 60%),
     radial-gradient(1100px 640px at 8% 98%, rgba(253,186,116,0.15), transparent 58%),
@@ -52,8 +55,11 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
     linear-gradient(180deg, rgba(8,8,10,0.50) 0%, rgba(8,8,10,0.68) 46%, rgba(8,8,10,0.82) 100%)}
 
 /* ══ SHELL ══ */
+/* Shell: solid translucent fill, NO backdrop-filter. A backdrop-filter on the
+   ancestor of a position:sticky element breaks the sticky's scroll-repaint in
+   Chromium (ghost-trail). On this near-black bg the blur was invisible anyway. */
 .shell{position:relative;z-index:1;max-width:1340px;margin:0 auto;
-  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  background:rgba(22,22,26,0.88);
   border:1px solid var(--edge);border-radius:var(--r-shell);
   box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
   padding:28px 28px 30px}
