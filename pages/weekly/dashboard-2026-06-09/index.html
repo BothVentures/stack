@@ -42,12 +42,9 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--font);color:var(--t-1);line-height:1.55;-webkit-font-smoothing:antialiased;
   min-height:100vh;position:relative;padding:52px 52px 72px;
-  background:#0a0a0c url('./bg.jpg') no-repeat center top;background-size:cover}
-/* ambient glow. NOTE: NOT fixed — a fixed background (background-attachment:fixed
-   or position:fixed) forces main-thread scrolling and breaks Chromium's repaint
-   invalidation for the sticky rail, leaving ghost-trail artifacts. Both the bg
-   image and this gradient layer now scroll with content. */
-body::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:#0a0a0c url('./bg.jpg') no-repeat center top fixed;background-size:cover}
+/* ambient: glow cálido abajo-izq + frío arriba-der, velo oscuro encima del grafito */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background:
     radial-gradient(1200px 700px at 80% 4%, rgba(125,211,252,0.16), transparent 60%),
     radial-gradient(1100px 640px at 8% 98%, rgba(253,186,116,0.15), transparent 58%),
@@ -55,11 +52,8 @@ body::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
     linear-gradient(180deg, rgba(8,8,10,0.50) 0%, rgba(8,8,10,0.68) 46%, rgba(8,8,10,0.82) 100%)}
 
 /* ══ SHELL ══ */
-/* Shell: solid translucent fill, NO backdrop-filter. A backdrop-filter on the
-   ancestor of a position:sticky element breaks the sticky's scroll-repaint in
-   Chromium (ghost-trail). On this near-black bg the blur was invisible anyway. */
 .shell{position:relative;z-index:1;max-width:1340px;margin:0 auto;
-  background:rgba(22,22,26,0.88);
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
   border:1px solid var(--edge);border-radius:var(--r-shell);
   box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
   padding:28px 28px 30px}
@@ -85,14 +79,11 @@ body::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
 .dash{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
 
 /* ── rail ── */
-/* Sticky rail: stays put while the venture column scrolls. */
+/* Sticky rail: stays put while the venture column scrolls. Bounded by .dash
+   (rail + venture grid only); the Questions section is a sibling OUTSIDE the
+   grid, so the rail unpins before it and they never overlap mid-scroll. */
 .rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px}
-/* Rail panels use a SOLID translucent fill (no backdrop-filter): a frosted
-   panel that travels via position:sticky over a fixed backdrop leaves a
-   ghost-trail repaint artifact in Chromium. Dropping the filter from the
-   moving element removes the artifact at the root. Venture cards keep glass —
-   they scroll normally (not sticky) and don't trail. */
-.panel{background:rgba(34,34,40,0.90);
+.panel{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
   border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
 .panel-h{display:flex;align-items:center;gap:8px;padding:16px 18px 0}
 .panel-h .t{font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--t-2)}
@@ -167,7 +158,9 @@ body::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
 .chip.none{font-size:11px;color:var(--t-4)}
 .vq{font-size:11.5px;color:var(--t-1);line-height:1.5;background:rgba(96,131,255,0.08);border:1px solid rgba(96,131,255,0.24);border-radius:10px;padding:10px 12px}
 .vq::before{content:"Pregunta · Tuesday";display:block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#9db4ff;font-weight:700;margin-bottom:4px}
-.qsection{grid-column:1 / -1;margin-top:6px}
+/* qsection lives OUTSIDE the .dash grid (sibling, full-width) so the sticky
+   rail can't overlap it mid-scroll. */
+.qsection{margin-top:18px}
 .qlist{list-style:none;counter-reset:q;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .qlist li{counter-increment:q;position:relative;background:var(--glass-2);border:1px solid var(--edge);border-radius:12px;padding:13px 16px 13px 44px;font-size:13px;color:var(--t-1);line-height:1.55}
 .qlist li::before{content:counter(q);position:absolute;left:15px;top:12px;font-size:12px;font-weight:700;color:#9db4ff}
@@ -397,8 +390,9 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 
       </div>
     </section>
+  </div>
 
-    <section class="qsection">
+  <section class="qsection">
       <div class="field-h"><span class="t">Questions for Tuesday</span><span class="d">para la meet</span></div>
       <ol class="qlist">
         <li><b>Punta Crypto:</b> el endgame es cubrir el alquiler de Manantial con $120K — pero son $240K/año (cubre la mitad) y el modelo financiero no está validado (riesgo H/H). ¿Se valida antes de comprometerlo como fuente? <span class="qv">(abierto — Daiana)</span></li>
@@ -407,8 +401,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         <li><b>Bandwidth:</b> con 105 overdue y Daiana sobrecargada — ¿qué se descarta explícitamente esta semana?</li>
         <li><b>Content Factory:</b> ¿se asigna el human-in-the-loop o se le da a Andrés la ventana para automatizar al 100%?</li>
       </ol>
-    </section>
-  </div>
+  </section>
 
   <!-- ══ APPENDIX (collapsible, starts hidden) ══ -->
   <details class="appendix" id="appendix">
