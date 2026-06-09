@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Synergy — Cómo operar · One-pager</title>
+<title>Synergy — Guía operativa</title>
 <style>
   :root{
     --ink:#1a1a18;
@@ -11,197 +11,218 @@
     --paper:#f5f3ee;
     --card:#fffefb;
     --line:#dcd8cf;
-    --accent:#1f5c4d;      /* obligatorio */
+    --accent:#1f5c4d;
     --accent-soft:#e4efe9;
-    --amber:#9a6b1f;       /* nice-to-have */
+    --amber:#9a6b1f;
     --amber-soft:#f3ead8;
     --warn:#8a3b2e;
     --mute:#8a877f;
+    --op:#3a5a8a;        /* operador */
+    --op-soft:#e6ecf4;
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    background:var(--paper);
-    color:var(--ink);
-    line-height:1.45;
-    font-size:13px;
-    padding:28px 22px 60px;
-    -webkit-font-smoothing:antialiased;
+    background:var(--paper);color:var(--ink);line-height:1.45;font-size:13px;
+    padding:0 0 60px;-webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1180px;margin:0 auto}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
 
-  /* HEADER */
-  header{
-    border-bottom:2px solid var(--ink);
-    padding-bottom:14px;margin-bottom:22px;
-    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:20;background:rgba(245,243,238,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);
+    padding:9px 22px;margin-bottom:22px;
   }
+  nav .inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  nav .wm{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;margin-right:10px}
+  nav a{font-size:11px;color:var(--ink-soft);text-decoration:none;padding:4px 10px;border-radius:20px;font-weight:600;letter-spacing:.02em}
+  nav a:hover{background:var(--accent-soft);color:var(--accent)}
+  nav a.req{color:var(--accent)}
+
+  header{border-bottom:2px solid var(--ink);padding:8px 0 14px;margin-bottom:14px;
+    display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px}
   .brand{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
   h1{font-size:26px;font-weight:700;letter-spacing:-.01em;margin-top:3px}
   h1 span{color:var(--accent)}
-  .sub{font-size:12px;color:var(--ink-soft);max-width:560px;margin-top:5px}
+  .sub{font-size:12px;color:var(--ink-soft);max-width:600px;margin-top:5px}
   .meta{font-size:10.5px;color:var(--mute);text-align:right;letter-spacing:.04em}
 
-  /* LAYOUT */
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
-  .col-12{grid-column:span 12}
-  .col-8{grid-column:span 8}
-  .col-6{grid-column:span 6}
-  .col-4{grid-column:span 4}
-  @media(max-width:880px){.col-8,.col-6,.col-4{grid-column:span 12}}
+  /* reading guide */
+  .guide{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:var(--ink-soft)}
+  .guide b{color:var(--ink)}
+  .guide .chips{margin-top:7px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:14px 16px 16px;
-  }
+  .section-label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);
+    font-weight:700;margin:34px 0 12px;padding-top:8px;border-top:1px dashed var(--line)}
+  .section-label.first{border-top:none;margin-top:6px}
+  .section-label b{color:var(--accent)}
+
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+  .col-12{grid-column:span 12}.col-8{grid-column:span 8}.col-7{grid-column:span 7}.col-6{grid-column:span 6}.col-5{grid-column:span 5}.col-4{grid-column:span 4}
+  @media(max-width:880px){.col-8,.col-7,.col-6,.col-5,.col-4{grid-column:span 12}}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px 16px}
   .card.flag{border-top:3px solid var(--accent)}
   .card.flag-amber{border-top:3px solid var(--amber)}
   .card.flag-warn{border-top:3px solid var(--warn)}
+  .card.flag-op{border-top:3px solid var(--op)}
 
-  h2{
-    font-size:11px;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink);font-weight:700;margin-bottom:10px;
-    display:flex;align-items:center;gap:8px;
-  }
-  h2 .n{
-    background:var(--ink);color:var(--paper);border-radius:4px;
-    font-size:10px;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;
-    font-weight:700;
-  }
-  h3{font-size:12px;font-weight:700;margin:10px 0 4px;color:var(--ink)}
-
+  h2{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink);font-weight:700;
+    margin-bottom:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  h2 .n{background:var(--ink);color:var(--paper);border-radius:4px;font-size:10px;width:18px;height:18px;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:700}
+  h3{font-size:12px;font-weight:700;margin:12px 0 5px;color:var(--ink)}
   p{font-size:12px;color:var(--ink-soft);margin-bottom:6px}
   strong{color:var(--ink)}
+  .lead{font-size:12px;color:var(--ink);margin-bottom:8px}
+  .lead b{color:var(--accent)}
 
-  /* MODEL STRIP */
-  .strip{
-    background:var(--ink);color:#eceae3;border-radius:8px;
-    padding:15px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;
-  }
+  .strip{background:var(--ink);color:#eceae3;border-radius:8px;padding:15px 18px;
+    display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
   @media(max-width:880px){.strip{grid-template-columns:repeat(2,1fr)}}
   .strip .b .t{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8fb3a8;font-weight:700;margin-bottom:4px}
   .strip .b p{color:#cfccc3;font-size:11px;margin:0;line-height:1.4}
   .strip .b p b{color:#fff}
 
-  /* tables */
   table{width:100%;border-collapse:collapse;font-size:11.5px}
-  th{text-align:left;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:700;padding:0 8px 5px 0;border-bottom:1px solid var(--line)}
+  th{text-align:left;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);
+    font-weight:700;padding:0 8px 5px 0;border-bottom:1px solid var(--line)}
   td{padding:6px 8px 6px 0;border-bottom:1px solid #efece4;vertical-align:top;color:var(--ink-soft)}
   td b{color:var(--ink)}
   tr:last-child td{border-bottom:none}
-  .cmd{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:11px;background:var(--accent-soft);color:var(--accent);padding:1px 5px;border-radius:4px;font-weight:600;white-space:nowrap}
-  .path{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--ink);background:#efece4;padding:1px 5px;border-radius:4px}
-
-  /* yes/no */
+  .cmd{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:11px;background:var(--accent-soft);
+    color:var(--accent);padding:1px 5px;border-radius:4px;font-weight:600;white-space:nowrap}
+  .path{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:10.5px;color:var(--ink);
+    background:#efece4;padding:1px 5px;border-radius:4px}
   .yes{color:var(--accent);font-weight:700}
   .no{color:var(--warn);font-weight:700}
 
-  /* must-do list */
   .must{list-style:none}
   .must li{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid #efece4;font-size:12px}
   .must li:last-child{border-bottom:none}
   .must .k{color:var(--accent);font-weight:700;flex-shrink:0;font-size:14px;line-height:1.2}
-  .must li b{color:var(--ink)}
 
-  /* timeline */
   .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
-  .flow .step{flex:1;min-width:120px;background:#faf8f3;border:1px solid var(--line);border-radius:6px;padding:9px 11px;position:relative;margin-right:16px;margin-bottom:8px}
+  .flow .step{flex:1;min-width:120px;background:#faf8f3;border:1px solid var(--line);border-radius:6px;
+    padding:9px 11px;position:relative;margin-right:16px;margin-bottom:8px}
   .flow .step:last-child{margin-right:0}
-  .flow .step::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);color:var(--mute);font-size:13px;font-weight:700}
+  .flow .step::after{content:"→";position:absolute;right:-13px;top:50%;transform:translateY(-50%);
+    color:var(--mute);font-size:13px;font-weight:700}
   .flow .step:last-child::after{display:none}
   .flow .day{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:3px}
   .flow .step p{font-size:11px;margin:0;line-height:1.35}
 
-  /* pills */
-  .pill{display:inline-block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:2px 7px;border-radius:20px;vertical-align:middle}
+  .pill{display:inline-block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+    padding:2px 7px;border-radius:20px;vertical-align:middle}
   .pill.req{background:var(--accent);color:#fff}
   .pill.nice{background:var(--amber);color:#fff}
+  .pill.op{background:var(--op);color:#fff}
+  .pill.next{background:#6b5b8a;color:#fff}
 
-  .legend{display:flex;gap:16px;align-items:center;font-size:11px;color:var(--ink-soft);margin-top:2px}
-  .legend span{display:flex;align-items:center;gap:5px}
-  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
-
-  /* anti-patterns */
   .never li{font-size:11.5px;padding:5px 0;border-bottom:1px solid #efece4;color:var(--ink-soft)}
   .never li:last-child{border-bottom:none}
   .never li::before{content:"✕";color:var(--warn);font-weight:700;margin-right:7px}
 
-  .footnote{font-size:10.5px;color:var(--mute);margin-top:22px;border-top:1px solid var(--line);padding-top:10px;line-height:1.5}
-  .lead{font-size:12px;color:var(--ink);margin-bottom:8px}
-  .lead b{color:var(--accent)}
+  /* annex pipeline diagram */
+  .pipe{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;margin:6px 0 4px}
+  .pipe .node{background:#faf8f3;border:1px solid var(--line);border-radius:6px;padding:8px 11px;
+    flex:1;min-width:130px;position:relative;margin-right:14px}
+  .pipe .node:last-child{margin-right:0}
+  .pipe .node::after{content:"→";position:absolute;right:-12px;top:50%;transform:translateY(-50%);color:var(--mute);font-weight:700}
+  .pipe .node:last-child::after{display:none}
+  .pipe .node .lbl{font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--op);font-weight:700;margin-bottom:3px}
+  .pipe .node p{font-size:10.5px;margin:0;line-height:1.35}
+
+  .status-line{font-size:11.5px;padding:6px 0;border-bottom:1px solid #efece4;display:flex;gap:9px}
+  .status-line:last-child{border-bottom:none}
+  .status-line .dot{flex-shrink:0;width:9px;height:9px;border-radius:50%;margin-top:4px}
+  .dot.green{background:var(--accent)}.dot.amber{background:var(--amber)}.dot.blue{background:var(--op)}
+  .status-line b{color:var(--ink)}
+
+  .footnote{font-size:10.5px;color:var(--mute);margin-top:26px;border-top:1px solid var(--line);
+    padding-top:10px;line-height:1.6}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10.5px;color:var(--ink-soft);align-items:center}
 </style>
 </head>
 <body>
+
+<nav>
+  <div class="inner">
+    <span class="wm">Synergy</span>
+    <a href="#esencial" class="req">① Lo esencial</a>
+    <a href="#anexo-a">A · Cómo funciona</a>
+    <a href="#anexo-b">B · Próximos pasos</a>
+    <a href="#anexo-c">C · Más con Syn</a>
+  </div>
+</nav>
+
 <div class="wrap">
 
   <header>
     <div>
       <div class="brand">Both_ &nbsp;·&nbsp; B_V® | OS</div>
-      <h1>Synergy — <span>cómo operar</span></h1>
-      <div class="sub">El lugar al que ir cuando estás perdido. Qué es obligatorio, dónde va cada cosa, cuándo usar cada skill. Modelo de épicas, sprints quincenales y curaduría por altitud.</div>
+      <h1>Synergy — <span>guía operativa</span></h1>
+      <div class="sub">Cómo trabajar con el sistema: el modelo de épicas, sprints quincenales y curaduría por altitud, más el manual de uso del día a día. El lugar al que ir cuando estás perdido.</div>
     </div>
     <div class="meta">V0.1.0 · Q-02.26<br>Sprint 1 arranca martes 09-06<br>Equipo: Gastón · René · Andy · Daiana · Mariano</div>
   </header>
 
-  <!-- MODEL STRIP (30%) -->
+  <!-- READING GUIDE -->
+  <div class="guide">
+    <b>Cómo leer esto.</b> Si solo querés operar, te alcanza con <b>① Lo esencial</b> — es lo obligatorio para que el sistema funcione. Los anexos son opcionales: <b>A</b> explica cómo está armado el sistema por detrás, <b>B</b> qué falta construir, <b>C</b> todo lo que podés hacer con Syn más allá de lo básico.
+    <div class="chips">
+      <span class="pill req">obligatorio</span>
+      <span class="pill nice">nice to have</span>
+      <span class="pill op">⚙ operador (Mariano)</span>
+      <span class="pill next">🔜 en construcción</span>
+    </div>
+  </div>
+
+  <!-- ============ MAIN ============ -->
+  <div class="section-label first" id="esencial"><b>① Lo esencial</b> — lo mínimo para operar</div>
+
   <div class="strip" style="margin-bottom:14px">
-    <div class="b">
-      <div class="t">Altitud</div>
-      <p>Capturamos <b>lo que gobierna</b>, no lo que se dijo. 3 frases sobre lo mismo = 1 item.</p>
-    </div>
-    <div class="b">
-      <div class="t">3 tipos</div>
-      <p><b>Decisión</b> (compromiso) · <b>Tarea</b> (entregable) · <b>Riesgo</b> (evento futuro). Cada uno con su gate.</p>
-    </div>
-    <div class="b">
-      <div class="t">2 zonas de confianza</div>
-      <p><b>Curada</b> = se actúa sin re-chequear. <b>Log</b> = solo auditoría. Alta confianza sube; baja espera confirm.</p>
-    </div>
-    <div class="b">
-      <div class="t">Sprint quincenal</div>
-      <p>Cada venture compromete <b>UN Win</b> cada 2 semanas. Cierra hit / miss / carry.</p>
-    </div>
-    <div class="b">
-      <div class="t">Altitudes de trabajo</div>
-      <p><b>Épica</b> = cuerpo grande · <b>Tarea</b> = shippable · <b>Sub-paso</b> = checklist en Asana.</p>
-    </div>
+    <div class="b"><div class="t">Altitud</div><p>Capturamos <b>lo que gobierna</b>, no lo que se dijo. 3 frases sobre lo mismo = 1 item.</p></div>
+    <div class="b"><div class="t">3 tipos</div><p><b>Decisión</b> (compromiso) · <b>Tarea</b> (entregable) · <b>Riesgo</b> (evento futuro). Cada uno con su filtro.</p></div>
+    <div class="b"><div class="t">2 zonas de confianza</div><p><b>Curada</b> = se actúa sin re-chequear. <b>Log</b> = solo auditoría.</p></div>
+    <div class="b"><div class="t">Sprint quincenal</div><p>Cada venture compromete <b>UN Win</b> cada 2 semanas. Cierra hit / miss / carry.</p></div>
+    <div class="b"><div class="t">Altitudes de trabajo</div><p><b>Épica</b> = cuerpo grande · <b>Tarea</b> = shippable · <b>Sub-paso</b> = checklist en Asana.</p></div>
   </div>
 
   <div class="grid">
 
-    <!-- 1. OBLIGATORIO -->
     <div class="col-6 card flag">
       <h2><span class="n">1</span> El mínimo obligatorio <span class="pill req">si esto no pasa, Syn no funciona</span></h2>
       <ul class="must">
-        <li><span class="k">◆</span><div><b>Abrí con <span class="cmd">/startup</span></b> — sincroniza el repo y confirma estado. Siempre, al empezar.</div></li>
-        <li><span class="k">◆</span><div><b>Cerrá con <span class="cmd">/upc</span></b> — valida, commitea y pushea. <strong>Sin /upc tu trabajo no se guarda ni lo ve el equipo.</strong></div></li>
-        <li><span class="k">◆</span><div><b>Repo en <span class="path">~/GitHub/both_os</span></b> — no Documents, no iCloud, no Dropbox. Si git rompe: Terminal → <span class="cmd">bash scripts/doctor.sh</span>.</div></li>
-        <li><span class="k">◆</span><div><b>Lunes: <span class="cmd">/vu</span> + <span class="cmd">/au</span></b> — cada champion actualiza su venture, cada area lead su área. De ahí sale el digest del martes.</div></li>
+        <li><span class="k">◆</span><div><b>Abrí con <span class="cmd">/startup</span></b> — sincroniza y confirma estado. Siempre, al empezar.</div></li>
+        <li><span class="k">◆</span><div><b>Cerrá con <span class="cmd">/upc</span></b> — valida, guarda y publica tu trabajo. <strong>Sin /upc, lo que hiciste no lo ve el equipo.</strong></div></li>
+        <li><span class="k">◆</span><div><b>Lunes: <span class="cmd">/vu</span> + <span class="cmd">/au</span></b> — cada champion actualiza su venture, cada lead su área. De ahí sale el digest del martes.</div></li>
         <li><span class="k">◆</span><div><b>Sprint: abrí y cerrá tu Win en <span class="cmd">/vu</span></b> — cada 2° martes. El Win es un <strong>outcome verificable</strong>, no esfuerzo.</div></li>
-        <li><span class="k">◆</span><div><b>Docs finales → vault, tareas → Asana.</b> Lo que sale de reunión lo escribe el miner solo. No a mano.</div></li>
+        <li><span class="k">◆</span><div><b>Documentos finales → Drive · tareas → Asana.</b> El conocimiento de reunión (decisiones, riesgos) lo escribe Syn solo en el vault — no a mano.</div></li>
       </ul>
+      <p style="margin-top:8px;margin-bottom:0;font-size:11px"><span class="pill op">⚙</span> &nbsp;Si git deja de andar, no es tu problema: avisá a Mariano. La recuperación está en el Anexo A.</p>
     </div>
 
-    <!-- 2. LATIDO SEMANAL -->
     <div class="col-6 card">
       <h2><span class="n">2</span> El latido — Tuesday Sync</h2>
       <p class="lead">El proceso más importante. Todo el ritmo semanal fluye por acá.</p>
       <div class="flow">
         <div class="step"><div class="day">Durante la semana</div><p>Trabajás ventures + áreas. Exploratorio.</p></div>
-        <div class="step"><div class="day">Lunes</div><p><span class="cmd">/vu</span> + <span class="cmd">/au</span>. Auto-commit al vault.</p></div>
-        <div class="step"><div class="day">Lun pm / Mar am</div><p>Mariano genera digest <span class="cmd">/wr</span>. Daiana valida. Se pre-lee.</p></div>
+        <div class="step"><div class="day">Lunes</div><p><span class="cmd">/vu</span> + <span class="cmd">/au</span>. Se guarda solo.</p></div>
+        <div class="step"><div class="day">Lun pm / Mar am</div><p>Sale el digest <span class="cmd">/wr</span>. Se pre-lee.</p></div>
         <div class="step"><div class="day">Martes (presencial)</div><p>Solo decisiones. Gastón preside. Máx 60 min.</p></div>
-        <div class="step"><div class="day">Post-reunión</div><p>Read.ai minea solo → vault + Asana. Sin aprobación.</p></div>
+        <div class="step"><div class="day">Post-reunión</div><p>Syn minea la reunión sola → vault + Asana.</p></div>
       </div>
-      <h3 style="margin-top:14px">Cadencia del sprint</h3>
-      <p style="margin:0"><b>Cada 2° martes</b> = boundary (abrís/cerrás Win). El martes del medio = pulse (solo seguimiento, sin abrir/cerrar). Boundaries: 09-06 · 23-06 · 07-07 …</p>
+      <h3>Cadencia del sprint</h3>
+      <p style="margin:0"><b>Cada 2° martes</b> = boundary: abrís y cerrás el Win. El martes del medio = pulse (seguimiento, sin abrir/cerrar). Boundaries: 09-06 · 23-06 · 07-07 …</p>
     </div>
 
-    <!-- 3. LOS 3 TIPOS — GATE -->
     <div class="col-12 card flag">
-      <h2><span class="n">3</span> Qué entra y qué no — el gate de cada tipo <span class="pill req">obligatorio entenderlo</span></h2>
+      <h2><span class="n">3</span> Qué entra y qué no — el filtro de cada tipo <span class="pill req">obligatorio entenderlo</span></h2>
+      <p class="lead" style="margin-bottom:10px">Syn no guarda todo lo que se dice. Guarda lo que <b>gobierna</b> el negocio. Cada tipo tiene un filtro de entrada — esto es lo que hace que el vault sea consultable y no un basurero de notas.</p>
       <table>
         <thead><tr><th style="width:11%">Tipo</th><th style="width:30%">Entra solo si…</th><th style="width:29%">NO es esto</th><th style="width:30%">Regla clave</th></tr></thead>
         <tbody>
@@ -209,112 +230,285 @@
             <td><b>Decisión</b></td>
             <td><span class="yes">✓</span> Hubo un <b>compromiso o resolución clara</b>. ("Seguimos con X", "Cerramos el formato")</td>
             <td><span class="no">✕</span> "We should…", "Habría que…", "Estaría bueno…" → no maduró.</td>
-            <td><b>Reversibilidad:</b> type-2 (reversible, barato perder) vs <b>type-1</b> (capital/contrato/término de fondo → siempre pide confirm).</td>
+            <td><b>Reversibilidad:</b> type-2 (reversible, barato perder) vs <b>type-1</b> (capital / contrato / término de fondo → siempre pide confirmación).</td>
           </tr>
           <tr>
             <td><b>Tarea</b></td>
             <td><span class="yes">✓</span> Tiene los <b>3</b>: owner nombrado + deliverable + horizonte (fecha o trigger).</td>
             <td><span class="no">✕</span> Falta uno de los 3. Títulos vagos: "Follow up", "Discutir", "Revisar", "Pensar en".</td>
-            <td><b>Anti-fragmentación:</b> mismo dueño + mismo outcome = 1 tarea. Sub-pasos van en context, nunca como items aparte. Cap = 7/venture (techo, no meta).</td>
+            <td><b>No se fragmenta:</b> mismo dueño + mismo outcome = 1 tarea. Los sub-pasos van adentro, nunca como items aparte.</td>
           </tr>
           <tr>
             <td><b>Riesgo</b></td>
-            <td><span class="yes">✓</span> <b>Likelihood + impact concretos</b> Y el venture ya existe en el vault.</td>
-            <td><span class="no">✕</span> "Me preocupa el mercado" (sin L×I). Logs / status updates.</td>
-            <td><b>RAID:</b> solo el riesgo futuro va a <span class="path">risks/</span>. Issue (ya pasó) → tarea · Assumption → watchlist · Dependency → precondición.</td>
+            <td><span class="yes">✓</span> <b>Probabilidad + impacto concretos</b> Y el venture ya existe en el vault.</td>
+            <td><span class="no">✕</span> "Me preocupa el mercado" (sin prob/impacto). Logs o status updates.</td>
+            <td><b>Solo lo que viene a futuro</b> es riesgo. Lo que ya pasó → es una tarea. Un supuesto → watchlist. (criterio RAID, ver Anexo A)</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- 4. DÓNDE VA CADA COSA -->
     <div class="col-6 card flag">
       <h2><span class="n">4</span> Dónde va cada cosa <span class="pill req">obligatorio</span></h2>
+      <p class="lead" style="margin-bottom:9px">Syn <b>no adivina si algo está listo.</b> El default es borrador local; el destino lo define el comando que corrés, no el archivo.</p>
       <table>
-        <thead><tr><th style="width:38%">Qué</th><th>Dónde</th></tr></thead>
+        <thead><tr><th style="width:32%">Qué</th><th>Dónde · quién lo manda</th></tr></thead>
         <tbody>
-          <tr><td><b>Doc final / conocimiento institucional</b></td><td><span class="path">vault/</span> con frontmatter YAML (o <span class="cmd">/cookie-monster</span> → Drive)</td></tr>
-          <tr><td><b>Borrador / output de agente</b></td><td><span class="path">vault/agent_outputs/</span> (vía <span class="cmd">save-output.sh</span>)</td></tr>
-          <tr><td><b>Tareas (estado real)</b></td><td><b>Asana</b> — fuente de verdad de tareas. El vault solo guarda el link si vino de un minado.</td></tr>
-          <tr><td><b>Decisiones / Riesgos</b></td><td><span class="path">vault/decisions/</span> · <span class="path">vault/risks/</span> — los escribe el miner. No a mano.</td></tr>
-          <tr><td><b>Épicas</b></td><td><span class="path">vault/initiatives/</span> (no se inventa tipo nuevo)</td></tr>
-          <tr><td><b>Links / docs fuente</b></td><td><b>Google Drive</b> = source of truth de documentos. El link se referencia desde el archivo del vault o la tarea de Asana.</td></tr>
-          <tr><td><b>Presentación read-only</b></td><td><b>Notion</b> — se lee, <b class="no">nunca se edita ahí</b>. Lo sincroniza Mariano los lunes.</td></tr>
+          <tr><td><b>Documento final</b> (reporte, deck, doc)</td><td><b>Google Drive</b> — <b>vos</b>, con <span class="cmd">/cookie-monster</span> o <span class="cmd">/print-to-drive</span> cuando está listo.</td></tr>
+          <tr><td><b>Conocimiento del negocio</b> (decisiones, riesgos, estado de ventures)</td><td><b>vault</b> — lo escribe <b>Syn solo</b> al minear o en <span class="cmd">/vu</span>·<span class="cmd">/au</span>. No a mano.</td></tr>
+          <tr><td><b>Output que Syn generó</b> y querés guardar</td><td><b>vault/agent_outputs</b> — Syn lo rutea solo.</td></tr>
+          <tr><td><b>Tareas (estado real)</b></td><td><b>Asana</b> — la fuente de verdad de tareas.</td></tr>
+          <tr><td><b>Borrador / mientras iterás</b></td><td><b>Tu carpeta de trabajo.</b> No se publica hasta que corras la skill. <b class="no">No lo metas en <span class="path">vault/</span></b> — eso sí lo levanta <span class="cmd">/upc</span>.</td></tr>
+          <tr><td><b>Lo que mira el resto del equipo</b></td><td><b>Notion</b> — se lee, <b class="no">nunca se edita ahí.</b></td></tr>
         </tbody>
       </table>
     </div>
 
-    <!-- 5. SKILLS -->
     <div class="col-6 card">
-      <h2><span class="n">5</span> Skills — cuándo sí</h2>
+      <h2><span class="n">5</span> Skills — cuándo sí, cuándo no</h2>
       <table>
         <thead><tr><th style="width:24%">Skill</th><th>Cuándo</th></tr></thead>
         <tbody>
           <tr><td><span class="cmd">/startup</span></td><td>Al abrir sesión. Siempre.</td></tr>
           <tr><td><span class="cmd">/upc</span></td><td>Al cerrar sesión. Siempre.</td></tr>
-          <tr><td><span class="cmd">/vu</span></td><td>Lunes + abrir/cerrar Win del sprint (champions).</td></tr>
-          <tr><td><span class="cmd">/au</span></td><td>Lunes, update de tu área (area leads).</td></tr>
-          <tr><td><span class="cmd">/db</span></td><td>Brief de la mañana: prioridades + Calendar + Asana + señales.</td></tr>
-          <tr><td><span class="cmd">/mp</span></td><td>Antes de una reunión: brief desde el vault.</td></tr>
-          <tr><td><span class="cmd">/mine</span></td><td>Minar reunión sin Read.ai (texto/audio). Auto-aprueba.</td></tr>
-          <tr><td><span class="cmd">/wr</span></td><td>Digest del martes (Mariano / Daiana).</td></tr>
+          <tr><td><span class="cmd">/vu</span> · <span class="cmd">/au</span></td><td>Lunes + Win del sprint (champions / leads).</td></tr>
+          <tr><td><span class="cmd">/db</span></td><td>Tu brief de la mañana.</td></tr>
+          <tr><td><span class="cmd">/mp</span></td><td>Antes de una reunión.</td></tr>
+          <tr><td><span class="cmd">/mine</span></td><td>Minar reunión sin Read.ai (texto/audio).</td></tr>
         </tbody>
       </table>
       <h3>Cuándo NO usar skill</h3>
-      <p style="margin:0">Charla casual, pregunta factual simple, o algo de un solo paso. La skill es para los rituales y entregables — no para todo.</p>
+      <p style="margin:0">Charla casual, pregunta factual simple, o algo de un solo paso. Las skills son para los rituales y entregables — no para todo. <b>(El catálogo completo está en el Anexo C.)</b></p>
     </div>
 
-    <!-- 6. CONFIANZA / CURADURÍA -->
-    <div class="col-6 card">
-      <h2><span class="n">6</span> Curar sin esfuerzo extra</h2>
-      <p class="lead">Curar es un <b>subproducto</b> de los rituales que ya corrés. No hay un paso aparte.</p>
+    <div class="col-8 card flag">
+      <h2><span class="n">6</span> Curar es un hábito diario, no una tarea extra</h2>
+      <p class="lead">Abrí <span class="cmd">/db</span> <b>todos los días.</b> No es solo tu agenda — es el <b>espejo de lo que Syn capturó de tu trabajo.</b> Mirarlo a diario es lo que mantiene curada la información de todo el equipo.</p>
+      <ul class="must">
+        <li><span class="k">◆</span><div><b>Revisá que esté bien.</b> ¿Ves algo mal, incompleto o que no es? <b>Decíselo a Syn ahí mismo.</b> Esa corrección de 10 segundos mantiene la info curada para todos.</div></li>
+        <li><span class="k">◆</span><div><b>El update semanal sale casi solo.</b> Si curás a diario, cuando llega tu <span class="cmd">/vu</span>·<span class="cmd">/au</span> del lunes ya está todo revisado — no es un trabajo aparte.</div></li>
+      </ul>
+      <h3>Por qué funciona — los niveles de confianza</h3>
       <table>
-        <thead><tr><th style="width:22%">Confianza</th><th>Qué pasa</th></tr></thead>
         <tbody>
-          <tr><td><b>Alta</b></td><td>Entra directo a <b>curada</b> (vigente). El equipo actúa sin re-chequear.</td></tr>
-          <tr><td><b>Baja / ambigua</b></td><td>Entra como <b>candidata</b>. La confirmás con 1 clic dentro de <span class="cmd">/vu</span>·<span class="cmd">/au</span>·<span class="cmd">/db</span>.</td></tr>
-          <tr><td><b>Type-1</b><br>(irreversible)</td><td>Nunca se auto-confía. <b>Siempre</b> confirm explícito. 2 semanas sin acción → escala a Daiana.</td></tr>
-          <tr><td><b>Silencio</b></td><td>Si se te mostró y no confirmaste (2 ciclos) → baja a log. No se borra, se jubila.</td></tr>
+          <tr><td style="width:24%"><b>Alta</b></td><td>Entra directo a <b>curada</b>: el equipo actúa sin re-chequear.</td></tr>
+          <tr><td><b>Baja / ambigua</b></td><td><b>Candidata</b> — la confirmás o corregís con 1 clic en tu <span class="cmd">/db</span>·<span class="cmd">/vu</span>.</td></tr>
+          <tr><td><b>Silencio</b></td><td>Si se te mostró y no la tocaste → baja a log. No se borra, se jubila.</td></tr>
         </tbody>
       </table>
-      <p style="margin-top:8px;margin-bottom:0"><b>Actualizar tu venture ES curar sus items.</b> No se confirma por Slack — el equipo no lo usa para esto.</p>
+      <p style="margin-top:8px;margin-bottom:0;font-size:11px">* Tu <span class="cmd">/db</span> es <b>customizable</b>: armalo a tu gusto — qué ver primero, qué dejar afuera — solo o con Mariano.</p>
     </div>
 
-    <!-- 7. NUNCA -->
-    <div class="col-6 card flag-warn">
-      <h2><span class="n">7</span> Reglas de oro — qué NO hacer</h2>
+    <div class="col-4 card flag-warn">
+      <h2><span class="n">7</span> Qué NO hacer</h2>
       <ul class="never">
         <li>Editar en <b>Notion</b> — es read-only, se pisa en el próximo sync.</li>
-        <li>Cerrar sesión sin <span class="cmd">/upc</span> — perdés el trabajo del equipo.</li>
-        <li>Fragmentar una tarea en sub-tareas separadas — sub-pasos van en context.</li>
-        <li>Inflar tareas para llegar al cap de 7 — es un techo de seguridad, no una meta.</li>
-        <li>Escribir decisiones/riesgos a mano si salieron de reunión — lo hace el miner.</li>
-        <li>Registrar como decisión un "deberíamos…" — no maduró, es ruido.</li>
-        <li>Mover el repo fuera de <span class="path">~/GitHub/both_os</span> — rompe el sync.</li>
+        <li>Cerrar sesión sin <span class="cmd">/upc</span> — perdés el trabajo.</li>
+        <li>Escribir decisiones/riesgos a mano si salieron de reunión — lo hace Syn.</li>
+        <li>Meter borradores dentro de <span class="path">vault/</span> — <span class="cmd">/upc</span> los publica antes de tiempo.</li>
       </ul>
     </div>
 
-    <!-- 8. NICE TO HAVE -->
-    <div class="col-6 card flag-amber">
-      <h2><span class="n">8</span> Nice to have <span class="pill nice">suma, no es obligatorio</span></h2>
+  </div>
+
+  <!-- ============ ANEXO A ============ -->
+  <div class="section-label" id="anexo-a"><b>Anexo A</b> — Cómo funciona el sistema por detrás</div>
+
+  <div class="grid">
+
+    <div class="col-12 card flag-op">
+      <h2><span class="n">A</span> La arquitectura en dos capas</h2>
+      <p class="lead">Synergy no vive en un solo lado. Son dos capas que comparten los mismos agentes, el mismo vault y la misma base de datos. <b>GitHub es el puente</b> entre ambas.</p>
+      <div class="grid" style="gap:12px;margin-top:6px">
+        <div class="col-6">
+          <h3>Capa local — donde trabajás vos</h3>
+          <p>Cada uno corre Syn en la <b>app de escritorio (Cowork)</b>, abriendo el repo <span class="path">both_os</span>. Los agentes y el vault están en tu disco. Cuando hacés <span class="cmd">/upc</span>, tus cambios se publican al repo y el resto los recibe en su próximo <span class="cmd">/startup</span>.</p>
+        </div>
+        <div class="col-6">
+          <h3>Capa nube — la que opera Mariano <span class="pill op">⚙</span></h3>
+          <p>Un <b>Worker</b> en la nube y una base <b>Supabase</b> manejan lo automático: minado de reuniones, memoria, sincronizaciones. No tenés que tocar nada de esto — corre solo en segundo plano.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-8 card">
+      <h2><span class="n">A</span> Qué pasa cuando termina una reunión</h2>
+      <p class="lead">Este es el corazón del sistema. Una reunión grabada se convierte en vault + tareas <b>sin que nadie escriba nada a mano</b>, en ~90 segundos.</p>
+      <div class="pipe">
+        <div class="node"><div class="lbl">1 · Read.ai</div><p>El bot se une por el Calendar y graba. Al terminar, dispara un aviso.</p></div>
+        <div class="node"><div class="lbl">2 · Minado</div><p>Syn lee el transcript y extrae decisiones, tareas y riesgos — aplicando los filtros de la sección 3.</p></div>
+        <div class="node"><div class="lbl">3 · Vault</div><p>Escribe cada item con su nivel de confianza y la cita textual que lo respalda.</p></div>
+        <div class="node"><div class="lbl">4 · Asana</div><p>Crea las tareas (sin duplicar) y deja todo listo para revisar.</p></div>
+      </div>
+      <p style="margin-top:8px"><b>Sin Read.ai?</b> Mismo resultado a mano: <span class="cmd">/mine</span> sobre el texto pegado, o <span class="cmd">/transcribe</span> primero si es un audio. No hay paso de aprobación — Syn aprueba y escribe al toque.</p>
+      <p style="margin-bottom:0"><b>El ancla anti-invento:</b> cada item guarda la <b>frase textual</b> de la que salió. Por eso una decisión "curada" es confiable: se puede rastrear a algo que alguien realmente dijo.</p>
+    </div>
+
+    <div class="col-4 card">
+      <h2><span class="n">A</span> El criterio RAID</h2>
+      <p>Cuando aparece algo que suena a "riesgo", Syn lo clasifica antes de guardarlo. Solo el riesgo real va a la pila de riesgos:</p>
       <table>
-        <thead><tr><th style="width:26%">Skill</th><th>Para qué</th></tr></thead>
         <tbody>
-          <tr><td><span class="cmd">/db</span> cada mañana</td><td>Empezar el día con prioridades + agenda + Asana en un solo lugar.</td></tr>
-          <tr><td><span class="cmd">/mp</span></td><td>Llegar a cada reunión con el contexto del vault ya cargado.</td></tr>
-          <tr><td><span class="cmd">/sc</span></td><td>Coaching operativo de Synergy (Daiana primary).</td></tr>
-          <tr><td><span class="cmd">/mc</span></td><td>Cierre de reunión: email + recap interno.</td></tr>
-          <tr><td><span class="cmd">/transcribe</span></td><td>Audio (WhatsApp, etc.) → transcript en el vault.</td></tr>
-          <tr><td><span class="cmd">/scan</span> · <span class="cmd">/cookie-monster</span></td><td>Meter cualquier doc al lugar correcto (vault / Drive).</td></tr>
+          <tr><td><b>Risk</b></td><td>evento futuro probable → <b>riesgo</b></td></tr>
+          <tr><td><b>Issue</b></td><td>ya está pasando → <b>tarea</b></td></tr>
+          <tr><td><b>Assumption</b></td><td>supuesto sin verificar → watchlist</td></tr>
+          <tr><td><b>Dependency</b></td><td>algo que debe pasar antes → precondición de una tarea</td></tr>
         </tbody>
       </table>
-      <p style="margin-top:8px;margin-bottom:0;font-size:11px">Regla simple: <b>lo obligatorio mantiene a Syn vivo</b> (sección 1). El resto te hace ir más rápido, pero podés operar sin ello.</p>
+      <p style="margin-top:8px;margin-bottom:0">Así la pila de riesgos queda limpia y accionable, no inflada con cosas que no son riesgos.</p>
+    </div>
+
+    <div class="col-6 card">
+      <h2><span class="n">A</span> El sprint, encima del Tuesday Sync</h2>
+      <p>El Tuesday Sync es <b>semanal</b>; el sprint es <b>quincenal</b>. Se montan uno sobre el otro: cada 2° martes es un boundary de sprint, el del medio es un pulse.</p>
+      <h3>Quién hace qué en el sprint</h3>
+      <table>
+        <tbody>
+          <tr><td><b>Daiana</b></td><td>Orquesta — que cada sprint abra y cierre; marca los Win trabados.</td></tr>
+          <tr><td><b>Cada champion</b></td><td>Declara su Win al abrir y lo cierra (hit / miss / carry) en <span class="cmd">/vu</span>.</td></tr>
+          <tr><td><b>Gastón</b></td><td>Ratifica el Endgame de cada venture (el enganche a la estrategia de portfolio).</td></tr>
+          <tr><td><b>Mariano</b> <span class="pill op">⚙</span></td><td>Renderiza el Control Panel y mantiene la lista de ventures elegibles.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;margin-bottom:0"><b>Regla del carry:</b> un Win que se falla puede arrastrarse una vez. Al 2° arrastre, se marca "trabado — re-scope o escalar".</p>
+    </div>
+
+    <div class="col-6 card">
+      <h2><span class="n">A</span> El vault, Notion y los permisos</h2>
+      <h3>El vault es el modelo vivo del negocio</h3>
+      <p>No es una carpeta de notas: es lo que el equipo consulta <b>sin re-discutir</b>. Por eso importa la curaduría — la pila "curada" tiene que ser confiable; el resto queda en "log" para auditoría.</p>
+      <h3>Notion = la vidriera</h3>
+      <p>Es la capa de presentación read-only. Se sincroniza desde el vault los lunes <span class="pill op">⚙</span>. Se mira, no se edita.</p>
+      <h3>Permisos por alcance</h3>
+      <p style="margin-bottom:0">No todos ven todo. <b>full</b> (Gastón, Daiana, Mariano) ve todo, incluida data de inversores; <b>founder</b> (René, Andy) ve lo operativo sin la data confidencial de LPs. La data sensible vive en un repo aparte.</p>
+    </div>
+
+    <div class="col-12 card flag-op">
+      <h2><span class="n">A</span> Si git deja de andar <span class="pill op">⚙ recuperación</span></h2>
+      <p style="margin-bottom:0">El sistema sincroniza solo por detrás. Si <span class="cmd">/startup</span> o <span class="cmd">/upc</span> reportan un problema de sync: abrí la <b>Terminal</b>, corré <span class="cmd">bash scripts/doctor.sh</span>, esperá a que dé todo verde, y volvé a Cowork a re-correr el comando que falló. Es el único camino de recuperación. Si no te sentís cómoda con la Terminal, es trabajo de Mariano — avisale y seguí con otra cosa.</p>
+    </div>
+
+  </div>
+
+  <!-- ============ ANEXO B ============ -->
+  <div class="section-label" id="anexo-b"><b>Anexo B</b> — Próximos pasos: qué ya corre y qué falta</div>
+
+  <div class="grid">
+
+    <div class="col-12 card">
+      <h2><span class="n">B</span> Estado honesto del sistema</h2>
+      <p class="lead">El modelo está diseñado completo y la guía lo presenta como modo de trabajo vigente. Pero hay piezas que ya corren y piezas en construcción. Esto es lo que falta para que todo el modelo esté de pie.</p>
+      <div class="legend" style="margin-bottom:10px">
+        <span><span class="dot green" style="display:inline-block;width:9px;height:9px;border-radius:50%"></span> &nbsp;ya corre</span>
+        <span><span class="dot amber" style="display:inline-block;width:9px;height:9px;border-radius:50%"></span> &nbsp;en rollout</span>
+        <span><span class="dot blue" style="display:inline-block;width:9px;height:9px;border-radius:50%"></span> &nbsp;operador / infra</span>
+      </div>
+      <div class="grid" style="gap:12px">
+        <div class="col-6">
+          <h3>Ya corre hoy 🟢</h3>
+          <div class="status-line"><span class="dot green"></span><div>Los <b>filtros de captura</b> de los 3 tipos (compromiso, los 3 elementos de tarea, prob+impacto) — se aplican en cada minado.</div></div>
+          <div class="status-line"><span class="dot green"></span><div>La <b>anti-fragmentación</b> de tareas y el tope de 7/venture.</div></div>
+          <div class="status-line"><span class="dot green"></span><div>El <b>pipeline de reunión</b> Read.ai → vault → Asana, automático.</div></div>
+          <div class="status-line"><span class="dot green"></span><div>El ciclo semanal del <b>Tuesday Sync</b> con <span class="cmd">/vu</span> <span class="cmd">/au</span> <span class="cmd">/wr</span>.</div></div>
+        </div>
+        <div class="col-6">
+          <h3>En construcción 🔜</h3>
+          <div class="status-line"><span class="dot amber"></span><div><b>Niveles de confianza + cita textual</b> escribiéndose en cada item (Fases 1-2, decisiones y riesgos ya migrados).</div></div>
+          <div class="status-line"><span class="dot amber"></span><div><b>El confirm-flow de candidatas</b> dentro de <span class="cmd">/vu</span>·<span class="cmd">/au</span>·<span class="cmd">/db</span> (Fase 5).</div></div>
+          <div class="status-line"><span class="dot amber"></span><div><b>El motor anti-duplicados</b> que refuerza en vez de multiplicar (Fase 5).</div></div>
+          <div class="status-line"><span class="dot amber"></span><div><b>El contenedor de épicas</b> y los links tarea→épica en Asana (Fase 5).</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-7 card flag-amber">
+      <h2><span class="n">B</span> Lo inmediato — para que el sprint arranque</h2>
+      <ul class="must">
+        <li><span class="k">①</span><div><b>Ratificar el modelo</b> en el Tuesday Sync de hoy (Gastón + equipo). Sin esto, el resto no tiene mandato.</div></li>
+        <li><span class="k">②</span><div><b>Correr el primer boundary de sprint real</b> — cada champion declara su Win en <span class="cmd">/vu</span>. Es la primera vez que se ejercita en un boundary vivo.</div></li>
+        <li><span class="k">③</span><div><b>Construir el Control Panel en Notion</b> <span class="pill op">⚙</span> — las 5 propiedades + el tablero por estado de salud. Aún no empezado.</div></li>
+        <li><span class="k">④</span><div><b>Validar en 3 reuniones reales</b> que el minado emite confianza + cita y que el filtro RAID aguanta. Recién ahí se da por "funciona".</div></li>
+      </ul>
+    </div>
+
+    <div class="col-5 card">
+      <h2><span class="n">B</span> Más adelante</h2>
+      <table>
+        <tbody>
+          <tr><td><b>Sprints de áreas</b></td><td>extender el Win a <span class="cmd">/au</span>, no solo ventures.</td></tr>
+          <tr><td><b>Evidencia al cierre</b></td><td>Syn arma la evidencia al lado del veredicto del Win (sin decidirlo).</td></tr>
+          <tr><td><b>Sweep semanal</b></td><td>los domingos se jubila solo lo vencido y sin dueño, reportándolo.</td></tr>
+          <tr><td><b>Escalado type-1</b></td><td>decisión irreversible sin acción en 2 semanas → escala a Daiana.</td></tr>
+          <tr><td><b>Rotación de credenciales</b> <span class="pill op">⚙</span></td><td>mantenimiento de infra (próxima: 10-06).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ============ ANEXO C ============ -->
+  <div class="section-label" id="anexo-c"><b>Anexo C</b> — Más cosas que podés hacer con Syn</div>
+
+  <div class="grid">
+
+    <div class="col-12 card">
+      <h2><span class="n">C</span> Más allá de lo básico</h2>
+      <p class="lead">Lo de la sección ① mantiene el sistema vivo. Esto es lo que te hace sacarle jugo. Nada de acá es obligatorio — pero casi todo es fácil de pedir.</p>
+    </div>
+
+    <div class="col-6 card">
+      <h2><span class="n">C</span> Hacé que Syn trabaje a tu medida</h2>
+      <table>
+        <thead><tr><th style="width:34%">Qué</th><th>Cómo</th></tr></thead>
+        <tbody>
+          <tr><td><b>Personalizar tu daily brief</b></td><td><span class="cmd">/db</span> es el estándar, pero el formato es tuyo. Decile a Syn (o a Mariano) qué querés ver primero, qué sacar, en qué orden — como Daiana ya tiene su <span class="cmd">/buen-dia-syn</span>.</td></tr>
+          <tr><td><b>Desarrollar skills propias</b></td><td>Si repetís un flujo, conviértelo en skill con <span class="cmd">skill-creator</span>. Una skill = un comando reusable que hace siempre lo mismo bien.</td></tr>
+          <tr><td><b>Que hable en tu registro</b></td><td><span class="cmd">/id</span> adapta el tono a vos. <span class="cmd">/POV</span> hace que Syn hable en la voz de un compañero (para anticipar cómo lo leería Gastón, René…).</td></tr>
+          <tr><td><b>Coaching operativo</b></td><td><span class="cmd">/sc</span> — Syn te acompaña a pensar cómo encarar algo dentro del sistema.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-6 card">
+      <h2><span class="n">C</span> Capturá y publicá</h2>
+      <table>
+        <thead><tr><th style="width:34%">Qué</th><th>Cómo</th></tr></thead>
+        <tbody>
+          <tr><td><b>Audio → vault</b></td><td><span class="cmd">/transcribe</span> — un audio de WhatsApp se vuelve transcript editable.</td></tr>
+          <tr><td><b>Cualquier doc → su lugar</b></td><td><span class="cmd">/scan</span> lo lee, <span class="cmd">/cookie-monster</span> lo manda a la carpeta correcta del Drive.</td></tr>
+          <tr><td><b>Publicar una página web</b></td><td><span class="cmd">/html-web</span> · <span class="cmd">/md-web</span> · <span class="cmd">/notion-web</span> → un link público (como esta misma guía).</td></tr>
+          <tr><td><b>Doc branded al Drive</b></td><td><span class="cmd">/print-to-drive</span> — convierte un markdown en un HTML con la marca y lo guarda.</td></tr>
+          <tr><td><b>Preparar / cerrar reuniones</b></td><td><span class="cmd">/mp</span> antes (brief desde el vault), <span class="cmd">/mc</span> después (email + recap).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-6 card">
+      <h2><span class="n">C</span> Preguntarle al negocio</h2>
+      <p>Todo lo que ya está capturado en el vault, Syn lo responde con contexto. No tenés que buscar el archivo — preguntás en lenguaje natural:</p>
+      <p style="margin-bottom:4px"><i>"¿Qué decidimos sobre el pricing de La Chamana?"</i><br>
+      <i>"¿Qué riesgos abiertos de alto impacto tiene Panambi?"</i><br>
+      <i>"¿En qué quedó la última reunión de Punta Cripto?"</i></p>
+      <p style="margin-bottom:0">Cuanto mejor curado el vault, mejores las respuestas. Por eso la sección ① importa.</p>
+    </div>
+
+    <div class="col-6 card flag-op">
+      <h2><span class="n">C</span> Agentes avanzados <span class="pill op">⚙ algunos sólo operador</span></h2>
+      <table>
+        <tbody>
+          <tr><td><span class="cmd">/stf</span></td><td><b>Stress Test Forum</b> — un consejo adversarial que ataca una oportunidad desde 5 ángulos para encontrar el mejor deal. Para decisiones grandes.</td></tr>
+          <tr><td><span class="cmd">/hux</span></td><td>CTO agéntico — visión técnica zoom-out (Mariano).</td></tr>
+          <tr><td><span class="cmd">/cso</span> · <span class="cmd">/sec-audit</span></td><td>Seguridad — postura, incidentes, higiene de credenciales (Mariano).</td></tr>
+          <tr><td><b>Conectores / plugins</b></td><td>Sumar herramientas. Calendar, Gmail, Asana y Notion ya están conectados — se pueden agregar más.</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;margin-bottom:0"><b>Regla simple:</b> si pensás "esto Syn debería poder hacerlo", probablemente sí — preguntá. Y si no existe todavía, casi siempre se puede construir.</p>
     </div>
 
   </div>
 
   <div class="footnote">
-    <b>Si estás perdido, empezá por la sección 1.</b> &nbsp;·&nbsp; Spec canónico del modelo: <span class="path">vault/initiatives/2026-06-05-v2-curation-criteria-tasks-decisions-risks.md</span> &nbsp;·&nbsp; Detalle por tipo: <span class="path">vault/docs/operations/curation-criteria/</span> &nbsp;·&nbsp; Sprint: <span class="path">harnesses/sprint-cycle.md</span> &nbsp;·&nbsp; Contexto general: <span class="path">.claude/CLAUDE.md</span>
+    <b>Si estás perdido, empezá por la sección ①.</b> &nbsp;·&nbsp; Spec canónico del modelo: <span class="path">vault/initiatives/2026-06-05-v2-curation-criteria…</span> &nbsp;·&nbsp; Detalle por tipo: <span class="path">vault/docs/operations/curation-criteria/</span> &nbsp;·&nbsp; Sprint: <span class="path">harnesses/sprint-cycle.md</span> &nbsp;·&nbsp; Contexto general: <span class="path">.claude/CLAUDE.md</span>
   </div>
 
 </div>
