@@ -79,13 +79,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .dash{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
 
 /* ── rail ── */
-/* Sticky rail: stays put while the venture column scrolls.
-   will-change:transform promotes it to its own GPU layer so the compositor
-   TRANSLATES it instead of repainting — kills the backdrop-filter ghost-trail
-   that plain position:sticky leaves over frosted panels in Chromium. */
-.rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px;
-  will-change:transform}
-.panel{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+/* Sticky rail: stays put while the venture column scrolls. */
+.rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px}
+/* Rail panels use a SOLID translucent fill (no backdrop-filter): a frosted
+   panel that travels via position:sticky over a fixed backdrop leaves a
+   ghost-trail repaint artifact in Chromium. Dropping the filter from the
+   moving element removes the artifact at the root. Venture cards keep glass —
+   they scroll normally (not sticky) and don't trail. */
+.panel{background:rgba(34,34,40,0.90);
   border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
 .panel-h{display:flex;align-items:center;gap:8px;padding:16px 18px 0}
 .panel-h .t{font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--t-2)}
