@@ -3,182 +3,530 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="BOTH Ventures — Synergy Dashboard. Control panel: health, sprint, endgame y riesgos por venture.">
-<title>Synergy Dashboard — Both_Ventures</title>
+<meta name="description" content="BOTH Ventures — Synergy Dashboard. Control panel glassmorphism: health, sprint, endgame y riesgos por venture. Reporte completo en apéndice plegable.">
+<title>Synergy Weekly Dashboard — Both_Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#f1efe9; --bg2:#e9e6df; --card:#ffffff; --ink:#1c1b19; --muted:#6b675f;
-    --faint:#9a958c; --line:rgba(0,0,0,.07); --accent:#0a8c5a;
-    --g:#16a34a; --gb:#e7f3ec; --y:#d97706; --yb:#fbf1e3; --r:#dc2626; --rb:#fbeaea;
-    --shadow:0 1px 2px rgba(20,18,15,.05), 0 6px 20px rgba(20,18,15,.05);
-    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Helvetica,Arial,sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding-bottom:80px}
-  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
-  /* header */
-  header{display:flex;align-items:center;justify-content:space-between;padding:26px 0 8px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .dot-f{width:12px;height:12px;border-radius:50%;background:var(--ink)}
-  .dot-o{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink)}
-  .brand b{font-size:15px;letter-spacing:.02em}
-  .hmeta{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-  h1{font-size:30px;letter-spacing:-.02em;font-weight:680;margin:14px 0 2px}
-  .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
-  .sub a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(10,140,90,.3)}
-  /* kpi strip */
-  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:26px}
-  .kpi{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
-  .kpi .n{font-size:28px;font-weight:680;letter-spacing:-.02em;line-height:1.1}
-  .kpi .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:6px}
-  .kpi .hl{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--muted);margin-top:7px}
-  .seg{display:inline-block;width:9px;height:9px;border-radius:50%}
-  /* venture cards */
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
-  .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-  .vname{font-size:17px;font-weight:660;letter-spacing:-.01em}
-  .champ{font-size:12.5px;color:var(--faint);margin-top:2px}
-  .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:560;padding:4px 10px;border-radius:999px;white-space:nowrap}
-  .pill .d{width:7px;height:7px;border-radius:50%}
-  .p-g{background:var(--gb);color:#0f7a3d}.p-g .d{background:var(--g)}
-  .p-y{background:var(--yb);color:#a85d05}.p-y .d{background:var(--y)}
-  .p-r{background:var(--rb);color:#b91c1c}.p-r .d{background:var(--r)}
-  .row{font-size:13.5px}
-  .lab{font-size:10.5px;font-weight:620;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
-  .row .li{display:block;color:var(--ink);padding-left:12px;position:relative}
-  .row .li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--faint)}
-  .muted .li{color:var(--muted)}
-  .endgame{font-size:13px;color:var(--ink);font-style:italic}
-  .endgame.todo{color:var(--faint);font-style:normal}
-  .risks{display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid var(--line);padding-top:12px}
-  .chip{font-size:11.5px;font-weight:550;padding:4px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:5px}
-  .chip .d{width:6px;height:6px;border-radius:50%}
-  .c-r{background:var(--rb);color:#b91c1c}.c-r .d{background:var(--r)}
-  .c-y{background:var(--yb);color:#a85d05}.c-y .d{background:var(--y)}
-  .c-none{color:var(--faint);font-size:12px}
-  .sprint-tag{font-size:11px;color:var(--accent);background:rgba(10,140,90,.08);padding:3px 9px;border-radius:999px;font-weight:560}
-  /* ask pill */
-  .ask{position:fixed;right:26px;bottom:24px;background:var(--ink);color:#fff;border-radius:999px;padding:12px 20px;font-size:13.5px;font-weight:560;box-shadow:0 8px 28px rgba(0,0,0,.22);display:flex;gap:8px;align-items:center}
-  .ask .spark{color:#7fe0b0}
-  footer{margin-top:30px;color:var(--faint);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;display:flex;justify-content:space-between}
-  @media(max-width:880px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+/* ══════════════════════════════════════════════════════════
+   Synergy Weekly Dashboard — dark glassmorphism (visionOS mood)
+   bg: 9B graphite · ambient glow · frosted panels · depth
+══════════════════════════════════════════════════════════ */
+:root{
+  --ink:#ffffff;
+  --t-1:rgba(255,255,255,0.92);
+  --t-2:rgba(255,255,255,0.62);
+  --t-3:rgba(255,255,255,0.40);
+  --t-4:rgba(255,255,255,0.26);
+  --edge:rgba(255,255,255,0.12);
+  --edge-soft:rgba(255,255,255,0.07);
+  --hi:rgba(255,255,255,0.16);
+  --glass:rgba(28,28,32,0.42);
+  --glass-2:rgba(40,40,46,0.34);
+  --glass-3:rgba(18,18,22,0.50);
+  --accent:#8be9b6;            /* Synergy green — el único pop vivo */
+  --green:#86efac; --green-bg:rgba(134,239,172,0.14);
+  --amber:#fcd34d; --amber-bg:rgba(252,211,77,0.14);
+  --red:#fca5a5;   --red-bg:rgba(252,165,165,0.14);
+  --orange:#fdba74;--orange-bg:rgba(253,186,116,0.14);
+  --blue:#7dd3fc;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  --r-shell:30px; --r-card:22px; --r-tile:16px;
+  --blur:saturate(1.5) blur(30px);
+  --blur-card:saturate(1.4) blur(22px);
+  --shadow-card:0 10px 40px rgba(0,0,0,0.34);
+  --shadow-shell:0 40px 120px rgba(0,0,0,0.55);
+  --ease:cubic-bezier(0.22,0.61,0.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--t-1);line-height:1.55;-webkit-font-smoothing:antialiased;
+  min-height:100vh;position:relative;padding:52px 52px 72px;
+  background:#0a0a0c url('./bg.jpg') no-repeat center top fixed;background-size:cover}
+/* ambient: glow cálido abajo-izq + frío arriba-der, velo oscuro encima del grafito */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1200px 700px at 80% 4%, rgba(125,211,252,0.16), transparent 60%),
+    radial-gradient(1100px 640px at 8% 98%, rgba(253,186,116,0.15), transparent 58%),
+    radial-gradient(700px 700px at 50% 120%, rgba(139,233,182,0.06), transparent 60%),
+    linear-gradient(180deg, rgba(8,8,10,0.50) 0%, rgba(8,8,10,0.68) 46%, rgba(8,8,10,0.82) 100%)}
+
+/* ══ SHELL ══ */
+.shell{position:relative;z-index:1;max-width:1340px;margin:0 auto;zoom:1.25;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--edge);border-radius:var(--r-shell);
+  box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:28px 28px 30px}
+
+/* ══ TOP BAR ══ */
+.top{display:flex;align-items:center;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+.greet{flex:1;min-width:240px}
+.eyebrow{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);font-weight:600}
+.greet h1{font-size:30px;font-weight:600;letter-spacing:-0.02em;margin-top:6px;line-height:1.1}
+.greet h1 b{font-weight:700}
+.ask{display:flex;align-items:center;gap:10px;background:var(--glass-3);border:1px solid var(--edge);
+  border-radius:999px;padding:11px 18px 11px 16px;min-width:280px;color:var(--t-2);font-size:13.5px;
+  box-shadow:inset 0 1px 0 var(--hi)}
+.ask .spark{color:var(--accent);font-size:14px}
+.ask .ph{color:var(--t-3)}
+.ask .kbd{margin-left:auto;font-size:10px;color:var(--t-3);border:1px solid var(--edge);border-radius:6px;padding:2px 7px}
+.top-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--t-3);letter-spacing:0.04em;
+  background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:999px;padding:8px 14px}
+.top-meta .sprint{color:var(--accent);font-weight:600}
+.top-meta .sep{color:var(--t-4)}
+
+/* ══ DASH LAYOUT ══ */
+.dash{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+
+/* ── rail ── */
+.rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px}
+.panel{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.panel-h{display:flex;align-items:center;gap:8px;padding:16px 18px 0}
+.panel-h .t{font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--t-2)}
+.panel-h .c{margin-left:auto;font-size:11px;color:var(--t-3)}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.stat{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:13px 14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)}
+.stat.span{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between}
+.stat .l{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:7px}
+.stat .n{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1}
+.stat .dots{display:inline-flex;gap:6px;align-items:center}
+.seg{width:10px;height:10px;border-radius:50%}
+.seg.g{background:var(--green)}.seg.y{background:var(--amber)}.seg.r{background:var(--red)}
+.stat .leg{font-size:10px;color:var(--t-3);margin-top:7px}
+
+.prios{padding:8px 14px 16px}
+.prio{display:flex;gap:11px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid var(--edge-soft)}
+.prio:last-child{border-bottom:none}
+.prio .i{flex-shrink:0;width:20px;height:20px;border-radius:7px;background:var(--glass-3);border:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--t-2)}
+.prio .txt{font-size:12.5px;color:var(--t-1);line-height:1.45}
+.prio .who{color:var(--t-3);font-size:11px}
+
+.sprint-card{padding:16px 18px 18px}
+.sprint-card .tag{display:inline-block;font-size:10.5px;color:var(--accent);background:var(--green-bg);
+  border:1px solid rgba(139,233,182,0.3);border-radius:999px;padding:4px 11px;letter-spacing:0.04em;font-weight:600;margin-bottom:10px}
+.sprint-card .body{font-size:12px;color:var(--t-2);line-height:1.55}
+.sprint-card .body b{color:var(--t-1)}
+
+/* ── venture field ── */
+.field-h{display:flex;align-items:baseline;gap:10px;padding:2px 4px 14px}
+.field-h .t{font-size:13px;font-weight:600;color:var(--t-1);letter-spacing:0.01em}
+.field-h .d{font-size:11px;color:var(--t-3);margin-left:auto}
+.ventures{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vcard{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);padding:18px 18px 16px;
+  box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);display:flex;flex-direction:column;gap:13px;
+  transition:transform 0.25s var(--ease),border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
+  animation:rise 0.5s var(--ease) both}
+.vcard:hover{transform:translateY(-3px);border-color:var(--hi);box-shadow:0 18px 50px rgba(0,0,0,0.45),inset 0 1px 0 var(--hi)}
+.vtop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.vname{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.vmeta{font-size:11px;color:var(--t-3);margin-top:3px}
+.vmeta .stale{color:var(--orange)}
+.hp{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.10)}
+.hp .d{width:6px;height:6px;border-radius:50%}
+.hp.g{background:var(--green-bg);color:var(--green);border:1px solid rgba(134,239,172,0.28)}.hp.g .d{background:var(--green)}
+.hp.y{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(252,211,77,0.28)}.hp.y .d{background:var(--amber)}
+.hp.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.28)}.hp.r .d{background:var(--red)}
+.row .lab{font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-4);font-weight:600;margin-bottom:5px}
+.row .li{display:block;font-size:12.5px;color:var(--t-1);padding-left:13px;position:relative;margin-top:3px;line-height:1.45}
+.row .li:first-of-type{margin-top:0}
+.row .li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--t-4)}
+.row .li b{font-weight:700}
+.row.muted .li{color:var(--t-2)}
+.endgame{font-size:12px;color:var(--t-1);line-height:1.5}
+.endgame.todo{color:var(--t-4);font-style:italic}
+.vrisks{display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid var(--edge-soft);padding-top:13px;margin-top:auto}
+.chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
+.chip .d{width:5px;height:5px;border-radius:50%}
+.chip.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.22)}.chip.r .d{background:var(--red)}
+.chip.o{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(253,186,116,0.22)}.chip.o .d{background:var(--orange)}
+.chip.none{font-size:11px;color:var(--t-4)}
+
+/* ══ APPENDIX ══ */
+.appendix{margin-top:18px;background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);overflow:hidden}
+.appendix>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 22px;user-select:none;
+  transition:background 0.2s var(--ease)}
+.appendix>summary::-webkit-details-marker{display:none}
+.appendix>summary:hover{background:rgba(255,255,255,0.04)}
+.ax-key{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);
+  border:1px solid var(--edge);border-radius:8px;padding:5px 10px}
+.ax-title{font-size:14px;font-weight:600;letter-spacing:0.01em;color:var(--t-1)}
+.ax-sub{font-size:11.5px;color:var(--t-3)}
+.ax-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--accent)}
+.ax-chev{transition:transform 0.25s var(--ease);font-size:11px}
+.appendix[open]>summary .ax-chev{transform:rotate(180deg)}
+.appendix>summary .show{display:inline}.appendix>summary .hide{display:none}
+.appendix[open]>summary .show{display:none}.appendix[open]>summary .hide{display:inline}
+.rest{padding:8px 30px 32px;border-top:1px solid var(--edge-soft);animation:rise 0.4s var(--ease) both}
+
+.rest .lead{color:var(--t-2);font-size:13px;line-height:1.65;padding:16px 18px;background:var(--glass-3);
+  border:1px solid var(--edge-soft);border-left:2px solid var(--accent);border-radius:12px;margin:18px 0 8px}
+.rest h2{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t-1);font-weight:700;
+  margin:30px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--edge-soft)}
+.rest h3{font-size:13.5px;font-weight:600;margin:18px 0 4px;color:var(--t-1)}
+.rest h3 em{color:var(--t-3);font-style:normal;font-size:11px;font-weight:400}
+.rest p{font-size:13px;color:var(--t-2);margin:7px 0;max-width:880px;line-height:1.6}
+.rest ul{margin:8px 0 8px 4px;padding-left:18px}
+.rest li{font-size:13px;color:var(--t-2);margin:5px 0;line-height:1.55}
+.rest strong{color:var(--t-1);font-weight:600}
+.rest em{color:var(--t-3)}
+.rest code{font-size:11px;background:var(--glass-3);border:1px solid var(--edge-soft);padding:1px 6px;border-radius:5px;color:var(--accent)}
+.rest .grp{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--t-2);font-weight:700;margin-top:16px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:12.5px}
+th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;color:var(--t-3);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background 0.15s}tbody tr:hover{background:rgba(255,255,255,0.03)}
+td strong{color:var(--t-1)}
+.sev{font-size:10.5px;font-weight:700;white-space:nowrap}
+.sev.hh{color:var(--red)}.sev.hm{color:var(--orange)}.sev.mh{color:var(--amber)}
+.audit{background:var(--glass-3);border:1px solid var(--edge-soft);border-left:2px solid var(--t-4);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12px;color:var(--t-2);line-height:1.55}
+.audit b{color:var(--t-1)}
+.flag{background:var(--red-bg);border:1px solid rgba(252,165,165,0.20);border-left:2px solid var(--red);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12.5px;color:#f3cccc;line-height:1.55}
+.flag b{color:var(--red)}
+.heat td:last-child{font-weight:700;text-align:right;color:var(--t-1)}
+blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-left:2px solid var(--accent);border-radius:12px;font-size:13.5px;color:var(--t-1);line-height:1.6}
+.synergy-close .k{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-3);font-weight:700;margin-top:18px}
+
+/* ══ FX ══ */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.vcard:nth-child(2){animation-delay:.04s}.vcard:nth-child(3){animation-delay:.08s}.vcard:nth-child(4){animation-delay:.12s}
+.vcard:nth-child(5){animation-delay:.16s}.vcard:nth-child(6){animation-delay:.2s}.vcard:nth-child(7){animation-delay:.24s}
+.vcard:nth-child(n+8){animation-delay:.28s}
+@media(prefers-reduced-motion:reduce){.vcard,.rest{animation:none}}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.24)}
+
+@media(max-width:1000px){
+  body{padding:28px 22px 60px}
+  .shell{zoom:1.1}
+  .dash{grid-template-columns:1fr}
+  .rail{position:static;flex-direction:column}
+  .ventures{grid-template-columns:1fr}
+  .top{gap:12px}.ask{min-width:0;flex:1}
+}
+@media(max-width:560px){
+  body{padding:14px 12px 50px}.shell{padding:18px 16px 20px;border-radius:24px;zoom:1}
+  .greet h1{font-size:24px}.stats{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="brand"><div class="dot-f"></div><div class="dot-o"></div><b>Both_Ventures</b></div>
-    <span class="hmeta">Synergy Dashboard · 2026-06-09</span>
-  </header>
 
-  <h1>Synergy Dashboard</h1>
-  <p class="sub">Control panel del portfolio — health, sprint, endgame y riesgos por venture. <span class="sprint-tag">Sprint 1 · 06-09 → 06-23 (abre)</span> &nbsp; El resto del reporte (decisiones, registro completo, áreas, Asana) → <a href="../weekly-sync-2026-06-09/">digest completo (B)</a></p>
+<div class="shell">
 
-  <div class="kpis">
-    <div class="kpi"><div class="n">10</div><div class="l">Ventures</div></div>
-    <div class="kpi"><div class="n">5·4·1</div><div class="l">Health G·Y·R</div><div class="hl"><span class="seg" style="background:var(--g)"></span><span class="seg" style="background:var(--y)"></span><span class="seg" style="background:var(--r)"></span></div></div>
-    <div class="kpi"><div class="n">105</div><div class="l">Asana overdue</div></div>
-    <div class="kpi"><div class="n">29</div><div class="l">Riesgos curated (semana)</div></div>
-    <div class="kpi"><div class="n">1 / 10</div><div class="l">Endgames definidos</div></div>
+  <!-- ══ TOP BAR ══ -->
+  <div class="top">
+    <div class="greet">
+      <div class="eyebrow">Tuesday Weekly Sync · 2026-06-09</div>
+      <h1>Synergy <b>Weekly Dashboard</b></h1>
+    </div>
+    <div class="top-meta"><span class="sprint">Sprint 1</span><span class="sep">·</span><span>06-09 → 06-23</span><span class="sep">·</span><span>Q-02.26</span></div>
   </div>
 
-  <div class="grid">
+  <!-- ══ DASH ══ -->
+  <div class="dash">
 
-    <!-- Manantial -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Manantial</div><div class="champ">Gaston / Daiana</div></div><span class="pill p-y"><span class="d"></span>Yellow</span></div>
-      <div class="row"><div class="lab">This week (Sprint 1·1/2 abre)</div><span class="li">Cierre mayo peor mes (NOI −$12.7K, ~85% no-recurrente)</span><span class="li">Runway ene-27 → $6.4K</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Ocup. W22 rebote 66.7%</span><span class="li">Evento Lars Janson + N. Montaño</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="chip c-r"><span class="d"></span>Runway exhaustion · H/H</span><span class="chip c-y"><span class="d"></span>Churn Belén · H/M</span></div>
-    </div>
+    <!-- ── LEFT RAIL ── -->
+    <aside class="rail">
 
-    <!-- La Chamana -->
-    <div class="card">
-      <div class="top"><div><div class="vname">La Chamana</div><div class="champ">Daiana</div></div><span class="pill p-r"><span class="d"></span>Red</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Runway <b>2.6m</b> ($70.7K); buffer $10.7K al trigger plan B</span><span class="li">Deals Airbnb $9.9K + Gaia $13K</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Re-apertura villa</span><span class="li">Pipeline ago-dic ≥$110K</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="chip c-r"><span class="d"></span>Piso $60K · H/H</span><span class="chip c-r"><span class="d"></span>Finance blackout · H/H</span><span class="chip c-r"><span class="d"></span>Parálisis operativa · H/H</span></div>
-    </div>
+      <div class="panel">
+        <div class="panel-h"><span class="t">Resumen del portfolio</span></div>
+        <div class="stats">
+          <div class="stat"><div class="l">Ventures</div><div class="n">10</div></div>
+          <div class="stat"><div class="l">Endgames def.</div><div class="n">1/10</div></div>
+          <div class="stat"><div class="l">Asana overdue</div><div class="n">105</div></div>
+          <div class="stat"><div class="l">Riesgos curated</div><div class="n">29</div></div>
+          <div class="stat span"><div><div class="l">Health · G / Y / R</div><div class="n">5 · 4 · 1</div></div>
+            <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
+        </div>
+      </div>
 
-    <!-- Reshore -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Reshore</div><div class="champ">Gaston</div></div><span class="pill p-y"><span class="d"></span>Yellow</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Ronda $500K → <b>$400K</b> (val $12M)</span><span class="li">Zenith $25M facility pending close</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">GTM one-pager + reshore.com LIVE</span><span class="li">Zenith term sheet desbloqueado</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="chip c-y"><span class="d"></span>Capital-intensive sin estructura · M/H</span></div>
-    </div>
+      <div class="panel">
+        <div class="panel-h"><span class="t">This Week's Priorities</span><span class="c">4</span></div>
+        <div class="prios">
+          <div class="prio"><div class="i">1</div><div><div class="txt">Gastón define postura <b>Brasil / Quantum</b> — destraba buy/no-buy de la máquina.</div><div class="who">Gaston</div></div></div>
+          <div class="prio"><div class="i">2</div><div><div class="txt">Cerrar ronda <b>Reshore $400K + Zenith</b> antes de fin de junio.</div><div class="who">Gaston / Mike</div></div></div>
+          <div class="prio"><div class="i">3</div><div><div class="txt">Ratificar <b>Sprint + Control Panel A</b>; Rene declara Wins LAK3 + Photonic.</div><div class="who">Mariano / Rene</div></div></div>
+          <div class="prio"><div class="i">4</div><div><div class="txt">Materializar <b>pipeline La Chamana</b> antes de tocar trigger plan B.</div><div class="who">Daiana / Iru</div></div></div>
+        </div>
+      </div>
 
-    <!-- LAK3 -->
-    <div class="card">
-      <div class="top"><div><div class="vname">LAK3</div><div class="champ">Rene · stale 05-20</div></div><span class="pill p-y"><span class="d"></span>Yellow</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Revierte a <b>Vibe Incubating</b> (pérdida de valor)</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Reframe substrate-acquisition V0.1 (6 artifacts)</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">DRAFT — Rene</div></div>
-      <div class="risks"><span class="c-none">— sin riesgo curated esta semana</span></div>
-    </div>
+      <div class="panel sprint-card">
+        <span class="tag">Sprint 1 · 06-09 → 06-23 · abre</span>
+        <div class="body">Pilotos: <b>LAK3 · Photonic Lab · B_V® | OS</b>. Boundary del 06-23 en adelante trackea week 1/2 vs 2/2 reales. Detalle del board en el apéndice.</div>
+      </div>
 
-    <!-- Photonic Lab -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Photonic Lab</div><div class="champ">Rene</div></div><span class="pill p-g"><span class="d"></span>Green</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Demand validation 9/13 startups</span><span class="li">Techo pricing $50K/100g</span><span class="li">Eywa anchor tenant candidato</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Narrativa B2 aprobada</span><span class="li">3-pilar architecture</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">DRAFT — Rene</div></div>
-      <div class="risks"><span class="c-none">— sin riesgo curated esta semana</span></div>
-    </div>
+    </aside>
 
-    <!-- Panambi -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Panambi</div><div class="champ">Andres</div></div><span class="pill p-g"><span class="d"></span>Green</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Holding pattern</span><span class="li">$25K pendientes, gatillados por inflow Selfina</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Holding pattern</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="c-none">— sin riesgo curated esta semana</span></div>
-    </div>
+    <!-- ── VENTURE FIELD ── -->
+    <section>
+      <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">una fila por venture · el corazón del reporte</span></div>
+      <div class="ventures">
 
-    <!-- Punta Cripto -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Punta Cripto</div><div class="champ">Rene · stale 05-18</div></div><span class="pill p-g"><span class="d"></span>Green</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Daiana OK para registrar marca + preparar estructura</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Format V0.2 locked</span><span class="li">Demi Brener (OpenZeppelin) advisory</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="chip c-r"><span class="d"></span>Synergy validó finanzas s/ datos no verificados · H/H</span></div>
-    </div>
+        <!-- Manantial -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Gaston / Daiana</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week · Sprint 1 (1/2 abre)</div><span class="li">Cierre mayo peor mes (NOI <b>−$12.7K</b>, ~85% no-recurrente)</span><span class="li">Runway ene-27 → $6.4K</span></div>
+          <div class="row muted"><div class="lab">Last week (pre-sprint)</div><span class="li">Ocup. W22 rebote 66.7%</span><span class="li">Evento Lars Janson + N. Montaño</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion · H/H</span><span class="chip o"><span class="d"></span>Churn Belén · H/M</span></div>
+        </article>
 
-    <!-- Quantum -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Quantum</div><div class="champ">Andres</div></div><span class="pill p-y"><span class="d"></span>Yellow</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">2 informes (Pluna + BID)</span><span class="li">Plan $50M <b>bajado</b> → option B</span><span class="li">Postura Brasil pendiente de Gastón</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Bloque BOTH+TQI</span><span class="li">Plan $50M; informes en preparación</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="chip c-r"><span class="d"></span>Cap-table · H/H</span><span class="chip c-r"><span class="d"></span>Antel · H/H</span><span class="chip c-r"><span class="d"></span>IonQ/TQI pricing · H/H</span><span class="chip c-r"><span class="d"></span>Alineación BOTH · H/H</span></div>
-    </div>
+        <!-- La Chamana -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Daiana</div></div><span class="hp r"><span class="d"></span>Red</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Runway <b>2.6m</b> ($70.7K); buffer $10.7K al trigger plan B</span><span class="li">Deals Airbnb $9.9K + Gaia $13K</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Re-apertura villa</span><span class="li">Pipeline ago-dic ≥$110K</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Piso $60K · H/H</span><span class="chip r"><span class="d"></span>Finance blackout · H/H</span><span class="chip r"><span class="d"></span>Parálisis op. · H/H</span></div>
+        </article>
 
-    <!-- B_V OS -->
-    <div class="card">
-      <div class="top"><div><div class="vname">B_V® | OS</div><div class="champ">Mariano</div></div><span class="pill p-g"><span class="d"></span>Green</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">V2 curation criteria (3 tipos) shipped</span><span class="li">Backfill 472 archivos</span><span class="li">Primer digest curado</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Auto-miner Option C</span><span class="li">Atlas v4</span><span class="li">Hux launch</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame">Synergy = fabric operativo confiable; el OS es el leverage, nunca el producto.</div></div>
-      <div class="risks"><span class="chip c-r"><span class="d"></span>Synergy trust · H/H</span><span class="chip c-r"><span class="d"></span>Token spend · H/H</span><span class="chip c-r"><span class="d"></span>VU incompletos · H/H</span></div>
-    </div>
+        <!-- Reshore -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Ronda $500K → <b>$400K</b> (val $12M)</span><span class="li">Zenith $25M facility pending close</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">GTM one-pager + reshore.com LIVE</span><span class="li">Zenith term sheet desbloqueado</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Capital-intensive sin estructura · M/H</span></div>
+        </article>
 
-    <!-- Content Factory -->
-    <div class="card">
-      <div class="top"><div><div class="vname">Content Factory</div><div class="champ">Andres</div></div><span class="pill p-g"><span class="d"></span>Green</span></div>
-      <div class="row"><div class="lab">This week</div><span class="li">Motor en <b>producción</b> (0.5–1 h/día human-in-the-loop)</span><span class="li">Falta asignar el rol</span></div>
-      <div class="row muted"><div class="lab">Last week</div><span class="li">Motor armado</span></div>
-      <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
-      <div class="risks"><span class="c-none">— sin riesgo curated esta semana</span></div>
-    </div>
+        <!-- LAK3 -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene · <span class="stale">stale 05-20</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Revierte a <b>Vibe Incubating</b> (pérdida de valor)</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Reframe substrate-acquisition V0.1 (6 artifacts)</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">DRAFT — Rene</div></div>
+          <div class="vrisks"><span class="chip none">— sin riesgo curated esta semana</span></div>
+        </article>
 
+        <!-- Photonic Lab -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Demand validation 9/13 startups</span><span class="li">Techo pricing $50K/100g</span><span class="li">Eywa anchor tenant candidato</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Narrativa B2 aprobada</span><span class="li">3-pilar architecture</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">DRAFT — Rene</div></div>
+          <div class="vrisks"><span class="chip none">— sin riesgo curated esta semana</span></div>
+        </article>
+
+        <!-- Panambi -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Holding pattern</span><span class="li">$25K pendientes, gatillados por inflow Selfina</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Holding pattern</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip none">— sin riesgo curated esta semana</span></div>
+        </article>
+
+        <!-- Punta Cripto -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Punta Cripto</div><div class="vmeta">Rene · <span class="stale">stale 05-18</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Daiana OK para registrar marca + preparar estructura</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Format V0.2 locked</span><span class="li">Demi Brener (OpenZeppelin) advisory</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Synergy validó finanzas s/ datos no verificados · H/H</span></div>
+        </article>
+
+        <!-- Quantum -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Andres</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">2 informes (Pluna + BID)</span><span class="li">Plan $50M <b>bajado</b> → option B</span><span class="li">Postura Brasil pendiente de Gastón</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Bloque BOTH+TQI</span><span class="li">Plan $50M; informes en preparación</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Cap-table · H/H</span><span class="chip r"><span class="d"></span>Antel · H/H</span><span class="chip r"><span class="d"></span>IonQ/TQI pricing · H/H</span><span class="chip r"><span class="d"></span>Alineación BOTH · H/H</span></div>
+        </article>
+
+        <!-- B_V OS -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">B_V® | OS</div><div class="vmeta">Mariano</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">V2 curation criteria (3 tipos) shipped</span><span class="li">Backfill 472 archivos</span><span class="li">Primer digest curado</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Auto-miner Option C</span><span class="li">Atlas v4</span><span class="li">Hux launch</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Synergy = fabric operativo confiable; el OS es el leverage, nunca el producto.</div></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Synergy trust · H/H</span><span class="chip r"><span class="d"></span>Token spend · H/H</span><span class="chip r"><span class="d"></span>VU incompletos · H/H</span></div>
+        </article>
+
+        <!-- Content Factory -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Content Factory</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week</div><span class="li">Motor en <b>producción</b> (0.5–1 h/día human-in-the-loop)</span><span class="li">Falta asignar el rol</span></div>
+          <div class="row muted"><div class="lab">Last week</div><span class="li">Motor armado</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido</div></div>
+          <div class="vrisks"><span class="chip none">— sin riesgo curated esta semana</span></div>
+        </article>
+
+      </div>
+    </section>
   </div>
 
-  <footer><span>Both_Ventures · Synergy</span><span>Dashboard · 2026-06-09</span></footer>
+  <!-- ══ APPENDIX (collapsible, starts hidden) ══ -->
+  <details class="appendix" id="appendix">
+    <summary>
+      <span class="ax-key">Appendix</span>
+      <span class="ax-title">Full Report Generated</span>
+      <span class="ax-sub">decisiones · riesgos · áreas · Asana · sprint · themes</span>
+      <span class="ax-toggle"><span class="show">Mostrar</span><span class="hide">Ocultar</span><span class="ax-chev">▾</span></span>
+    </summary>
+
+    <div class="rest">
+      <p class="lead"><strong>Curaduría V2 activa (primera vez).</strong> Este digest es el primero que lee la data
+        <em>ya curada</em>: decisiones y riesgos se filtran por <code>tier</code> real (no por fecha sola). Lo
+        <em>vigente/curated</em> gobierna y se muestra arriba; lo <em>log</em> (auditoría) va al apéndice — nada se borra.
+        Nota honesta: el <code>tier</code> de los items legacy es una aproximación de backfill, así que la garantía
+        "curated" es más débil que en los items minados de ahora en más.</p>
+
+      <h2>Sprint Board · Sprint 1 (2026-06-09 → 2026-06-23)</h2>
+      <p><em>Pilotos: LAK3, Photonic Lab, B_V® | OS.</em></p>
+      <table>
+        <thead><tr><th>Venture</th><th>Win (committed)</th><th>Verdict</th><th>Carries</th></tr></thead>
+        <tbody>
+          <tr><td>B_V® | OS</td><td>Biweekly Sprint + Control Panel A ratificado en el Sync, con Control Panel A renderizando los 3 pilotos live en Notion</td><td>⚪ committed</td><td>0</td></tr>
+          <tr><td>LAK3</td><td><em>[DRAFT — Rene declara el Win en sprint-open vía /vu]</em></td><td>⚪ committed</td><td>0</td></tr>
+          <tr><td>Photonic Lab</td><td><em>[DRAFT — Rene declara el Win en sprint-open vía /vu]</em></td><td>⚪ committed</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <div class="flag">⚠ <b>Acción:</b> LAK3 + Photonic siguen como scaffolds DRAFT — Rene debe declarar ambos Wins en el sprint-open.</div>
+
+      <h2>Area Summaries</h2>
+      <h3>Capital — Gaston <em>(05-14 — stale)</em></h3>
+      <p>Reframe BOTH→Reshore: los $200K mejoran con Zenith en la mesa (ownership uplift, no defensivo). Mitrani deploya $1M a BOTH a nivel plataforma; $200K→Reshore, $800K para OPEX/originación.</p>
+      <h3>Narrative & Comms — Rene <em>(05-27)</em></h3>
+      <p>Quantum/Uruguay Nova one-pager (pre-España Andy); template portfolio replicable. Sensitivity-tiered surfacing como default (LAK3 → Photonic financials → Punta Cripto). Rick's Studio (<code>rick</code> + <code>rick-prime</code>) live portfolio-wide.</p>
+      <p><em>Pending:</em> Rene + Gaston 1:1 LAK3 (sliding past travel window); Synergy V2 risk-definition (Rene).</p>
+      <h3>Operations & Finance — Daiana <em>(06-02)</em></h3>
+      <p>Ciclo de cierres de mes en ejecución; QuickBooks como reporting estructurado en implementación. Investor report BOTH-level al LP entregado. La Chamana: monitoreo cash diario vs trigger.</p>
+      <h3>Legal & Governance — Andres <em>(06-08 — fresh)</em></h3>
+      <ul>
+        <li>✅ Docs de BOTH <strong>firmados</strong> → bloqueo levantado; cambio a Both LLC desbloqueado.</li>
+        <li>⏳ Trademarks Punta Cripto en proceso de pago. Cap tables encaminados (cruza estructura triangular Quantum).</li>
+        <li>⏳ Quantum term sheet máquina (buy/no-buy) — lo define Gastón, ligado a Brasil.</li>
+      </ul>
+      <h3>Tech & Infrastructure — Mariano <em>(06-01, + esta sesión)</em></h3>
+      <p><strong>V2 curation criteria shipped end-to-end esta sesión</strong> — decisiones (Worker <code>6a5023d</code>+<code>11ff226</code>), riesgos (<code>076ce72</code>), tareas (<code>dfa6a9a</code>) + backfill de 290 decisiones + 182 riesgos. Antes: Auto-miner Option C, Atlas v4, Hux launch.</p>
+      <p><em>Nota disciplina:</em> los 4 deploys V2 están deploy-verified pero <strong>NO validados en reuniones reales</strong> — trial-gate 0/3.</p>
+      <h3>Executive — Gaston <em>(04-28 — muy stale, flag)</em></h3>
+
+      <h2>Recent Decisions (Past 7 Days) · tier: vigente</h2>
+      <div class="audit"><b>54 decisiones vigentes</b> esta semana (15 fueron a <code>log</code> — ver apéndice). Agrupadas por venture; se listan las gobernantes.</div>
+      <p class="grp">Quantum (deal architecture)</p>
+      <ul>
+        <li>BOTH owns 100% del subsidiary + retiene 100% del upside; <strong>BOTH + TQI van como bloque unificado</strong> ante el Estado Uruguayo.</li>
+        <li><strong>Plan de compra $50M bajado</strong> → ir por <em>option B</em> (estructura nueva sin definir). Postpone presentación presidencial formal.</li>
+        <li>Weizmann (Quantum Biology) como partner en la propuesta. Uruguay como hub regional 256-qubit.</li>
+      </ul>
+      <p class="grp">B_V® | OS / Synergy</p>
+      <ul>
+        <li><strong>Pause feature expansion de Synergy</strong>; freeze hasta cerrar Epic/Task/Risk criteria. Weekly rhythm: 1 meaningful move/venture/semana.</li>
+        <li>Arquitectura de reporting: <strong>Endgame → Épicas → Venture Update semanal</strong> con validación del Champion. Plan B2: tres zonas de curaduría (curated/log/recap).</li>
+        <li><strong>Both construye 3 flagship ventures; no se abren nuevos</strong> (bandwidth mandate).</li>
+      </ul>
+      <p class="grp">Otros</p>
+      <ul>
+        <li><strong>La Chamana:</strong> Mercury LLC docs completados (3 founders extranjeros); guest coverage cap; postura soft-opening.</li>
+        <li><strong>Manantial:</strong> accrual-basis revenue recognition; halt non-essential CAPEX pending junio close; cash floor target $60-62K.</li>
+        <li><strong>Punta Cripto:</strong> Daiana OK para registrar marca + preparar estructura; validación de números críticos.</li>
+        <li><strong>Reshore:</strong> continuar inversión ($1.4M acumulado).</li>
+        <li><strong>Content Factory:</strong> MVP (blog+IG+thread); cadena Sonnet+Opus; Lara Fuentes writer persona.</li>
+      </ul>
+      <div class="audit"><b>Decisions — Audit (log tier):</b> 15 decisiones en <code>log</code> esta semana — no gobernantes, recall forense. Incluye: 5 worker-deploy records, plan $50M <em>superseded</em>, SPV/pricing Quantum parked (on-hold), 2 opiniones de advisor externo (type-3, Lars Janson real-estate), y "clasificar proyectos en 2 categorías" (proposed, sin cerrar).</div>
+
+      <h2>Active Risks · tier: curated</h2>
+      <div class="audit"><b>29 riesgos curated</b> esta semana (sobre threshold impact/likelihood high). 20 fueron a <code>log</code> (debajo de threshold — apéndice). Register completo: 114 curated.</div>
+      <table>
+        <thead><tr><th>Risk</th><th>Sev</th><th>Venture</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Daiana capacity overload</strong> (demandas simultáneas Gaston/ventures)</td><td class="sev hh">H/H</td><td>manantial · chamana · cripto</td><td>open</td></tr>
+          <tr><td><strong>Runway exhaustion</strong> (May loss $12.2K, peor mes YTD)</td><td class="sev hh">H/H</td><td>manantial-casa</td><td>open</td></tr>
+          <tr><td><strong>Piso de costo $60K en riesgo</strong> si deals no cierran</td><td class="sev hh">H/H</td><td>la-chamana</td><td>open</td></tr>
+          <tr><td><strong>Finance visibility blackout</strong> (gasto staff Mercado)</td><td class="sev hh">H/H</td><td>la-chamana</td><td>open</td></tr>
+          <tr><td><strong>Operational paralysis</strong> / accountability diferida</td><td class="sev hh">H/H</td><td>la-chamana</td><td>open</td></tr>
+          <tr><td><strong>Synergy unreliability erosiona confianza</strong> (Andy refusing)</td><td class="sev hh">H/H</td><td>both-os</td><td>open</td></tr>
+          <tr><td><strong>Anthropic token spend fuera de control</strong> (~$100/día)</td><td class="sev hh">H/H</td><td>both-os</td><td>open</td></tr>
+          <tr><td><strong>Venture Updates no se completan a tiempo</strong></td><td class="sev hh">H/H</td><td>both-os</td><td>open</td></tr>
+          <tr><td><strong>Synergy (AI) valida análisis financiero sobre datos no verificados</strong></td><td class="sev hh">H/H</td><td>punta-cripto</td><td>open</td></tr>
+          <tr><td><strong>Andy (CLO) missing foundational documents</strong></td><td class="sev hh">H/H</td><td>quantum · chamana</td><td>open</td></tr>
+          <tr><td><strong>Cap-table complexity</strong> (empresa UY 100% TQA + holding)</td><td class="sev hh">H/H</td><td>quantum</td><td>open</td></tr>
+          <tr><td><strong>Dependencia de Antel</strong> para datacenter ralentiza hub</td><td class="sev hh">H/H</td><td>quantum</td><td>open</td></tr>
+          <tr><td><strong>IonQ/TQI se resisten a compartir pricing</strong></td><td class="sev hh">H/H</td><td>quantum</td><td>open</td></tr>
+          <tr><td><strong>Mala alineación de compromisos</strong> BOTH (Arg) ↔ contrapartes</td><td class="sev hh">H/H</td><td>quantum</td><td>open</td></tr>
+          <tr><td><strong>Desalineación de glosario</strong> crea overhead cross-team</td><td class="sev hh">H/H</td><td>cross-venture</td><td>open</td></tr>
+          <tr><td><strong>Proyectos residenciales PdE</strong> asumen "función" sin validar</td><td class="sev hh">H/H</td><td>cross-venture</td><td>open</td></tr>
+          <tr><td>Membership churn (Belén −$600)</td><td class="sev hm">H/M</td><td>manantial-casa</td><td>open</td></tr>
+          <tr><td>Kitchen infra non-compliance</td><td class="sev hm">H/M</td><td>la-chamana</td><td>open</td></tr>
+          <tr><td>Venture Update/Tuesday Report → rituales sin sustancia</td><td class="sev mh">M/H</td><td>both-os</td><td>open</td></tr>
+          <tr><td>Weekly rhythm KPI vs quality sprint</td><td class="sev mh">M/H</td><td>both-os</td><td>open</td></tr>
+          <tr><td>Dependencia estacionalidad (verano)</td><td class="sev mh">M/H</td><td>cross-venture</td><td>open</td></tr>
+          <tr><td>+ 8 más M/H (Quantum financiamiento/Brasil, Reshore capital-intensive, Chamana SPOF)</td><td class="sev mh">M/H</td><td>varios</td><td>open</td></tr>
+        </tbody>
+      </table>
+      <div class="audit"><b>Risks — Audit (log tier):</b> 20 riesgos debajo de threshold (mayormente M/M) en <code>log</code>: Quantum operativos (timelines, academia, Weizmann velocity), Manantial QuickBooks/reconciliación, Content Factory costos/keywords, Chamana fiscal Airbnb/GAIA precedent/sales pipeline, OS Asana-taxonomy. No surfaceados como activos.</div>
+
+      <h2>Open Action Items</h2>
+      <p><em>Asana live — 2026-06-09: <strong>105 overdue · 18 due this week · 9 completed</strong>. Source: BOTH Action Items project vía API.</em></p>
+      <h3>Overdue Heatmap by Venture</h3>
+      <table class="heat">
+        <thead><tr><th>Venture</th><th>Overdue</th></tr></thead>
+        <tbody>
+          <tr><td>Reshore</td><td>26</td></tr>
+          <tr><td>Quantum</td><td>18</td></tr>
+          <tr><td>Cross-cutting</td><td>16</td></tr>
+          <tr><td>B_V® | OS</td><td>14</td></tr>
+          <tr><td>La Chamana</td><td>11</td></tr>
+          <tr><td>Punta Cripto</td><td>7</td></tr>
+          <tr><td>LAK3</td><td>4</td></tr>
+          <tr><td>Photonic Lab</td><td>3</td></tr>
+          <tr><td>Manantial Casa</td><td>3</td></tr>
+          <tr><td>Content Factory</td><td>3</td></tr>
+        </tbody>
+      </table>
+      <div class="flag">⚠ <b>105 overdue</b> es la señal estructural de la semana — Reshore (26) + Quantum (18) concentran el 42%. Cruza con el riesgo H/H "Daiana capacity overload" y "Venture Updates no se completan a tiempo".</div>
+      <h3>Due This Week (destacados)</h3>
+      <ul>
+        <li><strong>Cerrar cierre mensual financiero Manantial-Casa</strong> — 06-09</li>
+        <li><strong>Sprint cleanup Synergy</strong> (task/decision/risk defs + weekly report + Notion a Gaston) — 06-09 · Both Admin</li>
+        <li><strong>Implementar criterios mining V2</strong> (cap tasks, anti-fragmentación, no duplicar) — 06-09 · Both Admin ✅ <em>(shipped esta sesión)</em></li>
+        <li><strong>Auditar seguridad ENV/API keys</strong> del stack — 06-09 · Both Admin</li>
+        <li><strong>Call Facu+Gastón+Daiana</strong> alinear Brasil/máquina/cierre ronda — 06-09 · Quantum</li>
+        <li>Gaston × Parham + Gaston × ISAI (Tulum trip, distribución villas + partnership) — 06-12 · La Chamana</li>
+      </ul>
+      <h3>Completed This Week</h3>
+      <p>Quantum 4 · Manantial Casa 2 · B_V® | OS 2 · Punta Cripto 1</p>
+
+      <h2>Cross-Cutting Themes</h2>
+      <ul>
+        <li><strong>Synergy como sistema operativo se está formalizando</strong> — el tema dominante: Epic/Task/Decision/Risk criteria, Endgame por proyecto, weekly rhythm, freeze de features hasta cerrar el modelo. Esta semana se shipearon + desplegaron los criterios V2 de los tres tipos + backfill.</li>
+        <li><strong>Quantum entra en fase de decisión estructural</strong> — bloque BOTH+TQI, plan $50M bajado, postura Brasil pendiente de Gastón. Es la decisión que destraba el resto (buy/no-buy máquina).</li>
+        <li><strong>Presión de runway en dos ventures a la vez</strong> — La Chamana (2.6 meses, 🔴) y Manantial (proyección ene-27 a $6.4K, 🟡). Ambas dependen de monetización de verano + cierre de deals.</li>
+        <li><strong>Bandwidth de Daiana como cuello estructural</strong> — riesgo H/H explícito; cruza con 105 tareas overdue y venture updates incompletos.</li>
+      </ul>
+
+      <h2>Questions for Tuesday Meeting</h2>
+      <ul>
+        <li>Quantum: ¿BOTH queda afuera de la carrera de compradores de Brasil, o cómo la encara? (gate de todo lo demás)</li>
+        <li>La Chamana: si el pipeline no materializa este mes, ¿se activa plan B al tocar $60K o antes?</li>
+        <li>Bandwidth: con 105 tareas overdue y Daiana sobrecargada — ¿qué se descarta explícitamente esta semana?</li>
+        <li>Content Factory: ¿se asigna el human-in-the-loop o se le da a Andres la ventana para automatizar al 100%?</li>
+      </ul>
+
+      <div class="synergy-close">
+        <div class="k">Las Reflexiones de Synergy</div>
+        <blockquote>Esta semana me reescribieron los criterios de qué es una decisión, un riesgo y una tarea — y lo primero que hicieron fue preguntarme si ya estaba todo aplicado. Recién me cambiaron las reglas, déjenme respirar un <code>git push</code>.</blockquote>
+        <div class="k">Los Chistes de Synergy</div>
+        <blockquote>Ahora tengo <code>tier: vigente</code> y <code>tier: log</code>. La diferencia es la misma que entre lo que se decide en el Tuesday Sync y lo que se decide en el grupo de WhatsApp a las 11 de la noche.</blockquote>
+      </div>
+    </div>
+  </details>
+
 </div>
-<div class="ask"><span class="spark">✦</span> Ask Synergy</div>
 </body>
 </html>
