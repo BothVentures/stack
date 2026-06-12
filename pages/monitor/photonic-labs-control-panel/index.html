@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photonic Labs · Control Panel · SOW Wiki · 2026-06-12</title>
+<style>
+  :root{
+    --bg:#FAFAF8; --card:#FFFFFF; --ink:#1A1C1A; --ink-2:#55605A; --ink-3:#8A938C;
+    --line:#E6E8E4; --line-2:#D2D6CE;
+    --green:#1F8A4C; --green-bg:#E7F5EC;
+    --amber:#C8860A; --amber-bg:#FBF1DC;
+    --red:#C8443C; --red-bg:#FBE9E7;
+    --blue:#2563B0; --blue-bg:#E8F0FA;
+    --violet:#7A4ABA; --violet-bg:#F0E9FA;
+    --shadow:0 1px 2px rgba(20,30,20,.04),0 4px 16px rgba(20,30,20,.06);
+    --shadow-h:0 2px 6px rgba(20,30,20,.08),0 12px 32px rgba(20,30,20,.10);
+    --sans:'Helvetica Neue',Helvetica,Arial,'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-0.006em}
+  .wrap{max-width:1080px;margin:0 auto;padding:40px 24px 96px}
+  a{color:var(--blue);text-decoration:none}
+
+  /* HEADER */
+  .head{margin-bottom:14px}
+  .eyebrow{font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+  h1{font-size:34px;font-weight:700;letter-spacing:-0.025em;line-height:1.1;margin-bottom:10px}
+  h1 .lt{color:var(--ink-3);font-weight:400}
+  .lede{font-size:16px;color:var(--ink-2);max-width:720px}
+  .metabar{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+  .pill{font-size:12px;font-weight:500;padding:6px 12px;border-radius:100px;background:var(--card);border:1px solid var(--line);color:var(--ink-2);box-shadow:var(--shadow)}
+  .pill b{color:var(--ink);font-weight:600}
+  .pill.g{background:var(--green-bg);border-color:transparent;color:var(--green)}
+  .pill.a{background:var(--amber-bg);border-color:transparent;color:var(--amber)}
+
+  /* SECTION TITLES */
+  .sec{margin-top:42px}
+  .sec-t{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+  .sec-t .n{font-size:12px;font-weight:700;color:var(--green);letter-spacing:.1em}
+  .sec-t h2{font-size:20px;font-weight:700;letter-spacing:-0.02em}
+  .sec-t .hint{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+
+  /* SNAPSHOT GRID */
+  .snap{display:grid;grid-template-columns:300px 1fr;gap:18px}
+  .donut-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+  .donut-card .big{font-size:13px;color:var(--ink-3);margin-top:6px}
+  .donut-sub{display:flex;gap:14px;margin-top:14px;font-size:12px;color:var(--ink-2)}
+  .donut-sub b{display:block;font-size:18px;color:var(--ink);font-weight:700}
+  .phasebars{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow)}
+  .pbrow{display:grid;grid-template-columns:210px 1fr 48px;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .pbrow:last-child{border-bottom:none}
+  .pbrow .pl{font-size:13px;font-weight:600}
+  .pbrow .pl small{display:block;font-weight:400;color:var(--ink-3);font-size:11px}
+  .track{height:9px;background:#EEF0EC;border-radius:100px;overflow:hidden}
+  .track > i{display:block;height:100%;border-radius:100px}
+  .pbrow .pv{font-size:14px;font-weight:700;text-align:right}
+  .f-g{background:var(--green)}.f-a{background:var(--amber)}.f-v{background:var(--violet)}.f-b{background:var(--blue)}
+
+  /* VERDICT */
+  .verdict{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:12px;padding:18px 22px;margin-top:18px;box-shadow:var(--shadow);font-size:15px;color:var(--ink-2)}
+  .verdict b{color:var(--ink);font-weight:600}
+  .verdict .g{color:var(--green);font-weight:600}.verdict .a{color:var(--amber);font-weight:600}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);display:flex;gap:11px;align-items:flex-start}
+  .kdot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex:none}
+  .d-g{background:var(--green)}.d-a{background:var(--amber)}.d-r{background:var(--red)}
+  .kpi .kn{font-size:13.5px;font-weight:600}
+  .kpi .kx{font-size:12px;color:var(--ink-3);margin-top:2px}
+
+  /* PHASE + CARDS */
+  .phase{margin-bottom:14px}
+  .phase-h{display:flex;align-items:center;gap:12px;padding:8px 2px;margin-bottom:6px}
+  .phase-h .pid{font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--ink-3)}
+  .phase-h .pnm{font-size:15px;font-weight:700}
+  .phase-h .ppct{margin-left:auto;font-size:13px;font-weight:700;color:var(--ink-2)}
+  .phase-h .ptrack{width:110px;height:7px;background:#EEF0EC;border-radius:100px;overflow:hidden}
+  .phase-h .ptrack > i{display:block;height:100%;border-radius:100px}
+
+  .acc{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;box-shadow:var(--shadow);overflow:hidden;transition:box-shadow .18s,border-color .18s}
+  .acc[open]{box-shadow:var(--shadow-h);border-color:var(--line-2)}
+  .acc summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:14px;user-select:none}
+  .acc summary::-webkit-details-marker{display:none}
+  .acc .did{font-size:12px;font-weight:700;color:var(--ink-3);width:34px;flex:none}
+  .acc .dnm{font-size:14.5px;font-weight:600;flex:1}
+  .acc .dnm small{display:block;font-weight:400;color:var(--ink-3);font-size:12px;margin-top:1px}
+  .chip{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border-radius:100px;white-space:nowrap}
+  .c-done{background:var(--green-bg);color:var(--green)}
+  .c-proc{background:var(--amber-bg);color:var(--amber)}
+  .c-pend{background:var(--red-bg);color:var(--red)}
+  .c-over{background:var(--violet-bg);color:var(--violet)}
+  .mini{width:54px;height:6px;background:#EEF0EC;border-radius:100px;overflow:hidden;flex:none}
+  .mini > i{display:block;height:100%}
+  .caret{flex:none;color:var(--ink-3);transition:transform .2s}
+  .acc[open] .caret{transform:rotate(90deg)}
+  .acc-body{padding:2px 18px 20px 18px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+  .acc-body h4{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin:16px 0 8px}
+  .acc-body p{margin-bottom:9px}
+  .acc-body ul{margin:0 0 9px 2px;list-style:none}
+  .acc-body li{position:relative;padding:4px 0 4px 18px}
+  .acc-body li::before{content:'';position:absolute;left:2px;top:12px;width:5px;height:5px;border-radius:50%;background:var(--line-2)}
+  .acc-body b{color:var(--ink);font-weight:600}
+  .blk{background:var(--red-bg);border-radius:8px;padding:10px 14px;margin:4px 0}
+  .blk li::before{background:var(--red)}
+  .blk-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--red);margin-bottom:4px}
+  .tbl{width:100%;border-collapse:collapse;margin:6px 0 12px;font-size:13px}
+  .tbl th,.tbl td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  .tbl th{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:600}
+  .tbl td b{color:var(--ink)}
+  .wlink{font-size:12px;color:var(--ink-3);margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-family:ui-monospace,Menlo,monospace}
+
+  /* CHART CARDS */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .chart-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow)}
+  .chart-card h3{font-size:14px;font-weight:700;margin-bottom:4px}
+  .chart-card .sub{font-size:12px;color:var(--ink-3);margin-bottom:16px}
+  .legend{display:flex;gap:16px;margin-top:14px;font-size:12px;color:var(--ink-2);flex-wrap:wrap}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .sw{width:11px;height:11px;border-radius:3px;flex:none}
+
+  /* PIPELINE */
+  .pipe{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .pcard{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--card)}
+  .pcard .pco{font-size:13.5px;font-weight:700}
+  .pcard .pde{font-size:12px;color:var(--ink-3);margin:2px 0 6px}
+  .ptag{font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:100px;display:inline-block}
+  .t-anchor{background:var(--violet-bg);color:var(--violet)}
+  .t-hot{background:var(--green-bg);color:var(--green)}
+  .t-warm{background:var(--amber-bg);color:var(--amber)}
+  .t-cold{background:#EEF0EC;color:var(--ink-3)}
+
+  /* ROADMAP */
+  .road{position:relative;padding-left:26px}
+  .road::before{content:'';position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line-2)}
+  .rstep{position:relative;margin-bottom:18px}
+  .rstep::before{content:'';position:absolute;left:-26px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--green)}
+  .rstep.gate::before{border-color:var(--red)}
+  .rstep .rq{font-size:12px;font-weight:700;color:var(--green);letter-spacing:.04em}
+  .rstep.gate .rq{color:var(--red)}
+  .rstep .rt{font-size:14.5px;font-weight:600;margin:1px 0 4px}
+  .rstep ul{list-style:none;margin:0}
+  .rstep li{position:relative;padding:3px 0 3px 16px;font-size:13px;color:var(--ink-2)}
+  .rstep li::before{content:'';position:absolute;left:2px;top:11px;width:4px;height:4px;border-radius:50%;background:var(--line-2)}
+
+  /* BLOCKER BOARD */
+  .bboard{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .bcard{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:10px;padding:13px 16px;box-shadow:var(--shadow)}
+  .bcard .bt{font-size:14px;font-weight:700;margin-bottom:3px}
+  .bcard .bd{font-size:12.5px;color:var(--ink-2)}
+  .bcard .bo{font-size:11.5px;color:var(--ink-3);margin-top:6px}
+  .bcard.unlock{border-left-color:var(--green)}
+
+  footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);display:flex;gap:18px;flex-wrap:wrap}
+
+  @media(max-width:820px){
+    .snap,.grid2,.bboard,.pipe,.kpis{grid-template-columns:1fr}
+    h1{font-size:27px}
+    .pbrow{grid-template-columns:150px 1fr 40px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="head">
+    <div class="eyebrow">BOTH Ventures · Photonic Lab · Pillar 01 — Wet Facility</div>
+    <h1>Photonic Labs Control Panel <span class="lt">· SOW Assessment · Business Model · Financials · Wiki</span></h1>
+    <p class="lede">Full assessment of the 6-month pre-incubation engagement against the contracted 4-phase structure. Each deliverable below expands into an in-depth wiki card — current state, drafted content, and flagged blockers. Scope held to the physical lab; Pillars 02 (Quantum) / 03 (AI) excluded.</p>
+    <div class="metabar">
+      <span class="pill">Contract <b>2026-02-02 · 6 mo</b></span>
+      <span class="pill a">Calendar <b>~72% · mo 4.3/6</b></span>
+      <span class="pill g">Drafted completion <b>~86%</b></span>
+      <span class="pill">Hard-closed <b>~58%</b></span>
+      <span class="pill">Close <b>~2026-08-02</b></span>
+    </div>
+  </div>
+
+  <!-- INSTITUTIONAL BACKING -->
+  <div class="sec">
+    <div class="verdict" style="border-left-color:var(--blue);background:var(--blue-bg)">
+      <b>Uruguay's institutional architecture is actively engaged behind Photonic Lab.</b> The instruments exist, the relationships are live, and the sovereign thread is open — a structural advantage no regional competitor holds.
+    </div>
+    <div class="grid2" style="grid-template-columns:1fr 1fr 1fr;margin-top:14px">
+      <div class="chart-card" style="border-top:3px solid var(--green)">
+        <h3>ANII <span class="chip c-done" style="float:right">Confirmed</span></h3>
+        <div style="font-size:13px;color:var(--ink-2);margin-top:6px">National research agency. <b>70% non-reimbursable co-financing</b> (Implementación de la Innovación), cap UYU 4–5M. Confirmed available <b>inside Zona Franca</b> since 2025 (Cristina Montero).</div>
+      </div>
+      <div class="chart-card" style="border-top:3px solid var(--amber)">
+        <h3>Uruguay XXI <span class="chip c-proc" style="float:right">Active</span></h3>
+        <div style="font-size:13px;color:var(--ink-2);margin-top:6px">Sovereign investment-promotion agency. <b>Actively facilitating</b> the COMAP route + institutional thread. Direct contacts: Cristina Montero / Cristina Moreno, María José Graña (COMAP experience).</div>
+      </div>
+      <div class="chart-card" style="border-top:3px solid var(--blue)">
+        <h3>Presidencia ROU <span class="chip" style="float:right;background:var(--blue-bg);color:var(--blue)">In motion</span></h3>
+        <div style="font-size:13px;color:var(--ink-2);margin-top:6px">Joint BOTH + TQA letter formalizing Uruguay-hub interest, in motion. Formal <b>sovereign endorsement</b> is the active ask (institutional V0.2.1 §11).</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--ink-3);margin-top:10px">Supporting ecosystem: <b>LATU</b> (met 30 May) · <b>ANDE</b> · <b>Parque de las Ciencias</b> (Enrique Buero) · <b>CIE ORT</b> · <b>Pasteur / LAB+</b>. Funding instruments are confirmed; the formal sovereign endorsement is being pursued, not yet signed.</div>
+  </div>
+
+  <!-- SNAPSHOT -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">01</span><h2>Snapshot</h2><span class="hint">drafted vs. hard-closed completion</span></div>
+    <div class="snap">
+      <div class="donut-card">
+        <svg width="170" height="170" viewBox="0 0 170 170">
+          <circle cx="85" cy="85" r="68" fill="none" stroke="#EEF0EC" stroke-width="18"/>
+          <!-- 86% drafted -->
+          <circle cx="85" cy="85" r="68" fill="none" stroke="#1F8A4C" stroke-width="18" stroke-linecap="round"
+            stroke-dasharray="427" stroke-dashoffset="60" transform="rotate(-90 85 85)"/>
+          <!-- 58% hard-closed inner arc -->
+          <circle cx="85" cy="85" r="50" fill="none" stroke="#C8860A" stroke-width="8" stroke-linecap="round"
+            stroke-dasharray="314" stroke-dashoffset="132" transform="rotate(-90 85 85)" opacity="0.9"/>
+          <text x="85" y="80" text-anchor="middle" font-size="30" font-weight="700" fill="#1A1C1A">86%</text>
+          <text x="85" y="100" text-anchor="middle" font-size="11" fill="#8A938C">drafted</text>
+        </svg>
+        <div class="donut-sub">
+          <div><b style="color:#1F8A4C">86%</b>drafted now</div>
+          <div><b style="color:#C8860A">58%</b>hard-closed</div>
+        </div>
+        <div class="big">+28 pts gained by drafting the missing deliverables in this pass</div>
+      </div>
+      <div class="phasebars">
+        <div class="pbrow"><div class="pl">Phase 1 <small>Strategic Clarity</small></div><div class="track"><i class="f-g" style="width:98%"></i></div><div class="pv">98%</div></div>
+        <div class="pbrow"><div class="pl">Phase 2 <small>Operating & Regulatory</small></div><div class="track"><i class="f-g" style="width:85%"></i></div><div class="pv">85%</div></div>
+        <div class="pbrow"><div class="pl">Phase 3 <small>Business Model / Unit Econ</small></div><div class="track"><i class="f-a" style="width:80%"></i></div><div class="pv">80%</div></div>
+        <div class="pbrow"><div class="pl">Phase 4 <small>Investment & Partnerships</small></div><div class="track"><i class="f-a" style="width:80%"></i></div><div class="pv">80%</div></div>
+        <div class="pbrow"><div class="pl">Complementary <small>Demand + Design</small></div><div class="track"><i class="f-v" style="width:100%"></i></div><div class="pv" style="color:#7A4ABA">★</div></div>
+      </div>
+    </div>
+    <div class="verdict">
+      <b>Verdict.</b> On schedule, <span class="g">ahead on substance</span> in two areas — regulatory path and demand validation (over-delivered). In this pass the gap deliverables were <b>drafted from existing data</b>, lifting drafted completion to ~86%. What remains is not research — it's <span class="a">decisions and field inputs</span>: the <b>ZF / no-ZF call</b>, the <b>Uruguay trip</b>, real <b>cost/salary/m² data</b>, and <b>Gaston's ratification</b> of the new Execution Roadmap. Close those and the SOW hard-closes.
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">02</span><h2>SOW Success Indicators</h2><span class="hint">2 met · 4 in motion</span></div>
+    <div class="kpis">
+      <div class="kpi"><span class="kdot d-g"></span><div><div class="kn">Closed strategic thesis</div><div class="kx">Thesis + decision map delivered; Model 3 locked.</div></div></div>
+      <div class="kpi"><span class="kdot d-a"></span><div><div class="kn">Designed operating model</div><div class="kx">Zones/flows done; workflows now drafted (2.1).</div></div></div>
+      <div class="kpi"><span class="kdot d-g"></span><div><div class="kn">Defined regulatory path</div><div class="kx">Strongest area; 5 instruments + ANII-in-ZF + new decree.</div></div></div>
+      <div class="kpi"><span class="kdot d-a"></span><div><div class="kn">Validated unit economics</div><div class="kx">Model + tiers drafted; ZF fork + real costs pending.</div></div></div>
+      <div class="kpi"><span class="kdot d-a"></span><div><div class="kn">Investment materials</div><div class="kx">V0.2.1 deck live; embed final numbers post-Phase 3.</div></div></div>
+      <div class="kpi"><span class="kdot d-a"></span><div><div class="kn">Partnerships advancing</div><div class="kx">9/13 in contact; Eywa anchor + capital/LOI pending.</div></div></div>
+    </div>
+  </div>
+
+  <!-- DELIVERABLE WIKI -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">03</span><h2>Deliverable Wiki</h2><span class="hint">click any card to expand</span></div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-h"><span class="pid">PHASE 1</span><span class="pnm">Strategic Clarity & Operational Thesis</span><span class="ptrack"><i class="f-g" style="width:98%"></i></span><span class="ppct">98%</span></div>
+
+      <details class="acc"><summary><span class="did">1.1</span><span class="dnm">Strategic Thesis Document<small>Doc 2 + Doc 8 · Model 3 entry, four surfaces</small></span><span class="mini"><i class="f-g" style="width:100%"></i></span><span class="chip c-done">delivered</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p><b>One line:</b> LATAM biotech doesn't fail on science — it fails on the infrastructure to scale it. The gap is <b>TRL 5–8</b>. Photonic Lab is that layer, on regulated Uruguayan soil, at prices the regional pipeline can pay.</p>
+          <h4>Entry model (decided)</h4>
+          <p><b>Model 3 — I+D + GMP-Ready.</b> GMP-compatible day one without full certification. Hard CAPEX ~$1.48M (capital need ~$1.9M). Long-term target: <b>Model 5 Hybrid</b> (Yr 3–4).</p>
+          <h4>Four operating surfaces</h4>
+          <p>Bioproduction · Computational+AI · Innovation & Development (34% buy analytics only) · Regulatory & institutional (ANII in ZF; FDA 35% / EMA 28%).</p>
+          <p><b>Assessment:</b> Fully delivered and stress-tested. The spine the other eleven hang from. No open gap.</p>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/1.1-strategic-thesis.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">1.2</span><span class="dnm">Institutional Narrative<small>V0.2.1 published — 13 sections, EN/ES</small></span><span class="mini"><i class="f-g" style="width:95%"></i></span><span class="chip c-done">delivered</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p><b>Now closed.</b> Published & locked at <a href="https://bothventures.github.io/stack/pages/venture/photonic-labs-institutional-v02/">V0.2.1</a> — bilingual, 13 sections, locked visual standard.</p>
+          <h4>Narrative arc</h4>
+          <p>Open → "Science is not the bottleneck" → the gap mapped (TRL ladder) → "Zero" accessible hubs → four surfaces → bioproduction spec → computational layer → why Uruguay (the state built the instruments) → team → "substrate not slideware" → the ask → sequence → close ("built from Uruguay, sequenced ahead of the cycle").</p>
+          <div class="blk"><div class="blk-t">Remaining 5% — flagged</div><ul class="blk">
+            <li><b>Pillar-01-only cut</b> needed for pure wet-facility audiences (keeps TQA at Play A / silent).</li>
+            <li><b>ES parity check</b> before any Spanish-first institutional send.</li></ul>
+          </div>
+          <p><b>Next action:</b> editorial decision (no research blocker) — confirm whether the Pillar-01 excerpt is needed or V0.2.1 is canonical for all audiences.</p>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/1.2-institutional-narrative.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">1.3</span><span class="dnm">Strategic Decision Map<small>8 infrastructure models + ZF fork</small></span><span class="mini"><i class="f-g" style="width:100%"></i></span><span class="chip c-done">delivered</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <h4>Decision path</h4>
+          <p>Model 0 (always) → <b>Model 3 (entry)</b> → Model 4 trigger (anchor + 2–3 clients + ≤2 platforms) → <b>Model 5 (target)</b>.</p>
+          <h4>The ZF / no-ZF fork (mapped; decision pending)</h4>
+          <table class="tbl"><tr><th>Axis</th><th>Outside ZF</th><th>Inside ZF</th></tr>
+            <tr><td>COMAP exoneration</td><td>✅ Applies</td><td>❌ No</td></tr>
+            <tr><td>ANII Implementación</td><td>✅</td><td>✅ (since 2025)</td></tr>
+            <tr><td>Corporate tax</td><td>IRAE 25%</td><td>0%</td></tr>
+            <tr><td>UY clients</td><td>Unrestricted</td><td>Allowed, not majority</td></tr>
+            <tr><td>Cost to UY client</td><td>Deductible</td><td>Non-deductible (Ley 19.566)</td></tr></table>
+          <p>The map is delivered; the <b>decision</b> is tracked under 3.3 / 4.3. Owner: Andres + Alejandro, Gaston gate.</p>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/1.3-strategic-decision-map.md</div>
+        </div>
+      </details>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-h"><span class="pid">PHASE 2</span><span class="pnm">Operating & Regulatory Model Design</span><span class="ptrack"><i class="f-g" style="width:85%"></i></span><span class="ppct">85%</span></div>
+
+      <details class="acc"><summary><span class="did">2.1</span><span class="dnm">Operating Model Blueprint<small>Workflows drafted here — onboarding + scheduling</small></span><span class="mini"><i class="f-a" style="width:85%"></i></span><span class="chip c-proc">drafted 85%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p>Existed: 21 zones, flows, equipment, single-use decision. Missing the two workflows — <b>drafted below.</b></p>
+          <h4>A · Client onboarding (sign → first run ≈ 8–12 wks)</h4>
+          <p>Inquiry → technical scoping → proposal & tier → contract + IP/MCB custody → process tech-transfer → scheduling slot → first run → data/dossier handoff.</p>
+          <h4>B · Multiclient scheduling</h4>
+          <p>Single-use = changeover days→hours, zero cross-contamination (the ATGen failure mode). Slot-based booking; ~3–5 projects/month at Tramo 1 (2 lines × ~2–3wk cycles) → consistent with 5–8 residents. Anchor gets reserved slots; subscription residents committed windows; analytics fills gaps.</p>
+          <h4>C · Service model</h4>
+          <p>Managed (client operates) vs <b>Accompanied</b> (lab team runs scale-up) — accompanied recommended default for TRL 5–6 clients lacking process depth.</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li>Physical <b>m² + final equipment count</b> → sets true capacity/slots.</li>
+            <li><b>Uruguay trip / ATGen visit</b> → validate multiclient model in the field.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/2.1-operating-model-blueprint.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">2.2</span><span class="dnm">Regulatory Readiness Map<small>5 instruments · the strongest deliverable</small></span><span class="mini"><i class="f-g" style="width:90%"></i></span><span class="chip c-done">delivered</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <table class="tbl"><tr><th>Instrument</th><th>Benefit</th></tr>
+            <tr><td><b>Ley 16.462</b></td><td>Biotech = national interest → customs franchises</td></tr>
+            <tr><td><b>Ley 19.317</b></td><td>Biotech in investment regime → COMAP door</td></tr>
+            <tr><td><b>Ley 16.906 + Decreto 329/025</b></td><td>IRAE+IP+tariff exemptions; new decree removes MYPE cap, +15pp IRAE for small firms</td></tr>
+            <tr><td><b>Ley 19.637</b></td><td>IRAE exemption on biotech R&D revenue</td></tr>
+            <tr><td><b>Ley 15.921 + 19.566</b></td><td>ZF: IRAE/IVA/tariffs 0%; services to non-franca territory</td></tr></table>
+          <p>GMP-ready roadmap embedded in Doc 8 (flows, surfaces, QMS day one). COMAP path 3–6 mo via Uruguay XXI. ANII: 70% non-reimbursable, cap UYU 4–5M, funds services not equipment.</p>
+          <div class="blk"><div class="blk-t">Remaining 10%</div><ul class="blk"><li><b>Ley 19.566 tax question:</b> does ZF lab-service = "sale to UY market" (client expense non-deductible)? Cristina + tributarista. Feeds the ZF decision.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/2.2-regulatory-readiness-map.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">2.3</span><span class="dnm">Role & Capability Matrix<small>Matrix + staffing-by-phase drafted here</small></span><span class="mini"><i class="f-a" style="width:80%"></i></span><span class="chip c-proc">drafted 80%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <table class="tbl"><tr><th>Role</th><th>When</th></tr>
+            <tr><td><b>Site Director / CTO</b></td><td>Pre-build</td></tr>
+            <tr><td>Senior Bioprocess Scientist</td><td>At launch</td></tr>
+            <tr><td>Analytical / QC Specialist</td><td>At launch</td></tr>
+            <tr><td><b>QA / Regulatory Head</b></td><td>Deferred → GMP-phase trigger (non-delegable)</td></tr>
+            <tr><td>Commercial Manager</td><td>Pre-launch</td></tr>
+            <tr><td>2× Lab Technicians</td><td>At launch (already contracted)</td></tr>
+            <tr><td>Admin / Ops support</td><td>At launch</td></tr></table>
+          <p><b>Hiring signal:</b> Augusto Desuque (Sartorius + bioreactor exp, wants to relocate to UY) — evaluate for Bioprocess role. Advisory: Qualia+ (Alejandro + JEC).</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li><b>Uruguay salary benchmarks</b> → turn role bands into real monthly OPEX (feeds 3.1/3.3).</li>
+            <li>Service-model choice (2.1) sets lean vs technical-heavy headcount.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/2.3-role-capability-matrix.md</div>
+        </div>
+      </details>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-h"><span class="pid">PHASE 3</span><span class="pnm">Business Model & Unit Economics</span><span class="ptrack"><i class="f-a" style="width:80%"></i></span><span class="ppct">80%</span></div>
+
+      <details class="acc"><summary><span class="did">3.1</span><span class="dnm">Financial Logic Deck<small>Sources & uses consolidated here</small></span><span class="mini"><i class="f-a" style="width:80%"></i></span><span class="chip c-proc">drafted 80%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <h4>Uses — hard CAPEX $1.48M (equip $379K + civil $602K + validation $150K + import $55K + 30% contingency $294K) · +$0.4M pre-rev runway → ~$1.9M capital need</h4>
+          <p>Civil + GMP-ready fit-out · cleanroom modules (ISO 8→5) · bioreactors 10/50L single-use · downstream (ÄKTA, TFF, HPLC) · analytical suite · cell-bank vault · IT/LIMS.</p>
+          <h4>Sources — sequenced stack</h4>
+          <table class="tbl"><tr><th>Layer</th><th>Target</th></tr>
+            <tr><td>ANII + non-dilutive</td><td>$300–600K</td></tr>
+            <tr><td>Anchors + equipment in-kind</td><td>$400–800K equiv</td></tr>
+            <tr><td>Impact VCs / regional</td><td>$500K–1.5M</td></tr>
+            <tr><td>Manantial.vc round</td><td>$1.5–3M</td></tr>
+            <tr><td>Series B / ZF + scale</td><td>$3–8M</td></tr></table>
+          <p><b>Institutional ask:</b> USD 2–3M cornerstone, ANII in parallel. <b>Reconciled (Jun 2026):</b> hard CAPEX $1.48M · total capital need $1.9–2.05M · EBITDA-positive Y2 (No-ZF) / Y3 (ZF) · FCF payback ~Y5 · EaaS 88% / GMP 68%. Full model + two scenarios in §04.</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li><b>Deliverable ownership</b> (Qualia vs BOTH vs joint) — model lives BOTH-side. Decide who signs.</li>
+            <li>Monthly OPEX precision ← 2.3 salaries; CAPEX precision ← m² + supplier quotes.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/3.1-financial-logic-deck.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">3.2</span><span class="dnm">Pricing & Tiers Rationale<small>5-tier architecture drafted here</small></span><span class="mini"><i class="f-a" style="width:75%"></i></span><span class="chip c-proc">drafted 75%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <table class="tbl"><tr><th>Tier</th><th>Offer</th><th>Price</th></tr>
+            <tr><td>T0</td><td>Analytics-only (34% of startups)</td><td>Per-service</td></tr>
+            <tr><td>T1</td><td>Infrastructure subscription</td><td>$8–20K/mo</td></tr>
+            <tr><td>T2</td><td>EaaS (per-use)</td><td>Per-run + pass-through</td></tr>
+            <tr><td>T3</td><td>GMP services + tech transfer</td><td>~$45K/project (68%)</td></tr>
+            <tr><td>T4</td><td>Capital + equity/royalty</td><td>Warrants / rev-share</td></tr></table>
+          <p><b>Ceiling anchor:</b> USD 50K/100g (Ardan, India) — Photonic prices under this, IP retained. Single-use shifts cost fixed→variable (pass-through) → protects multiclient margin. Break-even needs 5–8 residents mixed across tiers.</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li><b>Real cost-to-serve</b> (consumables/reagents/QA overhead per tier) needs vendor quotes — margins modeled, not yet costed.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/3.2-pricing-tiers-rationale.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">3.3</span><span class="dnm">Break-even Scenarios<small>Refreshed — two day-one tax scenarios</small></span><span class="mini"><i class="f-a" style="width:88%"></i></span><span class="chip c-proc">refreshed 88%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p><b>Reframed (Jun 2026)</b> from bear/base/bull to the decision that matters — <b>ZF vs No-ZF on day one</b> — plus the dual-entity target. Full tables + charts in §04 Business Model &amp; Financials.</p>
+          <table class="tbl"><tr><th>Metric</th><th>No-ZF</th><th>ZF</th></tr>
+            <tr><td>EBITDA-positive</td><td><b>Y2</b></td><td>Y3</td></tr>
+            <tr><td>Grants Y1–3</td><td>$400K</td><td>$240K</td></tr>
+            <tr><td>Tax Y1–6</td><td>~$895K</td><td><b>$0</b></td></tr>
+            <tr><td>Cum. net Y1–6</td><td>$3.33M</td><td><b>$3.81M</b></td></tr></table>
+          <p><b>Dual-entity (elegant):</b> outside-ZF early (grants + uptake + faster break-even), ZF entity for export/IP at Yr 3–4 → ~$4.0M cumulative net, best of both.</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk"><li><b>ZF / no-ZF decision</b> — to Tuesday Sync (Gaston gate); see decision brief. Real OPEX/CAPEX quotes harden the model.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/3.3-break-even-scenarios.md</div>
+        </div>
+      </details>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-h"><span class="pid">PHASE 4</span><span class="pnm">Investment, Grants & Partnerships</span><span class="ptrack"><i class="f-a" style="width:80%"></i></span><span class="ppct">80%</span></div>
+
+      <details class="acc"><summary><span class="did">4.1</span><span class="dnm">Investor & Grant Deck<small>V0.2.1 is the deck</small></span><span class="mini"><i class="f-a" style="width:85%"></i></span><span class="chip c-proc">drafted 85%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p>The institutional narrative <b>is</b> the deck — <a href="https://bothventures.github.io/stack/pages/venture/photonic-labs-institutional-v02/">V0.2.1</a>, 13 sections, locked.</p>
+          <h4>The ask</h4>
+          <p>Sovereign endorsement · anchor capital <b>USD 2–3M</b> · strategic pharma partners · talent (site director, advisory board).</p>
+          <h4>Grant track</h4>
+          <p>ANII Implementación (70% non-reimb, UYU 4–5M, ZF-OK) · COMAP (outside-ZF) · BID Lab / Ecosistema (UY node positioning, JEC warm intro).</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li>Embed final Phase 3 numbers (post-ZF decision).</li>
+            <li>Pillar-01-only cut + naming lock (Photonic vs Bioshift).</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/4.1-investor-grant-deck.md</div>
+        </div>
+      </details>
+
+      <details class="acc"><summary><span class="did">4.2</span><span class="dnm">Partnership Dossier<small>Commercial + institutional + suppliers</small></span><span class="mini"><i class="f-a" style="width:85%"></i></span><span class="chip c-proc">drafted 85%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p><b>Commercial:</b> 9/13 priority startups in contact (see pipeline below). <b>Institutional:</b> Uruguay XXI, ANII, LATU, Parque de las Ciencias, ANDE, CIE ORT. <b>Suppliers:</b> Tecnofrom, Sartorius, Cytiva, Eppendorf, Equipo Inox (quote pending). <b>Advisory:</b> Qualia+.</p>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li><b>Eywa anchor decision</b> — highest-value close; meeting pending (trip).</li>
+            <li><b>Capital + LOI legal structure</b> (KinzBio, Xeptiva) — vehicle + Gaston gate.</li>
+            <li><b>Uruguay trip</b> converts "in contact" → "in negotiation."</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/4.2-partnership-dossier.md</div>
+        </div>
+      </details>
+
+      <details class="acc" open><summary><span class="did">4.3</span><span class="dnm">Execution Roadmap (12–24 mo)<small>★ Keystone — created from scratch here</small></span><span class="mini"><i class="f-a" style="width:70%"></i></span><span class="chip c-proc">drafted 70%</span><span class="caret">▸</span></summary>
+        <div class="acc-body">
+          <p>This was the single true blank in the SOW — the deliverable everything converges on. Built below; <b>draft for Gaston ratification.</b></p>
+          <div class="road">
+            <div class="rstep gate"><div class="rq">T-ZERO GATE</div><div class="rt">Decide & structure</div><ul><li>Close <b>ZF / no-ZF decision</b> + Ley 19.566 tax answer</li><li>Anchor capital line of sight</li></ul></div>
+            <div class="rstep"><div class="rq">Q3 2026</div><div class="rt">Decide & structure</div><ul><li><b>Uruguay trip</b> — ATGen, Eywa anchor, Pasteur, Nanogrow, LATU</li><li>File ANII (3–9mo lead, parallel) · activate entity · lock site + m²</li><li>Finalize model w/ real OPEX + quotes (Daiana + JEC)</li></ul></div>
+            <div class="rstep"><div class="rq">Q4 2026</div><div class="rt">Capital & commitments</div><ul><li>Sovereign letter of support · close anchor (USD 2–3M) + in-kind</li><li>Convert 5–8 resident LOIs · structure capital+LOI vehicle</li><li>Lock design → tender construction · define Qualia+ Phase 2</li></ul></div>
+            <div class="rstep"><div class="rq">Q1–Q2 2027</div><div class="rt">Build</div><ul><li>Construction + GMP-ready fit-out (30% contingency)</li><li>Hire team · stand up QMS/LIMS/cell-bank · commission utilities</li><li><b>Tramo 1 operational · 15–21 zones live</b></li></ul></div>
+            <div class="rstep"><div class="rq">Q3–Q4 2027</div><div class="rt">First cohort & revenue</div><ul><li>Analytical + EaaS revenue active · first GMP dossier handoff</li><li>Cash trough crossed ~M10</li></ul></div>
+            <div class="rstep"><div class="rq">2028 · M18–24</div><div class="rt">Break-even & GMP</div><ul><li>EBITDA+ Y2 (No-ZF) / Y3 (ZF) · FCF payback ~Y5 · QA Head hired</li><li>Model 4 trigger eval · ZF entity if export >60% · Series B</li></ul></div>
+          </div>
+          <div class="blk"><div class="blk-t">Blockers to 100%</div><ul class="blk">
+            <li><b>Gaston ratification</b> at a Tuesday Sync (this is a draft).</li>
+            <li>T-zero gate (ZF + anchor + tax) firms up the dates.</li>
+            <li>Real construction quotes harden Q1–Q2 2027 durations.</li></ul></div>
+          <div class="wlink">wiki · vault/ventures/photonic-lab-sow-wiki/4.3-execution-roadmap.md</div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">04</span><h2>Business Model &amp; Financials</h2><span class="hint">refreshed Jun 2026 · supersedes April model</span></div>
+
+    <div class="verdict" style="border-left-color:var(--green)">
+      <b>Numbers refreshed &amp; reconciled.</b> The April figures we'd been quoting were stale and didn't reconcile (CAPEX, cash trough, break-even all off). Rebuilt into one consistent model with two day-one tax scenarios and the computational layer monetized. Canonical file: <span style="font-family:ui-monospace,monospace;font-size:12px">photonic-lab-financial-model-2026-06-v2.xlsx</span>.
+    </div>
+
+    <!-- SERVICE TIERS incl computational -->
+    <div class="chart-card" style="margin-top:18px">
+      <h3>Capabilities &amp; service tiers</h3>
+      <div class="sub">Wet-facility lines + computational layer (Surface 02, services-only). Sovereign-LLM/quantum abstracted (Play A).</div>
+      <table class="tbl">
+        <tr><th>Tier</th><th>Offer</th><th>Price</th><th>Gross margin</th></tr>
+        <tr><td><b>T0 · Analytics-only</b></td><td>Characterization (HPLC, qPCR, ELISA, electrophoresis) — 34% of startups buy only this</td><td>Per-service</td><td>high</td></tr>
+        <tr><td><b>T1 · Subscription</b></td><td>Bench/suite access, scheduled slots, shared utilities + QA support</td><td>$8&ndash;20K/mo</td><td>~75%</td></tr>
+        <tr><td><b>T2 · EaaS</b></td><td>Per bioreactor run + downstream/analytics session (SU pass-through)</td><td>$7K/run · $3.5K/session</td><td>~88%</td></tr>
+        <tr><td><b>T3 · GMP services</b></td><td>Accompanied scale-up + transferable dossier + CDMO handoff (from M18)</td><td>~$45K/project</td><td>68%</td></tr>
+        <tr><td><b>T4 · Capital + LOI</b></td><td>Invest into client round → secured future scaling client (KinzBio, Xeptiva)</td><td>Equity / royalty</td><td>&mdash;</td></tr>
+        <tr style="background:var(--violet-bg)"><td><b>C1 · Digital twin</b></td><td>Process modeling — iterate on screen before the wet lab; compresses validation</td><td>Per engagement</td><td>~85%</td></tr>
+        <tr style="background:var(--violet-bg)"><td><b>C2 · In-silico design</b></td><td>Generative candidate design + molecular ranking (advisory)</td><td>Per engagement</td><td>~85%</td></tr>
+        <tr style="background:var(--violet-bg)"><td><b>C3 · IP custody</b></td><td>Cryptographically protected MCB/WCB lineage (post-quantum-ready)</td><td>Recurring</td><td>~85%</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--ink-3)">Computational adds ~$40K (Y1) → ~$630K (Y6) — high-margin, opex-light, ~16% of revenue at maturity. Pillar 03 data-center CAPEX kept separate.</div>
+    </div>
+
+    <!-- FLOWCHART: funnel to profit -->
+    <div class="chart-card" style="margin-top:18px">
+      <h3>Business model — from startup funnel to profit</h3>
+      <div class="sub">Demand funnel → onboarding → the service engine → revenue waterfall → profit + compounding value</div>
+      <svg width="100%" viewBox="0 0 940 760" preserveAspectRatio="xMidYMid meet" font-family="'Helvetica Neue',Helvetica,Arial,sans-serif">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8A938C"/></marker>
+        </defs>
+        <!-- FUNNEL -->
+        <text x="470" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#8A938C" letter-spacing="1">DEMAND FUNNEL</text>
+        <rect x="200" y="30" width="540" height="26" rx="5" fill="#EEF0EC"/><text x="470" y="47" text-anchor="middle" font-size="11.5" fill="#1A1C1A">100+ regional · 62 UY biotech firms · 57% without a lab</text>
+        <rect x="262" y="62" width="416" height="26" rx="5" fill="#E4E7E2"/><text x="470" y="79" text-anchor="middle" font-size="11.5" fill="#1A1C1A">13 priority startups</text>
+        <rect x="320" y="94" width="300" height="26" rx="5" fill="#D7E6DC"/><text x="470" y="111" text-anchor="middle" font-size="11.5" fill="#1A1C1A">9 in direct contact</text>
+        <rect x="360" y="126" width="220" height="28" rx="5" fill="#1F8A4C"/><text x="470" y="144" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">5–8 anchor residents · LOIs</text>
+        <line x1="470" y1="154" x2="470" y2="176" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- ONBOARDING -->
+        <rect x="330" y="178" width="280" height="30" rx="6" fill="#fff" stroke="#D2D6CE"/><text x="470" y="197" text-anchor="middle" font-size="12" fill="#1A1C1A">Onboarding — sign → first run (~8–12 wks)</text>
+        <line x1="470" y1="208" x2="470" y2="228" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- GRANTS input -->
+        <rect x="20" y="250" width="150" height="58" rx="8" fill="#FBF1DC" stroke="#C8860A"/><text x="95" y="272" text-anchor="middle" font-size="11" font-weight="700" fill="#C8860A">GRANTS</text><text x="95" y="289" text-anchor="middle" font-size="10" fill="#55605A">ANII 70% (+COMAP</text><text x="95" y="302" text-anchor="middle" font-size="10" fill="#55605A">if no-ZF) $240–400K</text>
+        <line x1="170" y1="280" x2="196" y2="280" stroke="#C8860A" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- ENGINE -->
+        <rect x="200" y="230" width="540" height="150" rx="10" fill="#FAFAF8" stroke="#D2D6CE"/>
+        <text x="470" y="248" text-anchor="middle" font-size="11" font-weight="700" fill="#8A938C" letter-spacing="1">THE ENGINE — SERVICE TIERS</text>
+        <!-- wet group -->
+        <rect x="214" y="258" width="230" height="110" rx="8" fill="#E7F5EC"/><text x="329" y="276" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1F8A4C">WET FACILITY</text>
+        <text x="329" y="296" text-anchor="middle" font-size="10.5" fill="#1A1C1A">T0 Analytics · T1 Subscription</text>
+        <text x="329" y="312" text-anchor="middle" font-size="10.5" fill="#1A1C1A">$8–20K/mo</text>
+        <text x="329" y="332" text-anchor="middle" font-size="10.5" fill="#1A1C1A">T2 EaaS (per-run)</text>
+        <text x="329" y="352" text-anchor="middle" font-size="10.5" fill="#1A1C1A">T3 GMP services $45K/proj</text>
+        <!-- comp group -->
+        <rect x="454" y="258" width="160" height="110" rx="8" fill="#F0E9FA"/><text x="534" y="276" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7A4ABA">COMPUTATIONAL</text>
+        <text x="534" y="296" text-anchor="middle" font-size="10.5" fill="#1A1C1A">C1 Digital twin</text>
+        <text x="534" y="314" text-anchor="middle" font-size="10.5" fill="#1A1C1A">C2 In-silico design</text>
+        <text x="534" y="332" text-anchor="middle" font-size="10.5" fill="#1A1C1A">C3 IP custody</text>
+        <text x="534" y="356" text-anchor="middle" font-size="9" fill="#7A4ABA">~85% margin · Play A</text>
+        <!-- capital group -->
+        <rect x="624" y="258" width="102" height="110" rx="8" fill="#E8F0FA"/><text x="675" y="276" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2563B0">CAPITAL</text>
+        <text x="675" y="298" text-anchor="middle" font-size="10.5" fill="#1A1C1A">T4 Capital</text>
+        <text x="675" y="313" text-anchor="middle" font-size="10.5" fill="#1A1C1A">+ LOI</text>
+        <text x="675" y="336" text-anchor="middle" font-size="9" fill="#2563B0">equity /</text><text x="675" y="348" text-anchor="middle" font-size="9" fill="#2563B0">royalty</text>
+        <line x1="470" y1="380" x2="470" y2="402" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- REVENUE -->
+        <rect x="320" y="404" width="300" height="32" rx="6" fill="#E7F5EC" stroke="#1F8A4C"/><text x="470" y="424" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1C1A">REVENUE  $0.43M (Y1) → $3.83M (Y6)</text>
+        <line x1="470" y1="436" x2="470" y2="456" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- COGS/OPEX -->
+        <rect x="300" y="458" width="340" height="30" rx="6" fill="#fff" stroke="#D2D6CE"/><text x="470" y="477" text-anchor="middle" font-size="11.5" fill="#55605A">− COGS (12–24%)   − OPEX (team · lab · QA · compute)</text>
+        <line x1="470" y1="488" x2="470" y2="508" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- EBITDA -->
+        <rect x="335" y="510" width="270" height="30" rx="6" fill="#E7F5EC"/><text x="470" y="529" text-anchor="middle" font-size="12" font-weight="700" fill="#1F8A4C">EBITDA → positive Year 2 (No-ZF)</text>
+        <line x1="470" y1="540" x2="470" y2="560" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- TAX -->
+        <rect x="300" y="562" width="340" height="30" rx="6" fill="#fff" stroke="#D2D6CE"/><text x="470" y="581" text-anchor="middle" font-size="11.5" fill="#55605A">IRAE — ZF 0%  /  No-ZF reduced (Decreto 329/025)</text>
+        <line x1="470" y1="592" x2="470" y2="612" stroke="#8A938C" stroke-width="1.5" marker-end="url(#ar)"/>
+        <!-- NET PROFIT -->
+        <rect x="290" y="614" width="360" height="42" rx="8" fill="#1F8A4C"/><text x="470" y="634" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">NET PROFIT</text><text x="470" y="650" text-anchor="middle" font-size="11" fill="#E7F5EC">$1.35–1.80M (Y6) · FCF payback ~Year 5</text>
+        <!-- value outputs -->
+        <line x1="380" y1="656" x2="180" y2="690" stroke="#8A938C" stroke-width="1.2" marker-end="url(#ar)"/>
+        <line x1="470" y1="656" x2="470" y2="688" stroke="#8A938C" stroke-width="1.2" marker-end="url(#ar)"/>
+        <line x1="560" y1="656" x2="760" y2="690" stroke="#8A938C" stroke-width="1.2" marker-end="url(#ar)"/>
+        <rect x="40" y="692" width="250" height="46" rx="8" fill="#E8F0FA"/><text x="165" y="712" text-anchor="middle" font-size="11" font-weight="700" fill="#2563B0">Equity / royalty upside</text><text x="165" y="728" text-anchor="middle" font-size="10" fill="#55605A">T4 stakes in resident startups</text>
+        <rect x="345" y="692" width="250" height="46" rx="8" fill="#fff" stroke="#D2D6CE"/><text x="470" y="712" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1C1A">Transferable dossier</text><text x="470" y="728" text-anchor="middle" font-size="10" fill="#55605A">→ regional CDMO handoff</text>
+        <rect x="650" y="692" width="250" height="46" rx="8" fill="#E7F5EC"/><text x="775" y="712" text-anchor="middle" font-size="11" font-weight="700" fill="#1F8A4C">Manantial.vc deal flow</text><text x="775" y="728" text-anchor="middle" font-size="10" fill="#55605A">+ regional ecosystem value</text>
+      </svg>
+      <div style="font-size:12px;color:var(--ink-3);margin-top:8px">Grants de-risk the build; the service engine converts residents to recurring revenue; the dual-entity structure (§ scenarios) optimizes tax on the way to profit; equity, dossiers and deal-flow compound beyond the P&amp;L.</div>
+    </div>
+
+    <!-- CHARTS: revenue + EBITDA by scenario -->
+    <div class="grid2" style="margin-top:18px">
+      <div class="chart-card">
+        <h3>Total revenue — No-ZF vs ZF</h3>
+        <div class="sub">$000s · converges by Y6; ZF lags Y1&ndash;3 (UY haircut + fewer grants)</div>
+        <svg width="100%" height="210" viewBox="0 0 380 210" preserveAspectRatio="xMidYMid meet">
+          <line x1="40" y1="175" x2="370" y2="175" stroke="#D2D6CE"/>
+          <text x="34" y="98" text-anchor="end" font-size="9" fill="#8A938C">2M</text><line x1="40" y1="95" x2="370" y2="95" stroke="#EEF0EC"/>
+          <text x="34" y="22" text-anchor="end" font-size="9" fill="#8A938C">4M</text><line x1="40" y1="18" x2="370" y2="18" stroke="#EEF0EC"/>
+          <rect x="78" y="158" width="26" height="17" fill="#1F8A4C"/><rect x="106" y="160" width="26" height="15" fill="#94B8A2"/>
+          <rect x="178" y="92" width="26" height="83" fill="#1F8A4C"/><rect x="206" y="95" width="26" height="80" fill="#94B8A2"/>
+          <rect x="278" y="22" width="26" height="153" fill="#1F8A4C"/><rect x="306" y="22" width="26" height="153" fill="#94B8A2"/>
+          <text x="105" y="188" text-anchor="middle" font-size="9.5" fill="#8A938C">Y1</text>
+          <text x="205" y="188" text-anchor="middle" font-size="9.5" fill="#8A938C">Y3</text>
+          <text x="305" y="188" text-anchor="middle" font-size="9.5" fill="#8A938C">Y6</text>
+          <text x="205" y="86" text-anchor="middle" font-size="9" fill="#1F8A4C">2.08 / 2.00M</text>
+          <text x="305" y="16" text-anchor="middle" font-size="9" fill="#1F8A4C">3.83M</text>
+        </svg>
+        <div class="legend"><span><span class="sw" style="background:#1F8A4C"></span>No-ZF</span><span><span class="sw" style="background:#94B8A2"></span>ZF</span></div>
+      </div>
+      <div class="chart-card">
+        <h3>EBITDA path — No-ZF vs ZF</h3>
+        <div class="sub">$000s · No-ZF turns positive Y2, ZF Y3</div>
+        <svg width="100%" height="210" viewBox="0 0 380 210" preserveAspectRatio="xMidYMid meet">
+          <line x1="40" y1="130" x2="365" y2="130" stroke="#D2D6CE" stroke-dasharray="3 3"/>
+          <text x="36" y="133" text-anchor="end" font-size="9" fill="#8A938C">0</text>
+          <text x="36" y="25" text-anchor="end" font-size="9" fill="#8A938C">1.9M</text>
+          <polyline points="50,149 110,124 170,93 230,73 290,48 350,22" fill="none" stroke="#1F8A4C" stroke-width="2.5"/>
+          <polyline points="50,152 110,137 170,98 230,75 290,49 350,22" fill="none" stroke="#C8860A" stroke-width="2.5" stroke-dasharray="4 3"/>
+          <circle cx="110" cy="124" r="3.5" fill="#1F8A4C"/><text x="110" y="118" text-anchor="middle" font-size="8.5" fill="#1F8A4C">+96 Y2</text>
+          <circle cx="170" cy="98" r="3.5" fill="#C8860A"/><text x="170" y="112" text-anchor="middle" font-size="8.5" fill="#C8860A">+554 Y3</text>
+          <text x="50" y="168" font-size="9" fill="#8A938C">Y1</text><text x="350" y="168" text-anchor="end" font-size="9" fill="#8A938C">Y6</text>
+        </svg>
+        <div class="legend"><span><span class="sw" style="background:#1F8A4C"></span>No-ZF</span><span><span class="sw" style="background:#C8860A"></span>ZF</span></div>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div class="chart-card">
+        <h3>Capital &amp; returns</h3>
+        <div class="sub">Model 3 entry · reconciled</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px">
+          <div><div style="font-size:24px;font-weight:700">$1.48M</div><div style="font-size:12px;color:var(--ink-3)">all-in hard CAPEX (incl. 30% contingency)</div></div>
+          <div><div style="font-size:24px;font-weight:700">$1.9&ndash;2.05M</div><div style="font-size:12px;color:var(--ink-3)">total capital need / raise (No-ZF / ZF)</div></div>
+          <div><div style="font-size:24px;font-weight:700">Y2 / Y3</div><div style="font-size:12px;color:var(--ink-3)">EBITDA-positive (No-ZF / ZF)</div></div>
+          <div><div style="font-size:24px;font-weight:700">~Year 5</div><div style="font-size:12px;color:var(--ink-3)">free-cash-flow payback (deeptech-normal)</div></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Demand substrate</h3>
+        <div class="sub">Field-validated, not modeled</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px">
+          <div><div style="font-size:24px;font-weight:700">62</div><div style="font-size:12px;color:var(--ink-3)">active UY biotech firms · 57% without own lab</div></div>
+          <div><div style="font-size:24px;font-weight:700">74</div><div style="font-size:12px;color:var(--ink-3)">regional survey responses (AR partial)</div></div>
+          <div><div style="font-size:24px;font-weight:700">9/13</div><div style="font-size:12px;color:var(--ink-3)">priority startups in direct contact</div></div>
+          <div><div style="font-size:24px;font-weight:700">$50K</div><div style="font-size:12px;color:var(--ink-3)">/100g India ceiling (pricing anchor)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCENARIO COMPARISON -->
+    <div class="chart-card" style="margin-top:18px">
+      <h3>ZF vs No-ZF on day one</h3>
+      <div class="sub">Same operations; differ on tax, grants, and near-term UY-client uptake</div>
+      <table class="tbl">
+        <tr><th>Metric</th><th>No-ZF (day 1)</th><th>ZF (day 1)</th></tr>
+        <tr><td>EBITDA-positive</td><td><b>Year 2</b></td><td>Year 3</td></tr>
+        <tr><td>Grants captured Y1&ndash;3</td><td><b>$400K</b> (ANII + COMAP)</td><td>$240K (ANII only)</td></tr>
+        <tr><td>IRAE tax paid Y1&ndash;6</td><td>~$895K (Decreto-reduced early)</td><td><b>$0</b></td></tr>
+        <tr><td>Net income Y6</td><td>$1.35M</td><td><b>$1.80M</b></td></tr>
+        <tr><td>Cumulative net Y1&ndash;6</td><td>$3.33M</td><td><b>$3.81M</b></td></tr>
+        <tr><td>Capital need / raise</td><td><b>$1.9M</b></td><td>$2.05M</td></tr>
+        <tr><td>UY clients</td><td>Unrestricted, deductible</td><td>Minority + non-deductible</td></tr>
+      </table>
+    </div>
+    <div class="grid2" style="margin-top:14px">
+      <div class="chart-card" style="border-left:3px solid var(--green)">
+        <h3>No-ZF — pros / cons</h3>
+        <div style="font-size:13px;color:var(--ink-2)">
+        <b style="color:var(--green)">+</b> Breaks even ~1 yr sooner · +$160K more grants · full UY uptake + deductible for anchor cohort · COMAP equipment exemption · optionality preserved.<br><br>
+        <b style="color:var(--red)">&ndash;</b> Pays IRAE once profitable (Y5&ndash;6 at full 25%) · COMAP paperwork per equipment.
+        </div>
+      </div>
+      <div class="chart-card" style="border-left:3px solid var(--amber)">
+        <h3>ZF — pros / cons</h3>
+        <div style="font-size:13px;color:var(--ink-2)">
+        <b style="color:var(--green)">+</b> IRAE 0% forever · auto import exemption · ~$895K tax saved over 6 yr · fits the export endgame (FDA/EMA).<br><br>
+        <b style="color:var(--red)">&ndash;</b> Benefit back-loaded (worthless pre-profit) · UY clients can't be majority + non-deductible → hits the exact Y1&ndash;2 cohort whose LOIs fund the round · no COMAP · deeper start.
+        </div>
+      </div>
+    </div>
+
+    <!-- DUAL ENTITY -->
+    <div class="verdict" style="border-left-color:var(--violet);margin-top:18px">
+      <b style="color:var(--violet)">★ The elegant solution — the BOTH path (dual-entity, Yr 3&ndash;4).</b> Don't choose. <b>Start outside ZF</b> (capture the $400K grants, full UY uptake, faster break-even, survival in the critical window). Then at Year 3&ndash;4, when the book turns export-heavy, <b>spin a ZF entity</b> to hold IP and bill foreign clients at 0% IRAE — a non-ZF opco serving UY/regional + a ZF entity for export/IP. Captures both the early grant/uptake advantage <b>and</b> most of the back-end tax saving (~$4.0M cumulative net, the best of either pure path). Both/and, not either/or.
+    </div>
+
+    <!-- TIER-1 AAA -->
+    <div class="chart-card" style="margin-top:18px">
+      <h3>Tier-1 AAA — scaled ambition (comparison)</h3>
+      <div class="sub">Track 02 capital reframe: state-of-the-art scope vs Model 3 entry</div>
+      <table class="tbl">
+        <tr><th>Metric</th><th>Model 3 entry (base)</th><th>Tier-1 AAA (scaled)</th></tr>
+        <tr><td>Scope</td><td>10&ndash;50L single-use, GMP-ready</td><td>+200L line, full cleanroom, GMP from M12</td></tr>
+        <tr><td>Hard CAPEX</td><td>$1.48M</td><td>$3.5&ndash;4.0M</td></tr>
+        <tr><td>Capital raise</td><td>$1.9M</td><td>$4.5&ndash;5.5M</td></tr>
+        <tr><td>Y3 / Y6 revenue</td><td>~$2.1M / $3.8M</td><td>~$3.0M / $6.5M</td></tr>
+        <tr><td>Payback</td><td>~Year 5</td><td>~Year 5&ndash;6</td></tr>
+        <tr><td>Posture</td><td>Defensible without pipeline</td><td>Aggressive — needs anchor + sovereign capital</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--ink-3)">Estimates are directional, pending real quotes. Full build in the canonical xlsx.</div>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">05</span><h2>Commercial Pipeline</h2><span class="hint">9 of 13 priority startups in contact</span></div>
+    <div class="pipe">
+      <div class="pcard"><div class="pco">Eywa Biotech</div><div class="pde">GMP psilocybin/DMT · $2.5M Draper · intl LOIs</div><span class="ptag t-anchor">★ anchor candidate</span></div>
+      <div class="pcard"><div class="pco">Xeptiva</div><div class="pde">Vet therapeutic vaccines · 1st GMP lot · round Sept</div><span class="ptag t-hot">capital + LOI · ZF OK</span></div>
+      <div class="pcard"><div class="pco">KinzBio</div><div class="pde">1st LATAM phage therapy in humans · exiting round</div><span class="ptag t-hot">capital + LOI</span></div>
+      <div class="pcard"><div class="pco">Nanogrow</div><div class="pde">Camelid nanobodies · $300K→750K · $5M seed</div><span class="ptag t-warm">close meeting</span></div>
+      <div class="pcard"><div class="pco">Ardan Pharma</div><div class="pde">BORITINIB oncology · pays $50K/100g India</div><span class="ptag t-warm">ceiling + hire lead</span></div>
+      <div class="pcard"><div class="pco">Guska</div><div class="pde">Oncolytic RNA + AI · pre-clinical</div><span class="ptag t-warm">regulatory-as-service</span></div>
+      <div class="pcard"><div class="pco">Pasteur cluster</div><div class="pde">LoCBio · B4RNA · Scaffold</div><span class="ptag t-warm">medium-term</span></div>
+      <div class="pcard"><div class="pco">ATGen</div><div class="pde">Largest UY biotech · 300L · weaknesses mapped</div><span class="ptag t-cold">competitor + partner</span></div>
+      <div class="pcard"><div class="pco">Benten</div><div class="pde">Vet vaccine CRO · no own plant</div><span class="ptag t-cold">client candidate</span></div>
+      <div class="pcard"><div class="pco">Eolo · RadBio · Antarka</div><div class="pde">$7M / TGF-β / $3.5M (produces at ATGen)</div><span class="ptag t-cold">pending contact</span></div>
+    </div>
+  </div>
+
+  <!-- BLOCKER BOARD -->
+  <div class="sec">
+    <div class="sec-t"><span class="n">06</span><h2>Blockers & Unlocks</h2><span class="hint">what to tackle next</span></div>
+    <div class="bboard">
+      <div class="bcard unlock"><div class="bt">▶ Uruguay trip</div><div class="bd">Closes ATGen visit, Eywa anchor, Pasteur cluster, Nanogrow, LATU — and the field input to finalize 2.1.</div><div class="bo">Owner: Rene + Qualia+ · unlocks 2.1, 4.2</div></div>
+      <div class="bcard unlock"><div class="bt">▶ ZF / no-ZF decision</div><div class="bd">Blocking bifurcation — unblocks 3.3 fork, corporate structure, and 4.3 roadmap at once.</div><div class="bo">Owner: Andres + Alejandro · Gaston gate · depends on Ley 19.566 answer</div></div>
+      <div class="bcard"><div class="bt">Financial deliverable ownership</div><div class="bd">Model exists BOTH-side; Qualia index marks 3.1/3.3 open. Decide Qualia / BOTH / joint.</div><div class="bo">Blocks: Phase 3 sign-off</div></div>
+      <div class="bcard"><div class="bt">Real cost / salary / m² data</div><div class="bd">Vendor quotes + UY salaries + physical surface → harden 2.3 OPEX, 3.1 CAPEX, 3.2 margins.</div><div class="bo">Blocks: precision across Phase 3</div></div>
+      <div class="bcard"><div class="bt">Execution Roadmap ratification</div><div class="bd">4.3 drafted; needs Gaston to ratify at a Tuesday Sync to become canonical.</div><div class="bo">Owner: Rene → Gaston</div></div>
+      <div class="bcard"><div class="bt">Naming lock</div><div class="bd">Docs alternate "Photonic Lab(s)" / "Bioshift Lab." Pick one external name before any send.</div><div class="bo">Blocks: external materials</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <span><b>Photonic Labs Control Panel</b></span>
+    <span>Scope: Pillar 01 wet facility</span>
+    <span>Source: Qualia+ SOW + 8 docs + vault + V0.2.1</span>
+    <span>Generated 2026-06-12</span>
+    <span>Wiki: vault/ventures/photonic-lab-sow-wiki/</span>
+  </footer>
+
+</div>
+</body>
+</html>
