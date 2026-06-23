@@ -239,6 +239,25 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
   body{padding:14px 12px 50px}.shell{padding:18px 16px 20px;border-radius:24px}
   .greet h1{font-size:24px}.stats{grid-template-columns:1fr 1fr}
 }
+
+/* ── tags + filter ── */
+.vtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.vtag{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--edge)}
+.vtag.flagship{background:rgba(139,233,182,0.14);color:var(--accent);border-color:rgba(139,233,182,0.30)}
+.vtag.sidequest{background:rgba(125,176,255,0.12);color:#9ec1ff;border-color:rgba(125,176,255,0.30)}
+.vtag.passive{background:rgba(255,255,255,0.06);color:var(--t-2);border-color:var(--edge)}
+.vtag.network{background:rgba(134,217,185,0.10);color:#86d9b9;border-color:rgba(134,239,172,0.22)}
+.vtag.wildcard{background:rgba(196,160,255,0.14);color:#c9a6ff;border-color:rgba(196,160,255,0.32)}
+.filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:2px 4px 16px}
+.filterbar .flabel{font-size:11px;color:var(--t-3);text-transform:uppercase;letter-spacing:0.1em;margin-right:2px}
+.filterbar .fsep{font-size:9px;color:var(--t-4);text-transform:uppercase;letter-spacing:0.12em;margin:0 2px 0 10px}
+.fbtn{font-size:11px;font-weight:600;color:var(--t-2);background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s}
+.fbtn:hover{color:var(--t-1);border-color:var(--edge)}
+.fbtn.active{background:var(--accent);color:#0c1410;border-color:var(--accent)}
+.fbtn.fg.active{background:var(--green);color:#0c1410;border-color:var(--green)}
+.fbtn.fy.active{background:var(--amber);color:#1a1405;border-color:var(--amber)}
+.fbtn.fr.active{background:var(--red);color:#2a0c0c;border-color:var(--red)}
+.vcard.hide{display:none}
 </style>
 </head>
 <body>
@@ -303,11 +322,25 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
     <!-- ── VENTURE FIELD ── -->
     <section>
       <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">una fila por venture · confirmado en /vu</span></div>
+      <div class="filterbar">
+        <span class="flabel">Filtrar</span>
+        <button class="fbtn active" data-f="all">Todo</button>
+        <span class="fsep">tags</span>
+        <button class="fbtn" data-tag="flagship">Flagship</button>
+        <button class="fbtn" data-tag="sidequest">Side Quest</button>
+        <button class="fbtn" data-tag="passive">Passive</button>
+        <button class="fbtn" data-tag="network">Network</button>
+        <button class="fbtn" data-tag="wildcard">Wild Card</button>
+        <span class="fsep">status</span>
+        <button class="fbtn fg" data-health="g">Green</button>
+        <button class="fbtn fy" data-health="y">Yellow</button>
+        <button class="fbtn fr" data-health="r">Red</button>
+      </div>
       <div class="ventures">
 
         <!-- Manantial -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Daiana</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+        <article class="vcard" data-health="y" data-tags="flagship">
+          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Daiana</div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Apertura de <b>cuenta bancaria</b> + setup del sistema de facturación local</span><span class="li"><b>QuickBooks</b> con historial 2026 cargado y en uso activo</span><span class="li">Firmar <b>partnership UBS</b> (acuerdo ya cerrado)</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Evento <b>Akua</b> 12/06 ejecutado</span><span class="li">Cierre mayo integrado (Task Force V1.0); Endgame CM definido (dashboard 10/06)</span><span class="li">Archie (server local AI) estable; decisiones marca UY+AR y facturación-local→julio confirmadas</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Comunidad autosustentada que cubre el <b>alquiler de USD 20K/mes</b> y alcanza <b>break-even</b> (~70 members) sin perder lo construido. <span class="dr">Draft</span></div></div>
@@ -316,8 +349,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Reshore -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+        <article class="vcard" data-health="g" data-tags="flagship">
+          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston</div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Cerrar el <b>contrato del facility</b> ($100M / 25 revolvers, riesgo US)</span><span class="li"><b>Eximbank</b> PO insurance (cobertura % por definir) → decisión lending-partner vs. in-house</span><span class="li">3 productos: <b>supply chain matching · PO financing · invoice financing</b></span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Product chain completo hasta PO financing</span><span class="li"><b>$200K</b> ya deployados; 2º tramo de <b>$200K decidido</b> (faltan mechanics)</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Crear la <b>capa de coordinación + claridad de supply chain + trade finance para las Américas</b> — el OS confiable del comercio en la región. <span class="dr">Draft</span></div></div>
@@ -327,7 +360,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- La Chamana -->
-        <article class="vcard">
+        <article class="vcard" data-health="r" data-tags="">
           <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston</div></div><span class="hp r"><span class="d"></span>Red</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Foco: <b>retreat product packs</b></span><span class="li">Resolver la <b>decisión de venta</b> (términos en Endgame, queda proposed)</span><span class="li">Destrabar el <b>GTM/paid media</b> — exigir test + running a Andres</span><span class="li"><b>Llamar a Matías</b> (Head of RE de Ariel) re: decisión de listar</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🚩 <b>Paid media NO salió</b> — ~1 mes de build (Andres), sin test ni nada corriendo (caro, baja ejecución)</span><span class="li"><b>Luxury Haciendas</b> reframeado = acuerdo de referidos (reversible, no co-management)</span><span class="li"><b>PBHomes</b> manda propuesta el 01/07 · guest feedback 10/10 + punch list</span></div>
@@ -337,8 +370,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Quantum -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Gaston</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+        <article class="vcard" data-health="y" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Gaston</div><div class="vtags"><span class="vtag sidequest">Side Quest · Photonic</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>IonQ</b> como inversor potencial del Uruguay Newco</span><span class="li">Seguimiento <b>carta + memo</b> al gobierno (enviados 22/06)</span><span class="li">Avanzar el <b>term-sheet</b> (etapa de negociación)</span><span class="li"><b>Pipeline inversores:</b> Galperín passed · Riverwood→Blackstone +SandboxAQ · fondo Dubai · Founders Fund · Elsztain</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li"><b>Carta + memo al gobierno enviados</b> (22/06)</span><span class="li">QCaaS 17/06 fijó precios/estructura; <b>modelo financiero v2.2</b> armado</span><span class="li">Posicionamiento: BOTH como <b>"dueño del fierro"</b></span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Computadora cuántica de <b>256 qubits</b> operada vía el <b>Uruguay Newco</b> — 1ª de 256 qubits de LatAm. <span class="dr">Draft</span></div></div>
@@ -348,8 +381,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Punta Crypto -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-18</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
+        <article class="vcard" data-health="g" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-18</span></div><div class="vtags"><span class="vtag sidequest">Side Quest</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Cerrar <b>deal Aviador</b> (productor) con números antes del 16/06</span><span class="li">Validar <b>tiers de sponsors</b> (rango 5k–200k) con board</span><span class="li">Registrar SaaS + marca; abrir <b>venta sponsors 19/06</b></span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Modelo financiero <b>trigger-based</b> definido (80% sponsors / 20% tickets)</span><span class="li">Board: estructura 5% bono post-120k (no cap table); Demi/Ari/Darío</span><span class="li">MOU Polkadot + Casa Manantial como sponsor</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>$120K</b> netos post-evento → financiar el tramo de $10K/mes del alquiler de Casa Manantial. <span class="dr">Draft</span></div></div>
@@ -359,8 +392,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Photonic Lab -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+        <article class="vcard" data-health="g" data-tags="flagship">
+          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene</div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Uruguay trip (Rene + Qualia+): ATGen, Eywa, Pasteur/Nanogrow, LATU</span><span class="li">Eywa <b>anchor meeting</b> (~2 semanas)</span><span class="li">Operating Model Blueprint + Pillar 03 scoping</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Track 01: 9 de 13 startups en contacto</span><span class="li">ZF confirmado non-dealbreaker; pricing ceiling <b>$50K/100g</b></span><span class="li">Narrativa B2 aprobada</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Anchor tenant que financia el opex del lab — demanda, no grants. <span class="dr">Draft</span></div></div>
@@ -370,7 +403,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- B_V OS -->
-        <article class="vcard">
+        <article class="vcard" data-health="g" data-tags="">
           <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano</div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Fix del <b>portfolio summary widget</b> (data source inconsistente)</span><span class="li">Cablear la data financiera de Daiana a las cards</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Card-based weekly reporting <b>shipped</b> (This week / Last week / Endgame)</span><span class="li"><b>/vu</b> + <b>/au</b> reframed a card-confirmation + curación de riesgos/decisiones</span><span class="li">Arquitectura Endgame → épicas → weekly win definida</span><span class="li"><b>La Chamana — máquinas creadas:</b> Content Factory · CRM · Outreach · Paid Media <em>(recomendar manager independiente outsourced)</em></span><span class="li"><b>La Chamana — survey con Iru</b> (post-venta + post-estadía, último paso del funnel), rooteada en Airtable — <b>LIVE y funcionando</b></span></div>
@@ -380,8 +413,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- LAK3 -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-20</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+        <article class="vcard" data-health="y" data-tags="wildcard">
+          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-20</span></div><div class="vtags"><span class="vtag wildcard">Wild Card</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">🚩 <b>Compliance — Irán:</b> management coquetea con reunirse/trabajar con el régimen iraní (país sancionado) → frenar de inmediato</span><span class="li">Revierte a <b>Vibe Incubating</b> (token value collapse) — capital holding, sin épicas ni tracking</span><span class="li">One-pager V0.1.0 entregado a Xavier/Ivory; gates legales abiertos</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Reframe substrate-acquisition V0.1 (6 artifacts)</span><span class="li">Arquitectura ADGM de dos instrumentos definida</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Primer activo (agua) tokenizado y transable on-chain con liquidez real. <span class="dr">Draft</span></div></div>
@@ -391,8 +424,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Panambi -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+        <article class="vcard" data-health="g" data-tags="passive network">
+          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres</div><div class="vtags"><span class="vtag passive">Passive</span><span class="vtag network">Network</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Holding pattern; sin movimiento</span><span class="li">Espera el próximo inflow de <b>Selfina</b> (gatilla los $25K)</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Sin cambios; holding pattern sostenido</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Fondo cerrado con track record — salud mental LatAm como clase de activo. <span class="dr">Draft</span></div></div>
@@ -401,8 +434,8 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
         </article>
 
         <!-- Content Factory -->
-        <article class="vcard">
-          <div class="vtop"><div><div class="vname">Content Factory</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+        <article class="vcard" data-health="g" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Content Factory</div><div class="vmeta">Andres</div><div class="vtags"><span class="vtag sidequest">Side Quest</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Motor listo y en producción; requiere 0,5–1 h/día de <b>human-in-the-loop</b></span><span class="li">Asignar el HITL o dar a Andres ventana para automatizar al 100%</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">v1.0 operativa (01/06): motor genera contenido curado</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido — infraestructura interna cross-venture.</div></div>
@@ -613,5 +646,34 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
   </details>
 
 </div>
+<script>
+(function(){
+  var tag=null,health=null;
+  var cards=[].slice.call(document.querySelectorAll('.vcard'));
+  var btns=[].slice.call(document.querySelectorAll('.fbtn'));
+  function apply(){
+    cards.forEach(function(c){
+      var t=' '+(c.getAttribute('data-tags')||'')+' ';
+      var h=c.getAttribute('data-health')||'';
+      var ok=(!tag||t.indexOf(' '+tag+' ')>=0)&&(!health||h===health);
+      c.classList.toggle('hide',!ok);
+    });
+    btns.forEach(function(b){
+      var on=false;
+      if(b.dataset.f==='all')on=(!tag&&!health);
+      else if(b.dataset.tag)on=(b.dataset.tag===tag);
+      else if(b.dataset.health)on=(b.dataset.health===health);
+      b.classList.toggle('active',on);
+    });
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    if(b.dataset.f==='all'){tag=null;health=null;}
+    else if(b.dataset.tag){tag=(tag===b.dataset.tag)?null:b.dataset.tag;}
+    else if(b.dataset.health){health=(health===b.dataset.health)?null:b.dataset.health;}
+    apply();
+  });});
+  apply();
+})();
+</script>
 </body>
 </html>
