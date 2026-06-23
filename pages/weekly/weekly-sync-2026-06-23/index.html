@@ -285,7 +285,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
           <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$8K</div><div class="leg">post-pagos · ref 06-01 · refresh pend. (Daiana)</div></div>
           <div class="stat"><div class="l">BOTH runway</div><div class="n" style="font-size:19px">julio</div><div class="leg">puente = LP deploy $1M</div></div>
           <div class="stat"><div class="l">Próximo LP deploy</div><div class="n" style="font-size:19px">$1M</div><div class="leg">Mitrani · julio · platform</div></div>
-          <div class="stat"><div class="l">Ventures</div><div class="n">10</div></div>
+          <div class="stat span"><div><div class="l">Tipo · Flagship / Side Quest / Otros</div><div class="n">3 · 3 · 4</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
           <div class="stat span"><div><div class="l">Health · G / Y / R</div><div class="n">6 · 3 · 1</div></div>
             <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
         </div>
@@ -321,7 +321,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 
     <!-- ── VENTURE FIELD ── -->
     <section>
-      <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">una fila por venture · confirmado en /vu</span></div>
+      <div class="field-h"><span class="t">Venture Status Grid</span></div>
       <div class="filterbar">
         <span class="flabel">Filtrar</span>
         <button class="fbtn active" data-f="all">Todo</button>
@@ -648,28 +648,30 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 </div>
 <script>
 (function(){
-  var tag=null,health=null;
+  var active=null; // {type:'tag'|'health', val:string}
   var cards=[].slice.call(document.querySelectorAll('.vcard'));
   var btns=[].slice.call(document.querySelectorAll('.fbtn'));
   function apply(){
     cards.forEach(function(c){
-      var t=' '+(c.getAttribute('data-tags')||'')+' ';
-      var h=c.getAttribute('data-health')||'';
-      var ok=(!tag||t.indexOf(' '+tag+' ')>=0)&&(!health||h===health);
+      var ok=true;
+      if(active){
+        if(active.type==='tag'){ok=(' '+(c.getAttribute('data-tags')||'')+' ').indexOf(' '+active.val+' ')>=0;}
+        else {ok=(c.getAttribute('data-health')||'')===active.val;}
+      }
       c.classList.toggle('hide',!ok);
     });
     btns.forEach(function(b){
       var on=false;
-      if(b.dataset.f==='all')on=(!tag&&!health);
-      else if(b.dataset.tag)on=(b.dataset.tag===tag);
-      else if(b.dataset.health)on=(b.dataset.health===health);
+      if(b.dataset.f==='all'){on=!active;}
+      else if(b.dataset.tag){on=!!active&&active.type==='tag'&&active.val===b.dataset.tag;}
+      else if(b.dataset.health){on=!!active&&active.type==='health'&&active.val===b.dataset.health;}
       b.classList.toggle('active',on);
     });
   }
   btns.forEach(function(b){b.addEventListener('click',function(){
-    if(b.dataset.f==='all'){tag=null;health=null;}
-    else if(b.dataset.tag){tag=(tag===b.dataset.tag)?null:b.dataset.tag;}
-    else if(b.dataset.health){health=(health===b.dataset.health)?null:b.dataset.health;}
+    if(b.dataset.f==='all'){active=null;}
+    else if(b.dataset.tag){active=(active&&active.type==='tag'&&active.val===b.dataset.tag)?null:{type:'tag',val:b.dataset.tag};}
+    else if(b.dataset.health){active=(active&&active.type==='health'&&active.val===b.dataset.health)?null:{type:'health',val:b.dataset.health};}
     apply();
   });});
   apply();
