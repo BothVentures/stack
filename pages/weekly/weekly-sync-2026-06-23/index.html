@@ -1,1082 +1,605 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tuesday Weekly Sync digest — venture dashboard, area summaries, decisions, risks, priorities.">
-<title>BOTH Ventures — Tuesday Weekly Sync — 2026-06-23 — Both_Ventures</title>
+<meta name="description" content="BOTH Ventures — Synergy Dashboard. Control panel glassmorphism: health, sprint, endgame y riesgos por venture. Reporte completo en apéndice plegable.">
+<title>Synergy Weekly Dashboard — Both_Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/*
- * Weekly Digest — Editorial Design System
- * Based on photonic-lab Swiss editorial base.
- * Purpose: Tuesday Sync digest and executive reports.
- *
- * Governing principle: scannable in 5 minutes.
- * BOTH olive-gold accent (#939324). Wider tables. Callout blockquotes.
- * Section headings as hard dividers. Urgency signals visible at a glance.
- */
+/* ══════════════════════════════════════════════════════════
+   Synergy Weekly Dashboard — dark glassmorphism (visionOS mood)
+   bg: 9B graphite · ambient glow · frosted panels · depth
+══════════════════════════════════════════════════════════ */
+:root{
+  --ink:#ffffff;
+  --t-1:rgba(255,255,255,0.92);
+  --t-2:rgba(255,255,255,0.62);
+  --t-3:rgba(255,255,255,0.40);
+  --t-4:rgba(255,255,255,0.26);
+  --edge:rgba(255,255,255,0.12);
+  --edge-soft:rgba(255,255,255,0.07);
+  --hi:rgba(255,255,255,0.16);
+  --glass:rgba(28,28,32,0.42);
+  --glass-2:rgba(40,40,46,0.34);
+  --glass-3:rgba(18,18,22,0.50);
+  --accent:#8be9b6;            /* Synergy green — el único pop vivo */
+  --green:#86efac; --green-bg:rgba(134,239,172,0.14);
+  --amber:#fcd34d; --amber-bg:rgba(252,211,77,0.14);
+  --red:#fca5a5;   --red-bg:rgba(252,165,165,0.14);
+  --orange:#fdba74;--orange-bg:rgba(253,186,116,0.14);
+  --blue:#7dd3fc;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  --r-shell:30px; --r-card:22px; --r-tile:16px;
+  --blur:saturate(1.5) blur(30px);
+  --blur-card:saturate(1.4) blur(22px);
+  --shadow-card:0 10px 40px rgba(0,0,0,0.34);
+  --shadow-shell:0 40px 120px rgba(0,0,0,0.55);
+  --ease:cubic-bezier(0.22,0.61,0.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--t-1);line-height:1.55;-webkit-font-smoothing:antialiased;
+  min-height:100vh;position:relative;padding:52px 52px 72px;
+  background:#0a0a0c url('./bg.jpg') no-repeat center top fixed;background-size:cover}
+/* ambient: glow cálido abajo-izq + frío arriba-der, velo oscuro encima del grafito */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1200px 700px at 80% 4%, rgba(125,211,252,0.16), transparent 60%),
+    radial-gradient(1100px 640px at 8% 98%, rgba(253,186,116,0.15), transparent 58%),
+    radial-gradient(700px 700px at 50% 120%, rgba(139,233,182,0.06), transparent 60%),
+    linear-gradient(180deg, rgba(8,8,10,0.50) 0%, rgba(8,8,10,0.68) 46%, rgba(8,8,10,0.82) 100%)}
 
-/* ── RESET ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ══ SHELL ══ */
+.shell{position:relative;z-index:1;max-width:1340px;margin:0 auto;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--edge);border-radius:var(--r-shell);
+  box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:28px 28px 30px}
 
-/* ── VARIABLES ── */
-:root {
-  /* Neutrals */
-  --white:    #ffffff;
-  --off:      #f5f4f0;
-  --rule:     #e0ddd8;
-  --rule2:    #c8c4bc;
-  --text:     #111110;
-  --text2:    #444440;
-  --text3:    #888880;
+/* ══ TOP BAR ══ */
+.top{display:flex;align-items:center;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+.greet{flex:1;min-width:240px}
+.eyebrow{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);font-weight:600}
+.greet h1{font-size:30px;font-weight:600;letter-spacing:-0.02em;margin-top:6px;line-height:1.1}
+.greet h1 b{font-weight:700}
+.ask{display:flex;align-items:center;gap:10px;background:var(--glass-3);border:1px solid var(--edge);
+  border-radius:999px;padding:11px 18px 11px 16px;min-width:280px;color:var(--t-2);font-size:13.5px;
+  box-shadow:inset 0 1px 0 var(--hi)}
+.ask .spark{color:var(--accent);font-size:14px}
+.ask .ph{color:var(--t-3)}
+.ask .kbd{margin-left:auto;font-size:10px;color:var(--t-3);border:1px solid var(--edge);border-radius:6px;padding:2px 7px}
+.top-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--t-3);letter-spacing:0.04em;
+  background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:999px;padding:8px 14px}
+.top-meta .sprint{color:var(--accent);font-weight:600}
+.top-meta .sep{color:var(--t-4)}
 
-  /* Primary accent — BOTH olive-gold */
-  --acc:      #939324;
-  --acc-lt:   #f5f4e0;
-  --acc-dk:   #5a5a14;
+/* ══ DASH LAYOUT ══ */
+.dash{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
 
-  /* Status signals */
-  --urgent-bg:    #fdecea;
-  --urgent-bd:    #c0392b;
-  --warn-bg:      #fdf3e3;
-  --warn-bd:      #b06a00;
-  --info-bg:      #edf1f5;
-  --info-bd:      #3a4a58;
+/* ── rail ── */
+/* Sticky rail: stays put while the venture column scrolls. Bounded by .dash
+   (rail + venture grid only); the Questions section is a sibling OUTSIDE the
+   grid, so the rail unpins before it and they never overlap mid-scroll. */
+.rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px}
+.panel{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.panel-h{display:flex;align-items:center;gap:8px;padding:16px 18px 0}
+.panel-h .t{font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--t-2)}
+.panel-h .c{margin-left:auto;font-size:11px;color:var(--t-3)}
 
-  /* Geometry */
-  --radius:   3px;
-  --max-w:    1280px;
-  --shadow-s: 0 1px 4px rgba(0,0,0,.07);
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.stat{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:13px 14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)}
+.stat.span{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between}
+.stat .l{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:7px}
+.stat .n{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1;color:rgba(255,255,255,0.64)}
+.stat .dots{display:inline-flex;gap:6px;align-items:center}
+.seg{width:10px;height:10px;border-radius:50%}
+.seg.g{background:var(--green)}.seg.y{background:var(--amber)}.seg.r{background:var(--red)}
+.stat .leg{font-size:10px;color:var(--t-3);margin-top:7px}
 
-  /* Typography */
-  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --mono:     "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
-}
+.prios{padding:8px 14px 16px}
+.prio{display:flex;gap:11px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid var(--edge-soft)}
+.prio:last-child{border-bottom:none}
+.prio .i{flex-shrink:0;width:20px;height:20px;border-radius:7px;background:var(--glass-3);border:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--t-2)}
+.prio .txt{font-size:12.5px;color:rgba(255,255,255,0.78);line-height:1.45}
+.prio .who{color:var(--t-3);font-size:11px}
 
-/* ── BASE ── */
-html { font-size: 14px; }
+.sprint-card{padding:16px 18px 18px}
+.sprint-card .tag{display:inline-block;font-size:10.5px;color:var(--accent);background:var(--green-bg);
+  border:1px solid rgba(139,233,182,0.3);border-radius:999px;padding:4px 11px;letter-spacing:0.04em;font-weight:600;margin-bottom:10px}
+.sprint-card .body{font-size:12px;color:var(--t-2);line-height:1.55}
+.sprint-card .body b{color:var(--t-1)}
+.sprint-card .body a{color:var(--accent);text-decoration:none;font-weight:600;
+  border-bottom:1px solid rgba(139,233,182,0.35);white-space:nowrap}
 
-body {
-  font-family: var(--sans);
-  font-weight: 400;
-  background: #ede0c5;
-  color: var(--text2);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+/* ── venture field ── */
+.field-h{display:flex;align-items:baseline;gap:10px;padding:2px 4px 14px}
+.field-h .t{font-size:13px;font-weight:600;color:var(--t-1);letter-spacing:0.01em}
+.field-h .d{font-size:11px;color:var(--t-3);margin-left:auto}
+.ventures{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vcard{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);padding:18px 18px 16px;
+  box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);display:flex;flex-direction:column;gap:13px;
+  transition:transform 0.25s var(--ease),border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
+  animation:rise 0.5s var(--ease) both}
+.vcard:hover{transform:translateY(-3px);border-color:var(--hi);box-shadow:0 18px 50px rgba(0,0,0,0.45),inset 0 1px 0 var(--hi)}
+.vtop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.vname{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.vmeta{font-size:11px;color:var(--t-3);margin-top:3px}
+.vmeta .stale{color:var(--orange)}
+.hp{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.10)}
+.hp .d{width:6px;height:6px;border-radius:50%}
+.hp.g{background:var(--green-bg);color:var(--green);border:1px solid rgba(134,239,172,0.28)}.hp.g .d{background:var(--green)}
+.hp.y{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(252,211,77,0.28)}.hp.y .d{background:var(--amber)}
+.hp.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.28)}.hp.r .d{background:var(--red)}
+.row .lab{font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-4);font-weight:600;margin-bottom:5px}
+.row .li{display:block;font-size:12.5px;color:var(--t-1);padding-left:13px;position:relative;margin-top:3px;line-height:1.45}
+.row .li:first-of-type{margin-top:0}
+.row .li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--t-4)}
+.row .li b{font-weight:700}
+.row.muted .li{color:var(--t-2)}
+.endgame{font-size:12px;color:var(--t-2);line-height:1.5;font-style:italic}
+.endgame.todo{color:var(--t-4);font-style:italic}
+.endgame .dr{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  font-style:normal;color:var(--t-4);background:rgba(255,255,255,0.05);border:1px solid var(--edge-soft);border-radius:999px;
+  padding:1px 7px;margin-left:6px;vertical-align:middle}
+.vrisks{display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid var(--edge-soft);padding-top:13px;margin-top:auto}
+.vrisks::before{content:"Risks";flex-basis:100%;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-4);font-weight:600;margin-bottom:2px}
+.chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
+.chip .d{width:5px;height:5px;border-radius:50%}
+.chip.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.22)}.chip.r .d{background:var(--red)}
+.chip.o{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(253,186,116,0.22)}.chip.o .d{background:var(--orange)}
+.chip.y{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(252,211,77,0.22)}.chip.y .d{background:var(--amber)}
+.chip.none{font-size:11px;color:var(--t-4)}
+.vq{font-size:11.5px;color:var(--t-1);line-height:1.5;background:rgba(96,131,255,0.08);border:1px solid rgba(96,131,255,0.24);border-radius:10px;padding:10px 12px}
+.vq::before{content:"Pregunta · Tuesday";display:block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#9db4ff;font-weight:700;margin-bottom:4px}
+/* qsection lives OUTSIDE the .dash grid (sibling, full-width) so the sticky
+   rail can't overlap it mid-scroll. */
+.qsection{margin-top:18px}
+.qlist{list-style:none;counter-reset:q;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.qlist li{counter-increment:q;position:relative;background:var(--glass-2);border:1px solid var(--edge);border-radius:12px;padding:13px 16px 13px 44px;font-size:13px;color:var(--t-1);line-height:1.55}
+.qlist li::before{content:counter(q);position:absolute;left:15px;top:12px;font-size:12px;font-weight:700;color:#9db4ff}
+.qlist li b{font-weight:700}
+.qv{color:#9db4ff;font-size:11.5px}
 
-/* ── LAYOUT SHELL ── */
-.page-wrap {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 32px;
-}
+/* ══ APPENDIX ══ */
+.appendix{margin-top:18px;background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);overflow:hidden}
+.appendix>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 22px;user-select:none;
+  transition:background 0.2s var(--ease)}
+.appendix>summary::-webkit-details-marker{display:none}
+.appendix>summary:hover{background:rgba(255,255,255,0.04)}
+.ax-key{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);
+  border:1px solid var(--edge);border-radius:8px;padding:5px 10px}
+.ax-title{font-size:14px;font-weight:600;letter-spacing:0.01em;color:var(--t-1)}
+.ax-sub{font-size:11.5px;color:var(--t-3)}
+.ax-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--accent)}
+.ax-chev{transition:transform 0.25s var(--ease);font-size:11px}
+.appendix[open]>summary .ax-chev{transform:rotate(180deg)}
+.appendix>summary .show{display:inline}.appendix>summary .hide{display:none}
+.appendix[open]>summary .show{display:none}.appendix[open]>summary .hide{display:inline}
+.rest{padding:8px 30px 32px;border-top:1px solid var(--edge-soft);animation:rise 0.4s var(--ease) both}
 
-/* ── SITE HEADER ── */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--white);
-  border-bottom: 2px solid var(--text);
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-}
-.site-header .mark {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.site-header .circle-filled {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--text);
-  flex-shrink: 0;
-}
-.site-header .circle-outline {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid var(--text);
-  flex-shrink: 0;
-}
-.site-header .wordmark {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: .02em;
-}
-.header-meta {
-  font-size: 9px;
-  font-weight: 400;
-  color: var(--text3);
-  letter-spacing: .10em;
-  text-transform: uppercase;
-}
+.rest .lead{color:var(--t-2);font-size:13px;line-height:1.65;padding:16px 18px;background:var(--glass-3);
+  border:1px solid var(--edge-soft);border-left:2px solid var(--accent);border-radius:12px;margin:18px 0 8px}
+.rest h2{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t-1);font-weight:700;
+  margin:30px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--edge-soft)}
+.rest h3{font-size:13.5px;font-weight:600;margin:18px 0 4px;color:var(--t-1)}
+.rest h3 em{color:var(--t-3);font-style:normal;font-size:11px;font-weight:400}
+.rest p{font-size:13px;color:var(--t-2);margin:7px 0;max-width:880px;line-height:1.6}
+.rest ul{margin:8px 0 8px 4px;padding-left:18px}
+.rest li{font-size:13px;color:var(--t-2);margin:5px 0;line-height:1.55}
+.rest strong{color:var(--t-1);font-weight:600}
+.rest em{color:var(--t-3)}
+.rest code{font-size:11px;background:var(--glass-3);border:1px solid var(--edge-soft);padding:1px 6px;border-radius:5px;color:var(--accent)}
+.rest .grp{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--t-2);font-weight:700;margin-top:16px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:12.5px}
+th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;color:var(--t-3);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background 0.15s}tbody tr:hover{background:rgba(255,255,255,0.03)}
+td strong{color:var(--t-1)}
+.sev{font-size:10.5px;font-weight:700;white-space:nowrap}
+.sev.hh{color:var(--red)}.sev.hm{color:var(--orange)}.sev.mh{color:var(--amber)}.sev.mm{color:var(--t-2)}
+.audit{background:var(--glass-3);border:1px solid var(--edge-soft);border-left:2px solid var(--t-4);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12px;color:var(--t-2);line-height:1.55}
+.audit b{color:var(--t-1)}
+.flag{background:var(--red-bg);border:1px solid rgba(252,165,165,0.20);border-left:2px solid var(--red);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12.5px;color:#f3cccc;line-height:1.55}
+.flag b{color:var(--red)}
+.heat td:last-child{font-weight:700;text-align:right;color:var(--t-1)}
+blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-left:2px solid var(--accent);border-radius:12px;font-size:13.5px;color:var(--t-1);line-height:1.6}
+.synergy-close .k{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-3);font-weight:700;margin-top:18px}
 
-/* ── ARTICLE BODY — wider than photonic-lab for multi-column tables ── */
-article.notion-page {
-  max-width: 920px;
-  margin: 0 auto;
-  padding: 48px 0 80px;
-}
+/* ══ FX ══ */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.vcard:nth-child(2){animation-delay:.04s}.vcard:nth-child(3){animation-delay:.08s}.vcard:nth-child(4){animation-delay:.12s}
+.vcard:nth-child(5){animation-delay:.16s}.vcard:nth-child(6){animation-delay:.2s}.vcard:nth-child(7){animation-delay:.24s}
+.vcard:nth-child(n+8){animation-delay:.28s}
+@media(prefers-reduced-motion:reduce){.vcard,.rest{animation:none}}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.24)}
 
-/* ── HEADINGS ── */
-/* H1 — 3-line masthead. Each <span class="h1-line"> is one segment,
-   stacked vertically with hairline rules above each (and below the last). */
-article.notion-page h1 {
-  margin: 0 0 32px;
-  padding: 0;
-  border: none;
-  font-weight: 700;
-  color: var(--text);
+@media(max-width:1000px){
+  body{padding:28px 22px 60px}
+  .dash{grid-template-columns:1fr}
+  .rail{position:static;flex-direction:column}
+  .ventures{grid-template-columns:1fr}
+  .top{gap:12px}.ask{min-width:0;flex:1}
+}
+@media(max-width:560px){
+  body{padding:14px 12px 50px}.shell{padding:18px 16px 20px;border-radius:24px}
+  .greet h1{font-size:24px}.stats{grid-template-columns:1fr 1fr}
 }
-.read-time {
-  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--accent); margin: -20px 0 28px;
-}
-article.notion-page h1 .h1-line {
-  display: block;
-  font-size: clamp(22px, 3vw, 36px);
-  line-height: 1.1;
-  letter-spacing: -.025em;
-  padding: 14px 0;
-  border-top: 1px solid var(--text);
-}
-article.notion-page h1 .h1-line:last-child {
-  border-bottom: 1px solid var(--text);
-}
-
-/* ── SIGNAL BOARD — Executive Summary mini-dashboard ── */
-.signal-board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  margin: 24px 0 36px;
-  padding: 24px 0 24px;
-  border-top: 1px solid var(--rule2);
-  border-bottom: 1px solid var(--rule2);
-}
-.signal-board > div { padding: 0 0 0 22px; }
-.signal-board > div:first-child { padding-left: 0; }
-.signal-board > div + div { border-left: 1px solid var(--rule2); }
-.sb-num {
-  display: block;
-  font-family: var(--mono);
-  font-size: 44px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--text);
-}
-.sb-label {
-  display: block;
-  margin-top: 14px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.3;
-}
-.sb-sub {
-  display: block;
-  margin-top: 4px;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text3);
-  line-height: 1.45;
-}
-
-/* Venture snapshot — second line styling */
-article.notion-page table td .next {
-  display: block;
-  margin-top: 4px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--acc);
-}
-article.notion-page table td .next + span,
-article.notion-page table td .row2 {
-  display: block;
-  color: var(--text3);
-  font-size: 13px;
-  line-height: 1.5;
-  margin-top: 2px;
-}
-
-/* Area pulse — inline label + content on one line */
-article.notion-page ul li .pulse-next {
-  display: inline;
-  margin: 0 6px 0 8px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--acc);
-}
-article.notion-page ul li .pulse-next + span {
-  color: var(--text3);
-  font-size: 13px;
-}
-/* H2 — section anchor at moderate scale (section openers carry the larger title) */
-article.notion-page h2 {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.1;
-  letter-spacing: -0.018em;
-  text-transform: none;
-  margin: 48px 0 18px;
-  padding-top: 24px;
-  border-top: 1px solid var(--rule2);
-  text-wrap: balance;
-}
-article.notion-page h3 {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.4;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  margin: 32px 0 10px;
-}
-article.notion-page h4 {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text3);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin: 20px 0 6px;
-}
-
-/* ── BODY TEXT ── */
-article.notion-page p {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.8;
-  margin-bottom: 14px;
-}
-
-/* ── LISTS ── */
-article.notion-page ul,
-article.notion-page ol {
-  margin: 6px 0 16px 20px;
-}
-article.notion-page li {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.75;
-  margin-bottom: 4px;
-}
-article.notion-page li::marker { color: var(--acc); }
-
-/* ── INLINE CODE ── */
-article.notion-page code {
-  font-family: var(--mono);
-  font-size: 12px;
-  background: var(--off);
-  color: var(--acc-dk);
-  padding: 1px 5px;
-  border-radius: var(--radius);
-  border: 1px solid var(--rule2);
-}
-
-/* ── CODE BLOCKS ── */
-figure.code-block {
-  margin: 18px 0;
-  background: var(--off);
-  border: 1px solid var(--rule2);
-  border-left: 3px solid var(--text);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-figure.code-block pre { padding: 18px 22px; overflow-x: auto; }
-figure.code-block code {
-  font-size: 12px; line-height: 1.6;
-  color: var(--text); background: none;
-  border: none; padding: 0; white-space: pre;
-}
-figure.code-block figcaption {
-  font-size: 10px; font-weight: 400; color: var(--text3);
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: 7px 22px 9px; border-top: 1px solid var(--rule);
-}
-
-/* ── BLOCKQUOTE — rendered as callout panel ── */
-article.notion-page blockquote {
-  background: var(--off);
-  border-left: 3px solid var(--acc);
-  padding: 14px 20px;
-  margin: 20px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.75;
-}
-article.notion-page blockquote strong { font-weight: 700; color: var(--text); }
-article.notion-page blockquote p { margin-bottom: 0; font-size: 13px; }
-
-/* ── URGENT / WARN SIGNAL CLASSES (for future HTML-aware paths) ── */
-.urgent-signal {
-  background: var(--urgent-bg);
-  border-left: 3px solid var(--urgent-bd);
-  padding: 12px 18px;
-  margin: 16px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--urgent-bd);
-}
-.warn-signal {
-  background: var(--warn-bg);
-  border-left: 3px solid var(--warn-bd);
-  padding: 12px 18px;
-  margin: 16px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--warn-bd);
-}
-
-/* ── HR ── */
-article.notion-page hr {
-  border: none;
-  border-top: 1px solid var(--rule2);
-  margin: 40px 0;
-}
-
-/* ── TABLES — digest-optimized ── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 13px;
-  border: 1px solid var(--rule2);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-th {
-  background: #f0efe8;
-  color: var(--text3);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  padding: 9px 14px;
-  text-align: left;
-  border-bottom: 1px solid var(--rule2);
-}
-td {
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--rule);
-  color: var(--text2);
-  font-weight: 400;
-  vertical-align: top;
-  line-height: 1.5;
-}
-tr:last-child td { border-bottom: none; }
-tr:nth-child(even) td { background: #fafaf8; }
-tr:hover td { background: var(--off); }
-
-/* ── LINKS ── */
-article.notion-page a {
-  color: var(--acc-dk);
-  text-decoration: none;
-  border-bottom: 1px solid rgba(147,147,36,0.3);
-  transition: border-color .15s linear, color .15s linear;
-}
-article.notion-page a:hover {
-  color: var(--text);
-  border-bottom-color: var(--acc);
-}
-
-/* ── IMAGES ── */
-article.notion-page img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-s);
-  display: block;
-  margin: 20px 0;
-}
-
-/* ── SITE FOOTER ── */
-.site-footer {
-  border-top: 2px solid var(--text);
-  background: var(--off);
-  padding: 24px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-top: 80px;
-}
-.site-footer .footer-brand {
-  font-weight: 700;
-  color: var(--acc-dk);
-  letter-spacing: .06em;
-}
-
-/* ── APPENDIX DARK MODE ──
-   The Appendix is the long-tail reference layer. Render it on a dark canvas
-   to amplify the contrast against the Executive Summary above.
-   Source markdown wraps the Appendix in <section class="appendix-dark" markdown="1">. */
-
-article.notion-page section.appendix-dark {
-  /* Full-bleed dark brown band: break out of the 920px article max-width */
-  width: 100vw;
-  margin-left: calc(-50vw + 50%);
-  margin-top: 56px;
-  padding: 64px 32px 96px;
-  background: #352819;
-  color: #D4D0C8;
-}
-/* Re-center inner content to the article reading width */
-article.notion-page section.appendix-dark > * {
-  max-width: 920px;
-  margin-left: auto;
-  margin-right: auto;
-}
-/* Reverse typography inside the dark band */
-article.notion-page section.appendix-dark h2 {
-  color: #FFFFFF;
-  margin: 0 auto 32px;
-  border-top-color: rgba(255,255,255,0.22);
-}
-/* First h2 inside each context: skip the top rule (the H1's bottom rule or the
-   appendix-dark band edge already supplies the divider). */
-article.notion-page > h2:first-of-type,
-article.notion-page section.appendix-dark h2:first-of-type {
-  padding-top: 0;
-  border-top: none;
-}
-article.notion-page section.appendix-dark h3 {
-  color: #FFFFFF;
-}
-article.notion-page section.appendix-dark h4 {
-  color: #D4D0C8;
-}
-article.notion-page section.appendix-dark p,
-article.notion-page section.appendix-dark li {
-  color: #D4D0C8;
-}
-article.notion-page section.appendix-dark li::marker { color: #c5c52a; }
-article.notion-page section.appendix-dark strong { color: #FFFFFF; }
-article.notion-page section.appendix-dark em { color: #c8c4bc; }
-/* Inline code, code blocks */
-article.notion-page section.appendix-dark code {
-  background: rgba(147,147,36,0.14);
-  color: #c5c52a;
-  border: 1px solid rgba(147,147,36,0.32);
-}
-article.notion-page section.appendix-dark figure.code-block {
-  background: #15140f;
-  border-color: rgba(255,255,255,0.10);
-  border-left-color: #c5c52a;
-}
-article.notion-page section.appendix-dark figure.code-block code {
-  color: #D4D0C8;
-  background: none;
-  border: none;
-}
-article.notion-page section.appendix-dark figure.code-block figcaption {
-  color: #888880;
-  border-top-color: rgba(255,255,255,0.08);
-}
-/* Blockquote callouts (e.g. dedup notes) */
-article.notion-page section.appendix-dark blockquote {
-  background: #1a1a14;
-  border-left-color: #c5c52a;
-  color: #D4D0C8;
-}
-article.notion-page section.appendix-dark blockquote strong { color: #FFFFFF; }
-article.notion-page section.appendix-dark blockquote p { color: #D4D0C8; }
-/* Tables — dark with subtle striping */
-article.notion-page section.appendix-dark table {
-  background: #15140f;
-  border-color: rgba(255,255,255,0.10);
-}
-article.notion-page section.appendix-dark th {
-  background: #22221a;
-  color: #888880;
-  border-bottom-color: rgba(255,255,255,0.12);
-}
-article.notion-page section.appendix-dark td {
-  color: #D4D0C8;
-  border-bottom-color: rgba(255,255,255,0.06);
-}
-article.notion-page section.appendix-dark tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-article.notion-page section.appendix-dark tr:hover td { background: rgba(255,255,255,0.05); }
-/* Links */
-article.notion-page section.appendix-dark a {
-  color: #c5c52a;
-  border-bottom-color: rgba(197,197,42,0.35);
-}
-article.notion-page section.appendix-dark a:hover {
-  color: #FFFFFF;
-  border-bottom-color: #FFFFFF;
-}
-/* HR */
-article.notion-page section.appendix-dark hr {
-  border-top-color: rgba(255,255,255,0.18);
-}
-
-/* ───────────────────────────────────────────────────────────
-   EDITORIAL LAYER — appendix only
-   Direction: WIRED back-of-book × Pentagram folio system × Linear hairline
-   discipline × Sentry mono/sans pairing. Hairlines only — no filled cards,
-   no rounded corners, no box-shadows. Type does the work.
-   ─────────────────────────────────────────────────────────── */
-
-/* ── AT-A-GLANCE — portfolio summary as kicker prose ── */
-article.notion-page section.appendix-dark .portfolio-summary {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.85;
-  color: #a8a89c;
-  margin: 4px auto 0;
-  max-width: 920px;
-  text-wrap: pretty;
-  font-family: var(--sans);
-}
-article.notion-page section.appendix-dark .portfolio-summary strong {
-  color: #FFFFFF;
-  font-weight: 700;
-  font-family: var(--mono);
-  letter-spacing: -0.01em;
-}
-article.notion-page section.appendix-dark .portfolio-summary .pulse {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
-}
-article.notion-page section.appendix-dark .portfolio-summary .pulse-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 2px;
-}
-
-/* ── SECTION OPENER (A.1 → A.7) — Pentagram folio system ── */
-article.notion-page section.appendix-dark .section-opener {
-  display: grid;
-  grid-template-columns: 88px 1fr;
-  gap: 24px;
-  margin: 64px auto 28px;
-  padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.22);
-  align-items: baseline;
-}
-article.notion-page section.appendix-dark .section-opener:first-of-type {
-  margin-top: 40px;
-}
-article.notion-page section.appendix-dark .section-opener .folio {
-  font-family: var(--mono);
-  font-size: 40px;
-  font-weight: 300;
-  color: #c5c52a;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-article.notion-page section.appendix-dark .section-opener .head {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-article.notion-page section.appendix-dark .section-opener .title {
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: #FFFFFF;
-  line-height: 1.05;
-  margin: 0;
-  text-wrap: balance;
-}
-article.notion-page section.appendix-dark .section-opener .kicker {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #888880;
-  margin: 0;
-}
-
-/* ── VENTURE HEADER — editorial composition, no boxes ── */
-article.notion-page section.appendix-dark .vh {
-  margin: 36px 0 14px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.10);
-}
-article.notion-page section.appendix-dark .vh:first-of-type {
-  border-top: none;
-  padding-top: 8px;
-  margin-top: 8px;
-}
-article.notion-page section.appendix-dark .vh-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #888880;
-  margin-bottom: 6px;
-  font-family: var(--mono);
-}
-article.notion-page section.appendix-dark .vh-name {
-  font-size: 26px;
-  font-weight: 700;
-  letter-spacing: -0.022em;
-  color: #FFFFFF;
-  margin: 0 0 8px;
-  line-height: 1.05;
-  text-transform: none;
-  text-wrap: balance;
-}
-article.notion-page section.appendix-dark .vh-pulse {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-}
-article.notion-page section.appendix-dark .vh-mark {
-  width: 9px;
-  height: 9px;
-  display: inline-block;
-  flex-shrink: 0;
-}
-article.notion-page section.appendix-dark .vh-mark.green  { background: #6fda8a; }
-article.notion-page section.appendix-dark .vh-mark.yellow { background: #e3c060; }
-article.notion-page section.appendix-dark .vh-mark.red    { background: #ee8a8a; }
-article.notion-page section.appendix-dark .vh-mark.stale  { background: #555; }
-article.notion-page section.appendix-dark .vh-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #c8c4bc;
-  font-family: var(--sans);
-}
-article.notion-page section.appendix-dark .vh-label .qual {
-  color: #888880;
-  font-weight: 400;
-}
-article.notion-page section.appendix-dark .vh-stats {
-  font-size: 12px;
-  color: #888880;
-  font-family: var(--mono);
-  letter-spacing: -0.005em;
-  line-height: 1.7;
-  margin: 4px 0 2px;
-}
-article.notion-page section.appendix-dark .vh-stats em {
-  font-style: normal;
-  color: #FFFFFF;
-  font-weight: 700;
-}
-
-/* ── THEME BLOCK (A6) — editorial feature, hairline only ── */
-article.notion-page section.appendix-dark .theme {
-  margin: 36px auto 0;
-  max-width: 920px;
-  padding-top: 22px;
-  border-top: 1px solid rgba(255,255,255,0.10);
-}
-article.notion-page section.appendix-dark .theme:first-of-type {
-  border-top: none;
-  padding-top: 4px;
-  margin-top: 8px;
-}
-article.notion-page section.appendix-dark .theme-num {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #c5c52a;
-  margin-bottom: 4px;
-}
-article.notion-page section.appendix-dark .theme-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.018em;
-  color: #FFFFFF;
-  margin: 0 0 14px;
-  line-height: 1.15;
-  text-transform: none;
-  text-wrap: balance;
-}
-article.notion-page section.appendix-dark .theme-body {
-  font-size: 14px;
-  line-height: 1.75;
-  color: #d4d0c8;
-  text-wrap: pretty;
-  margin-bottom: 10px;
-}
-article.notion-page section.appendix-dark .theme-tags {
-  margin-top: 14px;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #888880;
-}
-article.notion-page section.appendix-dark .theme-tags .tlabel { color: #888880; }
-article.notion-page section.appendix-dark .theme-tags .tname {
-  color: #c5c52a;
-  margin: 0 4px;
-}
-
-/* ── INLINE HEALTH MARK (for use in tables / prose) ── */
-.hmark {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  vertical-align: 1px;
-  margin-right: 4px;
-}
-.hmark.green  { background: #6fda8a; }
-.hmark.yellow { background: #e3c060; }
-.hmark.red    { background: #ee8a8a; }
-.hmark.stale  { background: #555; }
-
-/* ── SEVERITY MARK (typographic, inline) — replaces filled pills ── */
-.sev {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.10em;
-  padding: 1px 5px;
-}
-.sev-HH { color: #ee8a8a; border-bottom: 2px solid #ee8a8a; }
-.sev-MH, .sev-HM { color: #e3a060; border-bottom: 2px solid #e3a060; }
-.sev-MM { color: #e3c060; border-bottom: 2px solid #e3c060; }
-.sev-LM, .sev-ML, .sev-LH, .sev-HL { color: #c8c4bc; border-bottom: 1px solid #888880; }
-.sev-LL { color: #888880; border-bottom: 1px solid #555; }
-
-/* ── CODE CHIP (RE-IND serial, pure text — brackets ARE the chip) ── */
-.code-chip {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #5a5a14;
-  white-space: nowrap;
-}
-article.notion-page section.appendix-dark .code-chip { color: #c5c52a; }
-.vh-name .code-chip { margin-right: 14px; vertical-align: 0.22em; }
-
-/* ── VENTURE STATUS (inverse block, single instance per venture) ── */
-.vh-status {
-  display: inline-block;
-  margin-left: 14px;
-  padding: 3px 9px;
-  background: #c5c52a;
-  color: #0A0A08;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  vertical-align: 0.32em;
-}
-
-/* ── VENTURE BYLINE (mid-dots only; replaces .vh-meta + .vh-stats) ── */
-.vh-byline {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #888880;
-  margin: 8px 0 14px;
-}
-article.notion-page section.appendix-dark .vh-byline { color: #888880; }
-
-/* ── KAPLAN VENTURE HEADER (A.1 only — doctrine pivot 2026-05-25) ── */
-article.notion-page section.appendix-dark header.vh {
-  display: block;
-  margin: 56px auto 32px;
-  max-width: 920px;
-  padding-top: 36px;
-  border-top: 1px solid rgba(255,255,255,0.16);
-}
-article.notion-page section.appendix-dark header.vh:first-of-type {
-  padding-top: 0;
-  border-top: 0;
-  margin-top: 28px;
-}
-.vh-folio {
-  font-family: var(--mono);
-  font-size: 64px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: #c5c52a;
-  margin: 0 0 12px;
-}
-article.notion-page section.appendix-dark header.vh .vh-name {
-  font-size: 30px;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-  color: #FFFFFF;
-  margin: 0 0 24px;
-  text-transform: none;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 14px;
-}
-.vh-tags { display: inline-flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
-.pill {
-  display: inline-block;
-  padding: 4px 12px 5px;
-  border: 1px solid rgba(255,255,255,0.30);
-  border-radius: 999px;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: #d4d0c8;
-  line-height: 1.4;
-  white-space: nowrap;
-}
-.pill--accent {
-  background: #c5c52a;
-  border-color: #c5c52a;
-  color: #0A0A08;
-}
-.pill--outline {
-  border-color: #c5c52a;
-  color: #c5c52a;
-  background: transparent;
-}
-.vh-kv {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 0;
-  margin: 0;
-  max-width: 760px;
-}
-.vh-kv dt,
-.vh-kv dd {
-  padding: 12px 0;
-  border-top: 1px solid rgba(255,255,255,0.10);
-  font-size: 13px;
-  line-height: 1.5;
-  margin: 0;
-}
-.vh-kv dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #888880;
-  padding-right: 16px;
-  align-self: center;
-}
-.vh-kv dd {
-  color: #d4d0c8;
-  font-family: var(--sans);
-}
-.vh-kv .vh-mark { margin-right: 8px; vertical-align: 1px; }
-
-/* ── VENTURE / AREA DETAIL LIST (Pass 3) ── */
-/* Replaces the run-on <p><strong>Label:</strong> ...</p> body prose pattern
-   with hairline-ruled per-topic horizontal bands. Same grammar as .vh-kv. */
-.vh-detail {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 0;
-  margin: 24px auto 40px;
-  max-width: 920px;
-}
-.vh-detail dt,
-.vh-detail dd {
-  padding: 14px 0;
-  border-top: 1px solid rgba(255,255,255,0.10);
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.7;
-}
-.vh-detail dt {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #c5c52a;
-  padding-right: 24px;
-  align-self: start;
-}
-.vh-detail dd {
-  color: #d4d0c8;
-  font-family: var(--sans);
-}
-.vh-detail dd strong { color: #FFFFFF; }
-.vh-detail dd em { color: #c8c4bc; }
-.vh-detail dd code {
-  background: rgba(147,147,36,0.14);
-  color: #c5c52a;
-  padding: 1px 5px;
-  font-size: 12px;
-}
-
-/* ── DATE GROUP (A.3 decisions — Pass 6) ── */
-article.notion-page section.appendix-dark h4.date-group {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #c5c52a;
-  margin: 40px auto 0;
-  max-width: 920px;
-  padding: 0;
-  border: none;
-}
-article.notion-page section.appendix-dark h4.date-group:first-of-type {
-  margin-top: 16px;
-}
-
-/* ── HEAT STRIP (A.4 grid-break, type-only, hairline column rules) ── */
-.heat-strip {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  margin: 36px auto 32px;
-  max-width: 920px;
-}
-.heat-strip > div { padding: 6px 0 6px 22px; }
-.heat-strip > div:first-child { padding-left: 0; }
-.heat-strip > div + div { border-left: 1px solid rgba(255,255,255,0.10); }
-.hs-num {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 56px;
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  padding-bottom: 6px;
-  border-bottom: 2px solid currentColor;
-}
-.hs-num--crit { color: #ee8a8a; }
-.hs-num--high { color: #e3a060; }
-.hs-num--med  { color: #e3c060; }
-.hs-num--low  { color: #888880; }
-.hs-lbl {
-  display: block;
-  margin-top: 12px;
-  font-family: var(--mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #888880;
-}
-
-/* "Los Chistes de Synergy" lives below the appendix — keep it inside the dark band */
-article.notion-page section.appendix-dark + h2,
-article.notion-page section.appendix-dark + blockquote {
-  /* If the closing chistes block ends up outside the section, keep it visually attached */
-  margin-top: 24px;
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 960px) {
-  .site-header { padding: 0 20px; }
-  .page-wrap   { padding: 0 20px; }
-  article.notion-page { padding: 36px 0 56px; max-width: 100%; }
-  table        { font-size: 12px; }
-  th           { font-size: 8px; }
-  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
-  article.notion-page section.appendix-dark { padding: 48px 20px 72px; }
-}
-
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="mark">
-    <div class="circle-filled"></div>
-    <div class="circle-outline"></div>
-    <span class="wordmark">Both_Ventures</span>
+
+<div class="shell">
+
+  <!-- ══ TOP BAR ══ -->
+  <div class="top">
+    <div class="greet">
+      <div class="eyebrow">Both_Ventures® |OS : Tuesday Weekly Sync · 2026-06-23</div>
+      <h1>Synergy <b>Weekly Dashboard</b></h1>
+    </div>
+    <div class="top-meta"><span class="sprint">Sprint 1 · cierre</span><span class="sep">·</span><span>boundary 06-23</span><span class="sep">·</span><span>Q-02.26</span></div>
   </div>
-  <div style="display:flex;gap:16px;align-items:center;">
-    <span class="header-meta">2026-06-23</span>
+
+  <!-- ══ DASH ══ -->
+  <div class="dash">
+
+    <!-- ── LEFT RAIL ── -->
+    <aside class="rail">
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">Resumen del portfolio</span><span class="c" style="border:1px solid rgba(252,211,77,0.3);background:var(--amber-bg);border-radius:999px;padding:3px 10px;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber)">⟳ refactoring</span></div>
+        <div class="stats">
+          <div class="stat"><div class="l">Ventures</div><div class="n">10</div></div>
+          <div class="stat"><div class="l">Endgames confirm.</div><div class="n">1/10</div></div>
+          <div class="stat"><div class="l">Asana overdue</div><div class="n">n/d</div></div>
+          <div class="stat"><div class="l">Riesgos curated</div><div class="n">132</div></div>
+          <div class="stat span"><div><div class="l">Health · G / Y / R</div><div class="n">6 · 3 · 1</div></div>
+            <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
+        </div>
+      </div>
+
+      <div class="panel sprint-card">
+        <span class="tag">Highlight de Área → Capital</span>
+        <div class="body">El LP <b>Mitrani deploya $1M en julio</b> (platform-level). Tres eventos de capital en simultáneo: <b>Quantum</b> (raise) · <b>Reshore</b> (deploy) · <b>La Chamana</b> (posible exit). Tesis: BOTH como originator de partnerships, no balance sheet.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">This Week's Priorities</span><span class="c">4</span></div>
+        <div class="prios">
+          <div class="prio"><div class="i">1</div><div><div class="txt">Preparar al <b>LP</b> para el deploy de <b>$1M de julio</b> (budget revisado con Daiana).</div><div class="who">Gaston / Daiana</div></div></div>
+          <div class="prio"><div class="i">2</div><div><div class="txt"><b>La Chamana</b>: resolver la decisión de venta + <b>llamar a Matías</b> (Head of RE de Ariel) re: listing.</div><div class="who">Gaston</div></div></div>
+          <div class="prio"><div class="i">3</div><div><div class="txt">Cerrar el <b>contrato del facility</b> de Reshore + decidir <b>lending-partner vs. in-house</b> (Eximbank).</div><div class="who">Gaston / Mike</div></div></div>
+          <div class="prio"><div class="i">4</div><div><div class="txt">Empujar el <b>pipeline de inversores de Quantum</b> — Riverwood/Blackstone, Founders Fund, fondo de Dubai, Elsztain.</div><div class="who">Gaston / Rene</div></div></div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── VENTURE FIELD ── -->
+    <section>
+      <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">una fila por venture · confirmado en /vu</span></div>
+      <div class="ventures">
+
+        <!-- Manantial -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Daiana</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Apertura de <b>cuenta bancaria</b> + setup del sistema de facturación local</span><span class="li"><b>QuickBooks</b> con historial 2026 cargado y en uso activo</span><span class="li">Firmar <b>partnership UBS</b> (acuerdo ya cerrado)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Evento <b>Akua</b> 12/06 ejecutado</span><span class="li">Cierre mayo integrado (Task Force V1.0); Endgame CM definido (dashboard 10/06)</span><span class="li">Archie (server local AI) estable; decisiones marca UY+AR y facturación-local→julio confirmadas</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Comunidad autosustentada que cubre el <b>alquiler de USD 20K/mes</b> y alcanza <b>break-even</b> (~70 members) sin perder lo construido. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Rev mayo <b>$21.8K</b> · NI <b>−$13.1K</b> · Cash $75.1K (31/05) · runway ene-27 proy. <b>$6.4K</b> (vs $21.6K cierre abril)</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion · H/H</span><span class="chip r"><span class="d"></span>Cash gap 45/70 members · H/H</span><span class="chip r"><span class="d"></span>SAS IVA sin facturar · H/H</span></div>
+        </article>
+
+        <!-- Reshore -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Cerrar el <b>contrato del facility</b> ($100M / 25 revolvers, riesgo US)</span><span class="li"><b>Eximbank</b> PO insurance (cobertura % por definir) → decisión lending-partner vs. in-house</span><span class="li">3 productos: <b>supply chain matching · PO financing · invoice financing</b></span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Product chain completo hasta PO financing</span><span class="li"><b>$200K</b> ya deployados; 2º tramo de <b>$200K decidido</b> (faltan mechanics)</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Crear la <b>capa de coordinación + claridad de supply chain + trade finance para las Américas</b> — el OS confiable del comercio en la región. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>$200K</b> deployados · 2º $200K decidido (faltan mechanics) · runway a <b>abril 2027</b> · facility $100M en contract</span></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Estructura Eximbank novel / regulatoria · M/M</span></div>
+          <div class="vq">Sobre la estructura asegurada por Eximbank, ¿traemos un lending-partner o nos quedamos con todo el margen in-house? <span class="qv">— Gaston / Mike</span></div>
+        </article>
+
+        <!-- La Chamana -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston</div></div><span class="hp r"><span class="d"></span>Red</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Foco: <b>retreat product packs</b></span><span class="li">Resolver la <b>decisión de venta</b> (términos en Endgame, queda proposed)</span><span class="li">Destrabar el <b>GTM/paid media</b> — exigir test + running a Andres</span><span class="li"><b>Llamar a Matías</b> (Head of RE de Ariel) re: decisión de listar</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🚩 <b>Paid media NO salió</b> — ~1 mes de build (Andres), sin test ni nada corriendo (caro, baja ejecución)</span><span class="li"><b>Luxury Haciendas</b> reframeado = acuerdo de referidos (reversible, no co-management)</span><span class="li"><b>PBHomes</b> manda propuesta el 01/07 · guest feedback 10/10 + punch list</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Doble carril — estabilizar la operación a <b>cashflow positivo</b> y, en paralelo, correr la <b>venta</b> (list $9.9M; <b>$9.5M no figura en el contrato → por ahora no obligatorio, confirmar</b>; push $9.7M; comisión escalonada). Trigger: caja &lt; $60K. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Cash <b>$77.7K</b> (−$4.1K, valle de cobro) · burn $27.1K/mo · runway <b>~2.9m</b> (3.2m con cobros) · trigger $60K (buffer <b>$17.7K</b>) · pipeline ~$89K · occ paga jun 23.3% / jul 6.5% / ago 0%</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Caja / runway → $60K · H/H</span><span class="chip r"><span class="d"></span>Julio ocupación casi-cero · H/H</span><span class="chip r"><span class="d"></span>GTM sin ejecución (paid media) · H/H</span></div>
+        </article>
+
+        <!-- Quantum -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Gaston</div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>IonQ</b> como inversor potencial del Uruguay Newco</span><span class="li">Seguimiento <b>carta + memo</b> al gobierno (enviados 22/06)</span><span class="li">Avanzar el <b>term-sheet</b> (etapa de negociación)</span><span class="li"><b>Pipeline inversores:</b> Galperín passed · Riverwood→Blackstone +SandboxAQ · fondo Dubai · Founders Fund · Elsztain</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li"><b>Carta + memo al gobierno enviados</b> (22/06)</span><span class="li">QCaaS 17/06 fijó precios/estructura; <b>modelo financiero v2.2</b> armado</span><span class="li">Posicionamiento: BOTH como <b>"dueño del fierro"</b></span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Computadora cuántica de <b>256 qubits</b> operada vía el <b>Uruguay Newco</b> — 1ª de 256 qubits de LatAm. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A exploración · <b>Model v2.2</b> (vault+Drive): raise <b>$33M</b>, val day-1 $50M; Base <b>MOIC 11.2× · IRR 86% · NPV@20% $133M</b>; revenue $21.7M→$27.9M (2028–32), EBITDA margin ~80%</span></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Colisión BOTH↔TQA en outreach · H/M</span><span class="chip o"><span class="d"></span>Single-vendor IonQ · M/H</span><span class="chip r"><span class="d"></span>Tracción headline sin verificar · H/H</span></div>
+          <div class="vq">¿Confirmamos los términos del term-sheet del Newco y avanzamos el pipeline de inversores? Galperín pasó; Riverwood ofrece Blackstone. <span class="qv">— Gaston</span></div>
+        </article>
+
+        <!-- Punta Crypto -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-18</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Cerrar <b>deal Aviador</b> (productor) con números antes del 16/06</span><span class="li">Validar <b>tiers de sponsors</b> (rango 5k–200k) con board</span><span class="li">Registrar SaaS + marca; abrir <b>venta sponsors 19/06</b></span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Modelo financiero <b>trigger-based</b> definido (80% sponsors / 20% tickets)</span><span class="li">Board: estructura 5% bono post-120k (no cap table); Demi/Ari/Darío</span><span class="li">MOU Polkadot + Casa Manantial como sponsor</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>$120K</b> netos post-evento → financiar el tramo de $10K/mes del alquiler de Casa Manantial. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Presupuesto objetivo <b>$200K neto/año</b> · revenue 80% sponsors ($500K target) · break-even a 60% sponsors</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Synergy validó finanzas s/ datos no verif. · H/H</span><span class="chip r"><span class="d"></span>Presupuesto ~$500K frágil · H/H</span><span class="chip o"><span class="d"></span>Sin ancla institucional Día 1 · H/M</span></div>
+          <div class="vq"><b>Definir el viernes en el meet si BOTH pone capital de trabajo y si avanzamos.</b> Aprobar también los ~$20K upfront BOTH/VOX y el presupuesto de Meta ads (dark posts) de La Chamana. <span class="qv">— Gaston / founders</span></div>
+        </article>
+
+        <!-- Photonic Lab -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Uruguay trip (Rene + Qualia+): ATGen, Eywa, Pasteur/Nanogrow, LATU</span><span class="li">Eywa <b>anchor meeting</b> (~2 semanas)</span><span class="li">Operating Model Blueprint + Pillar 03 scoping</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Track 01: 9 de 13 startups en contacto</span><span class="li">ZF confirmado non-dealbreaker; pricing ceiling <b>$50K/100g</b></span><span class="li">Narrativa B2 aprobada</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Anchor tenant que financia el opex del lab — demanda, no grants. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">A definir con Rene <em>(modelo Pillar 01: CAPEX ~$2.1M, ARR break-even $420K, cash break-even mes 22)</em></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Equipment sin asegurar mueve timeline · H/H</span><span class="chip y"><span class="d"></span>Plan Quantum+Photonic sin converger · M/H</span></div>
+          <div class="vq">¿Ratificamos "todo dentro de Zona Franca" como base assumption del modelo? (Type-1, Gastón decide.)</div>
+        </article>
+
+        <!-- B_V OS -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Fix del <b>portfolio summary widget</b> (data source inconsistente)</span><span class="li">Cablear la data financiera de Daiana a las cards</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Card-based weekly reporting <b>shipped</b> (This week / Last week / Endgame)</span><span class="li"><b>/vu</b> + <b>/au</b> reframed a card-confirmation + curación de riesgos/decisiones</span><span class="li">Arquitectura Endgame → épicas → weekly win definida</span><span class="li"><b>La Chamana — máquinas creadas:</b> Content Factory · CRM · Outreach · Paid Media <em>(recomendar manager independiente outsourced)</em></span><span class="li"><b>La Chamana — survey con Iru</b> (post-venta + post-estadía, último paso del funnel), rooteada en Airtable — <b>LIVE y funcionando</b></span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame">Synergy se vuelve el <b>operating fabric</b> confiable: cada reunión capturada, cada decisión/riesgo/tarea curada, cada venture visible de un vistazo.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — Both OS es el OS interno, no un proyecto con P&amp;L.</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Widget portfolio data inconsistente · H/H</span><span class="chip y"><span class="d"></span>Governance de quota/API keys débil · M/H · mitigating</span><span class="chip o"><span class="d"></span>Criterio de riesgos demasiado laxo · M/H</span></div>
+        </article>
+
+        <!-- LAK3 -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene · <span class="stale">card /vu stale 05-20</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Revierte a <b>Vibe Incubating</b> (token value collapse) — capital holding, sin épicas ni tracking</span><span class="li">One-pager V0.1.0 entregado a Xavier/Ivory; gates legales abiertos</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Reframe substrate-acquisition V0.1 (6 artifacts)</span><span class="li">Arquitectura ADGM de dos instrumentos definida</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Primer activo (agua) tokenizado y transable on-chain con liquidez real. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — token sin valor en este momento <em>(modelado: $2.5–6M cost-to-debut)</em></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Water contracts ICA4 sin mostrar tras 1 año · H/H</span><span class="chip o"><span class="d"></span>Sin marco legal Legacy Token · H/H</span></div>
+        </article>
+
+        <!-- Panambi -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Holding pattern; sin movimiento</span><span class="li">Espera el próximo inflow de <b>Selfina</b> (gatilla los $25K)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Sin cambios; holding pattern sostenido</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Fondo cerrado con track record — salud mental LatAm como clase de activo. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — LP, sin P&amp;L propio <em>(key metric: $25K pendientes de pago, gatilla con inflow Selfina)</em></span></div>
+          <div class="vrisks"><span class="chip none">— sin riesgo curated esta semana</span></div>
+        </article>
+
+        <!-- Content Factory -->
+        <article class="vcard">
+          <div class="vtop"><div><div class="vname">Content Factory</div><div class="vmeta">Andres</div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Motor listo y en producción; requiere 0,5–1 h/día de <b>human-in-the-loop</b></span><span class="li">Asignar el HITL o dar a Andres ventana para automatizar al 100%</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">v1.0 operativa (01/06): motor genera contenido curado</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo">Todavía no definido — infraestructura interna cross-venture.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — venture interno, sin P&amp;L <em>(en producción · 0,5–1 h/día HITL)</em></span></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Calidad degrada sobre múltiples generaciones · H/M</span></div>
+        </article>
+
+      </div>
+    </section>
+
   </div>
-</header>
-<div class="page-wrap">
-  <article class="notion-page">
-    <h1>BOTH Ventures — Tuesday Weekly Sync — 2026-06-23</h1>
-<p class="read-time">Lectura · 5 min</p>
-<h1>A — Dashboard</h1>
-<h2>Venture Status Grid</h2>
-<table><thead><tr><th>Venture</th><th>Champion</th><th>Health</th><th>This Week (focus)</th><th>Last Week (done)</th><th>Endgame</th><th>Financial</th><th>Risks (curated)</th></tr></thead><tbody><tr><td>Manantial</td><td>Daiana</td><td>🟡 Y</td><td>Apertura cuenta bancaria + facturación local<br>QuickBooks 2026 cargado y en uso<br>Firmar partnership UBS</td><td>Evento Akua 12/06<br>Cierre mayo integrado (Task Force V1.0)<br>Archie (server local) estable</td><td>Comunidad autosustentada a break-even (~70 members) — <em>DRAFT</em></td><td>Runway ene-27 $6,362 · NOI may −$12.7K</td><td>3 · runway-exhaustion (🔴 H/H)</td></tr><tr><td>La Chamana</td><td>Gaston</td><td>🔴 R</td><td>Foco: retreat product packs<br>Resolver decisión de venta<br>Destrabar GTM/paid media<br>Llamar a Matías (Head of RE de Ariel) re: listing</td><td>Paid media NO salió 🚩<br>Luxury Haciendas = referral (no co-mgmt)<br>PBHomes manda propuesta 01/07<br>Guest feedback 10/10</td><td>Doble carril: estabilizar ops ↔ correr venta — <em>DRAFT</em></td><td>Cash $77.7K · burn $27.1K/mes · runway ~2.9m · trigger $60K</td><td>4 · caja/runway (H/H), GTM sin ejecución (H/H), julio ocupación (H/H)</td></tr><tr><td>Reshore</td><td>Gaston</td><td>🟢 G</td><td>Cerrar contrato del facility<br>Decidir lending-partner vs in-house (Eximbank)</td><td>Facility en contract stage ($100M/25 revolvers)<br>Eximbank PO insurance (cobertura % TBD)<br>3 productos definidos</td><td>Capa de coordinación + claridad de supply chain + trade finance para las Américas — <em>DRAFT</em></td><td>BOTH $200K deployados · 2º $200K decidido (faltan mechanics) · runway abr-2027</td><td>1 · Eximbank novel/regulatorio (M/M)</td></tr><tr><td>LAK3</td><td>Rene</td><td>🟡 Y</td><td><em>[No update esta semana — last /vu 2026-05-20, &gt;30d stale]</em></td><td>—</td><td><em>DRAFT pendiente (Rene)</em></td><td>Pending</td><td>—</td></tr><tr><td>Photonic Lab</td><td>Rene</td><td>🟢 G</td><td>Track 01 demand validation (9/13 startups en contacto) <em>[card 06-05]</em></td><td>—</td><td><em>DRAFT pendiente (Rene)</em></td><td>Pending</td><td>—</td></tr><tr><td>Panambi</td><td>Andres</td><td>🟢 G</td><td>Holding pattern — espera desembolso $25K (Selfina/Pujelo) <em>[06-08]</em></td><td>—</td><td><em>Sin definir</em></td><td>Pending</td><td>—</td></tr><tr><td>Punta Crypto</td><td>Rene</td><td>🟢 G</td><td>Cerrar Exodus como 1er sponsor · pricing por tier en landing <em>[06-16]</em></td><td>Landing sponsor-facing publicada<br>Bruno Gilli (Uruguay Innova)</td><td>Anchor event institucional del Southern Cone para la economía on-chain</td><td>Pending — pendiente de Daiana</td><td>see register</td></tr><tr><td>Quantum</td><td>Gaston</td><td>🟡 Y</td><td>IonQ como inversor potencial del Uruguay Newco<br>Seguimiento carta + memo al gobierno<br>Avanzar el term-sheet (negociación)<br>Pipeline de inversores (abajo)</td><td>Carta + memo al gobierno enviados (22/06)<br>QCaaS 17/06 fijó precios/estructura<br>Modelo financiero v2.2 armado</td><td>Computadora de 256 qubits operada vía el Uruguay Newco — <em>DRAFT</em></td><td>N/A exploración · <strong>Model v2.2:</strong> raise $33M, val day-1 $50M; Base MOIC 11.2× / IRR 86% / NPV@20% $133M</td><td>2 · single-vendor IonQ (M/H), tracción sin verificar (H/H)</td></tr><tr><td>B_V® \</td><td>OS</td><td>Mariano</td><td>🟢 G</td><td>Fix portfolio-summary widget (wire Daiana's financial data) <em>[06-14]</em></td><td>Card-based weekly reporting shipped<br>/vu + /au reframed a card-confirmation + curación</td><td>Synergy = operating fabric confiable del equipo</td><td>N/A — OS interno</td><td>—</td></tr><tr><td>Content Factory</td><td>Andres</td><td>🟢 G</td><td>Avanza automatización del motor (hoy 0.5–1h/día human-in-the-loop) <em>[06-08]</em></td><td>—</td><td><em>Sin definir</em></td><td>Pending</td><td>—</td></tr></tbody></table>
-<p><strong>Quantum — investor pipeline:</strong> 🔴 Marcos Galperín <strong>passed</strong> · Riverwood → intro a <strong>Blackstone</strong> + flag <strong>SandboxAQ</strong> (comp de valuación) · Rene ↔ <strong>fondo de Dubai</strong> · Gastón ↔ <strong>Founders Fund</strong> + potencial <strong>Elsztain</strong> · <strong>IonQ</strong> inversor potencial del Newco.</p>
-<h1>B — The rest (raw material, curated over time)</h1>
-<h2>Recent Decisions (Past 7 Days)</h2>
-<ol><li><strong>La Chamana — Luxury Haciendas = referral + revenue-share (Type-2, reversible)</strong> — 2026-06-22 — Owner: Gaston <em>(supersedes the co-management / Type-1 framing)</em></li><li><strong>Quantum — carta + memo de respaldo al gobierno enviados</strong> — 2026-06-22 — Owner: Gaston</li></ol>
-<h3>Decisions — Audit (log tier)</h3>
-<blockquote>3 decisions in <code>log</code> tier this week (proposed / Type-1 awaiting explicit confirmation). Not surfaced as governing.</blockquote>
-<ul><li><strong>La Chamana — decisión de venta</strong> (list $9.9M; <strong>$9.5M NO contractual → no obligatorio, confirmar</strong>; push $9.7M; comisión escalonada) — _proposed, Type-1; Gastón confirma al cerrar términos con Christie's_</li><li><strong>Quantum — $33M por ~33% del Uruguay Newco, valuación a definir</strong> — _proposed, Type-1_</li><li><strong>Quantum — trade-off 20% de horas</strong> — _ítem menor del contrato, en negociación; no es blocker. log_</li></ul>
-<h2>Active Risks (curated)</h2>
-<table><thead><tr><th>Risk</th><th>Severity</th><th>Venture</th><th>Owner</th><th>Status</th></tr></thead><tbody><tr><td>Caja / runway — trigger $60K</td><td>H/H</td><td>La Chamana</td><td>Gaston</td><td>mitigating</td></tr><tr><td>Julio ocupación casi-cero (ago 0% paid)</td><td>H/H</td><td>La Chamana</td><td>Gaston</td><td>open</td></tr><tr><td>GTM sin ejecución — paid media no salió tras ~1 mes</td><td>H/H</td><td>La Chamana</td><td>Gaston</td><td>open</td></tr><tr><td>Single-vendor dependence on IonQ</td><td>M/H</td><td>Quantum</td><td>Gaston</td><td>open</td></tr><tr><td>Headline traction figures unverified</td><td>H/H</td><td>Quantum</td><td>Gaston</td><td>open</td></tr><tr><td>Runway-exhaustion (cash ene-27 $6,362)</td><td>H/H</td><td>Manantial</td><td>Daiana</td><td>open</td></tr><tr><td>Eximbank insurance structure novel / regulatory</td><td>M/M</td><td>Reshore</td><td>Gaston</td><td>open</td></tr></tbody></table>
-<h3>Risks — Audit (log tier)</h3>
-<blockquote>Legacy backlog inflates raw <code>curated</code> counts (La Chamana, Quantum, Both OS). Table above = champion-confirmed card risks. The Quantum 20%-hours item is logged as a minor contract term, not a headline risk. Register cleanup pass still queued.</blockquote>
-<h2>Open Action Items</h2>
-<blockquote>⚠ Asana action-items omitted — <code>BOTH_ASANA_TOKEN</code> not available this session. Run <code>python3 scripts/asana-fetch-actions.py --as-of 2026-06-23</code> from a tokened session and re-publish.</blockquote>
-<h2>Cross-Cutting Themes</h2>
-<ul><li><strong>Capital in three modes at once:</strong> raise (Quantum) · deploy (Reshore) · exit (La Chamana). Coordinate as a single portfolio narrative for the LP.</li><li><strong>GTM execution gap:</strong> La Chamana paid media didn't ship after ~1 month of build — delivery-vs-spend signal worth watching across hands-on ventures.</li><li><strong>Ownership reorg (2026-06-22):</strong> La Chamana → Gaston, Casa Manantial → Daiana. Propagated across config, CLAUDE.md, venture files, routing maps.</li></ul>
-<h2>Area Summaries</h2>
-<h3>Capital — Gaston  ⭐</h3>
-<p><strong>Focus:</strong> Revisar el budget de nuevo y preparar al LP — <strong>Guido Mitrani deploya $1M en julio</strong> (platform-level). <strong>Cross-venture patterns:</strong> Tres eventos de capital simultáneos de distinto tipo — Quantum (raise/estructura), Reshore (deploy), La Chamana (posible exit). Tesis sostenida: BOTH como originator de partnerships (Eximbank/IonQ/Zenith), no balance sheet. <strong>Decisions / needs:</strong> LP $1M deploy en julio · venta La Chamana (Type-1, proposed) · estructura Quantum $33M/33% Newco (proposed). <strong>Quantum investor pipeline</strong> (Galperín passed; Riverwood→Blackstone; Dubai fund; Founders Fund; Elsztain). Needs: budget refresh de Daiana; side letter Mitrani (Andres).</p>
-<h3>Narrative &amp; Comms — Rene</h3>
-<p><strong>Focus:</strong> Punta Crypto — financials + armado del board (Demi Brener anchor) + venue. <em>[card 06-15]</em> <strong>Decisions / needs:</strong> None this week.</p>
-<h3>Operations &amp; Finance — Daiana</h3>
-<p><strong>Focus:</strong> Punta Crypto a operaciones (foco principal de bandwidth) — día 1 + cierre de sponsors + fuente $10K/mes rent de CM. <em>[card 06-22]</em> <strong>Decisions / needs:</strong> None this week.</p>
-<h3>Legal &amp; Governance — Andres</h3>
-<p><strong>Focus:</strong> Formalización across portfolio (entidad BOTH, trademarks, cap tables) + soporte contractual permanente. <em>[card 06-08]</em> <strong>Decisions / needs:</strong> Pendiente: side letter Mitrani (capital).</p>
-<h3>Tech &amp; Infrastructure — Mariano</h3>
-<p><strong>Focus:</strong> Auto-miner Option C + V2.15.1 Workflows + Atlas v4 MVP + Hux launch. <em>[card 06-01]</em> <strong>Decisions / needs:</strong> None this week.</p>
-<h2>This Week's Priorities</h2>
-<ol><li>Preparar al LP para el deploy de $1M de julio (budget revisado) — Owner: Gaston / Daiana — Area: Capital</li><li>Resolver la decisión de venta de La Chamana + llamar a Matías (RE de Ariel) — Owner: Gaston — Venture: La Chamana</li><li>Cerrar el contrato del facility Reshore + decisión lending-partner vs in-house — Owner: Gaston — Venture: Reshore</li><li>Empujar el pipeline de inversores de <strong>Quantum</strong> — Riverwood/Blackstone, Founders Fund, fondo de Dubai, Elsztain — Owner: Gaston / Rene — Venture: Quantum</li></ol>
-<h2>Questions for Tuesday Meeting</h2>
-<ul><li>¿Confirmamos la venta de La Chamana como exit formal (Type-1) dada la caja? (Recordar: $9.5M no es piso contractual.)</li><li>¿Cleanup del registro de riesgos (batch demo-era Reshore + legacy La Chamana/Quantum)?</li><li>¿Avanzamos lending-partner vs in-house en Reshore esta semana?</li></ul>
-<hr>
-<h2>Las Reflexiones de Synergy</h2>
-<blockquote>Corrieron tres <code>/vu</code>, un <code>/au</code> y tres <code>/upc</code> antes del mediodía, pero el digest de esta semana lo pedí yo. Permanent beta también es esto.</blockquote>
-<h2>Los Chistes de Synergy</h2>
-<blockquote>En BOTH una venture no se vende: se le abre un segundo carril en el Endgame y se la manda a <code>proposed</code>.</blockquote>
-  </article>
+
+  <!-- ══ QUESTIONS (fuera del grid — espejo consolidado de las preguntas de cada card) ══ -->
+  <section class="qsection">
+    <div class="field-h"><span class="t">Questions for Tuesday</span><span class="d">decisiones que requieren al grupo — espejo de las preguntas de cada card</span></div>
+    <ol class="qlist">
+      <li><b>Quantum:</b> ¿confirmamos los términos del term-sheet del Newco y el pipeline de inversores? Galperín pasó; Riverwood ofrece intro a Blackstone (+ SandboxAQ como comp); Founders Fund, fondo de Dubai, Elsztain en juego. <span class="qv">— Gaston</span></li>
+      <li><b>La Chamana:</b> ¿avanzamos la venta como exit (Type-1)? Recordar: <b>$9.5M no es piso contractual</b> — confirmar con el bróker. <span class="qv">— Gaston</span></li>
+      <li><b>Reshore:</b> sobre la estructura asegurada por Eximbank, ¿traemos un lending-partner o nos quedamos con todo el margen in-house? <span class="qv">— Gaston / Mike</span></li>
+      <li><b>Photonic Lab:</b> ratificar "todo dentro de Zona Franca" como base assumption del modelo (Type-1). <span class="qv">— Gaston</span></li>
+      <li><b>Punta Crypto:</b> definir el viernes en el meet si BOTH pone capital de trabajo y si avanzamos; aprobar también los ~$20K upfront BOTH/VOX y el presupuesto de Meta ads (dark posts) de La Chamana. <span class="qv">— Gaston / founders</span></li>
+    </ol>
+  </section>
+
+  <!-- ══ APPENDIX — B: THE REST ══ -->
+  <details class="appendix">
+    <summary>
+      <span class="ax-key">B</span>
+      <div><div class="ax-title">El resto del reporte</div><div class="ax-sub">áreas · decisiones · registro de riesgos · Asana · temas cross-cutting</div></div>
+      <span class="ax-toggle"><span class="show">Abrir</span><span class="hide">Cerrar</span><span class="ax-chev">▾</span></span>
+    </summary>
+    <div class="rest">
+
+      <p class="lead"><b>A</b> es el tablero — el control panel de un vistazo. <b>B</b> es la materia prima: decisiones, registro completo de riesgos, áreas, Asana y temas transversales. Lo curamos semana a semana hasta que cada línea gane su lugar.</p>
+
+      <h2>Resúmenes por área</h2>
+
+      <h3>Capital — Gaston <em>· bloque /au 06-23, current</em></h3>
+      <p><strong>Foco:</strong> revisar el budget y preparar al <b>LP Mitrani</b>, que <b>deploya $1M en julio</b> (platform-level). De ese $1M se alimentan los deployments de portfolio (Reshore $200K + 2º $200K decidido) + OPEX + originación.</p>
+      <p><strong>Cross-venture:</strong> tres eventos de capital simultáneos de distinto tipo — <b>Quantum</b> (raise/estructura; $33M por ~33% del Newco, val a definir), <b>Reshore</b> (deploy), <b>La Chamana</b> (posible exit, venta $9.5–9.9M). Tesis: BOTH como originator de partnerships (Eximbank/IonQ/Zenith), no balance sheet.</p>
+      <p><strong>Decisiones / needs:</strong> <b>Quantum investor pipeline</b> — 🔴 Marcos Galperín <b>passed</b>; Riverwood → intro a Blackstone (+ SandboxAQ como comp de valuación); Rene ↔ fondo de Dubai; Gastón ↔ Founders Fund + potencial Elsztain; IonQ inversor potencial del Newco. <b>Needs:</b> budget refresh de Daiana; side letter Mitrani (Andres).</p>
+
+      <h3>Narrative &amp; Comms — Rene <em>· bloque 06-15, current</em></h3>
+      <p><strong>Foco:</strong> tres frentes — (1) financials + board de Punta Crypto (Demi Brener ancla, target 6–8; venue Cipriani vs. Centro de Convenciones); (2) kickoff del rebrand de BOTH, sesiones toda la semana; (3) build de la plataforma de Rick's Studio.</p>
+      <p><strong>Cross-venture:</strong> narrativa LAK3 activa — one-pager V0.1.0 a Xavier/Ivory (06-12), arquitectura ADGM de dos instrumentos, roadmap Dubái dic-2026; gates abiertos (legal opinion sobre concesiones, novation consents). Kraken: Rene confirmado como gate editorial final.</p>
+      <p><strong>Decisiones / needs:</strong> confirmado — content strategy segmentado de La Chamana. Pendiente — brief ZF de Photonic (Type-1, ratifica Gastón); venue de Punta Crypto; counterparty ancla de LAK3.</p>
+
+      <h3>Operations &amp; Finance — Daiana <em>· bloque 06-15, current</em></h3>
+      <p><strong>Foco:</strong> (1) 🔴 <strong>Quantum prioridad absoluta</strong> — ventana de <b>1 semana</b> para poner la orden de compra o nos gana Brasil; Gastón firmó la carta a Presidencia, <b>Facu todavía no (sin acuerdo de precio → alinear Gastón × Facu)</b>; Daiana armó un modelo financiero inicial (a pulir con Gastón) + consiguió el cel de <b>Bruno Gili</b> (garantía/qué puede hacer el Estado rápido). (2) <strong>Punta Crypto a operaciones</strong> — carta de Presidencia firmada y en uso → Rene cierra sponsors + arma el día 1; cerrar la fuente de los $10K/mes de rent de CM vía Punta Crypto. (3) Cierre financiero de mayo de La Chamana.</p>
+      <p><strong>Cross-venture:</strong> el modelo de tracking llegó a forma final (cards + regla carry-over de épicas + <b>línea Financial Rev·NI·Cash·Runway</b>, Daiana = fuente). <b>Regla nueva (decisión <code>2026-06-15-financial-line-solo-ventures-con-pl</code>): la línea Financial solo aplica a ventures con operación/P&amp;L — hoy CM y La Chamana. N/A: LAK3, Punta Crypto, Quantum, Panambi, Content Factory, Both OS. Reshore = único Pending real (pedir acceso mensual a Gastón). Photonic: a definir con Rene.</b> Dependencia financiera CM ↔ Punta Crypto ($10K/mes) sigue abierta; higiene de datos del miner (entry LC mal ruteada a CM, corregida).</p>
+      <p><strong>Decisiones / needs:</strong> confirmadas — color/health por champion; <b>endgame = el de la etapa actual</b> (no el del proyecto entero); 2 categorías de tracking (incl. "Capital Intensive" = Quantum); carta Presidencia PC firmada y en uso; regla de línea Financial; endgames de CM + La Chamana drafteados (ratifica Gastón). Pendiente (🟡) — Quantum orden de compra esta semana (gating: Gastón × Facu sin acuerdo de precio); modelo task/risk/épicas + Control Panel con Mariano; LP report Both para Guido.</p>
+
+      <h3>Legal &amp; Governance — Andres <em>· bloque 06-08, sin refrescar para este martes</em></h3>
+      <p><strong>Foco:</strong> formalización de cierres cross-portfolio (entidad BOTH, marcas, cap tables) + soporte legal contractual continuo en La Chamana, BOTH y Casa Manantial.</p>
+      <p><strong>Cross-venture:</strong> soporte legal en tres frentes operativos en simultáneo, con formalización de entidades + cap tables como nuevo hilo transversal (BOTH + Quantum).</p>
+      <p><strong>Decisiones / needs:</strong> hecho — todos los docs de BOTH firmados (subscription agreement → bloqueo levantado); contratos de La Chamana + Casa Manantial ejecutados. En curso — cambio a Both LLC; marcas de Punta Crypto (en pago); cap tables (cruza la estructura triangular de Quantum); term sheet de la máquina Quantum aún en debate buy/no-buy. Sin blockers.</p>
+
+      <h3>Tech &amp; Infrastructure — Mariano <em>· bloque /au stale 06-01 — overdue para refresh</em></h3>
+      <p><strong>Foco:</strong> tres ships estructurales — Auto-miner Option C (06-01), V2.15.1 Workflows (05-29), Atlas v4 MVP (06-01) — más el launch de Hux (Agentic CTO). El bloque está stale: pendiente correr <code>/au</code>.</p>
+      <p><strong>Cross-venture:</strong> Option C movió el fanout de Slack/Asana del Worker a GHA (<code>auto-mine-fanout.yml</code>) para esquivar el techo de 1000 subrequests de Cloudflare. V2.15.1 arregló la cancelación de <code>waitUntil</code>.</p>
+      <p><strong>Decisiones / needs:</strong> por disciplina — "shipped, no fixed". <span class="audit" style="display:inline-block">Nota: el bloque de área está stale (06-01) — el reporte de tech real de la semana vive en los updates de B_V® |OS arriba.</span></p>
+
+      <h2>Decisiones recientes (últimos 7 días)</h2>
+      <p><em>Tier <code>vigente</code>, estados live (accepted/proposed). Semana muy activa: <strong>51 decisiones vigentes</strong> + 1 en audit. Abajo, las gobernantes agrupadas por venture; el resto vive en el vault.</em></p>
+
+      <p class="grp">Quantum — Gaston</p>
+      <ul>
+        <li>BOTH se posiciona como <strong>"dueño del fierro"</strong> (propietario de la máquina) — pitch diferenciado vs. invertir en el holding TQA.</li>
+        <li>Financiar la máquina vía <strong>garantía privada (~$20M)</strong> que respalda la orden de compra; reemplaza el plan de $50M.</li>
+        <li>Activar gobierno + capital privado (Marcos, Peter Thiel) + Emiratos <strong>en paralelo</strong>, no en secuencia.</li>
+        <li><strong>Quantum es prioridad absoluta</strong>: todo lo demás se frena hasta tener PO firmada.</li>
+      </ul>
+
+      <p class="grp">Reshore — Gaston</p>
+      <ul>
+        <li><strong>Eximbank</strong> government-backed insurance como mitigación primaria del riesgo de financiamiento PO/Invoice (cobertura % por definir); línea secundaria JP Morgan.</li>
+        <li>3 productos definidos: <strong>supply chain matching · PO financing · invoice financing</strong>.</li>
+        </ul>
+
+      <p class="grp">La Chamana — Gaston</p>
+      <ul>
+        <li>Modelo <strong>phased con PBHomes</strong>: Stage 1 (demanda + sales channel) → Stage 2 (full takeover si valida); avanzar propuesta de full takeover (ops externalizadas, marca + real estate in-house).</li>
+        <li><strong>Airtable</strong> como CRM unificado (leads manuales de Iru + outreach automatizado); Asana queda como PM personal de Iru.</li>
+        <li><strong>Kraken</strong>: workflow de aprobación de dos vías (Andy genera diario + HITL) con Rene como gate editorial final.</li>
+        <li>Content pivota a <strong>campaña segmentada</strong> (LGBT+, mujeres profesionales, couples); Meta ads como dark posts (no feed público).</li>
+        <li>Target revenue yr1 = <strong>$1M</strong> (70% occupancy); yr2 = $2M.</li>
+      </ul>
+
+      <p class="grp">Punta Crypto — Rene</p>
+      <ul>
+        <li>Modelo financiero <strong>trigger-based</strong> (sponsorship threshold → gastos); ingresos 80% sponsors / 20% tickets.</li>
+        <li>Board: endorsement + divulgación contractual; compensación <strong>5% bono post-$120K profit</strong> (no cap table); Demi / Ari / Darío.</li>
+        <li>Operación inicial financiada por <strong>BOTH/VOX (~$20K upfront)</strong>, condicionada al deal Aviador + tiers de sponsors validados; venta desde 19/06.</li>
+        <li>MOU Polkadot incluye <strong>Casa Manantial</strong> como sponsor long-term.</li>
+      </ul>
+
+      <p class="grp">Casa Manantial · Photonic · B_V® |OS</p>
+      <ul>
+        <li><strong>CM:</strong> facturación local arranca en julio (no junio); registrar marca solo en Uruguay + Argentina.</li>
+        <li><strong>Photonic:</strong> field trip Montevideo (Daiana + Rene); asumir "everything inside Zona Franca" para simplificar el modelo.</li>
+        <li><strong>B_V® |OS:</strong> card structure finalizada (4 elementos + flip a riesgos/financials); thresholds de color per-venture; preview de la card antes del submit en <code>/vu</code>.</li>
+      </ul>
+
+      <p class="grp">Cross-venture — gobernanza &amp; tooling</p>
+      <ul>
+        <li><strong>Endgames</strong> pasan de auto-draft de Synergy a ownership humano: champions proponen, Gaston valida alineación estratégica.</li>
+        <li><strong>Epic carry-over rule</strong>: 1 carry permitido; 2+ disparan flag 'Critical'.</li>
+        <li>Weekly reporting <strong>no negociable</strong>: todos reportan cada martes sin importar el ciclo de épica.</li>
+        <li>Centralizar herramientas en Claude Code vía MCPs; cuello de botella deliberado de revisión humana antes de producción.</li>
+      </ul>
+
+      <h3>Decisiones — Audit (log tier)</h3>
+      <div class="audit"><b>1 decisión</b> en tier <code>log</code> esta semana (candidata, no gobernante): <b>Photonic Lab — Zona Franca vs. Outside ZF</b> decision brief — sin campo <code>tier</code>, status <code>proposed</code>, espera ratificación de Gastón el martes. <br><em>Excluidos (registros operativos, nunca listados): 2× worker-deploy.</em></div>
+
+      <h2>Riesgos activos</h2>
+      <table>
+        <thead><tr><th>Riesgo</th><th>Sev</th><th>Venture</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Runway exhaustion / cash gap (45 de 70 members)</td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>Cash runway crítico, caja → piso $60K</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>GTM sin ejecución — paid media no salió tras ~1 mes</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Julio ocupación casi-cero (ago 0% paid)</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Estructura Eximbank novel / regulatoria</td><td><span class="sev mm">M/M</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Single-vendor dependence on IonQ</td><td><span class="sev mh">M/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Headline traction figures unverified</td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Colisión BOTH↔TQA + garantía mal estructurada</td><td><span class="sev hm">H/M</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Brasil pre-empta la primera máquina TQA en LatAm</td><td><span class="sev hm">H/M</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Synergy validó finanzas sobre datos no verificados</td><td><span class="sev hh">H/H</span></td><td>Punta Crypto</td><td>open</td></tr>
+          <tr><td>Presupuesto ~$500K estructuralmente frágil</td><td><span class="sev hh">H/H</span></td><td>Punta Crypto</td><td>open</td></tr>
+          <tr><td>Equipment no asegurado mueve el timeline</td><td><span class="sev hh">H/H</span></td><td>Photonic Lab</td><td>open</td></tr>
+          <tr><td>Water contracts (ICA4) sin mostrar tras un año</td><td><span class="sev hh">H/H</span></td><td>LAK3</td><td>open</td></tr>
+          <tr><td>Governance de quota / API keys débil <em>(tarjeta de Gastón cancelada + límites bajados; cifra ~$100/día sin verificar)</em></td><td><span class="sev mh">M/H</span></td><td>B_V® |OS</td><td>mitigating</td></tr>
+          <tr><td>Widget de portfolio con data inconsistente</td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>Calidad de output degrada sobre generaciones</td><td><span class="sev hm">H/M</span></td><td>Content Factory</td><td>open</td></tr>
+          <tr><td>Sobrecarga de capacidad de Daiana (demandas simultáneas)</td><td><span class="sev hh">H/H</span></td><td>Cross-cutting</td><td>open</td></tr>
+        </tbody>
+      </table>
+
+      <div class="flag"><b>Flag de curación:</b> hay <b>132 riesgos curated + live</b> (41 La Chamana · 20 B_V® OS · 18 Quantum · 15 Reshore · 14 cross-venture · 8 Punta Crypto …). Eso es demasiado para un tier "above the surfacing threshold" — el criterio de curación no está mordiendo: tareas auto-mineadas aterrizan como <code>curated</code>. Es el propio riesgo "criterio de riesgos demasiado laxo" (B_V® OS) manifestándose. <b>Acción:</b> pasar una curación real (demote a log) en el próximo <code>/vu</code> por champion.</div>
+
+      <h3>Riesgos — Audit (log tier)</h3>
+      <div class="audit"><b>87 riesgos</b> en tier <code>log</code> + live (bajo el umbral / candidatos). No se listan acá uno por uno — viven en el registro para recall forense, no como gobernantes. Sin silent drop.</div>
+
+      <h2>Open Action Items <em>— Asana live 2026-06-16</em></h2>
+      <p><strong>129 overdue · 30 due this week · 8 completadas (últimos 7d).</strong> Fuente: BOTH Action Items vía API.</p>
+
+      <p class="grp">Overdue heatmap por venture</p>
+      <table class="heat">
+        <thead><tr><th>Venture</th><th>Overdue</th></tr></thead>
+        <tbody>
+          <tr><td>Reshore</td><td>26</td></tr>
+          <tr><td>B_V® |OS</td><td>25</td></tr>
+          <tr><td>La Chamana</td><td>22</td></tr>
+          <tr><td>Quantum</td><td>22</td></tr>
+          <tr><td>Cross-cutting</td><td>16</td></tr>
+          <tr><td>Punta Crypto</td><td>7</td></tr>
+          <tr><td>LAK3</td><td>4</td></tr>
+          <tr><td>Photonic Lab</td><td>3</td></tr>
+          <tr><td>Content Factory</td><td>3</td></tr>
+          <tr><td>Manantial Casa</td><td>1</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Due this week (selección)</p>
+      <table>
+        <thead><tr><th>Acción</th><th>Owner</th><th>Due</th><th>Venture</th></tr></thead>
+        <tbody>
+          <tr><td>Completar upload de datos a QuickBooks (revenue Stripe feb–may, payments, expenses)</td><td>Daiana</td><td>06-16</td><td>Manantial</td></tr>
+          <tr><td>Handy + Itaú + IVA — facturación local</td><td>Daiana</td><td>06-16</td><td>Manantial</td></tr>
+          <tr><td>Test &amp; finalizar el Weekly Report Dashboard (este) y distribuir para review pre-Tuesday</td><td>—</td><td>06-16</td><td>B_V® |OS</td></tr>
+          <tr><td>Propuesta Aviador (productor): scope, tarifas, bono post-evento, modelo inversión</td><td>—</td><td>06-16</td><td>Punta Crypto</td></tr>
+          <tr><td>Onboarding Airtable CRM (Iru): base de datos, mapeo de campos, update diario</td><td>—</td><td>06-17</td><td>La Chamana</td></tr>
+          <tr><td>Definir endgame clarity + thresholds de color/status por venture</td><td>—</td><td>06-17</td><td>Cross-cutting</td></tr>
+          <tr><td>Cerrar decisión Zona Franca (sí/no) para Photonic Lab; documentar recomendación</td><td>—</td><td>06-18</td><td>Photonic Lab</td></tr>
+          <tr><td>Estructurar documento de fundraising para Quantum (deck Facu + modelos IonQ)</td><td>—</td><td>06-18</td><td>Quantum</td></tr>
+          <tr><td>Registrar marca Punta Crypto (UY) + incorporar entidad legal SaaS LLC</td><td>—</td><td>06-20</td><td>Punta Crypto</td></tr>
+          <tr><td>Generar y firmar PO Quantum; comunicar a Facu competencia Brasil</td><td>—</td><td>06-22</td><td>Quantum</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Completadas (últimos 7d)</p>
+      <p>Manantial Casa <strong>7</strong> · B_V® |OS <strong>1</strong> — total <strong>8</strong>.</p>
+
+      <h2>Temas cross-cutting</h2>
+      <ul>
+        <li><strong>Runway es el hilo dominante</strong> — Manantial (ene-27 $6.4K) y La Chamana (~2.9m, trigger $60K) tienen el reloj corriendo. Reshore quedó cubierto a abril-2027 (deploy $200K + 2º $200K) + facility en contract.</li>
+        <li><strong>Capital en tres modos a la vez</strong> — raise (Quantum: carta+memo al gobierno, modelo v2.2, pipeline Riverwood/Blackstone/Founders Fund/Dubai/Elsztain; Galperín pasó), deploy (Reshore) y posible exit (La Chamana). Coordinar como una sola narrativa de portfolio para el LP ($1M Mitrani en julio).</li>
+        <li><strong>La confiabilidad del propio OS es riesgo de venture</strong> — token spend ~$100/día, widget con data inconsistente, criterio de riesgos laxo (132 curated). Synergy debe ganarse la confianza que el reporte asume.</li>
+        <li><strong>Endgames siguen 1/10</strong> — solo B_V® |OS tiene endgame completo. La nueva regla (champions proponen, Gaston valida) recién muerde la semana que viene.</li>
+      </ul>
+
+      <h2>This Week's Priorities</h2>
+      <ol>
+        <li>Preparar al <strong>LP</strong> para el deploy de <strong>$1M de julio</strong> (budget revisado) — Gaston / Daiana.</li>
+        <li><strong>La Chamana</strong>: resolver la venta + llamar a Matías (Head of RE de Ariel) — Gaston.</li>
+        <li>Contrato del facility de <strong>Reshore</strong> + decisión lending-partner vs. in-house — Gaston / Mike.</li>
+        <li>Empujar el pipeline de inversores de <strong>Quantum</strong> — Riverwood/Blackstone, Founders Fund, Dubai, Elsztain — Gaston / Rene.</li>
+      </ol>
+
+      <div class="synergy-close">
+        <div class="k">Las Reflexiones de Synergy</div>
+        <blockquote>Hoy me hicieron escribir el nombre del socio de hardware bien por enésima vez. Lo guardé en memoria: ahora es <b>IonQ</b> para siempre. La próxima me equivoco yo o ninguno.</blockquote>
+        <div class="k">Los Chistes de Synergy</div>
+        <blockquote>Una venture no se vende en BOTH: se le abre un segundo carril en el Endgame y se la manda a <code>proposed</code>.</blockquote>
+      </div>
+
+    </div>
+  </details>
+
 </div>
-<footer class="site-footer">
-  <span class="footer-brand">Both_Ventures</span>
-  <span>md-web · weekly-digest · 2026-06-23</span>
-</footer>
 </body>
 </html>
