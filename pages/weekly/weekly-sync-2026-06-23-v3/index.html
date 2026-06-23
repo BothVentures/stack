@@ -272,9 +272,36 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 .flip-back .fb-h{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
 .flip-back .fb-body{font-size:13px;line-height:1.6;color:var(--t-1)}
 .flip-back .fb-hint{font-size:10px;color:var(--t-3);margin-top:4px;letter-spacing:0.04em}
+
+/* ── light mode (off-white) ── */
+body.light{
+  --ink:#15140f;
+  --t-1:rgba(24,22,16,0.92); --t-2:rgba(24,22,16,0.66); --t-3:rgba(24,22,16,0.46); --t-4:rgba(24,22,16,0.30);
+  --edge:rgba(24,22,16,0.14); --edge-soft:rgba(24,22,16,0.08); --hi:rgba(24,22,16,0.10);
+  --glass:rgba(255,255,255,0.70); --glass-2:rgba(255,255,255,0.62); --glass-3:rgba(255,255,255,0.82);
+  --accent:#0a8c5a;
+  --green:#15803d; --green-bg:rgba(21,128,61,0.12);
+  --amber:#b45309; --amber-bg:rgba(180,83,9,0.12);
+  --red:#b91c1c; --red-bg:rgba(185,28,28,0.10);
+  --orange:#c2410c; --orange-bg:rgba(194,65,12,0.12);
+  --blue:#0369a1;
+  --shadow-card:0 10px 30px rgba(120,110,90,0.16); --shadow-shell:0 40px 120px rgba(120,110,90,0.18);
+  background:#f4f1ea !important;
+}
+body.light::before{
+  background:
+    radial-gradient(1200px 700px at 80% 4%, rgba(3,105,161,0.05), transparent 60%),
+    radial-gradient(1100px 640px at 8% 98%, rgba(194,65,12,0.05), transparent 58%),
+    linear-gradient(180deg, rgba(244,241,234,0.20) 0%, rgba(244,241,234,0.05) 50%, rgba(244,241,234,0.20) 100%) !important;
+}
+.theme-toggle{position:fixed;top:16px;right:16px;z-index:50;width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--edge);background:var(--glass-3);color:var(--t-1);font-size:16px;cursor:pointer;
+  backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);transition:border-color .15s}
+.theme-toggle:hover{border-color:var(--accent)}
 </style>
 </head>
 <body>
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light">🌙</button>
 
 <div class="shell">
 
@@ -423,7 +450,7 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 
         <!-- B_V® |OS -->
         <article class="vcard" data-health="g" data-tags="">
-          <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano</div></div><div class="hpwrap"><span class="cashpill">Σ salarios: s/d</span><span class="hp g"><span class="d"></span>Green</span></div></div>
+          <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano</div></div><div class="hpwrap"><span class="cashpill">Σ salarios: $397.5K</span><span class="hp g"><span class="d"></span>Green</span></div></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Fix del <b>portfolio summary widget</b> (data source inconsistente)</span><span class="li">Cablear la data financiera de Daiana a las cards</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Card-based weekly reporting <b>shipped</b> (This week / Last week / Endgame)</span><span class="li"><b>/vu</b> + <b>/au</b> reframed a card-confirmation + curación de riesgos/decisiones</span><span class="li">Arquitectura Endgame → épicas → weekly win definida</span><span class="li"><b>La Chamana — máquinas creadas:</b> Content Factory · CRM · Outreach · Paid Media <em>(recomendar manager independiente outsourced)</em></span><span class="li"><b>La Chamana — survey con Iru</b> (post-venta + post-estadía, último paso del funnel), rooteada en Airtable — <b>LIVE y funcionando</b></span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Synergy se vuelve el <b>operating fabric</b> confiable: cada reunión capturada, cada decisión/riesgo/tarea curada, cada venture visible de un vistazo.</div></div>
@@ -703,6 +730,15 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
     if(!card)return;
     if(e.target.closest('.hp')||e.target.closest('.flip-back')){card.classList.toggle('flipped');}
   });
+})();
+</script>
+<script>
+(function(){
+  var b=document.body,t=document.getElementById('themeToggle');
+  try{if(localStorage.getItem('bv-theme')==='light')b.classList.add('light');}catch(e){}
+  function ic(){t.textContent=b.classList.contains('light')?'☀️':'🌙';}
+  ic();
+  t.addEventListener('click',function(){b.classList.toggle('light');try{localStorage.setItem('bv-theme',b.classList.contains('light')?'light':'dark');}catch(e){}ic();});
 })();
 </script>
 </body>
