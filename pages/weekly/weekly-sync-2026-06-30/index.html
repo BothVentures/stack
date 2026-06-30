@@ -269,9 +269,24 @@ blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px 
 .vcard.flip .flip-back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:2px}
 .vcard.flip .hp{cursor:pointer}
 .vcard.flip .hp::after{content:"⤺";margin-left:5px;font-size:10px;opacity:0.7}
+.vcard.flip .cashpill{cursor:pointer}
+.vcard.flip .cashpill::after{content:"⤺";margin-left:4px;font-size:9px;opacity:0.7}
 .flip-back .fb-h{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
 .flip-back .fb-body{font-size:13px;line-height:1.6;color:var(--t-1)}
 .flip-back .fb-hint{font-size:10px;color:var(--t-3);margin-top:4px;letter-spacing:0.04em}
+/* ── capital position flip ── */
+.capflip{perspective:1000px;cursor:pointer}
+.capflip-inner{position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1);display:grid}
+.capflip.flipped .capflip-inner{transform:rotateY(180deg)}
+.capflip-front,.capflip-back{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.capflip-back{transform:rotateY(180deg)}
+.capflip .caphint{font-size:9px;color:var(--t-3);margin-left:6px;opacity:.75;letter-spacing:0}
+.capflip-back .cb-h{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:5px}
+.capflip-back .cb-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;line-height:1.4;padding:3px 0;border-top:1px solid var(--edge-soft)}
+.capflip-back .cb-row:first-of-type{border-top:none}
+.capflip-back .cb-v{color:var(--t-1);font-weight:700;white-space:nowrap}
+.capflip-back .cb-d{color:var(--t-3);font-size:10px}
+.capflip-back .cb-hint{font-size:10px;color:var(--t-3);margin-top:6px;letter-spacing:0.04em}
 
 /* ── light mode (off-white) ── */
 body.light{
@@ -331,9 +346,9 @@ body.light::before{
     <div class="top-meta"><span class="sprint">Sprint 1 · mid</span><span class="sep">·</span><span>pulse week (entre 06-23 y 07-07)</span><span class="sep">·</span><span>Q-02.26</span></div>
   </div>
 
-  <div class="keydates"><span class="kd-h">Próximas fechas</span><span class="kd"><b>01/07</b> Memo payroll + propuesta PBHomes (La Chamana)</span><span class="kd"><b>05/07</b> Propuesta comercial El Observador (CM)</span><span class="kd"><b>07/07</b> Sprint boundary 2 + deadline Meta Track B</span><span class="kd"><b>Julio</b> Deploy LP $1M (Mitrani)</span><span class="kd"><b>fin julio</b> 2º $200K Reshore</span></div>
+  <div class="keydates"><span class="kd-h">Próximas fechas</span><span class="kd"><b>01/07</b> Propuesta PBHomes (Gastón) — La Chamana</span><span class="kd"><b>05/07</b> Propuesta comercial El Observador (Daiana) — Casa Manantial</span><span class="kd"><b>07/07</b> Sprint boundary 2 (todo el equipo corre /vu+/au) + deadline Meta Track B (Mariano) — B_V® OS</span><span class="kd"><b>Julio</b> Deploy LP $1M, Mitrani (Gastón / Daiana) — Capital</span><span class="kd"><b>fin julio</b> 2º tramo $200K (Gastón) — Reshore</span></div>
 
-  <div class="freshbar"><span class="fb-h">Freshness · ledger</span><span class="fb-t"><b>3 de 10 ventures</b> (Manantial · B_V® OS · Content Factory) y <b>3 de 5 áreas</b> (Ops · Legal · Tech) corrieron <b>/vu / /au esta semana (06-29)</b>. El resto lleva la card del <b>06-22/23</b> — marcada <b class="kd"><span class="fresh y">carry</span></b> en cada card. Es <b>pulse week</b> (no boundary): sin Sprint Board este ciclo.</span></div>
+  <div class="freshbar"><span class="fb-h">Estado de actualización</span><span class="fb-t"><b>3 de 10 ventures</b> (Manantial · B_V® OS · Content Factory) y <b>3 de 5 áreas</b> (Ops · Legal · Tech) corrieron <b>/vu / /au esta semana (06-29)</b>. El resto lleva la card del <b>06-22/23</b> — marcada <b class="kd"><span class="fresh y">carry</span></b> en cada card. Es <b>pulse week</b> (no boundary): sin Sprint Board este ciclo.</span></div>
 
   <!-- ══ DASH ══ -->
   <div class="dash">
@@ -359,28 +374,39 @@ body.light::before{
 
       <div class="panel">
         <div class="panel-h"><span class="t">Resumen del portfolio</span><span class="c">06-30</span></div>
-      <div style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px">
-        <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Total capital deployed</div>
-        <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">~$940K</div>
-        <div style="font-size:10px;color:var(--t-3);margin-top:7px">+$225K comprometido (Reshore +$200K fin julio · Panambi +$25K) ≈ $1.17M</div>
-      </div>
+      <div class="capflip" style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px"><div class="capflip-inner">
+        <div class="capflip-front">
+          <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Capital invertido total <span style="text-transform:none;letter-spacing:0">· portafolio a costo</span><span class="caphint">⤺ clic: detalle</span></div>
+          <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">$1,913,046</div>
+          <div style="font-size:10px;color:var(--t-3);margin-top:7px">+$225K comprometido (Reshore +$200K fin julio · Panambi +$25K) ≈ $2.14M</div>
+        </div>
+        <div class="capflip-back">
+          <div class="cb-h">Detalle por venture</div>
+          <div class="cb-row"><span><b>Reshore</b> <span class="cb-d">$1M contribución Gastón + $200K cash</span></span><span class="cb-v">$1,200,000</span></div>
+          <div class="cb-row"><span><b>Casa Manantial</b> <span class="cb-d">contribución Selfina</span></span><span class="cb-v">$300,000</span></div>
+          <div class="cb-row"><span><b>La Chamana</b> <span class="cb-d">deploy BOTH</span></span><span class="cb-v">$300,080</span></div>
+          <div class="cb-row"><span><b>LAK3</b> <span class="cb-d">deploy BOTH</span></span><span class="cb-v">$87,966</span></div>
+          <div class="cb-row"><span><b>Panambi</b> <span class="cb-d">deploy BOTH</span></span><span class="cb-v">$25,000</span></div>
+          <div class="cb-hint">clic para volver</div>
+        </div>
+      </div></div>
         <div class="stats">
-          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$8K</div><div class="leg">post-pagos · ref 06-01 · refresh pend. (Daiana)</div></div>
+          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$9K</div><div class="leg">post-pagos · ref 06-30 (Daiana)</div></div>
           <div class="stat"><div class="l">BOTH runway</div><div class="n" style="font-size:19px">julio</div><div class="leg">puente = LP deploy $1M</div></div>
           <div class="stat"><div class="l">Próximo LP deploy</div><div class="n" style="font-size:19px">$1M</div><div class="leg">Mitrani · julio · platform</div></div>
-          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Otros</div><div class="n">3 · 4 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
+          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Otros</div><div class="n">4 · 3 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
           <div class="stat span"><div><div class="l">Health · G / Y / R</div><div class="n">5 · 3 · 2</div></div>
             <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
         </div>
         <div style="padding:0 14px 12px">
           <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Capital highlights</div>
-          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Tres eventos de capital en simultáneo — <b style="color:var(--t-1)">Quantum</b> (raise) · <b style="color:var(--t-1)">Reshore</b> (deploy) · <b style="color:var(--t-1)">La Chamana</b> (posible exit). El <b style="color:var(--t-1)">LP Mitrani</b> deploya <b style="color:var(--t-1)">$1M en julio</b> — alimenta todo.</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Tres eventos de capital en simultáneo — <b style="color:var(--t-1)">Quantum</b> (raise) · <b style="color:var(--t-1)">Reshore</b> (deploy) · <b style="color:var(--t-1)">La Chamana</b> (posible exit) — todos alimentados por el deploy de <b style="color:var(--t-1)">$1M</b> del <b style="color:var(--t-1)">LP Mitrani</b> en julio.</div>
         </div>
         <div style="padding:0 14px 14px">
           <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Revenue · Net income por proyecto</div>
           <table style="width:100%;border-collapse:collapse;font-size:11px">
-            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Proyecto</th><th style="padding:4px 6px;font-weight:600">Capital deployed</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
-            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$21.8K</td><td style="padding:5px 6px;color:var(--red)">−$13.1K</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$200K (+$200K)</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$40K/mes · caja→jul; 2º $200K→abr-27</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">burn $27.1K/mes</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Quantum</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$100K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Photonic Lab</td><td style="padding:5px 6px">$15K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K (+$25K)</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Punta Crypto</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Both OS</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">run-rate ~$650/mo</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Content Factory</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
+            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Proyecto</th><th style="padding:4px 6px;font-weight:600">Capital invertido</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
+            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$21.8K</td><td style="padding:5px 6px;color:var(--red)">−$13.1K</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$1.2M</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$40K/mes · caja→jul; 2º $200K→abr-27</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$23.3K (mayo)</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Quantum</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$88K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Photonic Lab</td><td style="padding:5px 6px">$15K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Punta Crypto</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Both OS</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">run-rate ~$650/mo</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Content Factory</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -415,18 +441,18 @@ body.light::before{
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Comunidad autosustentada que cubre el <b>alquiler de USD 20K/mes</b> y alcanza <b>break-even</b> (~70 members; hoy 46). <span class="dr">Draft</span></div></div>
           <div class="row"><div class="lab">Financial</div><span class="li">Rev mayo <b>$21.8K</b> · NI <b>−$13.1K</b> · Cash $75.1K (31/05) · runway proy. <b>~enero 2027</b></span></div>
           <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion · H/H</span><span class="chip o"><span class="d"></span>Daiana capacity overload · M/H</span><span class="chip y"><span class="d"></span>Tini sin PM formal · M/M</span><span class="chip o"><span class="d"></span>SAS IVA sin facturar · M/H</span><span class="chip o"><span class="d"></span>EO/stream sin comms ni posicionamiento · M/H</span></div>
-        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">Foco runway — gate estructural (llega a ~enero). Pierde plata todos los meses hasta break-even (~70 members; hoy 46). <b>Amarillo hasta break-even</b>; el eje operativo se corrió a cierre de acuerdos + facturación local.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">Foco runway — gate estructural (llega a ~enero). Pierde plata todos los meses hasta break-even (~70 members; hoy 46). <b>Amarillo hasta break-even</b>; el eje operativo se corrió a cierre de acuerdos + facturación local.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Cierre mayo</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$21,775</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net income</span><b style="color:var(--red)">−$13,055</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Caja (31/05)</span><b style="color:var(--t-1)">$75,111</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Runway</span><b style="color:var(--t-1)">ene-2027</b></div></div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
 
         <!-- Punta Crypto -->
         <article class="vcard" data-health="g" data-tags="sidequest">
           <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Casa Manantial</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
-          <div class="row"><div class="lab">This week (focus)</div><span class="li">Sponsor outreach <b>arrancó 06-29</b> — corriendo</span><span class="li"><b>Formato ejecutivo exclusivo</b> — principals público + privado; hospitality + experiencias = diferenciador core</span><span class="li">Conectar Polkadot ahead, vía Casa Manantial</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Planificar el nuevo enfoque del evento</b> — cambio de estrategia decidido; René arma el doc → Daiana rehace financials → arrancar a operar</span><span class="li"><b>Comenzar a ejecutar</b> el enfoque nuevo</span><span class="li">Sponsor outreach <b>arrancó 06-29</b> — corriendo</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li"><b>Pivot de formato</b>: modelo abierto 3-vertical → evento ejecutivo curado</span><span class="li"><b>Modelo financiero locked trigger-based</b> ($200K net/año; 80% sponsors / $500K + tickets; break-even 60% sponsors)</span><span class="li"><b>Board + endorsement</b> acordado (Demi · Ari · Darío + BOTH, 5% bonus post-$120K)</span><span class="li"><b>Polkadot MoU</b> confirmado vía CM</span></div>
           <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin /vu nuevo — card del 06-22.</b> Live: outreach arrancó 06-29; <b>marca en trámite de registro</b>; Daiana lo empaqueta a ops con René (~2 sem).</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>Anchor event institucional del Southern Cone</b> para la economía on-chain — propiedad de BOTH, replicable año a año.</div></div>
           <div class="row"><div class="lab">Financial</div><span class="li">Target <b>$200K net/año</b> ($120K CM + $80K BOTH) · 80% sponsors ($500K) + tickets · break-even 60% sponsors · <b>0 sponsors en cash</b></span></div>
           <div class="vrisks"><span class="chip o"><span class="d"></span>Sponsor pricing sin validar vs benchmark · H/M</span><span class="chip o"><span class="d"></span>Curation ↔ execution mismatch · M/H</span></div>
-          <div class="vq">Outreach arrancó 06-29; gov endorsement (Bruno Gilli / Uruguay Innova) ya firmado ✓. ¿Validamos el <b>pricing por tier</b> vs benchmark regional para sostener el outreach? <span class="qv">— Rene / Daiana</span></div>
+          <div class="vq">Cambio de estrategia decidido para el evento. <b>El pricing por tier se rehace</b> con los nuevos financials (Daiana) una vez que René cierre el doc del enfoque — no se valida contra el modelo viejo. <span class="qv">— Rene / Daiana</span></div>
         </article>
 
         <!-- Photonic Lab -->
@@ -466,15 +492,15 @@ body.light::before{
         </article>
 
         <!-- La Chamana -->
-        <article class="vcard flip" data-health="r" data-tags="sidequest"><div class="flip-inner"><div class="flip-front">
-          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag sidequest">Side Quest</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+        <article class="vcard flip" data-health="r" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Foco: <b>retreat product packs</b></span><span class="li">Resolver la <b>decisión de venta</b> (términos en Endgame, queda proposed)</span><span class="li">Destrabar el <b>GTM/paid media</b> — exigir test + running a Andres</span><span class="li"><b>Llamar a Matías</b> (Head of RE de Ariel) re: decisión de listar</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🚩 <b>Paid media NO salió</b> — ~1 mes de build (Andres), sin test ni nada corriendo</span><span class="li"><b>Luxury Haciendas</b> reframeado = acuerdo de referidos (reversible, no co-management)</span><span class="li"><b>PBHomes</b> manda propuesta el 01/07 · guest feedback 10/10 + punch list</span></div>
           <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin /vu nuevo — card del 06-22.</b> Live (área Legal): <b>contrato de Christie's mandado a revisión</b>; Mercury ongoing en resolución. Decisión 06-23: <b>hold del exit-comms</b> hasta cerrar la ventana de exclusividad de 6 meses.</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Doble carril — estabilizar a <b>cashflow positivo</b> y, en paralelo, correr la <b>venta</b> (list $9.9M; <b>$9.5M no figura en el contrato → por ahora no obligatorio, confirmar</b>; push $9.7M; comisión escalonada). Trigger: caja &lt; $60K. <span class="dr">Draft</span></div></div>
-          <div class="row"><div class="lab">Financial</div><span class="li">Cash <b>$77.7K</b> · burn $27.1K/mo · runway <b>~2.9m</b> (3.2m con cobros) · trigger $60K (buffer <b>$17.7K</b>) · occ paga jul casi-0% / ago 0%</span></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Cash <b>$71.7K</b> (cierre mayo) · burn $27.1K/mo · runway <b>~2.6m</b> (2.9m con cobros) · trigger $60K (buffer <b>$11.7K</b>) · occ paga jul casi-0% / ago 0%</span></div>
           <div class="vrisks"><span class="chip r"><span class="d"></span>Caja / runway → $60K · H/H</span><span class="chip r"><span class="d"></span>Julio ocupación casi-cero · H/H</span><span class="chip r"><span class="d"></span>GTM sin ejecución (paid media) · H/H</span><span class="chip o"><span class="d"></span>SDR follow-up bottleneck · M/H</span></div>
-        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">¿Por qué Red?</div><div class="fb-body"><b>Caja crítica</b>: runway ~2.9m, trigger $60K. Julio ocupación casi-cero (ago 0% paid). <b>GTM sin ejecutar</b> — el paid media no salió tras ~1 mes de build. Card del 06-22; corre en paralelo a la posible venta.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">¿Por qué Red?</div><div class="fb-body"><b>Caja crítica</b>: runway ~2.6m, trigger $60K. Julio ocupación casi-cero (ago 0% paid). <b>GTM sin ejecutar</b> — el paid media no salió tras ~1 mes de build. Card del 06-22; corre en paralelo a la posible venta.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Cierre mayo</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$0</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net operating</span><b style="color:var(--red)">−$23,275</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Caja (31/05)</span><b style="color:var(--t-1)">$71,656</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Deuda Pato</span><b style="color:var(--t-1)">$100K</b></div></div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
 
         <!-- B_V® |OS -->
         <article class="vcard flip" data-health="y" data-tags=""><div class="flip-inner"><div class="flip-front">
@@ -682,7 +708,7 @@ body.light::before{
 
       <h2>Temas cross-cutting</h2>
       <ul>
-        <li><strong>Runway sigue siendo el hilo dominante</strong> — Manantial (~ene-27) y La Chamana (~2.9m, trigger $60K) con el reloj corriendo. El puente del portfolio es el <b>deploy LP $1M de julio</b> (Mitrani); Reshore cubierto a abril-2027 con el 2º $200K.</li>
+        <li><strong>Runway sigue siendo el hilo dominante</strong> — Manantial (~ene-27) y La Chamana (~2.6m, trigger $60K) con el reloj corriendo. El puente del portfolio es el <b>deploy LP $1M de julio</b> (Mitrani); Reshore cubierto a abril-2027 con el 2º $200K.</li>
         <li><strong>Capital en tres modos a la vez</strong> — raise (Quantum), deploy (Reshore) y posible exit (La Chamana, ahora con hold de exit-comms 6 meses). El LP report de esta semana tiene que contar los tres como una sola narrativa de portfolio.</li>
         <li><strong>El problema del OS es juicio, no captura</strong> — el auto-miner captura bien, pero el incidente QCaaS probó que alucina deal terms con audio garbled. El quality gate (sin deployar) es el fix estructural: negarse a minar en vez de inventar. La confiabilidad del propio OS sigue siendo riesgo de venture.</li>
         <li><strong>Freshness de la cadencia</strong> — solo 3/10 ventures + 3/5 áreas corrieron /vu/au esta semana (pulse week). Las cards en <span class="fresh y">carry</span> son honestas pero envejecen; vale recordar la cadencia del lunes de cara al boundary 07-07.</li>
@@ -722,9 +748,9 @@ body.light::before{
     <div class="top-meta"><span class="sprint">Sprint 1 · mid</span><span class="sep">·</span><span>pulse week (between 06-23 and 07-07)</span><span class="sep">·</span><span>Q-02.26</span></div>
   </div>
 
-  <div class="keydates"><span class="kd-h">Key dates</span><span class="kd"><b>07-01</b> Payroll memo + PBHomes proposal (La Chamana)</span><span class="kd"><b>07-05</b> El Observador commercial proposal (CM)</span><span class="kd"><b>07-07</b> Sprint boundary 2 + Meta Track B deadline</span><span class="kd"><b>July</b> LP $1M deploy (Mitrani)</span><span class="kd"><b>end-July</b> Reshore 2nd $200K</span></div>
+  <div class="keydates"><span class="kd-h">Key dates</span><span class="kd"><b>07-01</b> PBHomes proposal (Gastón) — La Chamana</span><span class="kd"><b>07-05</b> El Observador commercial proposal (Daiana) — Casa Manantial</span><span class="kd"><b>07-07</b> Sprint boundary 2 (whole team runs /vu+/au) + Meta Track B deadline (Mariano) — B_V® OS</span><span class="kd"><b>July</b> LP $1M deploy, Mitrani (Gastón / Daiana) — Capital</span><span class="kd"><b>end-July</b> Reshore 2nd $200K tranche (Gastón) — Reshore</span></div>
 
-  <div class="freshbar"><span class="fb-h">Freshness · ledger</span><span class="fb-t"><b>3 of 10 ventures</b> (Manantial · B_V® OS · Content Factory) and <b>3 of 5 areas</b> (Ops · Legal · Tech) ran <b>/vu / /au this week (06-29)</b>. The rest carry the <b>06-22/23</b> card — flagged <b class="kd"><span class="fresh y">carry</span></b> on each card. It's a <b>pulse week</b> (not a boundary): no Sprint Board this cycle.</span></div>
+  <div class="freshbar"><span class="fb-h">Update status</span><span class="fb-t"><b>3 of 10 ventures</b> (Manantial · B_V® OS · Content Factory) and <b>3 of 5 areas</b> (Ops · Legal · Tech) ran <b>/vu / /au this week (06-29)</b>. The rest carry the <b>06-22/23</b> card — flagged <b class="kd"><span class="fresh y">carry</span></b> on each card. It's a <b>pulse week</b> (not a boundary): no Sprint Board this cycle.</span></div>
 
   <!-- ══ DASH ══ -->
   <div class="dash">
@@ -750,28 +776,39 @@ body.light::before{
 
       <div class="panel">
         <div class="panel-h"><span class="t">Portfolio summary</span><span class="c">06-30</span></div>
-      <div style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px">
-        <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Total capital deployed</div>
-        <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">~$940K</div>
-        <div style="font-size:10px;color:var(--t-3);margin-top:7px">+$225K committed (Reshore +$200K end-July · Panambi +$25K) ≈ $1.17M</div>
-      </div>
+      <div class="capflip" style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px"><div class="capflip-inner">
+        <div class="capflip-front">
+          <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Total capital invested <span style="text-transform:none;letter-spacing:0">· portfolio at cost</span><span class="caphint">⤺ click: detail</span></div>
+          <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">$1,913,046</div>
+          <div style="font-size:10px;color:var(--t-3);margin-top:7px">+$225K committed (Reshore +$200K end-July · Panambi +$25K) ≈ $2.14M</div>
+        </div>
+        <div class="capflip-back">
+          <div class="cb-h">Breakdown by venture</div>
+          <div class="cb-row"><span><b>Reshore</b> <span class="cb-d">$1M contribution from Gastón + $200K cash</span></span><span class="cb-v">$1,200,000</span></div>
+          <div class="cb-row"><span><b>Casa Manantial</b> <span class="cb-d">contribution from Selfina</span></span><span class="cb-v">$300,000</span></div>
+          <div class="cb-row"><span><b>La Chamana</b> <span class="cb-d">BOTH deploy</span></span><span class="cb-v">$300,080</span></div>
+          <div class="cb-row"><span><b>LAK3</b> <span class="cb-d">BOTH deploy</span></span><span class="cb-v">$87,966</span></div>
+          <div class="cb-row"><span><b>Panambi</b> <span class="cb-d">BOTH deploy</span></span><span class="cb-v">$25,000</span></div>
+          <div class="cb-hint">click to flip back</div>
+        </div>
+      </div></div>
         <div class="stats">
-          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$8K</div><div class="leg">post-payments · ref 06-01 · refresh pend. (Daiana)</div></div>
+          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$9K</div><div class="leg">post-payments · ref 06-30 (Daiana)</div></div>
           <div class="stat"><div class="l">BOTH runway</div><div class="n" style="font-size:19px">July</div><div class="leg">bridge = LP deploy $1M</div></div>
           <div class="stat"><div class="l">Next LP deploy</div><div class="n" style="font-size:19px">$1M</div><div class="leg">Mitrani · July · platform</div></div>
-          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Other</div><div class="n">3 · 4 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
+          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Other</div><div class="n">4 · 3 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
           <div class="stat span"><div><div class="l">Health · G / Y / R</div><div class="n">5 · 3 · 2</div></div>
             <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
         </div>
         <div style="padding:0 14px 12px">
           <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Capital highlights</div>
-          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Three capital events at once — <b style="color:var(--t-1)">Quantum</b> (raise) · <b style="color:var(--t-1)">Reshore</b> (deploy) · <b style="color:var(--t-1)">La Chamana</b> (possible exit). The <b style="color:var(--t-1)">LP Mitrani</b> deploys <b style="color:var(--t-1)">$1M in July</b> — it feeds everything.</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Three capital events at once — <b style="color:var(--t-1)">Quantum</b> (raise) · <b style="color:var(--t-1)">Reshore</b> (deploy) · <b style="color:var(--t-1)">La Chamana</b> (possible exit) — all fed by the <b style="color:var(--t-1)">LP Mitrani</b> <b style="color:var(--t-1)">$1M</b> deploy in July.</div>
         </div>
         <div style="padding:0 14px 14px">
           <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Revenue · Net income by project</div>
           <table style="width:100%;border-collapse:collapse;font-size:11px">
-            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Project</th><th style="padding:4px 6px;font-weight:600">Capital deployed</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
-            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$21.8K</td><td style="padding:5px 6px;color:var(--red)">−$13.1K</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$200K (+$200K)</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$40K/mo · cash→Jul; 2nd $200K→Apr-27</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">burn $27.1K/mo</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Quantum</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$100K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Photonic Lab</td><td style="padding:5px 6px">$15K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K (+$25K)</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Punta Crypto</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Both OS</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">run-rate ~$650/mo</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Content Factory</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
+            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Project</th><th style="padding:4px 6px;font-weight:600">Invested</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
+            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$21.8K</td><td style="padding:5px 6px;color:var(--red)">−$13.1K</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$1.2M</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$40K/mo · cash→Jul; 2nd $200K→Apr-27</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$23.3K (May)</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Quantum</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$88K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Photonic Lab</td><td style="padding:5px 6px">$15K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Punta Crypto</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Both OS</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">run-rate ~$650/mo</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Content Factory</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -806,18 +843,18 @@ body.light::before{
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Self-sustaining community covering the <b>USD 20K/mo rent</b> and reaching <b>break-even</b> (~70 members; 46 today). <span class="dr">Draft</span></div></div>
           <div class="row"><div class="lab">Financial</div><span class="li">May rev <b>$21.8K</b> · NI <b>−$13.1K</b> · Cash $75.1K (05/31) · runway proj. <b>~Jan 2027</b></span></div>
           <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion · H/H</span><span class="chip o"><span class="d"></span>Daiana capacity overload · M/H</span><span class="chip y"><span class="d"></span>Tini no formal PM · M/M</span><span class="chip o"><span class="d"></span>SAS IVA un-invoiced · M/H</span><span class="chip o"><span class="d"></span>EO/stream no comms nor positioning · M/H</span></div>
-        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">Runway focus — structural gate (reaches ~January). Loses money monthly until break-even (~70 members; 46 today). <b>Yellow until break-even</b>; the operating axis shifted to closing deals + local invoicing.</div><div class="fb-hint">click the pill to flip back</div></div></div></article>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">Runway focus — structural gate (reaches ~January). Loses money monthly until break-even (~70 members; 46 today). <b>Yellow until break-even</b>; the operating axis shifted to closing deals + local invoicing.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">May close</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$21,775</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net income</span><b style="color:var(--red)">−$13,055</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Cash (05/31)</span><b style="color:var(--t-1)">$75,111</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Runway</span><b style="color:var(--t-1)">Jan-2027</b></div></div><div class="fb-hint">click the pill to flip back</div></div></div></article>
 
         <!-- Punta Crypto -->
         <article class="vcard" data-health="g" data-tags="sidequest">
           <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Casa Manantial</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
-          <div class="row"><div class="lab">This week (focus)</div><span class="li">Sponsor outreach <b>started 06-29</b> — running</span><span class="li"><b>Exclusive executive format</b> — public + private principals; hospitality + experiences = core differentiator</span><span class="li">Connect Polkadot ahead, via Casa Manantial</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Plan the event's new approach</b> — strategy change decided; René builds the doc → Daiana redoes financials → start operating</span><span class="li"><b>Begin executing</b> the new approach</span><span class="li">Sponsor outreach <b>started 06-29</b> — running</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li"><b>Format pivot</b>: open 3-vertical model → curated executive event</span><span class="li"><b>Financial model locked trigger-based</b> ($200K net/yr; 80% sponsors / $500K + tickets; break-even 60% sponsors)</span><span class="li"><b>Board + endorsement</b> agreed (Demi · Ari · Darío + BOTH, 5% bonus post-$120K)</span><span class="li"><b>Polkadot MoU</b> confirmed via CM</span></div>
           <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No new /vu — 06-22 card.</b> Live: outreach started 06-29; <b>brand registration in progress</b>; Daiana packaging it to ops with René (~2 wks).</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>Southern Cone's institutional anchor event</b> for the on-chain economy — owned by BOTH, repeatable year over year.</div></div>
           <div class="row"><div class="lab">Financial</div><span class="li">Target <b>$200K net/yr</b> ($120K CM + $80K BOTH) · 80% sponsors ($500K) + tickets · break-even 60% sponsors · <b>0 sponsors in cash</b></span></div>
           <div class="vrisks"><span class="chip o"><span class="d"></span>Sponsor pricing unvalidated vs benchmark · H/M</span><span class="chip o"><span class="d"></span>Curation ↔ execution mismatch · M/H</span></div>
-          <div class="vq">Outreach started 06-29; gov endorsement (Bruno Gilli / Uruguay Innova) signed ✓. Do we validate <b>per-tier pricing</b> vs regional benchmark to sustain the outreach? <span class="qv">— Rene / Daiana</span></div>
+          <div class="vq">Strategy change decided for the event. <b>Per-tier pricing will be redone</b> with the new financials (Daiana) once René closes the approach doc — not validated against the old model. <span class="qv">— Rene / Daiana</span></div>
         </article>
 
         <!-- Photonic Lab -->
@@ -857,15 +894,15 @@ body.light::before{
         </article>
 
         <!-- La Chamana -->
-        <article class="vcard flip" data-health="r" data-tags="sidequest"><div class="flip-inner"><div class="flip-front">
-          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag sidequest">Side Quest</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+        <article class="vcard flip" data-health="r" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gaston <span class="fresh y">/vu 06-22 · carry</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
           <div class="row"><div class="lab">This week (focus)</div><span class="li">Focus: <b>retreat product packs</b></span><span class="li">Resolve the <b>sale decision</b> (terms in Endgame, stays proposed)</span><span class="li">Unblock the <b>GTM/paid media</b> — demand a test + running from Andres</span><span class="li"><b>Call Matías</b> (Ariel's Head of RE) re: listing decision</span></div>
           <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🚩 <b>Paid media did NOT ship</b> — ~1 month of build (Andres), no test, nothing running</span><span class="li"><b>Luxury Haciendas</b> reframed = referral agreement (reversible, no co-management)</span><span class="li"><b>PBHomes</b> sends proposal 07-01 · guest feedback 10/10 + punch list</span></div>
           <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No new /vu — 06-22 card.</b> Live (Legal area): <b>Christie's contract sent for review</b>; Mercury ongoing. Decision 06-23: <b>hold exit-comms</b> until the 6-month exclusivity window closes.</span></div>
           <div class="row"><div class="lab">Endgame</div><div class="endgame">Dual track — stabilize to <b>positive cashflow</b> and, in parallel, run the <b>sale</b> (list $9.9M; <b>$9.5M not in the contract → not binding for now, confirm</b>; push $9.7M; tiered commission). Trigger: cash &lt; $60K. <span class="dr">Draft</span></div></div>
-          <div class="row"><div class="lab">Financial</div><span class="li">Cash <b>$77.7K</b> · burn $27.1K/mo · runway <b>~2.9m</b> (3.2m w/ collections) · trigger $60K (buffer <b>$17.7K</b>) · paid occ July near-0% / Aug 0%</span></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Cash <b>$71.7K</b> (May close) · burn $27.1K/mo · runway <b>~2.6m</b> (2.9m w/ collections) · trigger $60K (buffer <b>$11.7K</b>) · paid occ July near-0% / Aug 0%</span></div>
           <div class="vrisks"><span class="chip r"><span class="d"></span>Cash / runway → $60K · H/H</span><span class="chip r"><span class="d"></span>July occupancy near-zero · H/H</span><span class="chip r"><span class="d"></span>GTM not executed (paid media) · H/H</span><span class="chip o"><span class="d"></span>SDR follow-up bottleneck · M/H</span></div>
-        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">Why Red?</div><div class="fb-body"><b>Critical cash</b>: runway ~2.9m, $60K trigger. July occupancy near-zero (Aug 0% paid). <b>GTM not executed</b> — paid media didn't ship after ~1 month of build. 06-22 card; runs in parallel with the possible sale.</div><div class="fb-hint">click the pill to flip back</div></div></div></article>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">Why Red?</div><div class="fb-body"><b>Critical cash</b>: runway ~2.6m, $60K trigger. July occupancy near-zero (Aug 0% paid). <b>GTM not executed</b> — paid media didn't ship after ~1 month of build. 06-22 card; runs in parallel with the possible sale.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">May close</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$0</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net operating</span><b style="color:var(--red)">−$23,275</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Cash (05/31)</span><b style="color:var(--t-1)">$71,656</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Pato debt</span><b style="color:var(--t-1)">$100K</b></div></div><div class="fb-hint">click the pill to flip back</div></div></div></article>
 
         <!-- B_V® |OS -->
         <article class="vcard flip" data-health="y" data-tags=""><div class="flip-inner"><div class="flip-front">
@@ -1073,7 +1110,7 @@ body.light::before{
 
       <h2>Cross-cutting themes</h2>
       <ul>
-        <li><strong>Runway is still the dominant thread</strong> — Manantial (~Jan-27) and La Chamana (~2.9m, $60K trigger) have the clock running. The portfolio bridge is July's <b>LP $1M deploy</b> (Mitrani); Reshore covered to April-2027 with the 2nd $200K.</li>
+        <li><strong>Runway is still the dominant thread</strong> — Manantial (~Jan-27) and La Chamana (~2.6m, $60K trigger) have the clock running. The portfolio bridge is July's <b>LP $1M deploy</b> (Mitrani); Reshore covered to April-2027 with the 2nd $200K.</li>
         <li><strong>Capital in three modes at once</strong> — raise (Quantum), deploy (Reshore), and possible exit (La Chamana, now with a 6-month exit-comms hold). This week's LP report has to tell all three as a single portfolio narrative.</li>
         <li><strong>The OS problem is judgment, not capture</strong> — the auto-miner captures well, but the QCaaS incident proved it hallucinates deal terms from garbled audio. The (undeployed) quality gate is the structural fix: refuse to mine rather than invent. The OS's own reliability is still a venture risk.</li>
         <li><strong>Cadence freshness</strong> — only 3/10 ventures + 3/5 areas ran /vu/au this week (pulse week). The <span class="fresh y">carry</span> cards are honest but they age; worth recalling the Monday cadence heading into the 07-07 boundary.</li>
@@ -1135,9 +1172,11 @@ body.light::before{
 <script>
 (function(){
   document.addEventListener('click',function(e){
+    var cap=e.target.closest('.capflip');
+    if(cap){cap.classList.toggle('flipped');return;}
     var card=e.target.closest('.vcard.flip');
     if(!card)return;
-    if(e.target.closest('.hp')||e.target.closest('.flip-back')){card.classList.toggle('flipped');}
+    if(e.target.closest('.hp')||e.target.closest('.cashpill')||e.target.closest('.flip-back')){card.classList.toggle('flipped');}
   });
 })();
 </script>
