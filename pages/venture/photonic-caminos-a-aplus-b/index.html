@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Photonic Lab — tres caminos: A (wet-lab lean), A+ (wet-lab + cómputo) y B (lab+fondo). Pregunta de tesis antes del modelo.">
+<title>Photonic Lab — Tres caminos: A / A+ / B — Both_Ventures</title>
+<style>
+/*
+ * Photonic Lab — Swiss Editorial Design System
+ * Source of truth for all Photonic Lab visual output.
+ * Edit here; notion-to-html.py inlines this at build time.
+ *
+ * Governing principle: light-brown paper (#ebe1cd) is the material.
+ * Regular weight (400) for prose — never light. BOTH web standard.
+ * One accent (#0a8c5a). Weight contrast over size contrast.
+ * Uppercase for metadata, never prose. Borders do structural work.
+ * Every page carries a .read-time line under the title.
+ */
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── VARIABLES ── */
+:root {
+  /* Neutrals — light-brown paper (BOTH web standard) */
+  --white:    #ebe1cd;   /* page background — paper, absolute */
+  --off:      #e2d7bf;   /* hover, footer, table headers */
+  --rule:     #d6cbb1;   /* hairline dividers, card gaps */
+  --rule2:    #c2b696;   /* heavier rules, active borders */
+  --text:     #111110;   /* primary text, nav/footer borders */
+  --text2:    #555550;   /* secondary / body copy */
+  --text3:    #999990;   /* tertiary / metadata / labels */
+
+  /* Primary accent — Photonic green */
+  --acc:      #0a8c5a;
+  --acc-lt:   #e6f5ee;
+  --acc-dk:   #065c3a;
+
+  /* Categorical — functional only, never decorative */
+  --amber:    #b06a00;
+  --amb-lt:   #fdf3e3;
+  --coral:    #c0392b;
+  --cor-lt:   #fdecea;
+  --blue:     #1a4fa0;
+  --blu-lt:   #e8effa;
+  --slate:    #3a4a58;
+  --slt-lt:   #edf1f5;
+
+  /* Geometry */
+  --radius:   3px;
+  --max-w:    1160px;
+  --shadow-s: 0 1px 4px rgba(0,0,0,.08);
+  --shadow-m: 0 2px 12px rgba(0,0,0,.10);
+
+  /* Typography */
+  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* ── BASE ── */
+html { font-size: 14px; }
+
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  background: var(--white);
+  color: var(--text2);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── READ TIME (BOTH web standard — sits under the title) ── */
+.read-time {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: -4px 0 28px;
+}
+
+/* ── LAYOUT SHELL ── */
+.page-wrap {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ── SITE HEADER (notion-web output) ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: 1.5px solid var(--text);
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+.site-header .mark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-header .circle-filled {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--text);
+  flex-shrink: 0;
+}
+.site-header .circle-outline {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text);
+  flex-shrink: 0;
+}
+.site-header .wordmark {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: .02em;
+}
+.header-meta {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .10em;
+  text-transform: uppercase;
+}
+
+/* ── ARTICLE BODY ── */
+article.notion-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 0 80px;
+}
+
+/* ── HEADINGS ── */
+article.notion-page h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  margin: 0 0 24px;
+}
+article.notion-page h2 {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.15;
+  letter-spacing: -.01em;
+  margin: 48px 0 16px;
+}
+article.notion-page h2 strong {
+  font-weight: 700;
+}
+article.notion-page h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin: 32px 0 10px;
+}
+
+/* ── BODY TEXT ── */
+article.notion-page p {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+article.notion-page p.spacer { height: 10px; margin: 0; }
+
+/* ── LISTS ── */
+article.notion-page ul,
+article.notion-page ol {
+  margin: 8px 0 18px 20px;
+}
+article.notion-page li {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 5px;
+}
+article.notion-page li::marker { color: var(--acc); }
+
+/* ── INLINE CODE ── */
+article.notion-page code {
+  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+  font-size: 12px;
+  background: var(--off);
+  color: var(--acc-dk);
+  padding: 1px 5px;
+  border-radius: var(--radius);
+  border: 1px solid var(--rule2);
+}
+
+/* ── CODE BLOCKS ── */
+figure.code-block {
+  margin: 20px 0;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+figure.code-block pre {
+  padding: 20px 24px;
+  overflow-x: auto;
+}
+figure.code-block code {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text);
+  background: none;
+  border: none;
+  padding: 0;
+  white-space: pre;
+}
+figure.code-block figcaption {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 7px 24px 10px;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── BLOCKQUOTE ── */
+article.notion-page blockquote {
+  border-left: 3px solid var(--acc);
+  padding: 12px 0 12px 20px;
+  margin: 24px 0;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.8;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--acc-lt);
+  border-left: 3px solid var(--acc);
+  padding: 16px 20px;
+  margin: 20px 0;
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.callout-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.callout-body {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+}
+.callout-body strong { font-weight: 700; color: var(--text); }
+
+/* ── TOGGLE ── */
+article.notion-page details {
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  margin: 10px 0;
+  overflow: hidden;
+}
+article.notion-page summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 14px 18px;
+  list-style: none;
+  background: var(--off);
+  border-bottom: 1px solid transparent;
+  transition: background .15s linear;
+}
+article.notion-page details[open] summary {
+  border-bottom-color: var(--rule);
+}
+article.notion-page summary:hover { background: var(--rule); }
+article.notion-page summary::before {
+  content: '+ ';
+  color: var(--acc);
+  font-weight: 700;
+}
+article.notion-page details[open] summary::before { content: '− '; }
+article.notion-page details > *:not(summary) {
+  padding: 16px 18px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text2);
+  line-height: 1.75;
+}
+
+/* ── HR ── */
+article.notion-page hr {
+  border: none;
+  border-top: 1px solid var(--rule2);
+  margin: 40px 0;
+}
+
+/* ── IMAGES ── */
+figure.image-block {
+  margin: 28px 0;
+}
+figure.image-block img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-s);
+  display: block;
+}
+figure.image-block figcaption {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text3);
+  letter-spacing: .05em;
+  margin-top: 10px;
+}
+
+/* ── TABLES ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 24px 0;
+  font-size: 13px;
+  border: 1px solid var(--rule2);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+th {
+  background: var(--off);
+  color: var(--text3);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule2);
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--text2);
+  font-weight: 400;
+  vertical-align: top;
+  line-height: 1.5;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--off); }
+
+/* ── COLUMN LAYOUT ── */
+.column-list {
+  display: grid;
+  gap: 24px;
+  margin: 20px 0;
+}
+.column { min-width: 0; }
+
+/* ── CHILD PAGE REFERENCE ── */
+.child-page-ref {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--acc);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  letter-spacing: .02em;
+}
+
+/* ── EMBED / BOOKMARK ── */
+.embed-block {
+  margin: 14px 0;
+  padding: 14px 18px;
+  background: var(--off);
+  border: 1px solid var(--rule2);
+  border-left: 3px solid var(--text3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.embed-block a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--blue);
+  text-decoration: none;
+}
+.embed-block a:hover { text-decoration: underline; }
+
+/* ── LINKS ── */
+article.notion-page a {
+  color: var(--acc);
+  text-decoration: none;
+  border-bottom: 1px solid var(--acc-lt);
+  transition: border-color .15s linear, color .15s linear;
+}
+article.notion-page a:hover {
+  color: var(--acc-dk);
+  border-bottom-color: var(--acc);
+}
+
+/* ── SECTION EYEBROW (reused in content) ── */
+.eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--acc);
+  flex-shrink: 0;
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 48px 0 32px;
+}
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── SITE FOOTER ── */
+.site-footer {
+  border-top: 1.5px solid var(--text);
+  background: var(--off);
+  padding: 28px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-top: 80px;
+}
+.site-footer .footer-brand {
+  font-weight: 700;
+  color: var(--acc);
+  letter-spacing: .06em;
+}
+
+/* ── MOTION ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.fade-up {
+  animation: fadeUp .3s ease forwards;
+}
+
+/* ── RESPONSIVE — single fold at 860px ── */
+@media (max-width: 860px) {
+  .site-header { padding: 0 20px; }
+  .page-wrap   { padding: 0 20px; }
+  article.notion-page { padding: 40px 0 60px; }
+  .column-list { grid-template-columns: 1fr !important; }
+  table        { font-size: 12px; }
+  th           { font-size: 8px; }
+  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
+}
+
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="mark">
+    <div class="circle-filled"></div>
+    <div class="circle-outline"></div>
+    <span class="wordmark">Both_Ventures</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;">
+    <span class="header-meta author">rene</span>
+    <span class="header-meta">2026-07-07</span>
+  </div>
+</header>
+<div class="page-wrap">
+  <article class="notion-page">
+    <h1>Photonic Lab — Tres caminos: A · A+ · B</h1>
+<p class="read-time">Lectura · 5 min</p>
+<blockquote>
+<p>Pregunta de tesis — no de modelo.</p>
+</blockquote>
+<p>Qué es Photonic Lab antes de definir cuánto se levanta. Tres caminos: dos son variantes del wet-lab de servicios (A y A+), el tercero es un vehículo lab+fondo (B). Cerrar esto antes de modelar.</p>
+<hr />
+<h2>01 · La pregunta, en una línea</h2>
+<p><strong>¿Photonic es un wet-lab de servicios — lean (A) o diferenciado por su capa propietaria (A+) — o es un vehículo lab+fondo que invierte, aloja y compone (B)?</strong></p>
+<p>El eje Zona Franca (all-in-ZF vs outside-first → dual-entity Yr 3–4) es <strong>ortogonal</strong>: aplica igual a los tres caminos y se decide en paralelo — no cambia cuál elegís.</p>
+<hr />
+<h2>02 · Los tres caminos, lado a lado</h2>
+<h3>Camino A — Wet-lab lean</h3>
+<p><em>Piso de caja</em></p>
+<p>Servicios de escalado TRL 5–8. Modelo 3 (I+D + GMP-ready). Sin capa de cómputo.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lente</strong></td>
+<td>Caja. Runway, break-even, márgenes.</td>
+</tr>
+<tr>
+<td><strong>Capex / ronda</strong></td>
+<td>$1.48M capex · ronda <strong>$1.9M</strong> (NoZF) / $2.05M (ZF)</td>
+</tr>
+<tr>
+<td><strong>Retorno</strong></td>
+<td>EBITDA+ Y2 (NoZF) · neto acum. 6 años <strong>~$3.33M</strong> (→ ~$4.0M dual-entity)</td>
+</tr>
+<tr>
+<td><strong>Quién fondea</strong></td>
+<td>ANII (70% no-reemb.) + Impact VC + Both_Ventures. <strong>Alcanzable hoy.</strong></td>
+</tr>
+<tr>
+<td><strong>Riesgo primario</strong></td>
+<td><strong>Commodity</strong> — capacidad fee-for-service replicable; densidad de pipeline; overrun de obra</td>
+</tr>
+<tr>
+<td><strong>Qué exige</strong></td>
+<td>Cornerstone $2–3M + primeras LOIs</td>
+</tr>
+</tbody>
+</table>
+<h3>Camino A+ — Wet-lab + cómputo · decisión 07-02</h3>
+<p><em>Caso base — cierra el break-even</em></p>
+<p>La base + capa in-silico / digital-twin / custodia de IP como <strong>booster</strong>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lente</strong></td>
+<td>Caja + foso. Diferenciación defendible sobre la misma ronda.</td>
+</tr>
+<tr>
+<td><strong>Capex / ronda</strong></td>
+<td>~$1.5M capex · ronda <strong>~$2M</strong>. Sin salto de ticket.</td>
+</tr>
+<tr>
+<td><strong>Retorno</strong></td>
+<td>Capa ~85% margen · ~16% del revenue a madurez. <strong>Es lo que sostiene el EBITDA Y2.</strong></td>
+</tr>
+<tr>
+<td><strong>Quién fondea</strong></td>
+<td>Mismo perfil que A — ANII + Impact VC. <strong>Alcanzable hoy.</strong></td>
+</tr>
+<tr>
+<td><strong>Riesgo primario</strong></td>
+<td>Ejecución de la capa; el break-even depende de ella (ver 03)</td>
+</tr>
+<tr>
+<td><strong>Qué exige</strong></td>
+<td>Mantener la capa como <strong>booster</strong>, no como core soberano ("quantum" fuera del pitch)</td>
+</tr>
+</tbody>
+</table>
+<h3>Camino B — Lab + fondo · gate Gastón</h3>
+<p><em>Ambición · El Flywheel</em></p>
+<p>Flywheel modelo SOSV/IndieBio: invertir + alojar + componer.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Lente</strong></td>
+<td>Patrimonial + optionality. El retorno viene del equity del portfolio, no de la caja del lab.</td>
+</tr>
+<tr>
+<td><strong>Capex / ronda</strong></td>
+<td>Vehículo <strong>$15–20M</strong> (GMP) o facility lean dentro de $10M <em>(estimado)</em></td>
+</tr>
+<tr>
+<td><strong>Retorno</strong></td>
+<td>Equity del sleeve + la infra hace valer más ese equity. Dos J-curves apiladas.</td>
+</tr>
+<tr>
+<td><strong>Quién fondea</strong></td>
+<td>Funder soberano/estratégico + LPs. Golden Ticket robable (ANII/estratégico). <strong>Hoy no comprometido.</strong></td>
+</tr>
+<tr>
+<td><strong>Riesgo primario</strong></td>
+<td>Revenue circular ≠ validación · conflicto de interés · funder no aparece · overlap Panambi</td>
+</tr>
+<tr>
+<td><strong>Qué exige</strong></td>
+<td>Funder concreto <strong>antes</strong> de modelar · vehículo/LP/skill distinto (posib. 2 raises)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>03 · A vs A+: el hallazgo del break-even</h2>
+<p><strong>La capa de cómputo no es cherry — es lo que hace cerrar los números.</strong></p>
+<p>El modelo v3 lo muestra: <strong>sin la capa computacional, el EBITDA Y2 NoZF pasa de +$96k a ≈−$57k</strong> y el break-even se corre de Y2 a Y3. La línea que el 07-02 mandaste a sacar del core es, en la aritmética actual, la que sostiene la rentabilidad temprana. Por eso A+ —no A puro— es el piso realista: misma ronda (~$2M), mismo perfil de inversor, pero con el layer adentro como booster.</p>
+<h3>Los servicios que lo hacen posible</h3>
+<table>
+<thead>
+<tr>
+<th>Servicio</th>
+<th>Qué es</th>
+<th>Cliente</th>
+<th>Margen</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C1 · Digital twin</strong></td>
+<td>Modelar biorreactor + downstream <em>antes</em> de tocar el wet-lab</td>
+<td>Residentes + clientes de analytics</td>
+<td>~85%</td>
+</tr>
+<tr>
+<td><strong>C2 · In-silico design</strong></td>
+<td>Diseño generativo + ranking molecular (advisory)</td>
+<td>Pipelines pre-clínicos</td>
+<td>~85%</td>
+</tr>
+<tr>
+<td><strong>C3 · IP custody</strong></td>
+<td>MCB/WCB protegidos criptográficamente (post-quantum-ready), recurrente</td>
+<td>Todos los residentes</td>
+<td>~85%</td>
+</tr>
+</tbody>
+</table>
+<p><em>Services-only, opex-light: el margen casi puro es lo que inclina el EBITDA temprano. Curva ~$40K (Y1) → ~$630K (Y6), ~16% del revenue a madurez. Precio unitario aún sin costear — margen modelado, no medido.</em></p>
+<hr />
+<h2>04 · Por qué A puro tiene riesgo commodity</h2>
+<p>El gap de TRL 5.8 es real y hoy está desatendido — <strong>eso explica por qué hay demanda</strong>. Pero "desatendido hoy" no es "defendible mañana". Un wet-lab que vende capacidad de escalado fee-for-service es <strong>replicable</strong>: ATGen extendiendo downstream, o un entrante con capital, ven el mismo hueco y erosionan el margen. Ser first-mover sobre un espacio vacío es una <strong>ventana, no un foso</strong>.</p>
+<p>Lo que vuelve el negocio defendible es la capa propietaria de <strong>A+</strong> (cómputo, in-silico, custodia de IP, substrato photonic) más el embedding institucional (ZF, ANII, nodo regional del ecosistema BID Lab). Dicho de otro modo: el argumento commodity no niega la tesis del gap — es un argumento <strong>a favor de A+ sobre A puro</strong>.</p>
+<hr />
+<h2>05 · Camino B: qué exige de verdad</h2>
+<p><strong>B es un fondo, no un lab más grande.</strong></p>
+<p>B no es "A+ con más plata". Es un <strong>vehículo de inversión</strong> — LP distinto, skill distinto, gobernanza distinta, posiblemente dos rondas. Los comparables verificados lo confirman: el único que combina lab+fondo (SOSV/IndieBio) opera a escala pre-seed/bench, <strong>no a escala GMP scale-up</strong>. Antes de modelar B hay que (1) identificar el <strong>funder soberano/estratégico concreto</strong> —sin él comprometido, B es narrativa, no plan—, (2) estructurar el <strong>conflicto de interés</strong> (el lab que aloja invierte en sus residentes) y (3) reconciliar el <strong>overlap con Panambi</strong> (salud mental / Eywa cae ahí). Gate de Gastón: nuevo vehículo de capital = autoridad exclusiva.</p>
+<hr />
+<h2>06 · Lo que no está sobre la mesa</h2>
+<p>El <strong>peldaño intermedio</strong> Tier-1 AAA a $4.5–5.5M (hoja 09) es el peor lugar para pararse. Canon de Daiana: <strong>"lean o full, no el medio"</strong> — comprometer costos de gama media sin el funding que los respalde da peor neto que ir lean o full. La elección honesta es A/A+ disciplinado <strong>o</strong> B con funder comprometido, no el promedio tibio.</p>
+<hr />
+<h2>Recomendación · secuencia</h2>
+<ol>
+<li>Tratar A / A+ / B como <strong>pregunta de tesis</strong>, no como tres modelos de plata. Cerrar primero <strong>qué es</strong> Photonic.</li>
+<li>Piso realista = <strong>A+</strong>: A puro no cierra el break-even ni tiene foso; la capa de cómputo se queda, como booster.</li>
+<li>B queda como <strong>ambición separada</strong> — solo se modela (v3.1) cuando haya funder soberano/estratégico comprometido y esté reconciliada con Panambi; es gate de Gastón.</li>
+<li>El <strong>T-zero gate</strong> (cornerstone sin comprometer + primeras LOIs) aplica a los tres y es lo primero, sea cual sea. La estructura ZF se decide en paralelo — no cambia cuál camino.</li>
+</ol>
+<hr />
+<p><em>Fuentes: vault/ventures/photonic-lab.md · decisión 2026-07-02 (scope stand-alone · modelo operativo) · modelo photonic-lab-financial-model-2026-07-v3.xlsx (hojas 05, 09) · SOW 3.2 (pricing tiers) · SOW 3.3 (break-even). Cifras de A/A+ son del modelo v3; las de B son estimadas y marcadas — falta quote real.</em></p>
+  </article>
+</div>
+<footer class="site-footer">
+  <span class="footer-brand">Both_Ventures</span>
+  <span>md-web · photonic-lab · 2026-07-07</span>
+</footer>
+</body>
+</html>
