@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synergy.bitmap — 1-bit register study</title>
+<style>
+  :root {
+    --paper: #E8E4DC;
+    --ink: #0A0A0A;
+    --warm: #D4D0C8;
+    --olive: #939324;
+    --hairline: rgba(10,10,10,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); }
+  body {
+    font-family: "Space Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    padding: 48px 56px 80px;
+    -webkit-font-smoothing: antialiased;
+  }
+  header.top {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--ink);
+    margin-bottom: 32px;
+  }
+  h1 {
+    font-family: "Fraunces", "Times New Roman", serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  h1 em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+    color: var(--olive);
+  }
+  .kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    opacity: 0.7;
+  }
+  .meta-r { text-align: right; font-size: 11px; opacity: 0.7; letter-spacing: 0.04em; }
+  .meta-r b { font-weight: 700; color: var(--ink); opacity: 1; }
+
+  .panel {
+    border: 1px solid var(--ink);
+    margin-bottom: 28px;
+    background: var(--paper);
+  }
+  .panel > .tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--ink);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .panel > .body { padding: 18px; }
+
+  .drop {
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--ink);
+    padding: 36px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .drop:hover, .drop.is-over { background: var(--warm); }
+  .drop strong { font-size: 15px; }
+  .drop .hint { font-size: 11px; opacity: 0.65; margin-top: 6px; letter-spacing: 0.04em; }
+
+  .controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    padding: 18px;
+  }
+  .controls label {
+    display: grid;
+    gap: 4px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .controls input[type=range] {
+    width: 100%;
+    accent-color: var(--olive);
+  }
+  .controls .val {
+    font-family: inherit;
+    font-size: 11px;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 900px) {
+    .controls { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+  article.variant {
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+  }
+  article.variant > header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--ink);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  article.variant > header .name { font-weight: 700; }
+  article.variant > header .num {
+    font-family: inherit;
+    opacity: 0.5;
+    font-variant-numeric: tabular-nums;
+  }
+  .canvas-wrap {
+    background: #fff;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    place-items: center;
+    padding: 0;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+  }
+  .canvas-wrap canvas {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  article.variant > footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    font-size: 11px;
+  }
+  article.variant .caption { opacity: 0.65; letter-spacing: 0.04em; }
+  article.variant a.dl {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 1px;
+    letter-spacing: 0.04em;
+  }
+  article.variant a.dl:hover { color: var(--olive); border-color: var(--olive); }
+
+  .doctrine {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--ink);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .doctrine p { max-width: 56ch; }
+  .doctrine .label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+    opacity: 0.55;
+  }
+  @media (max-width: 720px) { .doctrine { grid-template-columns: 1fr; } }
+
+  .src-preview {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .src-preview .thumb {
+    width: 120px;
+    aspect-ratio: 3/4;
+    background: var(--warm);
+    border: 1px solid var(--hairline);
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  .src-preview .thumb canvas, .src-preview .thumb img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .src-preview .info { font-size: 11px; opacity: 0.75; }
+  .src-preview .info b { color: var(--ink); opacity: 1; font-weight: 700; }
+  .src-preview .info div { margin-bottom: 4px; }
+
+  /* status line */
+  .status {
+    margin-top: 18px;
+    font-size: 10px;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <div class="kicker">Synergy · Image &amp; Lore · 1-bit Register</div>
+    <h1>Synergy<em>.bitmap</em></h1>
+  </div>
+  <div class="meta-r">
+    <div><b>SYS</b> · single-source / six-algorithm contact sheet</div>
+    <div>Drop input → all variants render live</div>
+    <div>Bridges Synergy chrome → institutional ink</div>
+  </div>
+</header>
+
+<section class="panel">
+  <div class="tag"><span>§00 · Source</span><span id="src-status">awaiting input</span></div>
+  <div class="body src-preview">
+    <div class="thumb" id="thumb">
+      <canvas id="placeholder" width="120" height="160"></canvas>
+    </div>
+    <div>
+      <div class="info" id="info">
+        <div><b>No image loaded.</b> A test pattern is rendering in all six variants so you can read the algorithms.</div>
+        <div>Drop a PNG/JPG/WEBP into the zone below, or click to select. Best at 800px+ on the long edge.</div>
+      </div>
+      <div class="drop" id="drop">
+        <strong>Drop image · or click to select</strong>
+        <div class="hint">PNG · JPG · WEBP · GIF — processed locally in browser</div>
+        <input type="file" id="file" accept="image/*" hidden>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="tag"><span>§01 · Controls</span><span>master parameters</span></div>
+  <div class="controls">
+    <label>Threshold <input type="range" id="threshold" min="0" max="255" value="128"><span class="val" id="threshold-v">128</span></label>
+    <label>Contrast <input type="range" id="contrast" min="-100" max="100" value="0"><span class="val" id="contrast-v">0</span></label>
+    <label>Output width <input type="range" id="width" min="300" max="1400" value="700" step="50"><span class="val" id="width-v">700px</span></label>
+    <label>Halftone cell <input type="range" id="cell" min="4" max="20" value="8"><span class="val" id="cell-v">8px</span></label>
+  </div>
+</section>
+
+<section class="grid" id="grid">
+  <article class="variant" data-algo="threshold">
+    <header><span class="num">01</span><span class="name">Threshold</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Hard 1-bit · no dither</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+  <article class="variant" data-algo="fs">
+    <header><span class="num">02</span><span class="name">Floyd–Steinberg</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Error diffusion · classic</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+  <article class="variant" data-algo="atkinson">
+    <header><span class="num">03</span><span class="name">Atkinson</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Mac System · lifted mid-tones</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+  <article class="variant" data-algo="bayer">
+    <header><span class="num">04</span><span class="name">Ordered Bayer 8×8</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Patterned · regular</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+  <article class="variant" data-algo="halftone">
+    <header><span class="num">05</span><span class="name">Halftone</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Newsprint dots · circular</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+  <article class="variant" data-algo="stipple">
+    <header><span class="num">06</span><span class="name">Stipple</span></header>
+    <div class="canvas-wrap"><canvas></canvas></div>
+    <footer><span class="caption">Random noise · organic grain</span><a class="dl" href="#">↓ PNG</a></footer>
+  </article>
+</section>
+
+<section class="doctrine">
+  <div>
+    <div class="label">§ Doctrine</div>
+    <p><strong>Synergy</strong> is the pattern of coupling between humans, agents, and vault — the distributed intelligence that emerges when those three operate as one. B_V® | OS is the body. Synergy is what the body does when it is healthy.</p>
+  </div>
+  <div>
+    <div class="label">§ Why bitmap mode</div>
+    <p>The original render of Synergy is chrome and iridescence — warm, lush, embodied. Bitmap mode strips it to two values: ink and paper. The translation forces the form to survive on geometry alone, and lets the persona-register cross into the institutional surface without breaking it.</p>
+  </div>
+</section>
+
+<div class="status" id="status">// renderer idle</div>
+
+<script>
+(() => {
+  // ---------- DOM
+  const drop = document.getElementById('drop');
+  const file = document.getElementById('file');
+  const thumb = document.getElementById('thumb');
+  const info = document.getElementById('info');
+  const srcStatus = document.getElementById('src-status');
+  const status = document.getElementById('status');
+  const placeholder = document.getElementById('placeholder');
+
+  const sliders = {
+    threshold: document.getElementById('threshold'),
+    contrast: document.getElementById('contrast'),
+    width: document.getElementById('width'),
+    cell: document.getElementById('cell'),
+  };
+  const slVals = {
+    threshold: document.getElementById('threshold-v'),
+    contrast: document.getElementById('contrast-v'),
+    width: document.getElementById('width-v'),
+    cell: document.getElementById('cell-v'),
+  };
+
+  let currentImage = null; // HTMLImageElement
+  let renderToken = 0;
+
+  // ---------- input
+  drop.addEventListener('click', () => file.click());
+  file.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+  ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('is-over'); }));
+  ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('is-over'); }));
+  drop.addEventListener('drop', e => {
+    const f = e.dataTransfer.files[0];
+    if (f) loadFile(f);
+  });
+  // window-level drop so the user can drop anywhere
+  window.addEventListener('dragover', e => e.preventDefault());
+  window.addEventListener('drop', e => {
+    e.preventDefault();
+    const f = e.dataTransfer.files[0];
+    if (f) loadFile(f);
+  });
+
+  function loadFile(f) {
+    if (!f.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(f);
+    const img = new Image();
+    img.onload = () => {
+      currentImage = img;
+      srcStatus.textContent = `${f.name} · ${img.naturalWidth}×${img.naturalHeight}`;
+      info.innerHTML = `<div><b>${f.name}</b> · ${img.naturalWidth}×${img.naturalHeight}px · ${(f.size/1024).toFixed(0)}KB</div><div>Move sliders above to retune. Right-click any variant to save full resolution.</div>`;
+      renderThumb(img);
+      renderAll();
+    };
+    img.src = url;
+  }
+
+  function renderThumb(img) {
+    const c = document.createElement('canvas');
+    const ratio = img.naturalWidth / img.naturalHeight;
+    c.width = 120;
+    c.height = Math.round(120 / ratio);
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    thumb.innerHTML = '';
+    thumb.appendChild(c);
+  }
+
+  Object.entries(sliders).forEach(([k, el]) => {
+    el.addEventListener('input', () => {
+      slVals[k].textContent = k === 'width' ? `${el.value}px` : k === 'cell' ? `${el.value}px` : el.value;
+      renderAll();
+    });
+  });
+
+  // ---------- placeholder test pattern
+  function makePlaceholderImage() {
+    // a synthetic portrait-ish pattern so the renderer has something to chew on
+    const c = document.createElement('canvas');
+    c.width = 600; c.height = 800;
+    const ctx = c.getContext('2d');
+    // radial gradient background
+    const g = ctx.createRadialGradient(300, 360, 40, 300, 360, 500);
+    g.addColorStop(0, '#fff');
+    g.addColorStop(0.55, '#9a9a9a');
+    g.addColorStop(1, '#0a0a0a');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, c.width, c.height);
+    // sphere highlight
+    const sh = ctx.createRadialGradient(220, 280, 5, 300, 360, 280);
+    sh.addColorStop(0, 'rgba(255,255,255,1)');
+    sh.addColorStop(0.3, 'rgba(255,255,255,0.3)');
+    sh.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = sh;
+    ctx.beginPath(); ctx.arc(300, 360, 280, 0, Math.PI*2); ctx.fill();
+    // type
+    ctx.fillStyle = '#fff';
+    ctx.font = '700 56px "Space Mono", monospace';
+    ctx.fillText('SYNERGY', 70, 680);
+    ctx.font = '12px "Space Mono", monospace';
+    ctx.globalAlpha = 0.7;
+    ctx.fillText('// awaiting input · placeholder', 70, 710);
+    ctx.globalAlpha = 1;
+    // grid hairlines
+    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+    ctx.lineWidth = 1;
+    for (let y = 0; y < c.height; y += 80) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(c.width,y); ctx.stroke(); }
+    return c;
+  }
+
+  // turn the placeholder canvas into an Image so the same pipeline works
+  function loadPlaceholder() {
+    const ph = makePlaceholderImage();
+    const url = ph.toDataURL('image/png');
+    const img = new Image();
+    img.onload = () => {
+      currentImage = img;
+      srcStatus.textContent = '// test pattern · drop image to replace';
+      renderAll();
+    };
+    img.src = url;
+  }
+
+  // ---------- color → gray + contrast
+  function toGray(imageData, contrast) {
+    const { width, height, data } = imageData;
+    const gray = new Float32Array(width * height);
+    const c = contrast * 255 / 100;
+    const factor = (259 * (c + 255)) / (255 * (259 - c));
+    for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+      const r = data[i], g = data[i+1], b = data[i+2];
+      let v = 0.299 * r + 0.587 * g + 0.114 * b;
+      v = factor * (v - 128) + 128;
+      gray[j] = Math.max(0, Math.min(255, v));
+    }
+    return gray;
+  }
+
+  function writeBW(imageData, bw) {
+    const { data } = imageData;
+    for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+      const v = bw[j] ? 255 : 0;
+      data[i] = data[i+1] = data[i+2] = v;
+      data[i+3] = 255;
+    }
+  }
+
+  // ---------- algorithms
+  function algoThreshold(gray, w, h, t) {
+    const bw = new Uint8Array(w * h);
+    for (let i = 0; i < gray.length; i++) bw[i] = gray[i] > t ? 1 : 0;
+    return bw;
+  }
+  function algoFS(gray, w, h, t) {
+    const g = new Float32Array(gray);
+    const bw = new Uint8Array(w * h);
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = y * w + x;
+        const old = g[i];
+        const newp = old > t ? 255 : 0;
+        bw[i] = newp ? 1 : 0;
+        const err = old - newp;
+        if (x + 1 < w)            g[i + 1]     += err * 7/16;
+        if (x > 0 && y + 1 < h)   g[i + w - 1] += err * 3/16;
+        if (y + 1 < h)            g[i + w]     += err * 5/16;
+        if (x + 1 < w && y + 1 < h) g[i + w + 1] += err * 1/16;
+      }
+    }
+    return bw;
+  }
+  function algoAtkinson(gray, w, h, t) {
+    const g = new Float32Array(gray);
+    const bw = new Uint8Array(w * h);
+    const off = [[1,0],[2,0],[-1,1],[0,1],[1,1],[0,2]];
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = y * w + x;
+        const old = g[i];
+        const newp = old > t ? 255 : 0;
+        bw[i] = newp ? 1 : 0;
+        const err = (old - newp) / 8;
+        for (const [dx, dy] of off) {
+          const nx = x + dx, ny = y + dy;
+          if (nx >= 0 && nx < w && ny < h) g[ny*w+nx] += err;
+        }
+      }
+    }
+    return bw;
+  }
+  const BAYER8 = [
+    [ 0,32, 8,40, 2,34,10,42],
+    [48,16,56,24,50,18,58,26],
+    [12,44, 4,36,14,46, 6,38],
+    [60,28,52,20,62,30,54,22],
+    [ 3,35,11,43, 1,33, 9,41],
+    [51,19,59,27,49,17,57,25],
+    [15,47, 7,39,13,45, 5,37],
+    [63,31,55,23,61,29,53,21],
+  ];
+  function algoBayer(gray, w, h, t) {
+    const bw = new Uint8Array(w * h);
+    const bias = (t - 128) * 0.5;
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = y * w + x;
+        const thresh = ((BAYER8[y%8][x%8] + 0.5) / 64) * 255;
+        bw[i] = (gray[i] + bias) > thresh ? 1 : 0;
+      }
+    }
+    return bw;
+  }
+  function algoStipple(gray, w, h, t) {
+    const bw = new Uint8Array(w * h);
+    for (let i = 0; i < gray.length; i++) {
+      const noise = (Math.random() * 256);
+      const thr = (noise * 0.5) + (t * 0.5);
+      bw[i] = gray[i] > thr ? 1 : 0;
+    }
+    return bw;
+  }
+  // halftone renders directly to ctx
+  function renderHalftone(ctx, gray, w, h, t, cellSize) {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+    ctx.fillStyle = '#000';
+    const bias = (128 - t) / 255;
+    for (let cy = 0; cy < h; cy += cellSize) {
+      for (let cx = 0; cx < w; cx += cellSize) {
+        let sum = 0, count = 0;
+        for (let dy = 0; dy < cellSize && cy+dy < h; dy++) {
+          for (let dx = 0; dx < cellSize && cx+dx < w; dx++) {
+            sum += gray[(cy+dy)*w + (cx+dx)];
+            count++;
+          }
+        }
+        const avg = sum / count;
+        const darkness = 1 - (avg / 255) + bias;
+        const r = (cellSize/2) * 1.18 * Math.sqrt(Math.max(0, darkness));
+        if (r > 0.3) {
+          ctx.beginPath();
+          ctx.arc(cx + cellSize/2, cy + cellSize/2, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+  }
+
+  // ---------- master render
+  function renderAll() {
+    if (!currentImage) return;
+    const token = ++renderToken;
+    const t0 = performance.now();
+    status.textContent = '// rendering…';
+
+    const targetW = parseInt(sliders.width.value, 10);
+    const ratio = currentImage.naturalWidth / currentImage.naturalHeight;
+    const w = targetW;
+    const h = Math.round(targetW / ratio);
+
+    // source canvas
+    const src = document.createElement('canvas');
+    src.width = w; src.height = h;
+    const sctx = src.getContext('2d');
+    sctx.drawImage(currentImage, 0, 0, w, h);
+    const idata = sctx.getImageData(0, 0, w, h);
+    const contrast = parseInt(sliders.contrast.value, 10);
+    const threshold = parseInt(sliders.threshold.value, 10);
+    const cell = parseInt(sliders.cell.value, 10);
+    const gray = toGray(idata, contrast);
+
+    const variants = [
+      ['threshold', () => algoThreshold(gray, w, h, threshold)],
+      ['fs',        () => algoFS(gray, w, h, threshold)],
+      ['atkinson',  () => algoAtkinson(gray, w, h, threshold)],
+      ['bayer',     () => algoBayer(gray, w, h, threshold)],
+      ['halftone',  null], // special-case render
+      ['stipple',   () => algoStipple(gray, w, h, threshold)],
+    ];
+
+    // yield between variants so the UI stays responsive
+    // setTimeout (not rAF) so background tabs still render
+    let i = 0;
+    const step = () => {
+      if (token !== renderToken) return;
+      if (i >= variants.length) {
+        const t1 = performance.now();
+        status.textContent = `// rendered ${variants.length} variants · ${(t1-t0).toFixed(0)}ms · ${w}×${h}`;
+        return;
+      }
+      const [algo, fn] = variants[i++];
+      const article = document.querySelector(`article.variant[data-algo="${algo}"]`);
+      const canvas = article.querySelector('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      const id = ctx.createImageData(w, h);
+      if (algo === 'halftone') {
+        renderHalftone(ctx, gray, w, h, threshold, cell);
+      } else {
+        const bw = fn();
+        writeBW(id, bw);
+        ctx.putImageData(id, 0, 0);
+      }
+      // update download link
+      const dl = article.querySelector('a.dl');
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        dl.href = url;
+        dl.download = `synergy.bitmap.${algo}.${w}x${h}.png`;
+      }, 'image/png');
+      setTimeout(step, 0);
+    };
+    setTimeout(step, 0);
+  }
+
+  // ---------- placeholder boot
+  // Hide the placeholder canvas (we boot the test pattern straight into thumb)
+  placeholder.style.display = 'none';
+  loadPlaceholder();
+})();
+</script>
+</body>
+</html>
