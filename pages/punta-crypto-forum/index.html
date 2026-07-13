@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punta Crypto Forum</title>
+<meta name="description" content="El foro institucional de la economía on-chain para el Cono Sur. Punta del Este, Uruguay.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0B0A; --panel:#141311; --panel2:#1B1A17;
+    --ink:#ECE7DD; --dim:#9C968A; --faint:#6E695E;
+    --gold:#C6A15B; --olive:#AEAE3C; --line:rgba(236,231,221,.12); --line2:rgba(236,231,221,.06);
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'Space Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+  /* language toggle */
+  body[data-lang="es"] .en{display:none;} body[data-lang="en"] .es{display:none;}
+  .langbar{position:fixed;top:16px;right:18px;z-index:50;display:flex;gap:2px;background:rgba(11,11,10,.7);
+    backdrop-filter:blur(8px);border:.5px solid var(--line);border-radius:24px;padding:4px;}
+  .langbar button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;background:transparent;color:var(--dim);
+    border:0;padding:6px 12px;border-radius:20px;cursor:pointer;}
+  .langbar button.active{background:var(--gold);color:#12110E;font-weight:700;}
+  /* kicker / headings */
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);}
+  h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-.01em;color:var(--ink);}
+  h2{font-size:30px;line-height:1.15;margin-bottom:14px;}
+  h3{font-size:19px;margin-bottom:6px;}
+  p{color:#DAD5CA;} .dim{color:var(--dim);}
+  /* hero */
+  .hero{position:relative;padding:120px 0 70px;border-bottom:.5px solid var(--line);overflow:hidden;}
+  .hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(120% 80% at 80% -10%,rgba(198,161,91,.16),transparent 60%),
+    radial-gradient(90% 70% at 0% 110%,rgba(174,174,60,.10),transparent 55%);pointer-events:none;}
+  .hero .wrap{position:relative;}
+  .hero .title{font-family:var(--serif);font-size:clamp(44px,8vw,88px);line-height:.98;font-weight:500;margin:18px 0 20px;}
+  .hero .title em{font-style:italic;color:var(--gold);}
+  .tagline{font-family:var(--serif);font-size:clamp(20px,3.2vw,30px);line-height:1.25;font-weight:400;max-width:720px;color:var(--ink);}
+  .subline{margin-top:20px;max-width:600px;font-size:16px;color:var(--dim);}
+  .herometa{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 22px;font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);}
+  .herometa b{color:var(--ink);font-weight:700;}
+  /* sections */
+  section{padding:64px 0;border-bottom:.5px solid var(--line2);}
+  .lead{font-size:18px;color:#DAD5CA;max-width:720px;}
+  .eyebrow{margin-bottom:18px;}
+  /* stat band */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:.5px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px;}
+  .stat{background:var(--panel);padding:22px 18px;}
+  .stat .n{font-family:var(--serif);font-size:30px;color:var(--gold);line-height:1;}
+  .stat .l{margin-top:8px;font-size:12.5px;color:var(--dim);line-height:1.4;}
+  /* grid cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px;}
+  .card{background:var(--panel);border:.5px solid var(--line);border-radius:12px;padding:22px;}
+  .card .tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);}
+  .card h3{margin-top:8px;}
+  .card p{font-size:14px;color:var(--dim);margin-top:4px;}
+  /* institutional highlight */
+  .inst{background:linear-gradient(180deg,rgba(198,161,91,.09),rgba(198,161,91,.02));border:.5px solid rgba(198,161,91,.35);border-radius:14px;padding:34px;}
+  .inst .seal{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);}
+  .inst h2{margin-top:10px;}
+  .orgs{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .org{font-family:var(--mono);font-size:12px;border:.5px solid var(--line);border-radius:8px;padding:8px 13px;color:var(--ink);background:rgba(0,0,0,.2);}
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px;}
+  .chip{font-size:13.5px;border:.5px solid var(--line);border-radius:22px;padding:8px 15px;color:#DAD5CA;background:var(--panel);}
+  /* experience list */
+  .exp{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:22px;}
+  .exp .item{border-left:2px solid var(--gold);padding:2px 0 2px 16px;}
+  .exp h3{font-size:17px;}
+  .exp p{font-size:13.5px;color:var(--dim);margin-top:3px;}
+  /* partnership */
+  .tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:22px;}
+  .tier{background:var(--panel);border:.5px solid var(--line);border-radius:12px;padding:22px;text-align:center;}
+  .tier .t{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+  .tier h3{margin:8px 0 4px;font-size:18px;}
+  .tier p{font-size:13px;color:var(--dim);}
+  /* cta */
+  .cta{text-align:center;padding:72px 0;}
+  .cta h2{font-size:clamp(26px,4vw,40px);max-width:760px;margin:0 auto 20px;}
+  .btn{display:inline-block;font-family:var(--mono);font-size:13px;letter-spacing:.08em;background:var(--gold);color:#12110E;
+    text-decoration:none;padding:14px 26px;border-radius:28px;font-weight:700;}
+  .btn.ghost{background:transparent;color:var(--ink);border:.5px solid var(--line);margin-left:8px;}
+  footer{padding:40px 0 60px;border-top:.5px solid var(--line);}
+  .foot{font-family:var(--mono);font-size:11px;color:var(--faint);line-height:1.9;letter-spacing:.03em;}
+  .foot b{color:var(--dim);}
+  a.inline{color:var(--gold);}
+  @media(max-width:640px){ section{padding:48px 0;} .hero{padding:96px 0 54px;} }
+</style>
+</head>
+<body data-lang="es">
+
+<div class="langbar" role="group" aria-label="Language">
+  <button data-set="es" class="active" onclick="setLang('es')">ES</button>
+  <button data-set="en" onclick="setLang('en')">EN</button>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Both Ventures · Punta del Este · Uruguay</div>
+    <div class="title">Punta Crypto <em>Forum</em></div>
+    <p class="tagline es">El foro institucional de la economía on-chain para el Cono Sur.</p>
+    <p class="tagline en">The institutional forum for the on-chain economy in the Southern Cone.</p>
+    <p class="subline es">Un encuentro curado, por invitación, donde reguladores, capital institucional y los constructores de la industria se sientan en la misma mesa — en el destino más resonante de Latinoamérica.</p>
+    <p class="subline en">A curated, invitation-only gathering where regulators, institutional capital and the industry's builders sit at the same table — in Latin America's most resonant destination.</p>
+    <div class="herometa">
+      <span class="es">📍 Punta del Este, Uruguay</span><span class="en">📍 Punta del Este, Uruguay</span>
+      <span class="es">🗓 Marzo 2027</span><span class="en">🗓 March 2027</span>
+      <span class="es">Con respaldo institucional del Estado uruguayo</span><span class="en">With the institutional endorsement of the Uruguayan State</span>
+    </div>
+  </div>
+</header>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="wrap">
+    <div class="kicker eyebrow es">La visión</div><div class="kicker eyebrow en">The vision</div>
+    <h2 class="es">La silla del Cono Sur no seguirá vacía.</h2>
+    <h2 class="en">The Southern Cone's seat will not stay empty.</h2>
+    <p class="lead es">Punta Crypto Forum no es una conferencia más. Es el punto de gravedad institucional que a la región le faltaba: el lugar donde la conversación sobre activos digitales ocurre con rigor regulatorio, capital sofisticado y construcción técnica de frontera — no en un centro de convenciones anónimo, sino en una sala curada donde importa quién está presente.</p>
+    <p class="lead en">Punta Crypto Forum is not one more conference. It is the institutional gravity point the region was missing: where the conversation on digital assets happens with regulatory rigor, sophisticated capital and frontier technical building — not in an anonymous convention hall, but in a curated room where who is present is what matters.</p>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section id="why-now">
+  <div class="wrap">
+    <div class="kicker eyebrow es">Por qué ahora</div><div class="kicker eyebrow en">Why now</div>
+    <h2 class="es">La región es enorme. El foro no existe.</h2>
+    <h2 class="en">The region is vast. The forum doesn't exist.</h2>
+    <p class="lead es">Latinoamérica es la quinta región del mundo por volumen on-chain, y la de mayor crecimiento del planeta. La conversación ya dejó de ser marginal — ocurre en ministerios y bancos centrales. Lo que falta es el contenedor institucional.</p>
+    <p class="lead en">Latin America is the world's fifth-largest region by on-chain volume, and the fastest-growing on the planet. The conversation is no longer marginal — it happens in ministries and central banks. What's missing is the institutional container.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">US$415B</div><div class="l es">Volumen on-chain LATAM, 2024</div><div class="l en">LATAM on-chain volume, 2024</div></div>
+      <div class="stat"><div class="n">42,5%</div><div class="l es">Crecimiento interanual — el más alto del mundo</div><div class="l en">Year-over-year growth — highest in the world</div></div>
+      <div class="stat"><div class="n">US$91,9B</div><div class="l es">Volumen on-chain solo de Argentina</div><div class="l en">On-chain volume, Argentina alone</div></div>
+      <div class="stat"><div class="n">0</div><div class="l es">Foros institucionales de referencia en el Cono Sur</div><div class="l en">Reference institutional forums in the Southern Cone</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY URUGUAY -->
+<section id="why-uruguay">
+  <div class="wrap">
+    <div class="kicker eyebrow es">Por qué Punta del Este</div><div class="kicker eyebrow en">Why Punta del Este</div>
+    <h2 class="es">La Biarritz del Cono Sur — con mejor marco regulatorio.</h2>
+    <h2 class="en">The Southern Cone's Biarritz — with a stronger regulatory frame.</h2>
+    <div class="cards">
+      <div class="card"><div class="tag es">Marco legal</div><div class="tag en">Legal frame</div><h3 class="es">Ley 20.345</h3><h3 class="en">Law 20,345</h3><p class="es">Régimen de proveedores de servicios de activos virtuales. BCU activo en la supervisión de activos digitales.</p><p class="en">Virtual-asset service-provider regime. A central bank actively engaged in digital-asset oversight.</p></div>
+      <div class="card"><div class="tag es">Estabilidad</div><div class="tag en">Stability</div><h3 class="es">#1 de la región</h3><h3 class="en">#1 in the region</h3><p class="es">Uruguay lidera LATAM en estabilidad política, estado de derecho y transparencia. Contratos en USD, estándar.</p><p class="en">Uruguay leads LATAM in political stability, rule of law and transparency. USD-denominated contracts are standard.</p></div>
+      <div class="card"><div class="tag es">Capital</div><div class="tag en">Capital</div><h3 class="es">Temporada HNW</h3><h3 class="en">HNW season</h3><p class="es">La mayor concentración de patrimonios y family offices de LATAM durante la temporada Q4–Q1.</p><p class="en">LATAM's highest concentration of wealth and family offices during the Q4–Q1 season.</p></div>
+      <div class="card"><div class="tag es">Marca-destino</div><div class="tag en">Destination brand</div><h3 class="es">"Punta del Este"</h3><h3 class="en">"Punta del Este"</h3><p class="es">Un nombre que señala aspiración y exclusividad — el mismo mecanismo que hace funcionar a "Dubái" para Token2049.</p><p class="en">A name that signals aspiration and exclusivity — the same mechanism that makes "Dubai" work for Token2049.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTITUTIONAL BACKING -->
+<section id="institutional">
+  <div class="wrap">
+    <div class="inst">
+      <div class="seal es">Respaldo institucional · confirmado</div><div class="seal en">Institutional endorsement · confirmed</div>
+      <h2 class="es">Con el Estado uruguayo en la mesa.</h2>
+      <h2 class="en">With the Uruguayan State at the table.</h2>
+      <p class="es">Uruguay Innova, programa de la Presidencia de la República, confirmó por escrito la participación institucional del Estado uruguayo en la jornada de regulación y política del Forum. Este respaldo no es protocolar — es la señal de que la conversación que ocurre acá es la que importa: seria, regulada, con consecuencias reales para el ecosistema regional.</p>
+      <p class="en">Uruguay Innova, a program of the Presidency of the Republic, has confirmed in writing the Uruguayan State's institutional participation in the Forum's regulation-and-policy day. This is not ceremonial backing — it is the signal that the conversation here is the one that matters: serious, regulated, with real consequences for the regional ecosystem.</p>
+      <div class="orgs">
+        <span class="org">Ministerio de Economía y Finanzas</span>
+        <span class="org">Banco Central del Uruguay</span>
+        <span class="org">ANII</span>
+        <span class="org">Uruguay Innova · Presidencia</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAT -->
+<section id="format">
+  <div class="wrap">
+    <div class="kicker eyebrow es">El formato</div><div class="kicker eyebrow en">The format</div>
+    <h2 class="es">Un council cerrado, un foro abierto, una experiencia inolvidable.</h2>
+    <h2 class="en">A closed council, an open forum, an unforgettable experience.</h2>
+    <div class="cards">
+      <div class="card"><div class="tag es">Jornada I · Institucional</div><div class="tag en">Day I · Institutional</div><h3 class="es">El Council</h3><h3 class="en">The Council</h3><p class="es">Puertas cerradas. Reguladores, capital institucional y principales del sector en la misma mesa. Stablecoins, tokenización de RWA, pagos, economía agéntica — como política y adopción, on the record.</p><p class="en">Closed doors. Regulators, institutional capital and sector principals at one table. Stablecoins, RWA tokenization, payments, the agentic economy — as policy and adoption, on the record.</p></div>
+      <div class="card"><div class="tag es">Jornada II · Abierta</div><div class="tag en">Day II · Open</div><h3 class="es">El Foro</h3><h3 class="en">The Forum</h3><p class="es">Escenario público de alto nivel: protocolo, industria y narrativa regional, con la voz del gobierno y los principales actores del ecosistema.</p><p class="en">A high-level public stage: protocol, industry and regional narrative, with the voice of government and the ecosystem's leading actors.</p></div>
+      <div class="card"><div class="tag es">Transversal</div><div class="tag en">Throughout</div><h3 class="es">La Experiencia</h3><h3 class="en">The Experience</h3><p class="es">La hospitalidad no es un extra — es parte del contenido. Curaduría sobre volumen: densidad de las conversaciones que importan, no metros cuadrados de floor.</p><p class="en">Hospitality is not an extra — it is part of the content. Curation over volume: density of the conversations that matter, not square footage of floor space.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE ROOM -->
+<section id="room">
+  <div class="wrap">
+    <div class="kicker eyebrow es">La sala</div><div class="kicker eyebrow en">The room</div>
+    <h2 class="es">Quién está presente.</h2>
+    <h2 class="en">Who is in the room.</h2>
+    <p class="lead es">Curaduría, no escala. Cada asiento es una decisión.</p>
+    <p class="lead en">Curation, not scale. Every seat is a decision.</p>
+    <div class="chips">
+      <span class="chip es">Reguladores y policymakers</span><span class="chip en">Regulators & policymakers</span>
+      <span class="chip es">Capital institucional y family offices</span><span class="chip en">Institutional capital & family offices</span>
+      <span class="chip es">Exchanges y emisores de stablecoins regulados</span><span class="chip en">Regulated exchanges & stablecoin issuers</span>
+      <span class="chip es">Tokenización de RWA e infraestructura</span><span class="chip en">RWA tokenization & infrastructure</span>
+      <span class="chip es">Builders y founders</span><span class="chip en">Builders & founders</span>
+      <span class="chip es">Líderes de opinión y prensa</span><span class="chip en">Key opinion leaders & press</span>
+    </div>
+  </div>
+</section>
+
+<!-- CURATION / SPEAKERS -->
+<section id="voices">
+  <div class="wrap">
+    <div class="kicker eyebrow es">Las voces</div><div class="kicker eyebrow en">The voices</div>
+    <h2 class="es">El calibre que define la economía on-chain.</h2>
+    <h2 class="en">The caliber that defines the on-chain economy.</h2>
+    <p class="lead es">El Forum convoca a los líderes que están construyendo el sistema: CEOs de exchanges y emisores de stablecoins regulados, operadores de tokenización de activos del mundo real, infraestructura institucional, reguladores y policymakers. La curaduría del programa está en curso, con un consejo asesor en formación.</p>
+    <p class="lead en">The Forum convenes the leaders building the system: CEOs of regulated exchanges and stablecoin issuers, real-world-asset tokenization operators, institutional infrastructure, regulators and policymakers. Program curation is underway, with an advisory board being assembled.</p>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <div class="kicker eyebrow es">La experiencia</div><div class="kicker eyebrow en">The experience</div>
+    <h2 class="es">La "Punta" de la marca se cumple.</h2>
+    <h2 class="en">The "Punta" in the name delivers.</h2>
+    <div class="exp">
+      <div class="item"><h3 class="es">Bodega Garzón</h3><h3 class="en">Bodega Garzón</h3><p class="es">Un almuerzo a fuego abierto en una de las bodegas más premiadas del continente.</p><p class="en">An open-fire lunch at one of the continent's most awarded wineries.</p></div>
+      <div class="item"><h3 class="es">Skyspace de James Turrell</h3><h3 class="en">James Turrell Skyspace</h3><p class="es">Un atardecer en la única obra Skyspace de James Turrell en Sudamérica, en José Ignacio.</p><p class="en">A sunset inside the only James Turrell Skyspace in South America, in José Ignacio.</p></div>
+      <div class="item"><h3 class="es">Cenas privadas · Casa Manantial</h3><h3 class="en">Private dinners · Casa Manantial</h3><p class="es">La base institucional del proyecto como mesa de cierre, íntima y fuera de registro.</p><p class="en">The project's institutional home as the closing table — intimate and off the record.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERSHIP -->
+<section id="partnership">
+  <div class="wrap">
+    <div class="kicker eyebrow es">Partnership</div><div class="kicker eyebrow en">Partnership</div>
+    <h2 class="es">Un lugar en la sala, antes que nadie.</h2>
+    <h2 class="en">A place in the room, before anyone else.</h2>
+    <p class="lead es">Un número acotado de socios accede al Forum en su edición inaugural: asociación institucional, exclusividad de categoría y proximidad directa a reguladores y capital. No se compra visibilidad ante una multitud — se compra acceso a la mesa donde se toman las decisiones.</p>
+    <p class="lead en">A limited number of partners join the Forum's inaugural edition: institutional association, category exclusivity and direct proximity to regulators and capital. You are not buying visibility before a crowd — you are buying access to the table where decisions are made.</p>
+    <div class="tiers">
+      <div class="tier"><div class="t">Title</div><h3 class="es">Socio fundador</h3><h3 class="en">Founding partner</h3><p class="es">La máxima asociación institucional y exclusividad de categoría.</p><p class="en">The highest institutional association and category exclusivity.</p></div>
+      <div class="tier"><div class="t">Platinum</div><h3 class="es">Socio principal</h3><h3 class="en">Principal partner</h3><p class="es">Acceso al council y un rol definido en el programa.</p><p class="en">Council access and a defined role in the program.</p></div>
+      <div class="tier"><div class="t">Partner</div><h3 class="es">Socio</h3><h3 class="en">Partner</h3><p class="es">Presencia curada en el Forum y la red que lo rodea.</p><p class="en">A curated presence in the Forum and the network around it.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="wrap">
+    <div class="kicker eyebrow es" style="text-align:center">Sumate</div><div class="kicker eyebrow en" style="text-align:center">Get involved</div>
+    <h2 class="es">Como sponsor, speaker, socio institucional o media partner — hablemos.</h2>
+    <h2 class="en">As a sponsor, speaker, institutional partner or media partner — let's talk.</h2>
+    <p class="es" style="max-width:620px;margin:0 auto 26px;color:var(--dim)">La ventana inaugural está abierta. La silla del Cono Sur, por primera vez, tiene dónde sentarse.</p>
+    <p class="en" style="max-width:620px;margin:0 auto 26px;color:var(--dim)">The inaugural window is open. The Southern Cone's seat, for the first time, has somewhere to sit.</p>
+    <a class="btn" href="mailto:info@puntacryptoforum.com"><span class="es">Escribinos</span><span class="en">Get in touch</span></a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <b>Punta Crypto Forum</b> — Both Ventures · Punta del Este, Uruguay<br>
+      <span class="es">Documento de presentación · 2026 · las fechas, sedes y participantes se confirman progresivamente.</span>
+      <span class="en">Presentation document · 2026 · dates, venues and participants are confirmed progressively.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function setLang(l){
+    document.body.setAttribute('data-lang',l);
+    document.documentElement.setAttribute('lang',l);
+    document.querySelectorAll('.langbar button').forEach(b=>b.classList.toggle('active',b.dataset.set===l));
+    try{localStorage.setItem('pcf_lang',l);}catch(e){}
+  }
+  (function(){ try{var s=localStorage.getItem('pcf_lang'); if(s){setLang(s);}}catch(e){} })();
+</script>
+</body>
+</html>
