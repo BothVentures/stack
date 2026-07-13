@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Manantial · Cierre Q2 2026 · Interno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bone:#F5EFE0; --bone-soft:#FAF6EC; --card:#FFFFFF;
+    --ochre:#D4A036; --ochre-deep:#B17F1F; --ochre-tint:#F7ECD4;
+    --sage:#6B7A4B; --ink:#1F1A14; --ink-soft:#4A4036; --petrol:#2A2418;
+    --line:rgba(31,26,20,0.14); --negative:#8B2A1A;
+    --serif:'Cormorant Garamond',Georgia,serif; --sans:'Jost','Helvetica Neue',Arial,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bone);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;padding:18px 14px 40px;}
+  .sheet{max-width:880px;margin:0 auto;}
+
+  .band{background:var(--petrol);color:var(--bone);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:14px;}
+  .band svg{width:42px;height:auto;color:var(--ochre);flex-shrink:0;}
+  .band .wm{font-family:var(--serif);font-weight:500;letter-spacing:0.22em;font-size:19px;line-height:1.1;}
+  .band .sub{font-size:9.5px;letter-spacing:0.26em;text-transform:uppercase;color:var(--ochre);margin-top:5px;}
+
+  .lede{font-family:var(--serif);font-style:italic;font-size:20px;line-height:1.35;color:var(--ink);margin:18px 4px 20px;}
+
+  .grid{display:grid;gap:10px;}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  @media(max-width:640px){.g4{grid-template-columns:repeat(2,1fr);}.g3{grid-template-columns:1fr;}}
+
+  .tile{background:var(--bone-soft);border:0.5px solid var(--line);border-radius:10px;padding:13px 14px;}
+  .tile .lbl{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--sage);font-weight:500;margin-bottom:7px;}
+  .tile .val{font-family:var(--serif);font-size:25px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;}
+  .tile .val.neg{color:var(--negative);}
+  .tile .delta{font-size:11px;color:var(--ink-soft);margin-top:6px;}
+
+  .seclbl{font-size:9.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);font-weight:500;margin:22px 4px 10px;}
+
+  /* Monthly x quarter table */
+  .tblwrap{background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:6px 4px;overflow-x:auto;}
+  table.pnl{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12.5px;min-width:720px;}
+  table.pnl th,table.pnl td{padding:8px 10px;text-align:right;white-space:nowrap;}
+  table.pnl thead th{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage);font-weight:600;border-bottom:1px solid var(--line);}
+  table.pnl th.concept,table.pnl td.concept{text-align:left;color:var(--ink);font-weight:500;}
+  table.pnl td.q,table.pnl th.q{background:var(--bone-soft);font-weight:600;color:var(--ink);}
+  table.pnl th.ytd,table.pnl td.ytd{background:var(--ochre-tint);font-weight:600;}
+  table.pnl tbody td{color:var(--ink-soft);border-bottom:0.5px solid rgba(31,26,20,0.06);}
+  table.pnl tbody tr.detail td{font-size:12px;}
+  table.pnl tbody tr.total td{border-top:1px solid var(--line);border-bottom:none;color:var(--ink);font-weight:600;font-size:13px;padding-top:10px;}
+  table.pnl tbody tr.net td{color:var(--ink);font-weight:600;font-size:13px;}
+  table.pnl tbody tr.cash td{color:var(--ink-soft);}
+  table.pnl .neg{color:var(--negative);}
+  table.pnl tbody tr.spacer td{padding:3px;border:none;background:transparent;}
+
+  .card{background:var(--card);border:0.5px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:14px;}
+  .card .h{font-size:9.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--sage);font-weight:500;margin-bottom:12px;}
+
+  .qrow{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .qrow .qlbl{font-size:11px;color:var(--ink-soft);width:34px;flex-shrink:0;font-weight:600;}
+  .bar{display:flex;height:30px;border-radius:8px;overflow:hidden;font-size:11px;font-weight:500;flex:1;background:var(--bone-soft);}
+  .bar .rec{background:var(--sage);color:#F5EFE0;}
+  .bar .one{background:var(--ochre);color:#4a3306;}
+  .bar div{display:flex;align-items:center;justify-content:center;}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+  .chip{background:var(--bone-soft);border:0.5px solid var(--line);border-radius:8px;padding:4px 9px;font-size:11px;color:var(--ink-soft);}
+
+  .runway{background:var(--ochre-tint);border:0.5px solid var(--ochre);border-radius:12px;padding:16px 18px;margin-top:14px;}
+  .runway .h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--ochre-deep);margin-bottom:8px;}
+  .runway .h svg{width:17px;height:17px;}
+  .runway p{font-size:12.5px;color:var(--ink-soft);line-height:1.55;}
+  .runway p b{color:var(--ink);font-weight:600;}
+  .runway p.note{font-size:11.5px;margin-top:8px;color:var(--ochre-deep);}
+  .be{margin-top:13px;}
+  .be .row{display:flex;justify-content:space-between;font-size:11px;color:var(--ochre-deep);margin-bottom:5px;}
+  .be .track{height:8px;background:rgba(177,127,31,0.18);border-radius:999px;overflow:hidden;}
+  .be .fill{width:63%;height:100%;background:var(--ochre-deep);}
+
+  .mini{border:0.5px solid var(--line);border-radius:10px;padding:10px 13px;font-size:12px;}
+  .mini .k{color:var(--sage);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;font-weight:500;}
+  .mini .v{font-family:var(--serif);font-weight:600;font-size:17px;margin-top:3px;}
+  .mini .x{color:var(--ink-soft);font-size:11px;}
+
+  .rec-card{background:var(--petrol);color:var(--bone);border-radius:12px;padding:18px 20px;margin-top:14px;}
+  .rec-card .h{font-size:9.5px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ochre);font-weight:500;margin-bottom:12px;}
+  .rec-card ol{list-style:none;counter-reset:r;}
+  .rec-card li{counter-increment:r;position:relative;padding-left:26px;margin-bottom:11px;font-size:13px;line-height:1.5;color:var(--bone);}
+  .rec-card li:last-child{margin-bottom:0;}
+  .rec-card li::before{content:counter(r);position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--ochre);color:var(--petrol);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:var(--sans);}
+  .rec-card li b{color:#fff;font-weight:600;}
+
+  .foot{font-size:10px;color:var(--ink-soft);letter-spacing:0.03em;line-height:1.6;margin:20px 4px 0;padding-top:12px;border-top:0.5px solid var(--line);}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="band">
+    <svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg" aria-label="Casa Manantial">
+      <path d="M 10 24 L 22.5 10 L 35 24 L 47.5 10 L 60 24 L 72.5 10 L 85 24 L 97.5 10 L 110 24" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square"/>
+      <path d="M 10 52 L 22.5 38 L 35 52 L 47.5 38 L 60 52 L 72.5 38 L 85 52 L 97.5 38 L 110 52" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square"/>
+    </svg>
+    <div>
+      <div class="wm">CASA MANANTIAL</div>
+      <div class="sub">Cierre Q2 2026 · Interno · Base caja (QuickBooks)</div>
+    </div>
+  </div>
+
+  <p class="lede">Q2 facturó 25&nbsp;% menos que Q1, pero todo el gap son eventos one-off que no se repitieron. La membresía recurrente sostuvo e incluso creció, y junio fue el mejor mes del trimestre. El foco sigue siendo runway.</p>
+
+  <div class="grid g4">
+    <div class="tile"><div class="lbl">Revenue Q2</div><div class="val">70.217</div><div class="delta">Q1 93.911 · −25 %</div></div>
+    <div class="tile"><div class="lbl">Net Q2</div><div class="val neg">(23.539)</div><div class="delta">Q1 (10.991)</div></div>
+    <div class="tile"><div class="lbl">Caja 30/06</div><div class="val">77.175</div><div class="delta">31/05 75.111 · +2.064</div></div>
+    <div class="tile"><div class="lbl">Members</div><div class="val">44</div><div class="delta">break-even ~70</div></div>
+  </div>
+
+  <div class="seclbl">Mes a mes · Q1 y Q2 · base caja · USD</div>
+  <div class="tblwrap">
+    <table class="pnl">
+      <thead>
+        <tr>
+          <th class="concept">Concepto</th>
+          <th>Ene</th><th>Feb</th><th>Mar</th><th class="q">Q1</th>
+          <th>Abr</th><th>May</th><th>Jun</th><th class="q">Q2</th>
+          <th class="ytd">YTD</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="detail"><td class="concept">Membresías (netas de descuentos)</td><td>21.650</td><td>13.850</td><td>13.225</td><td class="q">48.725</td><td>14.057</td><td>14.700</td><td>20.700</td><td class="q">49.457</td><td class="ytd">98.182</td></tr>
+        <tr class="detail"><td class="concept">Meals (almuerzos y asados)</td><td>5.560</td><td>7.072</td><td>9.813</td><td class="q">22.444</td><td>6.851</td><td>6.454</td><td>4.170</td><td class="q">17.475</td><td class="ytd">39.919</td></tr>
+        <tr class="detail"><td class="concept">Eventos</td><td>14.944</td><td>2.940</td><td>1.030</td><td class="q">18.914</td><td>—</td><td>—</td><td>—</td><td class="q">—</td><td class="ytd">18.914</td></tr>
+        <tr class="detail"><td class="concept">Wellness (gym)</td><td>390</td><td>958</td><td>1.184</td><td class="q">2.532</td><td>1.226</td><td>766</td><td>1.293</td><td class="q">3.285</td><td class="ytd">5.817</td></tr>
+        <tr class="detail"><td class="concept">Otros ingresos</td><td>1.256</td><td>40</td><td>—</td><td class="q">1.296</td><td>—</td><td>—</td><td>—</td><td class="q">—</td><td class="ytd">1.296</td></tr>
+        <tr class="total"><td class="concept">Revenue total</td><td>43.800</td><td>24.859</td><td>25.252</td><td class="q">93.911</td><td>22.134</td><td>21.920</td><td>26.163</td><td class="q">70.217</td><td class="ytd">164.128</td></tr>
+        <tr class="spacer"><td colspan="10"></td></tr>
+        <tr class="net"><td class="concept">Net (base caja)</td><td>2.728</td><td class="neg">(6.552)</td><td class="neg">(7.167)</td><td class="q neg">(10.991)</td><td class="neg">(6.468)</td><td class="neg">(11.262)</td><td class="neg">(5.809)</td><td class="q neg">(23.539)</td><td class="ytd neg">(34.530)</td></tr>
+        <tr class="cash"><td class="concept">Caja fin de mes</td><td>108.245</td><td>103.450</td><td>94.485</td><td class="q">94.485</td><td>88.020</td><td>75.111</td><td>77.175</td><td class="q">77.175</td><td class="ytd">77.175</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2" style="margin-top:14px;">
+    <div class="tile"><div class="lbl">Revenue YTD · ene–jun</div><div class="val">164.128</div><div class="delta">6 meses</div></div>
+    <div class="tile"><div class="lbl">Net YTD · ene–jun</div><div class="val neg">(34.530)</div><div class="delta">6 meses</div></div>
+  </div>
+
+  <div class="card">
+    <div class="h">Q1 → Q2 · la caída de revenue es one-off, no estructural</div>
+    <div class="qrow">
+      <span class="qlbl">Q1</span>
+      <div class="bar">
+        <div class="rec" style="flex:74997;">recurrente 74.997</div>
+        <div class="one" style="flex:18914;">eventos 18.914</div>
+      </div>
+    </div>
+    <div class="qrow">
+      <span class="qlbl">Q2</span>
+      <div class="bar">
+        <div class="rec" style="flex:70217;">recurrente 70.217</div>
+        <div style="flex:23694;background:transparent;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;font-size:11px;">eventos 0</div>
+      </div>
+    </div>
+    <div class="chips">
+      <span class="chip">Membresías recurrentes +1,5 % (48.725 → 49.457)</span>
+      <span class="chip">Eventos Q2 = 0 (Q1 tuvo el evento de enero, 14.944)</span>
+      <span class="chip">Meals −22 %</span>
+      <span class="chip">Wellness +30 %</span>
+    </div>
+  </div>
+
+  <div class="runway">
+    <div class="h">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      Runway — el foco real
+    </div>
+    <p>Caja <b>77.175</b> al 30/06 (todo líquido). El burn operativo corre a <b>~7,8k/mes</b> (run-rate Q2; junio mejoró a 5.809). A ese ritmo, la caja alcanza hasta <b>enero 2027 con ~16–22k</b> según el burn — mejora clara vs el cierre de mayo, que proyectaba 6.362.</p>
+    <p class="note">Nota: la caja subió +2.064 en junio a pesar de una pérdida operativa de 5.809. La diferencia (~7,9k) es un aporte de Gastón vía cuenta de alquiler — no es operativo. El runway real depende de bajar el burn o subir la membresía recurrente, no de este ingreso.</p>
+    <div class="be">
+      <div class="row"><span>break-even</span><span>44 / 70 members</span></div>
+      <div class="track"><div class="fill"></div></div>
+    </div>
+  </div>
+
+  <div class="grid g3" style="margin-top:14px;">
+    <div class="mini"><div class="k">Membresía recurrente</div><div class="v">+1,5 %</div><div class="x">Q1 48.725 → Q2 49.457</div></div>
+    <div class="mini"><div class="k">Mejor mes de Q2</div><div class="v">Junio</div><div class="x">net (5.809) · rev 26.163</div></div>
+    <div class="mini"><div class="k">Meals Q2</div><div class="v">−22 %</div><div class="x">17.475 vs 22.444 en Q1</div></div>
+  </div>
+
+  <div class="rec-card">
+    <div class="h">Recomendación</div>
+    <ol>
+      <li><b>Altas netas de membresía = la única palanca que movió el neto hacia arriba en Q2</b> y es recurrente. Sostener el foco agresivo en sumar members hacia el break-even (70).</li>
+      <li><b>Reponer el pipeline de eventos.</b> Q1 metió 18.914 en eventos; Q2, cero. Un evento del tamaño del de enero (~15k) cambia el resultado del trimestre por sí solo.</li>
+      <li><b>No confundir la caja con mejora operativa.</b> El aporte de Gastón sostuvo el runway en junio; el burn operativo (~7,8k/mes) sigue firme. Runway = bajar burn o subir recurrente.</li>
+    </ol>
+  </div>
+
+  <p class="foot">
+    Base caja · P&amp;L fuente QuickBooks (cash basis), ene–jun 2026 · caja por reconciliación bancaria (Casa Manantial 2026.xlsx), junio al 30/06 = 77.175.<br>
+    Mayo restateado: el cierre de mayo reportó net (13.055) desde el modelo interno; QuickBooks cierra en (11.262). Se adopta QuickBooks como fuente canónica de acá en más — abril, febrero y marzo atan entre ambas fuentes.<br>
+    Líneas de ingreso en base QuickBooks (los descuentos de membresía van netos dentro de la línea de membresías); la composición de líneas difiere del modelo interno previo, aunque totales y neto coinciden.<br>
+    Uso interno · task force · 13/07/2026
+  </p>
+
+</div>
+</body>
+</html>
