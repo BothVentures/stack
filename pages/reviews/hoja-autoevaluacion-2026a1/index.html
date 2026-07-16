@@ -3,550 +3,427 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Hoja de autoevaluación del proceso de evaluación semestral de BOTH (2026A1). Publicada para feedback del equipo sobre el formato.">
-<title>Evaluación semestral 2026A1 — Hoja de autoevaluación — Both_Ventures</title>
+<meta name="description" content="Evaluación semestral 2026A1 de BOTH — hoja de autoevaluación interactiva. Cada miembro completa su autoevaluación + feedback a los otros 4.">
+<title>Evaluación semestral 2026A1 — Hoja de autoevaluación</title>
 <style>
-/*
- * Photonic Lab — Swiss Editorial Design System
- * Source of truth for all Photonic Lab visual output.
- * Edit here; notion-to-html.py inlines this at build time.
- *
- * Governing principle: light-brown paper (#ebe1cd) is the material.
- * Regular weight (400) for prose — never light. BOTH web standard.
- * One accent (#0a8c5a). Weight contrast over size contrast.
- * Uppercase for metadata, never prose. Borders do structural work.
- * Every page carries a .read-time line under the title.
- */
+  :root{
+    --ground:#ebe1cd; --surface:#f3ecdc; --surface-2:#efe7d4; --field:#faf6ec;
+    --ink:#211d17; --muted:#6d6555; --line:#d8cdb4; --line-soft:#e2d9c3;
+    --accent:#1d5e5a; --accent-2:#134a46; --accent-soft:#d3e2de; --accent-ink:#0f403c;
+    --warn:#a8632c; --warn-soft:#f2e3d1;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,"Georgia",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono","JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --ground:#1e1b16; --surface:#262119; --surface-2:#2b251c; --field:#2b2519;
+    --ink:#ece3d1; --muted:#a2977f; --line:#3a3327; --line-soft:#332d22;
+    --accent:#66b2aa; --accent-2:#86c7c0; --accent-soft:#22403c; --accent-ink:#a9ded7;
+    --warn:#d59058; --warn-soft:#3a2c1c;
+  }}
+  :root[data-theme="dark"]{
+    --ground:#1e1b16; --surface:#262119; --surface-2:#2b251c; --field:#2b2519;
+    --ink:#ece3d1; --muted:#a2977f; --line:#3a3327; --line-soft:#332d22;
+    --accent:#66b2aa; --accent-2:#86c7c0; --accent-soft:#22403c; --accent-ink:#a9ded7;
+    --warn:#d59058; --warn-soft:#3a2c1c;
+  }
+  :root[data-theme="light"]{
+    --ground:#ebe1cd; --surface:#f3ecdc; --surface-2:#efe7d4; --field:#faf6ec;
+    --ink:#211d17; --muted:#6d6555; --line:#d8cdb4; --line-soft:#e2d9c3;
+    --accent:#1d5e5a; --accent-2:#134a46; --accent-soft:#d3e2de; --accent-ink:#0f403c;
+    --warn:#a8632c; --warn-soft:#f2e3d1;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  body{background:var(--ground); color:var(--ink); font-family:var(--sans); font-weight:400;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; padding:0 0 80px}
+  ::selection{background:var(--accent-soft); color:var(--accent-ink)}
+  .wrap{max-width:680px; margin:0 auto; padding:0 clamp(18px,5vw,32px)}
 
-/* ── RESET ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  /* HEADER */
+  header.top{padding:clamp(34px,7vw,60px) 0 26px; border-bottom:1px solid var(--line); margin-bottom:30px}
+  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:14px}
+  header.top h1{font-family:var(--serif); font-weight:600; font-size:clamp(2rem,5.5vw,2.8rem); line-height:1.03; letter-spacing:-.01em}
+  .cycle{display:inline-block; font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--accent-ink);
+    background:var(--accent-soft); border:1px solid var(--accent); border-radius:999px; padding:3px 11px; margin-left:8px; vertical-align:middle}
+  @media (prefers-color-scheme:dark){.cycle{color:var(--accent)}}
+  .intro{margin-top:18px; font-size:15px; color:var(--muted); line-height:1.7}
+  .intro b{color:var(--ink); font-weight:600}
 
-/* ── VARIABLES ── */
-:root {
-  /* Neutrals — light-brown paper (BOTH web standard) */
-  --white:    #ebe1cd;   /* page background — paper, absolute */
-  --off:      #e2d7bf;   /* hover, footer, table headers */
-  --rule:     #d6cbb1;   /* hairline dividers, card gaps */
-  --rule2:    #c2b696;   /* heavier rules, active borders */
-  --text:     #111110;   /* primary text, nav/footer borders */
-  --text2:    #555550;   /* secondary / body copy */
-  --text3:    #999990;   /* tertiary / metadata / labels */
+  /* SECTIONS */
+  .section{margin:34px 0}
+  .section-label{font-family:var(--mono); font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:16px; padding-bottom:8px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:9px}
+  @media (prefers-color-scheme:dark){.section-label{color:var(--accent)}}
+  .section-label .num{width:22px; height:22px; display:grid; place-items:center; background:var(--accent-soft);
+    border:1px solid var(--accent); border-radius:6px; color:var(--accent-ink); font-size:11px}
+  @media (prefers-color-scheme:dark){.section-label .num{color:var(--accent)}}
+  .hint{font-size:13px; color:var(--muted); margin:-6px 0 16px; line-height:1.55}
+  .goldrule{background:var(--surface); border:1px solid var(--line-soft); border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0; padding:12px 16px; font-size:13.5px; color:var(--muted); line-height:1.6; margin-bottom:20px}
+  .goldrule b{color:var(--ink); font-weight:600}
 
-  /* Primary accent — Photonic green */
-  --acc:      #0a8c5a;
-  --acc-lt:   #e6f5ee;
-  --acc-dk:   #065c3a;
+  /* FIELDS */
+  .field-label{display:block; font-size:14.5px; font-weight:600; color:var(--ink); margin:18px 0 6px; line-height:1.4}
+  .field-label .q{font-weight:400; color:var(--muted); display:block; font-size:13px; margin-top:2px}
+  textarea, input[type=text], input[type=password]{width:100%; border:1px solid var(--line); border-radius:8px;
+    padding:11px 13px; font-family:var(--sans); font-size:14.5px; color:var(--ink); background:var(--field);
+    outline:none; transition:border-color .15s, box-shadow .15s}
+  textarea{resize:vertical; min-height:70px; line-height:1.6}
+  textarea:focus, input[type=text]:focus, input[type=password]:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+  ::placeholder{color:var(--muted); opacity:.6}
 
-  /* Categorical — functional only, never decorative */
-  --amber:    #b06a00;
-  --amb-lt:   #fdf3e3;
-  --coral:    #c0392b;
-  --cor-lt:   #fdecea;
-  --blue:     #1a4fa0;
-  --blu-lt:   #e8effa;
-  --slate:    #3a4a58;
-  --slt-lt:   #edf1f5;
+  /* IDENTITY PICKER */
+  .who{display:flex; flex-wrap:wrap; gap:9px; margin-top:6px}
+  .who input{position:absolute; opacity:0; width:0; height:0}
+  .who label{padding:9px 18px; border:1px solid var(--line); border-radius:999px; font-size:14.5px; color:var(--ink);
+    cursor:pointer; background:var(--surface); transition:all .15s; user-select:none}
+  .who label:hover{border-color:var(--accent)}
+  .who input:checked + label{background:var(--accent); border-color:var(--accent); color:#fff}
+  @media (prefers-color-scheme:dark){.who input:checked + label{color:#12100c}}
 
-  /* Geometry */
-  --radius:   3px;
-  --max-w:    1160px;
-  --shadow-s: 0 1px 4px rgba(0,0,0,.08);
-  --shadow-m: 0 2px 12px rgba(0,0,0,.10);
+  /* PEER BLOCK */
+  .peer{background:var(--surface); border:1px solid var(--line-soft); border-radius:12px; padding:18px 18px 8px; margin:16px 0}
+  .peer h3{font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--ink); margin-bottom:4px}
+  .peer .peer-tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px}
+  @media (prefers-color-scheme:dark){.peer .peer-tag{color:var(--accent)}}
 
-  /* Typography */
-  --sans:     "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
+  /* RATINGS (optional 1-5) */
+  .ratings{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
+  .ratings-head{font-size:12px; color:var(--muted); margin-bottom:10px; font-style:italic}
+  .rrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:7px 0}
+  .rrow-label{font-size:13px; color:var(--ink)}
+  .scale{display:flex; gap:4px; flex-shrink:0}
+  .scale input{position:absolute; opacity:0; width:0; height:0}
+  .scale label{width:30px; height:30px; display:grid; place-items:center; border:1px solid var(--line); border-radius:6px;
+    font-size:13px; font-family:var(--mono); color:var(--muted); cursor:pointer; background:var(--field); transition:all .12s}
+  .scale label:hover{border-color:var(--accent)}
+  .scale input:checked + label{background:var(--accent); border-color:var(--accent); color:#fff}
+  @media (prefers-color-scheme:dark){.scale input:checked + label{color:#12100c}}
 
-/* ── BASE ── */
-html { font-size: 14px; }
+  /* SUBMIT */
+  .gate{background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:18px; margin:30px 0 18px}
+  .gate .field-label{margin-top:0}
+  .actions{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-top:6px}
+  button{font-family:var(--sans); cursor:pointer; border-radius:8px; border:1px solid transparent; transition:all .15s}
+  .btn-primary{background:var(--accent); color:#fff; border-color:var(--accent); padding:13px 30px; font-size:15px; font-weight:600}
+  @media (prefers-color-scheme:dark){.btn-primary{color:#12100c}}
+  .btn-primary:hover{background:var(--accent-2)}
+  .btn-primary:disabled{opacity:.5; cursor:default}
+  .btn-ghost{background:transparent; color:var(--accent); border-color:var(--line); padding:12px 22px; font-size:14px; font-weight:600}
+  .btn-ghost:hover{border-color:var(--accent)}
+  .err{color:var(--warn); font-size:13px; margin-top:10px; display:none}
+  .note{font-size:12.5px; color:var(--muted); margin-top:14px; line-height:1.6}
 
-body {
-  font-family: var(--sans);
-  font-weight: 400;
-  background: var(--white);
-  color: var(--text2);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  /* DONE / READONLY */
+  #done, #readonly{display:none}
+  .done-card{text-align:center; padding:44px 24px; background:var(--surface); border:1px solid var(--line-soft); border-radius:14px; margin:20px 0}
+  .done-card .mark{font-size:30px; margin-bottom:14px}
+  .done-card h2{font-family:var(--serif); font-size:1.7rem; font-weight:600; margin-bottom:8px}
+  .done-card p{color:var(--muted); font-size:14.5px; max-width:44ch; margin:0 auto}
+  .linkbox{display:flex; gap:8px; margin:18px 0 0; flex-wrap:wrap}
+  .linkbox input{flex:1; min-width:200px; font-family:var(--mono); font-size:12px}
+  .share{margin-top:26px; padding-top:22px; border-top:1px solid var(--line)}
+  .share h3{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  @media (prefers-color-scheme:dark){.share h3{color:var(--accent)}}
+  .share p{font-size:13.5px; color:var(--muted); line-height:1.6; margin-bottom:12px}
 
-/* ── READ TIME (BOTH web standard — sits under the title) ── */
-.read-time {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin: -4px 0 28px;
-}
+  /* READONLY VIEW */
+  #readonly .ro-block{margin:22px 0}
+  #readonly h3{font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); margin:20px 0 4px}
+  #readonly .ro-tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px}
+  #readonly .qa{margin:12px 0}
+  #readonly .qa .q{font-size:13px; font-weight:600; color:var(--ink)}
+  #readonly .qa .a{font-size:14.5px; color:var(--muted); white-space:pre-wrap; margin-top:2px}
+  #readonly .qa .a.empty{opacity:.5; font-style:italic}
+  #readonly .ro-ratings{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+  #readonly .chip{font-family:var(--mono); font-size:12px; color:var(--accent-ink); background:var(--accent-soft);
+    border:1px solid var(--accent); border-radius:6px; padding:3px 9px}
+  @media (prefers-color-scheme:dark){#readonly .chip{color:var(--accent)}}
 
-/* ── LAYOUT SHELL ── */
-.page-wrap {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 32px;
-}
+  footer.foot{margin-top:44px; padding-top:20px; border-top:1px solid var(--line); font-family:var(--mono);
+    font-size:11px; letter-spacing:.03em; color:var(--muted); line-height:1.7}
+  footer.foot a{color:var(--accent)}
 
-/* ── SITE HEADER (notion-web output) ── */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: var(--white);
-  border-bottom: 1.5px solid var(--text);
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32px;
-}
-.site-header .mark {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.site-header .circle-filled {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--text);
-  flex-shrink: 0;
-}
-.site-header .circle-outline {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 1.5px solid var(--text);
-  flex-shrink: 0;
-}
-.site-header .wordmark {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  letter-spacing: .02em;
-}
-.header-meta {
-  font-size: 9px;
-  font-weight: 400;
-  color: var(--text3);
-  letter-spacing: .10em;
-  text-transform: uppercase;
-}
-
-/* ── ARTICLE BODY ── */
-article.notion-page {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 56px 0 80px;
-}
-
-/* ── HEADINGS ── */
-article.notion-page h1 {
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.05;
-  letter-spacing: -.025em;
-  margin: 0 0 24px;
-}
-article.notion-page h2 {
-  font-size: clamp(20px, 2.5vw, 28px);
-  font-weight: 400;
-  color: var(--text);
-  line-height: 1.15;
-  letter-spacing: -.01em;
-  margin: 48px 0 16px;
-}
-article.notion-page h2 strong {
-  font-weight: 700;
-}
-article.notion-page h3 {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.4;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-  margin: 32px 0 10px;
-}
-
-/* ── BODY TEXT ── */
-article.notion-page p {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.8;
-  margin-bottom: 16px;
-}
-article.notion-page p.spacer { height: 10px; margin: 0; }
-
-/* ── LISTS ── */
-article.notion-page ul,
-article.notion-page ol {
-  margin: 8px 0 18px 20px;
-}
-article.notion-page li {
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.75;
-  margin-bottom: 5px;
-}
-article.notion-page li::marker { color: var(--acc); }
-
-/* ── INLINE CODE ── */
-article.notion-page code {
-  font-family: "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
-  font-size: 12px;
-  background: var(--off);
-  color: var(--acc-dk);
-  padding: 1px 5px;
-  border-radius: var(--radius);
-  border: 1px solid var(--rule2);
-}
-
-/* ── CODE BLOCKS ── */
-figure.code-block {
-  margin: 20px 0;
-  background: var(--off);
-  border: 1px solid var(--rule2);
-  border-left: 3px solid var(--text);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-figure.code-block pre {
-  padding: 20px 24px;
-  overflow-x: auto;
-}
-figure.code-block code {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--text);
-  background: none;
-  border: none;
-  padding: 0;
-  white-space: pre;
-}
-figure.code-block figcaption {
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--text3);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 7px 24px 10px;
-  border-top: 1px solid var(--rule);
-}
-
-/* ── BLOCKQUOTE ── */
-article.notion-page blockquote {
-  border-left: 3px solid var(--acc);
-  padding: 12px 0 12px 20px;
-  margin: 24px 0;
-  font-size: 15px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.8;
-}
-
-/* ── CALLOUT ── */
-.callout {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  background: var(--acc-lt);
-  border-left: 3px solid var(--acc);
-  padding: 16px 20px;
-  margin: 20px 0;
-  border-radius: 0 var(--radius) var(--radius) 0;
-}
-.callout-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-.callout-body {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.75;
-}
-.callout-body strong { font-weight: 700; color: var(--text); }
-
-/* ── TOGGLE ── */
-article.notion-page details {
-  border: 1px solid var(--rule2);
-  border-radius: var(--radius);
-  margin: 10px 0;
-  overflow: hidden;
-}
-article.notion-page summary {
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  padding: 14px 18px;
-  list-style: none;
-  background: var(--off);
-  border-bottom: 1px solid transparent;
-  transition: background .15s linear;
-}
-article.notion-page details[open] summary {
-  border-bottom-color: var(--rule);
-}
-article.notion-page summary:hover { background: var(--rule); }
-article.notion-page summary::before {
-  content: '+ ';
-  color: var(--acc);
-  font-weight: 700;
-}
-article.notion-page details[open] summary::before { content: '− '; }
-article.notion-page details > *:not(summary) {
-  padding: 16px 18px;
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--text2);
-  line-height: 1.75;
-}
-
-/* ── HR ── */
-article.notion-page hr {
-  border: none;
-  border-top: 1px solid var(--rule2);
-  margin: 40px 0;
-}
-
-/* ── IMAGES ── */
-figure.image-block {
-  margin: 28px 0;
-}
-figure.image-block img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-s);
-  display: block;
-}
-figure.image-block figcaption {
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--text3);
-  letter-spacing: .05em;
-  margin-top: 10px;
-}
-
-/* ── TABLES ── */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 24px 0;
-  font-size: 13px;
-  border: 1px solid var(--rule2);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-th {
-  background: var(--off);
-  color: var(--text3);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  padding: 10px 14px;
-  text-align: left;
-  border-bottom: 1px solid var(--rule2);
-}
-td {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--rule);
-  color: var(--text2);
-  font-weight: 400;
-  vertical-align: top;
-  line-height: 1.5;
-}
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: var(--off); }
-
-/* ── COLUMN LAYOUT ── */
-.column-list {
-  display: grid;
-  gap: 24px;
-  margin: 20px 0;
-}
-.column { min-width: 0; }
-
-/* ── CHILD PAGE REFERENCE ── */
-.child-page-ref {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--acc);
-  padding: 10px 0;
-  border-bottom: 1px solid var(--rule);
-  letter-spacing: .02em;
-}
-
-/* ── EMBED / BOOKMARK ── */
-.embed-block {
-  margin: 14px 0;
-  padding: 14px 18px;
-  background: var(--off);
-  border: 1px solid var(--rule2);
-  border-left: 3px solid var(--text3);
-  border-radius: 0 var(--radius) var(--radius) 0;
-}
-.embed-block a {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--blue);
-  text-decoration: none;
-}
-.embed-block a:hover { text-decoration: underline; }
-
-/* ── LINKS ── */
-article.notion-page a {
-  color: var(--acc);
-  text-decoration: none;
-  border-bottom: 1px solid var(--acc-lt);
-  transition: border-color .15s linear, color .15s linear;
-}
-article.notion-page a:hover {
-  color: var(--acc-dk);
-  border-bottom-color: var(--acc);
-}
-
-/* ── SECTION EYEBROW (reused in content) ── */
-.eyebrow {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--acc);
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.eyebrow::before {
-  content: '';
-  display: block;
-  width: 24px;
-  height: 1px;
-  background: var(--acc);
-  flex-shrink: 0;
-}
-
-/* ── SECTION DIVIDER ── */
-.section-divider {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-  color: var(--text3);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 48px 0 32px;
-}
-.section-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--rule);
-}
-
-/* ── SITE FOOTER ── */
-.site-footer {
-  border-top: 1.5px solid var(--text);
-  background: var(--off);
-  padding: 28px 32px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-top: 80px;
-}
-.site-footer .footer-brand {
-  font-weight: 700;
-  color: var(--acc);
-  letter-spacing: .06em;
-}
-
-/* ── MOTION ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0);   }
-}
-.fade-up {
-  animation: fadeUp .3s ease forwards;
-}
-
-/* ── RESPONSIVE — single fold at 860px ── */
-@media (max-width: 860px) {
-  .site-header { padding: 0 20px; }
-  .page-wrap   { padding: 0 20px; }
-  article.notion-page { padding: 40px 0 60px; }
-  .column-list { grid-template-columns: 1fr !important; }
-  table        { font-size: 12px; }
-  th           { font-size: 8px; }
-  .site-footer { flex-direction: column; gap: 10px; text-align: center; padding: 20px; }
-}
-
+  @media print{
+    .no-print{display:none !important}
+    body{background:#fff; color:#000}
+    .wrap{max-width:100%}
+  }
 </style>
 </head>
 <body>
-<header class="site-header">
-  <div class="mark">
-    <div class="circle-filled"></div>
-    <div class="circle-outline"></div>
-    <span class="wordmark">Both_Ventures</span>
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">BOTH Ventures · Proceso interno</p>
+    <h1>Hoja de autoevaluación<span class="cycle">2026A1</span></h1>
+    <p class="intro">Evaluación semestral del equipo. Completá tu <b>autoevaluación</b> y tu <b>feedback a los otros 4</b>. Es sobre <b>personas</b> (cómo trabajamos juntos), no sobre resultados de venture. Antes de fin de julio.</p>
+  </header>
+
+  <!-- ================= FORM ================= -->
+  <form id="form" autocomplete="off">
+
+    <div class="section">
+      <div class="section-label"><span class="num">0</span> ¿Quién sos?</div>
+      <div class="hint">Elegí tu nombre — abajo aparecen los otros 4 para que les des feedback.</div>
+      <div class="who" id="who"></div>
+    </div>
+
+    <div class="goldrule">
+      <b>Regla de oro:</b> hablá de conductas con un ejemplo, no de la persona. <em>"En la reunión del martes llegaste sin la data y cortamos la decisión"</em> &gt; <em>"sos desorganizado"</em>.
+    </div>
+
+    <div class="section" id="self-section" style="opacity:.45; pointer-events:none">
+      <div class="section-label"><span class="num">1</span> Sobre mí</div>
+
+      <label class="field-label">Lo que mejor hice este semestre<span class="q">En cómo trabajé con el equipo.</span></label>
+      <textarea name="self_best" placeholder="Escribí acá…"></textarea>
+
+      <label class="field-label">Dónde quedé corto / qué me costó</label>
+      <textarea name="self_short" placeholder="Escribí acá…"></textarea>
+
+      <label class="field-label">1–2 cosas que quiero mejorar el próximo semestre</label>
+      <textarea name="self_improve" placeholder="Escribí acá…"></textarea>
+
+      <label class="field-label">El espejo<span class="q">¿Coincide cómo me veo con cómo creo que me ve el equipo? ¿Dónde sí, dónde no?</span></label>
+      <textarea name="self_mirror" placeholder="Escribí acá…"></textarea>
+
+      <div class="ratings">
+        <div class="ratings-head">(Opcional) Ponete una nota 1–5 en las 4 dimensiones — solo para el medidor de concordancia (auto vs pares). No es un ranking.</div>
+        <div id="self-ratings"></div>
+      </div>
+    </div>
+
+    <div class="section" id="peers-section" style="opacity:.45; pointer-events:none">
+      <div class="section-label"><span class="num">2</span> Para cada uno de los otros 4</div>
+      <div class="hint">Seguí haciendo / empezá / pará — con un ejemplo. Esto lo vas a conversar cara a cara en tu call.</div>
+      <div id="peers"></div>
+    </div>
+
+    <div class="gate no-print">
+      <label class="field-label">Clave del equipo<span class="q">Para enviar a la base. Te la pasó Mariano.</span></label>
+      <input type="password" name="passphrase" id="passphrase" placeholder="clave compartida">
+      <div class="actions">
+        <button type="submit" class="btn-primary" id="submitBtn">Enviar a la base</button>
+        <button type="button" class="btn-ghost" id="linkBtnPre">Generar mi link (sin enviar)</button>
+      </div>
+      <p class="err" id="err"></p>
+      <p class="note">Tu envío se guarda en un Google Sheet privado del equipo. Las respuestas son abiertas entre los 5, nunca fuera. Podés también generar un link con tu autoeval “como quedó” para compartir o guardar.</p>
+    </div>
+  </form>
+
+  <!-- ================= DONE ================= -->
+  <div id="done">
+    <div class="done-card">
+      <div class="mark">✅</div>
+      <h2 id="done-title">Listo</h2>
+      <p id="done-msg">Tu autoevaluación quedó registrada. Gracias.</p>
+    </div>
+    <div class="share no-print">
+      <h3>Tu link — la autoeval “como quedó”</h3>
+      <p>Este link reproduce tu hoja completa tal como la llenaste. Compartilo con quien quieras del equipo o guardalo. Los datos viven dentro del propio link.</p>
+      <div class="linkbox">
+        <input type="text" id="shareLink" readonly>
+        <button type="button" class="btn-primary" id="copyBtn">Copiar</button>
+      </div>
+      <div class="actions" style="margin-top:14px">
+        <button type="button" class="btn-ghost" id="viewBtn">Ver cómo quedó</button>
+        <button type="button" class="btn-ghost" onclick="window.print()">Descargar / Imprimir</button>
+      </div>
+    </div>
   </div>
-  <div style="display:flex;gap:16px;align-items:center;">
-    <span class="header-meta author">mariano</span>
-    <span class="header-meta">2026-07-15</span>
+
+  <!-- ================= READONLY ================= -->
+  <div id="readonly">
+    <div id="ro-body"></div>
+    <div class="actions no-print" style="margin-top:24px">
+      <button type="button" class="btn-ghost" onclick="window.print()">Descargar / Imprimir</button>
+      <a class="btn-ghost" href="?" style="text-decoration:none; display:inline-block">Llenar la mía</a>
+    </div>
   </div>
-</header>
-<div class="page-wrap">
-  <article class="notion-page">
-    <blockquote>
-<p><strong>La única hoja que llenás.</strong> Copiala a <code>vault/reviews/2026-H1/{tu-nombre}/hoja.md</code> y completala antes de tus calls del Semestral Sync (~1 hora, cuando quieras — antes de fin de julio). Es sobre <strong>personas</strong> (cómo trabajamos juntos), no sobre resultados de venture. Se comparte entre los 5.</p>
-<p>Regla de oro para escribir: <strong>hablá de conductas con un ejemplo, no de la persona.</strong> "En la reunión del martes llegaste sin la data y cortamos la decisión" &gt; "sos desorganizado".</p>
-</blockquote>
-<h1>Hoja de autoevaluación · 2026A1</h1>
-<p class="read-time">Lectura · 1 min</p>
-<h2>Parte 1 — Cómo me fue (sobre mí)</h2>
-<ul>
-<li><strong>Lo que mejor hice este semestre</strong> (en cómo trabajé con el equipo):<blockquote></blockquote>
-</li>
-<li><strong>Dónde quedé corto / qué me costó:</strong><blockquote></blockquote>
-</li>
-<li><strong>1–2 cosas que quiero mejorar el próximo semestre:</strong><blockquote></blockquote>
-</li>
-<li><strong>El espejo:</strong> ¿coincide cómo me veo con cómo creo que me ve el equipo? ¿Dónde sí, dónde no?<blockquote></blockquote>
-</li>
-</ul>
-<h2>Parte 2 — Para cada uno de los otros 4</h2>
-<p><em>Repetí este bloque para Gastón, René, Daiana, Andrés y Mariano — todos menos vos.</em></p>
-<h3>Para {NOMBRE}</h3>
-<ul>
-<li><strong>Seguí haciendo</strong> (con un ejemplo):<blockquote></blockquote>
-</li>
-<li><strong>Empezá a</strong> (con un ejemplo):<blockquote></blockquote>
-</li>
-<li><strong>Pará de / cambiá</strong> (una conducta, no la persona):<blockquote></blockquote>
-</li>
-<li><strong>Qué haría que quiera trabajar aún más con vos:</strong><blockquote></blockquote>
-</li>
-</ul>
-<hr />
-<blockquote>
-<p><strong>(Opcional) El espejo en números.</strong> Si te sirve, ponete a vos y a cada uno una nota del 1 al 5 en: <em>contribución al sistema · cultura BOTH · colaboración · sostenerte sin quemarte</em>. No es un ranking ni se compara entre personas — es solo para ver dónde tu mirada y la del equipo coinciden y dónde no. Si no te suma, saltealo.</p>
-</blockquote>
-  </article>
+
+  <footer class="foot">
+    Evaluación semestral · 2026A1 · uso interno de BOTH.<br>
+    Índice de páginas: <a href="https://bothventures.github.io/stack/pages/">bothventures.github.io/stack/pages</a>
+  </footer>
+
 </div>
-<footer class="site-footer">
-  <span class="footer-brand">Both_Ventures</span>
-  <span>md-web · photonic-lab · 2026-07-15</span>
-</footer>
+
+<script>
+  // ── Config ────────────────────────────────────────────────────────────────
+  // SETUP (una sola vez, Mariano): pegá la URL /exec del Apps Script Web App.
+  // Mientras diga PASTE_ el form corre en modo preview: muestra "listo" pero NO graba.
+  // Instrucciones + código del script: vault/reviews/2026-H1/apps-script-setup.md
+  var SCRIPT_URL = 'PASTE_EXEC_URL_AQUI';
+  // Clave compartida (cambiala y avisale al equipo; tiene que coincidir con la del Apps Script).
+  var PASS = 'both-2026a1';
+
+  var TEAM = ["Gastón","René","Daiana","Andrés","Mariano"];
+  var DIMS = [
+    {k:"d1", label:"Contribución al sistema"},
+    {k:"d2", label:"Cultura BOTH"},
+    {k:"d3", label:"Colaboración / relación"},
+    {k:"d4", label:"Sustentabilidad (no quemarte)"}
+  ];
+  var PEER_FIELDS = [
+    {k:"continue", label:"Seguí haciendo", q:"Con un ejemplo."},
+    {k:"start",    label:"Empezá a",       q:"Con un ejemplo."},
+    {k:"stop",     label:"Pará de / cambiá", q:"Una conducta, no la persona."},
+    {k:"keeper",   label:"Qué haría que quiera trabajar aún más con vos", q:""}
+  ];
+
+  var form = document.getElementById('form');
+  var errEl = document.getElementById('err');
+
+  // ── Build identity picker ───────────────────────────────────────────────────
+  var whoEl = document.getElementById('who');
+  TEAM.forEach(function(n, i){
+    var id = 'who'+i;
+    whoEl.insertAdjacentHTML('beforeend',
+      '<input type="radio" name="evaluador" id="'+id+'" value="'+n+'">'+
+      '<label for="'+id+'">'+n+'</label>');
+  });
+
+  function scaleRow(prefix, dim){
+    var html = '<div class="rrow"><span class="rrow-label">'+dim.label+'</span><div class="scale">';
+    for (var v=1; v<=5; v++){
+      var id = prefix+'_'+dim.k+'_'+v;
+      html += '<input type="radio" name="'+prefix+'_'+dim.k+'" id="'+id+'" value="'+v+'">'+
+              '<label for="'+id+'">'+v+'</label>';
+    }
+    return html + '</div></div>';
+  }
+
+  function renderSelfRatings(){
+    document.getElementById('self-ratings').innerHTML = DIMS.map(function(d){ return scaleRow('self', d); }).join('');
+  }
+
+  function renderPeers(self){
+    var peers = TEAM.filter(function(n){ return n !== self; });
+    document.getElementById('peers').innerHTML = peers.map(function(name, idx){
+      var slot = 'peer'+(idx+1);
+      var html = '<div class="peer">'+
+        '<input type="hidden" name="'+slot+'_name" value="'+name+'">'+
+        '<div class="peer-tag">Para</div><h3>'+name+'</h3>';
+      PEER_FIELDS.forEach(function(f){
+        var q = f.q ? '<span class="q">'+f.q+'</span>' : '';
+        html += '<label class="field-label">'+f.label+q+'</label>'+
+                '<textarea name="'+slot+'_'+f.k+'" placeholder="Escribí acá…"></textarea>';
+      });
+      html += '<div class="ratings"><div class="ratings-head">(Opcional) Nota 1–5 en las 4 dimensiones</div>'+
+              DIMS.map(function(d){ return scaleRow(slot, d); }).join('') + '</div>';
+      return html + '</div>';
+    }).join('');
+  }
+
+  renderSelfRatings();
+
+  document.querySelectorAll('input[name="evaluador"]').forEach(function(r){
+    r.addEventListener('change', function(){
+      renderPeers(this.value);
+      var s = document.getElementById('self-section'), p = document.getElementById('peers-section');
+      s.style.opacity = p.style.opacity = '1';
+      s.style.pointerEvents = p.style.pointerEvents = 'auto';
+    });
+  });
+
+  // ── Collect a compact model (for the shareable link) ─────────────────────────
+  function val(name){ var el = form.querySelector('[name="'+name+'"]'); return el ? el.value : ''; }
+  function checked(name){ var el = form.querySelector('[name="'+name+'"]:checked'); return el ? el.value : ''; }
+
+  function collectModel(){
+    var self = checked('evaluador');
+    var peers = TEAM.filter(function(n){ return n !== self; });
+    var m = { ev:self, self:{ b:val('self_best'), c:val('self_short'), i:val('self_improve'), m:val('self_mirror'),
+              d:DIMS.map(function(d){ return checked('self_'+d.k); }) }, peers:[] };
+    peers.forEach(function(name, idx){
+      var slot='peer'+(idx+1);
+      m.peers.push({ n:name, co:val(slot+'_continue'), st:val(slot+'_start'), sp:val(slot+'_stop'),
+        ke:val(slot+'_keeper'), d:DIMS.map(function(d){ return checked(slot+'_'+d.k); }) });
+    });
+    return m;
+  }
+
+  // UTF-8 safe base64
+  function enc(obj){ return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }
+  function dec(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+
+  function makeLink(){ return location.origin + location.pathname + '#v=' + enc(collectModel()); }
+
+  // ── Submit ───────────────────────────────────────────────────────────────────
+  function showDone(){
+    form.style.display='none';
+    document.getElementById('done').style.display='block';
+    var m = collectModel();
+    document.getElementById('done-title').textContent = 'Listo' + (m.ev ? ', ' + m.ev : '');
+    document.getElementById('shareLink').value = makeLink();
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    errEl.style.display='none';
+    if (!checked('evaluador')){ errEl.textContent='Elegí tu nombre primero.'; errEl.style.display='block'; return; }
+    if ((document.getElementById('passphrase').value||'').trim().toLowerCase() !== PASS.toLowerCase()){
+      errEl.textContent='Clave incorrecta. Pedísela a Mariano.'; errEl.style.display='block'; return;
+    }
+    if (SCRIPT_URL.indexOf('PASTE_') !== -1){ showDone(); return; } // preview mode
+    var btn = document.getElementById('submitBtn');
+    btn.disabled=true; btn.textContent='Enviando…';
+    fetch(SCRIPT_URL, { method:'POST', body:new FormData(form), mode:'no-cors' })
+      .then(function(){ showDone(); })
+      .catch(function(){ showDone(); });
+  });
+
+  // Generate link without submitting
+  document.getElementById('linkBtnPre').addEventListener('click', function(){
+    errEl.style.display='none';
+    if (!checked('evaluador')){ errEl.textContent='Elegí tu nombre primero.'; errEl.style.display='block'; return; }
+    showDone();
+    document.getElementById('done-title').textContent = 'Tu link está listo';
+    document.getElementById('done-msg').textContent = 'No enviaste a la base (podés hacerlo después). Este link guarda tu autoeval como quedó.';
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var i = document.getElementById('shareLink'); i.select();
+    if (navigator.clipboard) navigator.clipboard.writeText(i.value);
+    var self=this; this.textContent='¡Copiado!'; setTimeout(function(){ self.textContent='Copiar'; }, 1600);
+  });
+  document.getElementById('viewBtn').addEventListener('click', function(){ location.hash = 'v=' + enc(collectModel()); location.reload(); });
+
+  // ── Readonly view (opening a shared link) ────────────────────────────────────
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function qa(q, a){
+    var empty = !(a && a.trim());
+    return '<div class="qa"><div class="q">'+q+'</div><div class="a'+(empty?' empty':'')+'">'+(empty?'—':esc(a))+'</div></div>';
+  }
+  function ratingChips(arr){
+    var out = (arr||[]).map(function(v,i){ return v ? '<span class="chip">'+DIMS[i].label+': '+v+'/5</span>' : ''; }).filter(Boolean);
+    return out.length ? '<div class="ro-ratings">'+out.join('')+'</div>' : '';
+  }
+  function renderReadonly(m){
+    var h = '<header class="top" style="border-bottom:1px solid var(--line); margin-bottom:20px"><p class="eyebrow">BOTH · Evaluación semestral 2026A1</p>'+
+      '<h1>Autoevaluación de '+esc(m.ev||'—')+'</h1><p class="intro">Así quedó su hoja. Lectura, no edición.</p></header>';
+    h += '<div class="ro-block"><div class="section-label" style="color:var(--accent)"><span class="num">1</span> Sobre '+esc(m.ev||'')+'</div>';
+    h += qa('Lo que mejor hice', m.self.b) + qa('Dónde quedé corto / qué me costó', m.self.c) +
+         qa('Qué quiero mejorar', m.self.i) + qa('El espejo', m.self.m) + ratingChips(m.self.d) + '</div>';
+    (m.peers||[]).forEach(function(p){
+      h += '<div class="ro-block"><h3>'+esc(p.n)+'</h3><div class="ro-tag">Feedback</div>';
+      h += qa('Seguí haciendo', p.co) + qa('Empezá a', p.st) + qa('Pará de / cambiá', p.sp) +
+           qa('Qué haría que quiera trabajar aún más con vos', p.ke) + ratingChips(p.d) + '</div>';
+    });
+    document.getElementById('ro-body').innerHTML = h;
+    document.querySelector('header.top').style.display='none';
+    form.style.display='none';
+    document.getElementById('readonly').style.display='block';
+  }
+
+  (function initFromHash(){
+    var m = location.hash.match(/^#v=(.+)$/);
+    if (!m) return;
+    try { renderReadonly(dec(m[1])); } catch(err){ /* bad link — ignore, show blank form */ }
+  })();
+</script>
 </body>
 </html>
