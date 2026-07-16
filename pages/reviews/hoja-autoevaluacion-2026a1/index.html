@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Evaluación semestral 2026A1 de BOTH — hoja de autoevaluación interactiva. Cada miembro completa su autoevaluación + feedback a los otros 4.">
+<meta name="description" content="Evaluación semestral 2026A1 de BOTH — hoja de autoevaluación interactiva. Cada miembro completa su autoevaluación.">
 <title>Evaluación semestral 2026A1 — Hoja de autoevaluación</title>
 <style>
   :root{
@@ -48,6 +48,7 @@
   @media (prefers-color-scheme:dark){.cycle{color:var(--accent)}}
   .intro{margin-top:18px; font-size:15px; color:var(--muted); line-height:1.7}
   .intro b{color:var(--ink); font-weight:600}
+  .intro a{color:var(--accent)}
 
   /* SECTIONS */
   .section{margin:34px 0}
@@ -81,12 +82,6 @@
   .who label:hover{border-color:var(--accent)}
   .who input:checked + label{background:var(--accent); border-color:var(--accent); color:#fff}
   @media (prefers-color-scheme:dark){.who input:checked + label{color:#12100c}}
-
-  /* PEER BLOCK */
-  .peer{background:var(--surface); border:1px solid var(--line-soft); border-radius:12px; padding:18px 18px 8px; margin:16px 0}
-  .peer h3{font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--ink); margin-bottom:4px}
-  .peer .peer-tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px}
-  @media (prefers-color-scheme:dark){.peer .peer-tag{color:var(--accent)}}
 
   /* RATINGS (optional 1-5) */
   .ratings{margin-top:14px; padding-top:12px; border-top:1px dashed var(--line)}
@@ -131,7 +126,6 @@
   /* READONLY VIEW */
   #readonly .ro-block{margin:22px 0}
   #readonly h3{font-family:var(--serif); font-size:1.2rem; font-weight:600; color:var(--ink); margin:20px 0 4px}
-  #readonly .ro-tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:10px}
   #readonly .qa{margin:12px 0}
   #readonly .qa .q{font-size:13px; font-weight:600; color:var(--ink)}
   #readonly .qa .a{font-size:14.5px; color:var(--muted); white-space:pre-wrap; margin-top:2px}
@@ -158,7 +152,7 @@
   <header class="top">
     <p class="eyebrow">BOTH Ventures · Proceso interno</p>
     <h1>Hoja de autoevaluación<span class="cycle">2026A1</span></h1>
-    <p class="intro">Evaluación semestral del equipo. Completá tu <b>autoevaluación</b> y tu <b>feedback a los otros 4</b>. Es sobre <b>personas</b> (cómo trabajamos juntos), no sobre resultados de venture. Antes de fin de julio.</p>
+    <p class="intro">Evaluación semestral del equipo. Completá tu <b>autoevaluación</b> — es sobre <b>personas</b> (cómo trabajamos juntos), no sobre resultados de venture. El feedback a los otros 4 se conversa cara a cara en tu call 1-1; hay una <a href="../guia-call-1-1-2026a1/">guía opcional</a> para eso. Antes de fin de julio.</p>
   </header>
 
   <!-- ================= FORM ================= -->
@@ -166,12 +160,12 @@
 
     <div class="section">
       <div class="section-label"><span class="num">0</span> ¿Quién sos?</div>
-      <div class="hint">Elegí tu nombre — abajo aparecen los otros 4 para que les des feedback.</div>
+      <div class="hint">Elegí tu nombre para empezar.</div>
       <div class="who" id="who"></div>
     </div>
 
     <div class="goldrule">
-      <b>Regla de oro:</b> hablá de conductas concretas con un ejemplo, no de etiquetas — vale igual cuando hablás de vos o de los demás. <em>"El martes no llevé la data y cortamos la decisión"</em> &gt; <em>"soy un desastre"</em>.
+      <b>Regla de oro:</b> hablá de conductas concretas con un ejemplo, no de etiquetas. <em>"El martes no llevé la data y cortamos la decisión"</em> &gt; <em>"soy un desastre"</em>.
     </div>
 
     <div class="section" id="self-section" style="opacity:.45; pointer-events:none">
@@ -190,12 +184,6 @@
         <div class="ratings-head">(Opcional) Ponete una nota 1–5 en cada eje — es tu autoevaluación, no un ranking.</div>
         <div id="self-ratings"></div>
       </div>
-    </div>
-
-    <div class="section" id="peers-section" style="opacity:.45; pointer-events:none">
-      <div class="section-label"><span class="num">2</span> Para cada uno de los otros 4</div>
-      <div class="hint">Seguí haciendo / empezá / pará — con un ejemplo. Esto lo vas a conversar cara a cara en tu call.</div>
-      <div id="peers"></div>
     </div>
 
     <div class="gate no-print">
@@ -264,13 +252,6 @@
     {k:"d5", label:"Sustentabilidad (no quemarme)"},
     {k:"d6", label:"Performance del equipo en general (combinada)"}
   ];
-  var PEER_FIELDS = [
-    {k:"continue", label:"Seguí haciendo", q:"Con un ejemplo."},
-    {k:"start",    label:"Empezá a",       q:"Con un ejemplo."},
-    {k:"stop",     label:"Pará de / cambiá", q:"Una conducta, no la persona."},
-    {k:"keeper",   label:"Qué haría que quiera trabajar aún más con vos", q:""}
-  ];
-
   var form = document.getElementById('form');
   var errEl = document.getElementById('err');
 
@@ -297,30 +278,13 @@
     document.getElementById('self-ratings').innerHTML = DIMS.map(function(d){ return scaleRow('self', d); }).join('');
   }
 
-  function renderPeers(self){
-    var peers = TEAM.filter(function(n){ return n !== self; });
-    document.getElementById('peers').innerHTML = peers.map(function(name, idx){
-      var slot = 'peer'+(idx+1);
-      var html = '<div class="peer">'+
-        '<input type="hidden" name="'+slot+'_name" value="'+name+'">'+
-        '<div class="peer-tag">Para</div><h3>'+name+'</h3>';
-      PEER_FIELDS.forEach(function(f){
-        var q = f.q ? '<span class="q">'+f.q+'</span>' : '';
-        html += '<label class="field-label">'+f.label+q+'</label>'+
-                '<textarea name="'+slot+'_'+f.k+'" placeholder="Escribí acá…"></textarea>';
-      });
-      return html + '</div>';
-    }).join('');
-  }
-
   renderSelfRatings();
 
   document.querySelectorAll('input[name="evaluador"]').forEach(function(r){
     r.addEventListener('change', function(){
-      renderPeers(this.value);
-      var s = document.getElementById('self-section'), p = document.getElementById('peers-section');
-      s.style.opacity = p.style.opacity = '1';
-      s.style.pointerEvents = p.style.pointerEvents = 'auto';
+      var s = document.getElementById('self-section');
+      s.style.opacity = '1';
+      s.style.pointerEvents = 'auto';
     });
   });
 
@@ -330,15 +294,8 @@
 
   function collectModel(){
     var self = checked('evaluador');
-    var peers = TEAM.filter(function(n){ return n !== self; });
-    var m = { ev:self, self:{ b:val('self_best'), c:val('self_short'), i:val('self_improve'),
-              d:DIMS.map(function(d){ return checked('self_'+d.k); }) }, peers:[] };
-    peers.forEach(function(name, idx){
-      var slot='peer'+(idx+1);
-      m.peers.push({ n:name, co:val(slot+'_continue'), st:val(slot+'_start'), sp:val(slot+'_stop'),
-        ke:val(slot+'_keeper') });
-    });
-    return m;
+    return { ev:self, self:{ b:val('self_best'), c:val('self_short'), i:val('self_improve'),
+             d:DIMS.map(function(d){ return checked('self_'+d.k); }) } };
   }
 
   // UTF-8 safe base64
@@ -404,11 +361,6 @@
     h += '<div class="ro-block"><div class="section-label" style="color:var(--accent)"><span class="num">1</span> Sobre '+esc(m.ev||'')+'</div>';
     h += qa('Lo que mejor hice', m.self.b) + qa('Dónde quedé corto / qué me costó', m.self.c) +
          qa('Qué quiero mejorar', m.self.i) + ratingChips(m.self.d) + '</div>';
-    (m.peers||[]).forEach(function(p){
-      h += '<div class="ro-block"><h3>'+esc(p.n)+'</h3><div class="ro-tag">Feedback</div>';
-      h += qa('Seguí haciendo', p.co) + qa('Empezá a', p.st) + qa('Pará de / cambiá', p.sp) +
-           qa('Qué haría que quiera trabajar aún más con vos', p.ke) + '</div>';
-    });
     document.getElementById('ro-body').innerHTML = h;
     document.querySelector('header.top').style.display='none';
     form.style.display='none';
