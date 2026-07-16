@@ -186,11 +186,8 @@
       <label class="field-label">1–2 cosas que quiero mejorar el próximo semestre</label>
       <textarea name="self_improve" placeholder="Escribí acá…"></textarea>
 
-      <label class="field-label">El espejo<span class="q">¿Coincide cómo me veo con cómo creo que me ve el equipo? ¿Dónde sí, dónde no?</span></label>
-      <textarea name="self_mirror" placeholder="Escribí acá…"></textarea>
-
       <div class="ratings">
-        <div class="ratings-head">(Opcional) Ponete una nota 1–5 en las 4 dimensiones — solo para el medidor de concordancia (auto vs pares). No es un ranking.</div>
+        <div class="ratings-head">(Opcional) Ponete una nota 1–5 en cada eje — es tu autoevaluación, no un ranking.</div>
         <div id="self-ratings"></div>
       </div>
     </div>
@@ -244,8 +241,7 @@
   </div>
 
   <footer class="foot">
-    Evaluación semestral · 2026A1 · uso interno de BOTH.<br>
-    Índice de páginas: <a href="https://bothventures.github.io/stack/pages/">bothventures.github.io/stack/pages</a>
+    Evaluación semestral · 2026A1 · uso interno de BOTH.
   </footer>
 
 </div>
@@ -261,10 +257,12 @@
 
   var TEAM = ["Gastón","René","Daiana","Andrés","Mariano"];
   var DIMS = [
-    {k:"d1", label:"Contribución al sistema"},
-    {k:"d2", label:"Cultura BOTH"},
-    {k:"d3", label:"Colaboración / relación"},
-    {k:"d4", label:"Sustentabilidad (no quemarte)"}
+    {k:"d1", label:"Mi contribución al sistema"},
+    {k:"d2", label:"Agencia / Responsabilidad"},
+    {k:"d3", label:"Cultura BOTH"},
+    {k:"d4", label:"Colaboración / relación"},
+    {k:"d5", label:"Sustentabilidad (no quemarme)"},
+    {k:"d6", label:"Performance del equipo en general (combinada)"}
   ];
   var PEER_FIELDS = [
     {k:"continue", label:"Seguí haciendo", q:"Con un ejemplo."},
@@ -311,8 +309,6 @@
         html += '<label class="field-label">'+f.label+q+'</label>'+
                 '<textarea name="'+slot+'_'+f.k+'" placeholder="Escribí acá…"></textarea>';
       });
-      html += '<div class="ratings"><div class="ratings-head">(Opcional) Nota 1–5 en las 4 dimensiones</div>'+
-              DIMS.map(function(d){ return scaleRow(slot, d); }).join('') + '</div>';
       return html + '</div>';
     }).join('');
   }
@@ -335,12 +331,12 @@
   function collectModel(){
     var self = checked('evaluador');
     var peers = TEAM.filter(function(n){ return n !== self; });
-    var m = { ev:self, self:{ b:val('self_best'), c:val('self_short'), i:val('self_improve'), m:val('self_mirror'),
+    var m = { ev:self, self:{ b:val('self_best'), c:val('self_short'), i:val('self_improve'),
               d:DIMS.map(function(d){ return checked('self_'+d.k); }) }, peers:[] };
     peers.forEach(function(name, idx){
       var slot='peer'+(idx+1);
       m.peers.push({ n:name, co:val(slot+'_continue'), st:val(slot+'_start'), sp:val(slot+'_stop'),
-        ke:val(slot+'_keeper'), d:DIMS.map(function(d){ return checked(slot+'_'+d.k); }) });
+        ke:val(slot+'_keeper') });
     });
     return m;
   }
@@ -407,11 +403,11 @@
       '<h1>Autoevaluación de '+esc(m.ev||'—')+'</h1><p class="intro">Así quedó su hoja. Lectura, no edición.</p></header>';
     h += '<div class="ro-block"><div class="section-label" style="color:var(--accent)"><span class="num">1</span> Sobre '+esc(m.ev||'')+'</div>';
     h += qa('Lo que mejor hice', m.self.b) + qa('Dónde quedé corto / qué me costó', m.self.c) +
-         qa('Qué quiero mejorar', m.self.i) + qa('El espejo', m.self.m) + ratingChips(m.self.d) + '</div>';
+         qa('Qué quiero mejorar', m.self.i) + ratingChips(m.self.d) + '</div>';
     (m.peers||[]).forEach(function(p){
       h += '<div class="ro-block"><h3>'+esc(p.n)+'</h3><div class="ro-tag">Feedback</div>';
       h += qa('Seguí haciendo', p.co) + qa('Empezá a', p.st) + qa('Pará de / cambiá', p.sp) +
-           qa('Qué haría que quiera trabajar aún más con vos', p.ke) + ratingChips(p.d) + '</div>';
+           qa('Qué haría que quiera trabajar aún más con vos', p.ke) + '</div>';
     });
     document.getElementById('ro-body').innerHTML = h;
     document.querySelector('header.top').style.display='none';
