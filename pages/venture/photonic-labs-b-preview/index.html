@@ -3,131 +3,467 @@
 <title>Photonic Labs — Command Center (Wiki · Biblia · Mapa)</title>
 <!-- VERSIÓN B · 0.1 (en edición) — dashboard command-center. Generado desde photonic-lab-wiki-b-0.1.md + biblia/mapa. -->
 <style>
-:root{--bg:#f4f4f5;--card:#ffffff;--ink:#18181b;--ink2:#3f3f46;--ink3:#52525b;--mut:#a1a1aa;--line:#e4e4e7;
---g:#0a8c5a;--g-d:#065c3a;--blue:#1a4fa0;--slate:#3a4a58;--coral:#c0392b;--amber:#b06a00;
---sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
---mono:'IBM Plex Mono','SF Mono',ui-monospace,Menlo,monospace;--nav:264px;}
-*{box-sizing:border-box}html{font-size:15px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
-a{color:var(--g-d);text-decoration:none}a:hover{text-decoration:underline}
-.wrap{display:flex;min-height:100vh}
-/* left nav */
-aside{width:var(--nav);flex:0 0 var(--nav);background:#fbfbfc;border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 12px 40px}
-.brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
-.brand .dot{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--g),#7bd3a8);flex:0 0 22px}
-.brand b{font-size:.95rem;letter-spacing:-.01em}.brand span{display:block;font-family:var(--mono);font-size:.62rem;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
-.ng{margin:2px 0;border-radius:8px}
-.ng>summary{list-style:none;cursor:pointer;padding:7px 10px;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&family=Instrument+Serif:ital@0;1&display=swap');
+
+/* ============================================================
+   PHOTONIC LABS · WIKI B — institutional token system (v02-derived)
+   Depth = hairlines + tint, never shadow. Accent = rationed violet.
+   Data hues keep their legacy var NAMES (markup references them inline).
+   ============================================================ */
+:root{
+  /* surface — warm cream paper, cool ink (v02 temperature split) */
+  --paper:      oklch(96.5% 0.012 85);
+  --paper-deep: oklch(93.5% 0.016 82);
+  --paper-elev: oklch(98.5% 0.008 85);
+  --ink:  oklch(20% 0.024 245);
+  --ink2: oklch(34% 0.022 245);
+  --ink3: oklch(48% 0.018 245);
+  --mut:  oklch(60% 0.015 248);
+  --line:      oklch(84% 0.014 80);
+  --line-soft: oklch(90% 0.010 82);
+  /* accent — violet, scarce */
+  --accent:       oklch(46% 0.245 295);
+  --accent-faint: oklch(46% 0.245 295 / 0.09);
+  --accent-quiet: oklch(46% 0.245 295 / 0.14);
+  --on-accent:    oklch(98% 0.005 300);
+  /* categorical data ramp — muted family, subordinate to accent */
+  --g:     oklch(53% 0.125 165);
+  --g-d:   oklch(43% 0.11 168);
+  --blue:  oklch(52% 0.115 245);
+  --slate: oklch(50% 0.03 250);
+  --coral: oklch(56% 0.16 30);
+  --amber: oklch(64% 0.125 70);
+  /* hero masthead gradient (theme-aware) */
+  --hero-1: oklch(92% 0.045 45);
+  --hero-2: oklch(91% 0.040 350);
+  --hero-3: oklch(91% 0.038 265);
+  /* legacy aliases — keep names alive for any straggler reference */
+  --bg: var(--paper);
+  --card: var(--paper-elev);
+  /* type */
+  --sans:  'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono:  'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --serif: 'IBM Plex Serif', Georgia, serif;
+  --serif-display: 'Instrument Serif', 'IBM Plex Serif', Georgia, serif;
+  /* motion — named curves only */
+  --ease-comp:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-diag:  cubic-bezier(0.3, 0, 0.2, 1);
+  --ease-atmos: cubic-bezier(0.4, 0, 0.6, 1);
+  /* metrics */
+  --nav: 264px;
+  --maxw: 1320px;
+  --pad: clamp(1.1rem, 2.2vw, 2.4rem);
+}
+:root[data-theme="dark"]{ color-scheme: dark; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:      oklch(13% 0.012 250);
+    --paper-deep: oklch(16% 0.014 250);
+    --paper-elev: oklch(18.5% 0.015 250);
+    --ink:  oklch(92% 0.014 85);
+    --ink2: oklch(76% 0.014 85);
+    --ink3: oklch(62% 0.014 85);
+    --mut:  oklch(54% 0.014 85);
+    --line:      oklch(30% 0.018 250);
+    --line-soft: oklch(24% 0.014 250);
+    --accent:       oklch(72% 0.22 295);
+    --accent-faint: oklch(72% 0.22 295 / 0.14);
+    --accent-quiet: oklch(72% 0.22 295 / 0.20);
+    --on-accent:    oklch(16% 0.02 300);
+    --g:     oklch(68% 0.13 165);
+    --g-d:   oklch(74% 0.12 167);
+    --blue:  oklch(68% 0.12 245);
+    --slate: oklch(66% 0.03 250);
+    --coral: oklch(68% 0.15 30);
+    --amber: oklch(75% 0.12 72);
+    --hero-1: oklch(23% 0.030 40);
+    --hero-2: oklch(20% 0.030 340);
+    --hero-3: oklch(20% 0.030 265);
+  }
+}
+/* explicit attribute override (future toggle) wins both directions */
+:root[data-theme="dark"]{
+  --paper:oklch(13% 0.012 250); --paper-deep:oklch(16% 0.014 250); --paper-elev:oklch(18.5% 0.015 250);
+  --ink:oklch(92% 0.014 85); --ink2:oklch(76% 0.014 85); --ink3:oklch(62% 0.014 85); --mut:oklch(54% 0.014 85);
+  --line:oklch(30% 0.018 250); --line-soft:oklch(24% 0.014 250);
+  --accent:oklch(72% 0.22 295); --accent-faint:oklch(72% 0.22 295 / 0.14); --accent-quiet:oklch(72% 0.22 295 / 0.20); --on-accent:oklch(16% 0.02 300);
+  --g:oklch(68% 0.13 165); --g-d:oklch(74% 0.12 167); --blue:oklch(68% 0.12 245); --slate:oklch(66% 0.03 250); --coral:oklch(68% 0.15 30); --amber:oklch(75% 0.12 72);
+  --hero-1:oklch(23% 0.030 40); --hero-2:oklch(20% 0.030 340); --hero-3:oklch(20% 0.030 265);
+  color-scheme: dark;
+}
+
+/* ---------- base ---------- */
+*{box-sizing:border-box}
+html{font-size:16px; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-weight:300; line-height:1.6;
+  font-feature-settings:"ss01","ss02","kern";
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  transition:background-color 360ms var(--ease-comp), color 360ms var(--ease-comp);
+}
+a{color:var(--accent); text-decoration:none; transition:color 180ms var(--ease-diag)}
+a:hover{text-decoration:underline; text-underline-offset:2px}
+a:focus-visible, button:focus-visible, summary:focus-visible{
+  outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;
+}
+::selection{background:var(--accent); color:var(--on-accent)}
+b, strong{font-weight:600}
+
+/* ---------- shell ---------- */
+.wrap{display:flex; min-height:100vh}
+main{flex:1; min-width:0}
+
+/* ---------- left nav rail ---------- */
+aside{
+  width:var(--nav); flex:0 0 var(--nav);
+  background:var(--paper-deep); border-right:1px solid var(--line);
+  position:sticky; top:0; height:100vh; overflow-y:auto;
+  padding:20px 12px 48px;
+}
+.brand{display:flex; align-items:center; gap:10px; padding:6px 8px 20px; cursor:pointer}
+.brand .dot{
+  width:22px; height:22px; border-radius:5px; flex:0 0 22px;
+  background:linear-gradient(135deg, var(--accent), oklch(64% 0.20 320));
+}
+.brand b{font-size:.95rem; font-weight:500; letter-spacing:-.01em}
+.brand span{
+  display:block; font-family:var(--mono); font-size:.6rem; color:var(--mut);
+  text-transform:uppercase; letter-spacing:.14em; margin-top:1px;
+}
+.ng{margin:1px 0}
+.ng>summary{
+  list-style:none; cursor:pointer; padding:8px 10px;
+  font-family:var(--mono); font-size:.64rem; text-transform:uppercase;
+  letter-spacing:.16em; color:var(--mut); font-weight:500;
+  display:flex; align-items:center; gap:7px;
+}
 .ng>summary::-webkit-details-marker{display:none}
-.ng>summary::before{content:'▸';font-size:.6rem;transition:transform .15s;color:var(--mut)}
-.ng[open]>summary::before{transform:rotate(90deg)}
-.ni{display:flex;align-items:baseline;gap:8px;padding:6px 10px 6px 22px;border-radius:7px;color:var(--ink2);font-size:.83rem;cursor:pointer}
-.ni:hover{background:var(--line);text-decoration:none}
-.ni.active{background:#e6f5ee;color:var(--g-d);font-weight:600}
-.ni-n{font-family:var(--mono);font-size:.62rem;color:var(--mut);min-width:14px}
-.ni-s{color:var(--mut);font-size:.68rem;font-weight:400}
-/* main */
-main{flex:1;min-width:0}
-/* hero — slim sunset masthead (persistent per view); no KPI widgets */
-.hero{background:linear-gradient(115deg,#fbe8d8 0%,#f6dde6 42%,#e2e6f4 100%);border-bottom:1px solid var(--line)}
-.hero .in{padding:18px 34px 15px;max-width:1180px;margin:0 auto}
-.crumb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:#8a7a6a}
-h1.t{margin:3px 0 4px;font-size:1.5rem;letter-spacing:-.02em}
-.lead{color:var(--ink2);font-size:.9rem;max-width:74ch;margin:0}
+.ng>summary::before{
+  content:'▸'; font-size:.58rem; color:var(--mut);
+  transition:transform 180ms var(--ease-diag);
+}
+.ng[open]>summary::before{transform:rotate(90deg); color:var(--accent)}
+.ni{
+  display:flex; align-items:baseline; gap:9px;
+  padding:6px 10px 6px 20px; margin:1px 0;
+  border-left:2px solid transparent;
+  color:var(--ink2); font-size:.83rem; cursor:pointer;
+  transition:color 160ms var(--ease-diag), border-color 160ms var(--ease-diag), padding-left 200ms var(--ease-comp), background-color 160ms var(--ease-diag);
+}
+.ni:hover{color:var(--ink); border-left-color:var(--line); padding-left:23px; text-decoration:none}
+.ni.active{
+  color:var(--accent); font-weight:500;
+  background:var(--accent-faint); border-left-color:var(--accent);
+}
+.ni-n{font-family:var(--mono); font-size:.6rem; color:var(--mut); min-width:15px}
+.ni.active .ni-n{color:var(--accent)}
+.ni-s{color:var(--mut); font-size:.66rem; font-weight:400}
+
+/* ---------- hero masthead (persistent instrument bar) ---------- */
+.hero{
+  background:linear-gradient(115deg, var(--hero-1) 0%, var(--hero-2) 46%, var(--hero-3) 100%);
+  border-bottom:1px solid var(--line);
+}
+.hero .in{
+  padding:16px var(--pad) 15px; max-width:var(--maxw); margin:0 auto;
+  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 28px;
+}
+.hero .in>.hgroup{min-width:0}
+.crumb{font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.18em; color:var(--ink3)}
+h1.t{
+  margin:4px 0 3px; font-weight:300;
+  font-size:clamp(1.35rem, 1.4vw + .9rem, 1.95rem); letter-spacing:-.02em; text-wrap:balance;
+}
+.lead{color:var(--ink2); font-size:.9rem; max-width:70ch; margin:0; text-wrap:pretty}
 body.onpane .hero{display:none}
-/* router — one section per "page"; only the active view shows, and it ends where its content ends */
+/* hero status cluster (home / persistent) */
+.status-cluster{display:flex; flex-wrap:wrap; gap:7px; align-items:center; font-family:var(--mono)}
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.1em;
+  padding:4px 9px; border-radius:999px; border:1px solid var(--line); color:var(--ink2);
+  background:color-mix(in oklch, var(--paper-elev) 70%, transparent);
+}
+.badge.lock{border-color:var(--accent); color:var(--accent); background:var(--accent-faint)}
+
+/* ---------- router / views ---------- */
 .view{display:none}
 .view.show{display:block}
-.view:not(.pane){max-width:1180px;margin:0 auto;padding:24px 34px 90px}
-.intro{max-width:820px;margin:0 auto;color:var(--ink2);font-size:.9rem;border-left:3px solid var(--g);background:#fafafa;padding:14px 18px;border-radius:0 10px 10px 0}
-.intro blockquote{margin:.5em 0;padding-left:12px;border-left:2px solid var(--line);color:var(--ink3)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 30px;margin:0 auto 16px;max-width:820px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 8px 24px -18px rgba(0,0,0,.18);scroll-margin-top:120px}
-/* breakouts — chart-heavy / wide-table / long sections use the full content width */
+.view:not(.pane){max-width:var(--maxw); margin:0 auto; padding:clamp(1.2rem,2vw,2rem) var(--pad) 6rem}
+@media (prefers-reduced-motion: no-preference){
+  .view.show{animation:viewIn 480ms var(--ease-comp) both}
+  @keyframes viewIn{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+  aside .ng, aside .brand{animation:navIn 460ms var(--ease-comp) both}
+  aside .brand{animation-delay:20ms}
+  aside .ng:nth-of-type(1){animation-delay:70ms}
+  aside .ng:nth-of-type(2){animation-delay:120ms}
+  aside .ng:nth-of-type(3){animation-delay:170ms}
+  aside .ng:nth-of-type(4){animation-delay:220ms}
+  aside .ng:nth-of-type(5){animation-delay:270ms}
+  aside .ng:nth-of-type(6){animation-delay:320ms}
+  aside .ng:nth-of-type(7){animation-delay:370ms}
+  aside .ng:nth-of-type(n+8){animation-delay:420ms}
+  @keyframes navIn{from{opacity:0; transform:translateX(-7px)} to{opacity:1; transform:none}}
+}
+
+/* ---------- content primitives ---------- */
+.intro{
+  color:var(--ink2); font-size:.92rem;
+  border-left:2px solid var(--accent); background:var(--paper-elev);
+  padding:16px 20px; border-radius:0 8px 8px 0; margin:0 0 18px;
+}
+.intro blockquote{margin:.5em 0; padding-left:14px; border-left:1px solid var(--line); color:var(--ink3)}
+
+.card{
+  background:var(--paper-elev); border:1px solid var(--line); border-radius:12px;
+  padding:clamp(1.1rem,2vw,1.9rem) clamp(1.2rem,2.4vw,2.2rem);
+  margin:0 0 18px; max-width:none; scroll-margin-top:100px;
+}
 .card.wide{max-width:none}
-.ch{display:flex;align-items:center;gap:11px;margin:0 0 12px;font-size:1.16rem;letter-spacing:-.01em}
-.cn{font-family:var(--mono);font-size:.8rem;font-weight:600;color:#fff;background:var(--g);border-radius:7px;padding:3px 8px;flex:0 0 auto}
-.card h3{font-size:.98rem;margin:18px 0 7px;color:var(--ink)}
-.card p{margin:.55em 0;color:var(--ink2);font-size:.9rem}
-.card ul,.card ol{margin:.5em 0;padding-left:1.25em}.card li{margin:.28em 0;color:var(--ink2);font-size:.89rem}
-/* keep prose at a readable measure even inside full-width breakouts; tables/charts stay full */
-.card p,.card ul,.card ol,.card h3,.card>blockquote{max-width:780px}
-.card blockquote{margin:12px 0;padding:11px 15px;background:#f7f9f8;border-left:3px solid var(--g);border-radius:0 9px 9px 0;color:var(--ink2);font-size:.87rem}
-.card blockquote strong:first-child{color:var(--g-d)}
-.card code{font-family:var(--mono);font-size:.82em;background:#f4f4f5;padding:1px 5px;border-radius:5px;color:var(--coral)}
-.card pre{background:#18181b;color:#e4e4e7;padding:13px 15px;border-radius:10px;overflow-x:auto;font-size:.78rem}
-.card pre code{background:none;color:inherit;padding:0}
-.tbl-wrap,.card table{width:100%}
-.card table{border-collapse:collapse;margin:12px 0;font-size:.82rem;display:block;overflow-x:auto}
-.card th{background:#f8f8f9;text-align:left;padding:8px 11px;border-bottom:2px solid var(--line);font-weight:600;color:var(--ink);white-space:nowrap}
-.card td{padding:8px 11px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+.ch{
+  display:flex; align-items:center; gap:12px; margin:0 0 16px;
+  font-family:var(--sans); font-weight:400;
+  font-size:clamp(1.15rem, 1.3vw + .6rem, 1.55rem); letter-spacing:-.015em; text-wrap:balance;
+}
+.cn{
+  font-family:var(--mono); font-size:.72rem; font-weight:500; letter-spacing:.02em;
+  color:var(--on-accent); background:var(--accent); border-radius:6px;
+  padding:3px 8px; flex:0 0 auto;
+}
+.card h3{
+  font-size:1rem; font-weight:500; margin:1.5em 0 .5em; color:var(--ink);
+  letter-spacing:-.008em; text-wrap:balance;
+}
+.card p{margin:.6em 0; color:var(--ink2); font-size:.92rem; text-wrap:pretty}
+.card ul, .card ol{margin:.6em 0; padding-left:1.3em}
+.card li{margin:.3em 0; color:var(--ink2); font-size:.9rem; text-wrap:pretty}
+.card li::marker{color:var(--mut)}
+/* running prose measure — :where() so any layout utility overrides it freely */
+.card :where(p, ul, ol, h3, > blockquote){max-width:70ch}
+.measure{max-width:66ch}
+.card blockquote{
+  margin:14px 0; padding:12px 16px; background:var(--paper-deep);
+  border-left:2px solid var(--accent); border-radius:0 8px 8px 0;
+  color:var(--ink2); font-family:var(--serif); font-style:italic; font-size:.95rem;
+}
+.card blockquote strong:first-child{color:var(--accent); font-style:normal; font-family:var(--sans)}
+.card code{
+  font-family:var(--mono); font-size:.82em; background:var(--paper-deep);
+  padding:1px 5px; border-radius:4px; color:var(--coral);
+}
+.card pre{
+  background:oklch(16% 0.02 250); color:oklch(90% 0.01 85);
+  padding:14px 16px; border-radius:9px; overflow-x:auto; font-size:.78rem;
+  border:1px solid var(--line);
+}
+.card pre code{background:none; color:inherit; padding:0}
+.card a code{color:var(--accent)}
+.card hr{border:0; border-top:1px solid var(--line-soft); margin:22px 0 2px; max-width:none}
+.subhead{font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.14em; color:var(--mut); margin:2px 0 10px}
+/* dense — multi-column reference lists (glossary, market lists) */
+.card.dense ul{max-width:none; columns:340px; column-gap:38px; margin:.5em 0 1.1em}
+.card.dense ul li{break-inside:avoid; margin:.2em 0 .55em}
+.card.dense h3{margin-top:1.7em}
+.card.dense h3:first-of-type{margin-top:.3em}
+
+/* ---------- tables ---------- */
+.tbl-wrap{width:100%; overflow-x:auto}
+.card table{
+  width:100%; border-collapse:collapse; margin:14px 0; font-size:.83rem;
+  display:block; overflow-x:auto; max-width:none;
+  border-top:1px solid var(--ink);
+}
+.card th{
+  position:sticky; top:0; z-index:1;
+  background:var(--paper-deep); text-align:left; padding:9px 12px;
+  border-bottom:1px solid var(--line); font-weight:500; color:var(--ink);
+  white-space:nowrap; font-size:.76rem; letter-spacing:.01em;
+}
+.card td{padding:9px 12px; border-bottom:1px solid var(--line-soft); color:var(--ink2); vertical-align:top}
 .card tr:last-child td{border-bottom:none}
+.card tbody tr:hover td{background:var(--accent-faint)}
 .card table strong{color:var(--ink)}
-.card a code{color:var(--g-d)}
-/* charts */
-.chart{margin:14px 0;padding:14px;background:#fbfbfc;border:1px solid var(--line);border-radius:11px}
-.chart figcaption{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-bottom:8px}
-.chart svg{width:100%;height:auto;display:block}
-.chart .cl{font-family:var(--mono);font-size:10px;fill:var(--ink2);font-weight:600}
-.chart .cx{font-family:var(--mono);font-size:9px;fill:var(--mut)}
-.chart .sl{font-size:12px;fill:var(--ink);font-weight:600}
-.chart .ss{font-size:10px;fill:var(--ink3)}
-.chart .ax{stroke:var(--line);stroke-width:1.5}.chart .ax.dash{stroke-dasharray:4 4}
-/* planta — interactive floor plan */
-.planta .flowbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:9px;gap:8px}
-.planta .flowline{flex:1;text-align:center;color:var(--g-d);border-top:2px solid var(--g);margin-top:6px;padding-top:3px}
-.planta .bands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start}
-.band{display:flex;flex-direction:column;gap:5px}
-.band-h{font-size:.66rem;font-weight:700;color:var(--ink2);padding:6px 6px;border-radius:6px;background:#eef0f1;text-align:center;min-height:34px;display:flex;align-items:center;justify-content:center;line-height:1.15}
-.band-g .band-h{background:#e2f3ea;color:var(--g-d)}
-.band-blue .band-h{background:#e8eefa;color:var(--blue)}
-.band-amber .band-h{background:#f7efe1;color:var(--amber)}
-.band-slate .band-h{background:#e9ebee;color:var(--slate)}
-.zone{font-family:var(--sans);font-size:.7rem;text-align:left;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink2);cursor:pointer;line-height:1.2;transition:.12s}
-.zone:hover{border-color:var(--g);background:#f5faf7}
-.zone.active{border-color:var(--g);background:var(--g);color:#fff;font-weight:600}
-.zone-detail{margin-top:11px;padding:11px 14px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--g);border-radius:0 9px 9px 0;font-size:.8rem;color:var(--ink2);min-height:20px}
-.zone-detail b{color:var(--g-d)}
-/* model map */
-.modelmap .zf-wrap{position:relative;border:2px dashed var(--g);border-radius:12px;padding:24px 14px 14px;margin-top:8px}
-.zf-tag{position:absolute;top:-9px;left:14px;background:var(--card);padding:0 8px;font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.05em;color:var(--g-d);font-weight:700}
-.mm-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
-.mm{flex:1;min-width:170px;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
-.mm b{font-size:.9rem}.mm span{font-size:.74rem;opacity:.92}
-.mm.core{background:#e2f3ea;color:var(--g-d);border:1px solid var(--g);flex:1.5}
-.mm.boost{background:#e8eefa;color:var(--blue);border:1px solid var(--blue)}
-.mm-arrow{display:flex;align-items:center;font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;white-space:nowrap}
-.mm.periph{margin-top:10px;background:#f1f2f3;color:var(--slate);border:1px dashed var(--slate)}
-/* stat bars */
-.statbars{display:flex;flex-direction:column;gap:9px}
-.sb-row{display:flex;align-items:center;gap:12px}
-.sb-bar{flex:0 0 38%;height:14px;background:#ececed;border-radius:7px;overflow:hidden}
-.sb-bar span{display:block;height:100%;border-radius:7px}
-.sb-lab{font-size:.82rem;color:var(--ink2)}.sb-lab b{font-family:var(--mono);color:var(--ink);font-weight:600}
-.sb-note{margin-top:11px;font-size:.76rem;color:var(--mut)}
-/* tiers */
-.tiers{display:flex;flex-direction:column;gap:6px}
-.tier-row{display:grid;grid-template-columns:42px 1fr 84px 50px;align-items:center;gap:11px;font-size:.8rem}
-.tier-t{font-family:var(--mono);font-weight:700;color:#fff;text-align:center;border-radius:6px;padding:3px 0;font-size:.74rem}
+
+/* ============================================================
+   LAYOUT UTILITIES — full-width composition per section
+   ============================================================ */
+.fullbleed{max-width:none; width:100%}
+.grid-2{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(1.2rem,2.4vw,2.2rem); align-items:start; max-width:none}
+.grid-3{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(1rem,2vw,1.8rem); align-items:start; max-width:none}
+/* prose + aside rail */
+.split{display:grid; grid-template-columns:minmax(0, 68ch) minmax(240px, 1fr); gap:clamp(1.5rem,3vw,2.8rem); align-items:start; max-width:none}
+/* 12-col dashboard */
+.panelset{display:grid; grid-template-columns:repeat(12, minmax(0,1fr)); gap:clamp(.9rem,1.6vw,1.3rem); align-items:start; max-width:none}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+/* spec-sheet (label | value rows) */
+.spec{display:grid; grid-template-columns:max-content 1fr; gap:0; max-width:none; border-top:1px solid var(--ink)}
+.spec>dt, .spec>.k{
+  font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.14em;
+  color:var(--mut); padding:11px 18px 11px 0; border-bottom:1px solid var(--line-soft); align-self:baseline;
+}
+.spec>dd, .spec>.v{margin:0; padding:11px 0; color:var(--ink); font-size:.92rem; border-bottom:1px solid var(--line-soft)}
+.spec>:nth-last-child(1), .spec>:nth-last-child(2){border-bottom:none}
+/* definition / glossary grid */
+.defgrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:2px 32px; max-width:none}
+.defgrid .term{padding:9px 0; border-bottom:1px solid var(--line-soft)}
+.defgrid .term b{display:block; font-weight:600; color:var(--ink); font-size:.9rem}
+.defgrid .term span{display:block; color:var(--ink3); font-size:.84rem; margin-top:2px; text-wrap:pretty}
+.defgrid .grouphead{grid-column:1/-1; font-family:var(--mono); font-size:.66rem; text-transform:uppercase; letter-spacing:.16em; color:var(--accent); margin:14px 0 2px; padding-bottom:5px; border-bottom:1px solid var(--line)}
+/* KPI strip — number-as-monument (v02 sub-tile) */
+.kpis{display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:clamp(1rem,2vw,2rem); max-width:none}
+.stat{border-top:2px solid var(--ink); padding-top:12px}
+.stat .num{
+  display:block; font-family:var(--sans); font-weight:200;
+  font-size:clamp(1.9rem, 2.4vw + .5rem, 3rem); line-height:.95; letter-spacing:-.03em; color:var(--ink);
+}
+.stat .num.accent{color:var(--accent)}
+.stat .lbl{
+  display:block; margin-top:8px; font-family:var(--mono); font-size:.64rem;
+  text-transform:uppercase; letter-spacing:.12em; color:var(--mut); line-height:1.35;
+}
+/* card grid + section launcher */
+.cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:clamp(.8rem,1.5vw,1.2rem); max-width:none}
+.launch{
+  display:block; border:1px solid var(--line); border-radius:10px; padding:14px 16px;
+  background:var(--paper-elev); color:var(--ink); cursor:pointer;
+  transition:transform 260ms var(--ease-comp), border-color 200ms var(--ease-diag), background-color 200ms var(--ease-diag);
+}
+.launch:hover{transform:translateY(-2px); border-color:var(--accent); text-decoration:none; background:var(--accent-faint)}
+.launch .k{font-family:var(--mono); font-size:.62rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+.launch b{display:block; font-weight:500; font-size:.95rem; margin:5px 0 3px; letter-spacing:-.01em}
+.launch span{display:block; color:var(--ink3); font-size:.8rem; text-wrap:pretty}
+.metarail{font-size:.84rem; color:var(--ink3)}
+.metarail a{display:block; padding:4px 0; border-bottom:1px solid var(--line-soft)}
+/* status pill (hiring tables, gates) */
+.pill{display:inline-block; font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.08em; padding:2px 8px; border-radius:999px; border:1px solid var(--line); color:var(--ink2)}
+.pill.on{border-color:var(--g); color:var(--g-d); background:color-mix(in oklch, var(--g) 12%, transparent)}
+.pill.wait{border-color:var(--amber); color:var(--amber); background:color-mix(in oklch, var(--amber) 12%, transparent)}
+.pill.off{border-color:var(--slate); color:var(--slate); background:color-mix(in oklch, var(--slate) 10%, transparent)}
+
+/* ---------- charts (SVG, token-driven) ---------- */
+.chart{margin:16px 0; padding:16px 18px; background:var(--paper-deep); border:1px solid var(--line); border-radius:10px; max-width:920px}
+.chart.fullbleed, .grid-2 .chart, .grid-3 .chart, .split .chart{max-width:none}
+.chart.planta, .chart:has(.gov), .chart:has(.tiers), .chart:has(.statbars), .chart:has(.modelmap){max-width:none}
+.chart figcaption{font-family:var(--mono); font-size:.62rem; text-transform:uppercase; letter-spacing:.12em; color:var(--mut); margin-bottom:10px}
+.chart svg{width:100%; height:auto; display:block}
+.chart .cl{font-family:var(--mono); font-size:10px; fill:var(--ink2); font-weight:500}
+.chart .cx{font-family:var(--mono); font-size:9px; fill:var(--mut)}
+.chart .sl{font-size:12px; fill:var(--ink); font-weight:600}
+.chart .ss{font-size:10px; fill:var(--ink3)}
+.chart .ax{stroke:var(--line); stroke-width:1.5}
+.chart .ax.dash{stroke-dasharray:4 4}
+
+/* ---------- planta (interactive floor plan) ---------- */
+.planta{max-width:none}
+.planta .flowbar{display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:.6rem; text-transform:uppercase; letter-spacing:.1em; color:var(--mut); margin-bottom:11px; gap:8px}
+.planta .flowline{flex:1; text-align:center; color:var(--g-d); border-top:2px solid var(--g); margin-top:6px; padding-top:3px}
+.planta .bands{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:9px; align-items:start}
+.band{display:flex; flex-direction:column; gap:6px}
+.band-h{
+  font-family:var(--mono); font-size:.62rem; font-weight:500; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--ink2); padding:8px 6px; border-radius:6px; background:var(--paper-deep);
+  text-align:center; min-height:36px; display:flex; align-items:center; justify-content:center; line-height:1.2;
+}
+.band-g .band-h{background:color-mix(in oklch, var(--g) 14%, var(--paper-elev)); color:var(--g-d)}
+.band-blue .band-h{background:color-mix(in oklch, var(--blue) 14%, var(--paper-elev)); color:var(--blue)}
+.band-amber .band-h{background:color-mix(in oklch, var(--amber) 16%, var(--paper-elev)); color:var(--amber)}
+.band-slate .band-h{background:color-mix(in oklch, var(--slate) 14%, var(--paper-elev)); color:var(--slate)}
+.zone{
+  font-family:var(--sans); font-size:.72rem; text-align:left; padding:8px 9px;
+  border:1px solid var(--line); border-radius:6px; background:var(--paper-elev); color:var(--ink2);
+  cursor:pointer; line-height:1.25;
+  transition:transform 180ms var(--ease-comp), border-color 160ms var(--ease-diag), background-color 160ms var(--ease-diag), color 160ms var(--ease-diag);
+}
+.zone:hover{border-color:var(--accent); background:var(--accent-faint); transform:translateY(-1px)}
+.zone.active{border-color:var(--accent); background:var(--accent); color:var(--on-accent); font-weight:500}
+.zone-detail{
+  margin-top:12px; padding:12px 15px; background:var(--paper-elev);
+  border:1px solid var(--line); border-left:2px solid var(--accent); border-radius:0 8px 8px 0;
+  font-size:.84rem; color:var(--ink2); min-height:20px;
+}
+.zone-detail b{color:var(--accent)}
+
+/* ---------- model map ---------- */
+.modelmap{max-width:none}
+.modelmap .zf-wrap{position:relative; border:1px dashed var(--g); border-radius:12px; padding:26px 16px 16px; margin-top:8px}
+.zf-tag{position:absolute; top:-9px; left:16px; background:var(--paper-elev); padding:0 9px; font-family:var(--mono); font-size:.58rem; text-transform:uppercase; letter-spacing:.1em; color:var(--g-d); font-weight:500}
+.mm-row{display:flex; align-items:stretch; gap:12px; flex-wrap:wrap}
+.mm{flex:1; min-width:170px; border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:4px}
+.mm b{font-size:.92rem; font-weight:600}
+.mm span{font-size:.76rem; opacity:.92}
+.mm.core{background:color-mix(in oklch, var(--g) 12%, var(--paper-elev)); color:var(--g-d); border:1px solid var(--g); flex:1.5}
+.mm.boost{background:color-mix(in oklch, var(--blue) 12%, var(--paper-elev)); color:var(--blue); border:1px solid var(--blue)}
+.mm.periph{margin-top:12px; background:var(--paper-deep); color:var(--slate); border:1px dashed var(--slate)}
+.mm-arrow{display:flex; align-items:center; font-family:var(--mono); font-size:.6rem; color:var(--mut); text-transform:uppercase; letter-spacing:.08em; white-space:nowrap}
+
+/* ---------- stat bars ---------- */
+.statbars{display:flex; flex-direction:column; gap:10px; max-width:none}
+.sb-row{display:flex; align-items:center; gap:14px}
+.sb-bar{flex:0 0 38%; height:12px; background:var(--paper-deep); border:1px solid var(--line); border-radius:999px; overflow:hidden}
+.sb-bar span{display:block; height:100%; border-radius:999px}
+.sb-lab{font-size:.84rem; color:var(--ink2)}
+.sb-lab b{font-family:var(--mono); color:var(--ink); font-weight:600}
+.sb-note{margin-top:12px; font-size:.78rem; color:var(--mut); text-wrap:pretty}
+
+/* ---------- tiers ---------- */
+.tiers{display:flex; flex-direction:column; gap:7px; max-width:none}
+.tier-row{display:grid; grid-template-columns:44px 1fr 84px 52px; align-items:center; gap:12px; font-size:.82rem}
+.tier-t{font-family:var(--mono); font-weight:500; color:var(--on-accent); text-align:center; border-radius:5px; padding:3px 0; font-size:.72rem}
 .tier-g{background:var(--g)}.tier-blue{background:var(--blue)}.tier-slate{background:var(--slate)}
 .tier-o{color:var(--ink2)}
-.tier-m{height:9px;background:#ececed;border-radius:5px;overflow:hidden}
-.tier-bar{display:block;height:100%;border-radius:5px}
-.tier-mv{font-family:var(--mono);font-size:.72rem;color:var(--ink3);text-align:right}
-/* governance */
-.gov{display:flex;flex-direction:column;gap:6px}
-.gov-row{display:flex;flex-wrap:wrap;gap:1px 12px;align-items:baseline;border-left:4px solid var(--slate);background:#fbfbfc;border-radius:0 8px 8px 0;padding:8px 13px}
-.gov-name{font-weight:700;font-size:.84rem;color:var(--ink)}
-.gov-auth{font-size:.78rem;color:var(--ink3)}
-@media(max-width:700px){.planta .bands{grid-template-columns:repeat(2,1fr)}.tier-row{grid-template-columns:38px 1fr 60px 44px;gap:7px}}
-/* pane views (Biblia / Mapa) — full-bleed document in an iframe */
-.pane-note{font-size:.78rem;color:var(--ink3);background:#fff;border-bottom:1px solid var(--line);padding:9px 34px}
-.pane iframe{width:100%;height:calc(100vh - 34px);border:0;background:#ffffff;display:block}
-/* responsive */
-@media(max-width:900px){:root{--nav:0px}aside{position:fixed;left:-280px;width:264px;transition:left .2s;z-index:40;box-shadow:2px 0 20px rgba(0,0,0,.15)}
-body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixed;top:10px;right:14px;left:auto;margin:0;z-index:45}
-.card{max-width:none;padding:18px 18px}.view:not(.pane){padding:16px 18px 70px}.intro{max-width:none}.hero .in{padding:16px 18px 12px}h1.t{font-size:1.3rem}.pane-note{padding:9px 18px}}
-.menu-btn{display:none;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:.8rem;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(0,0,0,.25)}
-@media(prefers-color-scheme:dark){}
+.tier-m{height:8px; background:var(--paper-deep); border:1px solid var(--line); border-radius:999px; overflow:hidden}
+.tier-bar{display:block; height:100%; border-radius:999px}
+.tier-mv{font-family:var(--mono); font-size:.72rem; color:var(--ink3); text-align:right}
+
+/* ---------- governance ---------- */
+.gov{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:9px; max-width:none}
+.gov-row{
+  display:flex; flex-direction:column; gap:2px; align-items:flex-start;
+  border-left:3px solid var(--slate); background:var(--paper-deep);
+  border-radius:0 8px 8px 0; padding:11px 15px;
+}
+.gov-name{font-weight:600; font-size:.86rem; color:var(--ink)}
+.gov-auth{font-size:.79rem; color:var(--ink3); text-wrap:pretty}
+
+/* ---------- pane views (Biblia / Mapa) ---------- */
+.pane-note{
+  font-family:var(--mono); font-size:.68rem; letter-spacing:.04em; color:var(--ink3);
+  background:var(--paper-elev); border-bottom:1px solid var(--line);
+  padding:9px var(--pad); height:34px; display:flex; align-items:center; gap:10px;
+}
+.pane-note a{color:var(--accent)}
+.pane iframe{width:100%; height:calc(100vh - 34px); border:0; background:var(--paper); display:block}
+
+/* ---------- mobile button ---------- */
+.menu-btn{
+  display:none; align-items:center; gap:6px; background:var(--paper-elev);
+  border:1px solid var(--line); border-radius:8px; padding:7px 12px;
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.06em; color:var(--ink); cursor:pointer; margin-bottom:12px;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:1000px){
+  .grid-3{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .panelset .c7, .panelset .c8, .panelset .c5, .panelset .c4, .panelset .c6{grid-column:span 12}
+}
+@media (max-width:900px){
+  :root{--nav:0px}
+  aside{position:fixed; left:-280px; width:264px; transition:left 220ms var(--ease-comp); z-index:40; box-shadow:2px 0 28px -8px oklch(0% 0 0 / .35)}
+  body.nav-open aside{left:0}
+  .menu-btn{display:inline-flex; position:fixed; top:10px; right:14px; left:auto; margin:0; z-index:45}
+  .grid-2, .grid-3, .split{grid-template-columns:minmax(0,1fr)}
+  .planta .bands{grid-template-columns:repeat(2, minmax(0,1fr))}
+  .card{padding:16px 16px}
+  .view:not(.pane){padding:14px 16px 5rem}
+  .hero .in{padding:14px 16px 12px}
+  .pane-note{padding:9px 16px}
+}
+@media (max-width:560px){
+  .planta .bands{grid-template-columns:minmax(0,1fr)}
+  .tier-row{grid-template-columns:40px 1fr 58px 46px; gap:8px}
+  .sb-bar{flex-basis:30%}
+}
 </style></head>
 <body>
 <div class="wrap">
@@ -144,33 +480,88 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </aside>
 <main>
  <div class="hero"><div class="in">
-   <div class="crumb">BOTH Ventures · Wet-lab stand-alone · Zona Franca</div>
-   <h1 class="t">Photonic Labs</h1>
-   <p class="lead">La capa de infraestructura de escalado biotech que hoy no existe en LATAM — wet-lab stand-alone GMP-ready, dentro de Zona Franca.</p>
+   <div class="hgroup">
+     <div class="crumb">Photonic Labs · Command Center</div>
+     <h1 class="t">Wiki del Proyecto</h1>
+     <p class="lead">Capa de infraestructura de escalado biotech — wet-lab stand-alone GMP-ready, dentro de Zona Franca.</p>
+   </div>
+   <div class="status-cluster">
+     <span class="badge lock">🔒 Canon 07-19 · all-in ZF</span>
+     <span class="badge">pre-incubación → incubación</span>
+     <span class="badge">René · gate Gastón</span>
+   </div>
  </div></div>
  <button class="menu-btn">☰ Secciones</button>
- <section class="view" data-view="home"><div class="intro"><h1>Photonic Labs — Wiki del Proyecto</h1>
-<blockquote>
-<p>🟢 <strong>VERSIÓN EN EDICIÓN (B · 0.1) — abierta 2026-07-16.</strong> Fork de trabajo del wiki. Editá acá. Sucede a <a href="photonic-lab-wiki-a-0.1.md"><code>photonic-lab-wiki-a-0.1.md</code></a> (congelada). Cuando esté lista, se regenera el <code>.html</code> consolidado y se re-publica a GitHub Pages (ver <a href="_index.md"><code>_index.md</code></a>).</p>
-<p><strong>Qué es este documento.</strong> La referencia navegable y única del proyecto Photonic Labs. Consolida los catorce documentos de la fase de pre-incubación (SOW Qualia+ · Both Ventures, febrero–julio 2026) y los <strong>sincroniza contra las decisiones vigentes de julio 2026</strong>. Donde la pre-incubación y las últimas iteraciones difieren, <strong>prevalece la definición más reciente</strong> — y la diferencia queda registrada explícitamente en <a href="#s12">§12 Sincronización y discrepancias</a>.</p>
-<p><strong>🔒 Canon estructural (2026-07-19):</strong> Photonic va <strong>all-in Zona Franca desde el día uno</strong> (Gastón · Type-1 · permanente) y el framing de "caminos A/A+/B" queda <strong>retirado</strong> — Photonic es un wet-lab stand-alone GMP-ready dentro de ZF. Decisión: <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>.</p>
-<p><strong>Anclas de verdad:</strong> venture file <a href="../../../ventures/photonic-lab.md"><code>photonic-lab.md</code></a> · <a href="2026-07-07-photonic-labs-one-pager.html"><code>photonic-labs-one-pager</code></a> · decisión ZF canónica <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>. <em>(El memo de caminos <a href="2026-07-07-photonic-caminos-a-aplus-b.md"><code>photonic-caminos-a-aplus-b</code></a> queda como snapshot histórico — framing retirado.)</em></p>
-<p><strong>Documento hermano:</strong> <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> — toda la data dura. Este wiki explica y enmarca; la biblia lista y respalda.</p>
-</blockquote>
-<hr /></div></section>
- <section class="view" data-view="s1"><article class="card"><h2 class="ch"><span class="cn">1</span> Qué es Photonic Labs</h2><p><strong>Photonic Labs es la capa de infraestructura de escalado biotech que hoy no existe en LATAM</strong> — un wet-lab multiplataforma, GMP-ready desde el diseño, que lleva la investigación validada del banco (TRL 4–5) al lote piloto validado y transferible (TRL 7–8), en suelo uruguayo y a precios que el pipeline regional puede pagar.</p>
-<ul>
-<li><strong>Owner / champion:</strong> René Labarthe (narrativa, posicionamiento, coherencia). Gate de capital y estructura: Gastón Frydlewski.</li>
-<li><strong>Base:</strong> Uruguay — sitio objetivo: <strong>Parque de las Ciencias, Canelones</strong>.</li>
-<li><strong>Rol de BOTH:</strong> Explore + Hands-on. Etapa: <strong>cierre de pre-incubación → incubación</strong> (2026-07-07).</li>
-<li><strong>Advisors estratégicos:</strong> <strong>Qualia+</strong> (Alejandro San Juan + Juan Eduardo "JEC" Ceriani) — acceso al ecosistema médico-científico + profundidad operativa GMP que BOTH no tiene por linaje propio.</li>
-</ul>
-<blockquote>
-<p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo / "quantum" <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#s3">§3</a> y <a href="#s12">§12</a>.</p>
-</blockquote>
+ <section class="view" data-view="home"><div class="panelset">
+  <div class="c7"><p class="measure" style="font-size:1.3rem;line-height:1.5;color:var(--ink);font-weight:300;text-wrap:balance;margin:.2em 0">La capa de infraestructura de escalado biotech que hoy no existe en LATAM: <strong style="font-weight:500">wet-lab stand-alone, GMP-ready, dentro de Zona Franca</strong>.</p></div>
+  <div class="c5"><a class="launch" data-view="s7"><span class="k">Decisión Type-1 · 2026-07-19</span><b>🔒 All-in Zona Franca, día uno</b><span>Estructura ZF permanente · IRAE/IP/IVA 0% · gate exclusivo de Gastón. Framing de "caminos A/A+/B" retirado.</span></a></div>
+
+  <div class="c12 kpis">
+    <div class="stat"><span class="num">$1.48M</span><span class="lbl">Hard CAPEX</span></div>
+    <div class="stat"><span class="num">$2.05M</span><span class="lbl">Ronda objetivo · ZF</span></div>
+    <div class="stat"><span class="num accent">Y3</span><span class="lbl">EBITDA positivo</span></div>
+    <div class="stat"><span class="num">$3.83M</span><span class="lbl">Revenue Y6</span></div>
+    <div class="stat"><span class="num">66.5</span><span class="lbl">Success score /100</span></div>
+  </div>
+
+  <div class="c8">
+    <div class="grouphead" style="color:var(--mut);border-color:var(--line);margin-top:4px">Entrar por sección</div>
+    <div class="cards">
+      <a class="launch" data-view="s2"><span class="k">§02</span><b>La tesis</b><span>El gap de infraestructura TRL 5–8.</span></a>
+      <a class="launch" data-view="s3"><span class="k">§03</span><b>El modelo</b><span>Wet-lab stand-alone dentro de ZF.</span></a>
+      <a class="launch" data-view="s5"><span class="k">§05</span><b>Diseño de planta</b><span>21 zonas · 5 bandas · flujo unidireccional.</span></a>
+      <a class="launch" data-view="s10"><span class="k">§10</span><b>Economía v3</b><span>CAPEX · revenue · EBITDA · tiers.</span></a>
+      <a class="launch" data-view="s12"><span class="k">§12</span><b>Sincronización</b><span>Canon julio vs pre-incubación.</span></a>
+      <a class="launch" data-view="s13"><span class="k">§13</span><b>Preguntas abiertas</b><span>Los dos gates de decisión vigentes.</span></a>
+    </div>
+  </div>
+
+  <div class="c4 metarail">
+    <div class="grouphead" style="border-color:var(--line)">Anclas de verdad</div>
+    <a href="../../../ventures/photonic-lab.md"><code>photonic-lab.md</code> · venture file</a>
+    <a href="2026-07-07-photonic-labs-one-pager.html"><code>photonic-labs-one-pager</code></a>
+    <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md">Decisión ZF canónica · 07-19</a>
+    <a data-view="biblia">Biblia del Proyecto — toda la data dura →</a>
+    <a data-view="mapa">Mapa de relaciones y flujos →</a>
+    <p style="font-size:.76rem;color:var(--mut);margin-top:12px;text-wrap:pretty">🟢 <strong style="color:var(--ink3)">Versión B · 0.1 (en edición)</strong> — abierta 2026-07-16, sucede a la wiki A congelada. KPIs espejo de §10 (modelo v3) — fuente única, no retipear.</p>
+  </div>
+
+  <div class="c12"><div class="intro measure" style="margin-top:6px"><strong>Qué es este documento.</strong> La referencia navegable y única de Photonic Labs. Consolida los catorce documentos de pre-incubación (SOW Qualia+ · Both Ventures, feb–jul 2026) y los <strong>sincroniza contra las decisiones vigentes de julio 2026</strong>. Donde pre-incubación y canon difieren, <strong>prevalece la definición más reciente</strong> — la diferencia queda registrada en <a href="#s12">§12 Sincronización y discrepancias</a>. Documento hermano: la <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> (data dura). Este wiki explica y enmarca; la biblia lista y respalda.</div></div>
+</div></section>
+ <section class="view" data-view="s1"><article class="card"><h2 class="ch"><span class="cn">1</span> Qué es Photonic Labs</h2>
+<div class="split">
+ <div>
+  <p style="font-size:1.05rem"><strong>Photonic Labs es la capa de infraestructura de escalado biotech que hoy no existe en LATAM</strong> — un wet-lab multiplataforma, GMP-ready desde el diseño, que lleva la investigación validada del banco (TRL 4–5) al lote piloto validado y transferible (TRL 7–8), en suelo uruguayo y a precios que el pipeline regional puede pagar.</p>
+  <blockquote>
+  <p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo / "quantum" <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#s3">§3</a> y <a href="#s12">§12</a>.</p>
+  </blockquote>
+ </div>
+ <div>
+  <div class="subhead">Ficha</div>
+  <dl class="spec">
+   <dt>Owner</dt><dd>René Labarthe — narrativa, posicionamiento, coherencia. Gate de capital y estructura: <strong>Gastón Frydlewski</strong>.</dd>
+   <dt>Base</dt><dd>Uruguay — sitio objetivo <strong>Parque de las Ciencias, Canelones</strong>.</dd>
+   <dt>Rol BOTH</dt><dd>Explore + Hands-on. Etapa: <strong>cierre de pre-incubación → incubación</strong> (2026-07-07).</dd>
+   <dt>Advisors</dt><dd><strong>Qualia+</strong> — Alejandro San Juan + Juan Eduardo "JEC" Ceriani. Acceso al ecosistema médico-científico + profundidad operativa GMP que BOTH no tiene por linaje propio.</dd>
+  </dl>
+ </div>
+</div>
 <hr /></article></section>
-<section class="view" data-view="s2"><article class="card"><h2 class="ch"><span class="cn">2</span> La tesis: el gap de TRL 5–8</h2><figure class="chart"><figcaption>La tesis — el hueco de infraestructura TRL 5–8</figcaption>
-<svg viewBox="0 0 620 152" role="img" aria-label="Escalera TRL 1 a 9 con gap crítico en 5 a 8"><rect x="18.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="48.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">1</text><rect x="83.3" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="114.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">2</text><rect x="148.7" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="179.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">3</text><rect x="214.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="244.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">4</text><rect x="279.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="310.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">5</text><rect x="344.7" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="375.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">6</text><rect x="410.0" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="440.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">7</text><rect x="475.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="506.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">8</text><rect x="540.7" y="58" width="61.3" height="30" rx="5" fill="var(--slate)" opacity="0.45"/><text x="571.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">9</text><path d="M279.3,96 L279.3,104 L536.7,104 L536.7,96" fill="none" stroke="var(--coral)" stroke-width="2"/><text x="408.0" y="122" text-anchor="middle" class="sl" style="fill:var(--coral)">GAP TRL 5–8 — donde entra Photonic</text><text x="146.7" y="46" text-anchor="middle" class="ss">Cubierto · UdelaR·Pasteur·INIA·ORT</text><text x="571.3" y="46" text-anchor="middle" class="ss">Inaccesible</text><text x="16.0" y="140" class="cx">TRL — Technology Readiness Level (1 → 9)</text></svg></figure><p>LATAM biotech no falla por ciencia débil. Falla porque <strong>no existe la infraestructura para escalar esa ciencia</strong>. El hueco está en el rango <strong>TRL 5–8</strong>: investigación validada que necesita volverse producción piloto, lotes GMP y procesos documentados y transferibles a un CDMO.</p>
+<section class="view" data-view="s2"><article class="card"><h2 class="ch"><span class="cn">2</span> La tesis: el gap de TRL 5–8</h2>
+<div class="split">
+<figure class="chart"><figcaption>La tesis — el hueco de infraestructura TRL 5–8</figcaption>
+<svg viewBox="0 0 620 152" role="img" aria-label="Escalera TRL 1 a 9 con gap crítico en 5 a 8"><rect x="18.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="48.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">1</text><rect x="83.3" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="114.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">2</text><rect x="148.7" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="179.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">3</text><rect x="214.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="244.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">4</text><rect x="279.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="310.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">5</text><rect x="344.7" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="375.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">6</text><rect x="410.0" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="440.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">7</text><rect x="475.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="506.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">8</text><rect x="540.7" y="58" width="61.3" height="30" rx="5" fill="var(--slate)" opacity="0.45"/><text x="571.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">9</text><path d="M279.3,96 L279.3,104 L536.7,104 L536.7,96" fill="none" stroke="var(--coral)" stroke-width="2"/><text x="408.0" y="122" text-anchor="middle" class="sl" style="fill:var(--coral)">GAP TRL 5–8 — donde entra Photonic</text><text x="146.7" y="46" text-anchor="middle" class="ss">Cubierto · UdelaR·Pasteur·INIA·ORT</text><text x="571.3" y="46" text-anchor="middle" class="ss">Inaccesible</text><text x="16.0" y="140" class="cx">TRL — Technology Readiness Level (1 → 9)</text></svg></figure>
+<div>
+ <div class="subhead">Evidencia dura</div>
+ <div class="kpis" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem 1.4rem">
+  <div class="stat"><span class="num">0</span><span class="lbl">Hubs GMP accesibles · LATAM</span></div>
+  <div class="stat"><span class="num">62</span><span class="lbl">Biotech activas UY · censo Stubrin</span></div>
+  <div class="stat"><span class="num accent">57%</span><span class="lbl">Startups sin lab propio</span></div>
+  <div class="stat"><span class="num">$50k</span><span class="lbl">Techo /100g · Ardan (India)</span></div>
+ </div>
+</div>
+</div>
+<p>LATAM biotech no falla por ciencia débil. Falla porque <strong>no existe la infraestructura para escalar esa ciencia</strong>. El hueco está en el rango <strong>TRL 5–8</strong>: investigación validada que necesita volverse producción piloto, lotes GMP y procesos documentados y transferibles a un CDMO.</p>
 <table>
 <thead>
 <tr>
@@ -202,12 +593,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 </tbody>
 </table>
-<p><strong>Evidencia dura (ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia §1–2</a>):</strong>
-- <strong>0</strong> hubs de scale-up GMP accesibles para startups en LATAM.
-- <strong>62</strong> empresas biotech activas en Uruguay (censo Stubrin, Oct 2025); solo <strong>11 de 44</strong> relevadas tienen planta propia; solo <strong>3</strong> con certificación internacional.
-- <strong>57%</strong> de las startups no tiene laboratorio propio.
-- Encuesta regional (74 startups): <strong>59%</strong> apunta a GMP, <strong>34%</strong> necesita infraestructura de escalado, <strong>39%</strong> busca socios industriales para escalar.
-- Techo de precio verificado: <strong>USD 50.000 / 100 g</strong> (Ardan Pharma terceriza en un CRO de India). Photonic cotiza por debajo.</p>
+<p><strong>Evidencia dura (ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia §1–2</a>):</strong></p><ul><li><strong>0</strong> hubs de scale-up GMP accesibles para startups en LATAM.</li><li><strong>62</strong> empresas biotech activas en Uruguay (censo Stubrin, Oct 2025); solo <strong>11 de 44</strong> relevadas tienen planta propia; solo <strong>3</strong> con certificación internacional.</li><li><strong>57%</strong> de las startups no tiene laboratorio propio.</li><li>Encuesta regional (74 startups): <strong>59%</strong> apunta a GMP, <strong>34%</strong> necesita infraestructura de escalado, <strong>39%</strong> busca socios industriales para escalar.</li><li>Techo de precio verificado: <strong>USD 50.000 / 100 g</strong> (Ardan Pharma terceriza en un CRO de India). Photonic cotiza por debajo.</li></ul>
 <p><strong>Matiz importante — el "riesgo commodity" (aclaración René, 07-07):</strong> el gap es real y hoy está desatendido — <em>eso</em> explica por qué hay demanda. Pero "desatendido hoy" ≠ "defendible mañana". Un wet-lab que vende capacidad fee-for-service es <strong>replicable</strong> (ATGen extendiendo su downstream, o un entrante con capital). Ser first-mover sobre un hueco vacío es <strong>una ventana, no un foso</strong>. Lo que vuelve el negocio defendible es la capa propietaria de A+ + el embedding institucional (ZF, ANII, nodo BID Lab). El argumento commodity, por lo tanto, es un argumento <strong>a favor de A+ sobre A puro</strong>, no en contra de la tesis.</p>
 <hr /></article></section>
 <section class="view" data-view="s3"><article class="card"><h2 class="ch"><span class="cn">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</h2><figure class="chart"><figcaption>El modelo — wet-lab stand-alone + boosters, dentro de Zona Franca</figcaption>
@@ -264,11 +650,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tbody>
 </table>
 <p><strong>Por qué el booster in-silico se queda (hallazgo del break-even, modelo v3):</strong> <em>sin</em> la capa in-silico (C1–C3), el EBITDA Y2 pasa de <strong>+$96k a ≈ −$57k</strong> y el break-even se corre ~1 año. La línea que la decisión 07-02 mandó a sacar del core es, en la aritmética actual, la que sostiene la rentabilidad temprana — por eso se queda como booster. La analítica T0, aparte, es core de caja desde el día uno (ver <a href="#s6">§6</a>).</p>
-<p><strong>Direcciones retiradas / archivadas:</strong>
-- <strong>Landmark / edificio-statement</strong> (tipo Bodega Garzón) — descartado por completo (07-07): capex-heavy, compite con el capital desplegable, ni SOSV construyó landmark.
-- <strong>Vehículo lab+fondo</strong> (flywheel SOSV/IndieBio, ex-"Camino B") — <strong>archivado</strong> como ambición patrimonial futura y separada. Sólo se reabre (gate exclusivo Gastón, nuevo vehículo de capital) con funder soberano/estratégico comprometido + estructura de conflicto de interés + reconciliación con <strong>Panambi</strong> (overlap salud mental — Eywa). Fuera de la narrativa del proyecto hasta entonces.
-- <strong>Peldaño intermedio Tier-1 AAA a $4.5–5.5M</strong> — descartado. Canon de Daiana: <strong>"lean o full, no el medio"</strong>.
-- <strong>Outside-first → dual-entity</strong> — retirado (ni Plan B); la estructura es all-in-ZF. Ver <a href="#s7">§7</a>.</p>
+<p><strong>Direcciones retiradas / archivadas:</strong></p><ul><li><strong>Landmark / edificio-statement</strong> (tipo Bodega Garzón) — descartado por completo (07-07): capex-heavy, compite con el capital desplegable, ni SOSV construyó landmark.</li><li><strong>Vehículo lab+fondo</strong> (flywheel SOSV/IndieBio, ex-"Camino B") — <strong>archivado</strong> como ambición patrimonial futura y separada. Sólo se reabre (gate exclusivo Gastón, nuevo vehículo de capital) con funder soberano/estratégico comprometido + estructura de conflicto de interés + reconciliación con <strong>Panambi</strong> (overlap salud mental — Eywa). Fuera de la narrativa del proyecto hasta entonces.</li><li><strong>Peldaño intermedio Tier-1 AAA a $4.5–5.5M</strong> — descartado. Canon de Daiana: <strong>"lean o full, no el medio"</strong>.</li><li><strong>Outside-first → dual-entity</strong> — retirado (ni Plan B); la estructura es all-in-ZF. Ver <a href="#s7">§7</a>.</li></ul>
 <hr /></article></section>
 <section class="view" data-view="s4"><article class="card"><h2 class="ch"><span class="cn">4</span> El modelo operativo — Modelo 3</h2><p><strong>Decisión 2026-07-02 (Type-3):</strong> el modelo operativo de Photonic Lab es el <strong>Modelo 3 — I+D + GMP-Ready</strong>.</p>
 <p>De los 8 modelos de infraestructura evaluados (0 a 7, más 5B — ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia §4</a>), el Modelo 3 es el punto de entrada más defendible dado el estado del pipeline regional.</p>
@@ -282,11 +664,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <blockquote>
 <p>⚠️ <strong>Nota de sincronización:</strong> la decisión 07-02 quedó auto-minada con "target: 2M litros bioreactores mínimo" — es un <strong>artefacto de transcripción</strong>. La escala real es <strong>10–50 L (Tramo 1) → 200–300 L (Tramo 2)</strong>, consistente con Capabilities, CAPEX y one-pager. Ver <a href="#s12">§12</a>.</p>
 </blockquote>
-<p><strong>Diferenciadores del modelo (verificados en pre-incubación):</strong>
-1. <strong>Single-use como formato principal</strong> — elimina contaminación cruzada entre clientes, anula CIP/SIP, reduce el turnaround de días a horas. Arquitectura de controlador dual (vidrio + SU). Validado con Eleonora Scoseria.
-2. <strong>Downstream dimensionado proporcionalmente al upstream</strong> (ÄKTA Process + ÄKTA Pilot + TFF) — el diferenciador crítico frente a ATGen, que tiene un biorreactor de 300 L con downstream dimensionado para 30 L.
-3. <strong>GMP-ready desde el diseño</strong> — flujos unidireccionales, QA/QC integrado, batch records, trazabilidad LIMS → dossier transferible a CDMO.
-4. <strong>Plataforma multiplataforma</strong> — cubre ~70% del pipeline biotech regional (procariotas, levaduras, mamífero, insecto, hongos filamentosos, microalgas) sin retooling sustancial.</p>
+<p><strong>Diferenciadores del modelo (verificados en pre-incubación):</strong></p><ol><li><strong>Single-use como formato principal</strong> — elimina contaminación cruzada entre clientes, anula CIP/SIP, reduce el turnaround de días a horas. Arquitectura de controlador dual (vidrio + SU). Validado con Eleonora Scoseria.</li><li><strong>Downstream dimensionado proporcionalmente al upstream</strong> (ÄKTA Process + ÄKTA Pilot + TFF) — el diferenciador crítico frente a ATGen, que tiene un biorreactor de 300 L con downstream dimensionado para 30 L.</li><li><strong>GMP-ready desde el diseño</strong> — flujos unidireccionales, QA/QC integrado, batch records, trazabilidad LIMS → dossier transferible a CDMO.</li><li><strong>Plataforma multiplataforma</strong> — cubre ~70% del pipeline biotech regional (procariotas, levaduras, mamífero, insecto, hongos filamentosos, microalgas) sin retooling sustancial.</li></ol>
 <hr /></article></section>
 <section class="view" data-view="s5"><article class="card wide"><h2 class="ch"><span class="cn">5</span> Diseño de planta</h2><figure class="chart planta"><figcaption>Diseño de planta — 5 bandas · 21 zonas funcionales · flujo unidireccional</figcaption>
 <div class="flowbar"><span>◐ Entrada materiales</span><span class="flowline">flujo unidireccional →</span><span>Productos ◑</span></div>
@@ -448,13 +826,9 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </blockquote>
 <p><strong>La estructura (cerrada):</strong> all-in ZF, day-one — IRAE/IP/IVA 0%, importación exonerada, optimizado para export regional. <strong>Un solo lab físico</strong>; la entidad ZF es la capa legal desde el inicio. ANII <strong>sigue accesible en ZF</strong> (desde 2025), así que los grants apilan sobre la ronda dentro de ZF — la objeción histórica "grants bloqueadas en ZF" ya no aplica.</p>
 <p><strong>Tradeoff registrado (trazabilidad — no se re-discute):</strong> el caso v3 del 07-04 mostró que <em>outside-first → dual-entity</em> daba <strong>+$160K grants · EBITDA+ Y2 vs Y3 · break-even ~1 año antes · neto acum ~$4.0M dual vs ~$3.8M all-in-ZF</strong>. Se opta por all-in-ZF <strong>a pesar</strong> de ese diferencial, priorizando estructura única + IRAE 0% permanente + endgame exportador. Financials gobernantes = escenario ZF (raise ~$2.05M · EBITDA+ Y3).</p>
-<p><strong>Puntos finos confirmados (Cristina Montero, Uruguay XXI):</strong>
-- ANII en ZF <strong>sí</strong> disponible desde 2025 — instrumento <strong>Implementación de la Innovación</strong>: 70% no-reembolsable, tope UYU 4M (5M con impacto climático). ANII financia honorarios, consultorías, software, IP — <strong>no</strong> equipamiento/activos fijos.
-- Clientes uruguayos habilitados <strong>pero no pueden ser mayoría de la cartera</strong> (mercado principal debe ser regional/internacional).
-- El gasto que un cliente uruguayo pague desde ZF <strong>no le es deducible de IRAE</strong> (desventaja de precio frente a labs fuera de ZF) — pendiente confirmación del tributarista sobre Ley 19.566 (Andres facilita).
-- <strong>COMAP no aplica en ZF</strong> — los beneficios de ZF sustituyen a los de COMAP. Fuera de ZF, la vía es COMAP + Ley 16.462.</p>
+<p><strong>Puntos finos confirmados (Cristina Montero, Uruguay XXI):</strong></p><ul><li>ANII en ZF <strong>sí</strong> disponible desde 2025 — instrumento <strong>Implementación de la Innovación</strong>: 70% no-reembolsable, tope UYU 4M (5M con impacto climático). ANII financia honorarios, consultorías, software, IP — <strong>no</strong> equipamiento/activos fijos.</li><li>Clientes uruguayos habilitados <strong>pero no pueden ser mayoría de la cartera</strong> (mercado principal debe ser regional/internacional).</li><li>El gasto que un cliente uruguayo pague desde ZF <strong>no le es deducible de IRAE</strong> (desventaja de precio frente a labs fuera de ZF) — pendiente confirmación del tributarista sobre Ley 19.566 (Andres facilita).</li><li><strong>COMAP no aplica en ZF</strong> — los beneficios de ZF sustituyen a los de COMAP. Fuera de ZF, la vía es COMAP + Ley 16.462.</li></ul>
 <hr /></article></section>
-<section class="view" data-view="s8"><article class="card"><h2 class="ch"><span class="cn">8</span> Mercado, demanda y ecosistema</h2><figure class="chart"><figcaption>Demanda regional — encuesta abril 2026 · 74 startups biotech</figcaption>
+<section class="view" data-view="s8"><article class="card dense"><h2 class="ch"><span class="cn">8</span> Mercado, demanda y ecosistema</h2><figure class="chart"><figcaption>Demanda regional — encuesta abril 2026 · 74 startups biotech</figcaption>
 <div class="statbars"><div class="sb-row"><div class="sb-bar"><span style="width:59%;background:var(--g)"></span></div><div class="sb-lab"><b>59%</b> requiere / apunta a GMP</div></div><div class="sb-row"><div class="sb-bar"><span style="width:39%;background:var(--blue)"></span></div><div class="sb-lab"><b>39%</b> busca socios para escalar</div></div><div class="sb-row"><div class="sb-bar"><span style="width:34%;background:var(--g)"></span></div><div class="sb-lab"><b>34%</b> necesita infra de escalado</div></div><div class="sb-row"><div class="sb-bar"><span style="width:31%;background:var(--blue)"></span></div><div class="sb-lab"><b>31%</b> necesita lotes piloto</div></div><div class="sb-row"><div class="sb-bar"><span style="width:28%;background:var(--slate)"></span></div><div class="sb-lab"><b>28%</b> apunta a EMA</div></div></div>
 <div class="sb-note">Más de la mitad en TRL 5+ · el rango 10–50 L (Tramo 1) atiende directamente el segmento de demanda declarada.</div></figure><h3>El censo (Lilia Stubrin, ANII/Uruguay XXI, Oct 2025)</h3>
 <ul>
@@ -473,13 +847,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li>El rango <strong>10–50 L</strong> del Tramo 1 atiende directamente el segmento de demanda declarada.</li>
 </ul>
 <h3>El trabajo de campo (9 de 13 startups prioritarias contactadas)</h3>
-<p>Perfiles completos en <a href="2026-07-08-photonic-labs-biblia.md">Biblia §6</a>. Titulares:
-- <strong>Eywa Biotech</strong> — <strong>el product-market fit más claro.</strong> Psilocibina por biosíntesis (E. coli recombinante), hoy fragmentada en 3 facilities, topada por regulatoria en ATGen (recombinante + psilocibina Lista I no escalable en cowork), MSP les sugirió armar su propia planta. Necesita <strong>300 L GMP con downstream integrado, &lt;$1000/g</strong> → cae en <strong>Tramo 2 / V1</strong>. Overlap con <strong>Panambi</strong> (salud mental).
-- <strong>Xeptiva</strong> — ya produjo lote GMP industrial, sale de ronda en septiembre, <strong>ZF confirmado OK explícitamente</strong>.
-- <strong>KinzBio</strong> — primer fagoterapia en humanos LATAM; escala en 2–3 años.
-- <strong>Ardan Pharma</strong> — techo de precio <strong>$50K/100g en India</strong>; mencionó a <strong>Augusto Desuque</strong> (ex-Sartorius, quiere mudarse a Uruguay) como candidato técnico.
-- <strong>Nanogrow</strong> — USD 300K revenue, proyecta $750K, ronda seed $5M.
-- <strong>Guska</strong> — valida <strong>asesoría regulatoria como línea de servicio</strong>.</p>
+<p>Perfiles completos en <a href="2026-07-08-photonic-labs-biblia.md">Biblia §6</a>. Titulares:</p><ul><li><strong>Eywa Biotech</strong> — <strong>el product-market fit más claro.</strong> Psilocibina por biosíntesis (E. coli recombinante), hoy fragmentada en 3 facilities, topada por regulatoria en ATGen (recombinante + psilocibina Lista I no escalable en cowork), MSP les sugirió armar su propia planta. Necesita <strong>300 L GMP con downstream integrado, &lt;$1000/g</strong> → cae en <strong>Tramo 2 / V1</strong>. Overlap con <strong>Panambi</strong> (salud mental).</li><li><strong>Xeptiva</strong> — ya produjo lote GMP industrial, sale de ronda en septiembre, <strong>ZF confirmado OK explícitamente</strong>.</li><li><strong>KinzBio</strong> — primer fagoterapia en humanos LATAM; escala en 2–3 años.</li><li><strong>Ardan Pharma</strong> — techo de precio <strong>$50K/100g en India</strong>; mencionó a <strong>Augusto Desuque</strong> (ex-Sartorius, quiere mudarse a Uruguay) como candidato técnico.</li><li><strong>Nanogrow</strong> — USD 300K revenue, proyecta $750K, ronda seed $5M.</li><li><strong>Guska</strong> — valida <strong>asesoría regulatoria como línea de servicio</strong>.</li></ul>
 <h3>Los referentes / no-competencia</h3>
 <ul>
 <li><strong>ATGen</strong> — biotech más grande de Uruguay (170 empleados, incuba ~10 startups, biorreactor 300 L). <strong>NO es competencia:</strong> es un cowork self-service; su 300 L es inusable para biológicos con downstream pesado (todo dimensionado a 30 L). <strong>Valida a Photonic por contraste.</strong> Posible partner.</li>
@@ -664,12 +1032,16 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <p>Tiempos estimate-grade — se firman con la empresa de bioingeniería y el costeo real de Eleonora. Ingeniería 3–6m · obra 12–18m · calificación/validación 6m.</p>
 </blockquote>
 <hr /></article></section>
-<section class="view" data-view="s10"><article class="card wide"><h2 class="ch"><span class="cn">10</span> Economía del proyecto — modelo v3</h2><figure class="chart"><figcaption>Revenue proyectado — modelo v3 (escenario ZF)</figcaption>
+<section class="view" data-view="s10"><article class="card wide"><h2 class="ch"><span class="cn">10</span> Economía del proyecto — modelo v3</h2>
+<div class="grid-2">
+<figure class="chart"><figcaption>Revenue proyectado — modelo v3 (escenario ZF)</figcaption>
 <svg viewBox="0 0 520 190" role="img" aria-label="Revenue Y1 a Y6 hasta $3.83M">
 <line x1="34" y1="156" x2="486" y2="156" class="ax"/><rect x="49.1" y="142.9" width="45.2" height="13.1" rx="3" fill="var(--g)"/><text x="71.7" y="136.9" text-anchor="middle" class="cl">$0.43M</text><text x="71.7" y="171.0" text-anchor="middle" class="cx">Y1</text><rect x="124.4" y="128.6" width="45.2" height="27.4" rx="3" fill="var(--g)"/><text x="147.0" y="122.6" text-anchor="middle" class="cl">$0.90M</text><text x="147.0" y="171.0" text-anchor="middle" class="cx">Y2</text><rect x="199.7" y="107.2" width="45.2" height="48.8" rx="3" fill="var(--g)"/><text x="222.3" y="101.2" text-anchor="middle" class="cl">$1.60M</text><text x="222.3" y="171.0" text-anchor="middle" class="cx">Y3</text><rect x="275.1" y="82.8" width="45.2" height="73.2" rx="3" fill="var(--g)"/><text x="297.7" y="76.8" text-anchor="middle" class="cl">$2.40M</text><text x="297.7" y="171.0" text-anchor="middle" class="cx">Y4</text><rect x="350.4" y="61.5" width="45.2" height="94.5" rx="3" fill="var(--g)"/><text x="373.0" y="55.5" text-anchor="middle" class="cl">$3.10M</text><text x="373.0" y="171.0" text-anchor="middle" class="cx">Y5</text><rect x="425.7" y="39.2" width="45.2" height="116.8" rx="3" fill="var(--g)"/><text x="448.3" y="33.2" text-anchor="middle" class="cl">$3.83M</text><text x="448.3" y="171.0" text-anchor="middle" class="cx">Y6</text></svg></figure><figure class="chart"><figcaption>EBITDA — positivo en Y3 (escenario ZF gobernante)</figcaption>
 <svg viewBox="0 0 520 190" role="img" aria-label="EBITDA positivo desde el año 3">
 <line x1="34" y1="135.7" x2="486" y2="135.7" class="ax dash"/>
-<polyline points="34.0,145.8 124.4,138.7 214.8,107.5 305.2,89.9 395.6,69.6 486.0,44.2" fill="none" stroke="var(--ink3)" stroke-width="2"/><circle cx="34.0" cy="145.8" r="3.5" fill="var(--coral)"/><text x="34.0" y="137.8" text-anchor="middle" class="cl">-0.20M</text><text x="34.0" y="171.0" text-anchor="middle" class="cx">Y1</text><circle cx="124.4" cy="138.7" r="3.5" fill="var(--coral)"/><text x="124.4" y="130.7" text-anchor="middle" class="cl">-0.06M</text><text x="124.4" y="171.0" text-anchor="middle" class="cx">Y2</text><circle cx="214.8" cy="107.5" r="3.5" fill="var(--g)"/><text x="214.8" y="99.5" text-anchor="middle" class="cl">+0.55M</text><text x="214.8" y="171.0" text-anchor="middle" class="cx">Y3</text><circle cx="305.2" cy="89.9" r="3.5" fill="var(--g)"/><text x="305.2" y="81.9" text-anchor="middle" class="cl">+0.90M</text><text x="305.2" y="171.0" text-anchor="middle" class="cx">Y4</text><circle cx="395.6" cy="69.6" r="3.5" fill="var(--g)"/><text x="395.6" y="61.6" text-anchor="middle" class="cl">+1.30M</text><text x="395.6" y="171.0" text-anchor="middle" class="cx">Y5</text><circle cx="486.0" cy="44.2" r="3.5" fill="var(--g)"/><text x="486.0" y="36.2" text-anchor="middle" class="cl">+1.80M</text><text x="486.0" y="171.0" text-anchor="middle" class="cx">Y6</text></svg></figure><figure class="chart"><figcaption>Tiers de precio — 8 líneas · wet-lab (T0–T4) + in-silico (C1–C3)</figcaption>
+<polyline points="34.0,145.8 124.4,138.7 214.8,107.5 305.2,89.9 395.6,69.6 486.0,44.2" fill="none" stroke="var(--ink3)" stroke-width="2"/><circle cx="34.0" cy="145.8" r="3.5" fill="var(--coral)"/><text x="34.0" y="137.8" text-anchor="middle" class="cl">-0.20M</text><text x="34.0" y="171.0" text-anchor="middle" class="cx">Y1</text><circle cx="124.4" cy="138.7" r="3.5" fill="var(--coral)"/><text x="124.4" y="130.7" text-anchor="middle" class="cl">-0.06M</text><text x="124.4" y="171.0" text-anchor="middle" class="cx">Y2</text><circle cx="214.8" cy="107.5" r="3.5" fill="var(--g)"/><text x="214.8" y="99.5" text-anchor="middle" class="cl">+0.55M</text><text x="214.8" y="171.0" text-anchor="middle" class="cx">Y3</text><circle cx="305.2" cy="89.9" r="3.5" fill="var(--g)"/><text x="305.2" y="81.9" text-anchor="middle" class="cl">+0.90M</text><text x="305.2" y="171.0" text-anchor="middle" class="cx">Y4</text><circle cx="395.6" cy="69.6" r="3.5" fill="var(--g)"/><text x="395.6" y="61.6" text-anchor="middle" class="cl">+1.30M</text><text x="395.6" y="171.0" text-anchor="middle" class="cx">Y5</text><circle cx="486.0" cy="44.2" r="3.5" fill="var(--g)"/><text x="486.0" y="36.2" text-anchor="middle" class="cl">+1.80M</text><text x="486.0" y="171.0" text-anchor="middle" class="cx">Y6</text></svg></figure>
+</div>
+<figure class="chart"><figcaption>Tiers de precio — 8 líneas · wet-lab (T0–T4) + in-silico (C1–C3)</figcaption>
 <div class="tiers"><div class="tier-row"><span class="tier-t tier-g">T0</span><span class="tier-o">Analítica standalone — core de caja hoy</span><span class="tier-m"><span class="tier-bar" style="width:80%;background:var(--g)"></span></span><span class="tier-mv">Alto</span></div><div class="tier-row"><span class="tier-t tier-g">T1</span><span class="tier-o">Suscripción de infraestructura · $8–20K/mes</span><span class="tier-m"><span class="tier-bar" style="width:75%;background:var(--g)"></span></span><span class="tier-mv">~75%</span></div><div class="tier-row"><span class="tier-t tier-g">T2</span><span class="tier-o">EaaS por uso · $7K/run · $3.5K/session</span><span class="tier-m"><span class="tier-bar" style="width:88%;background:var(--g)"></span></span><span class="tier-mv">~88%</span></div><div class="tier-row"><span class="tier-t tier-g">T3</span><span class="tier-o">Servicios GMP + tech transfer · ~$45K/proy</span><span class="tier-m"><span class="tier-bar" style="width:68%;background:var(--g)"></span></span><span class="tier-mv">68%</span></div><div class="tier-row"><span class="tier-t tier-slate">T4</span><span class="tier-o">Capital + LOI</span><span class="tier-m"><span class="tier-bar" style="width:28%;background:var(--slate)"></span></span><span class="tier-mv">equity</span></div><div class="tier-row"><span class="tier-t tier-blue">C1</span><span class="tier-o">Digital twin · booster A+</span><span class="tier-m"><span class="tier-bar" style="width:85%;background:var(--blue)"></span></span><span class="tier-mv">~85%</span></div><div class="tier-row"><span class="tier-t tier-blue">C2</span><span class="tier-o">In-silico design · booster A+</span><span class="tier-m"><span class="tier-bar" style="width:85%;background:var(--blue)"></span></span><span class="tier-mv">~85%</span></div><div class="tier-row"><span class="tier-t tier-blue">C3</span><span class="tier-o">IP custody · booster A+ · recurrente</span><span class="tier-m"><span class="tier-bar" style="width:85%;background:var(--blue)"></span></span><span class="tier-mv">~85%</span></div></div></figure><blockquote>
 <p><strong>Usar SIEMPRE el modelo v3</strong> (<a href="../../../ventures/photonic-lab-financial-model-2026-07-v3.xlsx"><code>photonic-lab-financial-model-2026-07-v3.xlsx</code></a>). Los modelos de abril y v2 están superseded. Cifras completas en <a href="2026-07-08-photonic-labs-biblia.md">Biblia §8</a>.</p>
 <p><strong>Escenario gobernante = ZF</strong> (all-in day-one, canon 07-19). Las cifras NoZF/dual-entity abajo son <strong>históricas</strong> (trazabilidad del tradeoff), no ruta viva.</p>
@@ -720,10 +1092,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 </tbody>
 </table>
-<p><strong>Tres gates del modelo (fragilidades honestas, 07-06):</strong>
-1. <strong>LOIs sin firmar</strong> — demanda validada en campo pero sin compromiso en papel.
-2. <strong>CAPEX estimate-grade</strong> — precios de refurb-marketplace + 1 quote de Equipo Inox + estimados de obra/validación. <strong>Contingencia 30% &lt; overrun documentado 80%</strong> (Benten Biotech). Faltan quotes reales de obra, Equipo Inox, Sartorius/Cytiva. <strong>El costeo real de facility lo lidera Eleonora Scoseria</strong> (gate de decisión vigente 07-17 — ver <a href="#s13">§13</a>).
-3. <strong>OpEx caja negra</strong> — falta el build bottom-up de OpEx.</p>
+<p><strong>Tres gates del modelo (fragilidades honestas, 07-06):</strong></p><ol><li><strong>LOIs sin firmar</strong> — demanda validada en campo pero sin compromiso en papel.</li><li><strong>CAPEX estimate-grade</strong> — precios de refurb-marketplace + 1 quote de Equipo Inox + estimados de obra/validación. <strong>Contingencia 30% &lt; overrun documentado 80%</strong> (Benten Biotech). Faltan quotes reales de obra, Equipo Inox, Sartorius/Cytiva. <strong>El costeo real de facility lo lidera Eleonora Scoseria</strong> (gate de decisión vigente 07-17 — ver <a href="#s13">§13</a>).</li><li><strong>OpEx caja negra</strong> — falta el build bottom-up de OpEx.</li></ol>
 <blockquote>
 <p>Estos son los <strong>gates del modelo</strong> (fragilidades de la aritmética). Distintos de los <strong>gates de decisión vigentes</strong> — costeo real de facility (Eleonora) · commitment interno 5+ años — que están en <a href="#s13">§13</a>. (ZF ya se cerró: all-in day-one, canon 07-19.) El 14-07 el equipo reencuadró los gates como <strong>ciclo, no frenos</strong>.</p>
 </blockquote>
@@ -885,17 +1254,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 </tbody>
 </table>
-<p><strong>Decisiones vigentes (registro):</strong>
-- 🔒 <code>2026-07-19</code> — <strong>ZF all-in day-one = CANON permanente</strong> (cierra la reapertura del 07-04; retira outside-first/dual-entity y el framing de caminos A/A+/B; Camino B archivado). <strong>[Gastón · Type-1]</strong> → <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>
-- <code>2026-07-02</code> — Scope stand-alone (wet-lab I+D+GMP-ready; silicio/IA/quantum fuera del core). <strong>[Gastón]</strong>
-- <code>2026-07-02</code> — Modelo operativo = Modelo 3. <strong>[René]</strong>
-- <code>2026-07-07</code> — Descartar dirección landmark. <strong>[René]</strong> <em>(el framing de caminos A/A+/B que abría quedó retirado el 07-19)</em>
-- <code>2026-07-07</code> — Pre-incubación cierra; incubación comienza. <strong>[proposed]</strong>
-- <code>2026-06-23</code> — ZF all-in ratificada (Type-1); reabierta 07-04, <strong>re-cerrada definitivamente 07-19</strong>. <strong>[Gastón]</strong>
-- <code>2026-07-04</code> — "El Caso" reabrió ZF (outside-first → dual-entity) — <strong>cerrado 07-19 a favor de all-in-ZF</strong>. <strong>[histórico]</strong></p>
-<p><strong>Endgame — dos formulaciones:</strong>
-- <strong>Vigente (ratificado, Q2'26 LP report — Gastón, 30-jun-2026):</strong> lab de bioproducción GMP-tier operativo que sirve el white space regional, con estructura de capital consolidada across equity institucional, grants y compromisos de clientes.
-- <strong>DRAFT (propuesto 07-04 — pendiente de ratificación):</strong> Photonic Lab como primera <strong>facility integrada bio-scale-up + validación</strong> de la región — la capa faltante "del banco al lote validado" que ni Uruguay ni Argentina cubren — reteniendo IP científica en suelo regulado y convirtiendo el wet-lab en un motor de validación exportador vía el booster in-silico.</p>
+<p><strong>Decisiones vigentes (registro):</strong></p><ul><li>🔒 <code>2026-07-19</code> — <strong>ZF all-in day-one = CANON permanente</strong> (cierra la reapertura del 07-04; retira outside-first/dual-entity y el framing de caminos A/A+/B; Camino B archivado). <strong>[Gastón · Type-1]</strong> → <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a></li><li><code>2026-07-02</code> — Scope stand-alone (wet-lab I+D+GMP-ready; silicio/IA/quantum fuera del core). <strong>[Gastón]</strong></li><li><code>2026-07-02</code> — Modelo operativo = Modelo 3. <strong>[René]</strong></li><li><code>2026-07-07</code> — Descartar dirección landmark. <strong>[René]</strong> <em>(el framing de caminos A/A+/B que abría quedó retirado el 07-19)</em></li><li><code>2026-07-07</code> — Pre-incubación cierra; incubación comienza. <strong>[proposed]</strong></li><li><code>2026-06-23</code> — ZF all-in ratificada (Type-1); reabierta 07-04, <strong>re-cerrada definitivamente 07-19</strong>. <strong>[Gastón]</strong></li><li><code>2026-07-04</code> — "El Caso" reabrió ZF (outside-first → dual-entity) — <strong>cerrado 07-19 a favor de all-in-ZF</strong>. <strong>[histórico]</strong></li></ul>
+<p><strong>Endgame — dos formulaciones:</strong></p><ul><li><strong>Vigente (ratificado, Q2'26 LP report — Gastón, 30-jun-2026):</strong> lab de bioproducción GMP-tier operativo que sirve el white space regional, con estructura de capital consolidada across equity institucional, grants y compromisos de clientes.</li><li><strong>DRAFT (propuesto 07-04 — pendiente de ratificación):</strong> Photonic Lab como primera <strong>facility integrada bio-scale-up + validación</strong> de la región — la capa faltante "del banco al lote validado" que ni Uruguay ni Argentina cubren — reteniendo IP científica en suelo regulado y convirtiendo el wet-lab en un motor de validación exportador vía el booster in-silico.</li></ul>
 <hr /></article></section>
 <section class="view" data-view="s12"><article class="card wide"><h2 class="ch"><span class="cn">12</span> Sincronización y discrepancias</h2><blockquote>
 <p><strong>El núcleo del ejercicio de consolidación.</strong> Regla: <strong>prevalece la definición más reciente</strong> (decisiones julio 2026 + los dos anclas). Cada fila indica qué decía la pre-incubación, qué dice el canon actual, y qué hacer.</p>
@@ -1183,7 +1543,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Notion (SSOT vivo, plan 17-jul)</strong> — 5 secciones: <strong>Docs Library · Gates · Decision Log · Entregables · Partners</strong>. Es donde vive el <strong>seguimiento vivo</strong> (gates abiertos, log de decisiones, estado de partners, SOW %). <strong>Esta wiki no lo reproduce</strong> — es la <strong>referencia narrativa durable + KPIs</strong>; linkea a Notion para el estado del día.</li>
 </ul>
 <hr /></article></section>
-<section class="view" data-view="s15"><article class="card wide"><h2 class="ch"><span class="cn">15</span> Glosario</h2><blockquote>
+<section class="view" data-view="s15"><article class="card wide dense"><h2 class="ch"><span class="cn">15</span> Glosario</h2><blockquote>
 <p>Términos, siglas y nombres del proyecto — con la sincronización pre-incubación → canon marcada donde aplica.</p>
 </blockquote>
 <h3>Nombres y entidades</h3>
@@ -1209,19 +1569,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </ul>
 <h3>Caminos y modelos</h3>
 <blockquote>
-<p>⚠️ <strong>El framing "Camino A / A+ / B" queda RETIRADO (canon 07-19).</strong> Photonic es un wet-lab stand-alone GMP-ready (T0 analítica core + in-silico booster · quantum periférico) dentro de ZF. Los términos se conservan abajo solo como referencia histórica.
-- <strong>Camino A</strong> <em>(histórico)</em> — wet-lab lean (Modelo 3, sin la capa in-silico). Era el "piso de caja".
-- <strong>Camino A+</strong> <em>(histórico → es el modelo settled)</em> — wet-lab + capa in-silico (C1–C3) como booster. Lo que hoy ES Photonic, sin el label.
-- <strong>Camino B</strong> <em>(archivado)</em> — vehículo lab+fondo (modelo SOSV/IndieBio). Ambición patrimonial futura y separada. Gate Gastón — reabrir solo con funder comprometido.
-- <strong>Landmark / edificio-statement</strong> — ⚠️ dirección <strong>descartada</strong> (07-07). Infra-activo capex-heavy tipo Bodega Garzón.
-- <strong>Modelo 0–7 (+5B)</strong> — los 8+ modelos de infraestructura evaluados (de plataforma base transversal a CMO regional completo). El elegido es el <strong>Modelo 3</strong>.
-- <strong>Modelo 3 — I+D + GMP-Ready</strong> — infraestructura de transición evolutiva: GMP-compatible por diseño sin certificación plena. El modelo operativo de entrada.
-- <strong>Modelo 4 — MVP GMP</strong> — célula GMP pequeña para lotes clínicos tempranos. = V1.
-- <strong>Modelo 5 — Híbrido</strong> — I+D + MVP GMP + anchor tenant. Objetivo de largo plazo. = V2.
-- <strong>MVP · V1 · V2</strong> — trayectoria de construcción: MVP (Modelo 3 / Tramo 1) → V1 (Modelo 4 / Tramo 2) → V2 (Modelo 5 Híbrido).
-- <strong>Tramo 0</strong> — ⚠️ <em>término de pre-incubación</em> para la capa computacional simultánea. Reencuadrado como <strong>booster A+</strong> (no un tramo con inversión propia).
-- <strong>Tramo 1</strong> — escala física 10–50 L (el MVP).
-- <strong>Tramo 2</strong> — escala física 200–300 L scale-up (V1). Aquí cae Eywa.</p>
+<p>⚠️ <strong>El framing "Camino A / A+ / B" queda RETIRADO (canon 07-19).</strong> Photonic es un wet-lab stand-alone GMP-ready (T0 analítica core + in-silico booster · quantum periférico) dentro de ZF. Los términos se conservan abajo solo como referencia histórica.</p><ul><li><strong>Camino A</strong> <em>(histórico)</em> — wet-lab lean (Modelo 3, sin la capa in-silico). Era el "piso de caja".</li><li><strong>Camino A+</strong> <em>(histórico → es el modelo settled)</em> — wet-lab + capa in-silico (C1–C3) como booster. Lo que hoy ES Photonic, sin el label.</li><li><strong>Camino B</strong> <em>(archivado)</em> — vehículo lab+fondo (modelo SOSV/IndieBio). Ambición patrimonial futura y separada. Gate Gastón — reabrir solo con funder comprometido.</li><li><strong>Landmark / edificio-statement</strong> — ⚠️ dirección <strong>descartada</strong> (07-07). Infra-activo capex-heavy tipo Bodega Garzón.</li><li><strong>Modelo 0–7 (+5B)</strong> — los 8+ modelos de infraestructura evaluados (de plataforma base transversal a CMO regional completo). El elegido es el <strong>Modelo 3</strong>.</li><li><strong>Modelo 3 — I+D + GMP-Ready</strong> — infraestructura de transición evolutiva: GMP-compatible por diseño sin certificación plena. El modelo operativo de entrada.</li><li><strong>Modelo 4 — MVP GMP</strong> — célula GMP pequeña para lotes clínicos tempranos. = V1.</li><li><strong>Modelo 5 — Híbrido</strong> — I+D + MVP GMP + anchor tenant. Objetivo de largo plazo. = V2.</li><li><strong>MVP · V1 · V2</strong> — trayectoria de construcción: MVP (Modelo 3 / Tramo 1) → V1 (Modelo 4 / Tramo 2) → V2 (Modelo 5 Híbrido).</li><li><strong>Tramo 0</strong> — ⚠️ <em>término de pre-incubación</em> para la capa computacional simultánea. Reencuadrado como <strong>booster A+</strong> (no un tramo con inversión propia).</li><li><strong>Tramo 1</strong> — escala física 10–50 L (el MVP).</li><li><strong>Tramo 2</strong> — escala física 200–300 L scale-up (V1). Aquí cae Eywa.</li></ul>
 </blockquote>
 <h3>Técnicos (bioproceso)</h3>
 <ul>
@@ -1281,13 +1629,21 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
  <div class="view pane" data-view="biblia"><div class="pane-note">📄 Biblia — snapshot 2026-07-08 (data dura). Para el canon estructural vigente (all-in ZF, caminos retirados) prevalece la <a data-view="home" style="cursor:pointer">Wiki</a>.</div><iframe id="f-biblia" title="Biblia del Proyecto" srcdoc="<!DOCTYPE html><html lang=&quot;es&quot;><head><meta charset=&quot;UTF-8&quot;>
 <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
 <title>Photonic Labs — Biblia</title><style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;family=IBM+Plex+Serif:ital@0;1&amp;display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
---paper:#ffffff;--off:#f4f4f5;--rule:#e4e4e7;--rule2:#d4d4d8;
---text:#18181b;--text2:#3f3f46;--text3:#a1a1aa;
---acc:#0a8c5a;--acc-lt:#e6f5ee;--acc-dk:#065c3a;
---amber:#b06a00;--amb-lt:#fdf3e3;--coral:#c0392b;--blue:#1a4fa0;--slate:#3a4a58;
---sans:&quot;Inter&quot;,-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Helvetica,Arial,sans-serif;--mono:&quot;IBM Plex Mono&quot;,&quot;SF Mono&quot;,ui-monospace,Menlo,monospace;}
+color-scheme:light dark;
+--paper:oklch(96.5% 0.012 85);--off:oklch(93.5% 0.016 82);--rule:oklch(84% 0.014 80);--rule2:oklch(79% 0.016 80);
+--text:oklch(20% 0.024 245);--text2:oklch(34% 0.022 245);--text3:oklch(58% 0.015 248);
+--acc:oklch(53% 0.125 165);--acc-lt:oklch(93% 0.04 165);--acc-dk:oklch(43% 0.11 168);
+--amber:oklch(64% 0.125 70);--amb-lt:oklch(94% 0.035 75);--coral:oklch(56% 0.16 30);--blue:oklch(52% 0.115 245);--slate:oklch(50% 0.03 250);
+--sans:&quot;IBM Plex Sans&quot;,system-ui,-apple-system,sans-serif;--mono:&quot;IBM Plex Mono&quot;,ui-monospace,Menlo,monospace;}
+@media(prefers-color-scheme:dark){:root{
+color-scheme:light dark;
+--paper:oklch(15% 0.014 250);--off:oklch(18.5% 0.015 250);--rule:oklch(30% 0.018 250);--rule2:oklch(37% 0.02 250);
+--text:oklch(92% 0.014 85);--text2:oklch(76% 0.014 85);--text3:oklch(58% 0.014 85);
+--acc:oklch(68% 0.13 165);--acc-lt:oklch(30% 0.055 165);--acc-dk:oklch(74% 0.12 167);
+--amber:oklch(75% 0.12 72);--amb-lt:oklch(31% 0.05 75);--coral:oklch(68% 0.15 30);--blue:oklch(68% 0.12 245);--slate:oklch(66% 0.03 250);}}
 html{font-size:15px;scroll-behavior:smooth}
 body{font-family:var(--sans);background:var(--paper);color:var(--text2);line-height:1.62;-webkit-font-smoothing:antialiased}
 .doc{max-width:960px;margin:0 auto;padding:34px 30px 90px}
@@ -2322,15 +2678,24 @@ document.querySelectorAll('table').forEach(function(t){
 <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
 <title>Photonic Labs — Mapa de Relaciones y Flujos</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@300;400;500;600;700&amp;display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
---paper:#ffffff;--off:#f4f4f5;--rule:#e4e4e7;--rule2:#d4d4d8;
---text:#18181b;--text2:#3f3f46;--text3:#a1a1aa;
---acc:#0a8c5a;--acc-lt:#e6f5ee;--acc-dk:#065c3a;
---amber:#b06a00;--amb-lt:#fdf3e3;--coral:#c0392b;--cor-lt:#fdecea;
---blue:#1a4fa0;--blu-lt:#e8effa;--slate:#3a4a58;--slt-lt:#edf1f5;
---sans:&quot;Inter&quot;,-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Helvetica,Arial,sans-serif;--radius:8px;--max:1140px;
+color-scheme:light dark;
+--paper:oklch(96.5% 0.012 85);--off:oklch(93.5% 0.016 82);--rule:oklch(84% 0.014 80);--rule2:oklch(79% 0.016 80);
+--text:oklch(20% 0.024 245);--text2:oklch(34% 0.022 245);--text3:oklch(58% 0.015 248);
+--acc:oklch(53% 0.125 165);--acc-lt:oklch(93% 0.04 165);--acc-dk:oklch(43% 0.11 168);
+--amber:oklch(64% 0.125 70);--amb-lt:oklch(94% 0.035 75);--coral:oklch(56% 0.16 30);--cor-lt:oklch(93% 0.04 30);
+--blue:oklch(52% 0.115 245);--blu-lt:oklch(93% 0.035 245);--slate:oklch(50% 0.03 250);--slt-lt:oklch(92% 0.015 250);
+--sans:&quot;IBM Plex Sans&quot;,system-ui,-apple-system,sans-serif;--radius:8px;--max:1140px;
 }
+@media(prefers-color-scheme:dark){:root{
+color-scheme:light dark;
+--paper:oklch(15% 0.014 250);--off:oklch(18.5% 0.015 250);--rule:oklch(30% 0.018 250);--rule2:oklch(37% 0.02 250);
+--text:oklch(92% 0.014 85);--text2:oklch(76% 0.014 85);--text3:oklch(58% 0.014 85);
+--acc:oklch(68% 0.13 165);--acc-lt:oklch(30% 0.055 165);--acc-dk:oklch(74% 0.12 167);
+--amber:oklch(75% 0.12 72);--amb-lt:oklch(31% 0.05 75);--coral:oklch(68% 0.15 30);--cor-lt:oklch(30% 0.06 30);
+--blue:oklch(68% 0.12 245);--blu-lt:oklch(30% 0.05 245);--slate:oklch(66% 0.03 250);--slt-lt:oklch(28% 0.02 250);}}
 html{font-size:15px}
 body{font-family:var(--sans);font-weight:400;background:var(--paper);color:var(--text2);line-height:1.55;-webkit-font-smoothing:antialiased}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 34px 70px}
@@ -2361,7 +2726,7 @@ svg{display:block}
 .svg-min{min-width:720px}
 /* tri columns — 3 estratos (T0 core / in-silico booster / quantum periférico) */
 .tri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 6px}
-.col{border:1px solid var(--rule2);border-radius:var(--radius);overflow:hidden;background:#f4f4f5}
+.col{border:1px solid var(--rule2);border-radius:var(--radius);overflow:hidden;background:light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250))}
 .col.aplus{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
 .col.b{border-color:var(--slate)}
 .col-h{padding:12px 15px;border-bottom:1.5px solid var(--text)}
@@ -2384,27 +2749,27 @@ svg{display:block}
 .band{display:grid;grid-template-columns:150px 1fr;gap:8px;align-items:stretch}
 .band .lbl{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:9px 11px;border-radius:var(--radius);display:flex;align-items:center;line-height:1.25}
 .band .cells{display:flex;flex-wrap:wrap;gap:5px}
-.band .cells .z{flex:1;min-width:90px;font-size:10.5px;padding:8px 9px;border-radius:var(--radius);background:#f4f4f5;border:1px solid var(--rule2);color:var(--text);line-height:1.3}
-.flowbar{display:flex;align-items:center;justify-content:space-between;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-dk);background:var(--acc-lt);border:1px solid #9fd3bd;border-radius:var(--radius);padding:6px 12px;margin:2px 0}
-.flowbar.res{color:var(--slate);background:var(--slt-lt);border-color:#c3cfd8}
+.band .cells .z{flex:1;min-width:90px;font-size:10.5px;padding:8px 9px;border-radius:var(--radius);background:light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250));border:1px solid var(--rule2);color:var(--text);line-height:1.3}
+.flowbar{display:flex;align-items:center;justify-content:space-between;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-dk);background:var(--acc-lt);border:1px solid light-dark(oklch(83% 0.06 165),oklch(46% 0.06 165));border-radius:var(--radius);padding:6px 12px;margin:2px 0}
+.flowbar.res{color:var(--slate);background:var(--slt-lt);border-color:light-dark(oklch(82% 0.03 250),oklch(46% 0.03 250))}
 /* A->D steps */
 .steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule2);border:1px solid var(--rule2);border-radius:var(--radius);overflow:hidden;margin:8px 0}
-.steps4>div{background:#f4f4f5;padding:13px 13px}
+.steps4>div{background:light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250));padding:13px 13px}
 .steps4 .pv{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc-dk)}
 .steps4 .pn{font-size:14px;font-weight:700;color:var(--text);margin-top:3px;letter-spacing:-.01em}
 .steps4 .pw{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
 .steps4 .pd{font-size:11px;color:var(--text2);margin-top:7px;line-height:1.45}
 .build{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}
-.bcard{border:1px solid var(--rule2);border-left:3px solid var(--acc);border-radius:var(--radius);padding:11px 13px;background:#f4f4f5}
+.bcard{border:1px solid var(--rule2);border-left:3px solid var(--acc);border-radius:var(--radius);padding:11px 13px;background:light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250))}
 .bcard.v1{border-left-color:var(--amber)}
 .bcard.v2{border-left-color:var(--slate)}
 .bcard .bt{font-size:12.5px;font-weight:700;color:var(--text)}
 .bcard .bs{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
 .bcard .bd{font-size:11px;color:var(--text2);margin-top:6px;line-height:1.45}
-.note{background:var(--amb-lt);border:1px solid #e6c99a;border-radius:var(--radius);padding:12px 16px;margin:16px 0 0;font-size:12px}
+.note{background:var(--amb-lt);border:1px solid light-dark(oklch(85% 0.07 75),oklch(52% 0.07 75));border-radius:var(--radius);padding:12px 16px;margin:16px 0 0;font-size:12px}
 .note b{color:var(--amber)}
-.note.grn{background:var(--acc-lt);border-color:#9fd3bd}.note.grn b{color:var(--acc-dk)}
-.orth{display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:11.5px;background:var(--blu-lt);border:1px solid #b9cbe8;border-radius:var(--radius);padding:10px 14px;color:var(--text2)}
+.note.grn{background:var(--acc-lt);border-color:light-dark(oklch(83% 0.06 165),oklch(46% 0.06 165))}.note.grn b{color:var(--acc-dk)}
+.orth{display:flex;align-items:center;gap:10px;margin:12px 0 0;font-size:11.5px;background:var(--blu-lt);border:1px solid light-dark(oklch(82% 0.06 245),oklch(48% 0.06 245));border-radius:var(--radius);padding:10px 14px;color:var(--text2)}
 .orth b{color:var(--blue)}
 .foot{padding:20px 0 0;font-size:10px;color:var(--text3);letter-spacing:.03em;line-height:1.7}
 .foot a{color:var(--acc-dk)}
@@ -2480,19 +2845,19 @@ svg{display:block}
     <div class=&quot;sec-head&quot;><span class=&quot;sec-num&quot;>02</span><span class=&quot;sec-title&quot;>Mapa de <b>relaciones</b> — el ecosistema</span></div>
     <p class=&quot;sec-sub&quot;>Photonic Labs en el centro; cinco constelaciones de actores. Las líneas indican el tipo de relación: financia, aloja/regula, asesora, compra, o sirve de referente.</p>
     <div class=&quot;legend&quot;>
-      <span><i class=&quot;dot&quot; style=&quot;background:#0a8c5a&quot;></i> Capital &amp;amp; grants</span>
-      <span><i class=&quot;dot&quot; style=&quot;background:#1a4fa0&quot;></i> Institucional / sitio</span>
-      <span><i class=&quot;dot&quot; style=&quot;background:#b06a00&quot;></i> Advisory &amp;amp; tecnología</span>
-      <span><i class=&quot;dot&quot; style=&quot;background:#3a4a58&quot;></i> Clientes / demanda</span>
-      <span><i class=&quot;dot&quot; style=&quot;background:#a1a1aa&quot;></i> Referentes (no-competencia)</span>
+      <span><i class=&quot;dot&quot; style=&quot;background:light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;></i> Capital &amp;amp; grants</span>
+      <span><i class=&quot;dot&quot; style=&quot;background:light-dark(oklch(52% 0.115 245),oklch(68% 0.12 245))&quot;></i> Institucional / sitio</span>
+      <span><i class=&quot;dot&quot; style=&quot;background:light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72))&quot;></i> Advisory &amp;amp; tecnología</span>
+      <span><i class=&quot;dot&quot; style=&quot;background:light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot;></i> Clientes / demanda</span>
+      <span><i class=&quot;dot&quot; style=&quot;background:light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot;></i> Referentes (no-competencia)</span>
     </div>
     <div class=&quot;scroll&quot;>
     <svg class=&quot;svg-min&quot; viewBox=&quot;0 0 1000 660&quot; width=&quot;100%&quot; role=&quot;img&quot; aria-label=&quot;Mapa de relaciones del ecosistema Photonic Labs&quot;>
       <defs>
-        <marker id=&quot;ar&quot; markerWidth=&quot;8&quot; markerHeight=&quot;8&quot; refX=&quot;6&quot; refY=&quot;3&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L6,3 L0,6 Z&quot; fill=&quot;#a1a1aa&quot;/></marker>
+        <marker id=&quot;ar&quot; markerWidth=&quot;8&quot; markerHeight=&quot;8&quot; refX=&quot;6&quot; refY=&quot;3&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L6,3 L0,6 Z&quot; fill=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot;/></marker>
       </defs>
       <!-- edges hub<->clusters -->
-      <g stroke=&quot;#d4d4d8&quot; stroke-width=&quot;1.4&quot; fill=&quot;none&quot;>
+      <g stroke=&quot;light-dark(oklch(80% 0.016 80),oklch(37% 0.02 250))&quot; stroke-width=&quot;1.4&quot; fill=&quot;none&quot;>
         <line x1=&quot;500&quot; y1=&quot;330&quot; x2=&quot;210&quot; y2=&quot;120&quot;/>
         <line x1=&quot;500&quot; y1=&quot;330&quot; x2=&quot;800&quot; y2=&quot;120&quot;/>
         <line x1=&quot;500&quot; y1=&quot;330&quot; x2=&quot;150&quot; y2=&quot;360&quot;/>
@@ -2500,7 +2865,7 @@ svg{display:block}
         <line x1=&quot;500&quot; y1=&quot;330&quot; x2=&quot;500&quot; y2=&quot;580&quot;/>
       </g>
       <!-- edge labels -->
-      <g font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#a1a1aa&quot; text-anchor=&quot;middle&quot;>
+      <g font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot; text-anchor=&quot;middle&quot;>
         <text x=&quot;330&quot; y=&quot;212&quot; transform=&quot;rotate(-36 330 212)&quot;>financia</text>
         <text x=&quot;675&quot; y=&quot;212&quot; transform=&quot;rotate(36 675 212)&quot;>aloja · regula · promueve</text>
         <text x=&quot;300&quot; y=&quot;333&quot;>asesora + potencia</text>
@@ -2510,58 +2875,58 @@ svg{display:block}
 
       <!-- HUB -->
       <g>
-        <rect x=&quot;392&quot; y=&quot;286&quot; width=&quot;216&quot; height=&quot;90&quot; rx=&quot;6&quot; fill=&quot;#18181b&quot;/>
+        <rect x=&quot;392&quot; y=&quot;286&quot; width=&quot;216&quot; height=&quot;90&quot; rx=&quot;6&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;/>
         <text x=&quot;500&quot; y=&quot;318&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;17&quot; font-weight=&quot;700&quot; fill=&quot;#fff&quot;>PHOTONIC LABS</text>
-        <text x=&quot;500&quot; y=&quot;338&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;#ded3bd&quot;>Wet-lab GMP-ready · Modelo 3</text>
-        <text x=&quot;500&quot; y=&quot;356&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;#7fd0a8&quot;>+ capa computacional (A+ booster)</text>
+        <text x=&quot;500&quot; y=&quot;338&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;light-dark(oklch(84% 0.03 85),oklch(35% 0.02 90))&quot;>Wet-lab GMP-ready · Modelo 3</text>
+        <text x=&quot;500&quot; y=&quot;356&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;light-dark(oklch(80% 0.09 165),oklch(52% 0.09 165))&quot;>+ capa computacional (A+ booster)</text>
       </g>
 
       <!-- Cluster: Capital (top-left) -->
       <g>
-        <rect x=&quot;40&quot; y=&quot;40&quot; width=&quot;300&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;#e6f5ee&quot; stroke=&quot;#0a8c5a&quot; stroke-width=&quot;1.3&quot;/>
-        <text x=&quot;56&quot; y=&quot;62&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#065c3a&quot; letter-spacing=&quot;1&quot;>CAPITAL &amp;amp; GRANTS</text>
-        <text x=&quot;56&quot; y=&quot;84&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>ANII</tspan> — 70% no-reemb. (Implem. Innovación)</text>
-        <text x=&quot;56&quot; y=&quot;102&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>BID Lab</tspan> — vía ecosistema (no VC directo)</text>
-        <text x=&quot;56&quot; y=&quot;120&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Impact VC</tspan> · <tspan font-weight=&quot;700&quot;>BOTH / Manantial.vc</tspan></text>
-        <text x=&quot;56&quot; y=&quot;138&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Cornerstone</tspan> (USD 2–3M) · soberano (B)</text>
+        <rect x=&quot;40&quot; y=&quot;40&quot; width=&quot;300&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165))&quot; stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot; stroke-width=&quot;1.3&quot;/>
+        <text x=&quot;56&quot; y=&quot;62&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(43% 0.11 168),oklch(74% 0.12 167))&quot; letter-spacing=&quot;1&quot;>CAPITAL &amp;amp; GRANTS</text>
+        <text x=&quot;56&quot; y=&quot;84&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>ANII</tspan> — 70% no-reemb. (Implem. Innovación)</text>
+        <text x=&quot;56&quot; y=&quot;102&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>BID Lab</tspan> — vía ecosistema (no VC directo)</text>
+        <text x=&quot;56&quot; y=&quot;120&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Impact VC</tspan> · <tspan font-weight=&quot;700&quot;>BOTH / Manantial.vc</tspan></text>
+        <text x=&quot;56&quot; y=&quot;138&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Cornerstone</tspan> (USD 2–3M) · soberano (B)</text>
       </g>
 
       <!-- Cluster: Institucional (top-right) -->
       <g>
-        <rect x=&quot;660&quot; y=&quot;40&quot; width=&quot;300&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;#e8effa&quot; stroke=&quot;#1a4fa0&quot; stroke-width=&quot;1.3&quot;/>
-        <text x=&quot;676&quot; y=&quot;62&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#1a4fa0&quot; letter-spacing=&quot;1&quot;>INSTITUCIONAL / SITIO</text>
-        <text x=&quot;676&quot; y=&quot;84&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Parque de las Ciencias</tspan> (ZF · Canelones)</text>
-        <text x=&quot;676&quot; y=&quot;102&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Uruguay XXI</tspan> (Cristina Montero) · <tspan font-weight=&quot;700&quot;>MSP</tspan></text>
-        <text x=&quot;676&quot; y=&quot;120&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>LATU</tspan> (stand biotech Ago–Sep) · <tspan font-weight=&quot;700&quot;>Presidencia</tspan></text>
-        <text x=&quot;676&quot; y=&quot;138&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;>Empresa de <tspan font-weight=&quot;700&quot;>bioingeniería</tspan> (ejecuta B/C)</text>
+        <rect x=&quot;660&quot; y=&quot;40&quot; width=&quot;300&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;light-dark(oklch(93% 0.035 245),oklch(30% 0.05 245))&quot; stroke=&quot;light-dark(oklch(52% 0.115 245),oklch(68% 0.12 245))&quot; stroke-width=&quot;1.3&quot;/>
+        <text x=&quot;676&quot; y=&quot;62&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(52% 0.115 245),oklch(68% 0.12 245))&quot; letter-spacing=&quot;1&quot;>INSTITUCIONAL / SITIO</text>
+        <text x=&quot;676&quot; y=&quot;84&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Parque de las Ciencias</tspan> (ZF · Canelones)</text>
+        <text x=&quot;676&quot; y=&quot;102&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Uruguay XXI</tspan> (Cristina Montero) · <tspan font-weight=&quot;700&quot;>MSP</tspan></text>
+        <text x=&quot;676&quot; y=&quot;120&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>LATU</tspan> (stand biotech Ago–Sep) · <tspan font-weight=&quot;700&quot;>Presidencia</tspan></text>
+        <text x=&quot;676&quot; y=&quot;138&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Empresa de <tspan font-weight=&quot;700&quot;>bioingeniería</tspan> (ejecuta B/C)</text>
       </g>
 
       <!-- Cluster: Advisory &amp; tech (left) -->
       <g>
-        <rect x=&quot;20&quot; y=&quot;300&quot; width=&quot;252&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;#fdf3e3&quot; stroke=&quot;#b06a00&quot; stroke-width=&quot;1.3&quot;/>
-        <text x=&quot;36&quot; y=&quot;322&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#b06a00&quot; letter-spacing=&quot;1&quot;>ADVISORY &amp;amp; TECNOLOGÍA</text>
-        <text x=&quot;36&quot; y=&quot;344&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Qualia+</tspan> — Alejandro San Juan</text>
-        <text x=&quot;36&quot; y=&quot;362&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;>+ JEC (AmegaLabs, ex-CAB) · GMP</text>
-        <text x=&quot;36&quot; y=&quot;384&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>TQA / IonQ</tspan> — cómputo (booster A+)</text>
-        <text x=&quot;36&quot; y=&quot;402&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;>Eleonora Scoseria (single-use) · Equipo Inox</text>
+        <rect x=&quot;20&quot; y=&quot;300&quot; width=&quot;252&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;light-dark(oklch(94% 0.035 75),oklch(31% 0.05 75))&quot; stroke=&quot;light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72))&quot; stroke-width=&quot;1.3&quot;/>
+        <text x=&quot;36&quot; y=&quot;322&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72))&quot; letter-spacing=&quot;1&quot;>ADVISORY &amp;amp; TECNOLOGÍA</text>
+        <text x=&quot;36&quot; y=&quot;344&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Qualia+</tspan> — Alejandro San Juan</text>
+        <text x=&quot;36&quot; y=&quot;362&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>+ JEC (AmegaLabs, ex-CAB) · GMP</text>
+        <text x=&quot;36&quot; y=&quot;384&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>TQA / IonQ</tspan> — cómputo (booster A+)</text>
+        <text x=&quot;36&quot; y=&quot;402&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Eleonora Scoseria (single-use) · Equipo Inox</text>
       </g>
 
       <!-- Cluster: Clientes (right) -->
       <g>
-        <rect x=&quot;728&quot; y=&quot;300&quot; width=&quot;252&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;#edf1f5&quot; stroke=&quot;#3a4a58&quot; stroke-width=&quot;1.3&quot;/>
-        <text x=&quot;744&quot; y=&quot;322&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#3a4a58&quot; letter-spacing=&quot;1&quot;>CLIENTES / DEMANDA</text>
-        <text x=&quot;744&quot; y=&quot;344&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Eywa</tspan> — PMF más claro (V1 · 300 L)</text>
-        <text x=&quot;744&quot; y=&quot;362&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Xeptiva</tspan> (ZF ✅) · <tspan font-weight=&quot;700&quot;>KinzBio</tspan> · <tspan font-weight=&quot;700&quot;>Nanogrow</tspan></text>
-        <text x=&quot;744&quot; y=&quot;384&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Guska</tspan> (regulatoria) · <tspan font-weight=&quot;700&quot;>Ardan</tspan> ($50K/100g)</text>
-        <text x=&quot;744&quot; y=&quot;402&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;>Pasteur / LAB+ (Scaffold, LoCBio, B4RNA)</text>
+        <rect x=&quot;728&quot; y=&quot;300&quot; width=&quot;252&quot; height=&quot;118&quot; rx=&quot;5&quot; fill=&quot;light-dark(oklch(92% 0.015 250),oklch(28% 0.02 250))&quot; stroke=&quot;light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot; stroke-width=&quot;1.3&quot;/>
+        <text x=&quot;744&quot; y=&quot;322&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot; letter-spacing=&quot;1&quot;>CLIENTES / DEMANDA</text>
+        <text x=&quot;744&quot; y=&quot;344&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Eywa</tspan> — PMF más claro (V1 · 300 L)</text>
+        <text x=&quot;744&quot; y=&quot;362&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Xeptiva</tspan> (ZF ✅) · <tspan font-weight=&quot;700&quot;>KinzBio</tspan> · <tspan font-weight=&quot;700&quot;>Nanogrow</tspan></text>
+        <text x=&quot;744&quot; y=&quot;384&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Guska</tspan> (regulatoria) · <tspan font-weight=&quot;700&quot;>Ardan</tspan> ($50K/100g)</text>
+        <text x=&quot;744&quot; y=&quot;402&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Pasteur / LAB+ (Scaffold, LoCBio, B4RNA)</text>
       </g>
 
       <!-- Cluster: Referentes (bottom) -->
       <g>
-        <rect x=&quot;330&quot; y=&quot;560&quot; width=&quot;340&quot; height=&quot;80&quot; rx=&quot;5&quot; fill=&quot;#efe9dc&quot; stroke=&quot;#a1a1aa&quot; stroke-width=&quot;1.3&quot;/>
-        <text x=&quot;346&quot; y=&quot;582&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#6f6656&quot; letter-spacing=&quot;1&quot;>REFERENTES (NO-COMPETENCIA)</text>
-        <text x=&quot;346&quot; y=&quot;604&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>ATGen</tspan> (cowork 300 L, downstream a 30 L)</text>
-        <text x=&quot;346&quot; y=&quot;622&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;#18181b&quot;><tspan font-weight=&quot;700&quot;>Loci Labs</tspan> (AR) · PCTP · ORT/CBI · mAbxience</text>
+        <rect x=&quot;330&quot; y=&quot;560&quot; width=&quot;340&quot; height=&quot;80&quot; rx=&quot;5&quot; fill=&quot;light-dark(oklch(93% 0.02 85),oklch(21% 0.02 250))&quot; stroke=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot; stroke-width=&quot;1.3&quot;/>
+        <text x=&quot;346&quot; y=&quot;582&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(48% 0.02 85),oklch(66% 0.02 85))&quot; letter-spacing=&quot;1&quot;>REFERENTES (NO-COMPETENCIA)</text>
+        <text x=&quot;346&quot; y=&quot;604&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>ATGen</tspan> (cowork 300 L, downstream a 30 L)</text>
+        <text x=&quot;346&quot; y=&quot;622&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;11.5&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;><tspan font-weight=&quot;700&quot;>Loci Labs</tspan> (AR) · PCTP · ORT/CBI · mAbxience</text>
       </g>
     </svg>
     </div>
@@ -2575,31 +2940,31 @@ svg{display:block}
     <div class=&quot;flowbar&quot;><span>▶ Entrada materiales</span><span>Flujo unidireccional →→→</span><span>Producto ▶</span></div>
     <div class=&quot;bands&quot;>
       <div class=&quot;band&quot;>
-        <div class=&quot;lbl&quot; style=&quot;background:#fdf3e3;color:#b06a00;border:1px solid #e6c99a&quot;>Logística / almacenes</div>
+        <div class=&quot;lbl&quot; style=&quot;background:light-dark(oklch(94% 0.035 75),oklch(31% 0.05 75));color:light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72));border:1px solid light-dark(oklch(85% 0.07 75),oklch(52% 0.07 75))&quot;>Logística / almacenes</div>
         <div class=&quot;cells&quot;>
-          <div class=&quot;z&quot;>Dep. materias primas</div><div class=&quot;z&quot;>Recepción / descarga</div><div class=&quot;z&quot;>Dep. insumos SU</div><div class=&quot;z&quot;>Dep. mat. limpios</div><div class=&quot;z&quot; style=&quot;background:#fdecea;border-color:#eab8b1&quot;>Expedición</div>
+          <div class=&quot;z&quot;>Dep. materias primas</div><div class=&quot;z&quot;>Recepción / descarga</div><div class=&quot;z&quot;>Dep. insumos SU</div><div class=&quot;z&quot;>Dep. mat. limpios</div><div class=&quot;z&quot; style=&quot;background:light-dark(oklch(93% 0.04 30),oklch(30% 0.06 30));border-color:light-dark(oklch(82% 0.07 30),oklch(48% 0.07 30))&quot;>Expedición</div>
         </div>
       </div>
       <div class=&quot;band&quot;>
-        <div class=&quot;lbl&quot; style=&quot;background:#e6f5ee;color:#065c3a;border:1px solid #9fd3bd&quot;>Preparación</div>
+        <div class=&quot;lbl&quot; style=&quot;background:light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165));color:light-dark(oklch(43% 0.11 168),oklch(74% 0.12 167));border:1px solid light-dark(oklch(83% 0.06 165),oklch(46% 0.06 165))&quot;>Preparación</div>
         <div class=&quot;cells&quot;>
           <div class=&quot;z&quot;>Pesadas / muestreo</div><div class=&quot;z&quot;>Prep. medios / soluciones</div><div class=&quot;z&quot;>Acondicionamiento</div><div class=&quot;z&quot;>Lavadero</div>
         </div>
       </div>
       <div class=&quot;band&quot;>
-        <div class=&quot;lbl&quot; style=&quot;background:#e8effa;color:#1a4fa0;border:1px solid #b9cbe8&quot;>Producción · corredor ISO 8</div>
+        <div class=&quot;lbl&quot; style=&quot;background:light-dark(oklch(93% 0.035 245),oklch(30% 0.05 245));color:light-dark(oklch(52% 0.115 245),oklch(68% 0.12 245));border:1px solid light-dark(oklch(82% 0.06 245),oklch(48% 0.06 245))&quot;>Producción · corredor ISO 8</div>
         <div class=&quot;cells&quot;>
           <div class=&quot;z&quot;>Banco celular (MCB/WCB)</div><div class=&quot;z&quot;>Inóculo (seed train)</div><div class=&quot;z&quot;>Fermentación / cultivo (10–50 L SU)</div><div class=&quot;z&quot;>Purificación / downstream (Puri 1·2 + Filtr.)</div>
         </div>
       </div>
       <div class=&quot;band&quot;>
-        <div class=&quot;lbl&quot; style=&quot;background:#efe9f6;color:#5b4b8a;border:1px solid #cbbfe0&quot;>I+D + QA/QC · circ. CNC</div>
+        <div class=&quot;lbl&quot; style=&quot;background:light-dark(oklch(94% 0.02 295),oklch(30% 0.05 295));color:light-dark(oklch(50% 0.13 295),oklch(72% 0.14 295));border:1px solid light-dark(oklch(80% 0.06 295),oklch(48% 0.08 295))&quot;>I+D + QA/QC · circ. CNC</div>
         <div class=&quot;cells&quot;>
           <div class=&quot;z&quot;>Innovación y Desarrollo (terapia génica, CAR-T, analítica standalone)</div><div class=&quot;z&quot;>QA / QC (físico-química · microbiología · genómica)</div>
         </div>
       </div>
       <div class=&quot;band&quot;>
-        <div class=&quot;lbl&quot; style=&quot;background:#edf1f5;color:#3a4a58;border:1px solid #c3cfd8&quot;>Soporte / servicios</div>
+        <div class=&quot;lbl&quot; style=&quot;background:light-dark(oklch(92% 0.015 250),oklch(28% 0.02 250));color:light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250));border:1px solid light-dark(oklch(82% 0.03 250),oklch(46% 0.03 250))&quot;>Soporte / servicios</div>
         <div class=&quot;cells&quot;>
           <div class=&quot;z&quot;>Esclusa residuos</div><div class=&quot;z&quot;>Dep. residuos</div><div class=&quot;z&quot;>Vestuarios</div><div class=&quot;z&quot;>Sala reuniones / onboarding</div><div class=&quot;z&quot;>IT / Servers</div>
         </div>
@@ -2616,56 +2981,56 @@ svg{display:block}
     <div class=&quot;scroll&quot;>
     <svg class=&quot;svg-min&quot; viewBox=&quot;0 0 1000 430&quot; width=&quot;100%&quot; role=&quot;img&quot; aria-label=&quot;Flujo de capital y valor de Photonic Labs&quot;>
       <defs>
-        <marker id=&quot;ag&quot; markerWidth=&quot;9&quot; markerHeight=&quot;9&quot; refX=&quot;7&quot; refY=&quot;3.2&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L7,3.2 L0,6.4 Z&quot; fill=&quot;#0a8c5a&quot;/></marker>
-        <marker id=&quot;asl&quot; markerWidth=&quot;9&quot; markerHeight=&quot;9&quot; refX=&quot;7&quot; refY=&quot;3.2&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L7,3.2 L0,6.4 Z&quot; fill=&quot;#3a4a58&quot;/></marker>
+        <marker id=&quot;ag&quot; markerWidth=&quot;9&quot; markerHeight=&quot;9&quot; refX=&quot;7&quot; refY=&quot;3.2&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L7,3.2 L0,6.4 Z&quot; fill=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;/></marker>
+        <marker id=&quot;asl&quot; markerWidth=&quot;9&quot; markerHeight=&quot;9&quot; refX=&quot;7&quot; refY=&quot;3.2&quot; orient=&quot;auto&quot;><path d=&quot;M0,0 L7,3.2 L0,6.4 Z&quot; fill=&quot;light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot;/></marker>
       </defs>
       <!-- INPUTS -->
-      <text x=&quot;20&quot; y=&quot;26&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#a1a1aa&quot; letter-spacing=&quot;1&quot;>ENTRA CAPITAL</text>
+      <text x=&quot;20&quot; y=&quot;26&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot; letter-spacing=&quot;1&quot;>ENTRA CAPITAL</text>
       <g font-family=&quot;Helvetica,Arial,sans-serif&quot;>
-        <rect x=&quot;20&quot; y=&quot;40&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;#e6f5ee&quot; stroke=&quot;#0a8c5a&quot;/><text x=&quot;34&quot; y=&quot;60&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>ANII 70% no-reemb.</text><text x=&quot;34&quot; y=&quot;75&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>honorarios/consultoría/SW/IP · no equipos</text>
-        <rect x=&quot;20&quot; y=&quot;94&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;#e6f5ee&quot; stroke=&quot;#0a8c5a&quot;/><text x=&quot;34&quot; y=&quot;114&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>Ronda privada ~$2M</text><text x=&quot;34&quot; y=&quot;129&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>Impact VC + BOTH + cornerstone $2–3M</text>
-        <rect x=&quot;20&quot; y=&quot;148&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;#e6f5ee&quot; stroke=&quot;#0a8c5a&quot;/><text x=&quot;34&quot; y=&quot;168&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>Capital-por-LOI (E1)</text><text x=&quot;34&quot; y=&quot;183&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>1–2 anchors → destraba cornerstone</text>
-        <rect x=&quot;20&quot; y=&quot;202&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;#fdf3e3&quot; stroke=&quot;#b06a00&quot;/><text x=&quot;34&quot; y=&quot;222&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>In-kind (Sartorius/Cytiva)</text><text x=&quot;34&quot; y=&quot;237&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>+ MERCOSUR arancel 0% · ZF exon.</text>
+        <rect x=&quot;20&quot; y=&quot;40&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165))&quot; stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;/><text x=&quot;34&quot; y=&quot;60&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>ANII 70% no-reemb.</text><text x=&quot;34&quot; y=&quot;75&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>honorarios/consultoría/SW/IP · no equipos</text>
+        <rect x=&quot;20&quot; y=&quot;94&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165))&quot; stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;/><text x=&quot;34&quot; y=&quot;114&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Ronda privada ~$2M</text><text x=&quot;34&quot; y=&quot;129&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>Impact VC + BOTH + cornerstone $2–3M</text>
+        <rect x=&quot;20&quot; y=&quot;148&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165))&quot; stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;/><text x=&quot;34&quot; y=&quot;168&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Capital-por-LOI (E1)</text><text x=&quot;34&quot; y=&quot;183&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>1–2 anchors → destraba cornerstone</text>
+        <rect x=&quot;20&quot; y=&quot;202&quot; width=&quot;210&quot; height=&quot;42&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(94% 0.035 75),oklch(31% 0.05 75))&quot; stroke=&quot;light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72))&quot;/><text x=&quot;34&quot; y=&quot;222&quot; font-size=&quot;11.5&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>In-kind (Sartorius/Cytiva)</text><text x=&quot;34&quot; y=&quot;237&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>+ MERCOSUR arancel 0% · ZF exon.</text>
       </g>
       <!-- arrows to lab -->
-      <g stroke=&quot;#0a8c5a&quot; stroke-width=&quot;1.6&quot; fill=&quot;none&quot; marker-end=&quot;url(#ag)&quot;>
+      <g stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot; stroke-width=&quot;1.6&quot; fill=&quot;none&quot; marker-end=&quot;url(#ag)&quot;>
         <path d=&quot;M230,61 C300,61 320,150 388,168&quot;/>
         <path d=&quot;M230,115 L388,168&quot;/>
         <path d=&quot;M230,169 L388,172&quot;/>
         <path d=&quot;M230,223 C300,223 320,190 388,178&quot;/>
       </g>
       <!-- LAB (capex) -->
-      <rect x=&quot;388&quot; y=&quot;120&quot; width=&quot;224&quot; height=&quot;112&quot; rx=&quot;6&quot; fill=&quot;#18181b&quot;/>
+      <rect x=&quot;388&quot; y=&quot;120&quot; width=&quot;224&quot; height=&quot;112&quot; rx=&quot;6&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;/>
       <text x=&quot;500&quot; y=&quot;150&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;14&quot; font-weight=&quot;700&quot; fill=&quot;#fff&quot;>EL LAB (CAPEX $1.48M)</text>
-      <text x=&quot;500&quot; y=&quot;170&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#ded3bd&quot;>equip $379K · civil/HVAC $602K</text>
-      <text x=&quot;500&quot; y=&quot;185&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; fill=&quot;#ded3bd&quot;>validación $150K · import $55K · +30%</text>
-      <text x=&quot;500&quot; y=&quot;208&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;#7fd0a8&quot;>21 zonas · single-use · GMP-ready · 5–8 residentes</text>
+      <text x=&quot;500&quot; y=&quot;170&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(84% 0.03 85),oklch(35% 0.02 90))&quot;>equip $379K · civil/HVAC $602K</text>
+      <text x=&quot;500&quot; y=&quot;185&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(84% 0.03 85),oklch(35% 0.02 90))&quot;>validación $150K · import $55K · +30%</text>
+      <text x=&quot;500&quot; y=&quot;208&quot; text-anchor=&quot;middle&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10.5&quot; fill=&quot;light-dark(oklch(80% 0.09 165),oklch(52% 0.09 165))&quot;>21 zonas · single-use · GMP-ready · 5–8 residentes</text>
       <!-- lab -> services -->
-      <g stroke=&quot;#0a8c5a&quot; stroke-width=&quot;1.6&quot; fill=&quot;none&quot; marker-end=&quot;url(#ag)&quot;>
+      <g stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot; stroke-width=&quot;1.6&quot; fill=&quot;none&quot; marker-end=&quot;url(#ag)&quot;>
         <path d=&quot;M612,150 L770,86&quot;/>
         <path d=&quot;M612,168 L770,140&quot;/>
         <path d=&quot;M612,186 L770,194&quot;/>
         <path d=&quot;M612,204 L770,250&quot;/>
       </g>
       <!-- SERVICES / revenue -->
-      <text x=&quot;770&quot; y=&quot;26&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#a1a1aa&quot; letter-spacing=&quot;1&quot;>GENERA REVENUE</text>
+      <text x=&quot;770&quot; y=&quot;26&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot; letter-spacing=&quot;1&quot;>GENERA REVENUE</text>
       <g font-family=&quot;Helvetica,Arial,sans-serif&quot;>
-        <rect x=&quot;770&quot; y=&quot;66&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;#f4f4f5&quot; stroke=&quot;#d4d4d8&quot;/><text x=&quot;784&quot; y=&quot;84&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>Suscripción infra $8–20K/mes</text><text x=&quot;784&quot; y=&quot;99&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>+ EaaS (por uso)</text>
-        <rect x=&quot;770&quot; y=&quot;118&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;#f4f4f5&quot; stroke=&quot;#d4d4d8&quot;/><text x=&quot;784&quot; y=&quot;136&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#18181b&quot;>Servicios GMP + tech transfer</text><text x=&quot;784&quot; y=&quot;151&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>premium, por proyecto (Y2+)</text>
-        <rect x=&quot;770&quot; y=&quot;170&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;#e6f5ee&quot; stroke=&quot;#0a8c5a&quot;/><text x=&quot;784&quot; y=&quot;188&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#065c3a&quot;>Capa computacional (A+)</text><text x=&quot;784&quot; y=&quot;203&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>C1·C2·C3 · ~85% margen · sostiene EBITDA</text>
-        <rect x=&quot;770&quot; y=&quot;222&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;#edf1f5&quot; stroke=&quot;#3a4a58&quot;/><text x=&quot;784&quot; y=&quot;240&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#3a4a58&quot;>Equity / warrants (B)</text><text x=&quot;784&quot; y=&quot;255&quot; font-size=&quot;10&quot; fill=&quot;#3f3f46&quot;>sleeve E2 $1–2M · vehículo separado</text>
+        <rect x=&quot;770&quot; y=&quot;66&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250))&quot; stroke=&quot;light-dark(oklch(80% 0.016 80),oklch(37% 0.02 250))&quot;/><text x=&quot;784&quot; y=&quot;84&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Suscripción infra $8–20K/mes</text><text x=&quot;784&quot; y=&quot;99&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>+ EaaS (por uso)</text>
+        <rect x=&quot;770&quot; y=&quot;118&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250))&quot; stroke=&quot;light-dark(oklch(80% 0.016 80),oklch(37% 0.02 250))&quot;/><text x=&quot;784&quot; y=&quot;136&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>Servicios GMP + tech transfer</text><text x=&quot;784&quot; y=&quot;151&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>premium, por proyecto (Y2+)</text>
+        <rect x=&quot;770&quot; y=&quot;170&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(93% 0.04 165),oklch(30% 0.055 165))&quot; stroke=&quot;light-dark(oklch(53% 0.125 165),oklch(68% 0.13 165))&quot;/><text x=&quot;784&quot; y=&quot;188&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(43% 0.11 168),oklch(74% 0.12 167))&quot;>Capa computacional (A+)</text><text x=&quot;784&quot; y=&quot;203&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>C1·C2·C3 · ~85% margen · sostiene EBITDA</text>
+        <rect x=&quot;770&quot; y=&quot;222&quot; width=&quot;210&quot; height=&quot;40&quot; rx=&quot;4&quot; fill=&quot;light-dark(oklch(92% 0.015 250),oklch(28% 0.02 250))&quot; stroke=&quot;light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot;/><text x=&quot;784&quot; y=&quot;240&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(50% 0.03 250),oklch(66% 0.03 250))&quot;>Equity / warrants (B)</text><text x=&quot;784&quot; y=&quot;255&quot; font-size=&quot;10&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>sleeve E2 $1–2M · vehículo separado</text>
       </g>
       <!-- outcome bar -->
-      <rect x=&quot;20&quot; y=&quot;300&quot; width=&quot;960&quot; height=&quot;104&quot; rx=&quot;6&quot; fill=&quot;#f4f4f5&quot; stroke=&quot;#d4d4d8&quot;/>
-      <text x=&quot;40&quot; y=&quot;324&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;#a1a1aa&quot; letter-spacing=&quot;1&quot;>RETORNO (MODELO v3)</text>
-      <g font-family=&quot;Helvetica,Arial,sans-serif&quot; fill=&quot;#18181b&quot;>
+      <rect x=&quot;20&quot; y=&quot;300&quot; width=&quot;960&quot; height=&quot;104&quot; rx=&quot;6&quot; fill=&quot;light-dark(oklch(93.5% 0.016 82),oklch(18.5% 0.015 250))&quot; stroke=&quot;light-dark(oklch(80% 0.016 80),oklch(37% 0.02 250))&quot;/>
+      <text x=&quot;40&quot; y=&quot;324&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-weight=&quot;700&quot; fill=&quot;light-dark(oklch(58% 0.015 248),oklch(58% 0.014 85))&quot; letter-spacing=&quot;1&quot;>RETORNO (MODELO v3)</text>
+      <g font-family=&quot;Helvetica,Arial,sans-serif&quot; fill=&quot;light-dark(oklch(20% 0.024 245),oklch(92% 0.014 85))&quot;>
         <text x=&quot;40&quot; y=&quot;352&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot;>EBITDA+ Y3 (ZF) · hist. Y2 (NoZF)</text>
         <text x=&quot;300&quot; y=&quot;352&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot;>Neto acum. 6a ~$3.78M (ZF) · hist. $3.33M NoZF</text>
         <text x=&quot;700&quot; y=&quot;352&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot;>Revenue Y6 $3.83M · payback ~Y5</text>
-        <text x=&quot;40&quot; y=&quot;378&quot; font-size=&quot;10.5&quot; fill=&quot;#3f3f46&quot;>Caja (wet-lab) — el lab se sostiene solo.</text>
-        <text x=&quot;300&quot; y=&quot;378&quot; font-size=&quot;10.5&quot; fill=&quot;#3f3f46&quot;>Patrimonial (Camino B · archivado) — hace valer más el equity del portfolio.</text>
+        <text x=&quot;40&quot; y=&quot;378&quot; font-size=&quot;10.5&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>Caja (wet-lab) — el lab se sostiene solo.</text>
+        <text x=&quot;300&quot; y=&quot;378&quot; font-size=&quot;10.5&quot; fill=&quot;light-dark(oklch(34% 0.022 245),oklch(76% 0.014 85))&quot;>Patrimonial (Camino B · archivado) — hace valer más el equity del portfolio.</text>
       </g>
-      <text x=&quot;40&quot; y=&quot;396&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-style=&quot;italic&quot; fill=&quot;#b06a00&quot;>⚠ 3 gates: LOIs sin firmar · CAPEX estimate-grade (contingencia 30% &amp;lt; overrun 80%) · OpEx caja negra.</text>
+      <text x=&quot;40&quot; y=&quot;396&quot; font-family=&quot;Helvetica,Arial,sans-serif&quot; font-size=&quot;10&quot; font-style=&quot;italic&quot; fill=&quot;light-dark(oklch(64% 0.125 70),oklch(75% 0.12 72))&quot;>⚠ 3 gates: LOIs sin firmar · CAPEX estimate-grade (contingencia 30% &amp;lt; overrun 80%) · OpEx caja negra.</text>
     </svg>
     </div>
   </section>
@@ -2729,6 +3094,8 @@ svg{display:block}
    z.classList.add('active');
    if(pd)pd.innerHTML='<b>'+z.dataset.z+'</b> — '+z.dataset.d;
  });});
+ // cross-frame nav shim — biblia/mapa iframes call parent.__go('wiki'|'mapa')
+ window.__go=function(v){show(v==='wiki'?'home':v);};
  // initial view from hash, else home
  show((location.hash||'#home').slice(1));
  window.addEventListener('hashchange',function(){show((location.hash||'#home').slice(1));});
