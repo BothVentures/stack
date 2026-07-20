@@ -28,22 +28,18 @@ aside{width:var(--nav);flex:0 0 var(--nav);background:#fbfbfc;border-right:1px s
 .ni-s{color:var(--mut);font-size:.68rem;font-weight:400}
 /* main */
 main{flex:1;min-width:0}
-/* hero — full sunset gradient, scrolls away with the page */
-.hero{background:linear-gradient(115deg,#fbe8d8 0%,#f6dde6 42%,#e2e6f4 100%)}
-.hero .in{padding:22px 34px 16px;max-width:1180px;margin:0 auto}
+/* hero — slim sunset masthead (persistent per view); no KPI widgets */
+.hero{background:linear-gradient(115deg,#fbe8d8 0%,#f6dde6 42%,#e2e6f4 100%);border-bottom:1px solid var(--line)}
+.hero .in{padding:18px 34px 15px;max-width:1180px;margin:0 auto}
 .crumb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:#8a7a6a}
-h1.t{margin:3px 0 4px;font-size:1.7rem;letter-spacing:-.02em}
-.lead{color:var(--ink2);font-size:.92rem;max-width:70ch;margin:0}
-/* KPI bar — slim sticky strip (~97px) that stays pinned; reclaims the old 257px sticky hero */
-.kbar{position:sticky;top:0;z-index:5;background:linear-gradient(115deg,#fbe8d8 0%,#f6dde6 42%,#e2e6f4 100%);border-top:1px solid rgba(255,255,255,.5);border-bottom:1px solid var(--line);box-shadow:0 6px 18px -14px rgba(0,0,0,.35)}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px 34px;max-width:1180px;margin:0 auto}
-.kpi{background:rgba(255,255,255,.72);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.7);border-radius:12px;padding:11px 13px}
-.kv{font-family:var(--mono);font-size:1.32rem;font-weight:600;letter-spacing:-.02em;color:var(--ink)}
-.kk{font-size:.72rem;color:var(--ink3);margin-top:1px;font-weight:600}
-.ks{font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;letter-spacing:.06em}
-/* editorial rhythm — centered reading column (good measure) punctuated by full-width breakouts */
-.content{max-width:1180px;margin:0 auto;padding:22px 34px 90px}
-.intro{max-width:820px;margin:0 auto 18px;color:var(--ink2);font-size:.9rem;border-left:3px solid var(--g);background:#fafafa;padding:12px 16px;border-radius:0 10px 10px 0}
+h1.t{margin:3px 0 4px;font-size:1.5rem;letter-spacing:-.02em}
+.lead{color:var(--ink2);font-size:.9rem;max-width:74ch;margin:0}
+body.onpane .hero{display:none}
+/* router — one section per "page"; only the active view shows, and it ends where its content ends */
+.view{display:none}
+.view.show{display:block}
+.view:not(.pane){max-width:1180px;margin:0 auto;padding:24px 34px 90px}
+.intro{max-width:820px;margin:0 auto;color:var(--ink2);font-size:.9rem;border-left:3px solid var(--g);background:#fafafa;padding:14px 18px;border-radius:0 10px 10px 0}
 .intro blockquote{margin:.5em 0;padding-left:12px;border-left:2px solid var(--line);color:var(--ink3)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 30px;margin:0 auto 16px;max-width:820px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 8px 24px -18px rgba(0,0,0,.18);scroll-margin-top:120px}
 /* breakouts — chart-heavy / wide-table / long sections use the full content width */
@@ -123,19 +119,13 @@ h1.t{margin:3px 0 4px;font-size:1.7rem;letter-spacing:-.02em}
 .gov-name{font-weight:700;font-size:.84rem;color:var(--ink)}
 .gov-auth{font-size:.78rem;color:var(--ink3)}
 @media(max-width:700px){.planta .bands{grid-template-columns:repeat(2,1fr)}.tier-row{grid-template-columns:38px 1fr 60px 44px;gap:7px}}
-/* panes */
-.pane{display:none}
-.pane.show{display:block}
+/* pane views (Biblia / Mapa) — full-bleed document in an iframe */
 .pane-note{font-size:.78rem;color:var(--ink3);background:#fff;border-bottom:1px solid var(--line);padding:9px 34px}
-.pane iframe{width:100%;height:calc(100vh - 40px);border:0;background:#ffffff;display:block}
-body.pane-on .content{display:none}
-.backwiki{display:none}
-body.pane-on .backwiki{display:inline-flex}
+.pane iframe{width:100%;height:calc(100vh - 34px);border:0;background:#ffffff;display:block}
 /* responsive */
 @media(max-width:900px){:root{--nav:0px}aside{position:fixed;left:-280px;width:264px;transition:left .2s;z-index:40;box-shadow:2px 0 20px rgba(0,0,0,.15)}
 body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixed;top:10px;right:14px;left:auto;margin:0;z-index:45}
-.kbar{position:static;box-shadow:none}.kpis{grid-template-columns:repeat(2,1fr);padding:12px 18px}
-.card{scroll-margin-top:56px;max-width:none;padding:18px 18px}.content{padding:16px 18px 70px}.intro{max-width:none}.hero .in{padding:18px 18px 12px}}
+.card{max-width:none;padding:18px 18px}.view:not(.pane){padding:16px 18px 70px}.intro{max-width:none}.hero .in{padding:16px 18px 12px}h1.t{font-size:1.3rem}.pane-note{padding:9px 18px}}
 .menu-btn{display:none;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:.8rem;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(0,0,0,.25)}
 @media(prefers-color-scheme:dark){}
 </style></head>
@@ -143,34 +133,32 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <div class="wrap">
 <aside>
  <div class="brand"><div class="dot"></div><div><b>Photonic Labs</b><span>Command Center</span></div></div>
- <details class="ng" open><summary>Panorama</summary><a class="ni" href="#s1" data-t="s1"><span class="ni-n">1</span> Qué es Photonic Labs</a><a class="ni" href="#s2" data-t="s2"><span class="ni-n">2</span> La tesis: el gap de TRL 5–8</a></details>
-<details class="ng" open><summary>El Lab</summary><a class="ni" href="#s3" data-t="s3"><span class="ni-n">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</a><a class="ni" href="#s4" data-t="s4"><span class="ni-n">4</span> El modelo operativo — Modelo 3</a><a class="ni" href="#s5" data-t="s5"><span class="ni-n">5</span> Diseño de planta</a><a class="ni" href="#s6" data-t="s6"><span class="ni-n">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</a></details>
-<details class="ng" open><summary>Contexto</summary><a class="ni" href="#s7" data-t="s7"><span class="ni-n">7</span> Marco legal, fiscal y Zona Franca</a><a class="ni" href="#s8" data-t="s8"><span class="ni-n">8</span> Mercado, demanda y ecosistema</a></details>
-<details class="ng"><summary>Ejecución</summary><a class="ni" href="#s9" data-t="s9"><span class="ni-n">9</span> Roadmap de ejecución</a><a class="ni" href="#s10" data-t="s10"><span class="ni-n">10</span> Economía del proyecto — modelo v3</a><a class="ni" href="#s11" data-t="s11"><span class="ni-n">11</span> Equipo, gobernanza y decisiones</a></details>
-<details class="ng"><summary>Gobernanza</summary><a class="ni" href="#s12" data-t="s12"><span class="ni-n">12</span> Sincronización y discrepancias</a><a class="ni" href="#s13" data-t="s13"><span class="ni-n">13</span> Preguntas abiertas</a></details>
-<details class="ng"><summary>Referencia</summary><a class="ni" href="#s14" data-t="s14"><span class="ni-n">14</span> Inventario de documentos</a><a class="ni" href="#s15" data-t="s15"><span class="ni-n">15</span> Glosario</a></details>
-<details class="ng"><summary>Data</summary><a class="ni pane-link" data-pane="biblia"><span class="ni-n">▸</span> Biblia <span class="ni-s">toda la data</span></a><a class="ni pane-link" data-pane="mapa"><span class="ni-n">▸</span> Mapa <span class="ni-s">relaciones y flujos</span></a></details>
+ <a class="ni ni-home" data-view="home"><span class="ni-n">◆</span> Inicio <span class="ni-s">panorama</span></a>
+<details class="ng" open><summary>Panorama</summary><a class="ni" data-view="s1"><span class="ni-n">1</span> Qué es Photonic Labs</a><a class="ni" data-view="s2"><span class="ni-n">2</span> La tesis: el gap de TRL 5–8</a></details>
+<details class="ng" open><summary>El Lab</summary><a class="ni" data-view="s3"><span class="ni-n">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</a><a class="ni" data-view="s4"><span class="ni-n">4</span> El modelo operativo — Modelo 3</a><a class="ni" data-view="s5"><span class="ni-n">5</span> Diseño de planta</a><a class="ni" data-view="s6"><span class="ni-n">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</a></details>
+<details class="ng" open><summary>Contexto</summary><a class="ni" data-view="s7"><span class="ni-n">7</span> Marco legal, fiscal y Zona Franca</a><a class="ni" data-view="s8"><span class="ni-n">8</span> Mercado, demanda y ecosistema</a></details>
+<details class="ng"><summary>Ejecución</summary><a class="ni" data-view="s9"><span class="ni-n">9</span> Roadmap de ejecución</a><a class="ni" data-view="s10"><span class="ni-n">10</span> Economía del proyecto — modelo v3</a><a class="ni" data-view="s11"><span class="ni-n">11</span> Equipo, gobernanza y decisiones</a></details>
+<details class="ng"><summary>Gobernanza</summary><a class="ni" data-view="s12"><span class="ni-n">12</span> Sincronización y discrepancias</a><a class="ni" data-view="s13"><span class="ni-n">13</span> Preguntas abiertas</a></details>
+<details class="ng"><summary>Referencia</summary><a class="ni" data-view="s14"><span class="ni-n">14</span> Inventario de documentos</a><a class="ni" data-view="s15"><span class="ni-n">15</span> Glosario</a></details>
+<details class="ng" open><summary>Data</summary><a class="ni" data-view="biblia"><span class="ni-n">▸</span> Biblia <span class="ni-s">toda la data</span></a><a class="ni" data-view="mapa"><span class="ni-n">▸</span> Mapa <span class="ni-s">relaciones y flujos</span></a></details>
 </aside>
 <main>
  <div class="hero"><div class="in">
    <div class="crumb">BOTH Ventures · Wet-lab stand-alone · Zona Franca</div>
    <h1 class="t">Photonic Labs</h1>
    <p class="lead">La capa de infraestructura de escalado biotech que hoy no existe en LATAM — wet-lab stand-alone GMP-ready, dentro de Zona Franca.</p>
-   <button class="backwiki ni" style="margin-top:8px">← volver a la Wiki</button>
  </div></div>
- <div class="kbar"><div class="kpis"><div class="kpi"><div class="kv">$1.48M</div><div class="kk">CAPEX</div><div class="ks">hard</div></div><div class="kpi"><div class="kv">$2.05M</div><div class="kk">Ronda</div><div class="ks">all-in ZF</div></div><div class="kpi"><div class="kv">Y3</div><div class="kk">EBITDA+</div><div class="ks">escenario ZF</div></div><div class="kpi"><div class="kv">$3.83M</div><div class="kk">Revenue Y6</div><div class="ks">modelo v3</div></div><div class="kpi"><div class="kv">66.5</div><div class="kk">Success</div><div class="ks">score v3</div></div></div></div>
  <button class="menu-btn">☰ Secciones</button>
- <div class="content">
-   <div class="intro"><h1>Photonic Labs — Wiki del Proyecto</h1>
+ <section class="view" data-view="home"><div class="intro"><h1>Photonic Labs — Wiki del Proyecto</h1>
 <blockquote>
 <p>🟢 <strong>VERSIÓN EN EDICIÓN (B · 0.1) — abierta 2026-07-16.</strong> Fork de trabajo del wiki. Editá acá. Sucede a <a href="photonic-lab-wiki-a-0.1.md"><code>photonic-lab-wiki-a-0.1.md</code></a> (congelada). Cuando esté lista, se regenera el <code>.html</code> consolidado y se re-publica a GitHub Pages (ver <a href="_index.md"><code>_index.md</code></a>).</p>
-<p><strong>Qué es este documento.</strong> La referencia navegable y única del proyecto Photonic Labs. Consolida los catorce documentos de la fase de pre-incubación (SOW Qualia+ · Both Ventures, febrero–julio 2026) y los <strong>sincroniza contra las decisiones vigentes de julio 2026</strong>. Donde la pre-incubación y las últimas iteraciones difieren, <strong>prevalece la definición más reciente</strong> — y la diferencia queda registrada explícitamente en <a href="#12-sincronización-y-discrepancias">§12 Sincronización y discrepancias</a>.</p>
+<p><strong>Qué es este documento.</strong> La referencia navegable y única del proyecto Photonic Labs. Consolida los catorce documentos de la fase de pre-incubación (SOW Qualia+ · Both Ventures, febrero–julio 2026) y los <strong>sincroniza contra las decisiones vigentes de julio 2026</strong>. Donde la pre-incubación y las últimas iteraciones difieren, <strong>prevalece la definición más reciente</strong> — y la diferencia queda registrada explícitamente en <a href="#s12">§12 Sincronización y discrepancias</a>.</p>
 <p><strong>🔒 Canon estructural (2026-07-19):</strong> Photonic va <strong>all-in Zona Franca desde el día uno</strong> (Gastón · Type-1 · permanente) y el framing de "caminos A/A+/B" queda <strong>retirado</strong> — Photonic es un wet-lab stand-alone GMP-ready dentro de ZF. Decisión: <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>.</p>
 <p><strong>Anclas de verdad:</strong> venture file <a href="../../../ventures/photonic-lab.md"><code>photonic-lab.md</code></a> · <a href="2026-07-07-photonic-labs-one-pager.html"><code>photonic-labs-one-pager</code></a> · decisión ZF canónica <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>. <em>(El memo de caminos <a href="2026-07-07-photonic-caminos-a-aplus-b.md"><code>photonic-caminos-a-aplus-b</code></a> queda como snapshot histórico — framing retirado.)</em></p>
 <p><strong>Documento hermano:</strong> <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> — toda la data dura. Este wiki explica y enmarca; la biblia lista y respalda.</p>
 </blockquote>
-<hr /></div>
-   <section class="card" id="s1" data-sec="1"><h2 class="ch"><span class="cn">1</span> Qué es Photonic Labs</h2><p><strong>Photonic Labs es la capa de infraestructura de escalado biotech que hoy no existe en LATAM</strong> — un wet-lab multiplataforma, GMP-ready desde el diseño, que lleva la investigación validada del banco (TRL 4–5) al lote piloto validado y transferible (TRL 7–8), en suelo uruguayo y a precios que el pipeline regional puede pagar.</p>
+<hr /></div></section>
+ <section class="view" data-view="s1"><article class="card"><h2 class="ch"><span class="cn">1</span> Qué es Photonic Labs</h2><p><strong>Photonic Labs es la capa de infraestructura de escalado biotech que hoy no existe en LATAM</strong> — un wet-lab multiplataforma, GMP-ready desde el diseño, que lleva la investigación validada del banco (TRL 4–5) al lote piloto validado y transferible (TRL 7–8), en suelo uruguayo y a precios que el pipeline regional puede pagar.</p>
 <ul>
 <li><strong>Owner / champion:</strong> René Labarthe (narrativa, posicionamiento, coherencia). Gate de capital y estructura: Gastón Frydlewski.</li>
 <li><strong>Base:</strong> Uruguay — sitio objetivo: <strong>Parque de las Ciencias, Canelones</strong>.</li>
@@ -178,10 +166,10 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Advisors estratégicos:</strong> <strong>Qualia+</strong> (Alejandro San Juan + Juan Eduardo "JEC" Ceriani) — acceso al ecosistema médico-científico + profundidad operativa GMP que BOTH no tiene por linaje propio.</li>
 </ul>
 <blockquote>
-<p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo / "quantum" <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#3-los-tres-caminos--a--a--b">§3</a> y <a href="#12-sincronización-y-discrepancias">§12</a>.</p>
+<p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo / "quantum" <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#s3">§3</a> y <a href="#s12">§12</a>.</p>
 </blockquote>
-<hr /></section>
-<section class="card" id="s2" data-sec="2"><h2 class="ch"><span class="cn">2</span> La tesis: el gap de TRL 5–8</h2><figure class="chart"><figcaption>La tesis — el hueco de infraestructura TRL 5–8</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s2"><article class="card"><h2 class="ch"><span class="cn">2</span> La tesis: el gap de TRL 5–8</h2><figure class="chart"><figcaption>La tesis — el hueco de infraestructura TRL 5–8</figcaption>
 <svg viewBox="0 0 620 152" role="img" aria-label="Escalera TRL 1 a 9 con gap crítico en 5 a 8"><rect x="18.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="48.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">1</text><rect x="83.3" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="114.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">2</text><rect x="148.7" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="179.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">3</text><rect x="214.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="244.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">4</text><rect x="279.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="310.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">5</text><rect x="344.7" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="375.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">6</text><rect x="410.0" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="440.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">7</text><rect x="475.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="506.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">8</text><rect x="540.7" y="58" width="61.3" height="30" rx="5" fill="var(--slate)" opacity="0.45"/><text x="571.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">9</text><path d="M279.3,96 L279.3,104 L536.7,104 L536.7,96" fill="none" stroke="var(--coral)" stroke-width="2"/><text x="408.0" y="122" text-anchor="middle" class="sl" style="fill:var(--coral)">GAP TRL 5–8 — donde entra Photonic</text><text x="146.7" y="46" text-anchor="middle" class="ss">Cubierto · UdelaR·Pasteur·INIA·ORT</text><text x="571.3" y="46" text-anchor="middle" class="ss">Inaccesible</text><text x="16.0" y="140" class="cx">TRL — Technology Readiness Level (1 → 9)</text></svg></figure><p>LATAM biotech no falla por ciencia débil. Falla porque <strong>no existe la infraestructura para escalar esa ciencia</strong>. El hueco está en el rango <strong>TRL 5–8</strong>: investigación validada que necesita volverse producción piloto, lotes GMP y procesos documentados y transferibles a un CDMO.</p>
 <table>
 <thead>
@@ -221,8 +209,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 - Encuesta regional (74 startups): <strong>59%</strong> apunta a GMP, <strong>34%</strong> necesita infraestructura de escalado, <strong>39%</strong> busca socios industriales para escalar.
 - Techo de precio verificado: <strong>USD 50.000 / 100 g</strong> (Ardan Pharma terceriza en un CRO de India). Photonic cotiza por debajo.</p>
 <p><strong>Matiz importante — el "riesgo commodity" (aclaración René, 07-07):</strong> el gap es real y hoy está desatendido — <em>eso</em> explica por qué hay demanda. Pero "desatendido hoy" ≠ "defendible mañana". Un wet-lab que vende capacidad fee-for-service es <strong>replicable</strong> (ATGen extendiendo su downstream, o un entrante con capital). Ser first-mover sobre un hueco vacío es <strong>una ventana, no un foso</strong>. Lo que vuelve el negocio defendible es la capa propietaria de A+ + el embedding institucional (ZF, ANII, nodo BID Lab). El argumento commodity, por lo tanto, es un argumento <strong>a favor de A+ sobre A puro</strong>, no en contra de la tesis.</p>
-<hr /></section>
-<section class="card" id="s3" data-sec="3"><h2 class="ch"><span class="cn">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</h2><figure class="chart"><figcaption>El modelo — wet-lab stand-alone + boosters, dentro de Zona Franca</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s3"><article class="card"><h2 class="ch"><span class="cn">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</h2><figure class="chart"><figcaption>El modelo — wet-lab stand-alone + boosters, dentro de Zona Franca</figcaption>
 <div class="modelmap"><div class="zf-wrap"><span class="zf-tag">Zona Franca · IRAE 0%</span>
  <div class="mm-row">
   <div class="mm core"><b>Wet-lab stand-alone</b><span>T0 analítica (core de caja) + producción GMP-ready · Modelo 3</span></div>
@@ -231,7 +219,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
  </div>
  <div class="mm periph"><b>Quantum / TQA</b><span>periférico · optionality — fuera del core</span></div>
 </div></div></figure><blockquote>
-<p>🔒 <strong>Decisión cerrada y permanente (canon 2026-07-19, Gastón · Type-1).</strong> El framing de "caminos A/A+/B" queda <strong>retirado</strong> — no se re-discute. Photonic Labs es un <strong>wet-lab stand-alone GMP-ready dentro de Zona Franca (all-in, desde el día uno)</strong>. Ver <a href="#7-marco-legal-fiscal-y-zona-franca">§7</a> · <a href="#12-sincronización-y-discrepancias">§12</a>.</p>
+<p>🔒 <strong>Decisión cerrada y permanente (canon 2026-07-19, Gastón · Type-1).</strong> El framing de "caminos A/A+/B" queda <strong>retirado</strong> — no se re-discute. Photonic Labs es un <strong>wet-lab stand-alone GMP-ready dentro de Zona Franca (all-in, desde el día uno)</strong>. Ver <a href="#s7">§7</a> · <a href="#s12">§12</a>.</p>
 </blockquote>
 <p><strong>Qué ES Photonic (settled):</strong></p>
 <table>
@@ -266,23 +254,23 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <tr>
 <td><strong>Estructura</strong></td>
 <td><strong>All-in Zona Franca, day-one</strong> (IRAE/IP/IVA 0%, importación exonerada)</td>
-<td>Cerrada — ver <a href="#7-marco-legal-fiscal-y-zona-franca">§7</a></td>
+<td>Cerrada — ver <a href="#s7">§7</a></td>
 </tr>
 <tr>
 <td><strong>Economía</strong></td>
 <td>CAPEX $1.48M · raise ~$2.05M (ZF) · EBITDA+ Y3 · rev Y6 $3.83M</td>
-<td>Modelo v3 — ver <a href="#10-economía-del-proyecto--modelo-v3">§10</a></td>
+<td>Modelo v3 — ver <a href="#s10">§10</a></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Por qué el booster in-silico se queda (hallazgo del break-even, modelo v3):</strong> <em>sin</em> la capa in-silico (C1–C3), el EBITDA Y2 pasa de <strong>+$96k a ≈ −$57k</strong> y el break-even se corre ~1 año. La línea que la decisión 07-02 mandó a sacar del core es, en la aritmética actual, la que sostiene la rentabilidad temprana — por eso se queda como booster. La analítica T0, aparte, es core de caja desde el día uno (ver <a href="#6-la-capa-computacional--t0-analítica-core--booster-a-c1c3">§6</a>).</p>
+<p><strong>Por qué el booster in-silico se queda (hallazgo del break-even, modelo v3):</strong> <em>sin</em> la capa in-silico (C1–C3), el EBITDA Y2 pasa de <strong>+$96k a ≈ −$57k</strong> y el break-even se corre ~1 año. La línea que la decisión 07-02 mandó a sacar del core es, en la aritmética actual, la que sostiene la rentabilidad temprana — por eso se queda como booster. La analítica T0, aparte, es core de caja desde el día uno (ver <a href="#s6">§6</a>).</p>
 <p><strong>Direcciones retiradas / archivadas:</strong>
 - <strong>Landmark / edificio-statement</strong> (tipo Bodega Garzón) — descartado por completo (07-07): capex-heavy, compite con el capital desplegable, ni SOSV construyó landmark.
 - <strong>Vehículo lab+fondo</strong> (flywheel SOSV/IndieBio, ex-"Camino B") — <strong>archivado</strong> como ambición patrimonial futura y separada. Sólo se reabre (gate exclusivo Gastón, nuevo vehículo de capital) con funder soberano/estratégico comprometido + estructura de conflicto de interés + reconciliación con <strong>Panambi</strong> (overlap salud mental — Eywa). Fuera de la narrativa del proyecto hasta entonces.
 - <strong>Peldaño intermedio Tier-1 AAA a $4.5–5.5M</strong> — descartado. Canon de Daiana: <strong>"lean o full, no el medio"</strong>.
-- <strong>Outside-first → dual-entity</strong> — retirado (ni Plan B); la estructura es all-in-ZF. Ver <a href="#7-marco-legal-fiscal-y-zona-franca">§7</a>.</p>
-<hr /></section>
-<section class="card" id="s4" data-sec="4"><h2 class="ch"><span class="cn">4</span> El modelo operativo — Modelo 3</h2><p><strong>Decisión 2026-07-02 (Type-3):</strong> el modelo operativo de Photonic Lab es el <strong>Modelo 3 — I+D + GMP-Ready</strong>.</p>
+- <strong>Outside-first → dual-entity</strong> — retirado (ni Plan B); la estructura es all-in-ZF. Ver <a href="#s7">§7</a>.</p>
+<hr /></article></section>
+<section class="view" data-view="s4"><article class="card"><h2 class="ch"><span class="cn">4</span> El modelo operativo — Modelo 3</h2><p><strong>Decisión 2026-07-02 (Type-3):</strong> el modelo operativo de Photonic Lab es el <strong>Modelo 3 — I+D + GMP-Ready</strong>.</p>
 <p>De los 8 modelos de infraestructura evaluados (0 a 7, más 5B — ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia §4</a>), el Modelo 3 es el punto de entrada más defendible dado el estado del pipeline regional.</p>
 <p><strong>La lógica:</strong> infraestructura de <strong>transición evolutiva</strong>. Es un laboratorio de desarrollo pero con <strong>sobre-inversión estratégica</strong> en layout, flujos de personas y materiales, superficies, drenajes, terminaciones y documentación, para ser <strong>compatible con estándares GMP sin la certificación plena</strong>. Se paga el "diseño para futuro GMP" hoy para <strong>no reconstruir mañana</strong>. Cuando la demanda lo justifique, el salto a GMP certificado es una <strong>evolución, no una reconstrucción</strong>.</p>
 <ul>
@@ -292,15 +280,15 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li>Evoluciona a Modelo 5 (Híbrido, GMP full) hacia el <strong>año 3–4</strong>.</li>
 </ul>
 <blockquote>
-<p>⚠️ <strong>Nota de sincronización:</strong> la decisión 07-02 quedó auto-minada con "target: 2M litros bioreactores mínimo" — es un <strong>artefacto de transcripción</strong>. La escala real es <strong>10–50 L (Tramo 1) → 200–300 L (Tramo 2)</strong>, consistente con Capabilities, CAPEX y one-pager. Ver <a href="#12-sincronización-y-discrepancias">§12</a>.</p>
+<p>⚠️ <strong>Nota de sincronización:</strong> la decisión 07-02 quedó auto-minada con "target: 2M litros bioreactores mínimo" — es un <strong>artefacto de transcripción</strong>. La escala real es <strong>10–50 L (Tramo 1) → 200–300 L (Tramo 2)</strong>, consistente con Capabilities, CAPEX y one-pager. Ver <a href="#s12">§12</a>.</p>
 </blockquote>
 <p><strong>Diferenciadores del modelo (verificados en pre-incubación):</strong>
 1. <strong>Single-use como formato principal</strong> — elimina contaminación cruzada entre clientes, anula CIP/SIP, reduce el turnaround de días a horas. Arquitectura de controlador dual (vidrio + SU). Validado con Eleonora Scoseria.
 2. <strong>Downstream dimensionado proporcionalmente al upstream</strong> (ÄKTA Process + ÄKTA Pilot + TFF) — el diferenciador crítico frente a ATGen, que tiene un biorreactor de 300 L con downstream dimensionado para 30 L.
 3. <strong>GMP-ready desde el diseño</strong> — flujos unidireccionales, QA/QC integrado, batch records, trazabilidad LIMS → dossier transferible a CDMO.
 4. <strong>Plataforma multiplataforma</strong> — cubre ~70% del pipeline biotech regional (procariotas, levaduras, mamífero, insecto, hongos filamentosos, microalgas) sin retooling sustancial.</p>
-<hr /></section>
-<section class="card wide" id="s5" data-sec="5"><h2 class="ch"><span class="cn">5</span> Diseño de planta</h2><figure class="chart planta"><figcaption>Diseño de planta — 5 bandas · 21 zonas funcionales · flujo unidireccional</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s5"><article class="card wide"><h2 class="ch"><span class="cn">5</span> Diseño de planta</h2><figure class="chart planta"><figcaption>Diseño de planta — 5 bandas · 21 zonas funcionales · flujo unidireccional</figcaption>
 <div class="flowbar"><span>◐ Entrada materiales</span><span class="flowline">flujo unidireccional →</span><span>Productos ◑</span></div>
 <div class="bands"><div class="band band-slate"><div class="band-h">Logística / almacenes</div><button class="zone" data-z="Depósito materias primas" data-d="Entrada unidireccional de insumos">Depósito materias primas</button><button class="zone" data-z="Recepción / descarga" data-d="Ingreso y control de materiales">Recepción / descarga</button><button class="zone" data-z="Depósito insumos SU" data-d="Single-use — formato principal del modelo">Depósito insumos SU</button><button class="zone" data-z="Depósito mat. limpios" data-d="Materiales acondicionados">Depósito mat. limpios</button><button class="zone" data-z="Expedición" data-d="Salida de productos terminados">Expedición</button></div><div class="band band-amber"><div class="band-h">Preparación</div><button class="zone" data-z="Pesadas / muestreo" data-d="Dosificación y toma de muestras">Pesadas / muestreo</button><button class="zone" data-z="Prep. medios / soluciones" data-d="Formulación de medios de cultivo">Prep. medios / soluciones</button><button class="zone" data-z="Acondicionamiento" data-d="Preparación de materiales para producción">Acondicionamiento</button><button class="zone" data-z="Lavadero" data-d="Limpieza de material">Lavadero</button></div><div class="band band-g"><div class="band-h">Producción · ISO 8</div><button class="zone" data-z="Banco celular" data-d="Ultrafreezers −80 °C + N₂ líq. −196 °C + UPS dedicado">Banco celular</button><button class="zone" data-z="Inóculo (seed train)" data-d="Incubadora CO₂ · shakers · BSC Clase II · contador celular">Inóculo (seed train)</button><button class="zone" data-z="Fermentación / cultivo" data-d="Biorreactores 10 L + 50 L single-use">Fermentación / cultivo</button><button class="zone" data-z="Purificación / downstream" data-d="3 salas: Purif 1 · Purif 2 · Filtración Final — ÄKTA Process+Pilot+TFF+HPLC">Purificación / downstream</button></div><div class="band band-blue"><div class="band-h">I+D + QA/QC · CNC</div><button class="zone" data-z="I+D" data-d="Terapia génica · CAR-T · suite analítica standalone">I+D</button><button class="zone" data-z="QA / QC" data-d="Físico-química · microbiología · genómica">QA / QC</button></div><div class="band band-slate"><div class="band-h">Soporte / servicios</div><button class="zone" data-z="Esclusa residuos" data-d="Salida de residuos, separada del flujo de materiales">Esclusa residuos</button><button class="zone" data-z="Depósito residuos" data-d="Acopio previo a retiro">Depósito residuos</button><button class="zone" data-z="Vestuarios" data-d="Acceso de personal, separado del flujo">Vestuarios</button><button class="zone" data-z="Sala reuniones / onboarding" data-d="Residentes y clientes">Sala reuniones / onboarding</button><button class="zone" data-z="IT / Servers" data-d="LIMS/ELN Benchling · trazabilidad completa">IT / Servers</button></div></div>
 <div class="zone-detail" id="planta-detail"><b>Hacé click en una zona</b> — 21 zonas en 5 bandas, sin cruces. Personal y residuos separados físicamente del flujo de materiales.</div></figure><p>Documentado en <strong>Capabilities (Mayo 2026)</strong>. El diseño conceptual define <strong>21 zonas funcionales</strong> organizadas en <strong>cinco bandas</strong> con <strong>flujo de materiales unidireccional</strong> — los materiales entran por un extremo y los productos salen por el otro, sin cruces. El acceso de personal y la salida de residuos están <strong>separados físicamente</strong> del flujo de materiales.</p>
@@ -344,10 +332,10 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <blockquote>
 <p>El plano conceptual existe en tres formatos entregados: tabla visual editable (Word), plano interactivo HTML (21 zonas clickeables) y la infografía de bandas. El diseño ejecutivo (m² y servicios reales por zona) lo produce la <strong>empresa de bioingeniería</strong> en la Fase B.</p>
 </blockquote>
-<hr /></section>
-<section class="card wide" id="s6" data-sec="6"><h2 class="ch"><span class="cn">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</h2><figure class="chart"><figcaption>La capa computacional — tres estratos</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s6"><article class="card wide"><h2 class="ch"><span class="cn">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</h2><figure class="chart"><figcaption>La capa computacional — tres estratos</figcaption>
 <svg viewBox="0 0 520 154" role="img" aria-label="Tres estratos: analítica core, in-silico booster, quantum periférico"><rect x="10" y="8" width="500" height="36" rx="8" fill="var(--g)" opacity="0.12"/><rect x="10" y="8" width="6" height="36" rx="3" fill="var(--g)"/><text x="26" y="26" class="sl">T0 · Analítica</text><text x="26" y="41" class="ss">Core de caja — hoy</text><rect x="10" y="54" width="500" height="36" rx="8" fill="var(--blue)" opacity="0.12"/><rect x="10" y="54" width="6" height="36" rx="3" fill="var(--blue)"/><text x="26" y="72" class="sl">C1–C3 · In-silico</text><text x="26" y="87" class="ss">Booster A+ (~85% margen)</text><rect x="10" y="100" width="500" height="36" rx="8" fill="var(--slate)" opacity="0.12"/><rect x="10" y="100" width="6" height="36" rx="3" fill="var(--slate)"/><text x="26" y="118" class="sl">Quantum / TQA</text><text x="26" y="133" class="ss">Periférico — optionality</text></svg></figure><blockquote>
-<p><strong>Reencuadre vigente (venture file, 2026-07-17):</strong> dentro de la capa computacional hay que separar tres estratos con roles distintos — <strong>analítica (T0) = core monetizable hoy</strong>, <strong>in-silico (C1–C3) = booster A+</strong>, <strong>quantum/TQA = periférico</strong>. La pre-incubación los presentaba fundidos en un solo "pilar de portada" (<em>The Quantum Alliance / Tramo 0 / motor de validación acelerada</em>); la decisión 07-02 sacó "quantum" del core y el 07-17 elevó la analítica a línea de caja de entrada. Ver <a href="#12-sincronización-y-discrepancias">§12 punto 2</a>.</p>
+<p><strong>Reencuadre vigente (venture file, 2026-07-17):</strong> dentro de la capa computacional hay que separar tres estratos con roles distintos — <strong>analítica (T0) = core monetizable hoy</strong>, <strong>in-silico (C1–C3) = booster A+</strong>, <strong>quantum/TQA = periférico</strong>. La pre-incubación los presentaba fundidos en un solo "pilar de portada" (<em>The Quantum Alliance / Tramo 0 / motor de validación acelerada</em>); la decisión 07-02 sacó "quantum" del core y el 07-17 elevó la analítica a línea de caja de entrada. Ver <a href="#s12">§12 punto 2</a>.</p>
 </blockquote>
 <p><strong>Los tres estratos:</strong></p>
 <table>
@@ -411,13 +399,13 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 </tbody>
 </table>
-<p>Curva del booster ~$40K (Y1) → ~$630K (Y6), ~16% del revenue a madurez. <strong>Precio unitario aún sin costear — margen modelado, no medido.</strong> Es la línea que sostiene el EBITDA Y2 (ver <a href="#3-los-tres-caminos--a--a--b">§3</a> y la <a href="#10-economía-del-proyecto--modelo-v3">tabla de tiers en §10</a>).</p>
+<p>Curva del booster ~$40K (Y1) → ~$630K (Y6), ~16% del revenue a madurez. <strong>Precio unitario aún sin costear — margen modelado, no medido.</strong> Es la línea que sostiene el EBITDA Y2 (ver <a href="#s3">§3</a> y la <a href="#s10">tabla de tiers en §10</a>).</p>
 <blockquote>
 <p><strong>Matiz importante:</strong> T0-Analítica y el booster C1–C3 son cosas distintas. T0 es un servicio de wet-lab (analítica sobre muestras) que factura ya; C1–C3 es la capa in-silico que da el foso de A+. El reencuadre 07-17 dice que <strong>la analítica no es un extra sino parte del core de caja</strong> — separado del debate A vs A+, que gira sobre el booster in-silico.</p>
 </blockquote>
 <p><strong>Optionality preservada (TQA plays):</strong> la ambigüedad sobre <em>qué</em> potencia la capa es un activo. Play A (silencioso, default) → Play B (partner nombrado, tras MoU/LOI de TQA) → Play C (co-pitch Photonic + Quantum Hub). Escalar de A a B/C es decisión conjunta René + Gastón, nunca improvisada.</p>
-<hr /></section>
-<section class="card" id="s7" data-sec="7"><h2 class="ch"><span class="cn">7</span> Marco legal, fiscal y Zona Franca</h2><p><strong>Cinco instrumentos legales</strong> verificados en fuentes oficiales (impo.com.uy, ANII, Uruguay XXI):</p>
+<hr /></article></section>
+<section class="view" data-view="s7"><article class="card"><h2 class="ch"><span class="cn">7</span> Marco legal, fiscal y Zona Franca</h2><p><strong>Cinco instrumentos legales</strong> verificados en fuentes oficiales (impo.com.uy, ANII, Uruguay XXI):</p>
 <table>
 <thead>
 <tr>
@@ -465,8 +453,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 - Clientes uruguayos habilitados <strong>pero no pueden ser mayoría de la cartera</strong> (mercado principal debe ser regional/internacional).
 - El gasto que un cliente uruguayo pague desde ZF <strong>no le es deducible de IRAE</strong> (desventaja de precio frente a labs fuera de ZF) — pendiente confirmación del tributarista sobre Ley 19.566 (Andres facilita).
 - <strong>COMAP no aplica en ZF</strong> — los beneficios de ZF sustituyen a los de COMAP. Fuera de ZF, la vía es COMAP + Ley 16.462.</p>
-<hr /></section>
-<section class="card" id="s8" data-sec="8"><h2 class="ch"><span class="cn">8</span> Mercado, demanda y ecosistema</h2><figure class="chart"><figcaption>Demanda regional — encuesta abril 2026 · 74 startups biotech</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s8"><article class="card"><h2 class="ch"><span class="cn">8</span> Mercado, demanda y ecosistema</h2><figure class="chart"><figcaption>Demanda regional — encuesta abril 2026 · 74 startups biotech</figcaption>
 <div class="statbars"><div class="sb-row"><div class="sb-bar"><span style="width:59%;background:var(--g)"></span></div><div class="sb-lab"><b>59%</b> requiere / apunta a GMP</div></div><div class="sb-row"><div class="sb-bar"><span style="width:39%;background:var(--blue)"></span></div><div class="sb-lab"><b>39%</b> busca socios para escalar</div></div><div class="sb-row"><div class="sb-bar"><span style="width:34%;background:var(--g)"></span></div><div class="sb-lab"><b>34%</b> necesita infra de escalado</div></div><div class="sb-row"><div class="sb-bar"><span style="width:31%;background:var(--blue)"></span></div><div class="sb-lab"><b>31%</b> necesita lotes piloto</div></div><div class="sb-row"><div class="sb-bar"><span style="width:28%;background:var(--slate)"></span></div><div class="sb-lab"><b>28%</b> apunta a EMA</div></div></div>
 <div class="sb-note">Más de la mitad en TRL 5+ · el rango 10–50 L (Tramo 1) atiende directamente el segmento de demanda declarada.</div></figure><h3>El censo (Lilia Stubrin, ANII/Uruguay XXI, Oct 2025)</h3>
 <ul>
@@ -553,10 +541,10 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tbody>
 </table>
 <blockquote>
-<p>El seguimiento vivo de partners e instituciones vive en <strong>Notion (sección Partners)</strong> — ver <a href="#13-preguntas-abiertas">§13</a>. Este bloque es el mapa de referencia.</p>
+<p>El seguimiento vivo de partners e instituciones vive en <strong>Notion (sección Partners)</strong> — ver <a href="#s13">§13</a>. Este bloque es el mapa de referencia.</p>
 </blockquote>
-<hr /></section>
-<section class="card wide" id="s9" data-sec="9"><h2 class="ch"><span class="cn">9</span> Roadmap de ejecución</h2><figure class="chart"><figcaption>Timeline de ejecución 12–24 meses</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s9"><article class="card wide"><h2 class="ch"><span class="cn">9</span> Roadmap de ejecución</h2><figure class="chart"><figcaption>Timeline de ejecución 12–24 meses</figcaption>
 <svg viewBox="0 0 600 124" role="img" aria-label="Timeline de ejecución de Q3 2026 a 2028"><line x1="64" y1="54" x2="536" y2="54" class="ax"/><circle cx="64.0" cy="54" r="6" fill="var(--g)"/><text x="64.0" y="40" text-anchor="middle" class="cl">Q3'26</text><text x="64.0" y="76" text-anchor="middle" class="ss">T-Zero gate</text><circle cx="182.0" cy="54" r="6" fill="var(--g)"/><text x="182.0" y="40" text-anchor="middle" class="cl">Q4'26</text><text x="182.0" y="76" text-anchor="middle" class="ss">Anchor + carta</text><text x="182.0" y="88" text-anchor="middle" class="ss">soberana</text><circle cx="300.0" cy="54" r="6" fill="var(--g)"/><text x="300.0" y="40" text-anchor="middle" class="cl">Q1–Q2'27</text><text x="300.0" y="76" text-anchor="middle" class="ss">Construcción +</text><text x="300.0" y="88" text-anchor="middle" class="ss">hiring</text><circle cx="418.0" cy="54" r="6" fill="var(--g)"/><text x="418.0" y="40" text-anchor="middle" class="cl">Q3–Q4'27</text><text x="418.0" y="76" text-anchor="middle" class="ss">1er revenue ·</text><text x="418.0" y="88" text-anchor="middle" class="ss">cash trough</text><circle cx="536.0" cy="54" r="6" fill="var(--g)"/><text x="536.0" y="40" text-anchor="middle" class="cl">2028</text><text x="536.0" y="76" text-anchor="middle" class="ss">EBITDA+ Y3</text></svg></figure><p>Dos capas: <strong>qué ES Photonic</strong> — modelo settled (wet-lab stand-alone GMP-ready: T0 analítica core + in-silico C1–3 booster · quantum periférico) — y <strong>cómo se construye/ejecuta</strong> (trayectoria MVP·V1·V2 · secuencia A→B→C→D).</p>
 <h3>Trayectoria de construcción (sobre el modelo settled)</h3>
 <table>
@@ -631,7 +619,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tbody>
 </table>
 <p><strong>Tiempos de referencia (a validar por la empresa de bioingeniería):</strong> ingeniería básica + detalle <strong>3–6 meses</strong> · obra <strong>12–18 meses</strong> · calificación/validación/aprobación regulatoria <strong>6 meses</strong>.</p>
-<p><strong>Variable clave: greenfield vs brownfield</strong> (se define en A5, con el Parque de las Ciencias) — fija los tiempos/costos reales de B y C. <strong>Confirmado greenfield</strong> en el Resumen Ejecutivo #14 (§2.2), pero el roadmap y el one-pager lo mantienen como binario abierto A5 (greenfield/brownfield) — ver <a href="#12-sincronización-y-discrepancias">§12</a>.</p>
+<p><strong>Variable clave: greenfield vs brownfield</strong> (se define en A5, con el Parque de las Ciencias) — fija los tiempos/costos reales de B y C. <strong>Confirmado greenfield</strong> en el Resumen Ejecutivo #14 (§2.2), pero el roadmap y el one-pager lo mantienen como binario abierto A5 (greenfield/brownfield) — ver <a href="#s12">§12</a>.</p>
 <p><strong>El eje ZF corre en paralelo dentro de la Fase A</strong> — ortogonal, no cambia la secuencia.</p>
 <h3>Camino a la ronda (cómo un lab biotech se vuelve fundable)</h3>
 <ol>
@@ -675,8 +663,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <blockquote>
 <p>Tiempos estimate-grade — se firman con la empresa de bioingeniería y el costeo real de Eleonora. Ingeniería 3–6m · obra 12–18m · calificación/validación 6m.</p>
 </blockquote>
-<hr /></section>
-<section class="card wide" id="s10" data-sec="10"><h2 class="ch"><span class="cn">10</span> Economía del proyecto — modelo v3</h2><figure class="chart"><figcaption>Revenue proyectado — modelo v3 (escenario ZF)</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s10"><article class="card wide"><h2 class="ch"><span class="cn">10</span> Economía del proyecto — modelo v3</h2><figure class="chart"><figcaption>Revenue proyectado — modelo v3 (escenario ZF)</figcaption>
 <svg viewBox="0 0 520 190" role="img" aria-label="Revenue Y1 a Y6 hasta $3.83M">
 <line x1="34" y1="156" x2="486" y2="156" class="ax"/><rect x="49.1" y="142.9" width="45.2" height="13.1" rx="3" fill="var(--g)"/><text x="71.7" y="136.9" text-anchor="middle" class="cl">$0.43M</text><text x="71.7" y="171.0" text-anchor="middle" class="cx">Y1</text><rect x="124.4" y="128.6" width="45.2" height="27.4" rx="3" fill="var(--g)"/><text x="147.0" y="122.6" text-anchor="middle" class="cl">$0.90M</text><text x="147.0" y="171.0" text-anchor="middle" class="cx">Y2</text><rect x="199.7" y="107.2" width="45.2" height="48.8" rx="3" fill="var(--g)"/><text x="222.3" y="101.2" text-anchor="middle" class="cl">$1.60M</text><text x="222.3" y="171.0" text-anchor="middle" class="cx">Y3</text><rect x="275.1" y="82.8" width="45.2" height="73.2" rx="3" fill="var(--g)"/><text x="297.7" y="76.8" text-anchor="middle" class="cl">$2.40M</text><text x="297.7" y="171.0" text-anchor="middle" class="cx">Y4</text><rect x="350.4" y="61.5" width="45.2" height="94.5" rx="3" fill="var(--g)"/><text x="373.0" y="55.5" text-anchor="middle" class="cl">$3.10M</text><text x="373.0" y="171.0" text-anchor="middle" class="cx">Y5</text><rect x="425.7" y="39.2" width="45.2" height="116.8" rx="3" fill="var(--g)"/><text x="448.3" y="33.2" text-anchor="middle" class="cl">$3.83M</text><text x="448.3" y="171.0" text-anchor="middle" class="cx">Y6</text></svg></figure><figure class="chart"><figcaption>EBITDA — positivo en Y3 (escenario ZF gobernante)</figcaption>
 <svg viewBox="0 0 520 190" role="img" aria-label="EBITDA positivo desde el año 3">
@@ -734,12 +722,12 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </table>
 <p><strong>Tres gates del modelo (fragilidades honestas, 07-06):</strong>
 1. <strong>LOIs sin firmar</strong> — demanda validada en campo pero sin compromiso en papel.
-2. <strong>CAPEX estimate-grade</strong> — precios de refurb-marketplace + 1 quote de Equipo Inox + estimados de obra/validación. <strong>Contingencia 30% &lt; overrun documentado 80%</strong> (Benten Biotech). Faltan quotes reales de obra, Equipo Inox, Sartorius/Cytiva. <strong>El costeo real de facility lo lidera Eleonora Scoseria</strong> (gate de decisión vigente 07-17 — ver <a href="#13-preguntas-abiertas">§13</a>).
+2. <strong>CAPEX estimate-grade</strong> — precios de refurb-marketplace + 1 quote de Equipo Inox + estimados de obra/validación. <strong>Contingencia 30% &lt; overrun documentado 80%</strong> (Benten Biotech). Faltan quotes reales de obra, Equipo Inox, Sartorius/Cytiva. <strong>El costeo real de facility lo lidera Eleonora Scoseria</strong> (gate de decisión vigente 07-17 — ver <a href="#s13">§13</a>).
 3. <strong>OpEx caja negra</strong> — falta el build bottom-up de OpEx.</p>
 <blockquote>
-<p>Estos son los <strong>gates del modelo</strong> (fragilidades de la aritmética). Distintos de los <strong>gates de decisión vigentes</strong> — costeo real de facility (Eleonora) · commitment interno 5+ años — que están en <a href="#13-preguntas-abiertas">§13</a>. (ZF ya se cerró: all-in day-one, canon 07-19.) El 14-07 el equipo reencuadró los gates como <strong>ciclo, no frenos</strong>.</p>
+<p>Estos son los <strong>gates del modelo</strong> (fragilidades de la aritmética). Distintos de los <strong>gates de decisión vigentes</strong> — costeo real de facility (Eleonora) · commitment interno 5+ años — que están en <a href="#s13">§13</a>. (ZF ya se cerró: all-in day-one, canon 07-19.) El 14-07 el equipo reencuadró los gates como <strong>ciclo, no frenos</strong>.</p>
 </blockquote>
-<p><strong>El hallazgo material:</strong> el break-even se apoya en la <strong>capa in-silico (C1–C3)</strong> que el 07-02 mandó a sacar del core → sin ella, EBITDA temprano cae ~$150k y el break-even se corre ~1 año. De ahí que el <strong>booster in-silico se quede</strong> (no es cherry: cierra los números). La analítica T0 es core de caja aparte — ver <a href="#6-la-capa-computacional--t0-analítica-core--booster-a-c1c3">§6</a>.</p>
+<p><strong>El hallazgo material:</strong> el break-even se apoya en la <strong>capa in-silico (C1–C3)</strong> que el 07-02 mandó a sacar del core → sin ella, EBITDA temprano cae ~$150k y el break-even se corre ~1 año. De ahí que el <strong>booster in-silico se quede</strong> (no es cherry: cierra los números). La analítica T0 es core de caja aparte — ver <a href="#s6">§6</a>.</p>
 <p><strong>Validación pendiente:</strong> Daiana (skill financiero corrido 07-06, cruces verifican: IRAE $894.4k · neto acum $3.33M NoZF / $3.78M ZF) + JEC.</p>
 <h3>Tiers de precio (modelo comercial)</h3>
 <p>Ocho líneas de servicio en dos familias — <strong>wet-lab (T0–T4)</strong> e <strong>in-silico (C1–C3)</strong>. El break-even requiere <strong>5–8 residentes mezclados across tiers</strong>. Techo de precio de referencia: <strong>USD 50K / 100g</strong> (Ardan, benchmark India). Detalle en <a href="2026-07-08-photonic-labs-biblia.md">Biblia §8</a>.</p>
@@ -804,10 +792,10 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tbody>
 </table>
 <blockquote>
-<p>Precios y márgenes son <strong>estimate-grade</strong> (modelados, cost-to-serve real pendiente). T0 es el tier de entrada que factura desde el arranque; C1–C3 es el booster in-silico de ~85% margen que sostiene el EBITDA Y2 (ver <a href="#6-la-capa-computacional--t0-analítica-core--booster-a-c1c3">§6</a>).</p>
+<p>Precios y márgenes son <strong>estimate-grade</strong> (modelados, cost-to-serve real pendiente). T0 es el tier de entrada que factura desde el arranque; C1–C3 es el booster in-silico de ~85% margen que sostiene el EBITDA Y2 (ver <a href="#s6">§6</a>).</p>
 </blockquote>
-<hr /></section>
-<section class="card" id="s11" data-sec="11"><h2 class="ch"><span class="cn">11</span> Equipo, gobernanza y decisiones</h2><figure class="chart"><figcaption>Autoridad de decisión — quién decide qué</figcaption>
+<hr /></article></section>
+<section class="view" data-view="s11"><article class="card"><h2 class="ch"><span class="cn">11</span> Equipo, gobernanza y decisiones</h2><figure class="chart"><figcaption>Autoridad de decisión — quién decide qué</figcaption>
 <div class="gov"><div class="gov-row" style="border-left-color:var(--g)"><span class="gov-name">Gastón Frydlewski</span><span class="gov-auth">Gate EXCLUSIVO — capital · exits · estructura · ZF</span></div><div class="gov-row" style="border-left-color:var(--blue)"><span class="gov-name">René Labarthe</span><span class="gov-auth">Champion — scope · narrativa · business plan</span></div><div class="gov-row" style="border-left-color:var(--slate)"><span class="gov-name">Andres Burecovics</span><span class="gov-auth">Legal / governance — estructura ZF · due diligence</span></div><div class="gov-row" style="border-left-color:var(--slate)"><span class="gov-name">Daiana Goldenberg</span><span class="gov-auth">Ops / finanzas — validación financiera independiente</span></div><div class="gov-row" style="border-left-color:var(--slate)"><span class="gov-name">Mariano Boris</span><span class="gov-auth">Capa técnica — data ordering · herramientas</span></div><div class="gov-row" style="border-left-color:var(--amber)"><span class="gov-name">Qualia+ · San Juan + JEC</span><span class="gov-auth">Advisory — ecosistema + profundidad GMP</span></div></div></figure><table>
 <thead>
 <tr>
@@ -908,8 +896,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <p><strong>Endgame — dos formulaciones:</strong>
 - <strong>Vigente (ratificado, Q2'26 LP report — Gastón, 30-jun-2026):</strong> lab de bioproducción GMP-tier operativo que sirve el white space regional, con estructura de capital consolidada across equity institucional, grants y compromisos de clientes.
 - <strong>DRAFT (propuesto 07-04 — pendiente de ratificación):</strong> Photonic Lab como primera <strong>facility integrada bio-scale-up + validación</strong> de la región — la capa faltante "del banco al lote validado" que ni Uruguay ni Argentina cubren — reteniendo IP científica en suelo regulado y convirtiendo el wet-lab en un motor de validación exportador vía el booster in-silico.</p>
-<hr /></section>
-<section class="card wide" id="s12" data-sec="12"><h2 class="ch"><span class="cn">12</span> Sincronización y discrepancias</h2><blockquote>
+<hr /></article></section>
+<section class="view" data-view="s12"><article class="card wide"><h2 class="ch"><span class="cn">12</span> Sincronización y discrepancias</h2><blockquote>
 <p><strong>El núcleo del ejercicio de consolidación.</strong> Regla: <strong>prevalece la definición más reciente</strong> (decisiones julio 2026 + los dos anclas). Cada fila indica qué decía la pre-incubación, qué dice el canon actual, y qué hacer.</p>
 </blockquote>
 <h3>🔴 Discrepancias que hay que sincronizar</h3>
@@ -936,7 +924,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <td><strong>Cómputo / Quantum</strong></td>
 <td>The Quantum Alliance / "Tramo 0" como <strong>pilar de portada</strong> que arranca simultáneo; "motor de validación acelerada" como titular (#14 §2.1/2.5/2.6). Venture file carga arquitectura <strong>3 pilares (Biotech+Quantum+AI)</strong> + TQA plays</td>
 <td>Tres estratos separados (07-17): <strong>analítica T0 = core monetizable hoy</strong> · <strong>in-silico C1–C3 = booster A+</strong> · <strong>quantum/TQA = periférico</strong> (fuera del pitch). Wet-lab <strong>stand-alone</strong> (Modelo 3) como base (decisiones 07-02, 07-07, 07-17)</td>
-<td>El framing quantum-forward / 3-pilares / motor-de-validación queda <strong>superseded para la narrativa de fundación</strong>. Analítica sube a core de caja; in-silico se conserva como booster A+; quantum queda como optionality (Plays A/B/C). Ver <a href="#6-la-capa-computacional--t0-analítica-core--booster-a-c1c3">§6</a>.</td>
+<td>El framing quantum-forward / 3-pilares / motor-de-validación queda <strong>superseded para la narrativa de fundación</strong>. Analítica sube a core de caja; in-silico se conserva como booster A+; quantum queda como optionality (Plays A/B/C). Ver <a href="#s6">§6</a>.</td>
 </tr>
 <tr>
 <td>3</td>
@@ -950,14 +938,14 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <td><strong>Zona Franca</strong></td>
 <td>#11 Binder (Jun): "<strong>decisión tomada: ZF</strong>" (all-in). #1.1/#14: "bifurcación abierta / pendiente"</td>
 <td>✅ <strong>RESUELTO (07-19):</strong> ZF = <strong>all-in day-one</strong>, cerrado permanente (Type-1 Gastón). Outside-first/dual-entity retirado.</td>
-<td>El Binder tenía razón: ZF sí, all-in. La reapertura del 07-04 quedó cerrada. Ver <a href="#7-marco-legal-fiscal-y-zona-franca">§7</a>.</td>
+<td>El Binder tenía razón: ZF sí, all-in. La reapertura del 07-04 quedó cerrada. Ver <a href="#s7">§7</a>.</td>
 </tr>
 <tr>
 <td>4b</td>
 <td><strong>Caminos A/A+/B</strong></td>
 <td>Framing de tesis abierto (memo 07-07): A vs A+ vs B a decidir</td>
 <td>✅ <strong>RETIRADO (07-19):</strong> modelo cerrado = wet-lab stand-alone (T0 core + in-silico booster · quantum periférico). Camino B archivado.</td>
-<td>No se re-discute. El memo de caminos queda como snapshot histórico. Ver <a href="#3-el-modelo--wet-lab-stand-alone-dentro-de-zona-franca-cerrado">§3</a>.</td>
+<td>No se re-discute. El memo de caminos queda como snapshot histórico. Ver <a href="#s3">§3</a>.</td>
 </tr>
 <tr>
 <td>5</td>
@@ -1020,10 +1008,10 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Greenfield vs brownfield:</strong> #14 §2.2 dice "greenfield <strong>confirmado</strong>"; el Roadmap #12 y el one-pager lo tratan como <strong>binario abierto (A5)</strong>. Canon operativo: <strong>abierto, se define en A5 con el Parque</strong> (el commit de hoy adopta "greenfield/brownfield"). Cerrar en la negociación del sitio.</li>
 <li><strong>Conteo de zonas:</strong> Capabilities lista 15 funciones numeradas pero el layout y los resúmenes hablan de <strong>21 zonas</strong>. El one-pager usa "<strong>15–21 zonas</strong>". Usar 21 (bandas completas) como número canónico; 15 = funciones core numeradas.</li>
 </ul>
-<hr /></section>
-<section class="card" id="s13" data-sec="13"><h2 class="ch"><span class="cn">13</span> Preguntas abiertas</h2><h3>🔑 Gates de decisión vigentes (2026-07-19)</h3>
+<hr /></article></section>
+<section class="view" data-view="s13"><article class="card"><h2 class="ch"><span class="cn">13</span> Preguntas abiertas</h2><h3>🔑 Gates de decisión vigentes (2026-07-19)</h3>
 <blockquote>
-<p>✅ <strong>Cerrado el 07-19:</strong> <strong>Zona Franca = all-in day-one</strong> (Type-1 Gastón, permanente) y <strong>modelo = wet-lab stand-alone</strong> (framing caminos A/A+/B retirado). Ya no son gates abiertos. Ver <a href="#3-el-modelo--wet-lab-stand-alone-dentro-de-zona-franca-cerrado">§3</a> · <a href="#7-marco-legal-fiscal-y-zona-franca">§7</a>.</p>
+<p>✅ <strong>Cerrado el 07-19:</strong> <strong>Zona Franca = all-in day-one</strong> (Type-1 Gastón, permanente) y <strong>modelo = wet-lab stand-alone</strong> (framing caminos A/A+/B retirado). Ya no son gates abiertos. Ver <a href="#s3">§3</a> · <a href="#s7">§7</a>.</p>
 </blockquote>
 <p>Quedan <strong>dos gates de decisión vigentes</strong> — reencuadrados el 14-07 como <strong>ciclo, no frenos</strong>:</p>
 <table>
@@ -1048,7 +1036,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tbody>
 </table>
 <blockquote>
-<p><strong>Contexto de proceso (14–17 jul):</strong> el <strong>kit de pre-incubación</strong> (handoff Qualia+ → BOTH) tiene deadline <strong>2026-07-31</strong>. Hay un <strong>bring-down de portafolio el 2026-07-23</strong> (equipo completo, Mariano presenta). El equipo está montando <strong>Notion como single source of truth</strong> (5 secciones: Docs Library · Gates · Decision Log · Entregables · Partners) — el seguimiento vivo de estos gates vive ahí; esta wiki es la referencia narrativa (ver <a href="#14-inventario-de-documentos">§14</a>).</p>
+<p><strong>Contexto de proceso (14–17 jul):</strong> el <strong>kit de pre-incubación</strong> (handoff Qualia+ → BOTH) tiene deadline <strong>2026-07-31</strong>. Hay un <strong>bring-down de portafolio el 2026-07-23</strong> (equipo completo, Mariano presenta). El equipo está montando <strong>Notion como single source of truth</strong> (5 secciones: Docs Library · Gates · Decision Log · Entregables · Partners) — el seguimiento vivo de estos gates vive ahí; esta wiki es la referencia narrativa (ver <a href="#s14">§14</a>).</p>
 </blockquote>
 <h3>Lista completa (Resumen Ejecutivo Bloque 3 + venture file, filtradas contra el canon actual)</h3>
 <ol>
@@ -1063,8 +1051,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Parque de las Ciencias</strong> — m² disponibles, condiciones de locación, greenfield/brownfield (Enrique Buero).</li>
 <li><strong>Qualia+ Fase 2</strong> — vehículo (extensión de advisory vs JV) + conversación de equity; engagement cierra ~02-08-2026.</li>
 </ol>
-<hr /></section>
-<section class="card wide" id="s14" data-sec="14"><h2 class="ch"><span class="cn">14</span> Inventario de documentos</h2><h3>Los 14 documentos de pre-incubación (esta consolidación)</h3>
+<hr /></article></section>
+<section class="view" data-view="s14"><article class="card wide"><h2 class="ch"><span class="cn">14</span> Inventario de documentos</h2><h3>Los 14 documentos de pre-incubación (esta consolidación)</h3>
 <table>
 <thead>
 <tr>
@@ -1194,8 +1182,8 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Control panel (<code>2026-06-12</code>)</strong> — <a href="https://bothventures.github.io/stack/pages/venture/photonic-labs-control-panel-2026-06-12/">página live</a>. Es el <strong>spine operativo</strong> (SOW % por fase, tiers, pipeline, roadmap 12–24 m) y la inspiración del layout command-center. ⚠️ <strong>No es fuente numérica ni de estructura:</strong> corre sobre modelo <strong>v2</strong> y es anterior a las decisiones de julio (07-02 stand-alone · 07-07 landmark descartado · 07-17 analítica-core · <strong>07-19 ZF all-in cerrada + caminos retirados</strong>). Toda cifra se reconcilia a <strong>v3 + canon julio</strong>.</li>
 <li><strong>Notion (SSOT vivo, plan 17-jul)</strong> — 5 secciones: <strong>Docs Library · Gates · Decision Log · Entregables · Partners</strong>. Es donde vive el <strong>seguimiento vivo</strong> (gates abiertos, log de decisiones, estado de partners, SOW %). <strong>Esta wiki no lo reproduce</strong> — es la <strong>referencia narrativa durable + KPIs</strong>; linkea a Notion para el estado del día.</li>
 </ul>
-<hr /></section>
-<section class="card wide" id="s15" data-sec="15"><h2 class="ch"><span class="cn">15</span> Glosario</h2><blockquote>
+<hr /></article></section>
+<section class="view" data-view="s15"><article class="card wide"><h2 class="ch"><span class="cn">15</span> Glosario</h2><blockquote>
 <p>Términos, siglas y nombres del proyecto — con la sincronización pre-incubación → canon marcada donde aplica.</p>
 </blockquote>
 <h3>Nombres y entidades</h3>
@@ -1285,13 +1273,12 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <h3>Tiers de servicio</h3>
 <ul>
 <li><strong>T0 · Analítica</strong> — servicio analítico standalone (HPLC, qPCR, ELISA…). <strong>Core monetizable hoy</strong> (reencuadre 07-17): tier de entrada que factura desde el arranque; distinto del booster in-silico C1–C3.</li>
-<li><strong>T1–T4</strong> — suscripción de infraestructura ($8–20K/mes) · EaaS por uso ($7K/run) · servicios GMP + tech transfer (~$45K/proyecto) · capital+LOI (equity/royalty). Ver <a href="#10-economía-del-proyecto--modelo-v3">§10</a>.</li>
+<li><strong>T1–T4</strong> — suscripción de infraestructura ($8–20K/mes) · EaaS por uso ($7K/run) · servicios GMP + tech transfer (~$45K/proyecto) · capital+LOI (equity/royalty). Ver <a href="#s10">§10</a>.</li>
 <li><strong>C1 / C2 / C3</strong> — booster in-silico A+ (digital twin · in-silico design · IP custody), ~85% margen. Sostiene el EBITDA Y2.</li>
 </ul>
 <hr />
-<p><em>Consolidación 2026-07-08 · sincronizada 2026-07-18 (updates venture file 14–17 jul) · René + Synergy. Prevalece siempre la definición más reciente. Ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> para la data dura y el <a href="2026-07-08-photonic-labs-mapa-relaciones-flujos.html">Mapa de Relaciones y Flujos</a> para la vista de primer nivel.</em></p></section>
- </div>
- <div class="pane" data-pane="biblia"><div class="pane-note">📄 Biblia — snapshot 2026-07-08 (data dura). Para el canon estructural vigente (all-in ZF, caminos retirados) prevalece la <a href="#s3" onclick="document.querySelectorAll('.backwiki')[0].click()">Wiki</a>.</div><iframe id="f-biblia" title="Biblia del Proyecto" srcdoc="<!DOCTYPE html><html lang=&quot;es&quot;><head><meta charset=&quot;UTF-8&quot;>
+<p><em>Consolidación 2026-07-08 · sincronizada 2026-07-18 (updates venture file 14–17 jul) · René + Synergy. Prevalece siempre la definición más reciente. Ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> para la data dura y el <a href="2026-07-08-photonic-labs-mapa-relaciones-flujos.html">Mapa de Relaciones y Flujos</a> para la vista de primer nivel.</em></p></article></section>
+ <div class="view pane" data-view="biblia"><div class="pane-note">📄 Biblia — snapshot 2026-07-08 (data dura). Para el canon estructural vigente (all-in ZF, caminos retirados) prevalece la <a data-view="home" style="cursor:pointer">Wiki</a>.</div><iframe id="f-biblia" title="Biblia del Proyecto" srcdoc="<!DOCTYPE html><html lang=&quot;es&quot;><head><meta charset=&quot;UTF-8&quot;>
 <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
 <title>Photonic Labs — Biblia</title><style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2328,7 +2315,7 @@ document.querySelectorAll('table').forEach(function(t){
 });
 </script>
 </body></html>"></iframe></div>
- <div class="pane" data-pane="mapa"><div class="pane-note">🗺️ Mapa de relaciones y flujos — snapshot 07-08, re-sincronizado al <strong>canon 07-19</strong> (ZF all-in · caminos A/A+/B retirados · modelo settled).</div><iframe id="f-mapa" title="Mapa de Relaciones y Flujos" srcdoc="<!DOCTYPE html>
+ <div class="view pane" data-view="mapa"><div class="pane-note">🗺️ Mapa de relaciones y flujos — snapshot 07-08, re-sincronizado al <strong>canon 07-19</strong> (ZF all-in · caminos A/A+/B retirados · modelo settled).</div><iframe id="f-mapa" title="Mapa de Relaciones y Flujos" srcdoc="<!DOCTYPE html>
 <html lang=&quot;es&quot; data-lang=&quot;es&quot;>
 <head>
 <meta charset=&quot;UTF-8&quot;>
@@ -2714,17 +2701,26 @@ svg{display:block}
 </div>
 <script>
 (function(){
- var nav=document.querySelectorAll('.ni[data-t]');
- var secs=[].slice.call(document.querySelectorAll('.card[data-sec]'));
- function setActive(id){nav.forEach(function(a){a.classList.toggle('active',a.dataset.t===id);});}
- nav.forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('nav-open');});});
- var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setActive('s'+e.target.dataset.sec);});},{rootMargin:'-118px 0px -70% 0px'});
- secs.forEach(function(s){obs.observe(s);});
- // panes
- function showPane(p){document.body.classList.add('pane-on');document.querySelectorAll('.pane').forEach(function(x){x.classList.toggle('show',x.dataset.pane===p);});window.scrollTo(0,0);}
- function showWiki(){document.body.classList.remove('pane-on');document.querySelectorAll('.pane').forEach(function(x){x.classList.remove('show');});}
- document.querySelectorAll('.pane-link').forEach(function(a){a.addEventListener('click',function(){showPane(a.dataset.pane);document.body.classList.remove('nav-open');});});
- document.querySelectorAll('.backwiki').forEach(function(b){b.addEventListener('click',showWiki);});
+ var links=[].slice.call(document.querySelectorAll('.ni[data-view]'));
+ var views=[].slice.call(document.querySelectorAll('.view'));
+ var PANES={biblia:1,mapa:1};
+ function show(v){
+   if(!views.some(function(x){return x.dataset.view===v;})) v='home';
+   views.forEach(function(x){x.classList.toggle('show',x.dataset.view===v);});
+   links.forEach(function(a){a.classList.toggle('active',a.dataset.view===v);});
+   document.body.classList.toggle('onpane', !!PANES[v]);
+   document.body.classList.remove('nav-open');
+   if(location.hash!=='#'+v){history.replaceState(null,'','#'+v);}
+   window.scrollTo(0,0);
+ }
+ // any element with data-view acts as a router link
+ document.querySelectorAll('[data-view]').forEach(function(a){
+   if(a.classList.contains('view'))return;
+   a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.view);});
+ });
+ // brand → home
+ var brand=document.querySelector('.brand');
+ if(brand){brand.style.cursor='pointer';brand.addEventListener('click',function(){show('home');});}
  var mb=document.querySelector('.menu-btn');if(mb)mb.addEventListener('click',function(){document.body.classList.toggle('nav-open');});
  // planta — clickable zones
  var pd=document.getElementById('planta-detail');
@@ -2733,6 +2729,9 @@ svg{display:block}
    z.classList.add('active');
    if(pd)pd.innerHTML='<b>'+z.dataset.z+'</b> — '+z.dataset.d;
  });});
+ // initial view from hash, else home
+ show((location.hash||'#home').slice(1));
+ window.addEventListener('hashchange',function(){show((location.hash||'#home').slice(1));});
 })();
 </script>
 </body></html>
