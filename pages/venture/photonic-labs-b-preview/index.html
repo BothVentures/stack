@@ -1,229 +1,363 @@
 <!DOCTYPE html>
 <html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Photonic Labs — Command Center (Wiki · Biblia · Mapa)</title>
-<!-- VERSIÓN B · 0.1 (en edición) — dashboard command-center. Generado desde photonic-lab-wiki-b-0.1.md + biblia/mapa. -->
+<!-- VERSIÓN B · 0.2 (en edición) — command-center reskin sobre el sistema de diseño Institucional V0.2 (warm paper · IBM Plex · violeta escaso · dark). Generado desde photonic-lab-wiki-b-0.1.md + biblia/mapa. -->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<script>(function(){try{var s=localStorage.getItem('pl-theme');var d=(s==='dark')||(s!=='light'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
 <style>
-:root{--bg:#f4f4f5;--card:#ffffff;--ink:#18181b;--ink2:#3f3f46;--ink3:#52525b;--mut:#a1a1aa;--line:#e4e4e7;
---g:#0a8c5a;--g-d:#065c3a;--blue:#1a4fa0;--blue-d:#123a78;--slate:#3a4a58;--slate-d:#2a3742;--coral:#c0392b;--amber:#b06a00;--amber-d:#8a5300;--violet:#5f45b0;--violet-d:#472f8c;
---sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
---mono:'IBM Plex Mono','SF Mono',ui-monospace,Menlo,monospace;--nav:264px;}
-*{box-sizing:border-box}html{font-size:15px}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
-a{color:var(--g-d);text-decoration:none}a:hover{text-decoration:underline}
+/* ═══════════════════════════════════════════════════════════════════
+   Photonic Labs · Command Center — design system aligned to the
+   Institutional Pitch V0.2 (warm paper · IBM Plex · scarce violet · dark).
+   Categories keep a MUTED, paper-tuned support palette, confined to the
+   dense diagrams; everything else is ink-on-paper + one violet accent.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ink ramp */
+  --ink:oklch(20% 0.024 250);--ink2:oklch(34% 0.022 250);--ink3:oklch(50% 0.018 250);--mut:oklch(60% 0.016 250);
+  /* warm paper surfaces */
+  --paper:oklch(96.5% 0.012 85);--paper-deep:oklch(93.2% 0.017 82);--paper-elev:oklch(98.4% 0.008 85);
+  --bg:var(--paper);--card:var(--paper-elev);
+  --line:oklch(83% 0.015 82);--line-soft:oklch(89% 0.012 82);
+  /* scarce accent — violet; scarcity is what makes it land */
+  --accent:oklch(46% 0.245 295);--accent-d:oklch(40% 0.20 295);--accent-faint:oklch(46% 0.245 295 / .09);
+  /* muted category palette (support only, inside diagrams) + readable text tone (-d) */
+  --g:oklch(54% 0.10 168);--g-d:oklch(42% 0.09 168);
+  --blue:oklch(52% 0.11 248);--blue-d:oklch(41% 0.10 248);
+  --slate:oklch(50% 0.028 250);--slate-d:oklch(38% 0.028 250);
+  --coral:oklch(56% 0.15 30);--amber:oklch(60% 0.10 72);--amber-d:oklch(47% 0.09 72);
+  --violet:oklch(53% 0.15 300);--violet-d:oklch(43% 0.14 300);
+  /* washes — tinted fills used behind chips/bands, theme-aware */
+  --wash-g:oklch(94% 0.04 168);--wash-blue:oklch(94% 0.04 250);--wash-amber:oklch(94% 0.045 78);
+  --wash-slate:oklch(93.5% 0.012 250);--wash-violet:oklch(94% 0.04 300);--wash-coral:oklch(93% 0.05 30);
+  --wash-gate:oklch(93% 0.05 78);
+  /* fixed schematic plate — the two large relationship maps render light in both themes */
+  --plate:#f4efe4;--plate-line:#d9cfba;--plate-ink:#232322;--plate-mut:#8a8172;
+  /* fonts */
+  --sans:'IBM Plex Sans',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:'IBM Plex Mono','SF Mono',ui-monospace,Menlo,monospace;
+  --serif:'IBM Plex Serif',Georgia,serif;--serif-it:'IBM Plex Serif',Georgia,serif;
+  --nav:270px;
+  --ease:cubic-bezier(.16,1,.3,1);--ease-d:cubic-bezier(.3,0,.2,1);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:oklch(93% 0.014 85);--ink2:oklch(78% 0.014 85);--ink3:oklch(62% 0.014 85);--mut:oklch(64% 0.014 85);
+  --paper:oklch(13% 0.014 255);--paper-deep:oklch(16.5% 0.016 255);--paper-elev:oklch(19% 0.016 255);
+  --line:oklch(31% 0.018 255);--line-soft:oklch(24% 0.014 255);
+  --accent:oklch(74% 0.19 300);--accent-d:oklch(82% 0.16 300);--accent-faint:oklch(74% 0.19 300 / .14);
+  --g:oklch(72% 0.11 168);--g-d:oklch(80% 0.10 168);--blue:oklch(72% 0.11 250);--blue-d:oklch(82% 0.10 250);
+  --slate:oklch(70% 0.03 255);--slate-d:oklch(80% 0.03 255);--coral:oklch(72% 0.14 30);
+  --amber:oklch(76% 0.10 78);--amber-d:oklch(84% 0.09 78);--violet:oklch(74% 0.15 300);--violet-d:oklch(84% 0.13 300);
+  --wash-g:oklch(28% 0.05 168);--wash-blue:oklch(28% 0.05 250);--wash-amber:oklch(30% 0.05 78);
+  --wash-slate:oklch(24% 0.01 255);--wash-violet:oklch(28% 0.055 300);--wash-coral:oklch(30% 0.06 30);
+  --wash-gate:oklch(30% 0.05 78);
+}}
+:root[data-theme="dark"]{
+  --ink:oklch(93% 0.014 85);--ink2:oklch(78% 0.014 85);--ink3:oklch(62% 0.014 85);--mut:oklch(64% 0.014 85);
+  --paper:oklch(13% 0.014 255);--paper-deep:oklch(16.5% 0.016 255);--paper-elev:oklch(19% 0.016 255);
+  --line:oklch(31% 0.018 255);--line-soft:oklch(24% 0.014 255);
+  --accent:oklch(74% 0.19 300);--accent-d:oklch(82% 0.16 300);--accent-faint:oklch(74% 0.19 300 / .14);
+  --g:oklch(72% 0.11 168);--g-d:oklch(80% 0.10 168);--blue:oklch(72% 0.11 250);--blue-d:oklch(82% 0.10 250);
+  --slate:oklch(70% 0.03 255);--slate-d:oklch(80% 0.03 255);--coral:oklch(72% 0.14 30);
+  --amber:oklch(76% 0.10 78);--amber-d:oklch(84% 0.09 78);--violet:oklch(74% 0.15 300);--violet-d:oklch(84% 0.13 300);
+  --wash-g:oklch(28% 0.05 168);--wash-blue:oklch(28% 0.05 250);--wash-amber:oklch(30% 0.05 78);
+  --wash-slate:oklch(24% 0.01 255);--wash-violet:oklch(28% 0.055 300);--wash-coral:oklch(30% 0.06 30);
+  --wash-gate:oklch(30% 0.05 78);
+}
+
+*{box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;line-height:1.58;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","kern";
+  transition:background-color .4s var(--ease),color .4s var(--ease)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+a:hover{border-color:var(--accent)}
 .wrap{display:flex;min-height:100vh}
-/* left nav */
-aside{width:var(--nav);flex:0 0 var(--nav);background:#fbfbfc;border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow-y:auto;padding:18px 12px 40px}
-.brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
-.brand .dot{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--g),#7bd3a8);flex:0 0 22px}
-.brand b{font-size:.95rem;letter-spacing:-.01em}.brand span{display:block;font-family:var(--mono);font-size:.62rem;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
-.ng{margin:2px 0;border-radius:8px}
-.ng>summary{list-style:none;cursor:pointer;padding:7px 10px;font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.09em;color:var(--mut);font-weight:600;display:flex;align-items:center;gap:6px}
+
+/* ─── left nav ─────────────────────────────────────────── */
+aside{width:var(--nav);flex:0 0 var(--nav);background:var(--paper-deep);border-right:1px solid var(--line);
+  position:sticky;top:0;height:100vh;overflow-y:auto;padding:26px 16px 22px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:11px;padding:2px 8px 22px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.brand .dot{width:19px;height:19px;border-radius:3px;background:var(--accent);flex:0 0 19px}
+.brand b{font-family:var(--sans);font-weight:400;font-size:1rem;letter-spacing:-.02em;color:var(--ink)}
+.brand span{display:block;font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;letter-spacing:.16em;margin-top:2px}
+.ng{margin:1px 0}
+.ng>summary{list-style:none;cursor:pointer;padding:12px 10px 6px;font-family:var(--mono);font-size:.62rem;
+  text-transform:uppercase;letter-spacing:.2em;color:var(--mut);font-weight:400;display:flex;align-items:center;gap:8px}
 .ng>summary::-webkit-details-marker{display:none}
-.ng>summary::before{content:'▸';font-size:.6rem;transition:transform .15s;color:var(--mut)}
-.ng[open]>summary::before{transform:rotate(90deg)}
-.ni{display:flex;align-items:baseline;gap:8px;padding:6px 10px 6px 22px;border-radius:7px;color:var(--ink2);font-size:.83rem;cursor:pointer}
-.ni:hover{background:var(--line);text-decoration:none}
-.ni.active{background:#e6f5ee;color:var(--g-d);font-weight:600}
-.ni-n{font-family:var(--mono);font-size:.62rem;color:var(--mut);min-width:14px}
-.ni-s{color:var(--mut);font-size:.68rem;font-weight:400}
-/* main */
+.ng>summary::before{content:'——';font-size:.62rem;letter-spacing:-.05em;color:var(--line);transition:color .15s}
+.ng[open]>summary::before,.ng>summary:hover::before{color:var(--accent)}
+.ni{display:flex;align-items:baseline;gap:9px;padding:6px 10px 6px 24px;color:var(--ink2);font-size:.85rem;
+  cursor:pointer;border-left:2px solid transparent;transition:color .14s,border-color .14s;border-bottom:0}
+.ni:hover{color:var(--ink);border-left-color:var(--line)}
+.ni.active{color:var(--accent);border-left-color:var(--accent);font-weight:400}
+.ni-n{font-family:var(--mono);font-size:.64rem;color:var(--mut);min-width:15px}
+.ni.active .ni-n{color:var(--accent)}
+.ni-s{color:var(--mut);font-size:.66rem;font-weight:300}
+.nav-foot{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.theme-tog{display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid var(--line);border-radius:20px;
+  padding:6px 13px;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;color:var(--ink3);
+  cursor:pointer;transition:border-color .15s,color .15s}
+.theme-tog:hover{border-color:var(--accent);color:var(--accent)}
+.nav-ver{font-family:var(--mono);font-size:.58rem;color:var(--mut);letter-spacing:.1em}
+
+/* ─── main + hero ──────────────────────────────────────── */
 main{flex:1;min-width:0}
-/* hero — slim sunset masthead (persistent per view); no KPI widgets */
-.hero{background:linear-gradient(115deg,#fbe8d8 0%,#f6dde6 42%,#e2e6f4 100%);border-bottom:1px solid var(--line)}
-.hero .in{padding:18px 34px 15px;max-width:1180px;margin:0 auto}
-.crumb{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:#8a7a6a}
-h1.t{margin:3px 0 4px;font-size:1.5rem;letter-spacing:-.02em}
-.lead{color:var(--ink2);font-size:.9rem;max-width:74ch;margin:0}
+.hero{background:var(--paper);border-bottom:1px solid var(--line)}
+.hero .in{padding:34px 46px 26px;max-width:1200px;margin:0 auto;position:relative}
+.crumb{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.22em;color:var(--mut)}
+.crumb::before{content:'—— ';color:var(--line)}
+h1.t{margin:12px 0 0;font-family:var(--sans);font-weight:200;font-size:clamp(2.4rem,5vw,3.7rem);
+  letter-spacing:-.04em;line-height:.95;color:var(--ink)}
+.lead{font-family:var(--serif-it);font-style:italic;font-weight:400;color:var(--ink2);
+  font-size:clamp(1.05rem,1.5vw,1.35rem);line-height:1.4;max-width:62ch;margin:16px 0 0;letter-spacing:-.005em}
 body.onpane .hero{display:none}
-/* router — one section per "page"; only the active view shows, and it ends where its content ends */
+
+/* ─── router views ─────────────────────────────────────── */
 .view{display:none}
-.view.show{display:block}
-.view:not(.pane){max-width:1180px;margin:0 auto;padding:24px 34px 90px}
-.intro{max-width:820px;margin:0 auto;color:var(--ink2);font-size:.9rem;border-left:3px solid var(--g);background:#fafafa;padding:14px 18px;border-radius:0 10px 10px 0}
-.intro blockquote{margin:.5em 0;padding-left:12px;border-left:2px solid var(--line);color:var(--ink3)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 30px;margin:0 auto 16px;max-width:820px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 8px 24px -18px rgba(0,0,0,.18);scroll-margin-top:120px}
-/* breakouts — chart-heavy / wide-table / long sections use the full content width */
+.view.show{display:block;animation:viewin .55s var(--ease) both}
+@keyframes viewin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.view:not(.pane){max-width:1200px;margin:0 auto;padding:34px 46px 110px}
+.intro{max-width:840px;margin:0 auto;color:var(--ink2);font-size:.95rem;border-left:2px solid var(--accent);
+  padding:6px 0 6px 22px}
+.intro h1,.intro h2,.intro h3{font-family:var(--sans);font-weight:250;letter-spacing:-.025em;color:var(--ink);line-height:1.08;text-wrap:balance}
+.intro h1{font-size:clamp(1.5rem,2.4vw,2rem);margin:.1em 0 .6em}
+.intro h2{font-size:1.2rem;font-weight:300;margin:1.1em 0 .4em}
+.intro h3{font-size:1rem;font-weight:400;margin:1em 0 .3em}
+.intro blockquote{margin:.6em 0;padding-left:16px;border-left:1px solid var(--line);color:var(--ink3);
+  font-family:var(--serif-it);font-style:italic;font-size:1.15rem;line-height:1.4}
+
+/* ─── section cards — flat, hairline, no shadow ────────── */
+.card{background:transparent;border:0;border-top:1px solid var(--ink);border-radius:0;padding:26px 0 8px;
+  margin:0 auto 30px;max-width:840px;scroll-margin-top:110px}
 .card.wide{max-width:none}
-.ch{display:flex;align-items:center;gap:11px;margin:0 0 12px;font-size:1.16rem;letter-spacing:-.01em}
-.cn{font-family:var(--mono);font-size:.8rem;font-weight:600;color:#fff;background:var(--g);border-radius:7px;padding:3px 8px;flex:0 0 auto}
-.card h3{font-size:.98rem;margin:18px 0 7px;color:var(--ink)}
-.card p{margin:.55em 0;color:var(--ink2);font-size:.9rem}
-.card ul,.card ol{margin:.5em 0;padding-left:1.25em}.card li{margin:.28em 0;color:var(--ink2);font-size:.89rem}
-/* keep prose at a readable measure even inside full-width breakouts; tables/charts stay full */
-.card p,.card ul,.card ol,.card h3,.card>blockquote{max-width:780px}
-.card blockquote{margin:12px 0;padding:11px 15px;background:#f7f9f8;border-left:3px solid var(--g);border-radius:0 9px 9px 0;color:var(--ink2);font-size:.87rem}
-.card blockquote strong:first-child{color:var(--g-d)}
-.card code{font-family:var(--mono);font-size:.82em;background:#f4f4f5;padding:1px 5px;border-radius:5px;color:var(--coral)}
-.card pre{background:#18181b;color:#e4e4e7;padding:13px 15px;border-radius:10px;overflow-x:auto;font-size:.78rem}
+.ch{display:flex;align-items:baseline;gap:14px;margin:0 0 20px;font-family:var(--sans);font-weight:250;
+  font-size:clamp(1.5rem,2.6vw,2.15rem);letter-spacing:-.028em;line-height:1.05;color:var(--ink);text-wrap:balance}
+.cn{font-family:var(--mono);font-size:.72rem;font-weight:400;color:var(--accent);letter-spacing:.14em;
+  flex:0 0 auto;transform:translateY(-.15em)}
+.cn::before{content:'§'}
+.card h3{font-family:var(--sans);font-weight:400;font-size:1.02rem;letter-spacing:-.01em;margin:26px 0 8px;color:var(--ink)}
+.card p{margin:.6em 0;color:var(--ink2);font-size:.94rem;line-height:1.62}
+.card ul,.card ol{margin:.6em 0;padding-left:1.3em}.card li{margin:.34em 0;color:var(--ink2);font-size:.92rem;line-height:1.55}
+.card li::marker{color:var(--mut)}
+.card p,.card ul,.card ol,.card h3,.card>blockquote{max-width:760px}
+.card strong,.card b{font-weight:500;color:var(--ink)}
+.card blockquote{margin:16px 0;padding:4px 0 4px 20px;border-left:2px solid var(--accent);
+  font-family:var(--serif-it);font-style:italic;font-size:1.12rem;line-height:1.4;color:var(--ink2);max-width:720px}
+.card blockquote strong:first-child{color:var(--accent);font-style:normal;font-family:var(--sans);font-weight:500}
+.card code{font-family:var(--mono);font-size:.82em;background:var(--paper-deep);padding:1px 6px;border-radius:0;color:var(--accent-d)}
+.card pre{background:var(--ink);color:var(--paper);padding:15px 17px;border-radius:0;overflow-x:auto;font-size:.78rem;font-family:var(--mono)}
 .card pre code{background:none;color:inherit;padding:0}
+.card a code{color:var(--accent)}
+
+/* tables — hairline rows, mono uppercase heads, no fills */
 .tbl-wrap,.card table{width:100%}
-.card table{border-collapse:collapse;margin:12px 0;font-size:.82rem;display:block;overflow-x:auto}
-.card th{background:#f8f8f9;text-align:left;padding:8px 11px;border-bottom:2px solid var(--line);font-weight:600;color:var(--ink);white-space:nowrap}
-.card td{padding:8px 11px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
-.card tr:last-child td{border-bottom:none}
-.card table strong{color:var(--ink)}
-.card a code{color:var(--g-d)}
-/* charts */
-.chart{margin:14px 0;padding:14px;background:#fbfbfc;border:1px solid var(--line);border-radius:11px}
-.chart figcaption{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin-bottom:8px}
+.card table{border-collapse:collapse;margin:16px 0;font-size:.85rem;display:block;overflow-x:auto;border-top:1px solid var(--ink)}
+.card th{text-align:left;padding:9px 13px 8px 0;border-bottom:1px solid var(--line);font-family:var(--mono);
+  font-weight:400;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mut);white-space:nowrap}
+.card td{padding:10px 13px 10px 0;border-bottom:1px solid var(--line-soft);color:var(--ink2);vertical-align:top}
+.card tr:last-child td{border-bottom:none}.card table strong{color:var(--ink)}
+.card td:first-child,.card th:first-child{padding-left:0}
+
+/* ─── charts (token-driven, theme-aware) ───────────────── */
+.chart{margin:18px 0;padding:18px;background:var(--paper-elev);border:1px solid var(--line);border-radius:0}
+.chart figcaption{font-family:var(--mono);font-size:.63rem;text-transform:uppercase;letter-spacing:.16em;color:var(--mut);margin-bottom:12px}
+.chart figcaption::before{content:'—— ';color:var(--line)}
 .chart svg{width:100%;height:auto;display:block}
-.chart .cl{font-family:var(--mono);font-size:10px;fill:var(--ink2);font-weight:600}
+.chart .cl{font-family:var(--mono);font-size:10px;fill:var(--ink2);font-weight:500}
 .chart .cx{font-family:var(--mono);font-size:9px;fill:var(--mut)}
-.chart .sl{font-size:12px;fill:var(--ink);font-weight:600}
+.chart .sl{font-size:12px;fill:var(--ink);font-weight:500}
 .chart .ss{font-size:10px;fill:var(--ink3)}
 .chart .ax{stroke:var(--line);stroke-width:1.5}.chart .ax.dash{stroke-dasharray:4 4}
+
 /* planta — interactive floor plan */
-.planta .flowbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin-bottom:9px;gap:8px}
-.planta .flowline{flex:1;text-align:center;color:var(--g-d);border-top:2px solid var(--g);margin-top:6px;padding-top:3px}
+.planta .flowbar{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:.6rem;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--mut);margin-bottom:11px;gap:8px}
+.planta .flowline{flex:1;text-align:center;color:var(--accent);border-top:1px solid var(--accent);margin-top:6px;padding-top:4px}
 .planta .bands{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;align-items:start}
 .band{display:flex;flex-direction:column;gap:5px}
-.band-h{font-size:.66rem;font-weight:700;color:var(--ink2);padding:6px 6px;border-radius:6px;background:#eef0f1;text-align:center;min-height:34px;display:flex;align-items:center;justify-content:center;line-height:1.15}
-.band-g .band-h{background:#e2f3ea;color:var(--g-d)}
-.band-blue .band-h{background:#e8eefa;color:var(--blue)}
-.band-amber .band-h{background:#f7efe1;color:var(--amber)}
-.band-slate .band-h{background:#e9ebee;color:var(--slate)}
-.zone{font-family:var(--sans);font-size:.7rem;text-align:left;padding:7px 8px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--ink2);cursor:pointer;line-height:1.2;transition:.12s}
-.zone:hover{border-color:var(--g);background:#f5faf7}
-.zone.active{border-color:var(--g);background:var(--g);color:#fff;font-weight:600}
-.zone-detail{margin-top:11px;padding:11px 14px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--g);border-radius:0 9px 9px 0;font-size:.8rem;color:var(--ink2);min-height:20px}
-.zone-detail b{color:var(--g-d)}
+.band-h{font-family:var(--mono);font-size:.6rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em;
+  padding:8px 6px;border-radius:5px;text-align:center;min-height:36px;display:flex;align-items:center;justify-content:center;line-height:1.2;
+  background:var(--wash-slate);color:var(--ink2)}
+.band-g .band-h{background:var(--wash-g);color:var(--g-d)}
+.band-blue .band-h{background:var(--wash-blue);color:var(--blue-d)}
+.band-amber .band-h{background:var(--wash-amber);color:var(--amber-d)}
+.band-slate .band-h{background:var(--wash-slate);color:var(--slate-d)}
+.zone{font-family:var(--sans);font-size:.72rem;text-align:left;padding:8px 9px;border:1px solid var(--line);
+  border-radius:5px;background:var(--paper);color:var(--ink2);cursor:pointer;line-height:1.25;transition:.14s}
+.zone:hover{border-color:var(--accent);color:var(--ink)}
+.zone.active{border-color:var(--accent);background:var(--accent);color:var(--paper-elev);font-weight:400}
+.zone-detail{margin-top:13px;padding:12px 16px;background:var(--paper);border:1px solid var(--line);
+  border-left:2px solid var(--accent);border-radius:5px;font-size:.83rem;color:var(--ink2);min-height:20px}
+.zone-detail b{color:var(--accent)}
+
 /* model map */
-.modelmap .zf-wrap{position:relative;border:2px dashed var(--g);border-radius:12px;padding:24px 14px 14px;margin-top:8px}
-.zf-tag{position:absolute;top:-9px;left:14px;background:var(--card);padding:0 8px;font-family:var(--mono);font-size:.58rem;text-transform:uppercase;letter-spacing:.05em;color:var(--g-d);font-weight:700}
-.mm-row{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
-.mm{flex:1;min-width:170px;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:3px}
-.mm b{font-size:.9rem}.mm span{font-size:.74rem;opacity:.92}
-.mm.core{background:#e2f3ea;color:var(--g-d);border:1px solid var(--g);flex:1.5}
-.mm.boost{background:#e8eefa;color:var(--blue);border:1px solid var(--blue)}
-.mm-arrow{display:flex;align-items:center;font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;white-space:nowrap}
-.mm.periph{margin-top:10px;background:#f1f2f3;color:var(--slate);border:1px dashed var(--slate)}
+.modelmap .zf-wrap{position:relative;border:1px dashed var(--g);border-radius:8px;padding:26px 15px 15px;margin-top:8px}
+.zf-tag{position:absolute;top:-9px;left:15px;background:var(--paper-elev);padding:0 9px;font-family:var(--mono);
+  font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:var(--g-d);font-weight:500}
+.mm-row{display:flex;align-items:stretch;gap:11px;flex-wrap:wrap}
+.mm{flex:1;min-width:170px;border-radius:6px;padding:13px 15px;display:flex;flex-direction:column;gap:4px}
+.mm b{font-weight:500;font-size:.9rem}.mm span{font-size:.76rem;opacity:.9}
+.mm.core{background:var(--wash-g);color:var(--g-d);border:1px solid var(--g);flex:1.5}
+.mm.boost{background:var(--wash-blue);color:var(--blue-d);border:1px solid var(--blue)}
+.mm-arrow{display:flex;align-items:center;font-family:var(--mono);font-size:.6rem;color:var(--mut);text-transform:uppercase;white-space:nowrap;letter-spacing:.08em}
+.mm.periph{margin-top:11px;background:var(--wash-slate);color:var(--slate-d);border:1px dashed var(--slate)}
+
 /* stat bars */
-.statbars{display:flex;flex-direction:column;gap:9px}
-.sb-row{display:flex;align-items:center;gap:12px}
-.sb-bar{flex:0 0 38%;height:14px;background:#ececed;border-radius:7px;overflow:hidden}
-.sb-bar span{display:block;height:100%;border-radius:7px}
-.sb-lab{font-size:.82rem;color:var(--ink2)}.sb-lab b{font-family:var(--mono);color:var(--ink);font-weight:600}
-.sb-note{margin-top:11px;font-size:.76rem;color:var(--mut)}
+.statbars{display:flex;flex-direction:column;gap:11px}
+.sb-row{display:flex;align-items:center;gap:14px}
+.sb-bar{flex:0 0 38%;height:8px;background:var(--paper-deep);border-radius:0;overflow:hidden}
+.sb-bar span{display:block;height:100%}
+.sb-lab{font-size:.85rem;color:var(--ink2)}.sb-lab b{font-family:var(--mono);color:var(--ink);font-weight:500}
+.sb-note{margin-top:13px;font-size:.78rem;color:var(--mut)}
+
 /* tiers */
-.tiers{display:flex;flex-direction:column;gap:6px}
-.tier-row{display:grid;grid-template-columns:42px 1fr 84px 50px;align-items:center;gap:11px;font-size:.8rem}
-.tier-t{font-family:var(--mono);font-weight:700;color:#fff;text-align:center;border-radius:6px;padding:3px 0;font-size:.74rem}
+.tiers{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.tier-row{display:grid;grid-template-columns:46px 1fr 84px 52px;align-items:center;gap:13px;font-size:.82rem;
+  padding:9px 0;border-bottom:1px solid var(--line-soft)}
+.tier-t{font-family:var(--mono);font-weight:500;color:var(--paper-elev);text-align:center;border-radius:3px;padding:3px 0;font-size:.72rem}
 .tier-g{background:var(--g)}.tier-blue{background:var(--blue)}.tier-slate{background:var(--slate)}
 .tier-o{color:var(--ink2)}
-.tier-m{height:9px;background:#ececed;border-radius:5px;overflow:hidden}
-.tier-bar{display:block;height:100%;border-radius:5px}
+.tier-m{height:6px;background:var(--paper-deep);border-radius:0;overflow:hidden}
+.tier-bar{display:block;height:100%}
 .tier-mv{font-family:var(--mono);font-size:.72rem;color:var(--ink3);text-align:right}
+
 /* governance */
-.gov{display:flex;flex-direction:column;gap:6px}
-.gov-row{display:flex;flex-wrap:wrap;gap:1px 12px;align-items:baseline;border-left:4px solid var(--slate);background:#fbfbfc;border-radius:0 8px 8px 0;padding:8px 13px}
-.gov-name{font-weight:700;font-size:.84rem;color:var(--ink)}
-.gov-auth{font-size:.78rem;color:var(--ink3)}
-/* ===== §9 roadmap — 3 phases · box diagrams (A1→D4) · gates · namespaced rm-* (avoids planta .band collision) ===== */
+.gov{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.gov-row{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline;border-left:2px solid var(--slate);
+  padding:11px 0 11px 15px;border-bottom:1px solid var(--line-soft)}
+.gov-name{font-weight:500;font-size:.86rem;color:var(--ink)}
+.gov-auth{font-size:.79rem;color:var(--ink3)}
+
+/* ═══ §9 roadmap — namespaced rm-* (no .band collision) ═══ */
 .rm{display:flex;flex-direction:column}
-.rmc-g{--acc:var(--g);--acc-d:var(--g-d);--wash:#eef8f2}
-.rmc-blue{--acc:var(--blue);--acc-d:var(--blue-d);--wash:#eef2fb}
-.rmc-amber{--acc:var(--amber);--acc-d:var(--amber-d);--wash:#fbf4e8}
-.rmc-violet{--acc:var(--violet);--acc-d:var(--violet-d);--wash:#f1edf9}
-.rmc-slate{--acc:var(--slate);--acc-d:var(--slate-d);--wash:#eef0f2}
-.rm-tl-lbl{font-family:var(--mono);font-size:11px;font-weight:600}
+.rmc-g{--acc:var(--g);--acc-d:var(--g-d);--wash:var(--wash-g)}
+.rmc-blue{--acc:var(--blue);--acc-d:var(--blue-d);--wash:var(--wash-blue)}
+.rmc-amber{--acc:var(--amber);--acc-d:var(--amber-d);--wash:var(--wash-amber)}
+.rmc-violet{--acc:var(--violet);--acc-d:var(--violet-d);--wash:var(--wash-violet)}
+.rmc-slate{--acc:var(--slate);--acc-d:var(--slate-d);--wash:var(--wash-slate)}
+.rm-tl-lbl{font-family:var(--mono);font-size:11px;font-weight:500}
 .rm-tl-per{font-family:var(--mono);font-size:9.5px;fill:var(--mut)}
 .rm-tl-sub{font-size:9.5px;fill:var(--ink3)}
-.rm-tl-gt{font-family:var(--mono);font-size:8.5px;font-weight:700}
+.rm-tl-gt{font-family:var(--mono);font-size:8.5px;font-weight:600}
 .rm-tl-st{font-family:var(--mono);font-size:8px}
-.rm-band{border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:13px;background:var(--card);overflow:hidden}
-.rm-hd{display:flex;align-items:center;gap:13px;padding:14px 20px;background:var(--wash);border-bottom:1px solid var(--line)}
-.rm-num{font-family:var(--mono);font-weight:700;color:#fff;background:var(--acc);width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-size:1rem;flex:0 0 auto}
-.rm-t{font-size:1.02rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);line-height:1.15}
-.rm-bsub{font-size:.76rem;color:var(--ink3);margin-top:1px}
-.rm-per2{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--acc-d);font-weight:600;white-space:nowrap}
-.rm-pill{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.04em;padding:3px 9px;border-radius:20px;white-space:nowrap;flex:0 0 auto}
-.rm-pill-done{background:#e6e9ec;color:var(--slate)}
-.rm-pill-now{background:#e6f5ee;color:var(--g-d);box-shadow:inset 0 0 0 1px var(--g)}
-.rm-pill-next{background:#f1f1f3;color:var(--mut)}
-.rm-grp{padding:15px 20px 17px}
+.rm-band{border:1px solid var(--line);border-left:2px solid var(--acc);border-radius:7px;background:var(--paper-elev);overflow:hidden}
+.rm-band+.rm-band{margin-top:0}
+.rm-hd{display:flex;align-items:center;gap:14px;padding:15px 21px;background:var(--wash);border-bottom:1px solid var(--line)}
+.rm-num{font-family:var(--mono);font-weight:500;color:var(--paper-elev);background:var(--acc);width:30px;height:30px;
+  border-radius:6px;display:grid;place-items:center;font-size:1rem;flex:0 0 auto}
+.rm-t{font-family:var(--sans);font-size:1.08rem;font-weight:500;letter-spacing:-.015em;color:var(--ink);line-height:1.15}
+.rm-bsub{font-size:.77rem;color:var(--ink3);margin-top:2px}
+.rm-per2{margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--acc-d);font-weight:500;white-space:nowrap;letter-spacing:.04em}
+.rm-pill{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 10px;border-radius:20px;white-space:nowrap;flex:0 0 auto}
+.rm-pill-done{background:var(--wash-slate);color:var(--slate-d)}
+.rm-pill-now{background:var(--accent-faint);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.rm-pill-next{background:var(--wash-slate);color:var(--slate-d)}
+.rm-grp{padding:16px 21px 18px}
 .rm-grp+.rm-grp{border-top:1px dashed var(--line)}
-.rm-glbl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--acc-d);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.rm-dep{font-size:.62rem;font-weight:600;color:var(--mut);text-transform:none;letter-spacing:.01em}
-.rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:10px;margin-top:10px}
-.rm-box{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--acc);border-radius:10px;padding:11px 13px 10px;display:flex;flex-direction:column;gap:5px;transition:transform .14s,box-shadow .14s,border-color .14s}
-.rm-box:hover{border-color:var(--acc);box-shadow:0 6px 18px -12px rgba(0,0,0,.3);transform:translateY(-2px)}
-.rm-code{font-family:var(--mono);font-size:.58rem;font-weight:700;letter-spacing:.05em;color:#fff;background:var(--acc);border-radius:5px;padding:2px 6px;align-self:flex-start}
+.rm-glbl{font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.14em;font-weight:500;
+  color:var(--acc-d);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rm-dep{font-size:.62rem;font-weight:400;color:var(--mut);text-transform:none;letter-spacing:.01em}
+.rm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:11px;margin-top:12px}
+.rm-box{background:var(--paper);border:1px solid var(--line);border-left:2px solid var(--acc);border-radius:6px;
+  padding:12px 14px 11px;display:flex;flex-direction:column;gap:6px;transition:transform .16s var(--ease),border-color .16s}
+.rm-box:hover{border-color:var(--acc);transform:translateY(-2px)}
+.rm-code{font-family:var(--mono);font-size:.58rem;font-weight:600;letter-spacing:.06em;color:var(--paper-elev);
+  background:var(--acc);border-radius:3px;padding:2px 7px;align-self:flex-start}
 .rm-box.done .rm-code::after{content:' ✓'}
-.rm-h{margin:0;font-size:.83rem;font-weight:650;color:var(--ink);letter-spacing:-.005em}
-.rm-meta{font-size:.735rem;color:var(--ink2);line-height:1.42}
-.rm-out{font-size:.72rem;font-weight:600;color:var(--acc-d);display:flex;gap:5px;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line);line-height:1.35}
+.rm-h{margin:0;font-family:var(--sans);font-size:.85rem;font-weight:500;color:var(--ink);letter-spacing:-.008em}
+.rm-meta{font-size:.74rem;color:var(--ink2);line-height:1.45}
+.rm-out{font-size:.72rem;font-weight:500;color:var(--acc-d);display:flex;gap:5px;margin-top:auto;padding-top:7px;border-top:1px dashed var(--line);line-height:1.35}
 .rm-out::before{content:'▸';opacity:.7}
-.rm-transfer{margin-top:11px;font-size:.74rem;color:var(--ink3);background:#f7f9f8;border-radius:8px;padding:8px 12px;border-left:3px solid var(--slate)}
-.rm-transfer b{color:var(--slate-d)}
-.rm-gate{display:flex;flex-direction:column;align-items:center;padding:2px 0}
-.rm-stem{width:2px;height:12px;background:var(--line)}
-.rm-cap{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:center;padding:7px 15px;border-radius:22px;background:#f7edda;border:1px solid #e0c088;max-width:96%}
-.rm-cap .rm-d{color:var(--amber);font-size:.7rem}
-.rm-cap .rm-gt2{font-family:var(--mono);font-size:.67rem;font-weight:700;letter-spacing:.03em;color:var(--amber-d);text-transform:uppercase}
-.rm-cap .rm-crit{font-size:.72rem;color:var(--ink3)}
-.rm-gate.soft .rm-cap{background:#f7f9f8;border:1px dashed var(--line)}
+.rm-transfer{margin-top:12px;font-size:.75rem;color:var(--ink3);background:var(--paper-deep);border-radius:5px;padding:9px 13px;border-left:2px solid var(--slate)}
+.rm-transfer b{color:var(--slate-d);font-weight:500}
+.rm-gate{display:flex;flex-direction:column;align-items:center;padding:6px 0}
+.rm-stem{width:1px;height:14px;background:var(--line)}
+.rm-cap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;padding:8px 16px;border-radius:22px;
+  background:var(--wash-gate);border:1px solid var(--amber);max-width:96%}
+.rm-cap .rm-d{color:var(--amber);font-size:.72rem}
+.rm-cap .rm-gt2{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.06em;color:var(--amber-d);text-transform:uppercase}
+.rm-cap .rm-crit{font-size:.73rem;color:var(--ink2)}
+.rm-gate.soft .rm-cap{background:var(--paper-deep);border:1px dashed var(--line)}
 .rm-gate.soft .rm-d,.rm-gate.soft .rm-gt2{color:var(--ink3)}
-.rm-gate.inband{margin:14px 0 4px}
-.rm-h3{font-size:.72rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);font-weight:700;margin:26px 0 2px}
-.rm-traj{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px;margin-top:12px}
-.rm-tcol{border:1px solid var(--line);border-top:3px solid var(--g);border-radius:10px;padding:12px 14px;background:#fbfbfc}
-.rm-tcol h4{margin:0 0 5px;font-size:.82rem;color:var(--ink)}
-.rm-k{font-family:var(--mono);font-size:.62rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
-.rm-tcol p{margin:5px 0 0;font-size:.76rem;color:var(--ink2)}
-.rm-trig{margin-top:7px;font-size:.71rem;color:var(--g-d);font-weight:600}
-.rm-anx{margin:24px 0 0;border:1px solid var(--line);border-radius:12px;background:#fbfbfc}
-.rm-anx>summary{list-style:none;cursor:pointer;padding:13px 17px;display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--ink)}
+.rm-gate.inband{margin:15px 0 4px}
+.rm-h3{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ink3);font-weight:500;margin:30px 0 2px}
+.rm-h3::before{content:'—— ';color:var(--line)}
+.rm-traj{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:11px;margin-top:14px}
+.rm-tcol{border:1px solid var(--line);border-top:2px solid var(--g);border-radius:6px;padding:13px 15px;background:var(--paper-elev)}
+.rm-tcol h4{font-family:var(--sans);font-weight:500;margin:0 0 6px;font-size:.83rem;color:var(--ink)}
+.rm-k{font-family:var(--mono);font-size:.62rem;color:var(--mut);text-transform:uppercase;letter-spacing:.1em}
+.rm-tcol p{margin:6px 0 0;font-size:.77rem;color:var(--ink2)}
+.rm-trig{margin-top:8px;font-size:.72rem;color:var(--g-d);font-weight:500}
+.rm-anx{margin:26px 0 0;border:1px solid var(--line);border-radius:7px;background:var(--paper-elev)}
+.rm-anx>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;align-items:center;gap:11px;font-size:.9rem;color:var(--ink)}
 .rm-anx>summary::-webkit-details-marker{display:none}
 .rm-anx>summary::before{content:'▸';color:var(--amber);font-size:.75rem;transition:transform .15s}
 .rm-anx[open]>summary::before{transform:rotate(90deg)}
-.rm-anx-k{font-family:var(--mono);font-size:.57rem;text-transform:uppercase;letter-spacing:.09em;color:var(--amber-d);font-weight:700;border:1px solid var(--amber);border-radius:5px;padding:2px 6px}
-.rm-anx-body{padding:2px 19px 18px;font-size:.83rem;color:var(--ink2)}
-.rm-anx-body li{margin:.3em 0}
-.rm-anx-body b{color:var(--ink)}
-@media(prefers-reduced-motion:reduce){.rm-box{transition:none}}
-@media(max-width:700px){.planta .bands{grid-template-columns:repeat(2,1fr)}.tier-row{grid-template-columns:38px 1fr 60px 44px;gap:7px}.rm-grid{grid-template-columns:1fr 1fr}.rm-per2{margin-left:0;flex-basis:100%}}
+.rm-anx-k{font-family:var(--mono);font-size:.57rem;text-transform:uppercase;letter-spacing:.14em;color:var(--amber-d);font-weight:600;border:1px solid var(--amber);border-radius:4px;padding:2px 7px}
+.rm-anx-body{padding:2px 20px 19px;font-size:.84rem;color:var(--ink2)}
+.rm-anx-body li{margin:.34em 0}.rm-anx-body b{color:var(--ink);font-weight:500}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.rm-box,.view.show{animation:none;transition:none}aside{transition:none}body{transition:none}}
+@media(max-width:700px){.planta .bands{grid-template-columns:repeat(2,1fr)}.tier-row{grid-template-columns:40px 1fr 60px 46px;gap:8px}.rm-grid{grid-template-columns:1fr 1fr}.rm-per2{margin-left:0;flex-basis:100%}}
 @media(max-width:440px){.rm-grid,.rm-traj{grid-template-columns:1fr}}
-/* ===== mapa-view blocks moved into §9/§10 — namespaced mv-* (avoids planta .band/.bands collision) ===== */
-.mv-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 12px;font-size:.7rem;color:var(--ink2)}
-.mv-legend span{display:inline-flex;align-items:center;gap:6px}
-.mv-dot{width:11px;height:11px;border-radius:3px;display:inline-block;flex:0 0 auto}
-.mv-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0;padding-bottom:6px}
+
+/* ═══ relationship maps moved into §9/§10 — mv-* ══════════ */
+.mv-legend{display:flex;flex-wrap:wrap;gap:7px 18px;margin:12px 0 14px;font-size:.72rem;color:var(--ink2);font-family:var(--mono);letter-spacing:.02em}
+.mv-legend span{display:inline-flex;align-items:center;gap:7px}
+.mv-dot{width:10px;height:10px;border-radius:2px;display:inline-block;flex:0 0 auto}
+/* the two large schematics render on a fixed warm plate in both themes — intentional printed-diagram treatment */
+.mv-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;padding:14px;background:var(--plate);
+  border:1px solid var(--plate-line);border-radius:7px}
 .mv-scroll svg{display:block}
 .mv-min{min-width:720px}
-.mv-flowbar{display:flex;align-items:center;justify-content:space-between;font-size:.56rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g-d);background:#e6f5ee;border:1px solid #9fd3bd;border-radius:8px;padding:6px 12px;margin:2px 0}
-.mv-flowbar.res{color:var(--slate);background:#edf1f5;border-color:#c3cfd8}
+.mv-flowbar{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:.58rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--g-d);background:var(--wash-g);border:1px solid var(--g);border-radius:5px;padding:7px 13px;margin:2px 0}
+.mv-flowbar.res{color:var(--slate-d);background:var(--wash-slate);border-color:var(--slate)}
 .mv-bands{display:flex;flex-direction:column;gap:6px;margin:8px 0}
 .mv-band{display:grid;grid-template-columns:150px 1fr;gap:8px;align-items:stretch}
-.mv-lbl{font-size:.56rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:9px 11px;border-radius:8px;display:flex;align-items:center;line-height:1.25}
-.mv-cells{display:flex;flex-wrap:wrap;gap:5px}
-.mv-z{flex:1;min-width:90px;font-size:.66rem;padding:8px 9px;border-radius:8px;background:#f4f4f5;border:1px solid var(--line);color:var(--ink);line-height:1.3}
-.mv-note{background:#fdf3e3;border:1px solid #e6c99a;border-radius:8px;padding:12px 16px;margin:14px 0 0;font-size:.76rem;color:var(--ink2)}
-.mv-note b{color:var(--amber)}
-.mv-note.grn{background:#e6f5ee;border-color:#9fd3bd}
-.mv-note.grn b{color:var(--g-d)}
+.mv-lbl{font-family:var(--mono);font-size:.56rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
+  padding:9px 12px;border-radius:5px;display:flex;align-items:center;line-height:1.3}
+.mv-cells{display:flex;flex-wrap:wrap;gap:6px}
+.mv-z{flex:1;min-width:90px;font-size:.67rem;padding:9px 10px;border-radius:5px;background:var(--paper);border:1px solid var(--line);color:var(--ink2);line-height:1.3}
+.mv-note{background:var(--wash-amber);border:1px solid var(--amber);border-radius:6px;padding:13px 16px;margin:16px 0 0;font-size:.78rem;color:var(--ink2)}
+.mv-note b{color:var(--amber-d);font-weight:500}
+.mv-note.grn{background:var(--wash-g);border-color:var(--g)}.mv-note.grn b{color:var(--g-d)}
 @media(max-width:760px){.mv-band{grid-template-columns:1fr}}
-/* pane views (Biblia / Mapa) — full-bleed document in an iframe */
-.pane-note{font-size:.78rem;color:var(--ink3);background:#fff;border-bottom:1px solid var(--line);padding:9px 34px}
-.pane iframe{width:100%;height:calc(100vh - 34px);border:0;background:#ffffff;display:block}
-/* responsive */
-@media(max-width:900px){:root{--nav:0px}aside{position:fixed;left:-280px;width:264px;transition:left .2s;z-index:40;box-shadow:2px 0 20px rgba(0,0,0,.15)}
-body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixed;top:10px;right:14px;left:auto;margin:0;z-index:45}
-.card{max-width:none;padding:18px 18px}.view:not(.pane){padding:16px 18px 70px}.intro{max-width:none}.hero .in{padding:16px 18px 12px}h1.t{font-size:1.3rem}.pane-note{padding:9px 18px}}
-.menu-btn{display:none;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 11px;font-size:.8rem;cursor:pointer;margin-bottom:10px;box-shadow:0 2px 8px -3px rgba(0,0,0,.25)}
-@media(prefers-color-scheme:dark){}
+
+/* ─── panes (Biblia / Mapa iframes — light, framed) ────── */
+.pane-note{font-family:var(--sans);font-size:.8rem;color:var(--ink3);background:var(--paper-deep);border-bottom:1px solid var(--line);padding:11px 46px}
+.pane-note a{color:var(--accent)}
+.pane iframe{width:100%;height:calc(100vh - 40px);border:0;background:#fff;display:block}
+
+/* ─── responsive nav ───────────────────────────────────── */
+@media(max-width:900px){:root{--nav:0px}
+  aside{position:fixed;left:-288px;width:270px;z-index:40;visibility:hidden;transition:left .22s var(--ease),visibility 0s .22s}
+  body.nav-open aside{left:0;visibility:visible;transition:left .22s var(--ease)}
+  .menu-btn{display:inline-flex!important;position:fixed;top:12px;right:14px;left:auto;margin:0;z-index:45}
+  .card{max-width:none}.view:not(.pane){padding:22px 20px 80px}.intro{max-width:none}
+  .hero .in{padding:22px 20px 16px}.pane-note{padding:11px 120px 11px 20px}
+  .crumb{display:block;padding-right:120px}h1.t{font-size:clamp(2rem,10vw,2.6rem)}}
+.menu-btn{display:none;align-items:center;gap:7px;background:var(--paper-elev);border:1px solid var(--line);border-radius:6px;
+  padding:8px 13px;font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink2);cursor:pointer}
 </style></head>
 <body>
 <div class="wrap">
-<aside>
+<aside id="nav">
  <div class="brand"><div class="dot"></div><div><b>Photonic Labs</b><span>Command Center</span></div></div>
- <a class="ni ni-home" data-view="home"><span class="ni-n">◆</span> Inicio <span class="ni-s">panorama</span></a>
-<details class="ng" open><summary>Panorama</summary><a class="ni" data-view="s1"><span class="ni-n">1</span> Qué es Photonic Labs</a><a class="ni" data-view="s2"><span class="ni-n">2</span> La tesis: el gap de TRL 5–8</a></details>
-<details class="ng" open><summary>El Lab</summary><a class="ni" data-view="s3"><span class="ni-n">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</a><a class="ni" data-view="s4"><span class="ni-n">4</span> El modelo operativo — Modelo 3</a><a class="ni" data-view="s5"><span class="ni-n">5</span> Diseño de planta</a><a class="ni" data-view="s6"><span class="ni-n">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</a></details>
-<details class="ng" open><summary>Contexto</summary><a class="ni" data-view="s7"><span class="ni-n">7</span> Marco legal, fiscal y Zona Franca</a><a class="ni" data-view="s8"><span class="ni-n">8</span> Mercado, demanda y ecosistema</a></details>
-<details class="ng"><summary>Ejecución</summary><a class="ni" data-view="s9"><span class="ni-n">9</span> Roadmap de ejecución</a><a class="ni" data-view="s10"><span class="ni-n">10</span> Economía del proyecto — modelo v3</a><a class="ni" data-view="s11"><span class="ni-n">11</span> Equipo, gobernanza y decisiones</a></details>
-<details class="ng"><summary>Gobernanza</summary><a class="ni" data-view="s12"><span class="ni-n">12</span> Sincronización y discrepancias</a><a class="ni" data-view="s13"><span class="ni-n">13</span> Preguntas abiertas</a></details>
-<details class="ng"><summary>Referencia</summary><a class="ni" data-view="s14"><span class="ni-n">14</span> Inventario de documentos</a><a class="ni" data-view="s15"><span class="ni-n">15</span> Glosario</a></details>
-<details class="ng" open><summary>Data</summary><a class="ni" data-view="biblia"><span class="ni-n">▸</span> Biblia <span class="ni-s">toda la data</span></a><a class="ni" data-view="mapa"><span class="ni-n">▸</span> Mapa <span class="ni-s">relaciones y flujos</span></a></details>
+ <a class="ni ni-home" href="#home" data-view="home"><span class="ni-n">◆</span> Inicio <span class="ni-s">panorama</span></a>
+<details class="ng" open><summary>Panorama</summary><a class="ni" href="#s1" data-view="s1"><span class="ni-n">1</span> Qué es Photonic Labs</a><a class="ni" href="#s2" data-view="s2"><span class="ni-n">2</span> La tesis: el gap de TRL 5–8</a></details>
+<details class="ng" open><summary>El Lab</summary><a class="ni" href="#s3" data-view="s3"><span class="ni-n">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</a><a class="ni" href="#s4" data-view="s4"><span class="ni-n">4</span> El modelo operativo — Modelo 3</a><a class="ni" href="#s5" data-view="s5"><span class="ni-n">5</span> Diseño de planta</a><a class="ni" href="#s6" data-view="s6"><span class="ni-n">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</a></details>
+<details class="ng" open><summary>Contexto</summary><a class="ni" href="#s7" data-view="s7"><span class="ni-n">7</span> Marco legal, fiscal y Zona Franca</a><a class="ni" href="#s8" data-view="s8"><span class="ni-n">8</span> Mercado, demanda y ecosistema</a></details>
+<details class="ng"><summary>Ejecución</summary><a class="ni" href="#s9" data-view="s9"><span class="ni-n">9</span> Roadmap de ejecución</a><a class="ni" href="#s10" data-view="s10"><span class="ni-n">10</span> Economía del proyecto — modelo v3</a><a class="ni" href="#s11" data-view="s11"><span class="ni-n">11</span> Equipo, gobernanza y decisiones</a></details>
+<details class="ng"><summary>Gobernanza</summary><a class="ni" href="#s12" data-view="s12"><span class="ni-n">12</span> Sincronización y discrepancias</a><a class="ni" href="#s13" data-view="s13"><span class="ni-n">13</span> Preguntas abiertas</a></details>
+<details class="ng"><summary>Referencia</summary><a class="ni" href="#s14" data-view="s14"><span class="ni-n">14</span> Inventario de documentos</a><a class="ni" href="#s15" data-view="s15"><span class="ni-n">15</span> Glosario</a></details>
+<details class="ng" open><summary>Data</summary><a class="ni" href="#biblia" data-view="biblia"><span class="ni-n">▸</span> Biblia <span class="ni-s">toda la data</span></a><a class="ni" href="#mapa" data-view="mapa"><span class="ni-n">▸</span> Mapa <span class="ni-s">relaciones y flujos</span></a></details>
+ <div class="nav-foot">
+  <button class="theme-tog" id="theme-tog"><span class="tt-ico">☾</span> <span class="tt-lbl">tema</span></button>
+  <span class="nav-ver">B · 0.2</span>
+ </div>
 </aside>
 <main>
  <div class="hero"><div class="in">
@@ -231,7 +365,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
    <h1 class="t">Photonic Labs</h1>
    <p class="lead">La capa de infraestructura de escalado biotech que hoy no existe en LATAM — wet-lab stand-alone GMP-ready, dentro de Zona Franca.</p>
  </div></div>
- <button class="menu-btn">☰ Secciones</button>
+ <button class="menu-btn" aria-controls="nav" aria-expanded="false">☰ Secciones</button>
  <section class="view" data-view="home"><div class="intro"><h1>Photonic Labs — Wiki del Proyecto</h1>
 <blockquote>
 <p>🟢 <strong>VERSIÓN EN EDICIÓN (B · 0.1) — abierta 2026-07-16.</strong> Fork de trabajo del wiki. Editá acá. Sucede a <a href="photonic-lab-wiki-a-0.1.md"><code>photonic-lab-wiki-a-0.1.md</code></a> (congelada). Cuando esté lista, se regenera el <code>.html</code> consolidado y se re-publica a GitHub Pages (ver <a href="_index.md"><code>_index.md</code></a>).</p>
@@ -249,11 +383,11 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Advisors estratégicos:</strong> <strong>Qualia+</strong> (Alejandro San Juan + Juan Eduardo "JEC" Ceriani) — acceso al ecosistema médico-científico + profundidad operativa GMP que BOTH no tiene por linaje propio.</li>
 </ul>
 <blockquote>
-<p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo / "quantum" <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#s3">§3</a> y <a href="#s12">§12</a>.</p>
+<p><strong>Encuadre canónico (decisión 2026-07-02):</strong> el scope de fundación es un <strong>wet-lab stand-alone</strong> que tiene que funcionar como negocio independiente. Silicio / IA / cómputo avanzado <strong>no</strong> son el core inicial — son <em>boosters</em> que se agregan sobre una base que se sostiene sola. Ver <a href="#s3">§3</a> y <a href="#s12">§12</a>.</p>
 </blockquote>
 <hr /></article></section>
 <section class="view" data-view="s2"><article class="card"><h2 class="ch"><span class="cn">2</span> La tesis: el gap de TRL 5–8</h2><figure class="chart"><figcaption>La tesis — el hueco de infraestructura TRL 5–8</figcaption>
-<svg viewBox="0 0 620 152" role="img" aria-label="Escalera TRL 1 a 9 con gap crítico en 5 a 8"><rect x="18.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="48.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">1</text><rect x="83.3" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="114.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">2</text><rect x="148.7" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="179.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">3</text><rect x="214.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="244.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">4</text><rect x="279.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="310.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">5</text><rect x="344.7" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="375.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">6</text><rect x="410.0" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="440.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">7</text><rect x="475.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="506.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">8</text><rect x="540.7" y="58" width="61.3" height="30" rx="5" fill="var(--slate)" opacity="0.45"/><text x="571.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:#fff">9</text><path d="M279.3,96 L279.3,104 L536.7,104 L536.7,96" fill="none" stroke="var(--coral)" stroke-width="2"/><text x="408.0" y="122" text-anchor="middle" class="sl" style="fill:var(--coral)">GAP TRL 5–8 — donde entra Photonic</text><text x="146.7" y="46" text-anchor="middle" class="ss">Cubierto · UdelaR·Pasteur·INIA·ORT</text><text x="571.3" y="46" text-anchor="middle" class="ss">Inaccesible</text><text x="16.0" y="140" class="cx">TRL — Technology Readiness Level (1 → 9)</text></svg></figure><p>LATAM biotech no falla por ciencia débil. Falla porque <strong>no existe la infraestructura para escalar esa ciencia</strong>. El hueco está en el rango <strong>TRL 5–8</strong>: investigación validada que necesita volverse producción piloto, lotes GMP y procesos documentados y transferibles a un CDMO.</p>
+<svg viewBox="0 0 620 152" role="img" aria-label="Escalera TRL 1 a 9 con gap crítico en 5 a 8"><rect x="18.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="48.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">1</text><rect x="83.3" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="114.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">2</text><rect x="148.7" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="179.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">3</text><rect x="214.0" y="58" width="61.3" height="30" rx="5" fill="var(--g)" opacity="0.85"/><text x="244.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">4</text><rect x="279.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="310.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">5</text><rect x="344.7" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="375.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">6</text><rect x="410.0" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="440.7" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">7</text><rect x="475.3" y="58" width="61.3" height="30" rx="5" fill="var(--coral)" opacity="0.92"/><text x="506.0" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">8</text><rect x="540.7" y="58" width="61.3" height="30" rx="5" fill="var(--slate)" opacity="0.45"/><text x="571.3" y="77" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--paper-elev)">9</text><path d="M279.3,96 L279.3,104 L536.7,104 L536.7,96" fill="none" stroke="var(--coral)" stroke-width="2"/><text x="408.0" y="122" text-anchor="middle" class="sl" style="fill:var(--coral)">GAP TRL 5–8 — donde entra Photonic</text><text x="146.7" y="46" text-anchor="middle" class="ss">Cubierto · UdelaR·Pasteur·INIA·ORT</text><text x="571.3" y="46" text-anchor="middle" class="ss">Inaccesible</text><text x="16.0" y="140" class="cx">TRL — Technology Readiness Level (1 → 9)</text></svg></figure><p>LATAM biotech no falla por ciencia débil. Falla porque <strong>no existe la infraestructura para escalar esa ciencia</strong>. El hueco está en el rango <strong>TRL 5–8</strong>: investigación validada que necesita volverse producción piloto, lotes GMP y procesos documentados y transferibles a un CDMO.</p>
 <table>
 <thead>
 <tr>
@@ -293,14 +427,13 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 - Techo de precio verificado: <strong>USD 50.000 / 100 g</strong> (Ardan Pharma terceriza en un CRO de India). Photonic cotiza por debajo.</p>
 <p><strong>Matiz importante — el "riesgo commodity" (aclaración René, 07-07):</strong> el gap es real y hoy está desatendido — <em>eso</em> explica por qué hay demanda. Pero "desatendido hoy" ≠ "defendible mañana". Un wet-lab que vende capacidad fee-for-service es <strong>replicable</strong> (ATGen extendiendo su downstream, o un entrante con capital). Ser first-mover sobre un hueco vacío es <strong>una ventana, no un foso</strong>. Lo que vuelve el negocio defendible es la capa propietaria de A+ + el embedding institucional (ZF, ANII, nodo BID Lab). El argumento commodity, por lo tanto, es un argumento <strong>a favor de A+ sobre A puro</strong>, no en contra de la tesis.</p>
 <hr /></article></section>
-<section class="view" data-view="s3"><article class="card"><h2 class="ch"><span class="cn">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</h2><figure class="chart"><figcaption>El modelo — wet-lab stand-alone + boosters, dentro de Zona Franca</figcaption>
+<section class="view" data-view="s3"><article class="card"><h2 class="ch"><span class="cn">3</span> El modelo — wet-lab stand-alone dentro de Zona Franca (cerrado)</h2><figure class="chart"><figcaption>El modelo — wet-lab stand-alone + booster in-silico, dentro de Zona Franca</figcaption>
 <div class="modelmap"><div class="zf-wrap"><span class="zf-tag">Zona Franca · IRAE 0%</span>
  <div class="mm-row">
   <div class="mm core"><b>Wet-lab stand-alone</b><span>T0 analítica (core de caja) + producción GMP-ready · Modelo 3</span></div>
   <div class="mm-arrow">sostiene →</div>
   <div class="mm boost"><b>In-silico C1–C3</b><span>booster A+ · ~85% margen · cierra el EBITDA</span></div>
  </div>
- <div class="mm periph"><b>Quantum / TQA</b><span>periférico · optionality — fuera del core</span></div>
 </div></div></figure><blockquote>
 <p>🔒 <strong>Decisión cerrada y permanente (canon 2026-07-19, Gastón · Type-1).</strong> El framing de "caminos A/A+/B" queda <strong>retirado</strong> — no se re-discute. Photonic Labs es un <strong>wet-lab stand-alone GMP-ready dentro de Zona Franca (all-in, desde el día uno)</strong>. Ver <a href="#s7">§7</a> · <a href="#s12">§12</a>.</p>
 </blockquote>
@@ -328,11 +461,6 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <td><strong>Capa in-silico (C1–C3)</strong></td>
 <td>Digital twin · in-silico design · IP custody (~85% margen)</td>
 <td><strong>Booster</strong> — sostiene el break-even temprano</td>
-</tr>
-<tr>
-<td><strong>Quantum / TQA</strong></td>
-<td>Cómputo avanzado (IonQ, TQA)</td>
-<td><strong>Periférico</strong> — Play A, fuera del pitch</td>
 </tr>
 <tr>
 <td><strong>Estructura</strong></td>
@@ -374,7 +502,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <section class="view" data-view="s5"><article class="card wide"><h2 class="ch"><span class="cn">5</span> Diseño de planta</h2><figure class="chart planta"><figcaption>Diseño de planta — 5 bandas · 21 zonas funcionales · flujo unidireccional</figcaption>
 <div class="flowbar"><span>◐ Entrada materiales</span><span class="flowline">flujo unidireccional →</span><span>Productos ◑</span></div>
 <div class="bands"><div class="band band-slate"><div class="band-h">Logística / almacenes</div><button class="zone" data-z="Depósito materias primas" data-d="Entrada unidireccional de insumos">Depósito materias primas</button><button class="zone" data-z="Recepción / descarga" data-d="Ingreso y control de materiales">Recepción / descarga</button><button class="zone" data-z="Depósito insumos SU" data-d="Single-use — formato principal del modelo">Depósito insumos SU</button><button class="zone" data-z="Depósito mat. limpios" data-d="Materiales acondicionados">Depósito mat. limpios</button><button class="zone" data-z="Expedición" data-d="Salida de productos terminados">Expedición</button></div><div class="band band-amber"><div class="band-h">Preparación</div><button class="zone" data-z="Pesadas / muestreo" data-d="Dosificación y toma de muestras">Pesadas / muestreo</button><button class="zone" data-z="Prep. medios / soluciones" data-d="Formulación de medios de cultivo">Prep. medios / soluciones</button><button class="zone" data-z="Acondicionamiento" data-d="Preparación de materiales para producción">Acondicionamiento</button><button class="zone" data-z="Lavadero" data-d="Limpieza de material">Lavadero</button></div><div class="band band-g"><div class="band-h">Producción · ISO 8</div><button class="zone" data-z="Banco celular" data-d="Ultrafreezers −80 °C + N₂ líq. −196 °C + UPS dedicado">Banco celular</button><button class="zone" data-z="Inóculo (seed train)" data-d="Incubadora CO₂ · shakers · BSC Clase II · contador celular">Inóculo (seed train)</button><button class="zone" data-z="Fermentación / cultivo" data-d="Biorreactores 10 L + 50 L single-use">Fermentación / cultivo</button><button class="zone" data-z="Purificación / downstream" data-d="3 salas: Purif 1 · Purif 2 · Filtración Final — ÄKTA Process+Pilot+TFF+HPLC">Purificación / downstream</button></div><div class="band band-blue"><div class="band-h">I+D + QA/QC · CNC</div><button class="zone" data-z="I+D" data-d="Terapia génica · CAR-T · suite analítica standalone">I+D</button><button class="zone" data-z="QA / QC" data-d="Físico-química · microbiología · genómica">QA / QC</button></div><div class="band band-slate"><div class="band-h">Soporte / servicios</div><button class="zone" data-z="Esclusa residuos" data-d="Salida de residuos, separada del flujo de materiales">Esclusa residuos</button><button class="zone" data-z="Depósito residuos" data-d="Acopio previo a retiro">Depósito residuos</button><button class="zone" data-z="Vestuarios" data-d="Acceso de personal, separado del flujo">Vestuarios</button><button class="zone" data-z="Sala reuniones / onboarding" data-d="Residentes y clientes">Sala reuniones / onboarding</button><button class="zone" data-z="IT / Servers" data-d="LIMS/ELN Benchling · trazabilidad completa">IT / Servers</button></div></div>
-<div class="zone-detail" id="planta-detail"><b>Hacé click en una zona</b> — 21 zonas en 5 bandas, sin cruces. Personal y residuos separados físicamente del flujo de materiales.</div></figure><p>Documentado en <strong>Capabilities (Mayo 2026)</strong>. El diseño conceptual define <strong>21 zonas funcionales</strong> organizadas en <strong>cinco bandas</strong> con <strong>flujo de materiales unidireccional</strong> — los materiales entran por un extremo y los productos salen por el otro, sin cruces. El acceso de personal y la salida de residuos están <strong>separados físicamente</strong> del flujo de materiales.</p>
+<div class="zone-detail" id="planta-detail" aria-live="polite"><b>Hacé click en una zona</b> — 21 zonas en 5 bandas, sin cruces. Personal y residuos separados físicamente del flujo de materiales.</div></figure><p>Documentado en <strong>Capabilities (Mayo 2026)</strong>. El diseño conceptual define <strong>21 zonas funcionales</strong> organizadas en <strong>cinco bandas</strong> con <strong>flujo de materiales unidireccional</strong> — los materiales entran por un extremo y los productos salen por el otro, sin cruces. El acceso de personal y la salida de residuos están <strong>separados físicamente</strong> del flujo de materiales.</p>
 <p><strong>Las cinco bandas (de la infografía / plano conceptual — Tramo 1):</strong></p>
 <table>
 <thead>
@@ -416,11 +544,11 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <p>El plano conceptual existe en tres formatos entregados: tabla visual editable (Word), plano interactivo HTML (21 zonas clickeables) y la infografía de bandas. El diseño ejecutivo (m² y servicios reales por zona) lo produce la <strong>empresa de bioingeniería</strong> en la Fase B.</p>
 </blockquote>
 <hr /></article></section>
-<section class="view" data-view="s6"><article class="card wide"><h2 class="ch"><span class="cn">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</h2><figure class="chart"><figcaption>La capa computacional — tres estratos</figcaption>
-<svg viewBox="0 0 520 154" role="img" aria-label="Tres estratos: analítica core, in-silico booster, quantum periférico"><rect x="10" y="8" width="500" height="36" rx="8" fill="var(--g)" opacity="0.12"/><rect x="10" y="8" width="6" height="36" rx="3" fill="var(--g)"/><text x="26" y="26" class="sl">T0 · Analítica</text><text x="26" y="41" class="ss">Core de caja — hoy</text><rect x="10" y="54" width="500" height="36" rx="8" fill="var(--blue)" opacity="0.12"/><rect x="10" y="54" width="6" height="36" rx="3" fill="var(--blue)"/><text x="26" y="72" class="sl">C1–C3 · In-silico</text><text x="26" y="87" class="ss">Booster A+ (~85% margen)</text><rect x="10" y="100" width="500" height="36" rx="8" fill="var(--slate)" opacity="0.12"/><rect x="10" y="100" width="6" height="36" rx="3" fill="var(--slate)"/><text x="26" y="118" class="sl">Quantum / TQA</text><text x="26" y="133" class="ss">Periférico — optionality</text></svg></figure><blockquote>
-<p><strong>Reencuadre vigente (venture file, 2026-07-17):</strong> dentro de la capa computacional hay que separar tres estratos con roles distintos — <strong>analítica (T0) = core monetizable hoy</strong>, <strong>in-silico (C1–C3) = booster A+</strong>, <strong>quantum/TQA = periférico</strong>. La pre-incubación los presentaba fundidos en un solo "pilar de portada" (<em>The Quantum Alliance / Tramo 0 / motor de validación acelerada</em>); la decisión 07-02 sacó "quantum" del core y el 07-17 elevó la analítica a línea de caja de entrada. Ver <a href="#s12">§12 punto 2</a>.</p>
+<section class="view" data-view="s6"><article class="card wide"><h2 class="ch"><span class="cn">6</span> La capa computacional — T0 analítica (core) + booster A+ (C1–C3)</h2><figure class="chart"><figcaption>La capa computacional — dos estratos</figcaption>
+<svg viewBox="0 0 520 108" role="img" aria-label="Dos estratos: analítica core y booster in-silico A+"><rect x="10" y="8" width="500" height="36" rx="8" fill="var(--g)" opacity="0.12"/><rect x="10" y="8" width="6" height="36" rx="3" fill="var(--g)"/><text x="26" y="26" class="sl">T0 · Analítica</text><text x="26" y="41" class="ss">Core de caja — hoy</text><rect x="10" y="54" width="500" height="36" rx="8" fill="var(--blue)" opacity="0.12"/><rect x="10" y="54" width="6" height="36" rx="3" fill="var(--blue)"/><text x="26" y="72" class="sl">C1–C3 · In-silico</text><text x="26" y="87" class="ss">Booster A+ (~85% margen)</text></svg></figure><blockquote>
+<p><strong>Reencuadre vigente (venture file, 2026-07-17):</strong> dentro de la capa computacional hay que separar dos estratos con roles distintos — <strong>analítica (T0) = core monetizable hoy</strong> e <strong>in-silico (C1–C3) = booster A+</strong>. La pre-incubación los presentaba fundidos en un solo "pilar de portada" (<em>Tramo 0 / motor de validación acelerada</em>); la decisión 07-02 los sacó del core y el 07-17 elevó la analítica a línea de caja de entrada. Ver <a href="#s12">§12</a>.</p>
 </blockquote>
-<p><strong>Los tres estratos:</strong></p>
+<p><strong>Los dos estratos:</strong></p>
 <table>
 <thead>
 <tr>
@@ -442,12 +570,6 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <td>La capa propietaria (digital twin · in-silico design · IP custody)</td>
 <td><strong>Booster A+.</strong> ~85% margen; es lo que sostiene el break-even (EBITDA Y2)</td>
 <td>Se agrega sobre la base wet-lab</td>
-</tr>
-<tr>
-<td><strong>TQA / quantum</strong></td>
-<td>Cómputo cuántico / substrato photonic (IonQ, TQA)</td>
-<td><strong>Periférico.</strong> Fuera del pitch de fundación; se abstrae como "capacidades computacionales avanzadas" (Play A)</td>
-<td>Optionality, no core</td>
 </tr>
 </tbody>
 </table>
@@ -476,7 +598,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 <tr>
 <td><strong>C3 · IP custody</strong></td>
-<td>MCB/WCB protegidos criptográficamente (post-quantum-ready), recurrente</td>
+<td>MCB/WCB protegidos criptográficamente (cifrado de próxima generación), recurrente</td>
 <td>Todos los residentes</td>
 <td>~85%</td>
 </tr>
@@ -486,7 +608,6 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <blockquote>
 <p><strong>Matiz importante:</strong> T0-Analítica y el booster C1–C3 son cosas distintas. T0 es un servicio de wet-lab (analítica sobre muestras) que factura ya; C1–C3 es la capa in-silico que da el foso de A+. El reencuadre 07-17 dice que <strong>la analítica no es un extra sino parte del core de caja</strong> — separado del debate A vs A+, que gira sobre el booster in-silico.</p>
 </blockquote>
-<p><strong>Optionality preservada (TQA plays):</strong> la ambigüedad sobre <em>qué</em> potencia la capa es un activo. Play A (silencioso, default) → Play B (partner nombrado, tras MoU/LOI de TQA) → Play C (co-pitch Photonic + Quantum Hub). Escalar de A a B/C es decisión conjunta René + Gastón, nunca improvisada.</p>
 <hr /></article></section>
 <section class="view" data-view="s7"><article class="card"><h2 class="ch"><span class="cn">7</span> Marco legal, fiscal y Zona Franca</h2><p><strong>Cinco instrumentos legales</strong> verificados en fuentes oficiales (impo.com.uy, ANII, Uruguay XXI):</p>
 <table>
@@ -592,11 +713,6 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <td>Cristina Montero · Cristina Moreno · María José Graña</td>
 </tr>
 <tr>
-<td><strong>Presidencia (ROU)</strong></td>
-<td>Carta conjunta BOTH + TQA formalizando interés de hub — en curso, endorsement soberano aún no firmado</td>
-<td>—</td>
-</tr>
-<tr>
 <td><strong>Parque de las Ciencias</strong></td>
 <td>Sitio objetivo (Canelones, régimen ZF); alberga LATU, Pasteur</td>
 <td>Enrique Buero (Gerente)</td>
@@ -630,21 +746,21 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <section class="view" data-view="s9"><article class="card wide"><h2 class="ch"><span class="cn">9</span> Roadmap de ejecución</h2><figure class="chart"><figcaption>De un vistazo — pre-incubación → incubación → desarrollo</figcaption>
 <svg viewBox="0 0 720 150" role="img" aria-label="Roadmap en tres fases con dos gates">
 <line x1="30" y1="132" x2="690" y2="132" stroke="var(--line)" stroke-width="1.5"/>
-<rect x="30" y="52" width="182" height="42" rx="9" fill="#eef0f2" stroke="var(--slate)" stroke-width="1"/>
+<rect x="30" y="52" width="182" height="42" rx="9" fill="var(--wash-slate)" stroke="var(--slate)" stroke-width="1"/>
 <text x="121" y="40" text-anchor="middle" class="rm-tl-per">H1 2026 · Qualia+ / Rene</text>
 <text x="121" y="70" text-anchor="middle" class="rm-tl-lbl" fill="var(--slate-d)">1 · Pre-Incubación</text>
 <text x="121" y="85" text-anchor="middle" class="rm-tl-st" fill="var(--slate)">✓ CERRANDO</text>
 <text x="121" y="116" text-anchor="middle" class="rm-tl-sub">Tesis + de-risk → kit</text>
 <path d="M238 82 l9 11 l-9 11 l-9 -11 z" fill="var(--amber)"/>
 <text x="238" y="66" text-anchor="middle" class="rm-tl-gt" fill="var(--amber-d)">GATE 0</text>
-<rect x="264" y="52" width="182" height="42" rx="9" fill="#e6f5ee" stroke="var(--g)" stroke-width="1.6"/>
+<rect x="264" y="52" width="182" height="42" rx="9" fill="var(--wash-g)" stroke="var(--g)" stroke-width="1.6"/>
 <text x="355" y="40" text-anchor="middle" class="rm-tl-per">Q3'26 → 2027 · FASE A + B</text>
 <text x="355" y="70" text-anchor="middle" class="rm-tl-lbl" fill="var(--g-d)">2 · Incubación</text>
 <text x="355" y="85" text-anchor="middle" class="rm-tl-st" fill="var(--g)">▶ AHORA</text>
 <text x="355" y="116" text-anchor="middle" class="rm-tl-sub">Capital + diseño</text>
 <path d="M472 82 l9 11 l-9 11 l-9 -11 z" fill="var(--amber)"/>
 <text x="472" y="66" text-anchor="middle" class="rm-tl-gt" fill="var(--amber-d)">GATE 1</text>
-<rect x="498" y="52" width="192" height="42" rx="9" fill="#f1edf9" stroke="var(--violet)" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="498" y="52" width="192" height="42" rx="9" fill="var(--wash-violet)" stroke="var(--violet)" stroke-width="1" stroke-dasharray="4 3"/>
 <text x="594" y="40" text-anchor="middle" class="rm-tl-per">FASE C + D</text>
 <text x="594" y="70" text-anchor="middle" class="rm-tl-lbl" fill="var(--violet-d)">3 · Desarrollo</text>
 <text x="594" y="85" text-anchor="middle" class="rm-tl-st" fill="var(--violet)">○ 2027 → 2028</text>
@@ -656,7 +772,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <div class="rm-grp rmc-slate"><div class="rm-glbl">Entregables entregados <span class="rm-dep">delivery kit · deadline 31-jul</span></div><div class="rm-grid">
 <div class="rm-box done"><span class="rm-code">PI·1</span><h4 class="rm-h">Tesis + decision map</h4><div class="rm-meta">El hueco TRL 5–8 en LATAM · wet-lab stand-alone (canon 07-19).</div><div class="rm-out">Claridad estratégica</div></div>
 <div class="rm-box done"><span class="rm-code">PI·2</span><h4 class="rm-h">Camino regulatorio</h4><div class="rm-meta">MSP · bioseguridad BSL-2 · condiciones ANII mapeadas.</div><div class="rm-out">De-riskeado ⭐</div></div>
-<div class="rm-box done"><span class="rm-code">PI·3</span><h4 class="rm-h">Modelo operativo</h4><div class="rm-meta">Modelo 3 · T0 analítica core + in-silico booster A+ · quantum periférico.</div><div class="rm-out">Cerrado</div></div>
+<div class="rm-box done"><span class="rm-code">PI·3</span><h4 class="rm-h">Modelo operativo</h4><div class="rm-meta">Modelo 3 · T0 analítica core + in-silico booster A+.</div><div class="rm-out">Cerrado</div></div>
 <div class="rm-box done"><span class="rm-code">PI·4</span><h4 class="rm-h">Validación de demanda</h4><div class="rm-meta">Encuesta 74 biotech + censo UY · 59% apunta a GMP.</div><div class="rm-out">Over-delivered ⭐</div></div>
 <div class="rm-box done"><span class="rm-code">PI·5</span><h4 class="rm-h">Diseño de planta</h4><div class="rm-meta">21 zonas · 5 bandas · flujo unidireccional · ISO 8.</div><div class="rm-out">Blueprint entregado</div></div>
 <div class="rm-box done"><span class="rm-code">PI·6</span><h4 class="rm-h">Biblia + Wiki + kit</h4><div class="rm-meta">14 docs sincronizados · one-pager · SOW assessment.</div><div class="rm-out">Fuente de verdad única</div></div>
@@ -698,13 +814,13 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </div>
 <h3>Ecosistema — mapa de relaciones</h3>
 <p>Photonic Labs en el centro; cinco constelaciones de actores. Las líneas indican el tipo de relación: financia, aloja/regula, asesora, compra, o sirve de referente.</p>
-<div class="mv-legend"><span><i class="mv-dot" style="background:#0a8c5a"></i> Capital &amp; grants</span><span><i class="mv-dot" style="background:#1a4fa0"></i> Institucional / sitio</span><span><i class="mv-dot" style="background:#b06a00"></i> Advisory &amp; tecnología</span><span><i class="mv-dot" style="background:#3a4a58"></i> Clientes / demanda</span><span><i class="mv-dot" style="background:#a1a1aa"></i> Referentes (no-competencia)</span></div>
-<div class="mv-scroll"><svg class="mv-min" viewBox="0 0 1000 660" width="100%" role="img" aria-label="Mapa de relaciones del ecosistema Photonic Labs"><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a1a1aa"/></marker></defs><g stroke="#d4d4d8" stroke-width="1.4" fill="none"><line x1="500" y1="330" x2="210" y2="120"/><line x1="500" y1="330" x2="800" y2="120"/><line x1="500" y1="330" x2="150" y2="360"/><line x1="500" y1="330" x2="850" y2="360"/><line x1="500" y1="330" x2="500" y2="580"/></g><g font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#a1a1aa" text-anchor="middle"><text x="330" y="212" transform="rotate(-36 330 212)">financia</text><text x="675" y="212" transform="rotate(36 675 212)">aloja · regula · promueve</text><text x="300" y="333">asesora + potencia</text><text x="690" y="333">compran servicios</text><text x="500" y="470">valida por contraste</text></g><g><rect x="392" y="286" width="216" height="90" rx="6" fill="#18181b"/><text x="500" y="318" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">PHOTONIC LABS</text><text x="500" y="338" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#ded3bd">Wet-lab GMP-ready · Modelo 3</text><text x="500" y="356" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#7fd0a8">+ capa computacional (A+ booster)</text></g><g><rect x="40" y="40" width="300" height="118" rx="5" fill="#e6f5ee" stroke="#0a8c5a" stroke-width="1.3"/><text x="56" y="62" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#065c3a" letter-spacing="1">CAPITAL &amp; GRANTS</text><text x="56" y="84" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">ANII</tspan> — 70% no-reemb. (Implem. Innovación)</text><text x="56" y="102" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">BID Lab</tspan> — vía ecosistema (no VC directo)</text><text x="56" y="120" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Impact VC</tspan> · <tspan font-weight="700">BOTH / Manantial.vc</tspan></text><text x="56" y="138" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Cornerstone</tspan> (USD 2–3M) · soberano (B)</text></g><g><rect x="660" y="40" width="300" height="118" rx="5" fill="#e8effa" stroke="#1a4fa0" stroke-width="1.3"/><text x="676" y="62" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1a4fa0" letter-spacing="1">INSTITUCIONAL / SITIO</text><text x="676" y="84" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Parque de las Ciencias</tspan> (ZF · Canelones)</text><text x="676" y="102" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Uruguay XXI</tspan> (Cristina Montero) · <tspan font-weight="700">MSP</tspan></text><text x="676" y="120" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">LATU</tspan> (stand biotech Ago–Sep) · <tspan font-weight="700">Presidencia</tspan></text><text x="676" y="138" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Empresa de <tspan font-weight="700">bioingeniería</tspan> (ejecuta B/C)</text></g><g><rect x="20" y="300" width="252" height="118" rx="5" fill="#fdf3e3" stroke="#b06a00" stroke-width="1.3"/><text x="36" y="322" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#b06a00" letter-spacing="1">ADVISORY &amp; TECNOLOGÍA</text><text x="36" y="344" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Qualia+</tspan> — Alejandro San Juan</text><text x="36" y="362" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">+ JEC (AmegaLabs, ex-CAB) · GMP</text><text x="36" y="384" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">TQA / IonQ</tspan> — cómputo (booster A+)</text><text x="36" y="402" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Eleonora Scoseria (single-use) · Equipo Inox</text></g><g><rect x="728" y="300" width="252" height="118" rx="5" fill="#edf1f5" stroke="#3a4a58" stroke-width="1.3"/><text x="744" y="322" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#3a4a58" letter-spacing="1">CLIENTES / DEMANDA</text><text x="744" y="344" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Eywa</tspan> — PMF más claro (V1 · 300 L)</text><text x="744" y="362" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Xeptiva</tspan> (ZF ✅) · <tspan font-weight="700">KinzBio</tspan> · <tspan font-weight="700">Nanogrow</tspan></text><text x="744" y="384" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Guska</tspan> (regulatoria) · <tspan font-weight="700">Ardan</tspan> ($50K/100g)</text><text x="744" y="402" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Pasteur / LAB+ (Scaffold, LoCBio, B4RNA)</text></g><g><rect x="330" y="560" width="340" height="80" rx="5" fill="#efe9dc" stroke="#a1a1aa" stroke-width="1.3"/><text x="346" y="582" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#6f6656" letter-spacing="1">REFERENTES (NO-COMPETENCIA)</text><text x="346" y="604" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">ATGen</tspan> (cowork 300 L, downstream a 30 L)</text><text x="346" y="622" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Loci Labs</tspan> (AR) · PCTP · ORT/CBI · mAbxience</text></g></svg></div>
-<div class="mv-note"><b>Sincronización:</b> ATGen pasó de "principal competencia" (pre-incubación, mayo) a <b>no-competencia / valida por contraste</b> (canon julio). BID Lab: la entidad-lab no es elegible para VC directo → se relaciona vía el <b>proyecto-ecosistema</b>. "Quantum" (TQA/IonQ) queda como <b>booster abstraído</b>, fuera del pitch de fundación.</div>
+<div class="mv-legend"><span><i class="mv-dot" style="background:var(--g)"></i> Capital &amp; grants</span><span><i class="mv-dot" style="background:var(--blue)"></i> Institucional / sitio</span><span><i class="mv-dot" style="background:var(--amber)"></i> Advisory &amp; tecnología</span><span><i class="mv-dot" style="background:var(--slate)"></i> Clientes / demanda</span><span><i class="mv-dot" style="background:var(--mut)"></i> Referentes (no-competencia)</span></div>
+<div class="mv-scroll"><svg class="mv-min" viewBox="0 0 1000 660" width="100%" role="img" aria-label="Mapa de relaciones del ecosistema Photonic Labs"><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#a1a1aa"/></marker></defs><g stroke="#d4d4d8" stroke-width="1.4" fill="none"><line x1="500" y1="330" x2="210" y2="120"/><line x1="500" y1="330" x2="800" y2="120"/><line x1="500" y1="330" x2="150" y2="360"/><line x1="500" y1="330" x2="850" y2="360"/><line x1="500" y1="330" x2="500" y2="580"/></g><g font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#a1a1aa" text-anchor="middle"><text x="330" y="212" transform="rotate(-36 330 212)">financia</text><text x="675" y="212" transform="rotate(36 675 212)">aloja · regula · promueve</text><text x="300" y="333">asesora + potencia</text><text x="690" y="333">compran servicios</text><text x="500" y="470">valida por contraste</text></g><g><rect x="392" y="286" width="216" height="90" rx="6" fill="#18181b"/><text x="500" y="318" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="17" font-weight="700" fill="#fff">PHOTONIC LABS</text><text x="500" y="338" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#ded3bd">Wet-lab GMP-ready · Modelo 3</text><text x="500" y="356" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="10.5" fill="#7fd0a8">+ capa computacional (A+ booster)</text></g><g><rect x="40" y="40" width="300" height="118" rx="5" fill="#e6f5ee" stroke="#0a8c5a" stroke-width="1.3"/><text x="56" y="62" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#065c3a" letter-spacing="1">CAPITAL &amp; GRANTS</text><text x="56" y="84" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">ANII</tspan> — 70% no-reemb. (Implem. Innovación)</text><text x="56" y="102" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">BID Lab</tspan> — vía ecosistema (no VC directo)</text><text x="56" y="120" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Impact VC</tspan> · <tspan font-weight="700">BOTH / Manantial.vc</tspan></text><text x="56" y="138" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Cornerstone</tspan> (USD 2–3M) · soberano (B)</text></g><g><rect x="660" y="40" width="300" height="118" rx="5" fill="#e8effa" stroke="#1a4fa0" stroke-width="1.3"/><text x="676" y="62" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#1a4fa0" letter-spacing="1">INSTITUCIONAL / SITIO</text><text x="676" y="84" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Parque de las Ciencias</tspan> (ZF · Canelones)</text><text x="676" y="102" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Uruguay XXI</tspan> (Cristina Montero) · <tspan font-weight="700">MSP</tspan></text><text x="676" y="120" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">LATU</tspan> (stand biotech Ago–Sep) · <tspan font-weight="700">Presidencia</tspan></text><text x="676" y="138" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Empresa de <tspan font-weight="700">bioingeniería</tspan> (ejecuta B/C)</text></g><g><rect x="20" y="300" width="252" height="118" rx="5" fill="#fdf3e3" stroke="#b06a00" stroke-width="1.3"/><text x="36" y="322" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#b06a00" letter-spacing="1">ADVISORY &amp; TECNOLOGÍA</text><text x="36" y="344" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Qualia+</tspan> — Alejandro San Juan</text><text x="36" y="362" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">+ JEC (AmegaLabs, ex-CAB) · GMP</text><text x="36" y="384" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Eleonora Scoseria (single-use) · Equipo Inox</text></g><g><rect x="728" y="300" width="252" height="118" rx="5" fill="#edf1f5" stroke="#3a4a58" stroke-width="1.3"/><text x="744" y="322" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#3a4a58" letter-spacing="1">CLIENTES / DEMANDA</text><text x="744" y="344" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Eywa</tspan> — PMF más claro (V1 · 300 L)</text><text x="744" y="362" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Xeptiva</tspan> (ZF ✅) · <tspan font-weight="700">KinzBio</tspan> · <tspan font-weight="700">Nanogrow</tspan></text><text x="744" y="384" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Guska</tspan> (regulatoria) · <tspan font-weight="700">Ardan</tspan> ($50K/100g)</text><text x="744" y="402" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b">Pasteur / LAB+ (Scaffold, LoCBio, B4RNA)</text></g><g><rect x="330" y="560" width="340" height="80" rx="5" fill="#efe9dc" stroke="#a1a1aa" stroke-width="1.3"/><text x="346" y="582" font-family="Helvetica,Arial,sans-serif" font-size="10" font-weight="700" fill="#6f6656" letter-spacing="1">REFERENTES (NO-COMPETENCIA)</text><text x="346" y="604" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">ATGen</tspan> (cowork 300 L, downstream a 30 L)</text><text x="346" y="622" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#18181b"><tspan font-weight="700">Loci Labs</tspan> (AR) · PCTP · ORT/CBI · mAbxience</text></g></svg></div>
+<div class="mv-note"><b>Sincronización:</b> ATGen pasó de "principal competencia" (pre-incubación, mayo) a <b>no-competencia / valida por contraste</b> (canon julio). BID Lab: la entidad-lab no es elegible para VC directo → se relaciona vía el <b>proyecto-ecosistema</b>.</div>
 <h3>Flujo de materiales — la planta (Tramo 1)</h3>
 <p>21 zonas en 5 bandas. Flujo de materiales <b>unidireccional</b> (entra por un extremo, sale por el otro, sin cruces). Acceso de personal y salida de residuos separados físicamente. Corredor de producción bajo ISO 8. (Capabilities, mayo 2026.)</p>
 <div class="mv-flowbar"><span>▶ Entrada materiales</span><span>Flujo unidireccional →→→</span><span>Producto ▶</span></div>
-<div class="mv-bands"><div class="mv-band"><div class="mv-lbl" style="background:#fdf3e3;color:#b06a00;border:1px solid #e6c99a">Logística / almacenes</div><div class="mv-cells"><div class="mv-z">Dep. materias primas</div><div class="mv-z">Recepción / descarga</div><div class="mv-z">Dep. insumos SU</div><div class="mv-z">Dep. mat. limpios</div><div class="mv-z" style="background:#fdecea;border-color:#eab8b1">Expedición</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:#e6f5ee;color:#065c3a;border:1px solid #9fd3bd">Preparación</div><div class="mv-cells"><div class="mv-z">Pesadas / muestreo</div><div class="mv-z">Prep. medios / soluciones</div><div class="mv-z">Acondicionamiento</div><div class="mv-z">Lavadero</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:#e8effa;color:#1a4fa0;border:1px solid #b9cbe8">Producción · corredor ISO 8</div><div class="mv-cells"><div class="mv-z">Banco celular (MCB/WCB)</div><div class="mv-z">Inóculo (seed train)</div><div class="mv-z">Fermentación / cultivo (10–50 L SU)</div><div class="mv-z">Purificación / downstream (Puri 1·2 + Filtr.)</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:#efe9f6;color:#5b4b8a;border:1px solid #cbbfe0">I+D + QA/QC · circ. CNC</div><div class="mv-cells"><div class="mv-z">Innovación y Desarrollo (terapia génica, CAR-T, analítica standalone)</div><div class="mv-z">QA / QC (físico-química · microbiología · genómica)</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:#edf1f5;color:#3a4a58;border:1px solid #c3cfd8">Soporte / servicios</div><div class="mv-cells"><div class="mv-z">Esclusa residuos</div><div class="mv-z">Dep. residuos</div><div class="mv-z">Vestuarios</div><div class="mv-z">Sala reuniones / onboarding</div><div class="mv-z">IT / Servers</div></div></div></div>
+<div class="mv-bands"><div class="mv-band"><div class="mv-lbl" style="background:var(--wash-amber);color:var(--amber-d);border:1px solid var(--amber)">Logística / almacenes</div><div class="mv-cells"><div class="mv-z">Dep. materias primas</div><div class="mv-z">Recepción / descarga</div><div class="mv-z">Dep. insumos SU</div><div class="mv-z">Dep. mat. limpios</div><div class="mv-z" style="background:var(--wash-coral);border-color:var(--coral)">Expedición</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:var(--wash-g);color:var(--g-d);border:1px solid var(--g)">Preparación</div><div class="mv-cells"><div class="mv-z">Pesadas / muestreo</div><div class="mv-z">Prep. medios / soluciones</div><div class="mv-z">Acondicionamiento</div><div class="mv-z">Lavadero</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:var(--wash-blue);color:var(--blue-d);border:1px solid var(--blue)">Producción · corredor ISO 8</div><div class="mv-cells"><div class="mv-z">Banco celular (MCB/WCB)</div><div class="mv-z">Inóculo (seed train)</div><div class="mv-z">Fermentación / cultivo (10–50 L SU)</div><div class="mv-z">Purificación / downstream (Puri 1·2 + Filtr.)</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:var(--wash-violet);color:var(--violet-d);border:1px solid var(--violet)">I+D + QA/QC · circ. CNC</div><div class="mv-cells"><div class="mv-z">Innovación y Desarrollo (terapia génica, CAR-T, analítica standalone)</div><div class="mv-z">QA / QC (físico-química · microbiología · genómica)</div></div></div><div class="mv-band"><div class="mv-lbl" style="background:var(--wash-slate);color:var(--slate-d);border:1px solid var(--slate)">Soporte / servicios</div><div class="mv-cells"><div class="mv-z">Esclusa residuos</div><div class="mv-z">Dep. residuos</div><div class="mv-z">Vestuarios</div><div class="mv-z">Sala reuniones / onboarding</div><div class="mv-z">IT / Servers</div></div></div></div>
 <div class="mv-flowbar res"><span>◀ Salida residuos</span><span>Acceso personal (separado del flujo de materiales) ▶</span></div>
 <div class="mv-note grn"><b>Diferenciador:</b> el downstream (ÄKTA Process + ÄKTA Pilot + TFF, 3 salas) está <b>dimensionado proporcionalmente al upstream</b> — a diferencia de ATGen (biorreactor 300 L con downstream para 30 L). <b>Single-use</b> como formato principal → cero contaminación cruzada, turnaround de horas. <b>GMP-ready</b> por diseño.</div>
 <details class="rm-anx"><summary><span class="rm-anx-k">Anexo</span> Notas, supuestos y fuente</summary><div class="rm-anx-body"><ul>
@@ -942,7 +1058,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </table>
 <p><strong>Decisiones vigentes (registro):</strong>
 - 🔒 <code>2026-07-19</code> — <strong>ZF all-in day-one = CANON permanente</strong> (cierra la reapertura del 07-04; retira outside-first/dual-entity y el framing de caminos A/A+/B; Camino B archivado). <strong>[Gastón · Type-1]</strong> → <a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>2026-07-19-photonic-zf-all-in-canonical</code></a>
-- <code>2026-07-02</code> — Scope stand-alone (wet-lab I+D+GMP-ready; silicio/IA/quantum fuera del core). <strong>[Gastón]</strong>
+- <code>2026-07-02</code> — Scope stand-alone (wet-lab I+D+GMP-ready; silicio/IA/cómputo avanzado fuera del core). <strong>[Gastón]</strong>
 - <code>2026-07-02</code> — Modelo operativo = Modelo 3. <strong>[René]</strong>
 - <code>2026-07-07</code> — Descartar dirección landmark. <strong>[René]</strong> <em>(el framing de caminos A/A+/B que abría quedó retirado el 07-19)</em>
 - <code>2026-07-07</code> — Pre-incubación cierra; incubación comienza. <strong>[proposed]</strong>
@@ -976,55 +1092,48 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </tr>
 <tr>
 <td>2</td>
-<td><strong>Cómputo / Quantum</strong></td>
-<td>The Quantum Alliance / "Tramo 0" como <strong>pilar de portada</strong> que arranca simultáneo; "motor de validación acelerada" como titular (#14 §2.1/2.5/2.6). Venture file carga arquitectura <strong>3 pilares (Biotech+Quantum+AI)</strong> + TQA plays</td>
-<td>Tres estratos separados (07-17): <strong>analítica T0 = core monetizable hoy</strong> · <strong>in-silico C1–C3 = booster A+</strong> · <strong>quantum/TQA = periférico</strong> (fuera del pitch). Wet-lab <strong>stand-alone</strong> (Modelo 3) como base (decisiones 07-02, 07-07, 07-17)</td>
-<td>El framing quantum-forward / 3-pilares / motor-de-validación queda <strong>superseded para la narrativa de fundación</strong>. Analítica sube a core de caja; in-silico se conserva como booster A+; quantum queda como optionality (Plays A/B/C). Ver <a href="#s6">§6</a>.</td>
-</tr>
-<tr>
-<td>3</td>
 <td><strong>Estructura de tramos</strong></td>
 <td>Tramo 0 (cómputo) + Tramo 1 (wet-lab) <strong>simultáneos</strong> + Tramo 2 (scale-up)</td>
 <td>Modelo settled (wet-lab stand-alone) + trayectoria <strong>MVP (M3/T1) → V1 (M4/T2) → V2 (M5)</strong></td>
 <td>"Tramo 0 simultáneo" se subsume en "booster in-silico". Tramo 1/2 siguen vivos como <strong>escalas físicas</strong> (10–50 L / 200–300 L).</td>
 </tr>
 <tr>
-<td>4</td>
+<td>3</td>
 <td><strong>Zona Franca</strong></td>
 <td>#11 Binder (Jun): "<strong>decisión tomada: ZF</strong>" (all-in). #1.1/#14: "bifurcación abierta / pendiente"</td>
 <td>✅ <strong>RESUELTO (07-19):</strong> ZF = <strong>all-in day-one</strong>, cerrado permanente (Type-1 Gastón). Outside-first/dual-entity retirado.</td>
 <td>El Binder tenía razón: ZF sí, all-in. La reapertura del 07-04 quedó cerrada. Ver <a href="#s7">§7</a>.</td>
 </tr>
 <tr>
-<td>4b</td>
+<td>3b</td>
 <td><strong>Caminos A/A+/B</strong></td>
 <td>Framing de tesis abierto (memo 07-07): A vs A+ vs B a decidir</td>
-<td>✅ <strong>RETIRADO (07-19):</strong> modelo cerrado = wet-lab stand-alone (T0 core + in-silico booster · quantum periférico). Camino B archivado.</td>
+<td>✅ <strong>RETIRADO (07-19):</strong> modelo cerrado = wet-lab stand-alone (T0 core + in-silico booster). Camino B archivado.</td>
 <td>No se re-discute. El memo de caminos queda como snapshot histórico. Ver <a href="#s3">§3</a>.</td>
 </tr>
 <tr>
-<td>5</td>
+<td>4</td>
 <td><strong>ATGen</strong></td>
 <td>"<strong>la principal competencia</strong>" (#10 May)</td>
 <td>"<strong>NO es competencia</strong> — cowork self-service; valida por contraste" (#14 §2.3 + one-pager)</td>
 <td>Superseded por la visita de campo de junio. Framing: no-competencia / benchmark / posible partner.</td>
 </tr>
 <tr>
-<td>6</td>
+<td>5</td>
 <td><strong>Eywa (anchor)</strong></td>
 <td>"posible <strong>anchor tenant</strong>" (Tramo 1)</td>
 <td>"<strong>el PMF más claro</strong>" pero necesita <strong>300 L → cae en Tramo 2 / V1</strong>, no en el MVP. Overlap <strong>Panambi</strong></td>
 <td>Eywa sigue como PMF/cliente natural, pero mapeada a V1. Reconciliar con Panambi si se reabre el vehículo lab+fondo (archivado).</td>
 </tr>
 <tr>
-<td>7</td>
+<td>6</td>
 <td><strong>Números financieros</strong></td>
 <td>Modelo abril: $2.1M midpoint, break-even M22. CAPEX #13 sin precios (research)</td>
 <td><strong>Modelo v3</strong>: CAPEX $1.48M · raise $1.9M/$2.05M · EBITDA+ Y2/Y3 · neto ~$3.33M→$4.0M · rev Y6 $3.83M</td>
 <td>Usar <strong>siempre v3</strong>. Abril y v2 superseded. Marca estimate-grade.</td>
 </tr>
 <tr>
-<td>8</td>
+<td>7</td>
 <td><strong>Entidad legal</strong></td>
 <td>"Manantial.BUILD LLC <strong>o</strong> nueva entidad" (#11, #14)</td>
 <td>Dirección: <strong>entidad propia Photonic Lab</strong> (roadmap #12 A1) con misión/visión propias</td>
@@ -1249,7 +1358,6 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>Qualia+</strong> — capa de advisory estratégico de Pillar 01. Alejandro San Juan + JEC. Contrato USD 15K · 6 meses (feb–ago 2026).</li>
 <li><strong>Alejandro San Juan ("Ale")</strong> — neurocirujano, linaje médico-científico argentino; cara pública posible; co-autor del marco legal/ZF.</li>
 <li><strong>Juan Eduardo Ceriani ("JEC", "Juane")</strong> — presidente de AmegaLabs, ex-Director de la Cámara Argentina de Biotecnología; profundidad operativa GMP. No hace fronting público.</li>
-<li><strong>The Quantum Alliance (TQA)</strong> — alianza de cómputo avanzado (micro-datacenters, GPUs, nodos cuánticos) con IonQ como partner de hardware. En la pre-incubación era pilar de portada; ahora <strong>abstraída</strong> dentro del booster A+ ("quantum" fuera del pitch).</li>
 <li><strong>Panambi</strong> — fondo de BOTH para ciencias de la salud mental en LATAM. Overlap con Photonic vía Eywa (psilocibina/salud mental) — a reconciliar en Camino B.</li>
 <li><strong>ATGen</strong> — biotech más grande de Uruguay; cowork self-service con biorreactor 300 L. No-competencia; posible partner.</li>
 <li><strong>Loci Labs</strong> — coworking biotech de Buenos Aires; comparable de cowork puro.</li>
@@ -1264,7 +1372,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </ul>
 <h3>Caminos y modelos</h3>
 <blockquote>
-<p>⚠️ <strong>El framing "Camino A / A+ / B" queda RETIRADO (canon 07-19).</strong> Photonic es un wet-lab stand-alone GMP-ready (T0 analítica core + in-silico booster · quantum periférico) dentro de ZF. Los términos se conservan abajo solo como referencia histórica.
+<p>⚠️ <strong>El framing "Camino A / A+ / B" queda RETIRADO (canon 07-19).</strong> Photonic es un wet-lab stand-alone GMP-ready (T0 analítica core + in-silico booster) dentro de ZF. Los términos se conservan abajo solo como referencia histórica.
 - <strong>Camino A</strong> <em>(histórico)</em> — wet-lab lean (Modelo 3, sin la capa in-silico). Era el "piso de caja".
 - <strong>Camino A+</strong> <em>(histórico → es el modelo settled)</em> — wet-lab + capa in-silico (C1–C3) como booster. Lo que hoy ES Photonic, sin el label.
 - <strong>Camino B</strong> <em>(archivado)</em> — vehículo lab+fondo (modelo SOSV/IndieBio). Ambición patrimonial futura y separada. Gate Gastón — reabrir solo con funder comprometido.
@@ -1303,7 +1411,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 <li><strong>QA / QC</strong> — Quality Assurance / Quality Control.</li>
 <li><strong>Digital twin</strong> — modelo computacional del biorreactor + downstream (servicio C1).</li>
 <li><strong>In-silico design</strong> — diseño/ranking molecular computacional (servicio C2).</li>
-<li><strong>IP custody</strong> — custodia criptográfica (post-quantum-ready) de MCB/WCB (servicio C3).</li>
+<li><strong>IP custody</strong> — custodia criptográfica (cifrado avanzado) de MCB/WCB (servicio C3).</li>
 </ul>
 <h3>Fiscal / legal</h3>
 <ul>
@@ -1333,7 +1441,7 @@ body.nav-open aside{left:0}.menu-btn{display:inline-flex!important;position:fixe
 </ul>
 <hr />
 <p><em>Consolidación 2026-07-08 · sincronizada 2026-07-18 (updates venture file 14–17 jul) · René + Synergy. Prevalece siempre la definición más reciente. Ver <a href="2026-07-08-photonic-labs-biblia.md">Biblia del Proyecto</a> para la data dura y el <a href="2026-07-08-photonic-labs-mapa-relaciones-flujos.html">Mapa de Relaciones y Flujos</a> para la vista de primer nivel.</em></p></article></section>
- <div class="view pane" data-view="biblia"><div class="pane-note">📄 Biblia — snapshot 2026-07-08 (data dura). Para el canon estructural vigente (all-in ZF, caminos retirados) prevalece la <a data-view="home" style="cursor:pointer">Wiki</a>.</div><iframe id="f-biblia" title="Biblia del Proyecto" srcdoc="<!DOCTYPE html><html lang=&quot;es&quot;><head><meta charset=&quot;UTF-8&quot;>
+ <div class="view pane" data-view="biblia"><div class="pane-note">📄 Biblia — snapshot 2026-07-08 (data dura). Para el canon estructural vigente (all-in ZF, caminos retirados) prevalece la <a href="#home" data-view="home">Wiki</a>.</div><iframe id="f-biblia" title="Biblia del Proyecto" srcdoc="<!DOCTYPE html><html lang=&quot;es&quot;><head><meta charset=&quot;UTF-8&quot;>
 <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>
 <title>Photonic Labs — Biblia</title><style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2341,7 +2449,7 @@ Esclusa residuos · Depósito residuos · Vestuarios · Sala reuniones/onboardin
 </tr>
 <tr>
 <td><strong>May 2026</strong></td>
-<td>Capabilities (#8, 21 zonas). Trabajo de campo (#10). Índices SOW (#1, #1.1). Convergencia con Quantum → arquitectura 3 pilares (05-14). Narrativa V0.2.0 (05-19).</td>
+<td>Capabilities (#8, 21 zonas). Trabajo de campo (#10). Índices SOW (#1, #1.1). Arquitectura del proyecto consolidada (05-14). Narrativa V0.2.0 (05-19).</td>
 </tr>
 <tr>
 <td><strong>May–Jun 2026</strong></td>
@@ -2414,8 +2522,8 @@ section{padding:30px 0;border-bottom:1px solid var(--rule)}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:6px 0;padding-bottom:6px}
 svg{display:block}
 .svg-min{min-width:720px}
-/* tri columns — 3 estratos (T0 core / in-silico booster / quantum periférico) */
-.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 6px}
+/* tri columns — 2 estratos (T0 core / in-silico booster) */
+.tri{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0 6px}
 .col{border:1px solid var(--rule2);border-radius:var(--radius);overflow:hidden;background:#f4f4f5}
 .col.aplus{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc) inset}
 .col.b{border-color:var(--slate)}
@@ -2495,7 +2603,7 @@ svg{display:block}
   <!-- 01 · TESIS -->
   <section>
     <div class=&quot;sec-head&quot;><span class=&quot;sec-num&quot;>01</span><span class=&quot;sec-title&quot;><b>Qué ES Photonic</b> — modelo settled</span></div>
-    <p class=&quot;sec-sub&quot;>No es &quot;cuánto se levanta&quot; sino &quot;qué es&quot;. Modelo cerrado (canon 07-19): un <b>wet-lab stand-alone GMP-ready</b> en tres estratos con roles distintos — analítica T0 (core de caja), in-silico C1–C3 (booster A+) y quantum/TQA (periférico). El framing de &quot;caminos A/A+/B&quot; quedó retirado.</p>
+    <p class=&quot;sec-sub&quot;>No es &quot;cuánto se levanta&quot; sino &quot;qué es&quot;. Modelo cerrado (canon 07-19): un <b>wet-lab stand-alone GMP-ready</b> en dos estratos con roles distintos — analítica T0 (core de caja) e in-silico C1–C3 (booster A+). El framing de &quot;caminos A/A+/B&quot; quedó retirado.</p>
     <div class=&quot;tri&quot;>
       <div class=&quot;col&quot;>
         <div class=&quot;col-h&quot;><div class=&quot;tag&quot;>T0 · core de caja</div><div class=&quot;nm&quot;>Analítica (wet-lab)</div><div class=&quot;one&quot;>Servicio analítico standalone (HPLC, qPCR, ELISA…). Modelo 3, TRL 5–8.</div></div>
@@ -2513,15 +2621,6 @@ svg{display:block}
           <dt>Margen</dt><dd>~85% · <b>sostiene el EBITDA</b></dd>
           <dt>Curva</dt><dd>~$40K (Y1) → ~$630K (Y6)</dd>
           <dt>Nota</dt><dd>Precio unitario aún sin costear (margen modelado)</dd>
-        </dl>
-      </div>
-      <div class=&quot;col b&quot;>
-        <div class=&quot;col-h&quot;><div class=&quot;tag&quot;>Quantum / TQA · periférico</div><div class=&quot;nm&quot;>Optionality</div><div class=&quot;one&quot;>Cómputo cuántico / substrato photonic (IonQ, TQA).</div></div>
-        <dl>
-          <dt>Rol</dt><dd>Fuera del core — &quot;capacidades computacionales avanzadas&quot;.</dd>
-          <dt>Plays</dt><dd>A (silencioso) → B (partner) → C (co-pitch)</dd>
-          <dt>Decisión</dt><dd>Escalar A→B/C = René + Gastón</dd>
-          <dt>Estado</dt><dd>Optionality preservada, no core</dd>
         </dl>
       </div>
     </div>
@@ -2549,7 +2648,7 @@ svg{display:block}
   </section>
 
   <div class=&quot;foot&quot;>
-    <p><b>Fuentes ancla (canon vigente 2026-07-19):</b> decisión ZF all-in day-one · modelo settled (wet-lab stand-alone: T0 core + in-silico booster · quantum periférico) · one-pager Photonic Labs · venture file <code>photonic-lab.md</code> · modelo financiero v3. El framing de caminos A/A+/B quedó retirado. Consolida los 14 documentos de pre-incubación (Qualia+ · Both Ventures · Manantial.BUILD LLC, feb–jul 2026): prevalece siempre la definición más reciente.</p>
+    <p><b>Fuentes ancla (canon vigente 2026-07-19):</b> decisión ZF all-in day-one · modelo settled (wet-lab stand-alone: T0 core + in-silico booster) · one-pager Photonic Labs · venture file <code>photonic-lab.md</code> · modelo financiero v3. El framing de caminos A/A+/B quedó retirado. Consolida los 14 documentos de pre-incubación (Qualia+ · Both Ventures · Manantial.BUILD LLC, feb–jul 2026): prevalece siempre la definición más reciente.</p>
     <p>Documentos hermanos: <b>Wiki del Proyecto</b> (marco + glosario) · <b>Biblia del Proyecto</b> (toda la data). Cifras estimate-grade — quotes reales de obra/equipos pendientes. Photonic Labs · Both Ventures · 2026-07-08 · Interno.</p>
   </div>
 
@@ -2561,6 +2660,20 @@ svg{display:block}
 </div>
 <script>
 (function(){
+ /* ── theme: follow OS by default, allow persisted override ── */
+ var root=document.documentElement, KEY='pl-theme';
+ function sysDark(){return window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches;}
+ function eff(){var s=null;try{s=localStorage.getItem(KEY);}catch(e){} if(s==='dark'||s==='light')return s; return sysDark()?'dark':'light';}
+ function paint(){var e=eff();
+   if(e==='dark')root.setAttribute('data-theme','dark');else root.setAttribute('data-theme','light');
+   var t=document.getElementById('theme-tog'); if(t){var nx=e==='dark'?'claro':'oscuro'; t.querySelector('.tt-lbl').textContent=nx; t.querySelector('.tt-ico').textContent=e==='dark'?'☀':'☾'; t.setAttribute('aria-label','Cambiar a modo '+nx);}
+ }
+ paint();
+ var tog=document.getElementById('theme-tog');
+ if(tog)tog.addEventListener('click',function(){var e=eff(); try{localStorage.setItem(KEY,e==='dark'?'light':'dark');}catch(err){} paint();});
+ if(window.matchMedia){try{window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){var s=null;try{s=localStorage.getItem(KEY);}catch(e){} if(s!=='dark'&&s!=='light')paint();});}catch(e){}}
+
+ /* ── router ── */
  var links=[].slice.call(document.querySelectorAll('.ni[data-view]'));
  var views=[].slice.call(document.querySelectorAll('.view'));
  var PANES={biblia:1,mapa:1};
@@ -2569,27 +2682,27 @@ svg{display:block}
    views.forEach(function(x){x.classList.toggle('show',x.dataset.view===v);});
    links.forEach(function(a){a.classList.toggle('active',a.dataset.view===v);});
    document.body.classList.toggle('onpane', !!PANES[v]);
-   document.body.classList.remove('nav-open');
+   if(typeof setNav==='function')setNav(false);else document.body.classList.remove('nav-open');
    if(location.hash!=='#'+v){history.replaceState(null,'','#'+v);}
    window.scrollTo(0,0);
  }
- // any element with data-view acts as a router link
  document.querySelectorAll('[data-view]').forEach(function(a){
    if(a.classList.contains('view'))return;
    a.addEventListener('click',function(e){e.preventDefault();show(a.dataset.view);});
  });
- // brand → home
  var brand=document.querySelector('.brand');
  if(brand){brand.style.cursor='pointer';brand.addEventListener('click',function(){show('home');});}
- var mb=document.querySelector('.menu-btn');if(mb)mb.addEventListener('click',function(){document.body.classList.toggle('nav-open');});
- // planta — clickable zones
+ var mb=document.querySelector('.menu-btn');
+ function setNav(open){document.body.classList.toggle('nav-open',!!open);if(mb)mb.setAttribute('aria-expanded',open?'true':'false');}
+ if(mb)mb.addEventListener('click',function(){setNav(!document.body.classList.contains('nav-open'));});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape')setNav(false);});
+ /* planta — clickable zones */
  var pd=document.getElementById('planta-detail');
  document.querySelectorAll('.planta .zone').forEach(function(z){z.addEventListener('click',function(){
    document.querySelectorAll('.planta .zone.active').forEach(function(a){a.classList.remove('active');});
    z.classList.add('active');
    if(pd)pd.innerHTML='<b>'+z.dataset.z+'</b> — '+z.dataset.d;
  });});
- // initial view from hash, else home
  show((location.hash||'#home').slice(1));
  window.addEventListener('hashchange',function(){show((location.hash||'#home').slice(1));});
 })();
