@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Photonic Labs · Institutional Pitch · V0.3.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:wght@300;400;500&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* color tokens — anchor + neutral ramp + scarce accent · LIGHT */
+  --ink: oklch(18% 0.025 245);
+  --ink-soft: oklch(32% 0.025 245);
+  --ink-mute: oklch(52% 0.018 245);
+  --paper: oklch(96.5% 0.012 85);
+  --paper-deep: oklch(93% 0.018 80);
+  --paper-elev: oklch(98% 0.008 85);
+  --hairline: oklch(82% 0.015 80);
+  --hairline-soft: oklch(89% 0.012 80);
+  --accent: oklch(46% 0.245 295);        /* saturated violet — used sparingly; the scarcity is what makes it land */
+  --accent-faint: oklch(46% 0.245 295 / 0.08);
+
+  /* typography tokens */
+  --font-display: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-serif: 'IBM Plex Serif', Georgia, serif;
+
+  /* motion tokens — named curves, never default keywords */
+  --ease-diag: cubic-bezier(0.3, 0, 0.2, 1);
+  --ease-comp: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-atmos: cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* spacing */
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --slide-pad: clamp(2rem, 6vw, 6rem);
+}
+
+/* DARK theme — applied at document root, flips every token; one swap, whole deck reskins */
+:root[data-theme="dark"] {
+  --ink:           oklch(94% 0.014 85);
+  --ink-soft:      oklch(78% 0.014 85);
+  --ink-mute:      oklch(58% 0.014 85);
+  --paper:         oklch(11% 0.012 250);
+  --paper-deep:    oklch(15% 0.014 250);
+  --paper-elev:    oklch(18% 0.014 250);
+  --hairline:      oklch(30% 0.018 250);
+  --hairline-soft: oklch(23% 0.014 250);
+  --accent:        oklch(72% 0.22 295);
+  --accent-faint:  oklch(72% 0.22 295 / 0.12);
+}
+html, body { transition: background-color 360ms var(--ease-comp), color 360ms var(--ease-comp); }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.55;
+  font-feature-settings: "ss01", "ss02", "kern";
+}
+
+/* ─────────────────── slide chassis ─────────────────── */
+.slide {
+  min-height: 100vh;
+  padding: var(--slide-pad);
+  padding-right: var(--slide-pad);
+  position: relative;
+  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: clamp(1.5rem, 3vh, 3rem);
+  border-bottom: 1px solid var(--hairline);
+  overflow: hidden;
+}
+
+/* reserve room for the fixed right-rail nav on desktop so content never tucks under it */
+@media (min-width: 901px) {
+  .slide {
+    padding-right: clamp(9rem, 11vw, 12rem);
+  }
+}
+
+.slide-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+  text-transform: uppercase;
+  position: absolute;
+  top: var(--slide-pad);
+  right: clamp(9rem, 11vw, 12rem);
+}
+
+@media (max-width: 900px) {
+  .slide-num { right: var(--slide-pad); }
+}
+
+.slide-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.slide-kicker::before {
+  content: "—— ";
+  color: var(--hairline);
+}
+
+/* ─────────────────── display type ─────────────────── */
+.display-xl {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(3.25rem, 12vw + 0.5rem, 14rem);
+  line-height: 0.93;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  font-feature-settings: "ss01";
+}
+
+.display-lg {
+  font-family: var(--font-display);
+  font-weight: 250;
+  font-size: clamp(2.25rem, 7.5vw + 0.25rem, 7.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.display-md {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.75rem, 4.5vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+
+.display-sm {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.98rem, 1.05vw + 0.4rem, 1.2rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+
+.body-tight { max-width: 48ch; }
+.body-loose { max-width: 68ch; }
+
+.mono-meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.serif-aside {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1rem, 1.4vw, 1.35rem);
+  line-height: 1.45;
+  color: var(--ink-soft);
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.accent-mark { color: var(--accent); }
+
+/* ─────────────────── scroll reveal ─────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 1100ms var(--ease-comp),
+    transform 1100ms var(--ease-comp);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 900ms var(--ease-comp),
+    transform 900ms var(--ease-comp);
+}
+.reveal-stagger.in > * { opacity: 1; transform: translateY(0); }
+.reveal-stagger.in > *:nth-child(1) { transition-delay: 60ms; }
+.reveal-stagger.in > *:nth-child(2) { transition-delay: 140ms; }
+.reveal-stagger.in > *:nth-child(3) { transition-delay: 220ms; }
+.reveal-stagger.in > *:nth-child(4) { transition-delay: 300ms; }
+.reveal-stagger.in > *:nth-child(5) { transition-delay: 380ms; }
+.reveal-stagger.in > *:nth-child(6) { transition-delay: 460ms; }
+.reveal-stagger.in > *:nth-child(7) { transition-delay: 540ms; }
+.reveal-stagger.in > *:nth-child(8) { transition-delay: 620ms; }
+
+/* ─────────────────── slide 01 · hero ─────────────────── */
+.hero {
+  background: var(--paper);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-content: stretch;
+  min-height: 100vh;
+}
+.hero-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.hero-logo {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ink);
+  line-height: 0;
+}
+.hero-logo svg {
+  display: block;
+  height: clamp(14px, 1.4vw, 22px);
+  width: auto;
+  fill: currentColor;
+}
+.hero-version {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-mute);
+}
+.hero-stage {
+  display: grid;
+  align-content: end;
+  padding-bottom: clamp(2rem, 6vh, 4rem);
+}
+.hero-h1 {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(3.5rem, 14vw + 0.5rem, 16rem);
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+  font-feature-settings: "ss01";
+}
+.hero-h1 .em {
+  font-style: italic;
+  font-weight: 250;
+  font-family: var(--font-serif);
+  font-size: 0.94em;
+  letter-spacing: -0.045em;
+}
+.hero-sub {
+  margin-top: clamp(2rem, 4vh, 3.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: end;
+  border-top: 1px solid var(--hairline);
+  padding-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.hero-strap {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  color: var(--ink);
+  max-width: 36ch;
+}
+.hero-meta-block {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem 2rem;
+  align-content: end;
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.hero-meta-block .label { color: var(--ink-mute); }
+.hero-meta-block .val { color: var(--ink); }
+.hero-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-top: 1px solid var(--hairline);
+  padding-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.hero-foot .scroll-cue::before {
+  content: "↓  ";
+  color: var(--accent);
+}
+
+/* ─────────────────── slide 02 · thesis ─────────────────── */
+.thesis-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: start;
+}
+.thesis-quote {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(2rem, 4.4vw + 0.25rem, 5rem);
+  line-height: 1.02;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
+  max-width: 100%;
+}
+.thesis-quote .em-it,
+.thesis-quote .strike {
+  display: inline-block;
+  max-width: 100%;
+}
+@media (max-width: 1100px) {
+  .thesis-grid { grid-template-columns: minmax(0, 1fr); }
+}
+.thesis-quote .strike {
+  position: relative;
+  color: var(--ink-mute);
+}
+.thesis-quote .strike::after {
+  content: "";
+  position: absolute;
+  left: -0.05em;
+  right: -0.05em;
+  top: 50%;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1400ms 700ms var(--ease-comp);
+}
+.in .thesis-quote .strike::after { transform: scaleX(1); }
+.thesis-quote .em-it {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* ─────────────────── slide 03 · TRL gap ─────────────────── */
+.trl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  margin-top: clamp(1rem, 2vh, 2rem);
+}
+.trl-cell {
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2vw, 2rem);
+  border-right: 1px solid var(--hairline);
+  display: grid;
+  align-content: space-between;
+  gap: 1rem;
+  min-height: 38vh;
+  position: relative;
+  transition: background 600ms var(--ease-diag);
+}
+.trl-cell:last-child { border-right: none; }
+.trl-cell .trl-range {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.trl-cell .trl-label {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.2rem, 1.6vw + 0.4rem, 1.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.trl-cell .trl-status {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.trl-cell.covered .trl-status { color: var(--ink-soft); }
+.trl-cell.gap {
+  background: var(--accent-faint);
+  /* broken-grid moment — the gap cells push down 1.5rem to mark the missing layer */
+  transform: translateY(clamp(0.75rem, 1.5vh, 1.5rem));
+}
+.in .trl-cell.gap { animation: gap-pulse 5400ms 1800ms var(--ease-atmos) infinite; }
+@keyframes gap-pulse {
+  0%, 100% { background: var(--accent-faint); }
+  50% { background: oklch(46% 0.245 295 / 0.14); }
+}
+.trl-cell.gap .trl-status { color: var(--accent); }
+.trl-cell.unreachable .trl-status { color: var(--ink-mute); }
+.trl-cell .trl-note {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.trl-caption {
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1rem, 1.3vw + 0.2rem, 1.5rem);
+  line-height: 1.4;
+  color: var(--ink);
+  max-width: 64ch;
+  text-wrap: pretty;
+}
+.trl-caption strong { font-weight: 500; font-style: normal; color: var(--accent); font-family: var(--font-display); }
+
+/* ─────────────────── slide 04 · the 0 ─────────────────── */
+.zero-slide {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  min-height: 100vh;
+  padding-top: clamp(3rem, 8vh, 6rem);
+  padding-bottom: clamp(3rem, 8vh, 6rem);
+}
+.zero-glyph {
+  font-family: var(--font-display);
+  font-weight: 150;
+  font-size: clamp(18rem, 48vw, 64rem);
+  line-height: 0.8;
+  letter-spacing: -0.08em;
+  color: var(--accent);
+  text-align: left;
+  font-feature-settings: "ss01";
+  position: relative;
+  margin-left: -0.04em;
+}
+.zero-glyph::after {
+  content: "ZERO";
+  position: absolute;
+  bottom: 0.2em;
+  left: 0.95em;
+  font-family: var(--font-mono);
+  font-size: 0.05em;
+  color: var(--ink-mute);
+  letter-spacing: 0.3em;
+  font-weight: 400;
+}
+.zero-aside {
+  display: grid;
+  gap: 1.5rem;
+  border-left: 1px solid var(--hairline);
+  padding-left: clamp(1.5rem, 3vw, 3rem);
+}
+.zero-aside .label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.zero-aside .read {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.4rem, 2vw + 0.3rem, 2.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+.zero-aside .source {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+  border-top: 1px solid var(--hairline);
+  padding-top: 0.8rem;
+}
+
+/* ─────────────────── slide 05 · four surfaces ─────────────────── */
+.surfaces {
+  display: grid;
+  gap: clamp(1.5rem, 2.5vh, 2.5rem);
+  margin-top: clamp(1rem, 2vh, 2rem);
+}
+.surface-row {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 0.4fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 3rem);
+  align-items: start;
+  padding: 1.4rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.surface-row:last-child { border-bottom: 1px solid var(--hairline); }
+.surface-row .idx {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-mute);
+  padding-top: 0.3rem;
+}
+.surface-row .title {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-size: clamp(1.35rem, 1.6vw + 0.3rem, 1.9rem);
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+}
+.surface-row .desc {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 0.9vw + 0.4rem, 1.1rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* ─────────────────── slide 06 · bioproduction detail ─────────────────── */
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+  border-top: 1px solid var(--hairline);
+  padding-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.spec-block {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+.spec-block .k {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.spec-block .v {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-size: clamp(1.05rem, 1.3vw + 0.2rem, 1.4rem);
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+}
+.spec-block .v small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  letter-spacing: 0;
+  margin-top: 0.4rem;
+  line-height: 1.45;
+}
+
+/* ─────────────────── slide 07 · computational ─────────────────── */
+.computational {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: center;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.comp-list {
+  list-style: none;
+  display: grid;
+  gap: 0;
+}
+.comp-list li {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1.25rem;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--hairline);
+  align-items: baseline;
+}
+.comp-list li:last-child { border-bottom: 1px solid var(--hairline); }
+.comp-list .n {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+}
+.comp-list .t {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-size: clamp(1.05rem, 1.2vw + 0.3rem, 1.4rem);
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+}
+.comp-list .t small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 300;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  margin-top: 0.35rem;
+  line-height: 1.5;
+}
+.comp-aside {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.5vw + 0.2rem, 1.8rem);
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: -0.014em;
+  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  text-wrap: pretty;
+}
+
+/* ─────────────────── slide 08 · why uruguay ─────────────────── */
+.uy-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.uy-instruments {
+  display: grid;
+  gap: 0;
+}
+.uy-row {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 0.5fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--hairline);
+  align-items: baseline;
+}
+.uy-row:last-child { border-bottom: 1px solid var(--hairline); }
+.uy-row .n {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-mute);
+}
+.uy-row .nm {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1vw + 0.3rem, 1.2rem);
+  letter-spacing: -0.012em;
+}
+.uy-row .dx {
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 0.7vw + 0.35rem, 1rem);
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* ─────────────────── slide 09 · team ─────────────────── */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+  padding-top: clamp(1.5rem, 3vh, 2.5rem);
+  border-top: 1px solid var(--hairline);
+}
+.team-card {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+.team-card .role {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.team-card .name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.2vw + 0.3rem, 1.45rem);
+  letter-spacing: -0.018em;
+  line-height: 1.15;
+}
+.team-card .bio {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  text-wrap: pretty;
+  margin-top: 0.25rem;
+}
+
+.qualia-band {
+  margin-top: clamp(2rem, 4vh, 3rem);
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  background: var(--paper-deep);
+  border: 1px solid var(--hairline);
+  display: grid;
+  grid-template-columns: minmax(0, 0.3fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+.qualia-band .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.qualia-band .qbody {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.1rem, 1.3vw + 0.3rem, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.018em;
+  text-wrap: pretty;
+  color: var(--ink);
+}
+.qualia-band .qbody strong { font-weight: 500; color: var(--ink); }
+
+/* ─────────────────── slide 10 · substrate / traction ─────────────────── */
+.substrate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.sub-tile {
+  border-top: 2px solid var(--ink);
+  padding-top: 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.sub-tile .num {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(2.8rem, 4.5vw + 0.5rem, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.sub-tile .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  line-height: 1.4;
+}
+
+/* ─────────────────── slide 11 · financials ─────────────────── */
+.fin-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(2rem, 4vw, 4rem);
+  align-items: start;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.fin-table {
+  border-top: 1px solid var(--ink);
+}
+.fin-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--hairline);
+  align-items: baseline;
+}
+.fin-row .k {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.fin-row .v {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-size: clamp(1.1rem, 1.3vw + 0.2rem, 1.45rem);
+  letter-spacing: -0.022em;
+  text-align: right;
+}
+.fin-row.bold .k { color: var(--ink); }
+.fin-row.bold .v { font-weight: 500; }
+.fin-callout {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+}
+.fin-callout .pull {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 1.6vw + 0.3rem, 2rem);
+  line-height: 1.3;
+  color: var(--ink);
+  letter-spacing: -0.014em;
+  text-wrap: pretty;
+}
+.fin-scenarios {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--hairline);
+  background: var(--paper-elev);
+}
+.fin-scenarios .lbl {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.fin-scen-row {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--hairline-soft);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  align-items: baseline;
+}
+.fin-scen-row .tag {
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-mute);
+}
+.fin-scen-row.base .tag { color: var(--accent); }
+
+/* ─────────────────── slide 12 · the asks ─────────────────── */
+.ask-stack {
+  display: grid;
+  gap: 0;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+.ask-row {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 0.55fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2.5vw, 3rem);
+  padding: clamp(1.4rem, 2.5vh, 2rem) 0;
+  border-top: 1px solid var(--hairline);
+  align-items: baseline;
+  transition: padding 600ms var(--ease-comp);
+}
+.ask-row:last-child { border-bottom: 1px solid var(--hairline); }
+.ask-row .n {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.ask-row .title {
+  font-family: var(--font-display);
+  font-weight: 350;
+  font-size: clamp(1.5rem, 2vw + 0.4rem, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.ask-row .body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 0.95vw + 0.35rem, 1.15rem);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 56ch;
+  text-wrap: pretty;
+}
+
+/* ─────────────────── slide 13 · sequencing ─────────────────── */
+.seq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+  border-top: 1px solid var(--ink);
+}
+.seq-col {
+  padding: clamp(1.5rem, 2.5vw, 2.25rem) clamp(1rem, 2vw, 2rem);
+  border-right: 1px solid var(--hairline);
+  display: grid;
+  align-content: start;
+  gap: 1rem;
+  min-height: 42vh;
+  position: relative;
+}
+.seq-col:last-child { border-right: none; }
+.seq-col .period {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.seq-col .phase {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.3rem, 1.8vw + 0.3rem, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.024em;
+  margin-bottom: 0.5rem;
+}
+.seq-col ul {
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+.seq-col li {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  padding-left: 1rem;
+  position: relative;
+  text-wrap: pretty;
+}
+.seq-col li::before {
+  content: "·";
+  position: absolute;
+  left: 0.15rem;
+  top: -0.05em;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 1.4em;
+}
+
+/* ─────────────────── slide 14 · close ─────────────────── */
+.close-slide {
+  background: var(--paper);
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: stretch;
+  min-height: 100vh;
+}
+.close-stage {
+  display: grid;
+  align-content: center;
+  gap: 1.5rem;
+}
+.close-line {
+  font-family: var(--font-display);
+  font-weight: 200;
+  font-size: clamp(2.5rem, 8.5vw + 0.4rem, 9rem);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  max-width: 16ch;
+}
+.close-line .em-it {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+}
+.close-coda {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.1rem, 1.5vw + 0.3rem, 1.8rem);
+  line-height: 1.4;
+  color: var(--ink-soft);
+  max-width: 38ch;
+  text-wrap: pretty;
+  margin-top: 1rem;
+  border-left: 2px solid var(--accent);
+  padding-left: 1.5rem;
+}
+.contact-footer {
+  border-top: 1px solid var(--hairline);
+  padding-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: clamp(1rem, 2.5vw, 3rem);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.contact-footer .blk { display: grid; gap: 0.3rem; }
+.contact-footer .blk .v { color: var(--ink); letter-spacing: 0.08em; }
+.contact-footer .blk .v.lower { text-transform: none; letter-spacing: 0.04em; }
+
+/* ─────────────────── slide nav ─────────────────── */
+.slide-nav {
+  position: fixed;
+  right: clamp(1rem, 2vw, 2rem);
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 0.5rem;
+  z-index: 50;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-mute);
+  background: transparent;
+  pointer-events: none;
+}
+.slide-nav a {
+  pointer-events: auto;
+  color: var(--ink-mute);
+  text-decoration: none;
+  padding: 0.2rem 0.4rem 0.2rem 0;
+  border-right: 1px solid transparent;
+  text-align: right;
+  display: block;
+  transition: color 220ms var(--ease-diag), border-color 220ms var(--ease-diag);
+  letter-spacing: 0.12em;
+}
+.slide-nav a:hover, .slide-nav a.active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+@media (max-width: 900px) {
+  .slide-nav { display: none; }
+  .thesis-grid, .computational, .uy-grid, .zero-slide, .fin-grid, .hero-sub {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .trl-grid, .seq-grid { grid-template-columns: minmax(0, 1fr); }
+  .trl-cell, .seq-col { border-right: none; border-bottom: 1px solid var(--hairline); min-height: auto; }
+  .ask-row { grid-template-columns: 4rem minmax(0, 1fr); }
+  .ask-row .body { grid-column: 1 / -1; padding-top: 0.5rem; }
+  .zero-glyph { font-size: clamp(12rem, 60vw, 22rem); }
+  .hero-meta-block { justify-self: start; }
+}
+
+/* focus state visible + intentional */
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+::selection { background: var(--accent); color: var(--paper); }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PL-HERO · V0.2.1 · BITMAP SPECTRAL HERO
+   All tokens, IDs, and classes scoped under .pl-hero to avoid bleed into
+   the rest of the deck. Body remains scrollable; cursor:none only on stage.
+   ═══════════════════════════════════════════════════════════════════════ */
+.slide.pl-hero {
+  padding: 0;
+  display: block;
+  background: var(--paper);
+  overflow: hidden;
+  min-height: 100vh;
+  height: 100vh;
+  transition: background-color 360ms var(--ease-comp);
+}
+@media (min-width: 901px) {
+  .slide.pl-hero { padding-right: 0; }
+}
+.pl-hero {
+  --pl-paper:      oklch(94% 0.012 85);
+  --pl-paper-deep: oklch(91% 0.014 82);
+  --pl-ink:        oklch(15% 0.02 85);
+  --pl-ink-soft:   oklch(28% 0.02 85);
+  --pl-rim-2:      oklch(50% 0.26 290);
+  background: var(--pl-paper);
+  color: var(--pl-ink);
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  transition: background-color 320ms ease, color 320ms ease;
+}
+.pl-hero[data-pl-theme="dark"] {
+  --pl-paper:      oklch(10% 0.010 85);
+  --pl-paper-deep: oklch(13% 0.012 85);
+  --pl-ink:        oklch(92% 0.014 85);
+  --pl-ink-soft:   oklch(72% 0.012 85);
+  --pl-rim-2:      oklch(68% 0.24 290);
+}
+.pl-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--pl-paper);
+  overflow: hidden;
+  isolation: isolate;
+  cursor: none;
+}
+.pl-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+}
+.pl-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(20px, 2.4vw, 36px);
+  pointer-events: none;
+}
+.pl-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.pl-logo {
+  color: var(--pl-ink);
+  width: clamp(180px, 18vw, 260px);
+  height: auto;
+  display: block;
+  pointer-events: auto;
+}
+.pl-logo svg { width: 100%; height: auto; display: block; }
+.pl-logo svg path { fill: currentColor; }
+.pl-meta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  text-align: right;
+  line-height: 1.55;
+  opacity: 0.62;
+  letter-spacing: 0.03em;
+}
+.pl-meta span { display: block; }
+.pl-center {
+  align-self: center;
+  justify-self: start;
+  max-width: 48%;
+  display: grid;
+  gap: clamp(14px, 1.6vh, 24px);
+}
+.pl-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: clamp(10px, 0.8vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pl-ink);
+}
+.pl-eyebrow::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--pl-rim-2);
+}
+.pl-eyebrow .pl-accent { color: var(--pl-rim-2); }
+.pl-center h1 {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(48px, 7.4vw, 132px);
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  margin: 0;
+  color: var(--pl-ink);
+}
+.pl-center h1 em {
+  font-style: italic;
+  color: var(--pl-rim-2);
+}
+.pl-definition {
+  font-family: 'Instrument Serif', 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(16px, 1.32vw, 22px);
+  line-height: 1.4;
+  letter-spacing: 0.005em;
+  max-width: 38ch;
+  color: var(--pl-ink);
+  text-wrap: pretty;
+}
+.pl-definition em { font-style: italic; color: var(--pl-rim-2); }
+.pl-definition .pl-lead { font-style: italic; }
+.pl-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  opacity: 0.62;
+  letter-spacing: 0.05em;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pl-bottom-bar > div { display: flex; gap: 18px; flex-wrap: wrap; }
+
+/* Global UI toggles — position:fixed, always visible. Uses deck tokens so they adapt to theme. */
+.pl-toggles {
+  position: fixed;
+  bottom: clamp(14px, 1.6vh, 22px);
+  right: clamp(14px, 1.6vw, 22px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+  pointer-events: auto;
+  user-select: none;
+  transition: color 320ms var(--ease-comp);
+}
+.pl-toggles .pl-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 5px 7px;
+  border: 1px solid color-mix(in oklch, var(--ink) 22%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--paper) 75%, transparent);
+  backdrop-filter: blur(12px) saturate(1.1);
+  -webkit-backdrop-filter: blur(12px) saturate(1.1);
+  transition: border-color 320ms var(--ease-comp), background 320ms var(--ease-comp);
+}
+.pl-toggles button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 160ms var(--ease-diag), color 160ms var(--ease-diag);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+}
+.pl-toggles button:hover { color: var(--accent); }
+.pl-toggles button.on {
+  background: var(--ink);
+  color: var(--paper);
+}
+.pl-theme-icon { width: 12px; height: 12px; display: block; }
+
+/* custom cursor — only visible when hovering the stage */
+.pl-cursor {
+  position: absolute;
+  top: 0; left: 0;
+  width: 16px; height: 16px;
+  border: 1px solid var(--pl-ink);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 100;
+  mix-blend-mode: multiply;
+  transition: width 180ms ease, height 180ms ease, opacity 200ms ease;
+  opacity: 0;
+}
+.pl-stage:hover .pl-cursor { opacity: 1; }
+.pl-cursor.over-controls { width: 24px; height: 24px; }
+
+/* ─────────────────── V03 additions ─────────────────── */
+
+/* slide 07 · plant — unidirectional flow bar */
+.plant-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--hairline);
+  background: var(--paper-deep);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.plant-flow .flow-mid { flex: 1; text-align: center; color: var(--accent); }
+.plant-flow .flow-end { white-space: nowrap; }
+
+/* slide 09 · roadmap — status pills on the phase columns */
+.seq-col .rm-status {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.5rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  white-space: nowrap;
+  width: max-content;
+}
+.seq-col .rm-status.now  { color: var(--accent); border-color: color-mix(in oklch, var(--accent) 55%, transparent); }
+.seq-col .rm-status.done { color: var(--ink-soft); }
+.seq-col .rm-status.next { color: var(--ink-mute); border-style: dashed; }
+.seq-col .phase-lead {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* slide 09 · roadmap — the two release gates */
+.rm-gates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2.5rem);
+  margin-top: clamp(1.5rem, 3vh, 2.25rem);
+  padding-top: clamp(1.25rem, 2.5vh, 2rem);
+  border-top: 1px solid var(--ink);
+}
+.rm-gate-chip { display: grid; gap: 0.4rem; align-content: start; }
+.rm-gate-chip .gk {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.rm-gate-chip .gk::before { content: "\25C6\00a0"; }
+.rm-gate-chip .gv {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* slide 09 · roadmap — build trajectory (orthogonal to phases) */
+.rm-traj {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(1.5rem, 3vh, 2.25rem);
+}
+.rm-traj .tcol {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  border-top: 2px solid var(--ink);
+  padding-top: 0.9rem;
+}
+.rm-traj .tk {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.rm-traj .tv {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1rem, 1vw + 0.3rem, 1.25rem);
+  letter-spacing: -0.018em;
+  line-height: 1.15;
+}
+.rm-traj .td {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+@media (max-width: 760px) {
+  .seq-grid { grid-template-columns: 1fr; }
+  .seq-col { border-right: none; border-bottom: 1px solid var(--hairline); min-height: auto; }
+  .rm-gates, .rm-traj { grid-template-columns: 1fr; }
+  .plant-flow { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+}
+
+@media (max-width: 900px) {
+  .pl-center { max-width: 92%; }
+}
+</style>
+</head>
+<body>
+
+<nav class="slide-nav" aria-label="Deck navigation">
+  <a href="#s01" data-slide="01" data-es="01 · INICIO">01 · OPEN</a>
+  <a href="#s02" data-slide="02" data-es="02 · TESIS">02 · THESIS</a>
+  <a href="#s03" data-slide="03" data-es="03 · BRECHA">03 · GAP</a>
+  <a href="#s04" data-slide="04" data-es="04 · CERO">04 · ZERO</a>
+  <a href="#s05" data-slide="05" data-es="05 · QUÉ ES">05 · BUILD</a>
+  <a href="#s06" data-slide="06" data-es="06 · INFRA">06 · INFRA</a>
+  <a href="#s07" data-slide="07" data-es="07 · PLANTA">07 · PLANT</a>
+  <a href="#s08" data-slide="08" data-es="08 · CÓMPUTO+IA">08 · COMPUTE+AI</a>
+  <a href="#s09" data-slide="09" data-es="09 · HOJA DE RUTA">09 · ROADMAP</a>
+  <a href="#s10" data-slide="10" data-es="10 · URUGUAY">10 · URUGUAY</a>
+  <a href="#s11" data-slide="11" data-es="11 · RED">11 · NETWORK</a>
+  <a href="#s12" data-slide="12" data-es="12 · SUSTRATO">12 · SUBSTRATE</a>
+  <a href="#s13" data-slide="13" data-es="13 · REFERENTES">13 · BENCHMARK</a>
+  <a href="#s14" data-slide="14" data-es="14 · CIERRE">14 · CLOSE</a>
+</nav>
+
+<!-- ═════════════════════════════ 01 · HERO — BITMAP SPECTRAL ═════════════════════════════ -->
+<section class="slide pl-hero" id="s01" data-pl-theme="light">
+  <div class="pl-stage">
+    <canvas id="pl-bitmap" class="pl-canvas"></canvas>
+    <div class="pl-overlay">
+
+      <header class="pl-top-bar">
+        <a class="pl-logo" href="#" aria-label="Photonic Labs">
+          <svg viewBox="0 0 1486 140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M73.4248 7.36816H80.7676V14.7373H73.4248V22.1055H80.7676V29.4736H73.4248V44.2109H80.7676V51.5791H73.4248V58.9473H80.7676V66.3154H88.1104V58.9473H102.795V66.3154H95.4531V73.6846H102.795V66.3154H117.48V58.9473H124.823V66.3154H139.508V73.6846H124.823V81.0527H117.48V73.6846H102.795V81.0527H88.1104V73.6846H80.7676V81.0527H73.4248V88.4209H80.7676V95.7891H73.4248V110.526H80.7676V117.895H73.4248V125.263H80.7676V132.632H73.4248V140H66.083V132.632H58.7402V125.263H66.083V117.895H58.7402V110.526H66.083V95.7891H58.7402V88.4209H66.083V81.0527H58.7402V73.6846H51.3975V81.0527H36.7129V73.6846H44.0547V66.3154H36.7129V73.6846H22.0273V81.0527H14.6846V73.6846H0V66.3154H14.6846V58.9473H22.0273V66.3154H36.7129V58.9473H51.3975V66.3154H58.7402V58.9473H66.083V51.5791H58.7402V44.2109H66.083V29.4736H58.7402V22.1055H66.083V14.7373H58.7402V7.36816H66.083V0H73.4248V7.36816ZM14.6846 132.632H7.34277V125.263H14.6846V132.632ZM132.165 132.632H124.823V125.263H132.165V132.632ZM525.547 42.2656C535.885 42.2656 544.866 43.9939 552.489 47.4521C560.112 50.9104 566.012 55.8361 570.189 62.2285C574.366 68.5162 576.455 76.0092 576.455 84.707C576.455 89.9467 575.672 94.7676 574.105 99.1689C572.643 103.57 570.45 107.553 567.526 111.116C564.602 114.574 561.052 117.509 556.875 119.919C552.698 122.329 547.947 124.162 542.621 125.42C537.4 126.782 531.708 127.464 525.547 127.464C515.313 127.464 506.332 125.735 498.604 122.276C490.981 118.713 485.081 113.735 480.904 107.343C476.727 100.95 474.639 93.4049 474.639 84.707C474.639 79.5722 475.422 74.8037 476.988 70.4023C478.555 66.0011 480.8 62.0714 483.724 58.6133C486.648 55.1551 490.146 52.2208 494.219 49.8105C498.396 47.2955 503.095 45.4089 508.316 44.1514C513.642 42.8938 519.386 42.2656 525.547 42.2656ZM703.909 42.2656C714.247 42.2656 723.228 43.9939 730.852 47.4521C738.475 50.9104 744.375 55.8361 748.552 62.2285C752.729 68.5162 754.817 76.0092 754.817 84.707C754.817 89.9467 754.034 94.7676 752.468 99.1689C751.006 103.57 748.813 107.553 745.889 111.116C742.965 114.574 739.414 117.509 735.237 119.919C731.06 122.329 726.308 124.162 720.982 125.42C715.761 126.782 710.07 127.464 703.909 127.464C693.675 127.464 684.694 125.735 676.967 122.276C669.344 118.713 663.444 113.735 659.267 107.343C655.09 100.95 653.001 93.4049 653.001 84.707C653.001 79.5722 653.784 74.8037 655.351 70.4023C656.917 66.0011 659.162 62.0714 662.086 58.6133C665.01 55.155 668.508 52.2208 672.581 49.8105C676.758 47.2955 681.457 45.4089 686.679 44.1514C692.004 42.8939 697.748 42.2656 703.909 42.2656ZM960.74 42.2656C969.408 42.2656 977.083 43.4706 983.767 45.8809C990.45 48.2911 995.881 51.5924 1000.06 55.7842C1004.23 59.9759 1006.85 64.7444 1007.89 70.0889H992.226C990.972 67.2594 988.988 64.6388 986.273 62.2285C983.558 59.7135 980.06 57.723 975.778 56.2559C971.601 54.6839 966.588 53.8975 960.74 53.8975C956.146 53.8975 951.968 54.4218 948.209 55.4697C944.45 56.4129 941.16 57.8276 938.341 59.7139C935.522 61.4953 933.12 63.6958 931.136 66.3154C929.256 68.8305 927.846 71.6608 926.906 74.8047C925.967 77.8435 925.496 81.1443 925.496 84.707C925.496 90.6803 926.801 96.0254 929.412 100.741C932.127 105.352 936.096 109.019 941.317 111.744C946.539 114.469 953.013 115.832 960.74 115.832C969.512 115.832 976.353 114.26 981.261 111.116C986.169 107.972 989.824 104.147 992.226 99.6406H1007.89C1006.53 105.09 1003.76 109.911 999.587 114.103C995.514 118.294 990.189 121.596 983.61 124.006C977.031 126.311 969.408 127.464 960.74 127.464C950.507 127.464 941.578 125.735 933.955 122.276C926.332 118.713 920.432 113.735 916.255 107.343C912.078 100.95 909.989 93.405 909.989 84.707C909.989 79.5722 910.72 74.8037 912.182 70.4023C913.748 66.0011 915.994 62.0715 918.918 58.6133C921.842 55.1551 925.392 52.2208 929.569 49.8105C933.746 47.2955 938.446 45.4089 943.667 44.1514C948.888 42.8939 954.579 42.2657 960.74 42.2656ZM1300.5 62.3652C1302.79 58.3733 1305.66 55.0258 1309.11 52.3252C1313.39 48.8671 1318.25 46.3522 1323.68 44.7803C1329.11 43.1036 1334.75 42.2656 1340.6 42.2656C1349.16 42.2657 1356.89 43.9425 1363.78 47.2959C1370.78 50.6493 1376.31 55.4694 1380.38 61.7568C1384.56 68.0445 1386.65 75.6948 1386.65 84.707C1386.65 90.0516 1385.87 94.9772 1384.3 99.4834C1382.73 103.99 1380.54 107.971 1377.72 111.43C1375.01 114.888 1371.72 117.823 1367.85 120.233C1363.99 122.539 1359.76 124.32 1355.17 125.577C1350.57 126.835 1345.71 127.464 1340.6 127.464C1334.75 127.464 1329.11 126.678 1323.68 125.106C1318.25 123.43 1313.39 120.862 1309.11 117.403C1305.66 114.618 1302.79 111.255 1300.5 107.314V125.263H1285.62V13.0273H1300.5V62.3652ZM1441.04 42.2656C1450.13 42.2656 1457.65 43.2608 1463.6 45.252C1469.55 47.2431 1474.1 50.02 1477.23 53.583C1480.47 57.1459 1482.45 61.2854 1483.18 66.001H1467.67C1467.15 63.6957 1465.95 61.6525 1464.07 59.8711C1462.19 57.9848 1459.37 56.4652 1455.61 55.3125C1451.85 54.1598 1446.89 53.583 1440.73 53.583C1434.99 53.583 1430.18 54.1074 1426.32 55.1553C1422.46 56.2032 1419.58 57.6179 1417.71 59.3994C1415.83 61.1809 1414.89 63.2772 1414.89 65.6875C1414.89 68.6215 1416.09 70.9269 1418.49 72.6035C1420.99 74.1754 1424.65 75.328 1429.45 76.0615L1456.39 79.6768C1462.35 80.5151 1467.52 81.8259 1471.9 83.6074C1476.39 85.2841 1479.84 87.6417 1482.24 90.6807C1484.75 93.6148 1486 97.4921 1486 102.312C1486 106.504 1484.96 110.173 1482.87 113.316C1480.88 116.46 1478.01 119.08 1474.25 121.176C1470.49 123.272 1465.9 124.844 1460.47 125.892C1455.14 126.94 1449.14 127.464 1442.45 127.464C1434.41 127.464 1427.57 126.73 1421.93 125.263C1416.4 123.796 1411.86 121.857 1408.31 119.447C1404.86 116.932 1402.25 114.155 1400.47 111.116C1398.8 108.077 1397.81 104.986 1397.5 101.842H1412.85C1413.48 104.042 1414.73 106.243 1416.61 108.443C1418.59 110.644 1421.62 112.478 1425.69 113.945C1429.87 115.412 1435.46 116.146 1442.45 116.146C1449.24 116.146 1454.67 115.57 1458.74 114.417C1462.82 113.264 1465.74 111.692 1467.52 109.701C1469.4 107.71 1470.34 105.509 1470.34 103.099C1470.34 100.584 1469.24 98.2784 1467.05 96.1826C1464.85 93.9819 1460.83 92.5148 1454.99 91.7812L1427.57 88.0088C1417.97 86.7513 1410.87 84.3927 1406.27 80.9346C1401.78 77.3715 1399.53 72.4984 1399.53 66.3154C1399.53 62.8573 1400.37 59.7132 1402.04 56.8838C1403.82 53.9498 1406.37 51.3822 1409.72 49.1816C1413.16 46.981 1417.5 45.3041 1422.72 44.1514C1427.94 42.8938 1434.05 42.2656 1441.04 42.2656ZM1226.09 42.2656C1235.28 42.2656 1243.01 43.3133 1249.28 45.4092C1255.54 47.5051 1260.24 50.5966 1263.38 54.6836C1266.61 58.7706 1268.23 63.8536 1268.23 69.9316V125.263H1253.82V104.122C1251.65 108.385 1248.83 112.131 1245.36 115.36C1241.18 119.238 1236.17 122.224 1230.32 124.32C1224.58 126.311 1218.16 127.307 1211.06 127.307C1200.51 127.307 1192.31 125.21 1186.46 121.019C1180.62 116.827 1177.69 110.958 1177.69 103.413C1177.69 99.0118 1178.79 95.2395 1180.98 92.0957C1183.18 88.8471 1186.36 86.2265 1190.54 84.2354C1194.82 82.1395 1200.04 80.7772 1206.2 80.1484L1244.73 75.7471C1247.66 75.4327 1249.8 74.6996 1251.16 73.5469C1252.62 72.2894 1253.35 70.56 1253.35 68.3594V68.2021C1253.35 65.0584 1252.25 62.3862 1250.06 60.1855C1247.87 57.9849 1244.73 56.308 1240.66 55.1553C1236.59 54.0025 1231.68 53.4258 1225.94 53.4258C1217.37 53.4258 1210.64 54.5784 1205.73 56.8838C1200.82 59.0845 1197.9 62.3858 1196.96 66.7871H1181.92C1182.55 61.5475 1184.69 57.146 1188.34 53.583C1192 49.9152 1197.01 47.1383 1203.38 45.252C1209.75 43.2609 1217.32 42.2656 1226.09 42.2656ZM22.0273 125.263H14.6846V117.895H22.0273V125.263ZM36.7129 125.263H29.3701V117.895H36.7129V125.263ZM110.138 125.263H102.795V117.895H110.138V125.263ZM124.823 125.263H117.48V117.895H124.823V125.263ZM317.256 13.0273C322.581 13.0274 327.489 13.7614 331.979 15.2285C336.47 16.5909 340.334 18.6862 343.571 21.5156C346.913 24.3451 349.471 27.8561 351.246 32.0479C353.126 36.2397 354.066 41.0604 354.066 46.5098C354.066 51.959 353.126 56.7799 351.246 60.9717C349.471 65.1632 346.913 68.6736 343.571 71.5029C340.334 74.3324 336.47 76.4811 331.979 77.9482C327.489 79.3105 322.581 79.9912 317.256 79.9912H259.925V125.263H244.261V13.0273H317.256ZM384.824 63.3945C386.812 59.0734 389.264 55.4877 392.186 52.6396C395.945 49.0766 400.331 46.457 405.344 44.7803C410.461 43.1036 415.995 42.2657 421.947 42.2656C430.093 42.2656 437.038 43.7327 442.781 46.667C448.629 49.4965 453.119 53.7406 456.252 59.3994C459.385 65.0583 460.951 72.027 460.951 80.3057V125.263H446.07V83.293C446.07 74.1758 443.773 66.9966 439.178 61.7568C434.583 56.4126 427.326 53.7403 417.405 53.7402C410.826 53.7402 405.083 55.1025 400.175 57.8271C395.267 60.447 391.455 64.0628 388.74 68.6738C386.13 73.2847 384.824 78.4194 384.824 84.0781V125.263H369.943V13.0273H384.824V63.3945ZM615.78 44.4658H644.132V55.627H615.78V101.056C615.78 105.562 617.034 108.863 619.54 110.959C622.151 113.055 625.231 114.102 628.781 114.103H644.132V125.263H625.962C618.026 125.263 611.864 123.325 607.479 119.447C603.093 115.57 600.899 110.067 600.899 102.941V55.627H581.633V44.4658H600.899V22.6162H615.78V44.4658ZM822.443 42.2656C828.709 42.2657 834.295 43.1037 839.203 44.7803C844.111 46.3521 848.288 48.7623 851.734 52.0107C855.18 55.1546 857.791 59.1374 859.566 63.958C861.446 68.6737 862.387 74.1229 862.387 80.3057V125.263H847.506V83.293C847.506 77.2148 846.409 71.9746 844.216 67.5732C842.127 63.1719 838.89 59.7657 834.504 57.3555C830.118 54.9454 824.532 53.7403 817.744 53.7402C810.956 53.7402 805.055 55.1025 800.043 57.8271C795.031 60.447 791.114 64.0629 788.295 68.6738C785.58 73.2846 784.223 78.4195 784.223 84.0781V125.263H769.342V44.4658H784.223V63.4229C786.246 59.0891 788.803 55.4939 791.898 52.6396C795.762 49.0769 800.304 46.457 805.525 44.7803C810.747 43.1036 816.387 42.2656 822.443 42.2656ZM894.983 125.263H880.103V44.4658H894.983V125.263ZM1086.72 112.688H1167.86V125.263H1071.21V13.0273H1086.72V112.688ZM29.3701 117.895H22.0273V110.526H29.3701V117.895ZM117.48 117.895H110.138V110.526H117.48V117.895ZM525.547 53.8975C520.952 53.8975 516.775 54.4218 513.016 55.4697C509.256 56.4129 505.967 57.8276 503.147 59.7139C500.328 61.4953 497.926 63.6958 495.942 66.3154C494.063 68.8305 492.653 71.6608 491.713 74.8047C490.773 77.8436 490.303 81.1443 490.303 84.707C490.303 90.5756 491.608 95.8682 494.219 100.584C496.934 105.3 500.903 109.019 506.124 111.744C511.345 114.469 517.819 115.832 525.547 115.832C530.246 115.832 534.475 115.36 538.234 114.417C541.994 113.369 545.284 111.902 548.104 110.016C550.923 108.129 553.273 105.928 555.152 103.413C557.032 100.793 558.441 97.9113 559.381 94.7676C560.321 91.6237 560.791 88.2701 560.791 84.707C560.791 78.7339 559.486 73.4419 556.875 68.8311C554.264 64.2201 550.348 60.6043 545.127 57.9844C539.906 55.2597 533.379 53.8975 525.547 53.8975ZM703.909 53.8975C699.314 53.8975 695.137 54.4218 691.378 55.4697C687.619 56.4129 684.329 57.8276 681.51 59.7139C678.69 61.4954 676.288 63.6956 674.304 66.3154C672.424 68.8305 671.015 71.6608 670.075 74.8047C669.135 77.8436 668.665 81.1442 668.665 84.707C668.665 90.5756 669.97 95.8682 672.581 100.584C675.296 105.3 679.264 109.02 684.485 111.744C689.707 114.469 696.182 115.832 703.909 115.832C708.608 115.832 712.837 115.36 716.597 114.417C720.356 113.369 723.645 111.902 726.465 110.016C729.284 108.129 731.634 105.928 733.514 103.413C735.393 100.793 736.803 97.9114 737.743 94.7676C738.683 91.6237 739.153 88.27 739.153 84.707C739.153 78.7339 737.848 73.4419 735.237 68.8311C732.627 64.2201 728.711 60.6043 723.489 57.9844C718.268 55.2597 711.741 53.8975 703.909 53.8975ZM1253.35 83.3965C1252.24 83.8256 1251.04 84.2116 1249.75 84.5498C1247.45 85.0738 1244.21 85.5981 1240.04 86.1221L1207.3 90.3662C1202.6 90.995 1199.1 92.3049 1196.8 94.2959C1194.51 96.1822 1193.36 98.8028 1193.36 102.156C1193.36 106.662 1195.18 110.068 1198.84 112.373C1202.6 114.678 1208.13 115.832 1215.44 115.832C1220.66 115.832 1225.52 115.098 1230.01 113.631C1234.61 112.059 1238.63 109.963 1242.07 107.343C1245.62 104.723 1248.39 101.684 1250.37 98.2256C1252.36 94.6627 1253.35 90.9426 1253.35 87.0654V83.3965ZM1336.84 53.8975C1332.66 53.8975 1328.69 54.4218 1324.93 55.4697C1321.28 56.4129 1317.94 57.7751 1314.91 59.5566C1311.88 61.3381 1309.27 63.5384 1307.08 66.1582C1304.99 68.6733 1303.32 71.5036 1302.06 74.6475C1300.91 77.6863 1300.34 81.0395 1300.34 84.707C1300.34 90.6804 1301.91 96.0254 1305.04 100.741C1308.28 105.457 1312.61 109.177 1318.04 111.901C1323.58 114.521 1329.84 115.832 1336.84 115.832C1341.01 115.832 1344.83 115.36 1348.27 114.417C1351.82 113.369 1355.01 111.954 1357.83 110.173C1360.65 108.287 1363 106.085 1364.88 103.57C1366.86 100.951 1368.37 98.0685 1369.42 94.9248C1370.46 91.6762 1370.99 88.2701 1370.99 84.707C1370.99 78.629 1369.58 73.2847 1366.76 68.6738C1363.94 64.0629 1359.97 60.447 1354.85 57.8271C1349.84 55.2073 1343.83 53.8975 1336.84 53.8975ZM22.0273 110.526H14.6846V103.158H22.0273V110.526ZM36.7129 110.526H29.3701V103.158H36.7129V110.526ZM110.138 110.526H102.795V103.158H110.138V110.526ZM124.823 110.526H117.48V103.158H124.823V110.526ZM44.0547 103.158H36.7129V95.7891H44.0547V103.158ZM102.795 103.158H95.4531V95.7891H102.795V103.158ZM51.3975 95.7891H44.0547V88.4209H51.3975V95.7891ZM95.4531 95.7891H88.1104V88.4209H95.4531V95.7891ZM58.7402 88.4209H51.3975V81.0527H58.7402V88.4209ZM88.1104 88.4209H80.7676V81.0527H88.1104V88.4209ZM259.925 67.416H315.22C320.023 67.416 324.096 66.578 327.438 64.9014C330.779 63.2246 333.285 60.8138 334.956 57.6699C336.731 54.5262 337.619 50.8061 337.619 46.5098C337.619 40.0125 335.687 34.9296 331.823 31.2617C327.96 27.4892 322.425 25.6026 315.22 25.6025H259.925V67.416ZM58.7402 58.9473H51.3975V51.5791H58.7402V58.9473ZM88.1104 58.9473H80.7676V51.5791H88.1104V58.9473ZM51.3975 51.5791H44.0547V44.2109H51.3975V51.5791ZM95.4531 51.5791H88.1104V44.2109H95.4531V51.5791ZM44.0547 44.2109H36.7129V36.8418H44.0547V44.2109ZM102.795 44.2109H95.4531V36.8418H102.795V44.2109ZM22.0273 36.8418H14.6846V29.4736H22.0273V36.8418ZM36.7129 36.8418H29.3701V29.4736H36.7129V36.8418ZM110.138 36.8418H102.795V29.4736H110.138V36.8418ZM124.823 36.8418H117.48V29.4736H124.823V36.8418ZM895.923 29.6895H879.163V13.0273H895.923V29.6895ZM29.3701 29.4736H22.0273V22.1055H29.3701V29.4736ZM117.48 29.4736H110.138V22.1055H117.48V29.4736ZM22.0273 22.1055H14.6846V14.7373H22.0273V22.1055ZM36.7129 22.1055H29.3701V14.7373H36.7129V22.1055ZM110.138 22.1055H102.795V14.7373H110.138V22.1055ZM124.823 22.1055H117.48V14.7373H124.823V22.1055ZM14.6846 14.7373H7.34277V7.36816H14.6846V14.7373ZM132.165 14.7373H124.823V7.36816H132.165V14.7373Z"/></svg>
+        </a>
+        <div class="pl-meta">
+          <span>PHOTONIC LABS · V0.3.0</span>
+          <span>INSTITUTIONAL · Q-03.26</span>
+          <span>2026-07-21 · 14 sections</span>
+        </div>
+      </header>
+
+      <div class="pl-center">
+        <span class="pl-eyebrow">
+          <span class="pl-accent">▲</span>
+          <span data-i18n="eyebrow">Built for the LATAM pipeline</span>
+        </span>
+        <h1 data-i18n="headline" data-i18n-html><span>Uruguay's first <em>Biotech</em> <em>scale&#8209;up</em> facility</span></h1>
+        <p class="pl-definition" data-i18n="definition" data-i18n-html>
+          <span><span class="pl-lead">Photonic Lab</span> is Uruguay's deep-tech bioproduction node — a multi-platform, GMP-ready facility with an integrated <em>LLM</em> computational layer for <em>in-silico</em> candidate design, process modeling, analytical characterization, and <em>cryptographically protected biological IP</em>.</span>
+        </p>
+      </div>
+
+      <footer class="pl-bottom-bar">
+        <div>
+          <span>FIELD · METABALL n=5+cursor</span>
+          <span>DITHER · ATKINSON</span>
+          <span>RIM · SPECTRAL DISPERSION 6-BAND</span>
+        </div>
+        <div data-i18n="cursorHint">↳ MOVE CURSOR TO REFRACT · SCROLL TO ADVANCE</div>
+      </footer>
+
+    </div>
+
+    <div class="pl-cursor" id="pl-cursor"></div>
+  </div>
+</section>
+
+<!-- Global UI — language + theme toggles. Position:fixed, always visible across all slides. -->
+<div class="pl-toggles" id="pl-toggles" aria-label="Deck controls">
+  <div class="pl-group" role="group" aria-label="Language">
+    <button type="button" class="pl-lang on" data-lang="en" aria-label="English">EN</button>
+    <button type="button" class="pl-lang"   data-lang="es" aria-label="Español">ES</button>
+  </div>
+  <div class="pl-group" role="group" aria-label="Theme">
+    <button type="button" class="pl-theme on" data-theme="light" aria-label="Light">
+      <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.1">
+        <circle cx="6" cy="6" r="2.4" fill="currentColor"/>
+        <g stroke-linecap="round">
+          <line x1="6" y1="0.6" x2="6" y2="2"/>
+          <line x1="6" y1="10" x2="6" y2="11.4"/>
+          <line x1="0.6" y1="6" x2="2" y2="6"/>
+          <line x1="10" y1="6" x2="11.4" y2="6"/>
+          <line x1="2.2" y1="2.2" x2="3.2" y2="3.2"/>
+          <line x1="8.8" y1="8.8" x2="9.8" y2="9.8"/>
+          <line x1="9.8" y1="2.2" x2="8.8" y2="3.2"/>
+          <line x1="3.2" y1="8.8" x2="2.2" y2="9.8"/>
+        </g>
+      </svg>
+    </button>
+    <button type="button" class="pl-theme" data-theme="dark" aria-label="Dark">
+      <svg class="pl-theme-icon" viewBox="0 0 12 12" fill="currentColor">
+        <path d="M9.4 7.2A4.2 4.2 0 0 1 4.8 2.6c0-.4.05-.8.15-1.2A4.6 4.6 0 1 0 10.6 7.05c-.4.1-.8.15-1.2.15Z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═════════════════════════════ 02 · THESIS ═════════════════════════════ -->
+<section class="slide" id="s02">
+  <span class="slide-num">02 / 14</span>
+  <span class="slide-kicker reveal" data-es="Tesis">Thesis</span>
+
+  <div class="thesis-grid">
+    <h2 class="thesis-quote reveal">
+      <span class="em-it" data-es="La ciencia no es">Science is not</span><br>
+      <span class="strike" data-es="el cuello de botella.">the bottleneck.</span>
+    </h2>
+    <div class="reveal-stagger" style="display:grid;gap:1.4rem;align-content:start;max-width:54ch;">
+      <p class="body body-loose" data-es="Universidades, institutos de investigación y laboratorios en etapa temprana en Uruguay, Argentina y Brasil generan ciencia biotecnológica de calidad internacional. Patentes registradas en EE.UU., Europa y MERCOSUR. Sus fundadores presentan a inversores globales. La ciencia funciona.">
+        Universities, research institutes, and early-stage labs across Uruguay, Argentina, and Brazil generate biotech science of international quality. Patents file in the US, EU, and across MERCOSUR. Founders pitch global investors. The bench science works.
+      </p>
+      <p class="body body-loose" data-es="Lo que colapsa es el paso siguiente. Entre la investigación validada en TRL 4 y la transferencia comercial en TRL 9 hay una capa de producción a escala piloto, lotes con calidad GMP, dossiers regulatorios y procesos transferibles. Esa capa no existe en la región en una forma accesible para un startup. Los fundadores envían moléculas a Europa o la India para escalar — pagando costos inflados, perdiendo control sobre la PI, aceptando ambigüedad regulatoria.">
+        What collapses is the next step. Between validated research at TRL 4 and commercial transfer at TRL 9 sits a layer of pilot-scale production, GMP-grade lots, regulatory dossiers, and transferable processes. That layer does not exist in the region in any form a startup can access. Founders fly molecules to Europe or India to scale — paying inflated costs, losing IP control, accepting regulatory ambiguity.
+      </p>
+      <p class="serif-aside" data-es="Photonic Labs es esa capa.">
+        Photonic Labs is the layer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 03 · TRL GAP ═════════════════════════════ -->
+<section class="slide" id="s03">
+  <span class="slide-num">03 / 14</span>
+  <span class="slide-kicker reveal" data-es="La brecha, mapeada">The gap, mapped</span>
+  <h2 class="display-lg reveal" style="max-width:18ch;" data-es="Dónde la región deja de ser autosuficiente.">Where the region stops being self-sufficient.</h2>
+
+  <div class="trl-grid reveal">
+    <div class="trl-cell covered">
+      <div>
+        <div class="trl-range">TRL 1 — 4</div>
+        <div class="trl-label" data-es="Investigación básica<br>y prueba de concepto">Basic research<br>& proof of concept</div>
+      </div>
+      <div>
+        <div class="trl-status" data-es="Cubierto">Covered</div>
+        <div class="trl-note" data-es="Universidades, Pasteur, UdelaR, INIA, institutos regionales. Financiados, productivos, internacionalmente conectados.">Universities, Pasteur, UdelaR, INIA, regional institutes. Funded, productive, internationally connected.</div>
+      </div>
+    </div>
+    <div class="trl-cell gap">
+      <div>
+        <div class="trl-range">TRL 5 — 6</div>
+        <div class="trl-label" data-es="Escalado y<br>producción piloto">Scale-up &<br>pilot production</div>
+      </div>
+      <div>
+        <div class="trl-status" data-es="— Brecha crítica">— Critical gap</div>
+        <div class="trl-note" data-es="Casi nula oferta accesible en LATAM. Los fundadores envían moléculas afuera y pierden meses — o frenan.">Near-zero accessible options across LATAM. Founders fly molecules abroad and lose months — or stop.</div>
+      </div>
+    </div>
+    <div class="trl-cell gap">
+      <div>
+        <div class="trl-range">TRL 7 — 8</div>
+        <div class="trl-label" data-es="Producción GMP<br>y transferencia tecnológica">GMP production<br>& tech transfer</div>
+      </div>
+      <div>
+        <div class="trl-status" data-es="— Brecha crítica">— Critical gap</div>
+        <div class="trl-note" data-es="La capacidad GMP regional existente (mAbxience, otros) es inaccesible al pipeline de etapa temprana. Los volúmenes mínimos excluyen.">Existing regional GMP capacity (mAbxience, others) inaccessible to early-stage pipeline. Volume floors exclude.</div>
+      </div>
+    </div>
+    <div class="trl-cell unreachable">
+      <div>
+        <div class="trl-range">TRL 9</div>
+        <div class="trl-label" data-es="Manufactura<br>comercial">Commercial<br>manufacturing</div>
+      </div>
+      <div>
+        <div class="trl-status" data-es="Fuera de alcance">Out of reach</div>
+        <div class="trl-note" data-es="Los volúmenes mínimos requeridos excluyen estructuralmente a los startups, por más fuerte que sea la ciencia.">Minimum volume requirements structurally exclude startups, no matter how strong the science.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="trl-caption reveal" data-es="La ciencia sobrevive <strong>TRL 1—4</strong>. Después se topa con dos capas que la región no puede llenar y sale. Photonic Labs está construido para sostener esas dos capas — TRL 5—6 y TRL 7—8 — dentro de Uruguay, sobre suelo regulado, a precios que el pipeline regional efectivamente puede pagar.">
+    The science survives <strong>TRL 1—4</strong>. It then meets two unfillable layers and exits the region. Photonic Labs is built to hold those two layers — TRL 5—6 and TRL 7—8 — inside Uruguay, on regulated soil, at price points the regional pipeline can actually pay.
+  </p>
+</section>
+
+<!-- ═════════════════════════════ 04 · THE ZERO ═════════════════════════════ -->
+<section class="slide" id="s04">
+  <span class="slide-num">04 / 14</span>
+  <div class="zero-slide">
+    <div class="zero-glyph reveal" aria-label="Zero">0</div>
+    <div class="zero-aside reveal-stagger">
+      <span class="label" data-es="El número, aislado">The number, isolated</span>
+      <p class="read" data-es="Hubs de escalado GMP en América Latina que un biotech en etapa temprana puede efectivamente utilizar.">Accessible GMP scale-up hubs in Latin America that an early-stage biotech can actually use.</p>
+      <p class="serif-aside" style="font-size:1.1rem;" data-es="100+ startups deep-tech mapeados en UY · AR · BR.<br>62 empresas biotech activas en Uruguay — 57% sin laboratorio propio.">
+        100+ deeptech startups mapped across UY · AR · BR.<br>
+        62 active biotech firms in Uruguay alone — 57% without their own lab.
+      </p>
+      <span class="source" data-es="Censo · Lilia Stubrin, Oct 2025 · 71% de respuesta · registro biotech UY">Census · Lilia Stubrin, Oct 2025 · 71% response · UY biotech registry</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 05 · FOUR SURFACES ═════════════════════════════ -->
+<section class="slide" id="s05">
+  <span class="slide-num">05 / 14</span>
+  <span class="slide-kicker reveal" data-es="Qué es Photonic Labs">What Photonic Labs is</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Una sola instalación, cuatro superficies operativas.">A single facility, four operating surfaces.</h2>
+
+  <div class="surfaces reveal-stagger">
+    <div class="surface-row">
+      <span class="idx">— 01</span>
+      <h3 class="title" data-es="Infraestructura de bioproducción">Bioproduction infrastructure</h3>
+      <p class="desc" data-es="Multi-plataforma: procariotas, levaduras, CHO, insecto, hongos, microalgas. GMP-ready desde el origen, arquitectura single-use, 10—50 L Tramo&nbsp;1. Cubre aproximadamente dos tercios del pipeline biotech regional sin reconfigurar.">Multi-platform: prokaryotes, yeasts, CHO, insect, fungi, microalgae. GMP-ready from origin, single-use architecture, 10—50 L Tramo&nbsp;1. Covers roughly two-thirds of the regional biotech pipeline without retooling.</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 02</span>
+      <h3 class="title" data-es="Capacidades computacionales + IA">Computational + AI capabilities</h3>
+      <p class="desc" data-es="Cómputo analítico (HPLC, qPCR, NanoDrop, ELISA, electroforesis). Modelado de proceso y gemelo digital del biorreactor + downstream. Diseño in-silico de candidatos y ranking molecular. Un stack LLM soberano — modelos open-weight, hospedados localmente, fine-tuneados sobre literatura biotech, corpora regulatorios y datos del pipeline residente. Custodia criptográfica de la PI biológica desde el día uno.">Analytical compute (HPLC, qPCR, NanoDrop, ELISA, electrophoresis). Process modeling and digital twin of bioreactor + downstream. In-silico candidate design and molecular ranking. A sovereign LLM stack — open-weight models, locally hosted, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Cryptographically protected custody of biological IP from day one.</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 03</span>
+      <h3 class="title" data-es="Innovación y desarrollo">Innovation &amp; development</h3>
+      <p class="desc" data-es="Trabajo de proceso de frontera en terapia génica y evaluaciones CAR-T. Servicio analítico independiente para el 34% de startups encuestados que compran solo analítica. Dossiers transferibles — proceso, datos, paquete regulatorio — listos para handoff a un CDMO cliente.">Frontier process work in gene therapy and CAR-T evaluations. Standalone analytical service for the 34% of surveyed startups that buy analytics only. Transferable dossiers — process, data, regulatory package — ready for client CDMO handoff.</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 04</span>
+      <h3 class="title" data-es="Capa regulatoria e institucional">Regulatory &amp; institutional layer</h3>
+      <p class="desc" data-es="ANII dentro de Zona Franca. Trayectoria hacia FDA (35%) y EMA (28%) del pipeline encuestado. MERCOSUR más el marco de Ley de Inversiones como moat regulatorio. Uruguay XXI como hilo institucional hacia capital soberano y multilateral.">ANII inside Zona Franca. Trajectory toward FDA (35%) and EMA (28%) of surveyed pipeline. MERCOSUR plus Ley de Inversiones regulatory moat. Uruguay XXI as institutional thread into sovereign and multilateral capital.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 06 · BIOPRODUCTION DETAIL ═════════════════════════════ -->
+<section class="slide" id="s06">
+  <span class="slide-num">06 / 14</span>
+  <span class="slide-kicker reveal" data-es="Superficie 01 · en especificación">Surface 01 · in specification</span>
+  <h2 class="display-lg reveal" style="max-width:20ch;" data-es="Bioproducción, dimensionada al pipeline regional.">Bioproduction, sized for the regional pipeline.</h2>
+
+  <div class="spec-grid reveal-stagger">
+    <div class="spec-block">
+      <span class="k" data-es="Plataformas">Platforms</span>
+      <span class="v" data-es="6 sistemas de expresión<small>Procariotas · levaduras · CHO · insecto · hongos · microalgas — seleccionados para cubrir el pipeline dominante de LATAM sin reconfigurar.</small>">6 expression systems<small>Prokaryotes · yeasts · CHO · insect · fungi · microalgae — selected to cover the dominant LATAM pipeline without retooling.</small></span>
+    </div>
+    <div class="spec-block">
+      <span class="k" data-es="Escala Tramo 1">Tramo 1 scale</span>
+      <span class="v" data-es="10 — 50 L<small>Arquitectura de biorreactor single-use. Modular, alto turnover, compatible con flujos iterativos del cliente.</small>">10 — 50 L<small>Single-use bioreactor architecture. Modular, fast turnover, compatible with iterative client workflows.</small></span>
+    </div>
+    <div class="spec-block">
+      <span class="k" data-es="Grado de diseño">Design grade</span>
+      <span class="v" data-es="GMP-ready desde el día uno<small>Flujos, materiales, superficies, drenajes, QMS. Salto a GMP completo sin reconstruir la planta. Defendible ante inversores y reguladores.</small>">GMP-ready from day one<small>Flows, materials, surfaces, drainage, QMS. Jump to full GMP without rebuilding the facility. Defensible to investors and to regulators.</small></span>
+    </div>
+    <div class="spec-block">
+      <span class="k" data-es="Layout">Layout</span>
+      <span class="v" data-es="Tramo 1 de 15 zonas<small>BSL-2, cleanrooms, HVAC, utilities, QA — un único plan coherente.</small>">15-zone Tramo 1<small>Designed under Qualia+ engagement. BSL-2, cleanrooms, HVAC, utilities, QA — single coherent plan.</small></span>
+    </div>
+    <div class="spec-block">
+      <span class="k" data-es="Cobertura">Coverage</span>
+      <span class="v" data-es="~60 — 70%<small>Participación estimada del pipeline regional que Photonic Labs puede escalar sin comisionar líneas nuevas. La amplitud multi-plataforma es estructural, no marketing.</small>">~60 — 70%<small>Estimated share of the regional pipeline that Photonic Labs can scale without commissioning new lines. The cross-platform breadth is structural, not marketing.</small></span>
+    </div>
+    <div class="spec-block">
+      <span class="k" data-es="Densidad de pipeline">Pipeline density</span>
+      <span class="v" data-es="5 — 8 residentes ancla<small>Objetivo de break-even. 20+ candidatos identificados pre-launch en UY, AR, BR. Sondeo en curso.</small>">5 — 8 anchor residents<small>Break-even target. 20+ named candidates mapped pre-launch across UY, AR, BR. Sondeo in motion.</small></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 07 · PLANT DESIGN ═════════════════════════════ -->
+<section class="slide" id="s07">
+  <span class="slide-num">07 / 14</span>
+  <span class="slide-kicker reveal" data-es="Superficie 01 · el plano">Surface 01 · the floor plan</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Un plan coherente — 21 zonas, cinco bandas, una dirección.">One coherent plan — 21 zones, five bands, one direction.</h2>
+
+  <div class="plant-flow reveal">
+    <span class="flow-end" data-es="◐ Entrada de materiales">◐ Materials in</span>
+    <span class="flow-mid" data-es="flujo unidireccional →">unidirectional flow →</span>
+    <span class="flow-end" data-es="Salida de productos ◑">Products out ◑</span>
+  </div>
+
+  <div class="surfaces reveal-stagger">
+    <div class="surface-row">
+      <span class="idx">— 01</span>
+      <h3 class="title" data-es="Logística / almacenes">Logistics / stores</h3>
+      <p class="desc" data-es="Depósito de materias primas · recepción y descarga · depósito de insumos single-use · depósito de materiales limpios · expedición. Entrada unidireccional de insumos.">Raw-materials store · receiving &amp; unloading · single-use consumables store · clean-materials store · dispatch. Unidirectional entry of inputs.</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 02</span>
+      <h3 class="title" data-es="Preparación">Preparation</h3>
+      <p class="desc" data-es="Pesadas y muestreo · preparación de medios y soluciones · acondicionamiento · lavadero.">Weighing &amp; sampling · media and solution prep · conditioning · wash.</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 03</span>
+      <h3 class="title" data-es="Producción · corredor ISO 8">Production · ISO 8 corridor</h3>
+      <p class="desc" data-es="Banco celular (ultrafreezers −80 °C + N₂ líquido −196 °C + UPS dedicado) · inóculo / seed train (incubadora CO₂, shakers, BSC Clase II) · fermentación y cultivo (biorreactores single-use 10 L + 50 L) · purificación / downstream (3 salas — ÄKTA Process + Pilot + TFF + HPLC de proceso).">Cell bank (−80 °C ultrafreezers + −196 °C LN₂ + dedicated UPS) · seed train (CO₂ incubator, shakers, Class II BSC) · fermentation &amp; culture (10 L + 50 L single-use bioreactors) · purification / downstream (3 rooms — ÄKTA Process + Pilot + TFF + process HPLC).</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 04</span>
+      <h3 class="title" data-es="I+D + QA/QC · circulación CNC">R&amp;D + QA/QC · CNC circulation</h3>
+      <p class="desc" data-es="I+D (terapia génica, CAR-T, suite analítica standalone) · QA/QC (físico-química, microbiología, genómica).">R&amp;D (gene therapy, CAR-T, stand-alone analytical suite) · QA/QC (physical-chemistry, microbiology, genomics).</p>
+    </div>
+    <div class="surface-row">
+      <span class="idx">— 05</span>
+      <h3 class="title" data-es="Soporte / servicios">Support / services</h3>
+      <p class="desc" data-es="Esclusa de residuos · depósito de residuos · vestuarios · sala de reuniones y onboarding · IT / servers (LIMS/ELN Benchling, trazabilidad completa).">Waste airlock · waste store · changing rooms · meeting &amp; onboarding · IT / servers (LIMS/ELN Benchling, full traceability).</p>
+    </div>
+  </div>
+
+  <div class="substrate-grid reveal-stagger" style="margin-top:clamp(1.5rem,3vh,2.5rem);">
+    <div class="sub-tile"><span class="num">21</span><span class="lbl" data-es="Zonas<br>funcionales">Functional<br>zones</span></div>
+    <div class="sub-tile"><span class="num">5</span><span class="lbl" data-es="Bandas<br>operativas">Operating<br>bands</span></div>
+    <div class="sub-tile"><span class="num">3</span><span class="lbl" data-es="Salas de<br>downstream">Downstream<br>rooms</span></div>
+    <div class="sub-tile"><span class="num">2</span><span class="lbl" data-es="Escalas single-use<br>(10 L + 50 L)">Single-use scales<br>(10 L + 50 L)</span></div>
+  </div>
+
+  <p class="serif-aside reveal" style="margin-top:2.5rem;max-width:64ch;" data-es="Los materiales entran por un extremo y el producto sale por el otro — sin cruces. El acceso de personal y la salida de residuos están físicamente separados del flujo de materiales; el corredor de producción opera bajo ISO 8, con salas limpias objetivo ISO 7—8. El diseño ejecutivo — metros cuadrados y servicios por zona — lo produce la empresa de bioingeniería en la Fase B.">
+    Materials enter one end and product leaves the other — no crossings. Personnel access and waste egress are physically separated from the material flow; the production corridor runs at ISO 8, target clean rooms ISO 7—8. The executive design — square metres and services per zone — is produced by the bioengineering partner in Phase B.
+  </p>
+</section>
+
+<!-- ═════════════════════════════ 08 · COMPUTATIONAL + AI ═════════════════════════════ -->
+<section class="slide" id="s08">
+  <span class="slide-num">08 / 14</span>
+  <span class="slide-kicker reveal" data-es="Superficie 02 · la capa integrada">Surface 02 · the integrated layer</span>
+  <h2 class="display-lg reveal" style="max-width:24ch;" data-es="Capacidades computacionales <em style='font-family:var(--font-serif);font-weight:300;letter-spacing:-0.025em;'>+ IA</em>, embebidas en el laboratorio.">Computational <em style="font-family:var(--font-serif);font-weight:300;letter-spacing:-0.025em;">+ AI</em> capabilities, embedded in the lab.</h2>
+
+  <div class="computational">
+    <ul class="comp-list reveal-stagger">
+      <li><span class="n">— 01</span><span class="t" data-es="Instrumentación analítica<small>HPLC, qPCR, NanoDrop, ELISA, electroforesis — el sustrato del ingreso por servicio analítico independiente (34% de startups encuestados compra esto y solo esto).</small>">Analytical instrumentation<small>HPLC, qPCR, NanoDrop, ELISA, electrophoresis — the substrate of standalone analytical service revenue (34% of surveyed startups buy this and only this).</small></span></li>
+      <li><span class="n">— 02</span><span class="t" data-es="Modelado de proceso y gemelo digital<small>Biorreactor y downstream modelados por adelantado. Iteraciones en pantalla antes de iteraciones en el wet lab. Comprime ciclos de validación por meses.</small>">Process modeling &amp; digital twin<small>Bioreactor and downstream modeled in advance. Iterations on screen before iterations in the wet lab. Compresses validation cycles by months.</small></span></li>
+      <li><span class="n">— 03</span><span class="t" data-es="Diseño in-silico de candidatos<small>Diseño generativo de proteínas, ranking molecular y acceso consultivo a recursos computacionales de frontera. Decisiones tomadas antes de producir lotes.</small>">In-silico candidate design<small>Generative protein design, molecular ranking, and advisory access to frontier computational resources. Decisions made before lots are produced.</small></span></li>
+      <li><span class="n">— 04</span><span class="t" data-es="IA soberana · stack LLM de dominio<small>Modelos foundation open-weight, hospedados localmente sobre cómputo emplazado en la región, fine-tuneados sobre literatura biotech, corpora regulatorios y datos del pipeline residente. Redacción regulatoria asistida por retrieval, asistentes de laboratorio grado-operador y forecasting de pipeline viven dentro del edificio — no detrás de la API de un proveedor.</small>">Sovereign AI · domain LLM stack<small>Open-weight foundation models, locally hosted on regionally-sited compute, fine-tuned on biotech literature, regulatory corpora, and resident pipeline data. Retrieval-augmented regulatory drafting, operator-grade lab assistants, and pipeline forecasting live inside the building — not behind a vendor's API.</small></span></li>
+      <li><span class="n">— 05</span><span class="t" data-es="Custodia de PI alineada soberanamente<small>Linaje MCB / WCB protegido criptográficamente. La PI biológica se defiende en la capa de almacenamiento, no solo en la capa contractual.</small>">Sovereign-aligned IP custody<small>Cryptographically protected MCB / WCB lineage. Biological IP defended at the storage layer, not just the contractual layer.</small></span></li>
+    </ul>
+    <p class="comp-aside reveal" data-es="Bioproducción sin un piso computacional es trabajo de wet lab. Photonic Labs está construido para que el loop in-silico completo — instrumentos, gemelo digital, IA generativa, y el stack LLM soberano que los orquesta — sea parte del edificio, no una relación con un proveedor incorporada después.">
+      Bioproduction without a computational floor is wet-lab labor. Photonic Labs is built so the full in-silico loop — instruments, digital twin, generative AI, and the sovereign LLM stack that orchestrates them — is part of the building, not a vendor relationship retrofitted later.
+    </p>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 09 · ROADMAP ═════════════════════════════ -->
+<section class="slide" id="s09">
+  <span class="slide-num">09 / 14</span>
+  <span class="slide-kicker reveal" data-es="El camino al go-live">The path to go-live</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Un build por etapas, no un calendario fijo.">A stage-gated build, not a fixed calendar.</h2>
+  <p class="body body-loose reveal" style="max-width:70ch;" data-es="Tres fases y dos gates de liberación de capital — el modelo stage-gate de I+D del venture. La forma y la fecha del go-live emergen de los gates, no de un cronograma impuesto.">
+    Three phases, two capital-release gates — the venture's R&amp;D stage-gate model. The shape and date of go-live emerge from the gates, not from an imposed schedule.
+  </p>
+
+  <div class="seq-grid reveal-stagger">
+    <div class="seq-col">
+      <span class="period" data-es="— Feb — Jul 2026">— Feb — Jul 2026</span>
+      <span class="rm-status done" data-es="✓ Cerrando">✓ Closing</span>
+      <h3 class="phase" data-es="Pre-Incubación">Pre-Incubation</h3>
+      <span class="phase-lead" data-es="Tesis → proyecto ejecutable.">Thesis → executable project.</span>
+      <ul data-es="<li>Tesis + mapa de decisiones — el gap TRL 5—8</li><li>Camino regulatorio — MSP · BSL-2 · ANII</li><li>Modelo operativo cerrado — Modelo 3</li><li>Demanda validada — encuesta 74 biotech · diseño de planta listo</li>">
+        <li>Thesis + decision map — the TRL 5—8 gap</li>
+        <li>Regulatory path — MSP · BSL-2 · ANII</li>
+        <li>Operating model closed — Model 3</li>
+        <li>Demand validated — 74-biotech survey · plant design done</li>
+      </ul>
+    </div>
+    <div class="seq-col">
+      <span class="period" data-es="— Q3 2026 → 2027">— Q3 2026 → 2027</span>
+      <span class="rm-status now" data-es="▶ Ahora">▶ Now</span>
+      <h3 class="phase" data-es="Incubación">Incubation</h3>
+      <span class="phase-lead" data-es="De-risk de capital y diseño.">De-risk capital &amp; design.</span>
+      <ul data-es="<li>Fase A — entidad · usuario ZF · ronda privada</li><li>Grants públicos — ANII 70% · BID · Uy Innova</li><li>Negociación Parque — greenfield vs brownfield</li><li>Fase B — diseño ejecutivo · permisos · equipos</li>">
+        <li>Phase A — entity · ZF user status · private round</li>
+        <li>Public grants — ANII 70% · BID · Uy Innova</li>
+        <li>Parque negotiation — greenfield vs brownfield</li>
+        <li>Phase B — executive design · permits · equipment</li>
+      </ul>
+    </div>
+    <div class="seq-col">
+      <span class="period" data-es="— 2027 → ppio 2028">— 2027 → early 2028</span>
+      <span class="rm-status next" data-es="○ Futuro">○ Future</span>
+      <h3 class="phase" data-es="Desarrollo">Development</h3>
+      <span class="phase-lead" data-es="Construir y encender el lab.">Build &amp; switch on the lab.</span>
+      <ul data-es="<li>Fase C — obra civil · instalación · fit-out</li><li>Commissioning — IQ / OQ · ISO 7—8</li><li>Fase D — equipo core · soft launch</li><li>Operación — 3 tiers · revenue · revisión Tramo 2</li>">
+        <li>Phase C — civil works · installation · fit-out</li>
+        <li>Commissioning — IQ / OQ · ISO 7—8</li>
+        <li>Phase D — core team · soft launch</li>
+        <li>Operation — 3 tiers · revenue · Tramo 2 review</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="rm-gates reveal-stagger">
+    <div class="rm-gate-chip">
+      <span class="gk" data-es="Gate 0 — entrada a incubación">Gate 0 — entry to incubation</span>
+      <span class="gv" data-es="Entidad viva · ZF all-in · ≥1 LOI ancla · QA Director identificado.">Live entity · ZF all-in · ≥1 anchor LOI · QA Director identified.</span>
+    </div>
+    <div class="rm-gate-chip">
+      <span class="gk" data-es="Gate 1 — go-live / v1">Gate 1 — go-live / v1</span>
+      <span class="gv" data-es="Físico IQ/OQ/PQ · QA + QMS · ARR firmado · runway ≥ 12 meses.">Physical IQ/OQ/PQ · QA + QMS · signed ARR · runway ≥ 12 months.</span>
+    </div>
+  </div>
+
+  <div class="rm-traj reveal-stagger">
+    <div class="tcol"><span class="tk">MVP · Model 3 · Tramo 1</span><span class="tv" data-es="10—50 L · GMP-ready">10—50 L · GMP-ready</span><span class="td" data-es="15—21 zonas · single-use · 5—8 residentes.">15—21 zones · single-use · 5—8 residents.</span></div>
+    <div class="tcol"><span class="tk">V1 · Model 4 · Tramo 2</span><span class="tv" data-es="200—300 L · GMP">200—300 L · GMP</span><span class="td" data-es="Línea de downstream expandida.">Expanded downstream line.</span></div>
+    <div class="tcol"><span class="tk">V2 · Model 5 híbrido</span><span class="tv" data-es="Tier-1 · Año 4+">Tier-1 · Year 4+</span><span class="td" data-es="Hub regional multiplataforma.">Multi-platform regional hub.</span></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 10 · WHY URUGUAY ═════════════════════════════ -->
+<section class="slide" id="s10">
+  <span class="slide-num">10 / 14</span>
+  <span class="slide-kicker reveal" data-es="Por qué Uruguay, estructuralmente">Why Uruguay, structurally</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Un Estado que ya construyó los instrumentos.">A state that has already built the instruments.</h2>
+
+  <div class="uy-grid">
+    <p class="body body-loose reveal" data-es="Uruguay no es un destino por defecto — es uno deliberado. El país pasó dos décadas ensamblando la arquitectura legal, fiscal e institucional que la infraestructura biotech ahora necesita. Los instrumentos existen. Esperaban a un emprendimiento dimensionado para usarlos todos a la vez.">
+      Uruguay is not a default destination — it is a deliberate one. The country has spent two decades assembling the legal, fiscal, and institutional architecture that biotech infrastructure now needs. The instruments exist. They were waiting for a venture sized to use them all at once.
+    </p>
+    <div class="uy-instruments reveal-stagger">
+      <div class="uy-row"><span class="n">— 01</span><span class="nm">ANII</span><span class="dx" data-es="Agencia nacional de investigación. 70% de cofinanciamiento no reembolsable, tope UYU 4M. Confirmada disponible <em>dentro de Zona Franca</em> desde 2025 — cambiando estructuralmente el cálculo de ZF.">National research agency. 70% non-reimbursable co-financing, cap UYU 4M. Confirmed available <em>inside Zona Franca</em> since 2025 — structurally changing the ZF calculus.</span></div>
+      <div class="uy-row"><span class="n">— 02</span><span class="nm">Zona Franca biotech</span><span class="dx" data-es="IRAE 0%, ahorro en aranceles de importación, óptima para operaciones de exportación regional. Marco Ley 19.566 — biotech multi-plataforma específicamente contemplada.">IRAE 0%, import duty savings, optimal for regional export operations. Ley 19.566 framework — multi-platform biotech specifically contemplated.</span></div>
+      <div class="uy-row"><span class="n">— 03</span><span class="nm">Ley de Inversiones</span><span class="dx" data-es="Marco de crédito fiscal para inversión calificada. Apilable con ZF y ANII. La razón por la que un CAPEX sub-USD 3M supera los thresholds regionales del capital institucional.">Tax credit framework for qualifying investment. Stackable with ZF and ANII. The reason a sub-$3M CAPEX clears regional thresholds for institutional capital.</span></div>
+      <div class="uy-row"><span class="n">— 04</span><span class="nm">Uruguay XXI</span><span class="dx" data-es="Agencia soberana de promoción de inversiones. Hilo institucional hacia capital multilateral, redes de embajada y programas bilaterales.">Sovereign investment promotion agency. Institutional thread into multilateral capital, embassy networks, and bilateral programs.</span></div>
+      <div class="uy-row"><span class="n">— 05</span><span class="nm">MERCOSUR + FDA / EMA</span><span class="dx" data-es="35% del pipeline encuestado apunta a FDA. 28% a EMA. Photonic Labs está secuenciado para graduar residentes en ambas jurisdicciones, no solo registros regionales.">35% of surveyed pipeline targets FDA. 28% targets EMA. Photonic Labs is sequenced to graduate residents into both jurisdictions, not just regional registries.</span></div>
+      <div class="uy-row"><span class="n">— 06</span><span class="nm">Parque de las Ciencias</span><span class="dx" data-es="Infraestructura ZF bio-adaptada ya operativa. El ecosistema de co-tenants reduce el riesgo de comisionamiento y acelera los ciclos de inspección regulatoria.">Bio-adapted ZF infrastructure already operational. Co-tenant ecosystem reduces commissioning risk and accelerates regulatory inspection cycles.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 11 · NETWORK ═════════════════════════════ -->
+<section class="slide" id="s11">
+  <span class="slide-num">11 / 14</span>
+  <span class="slide-kicker reveal" data-es="La red detrás del build">The network behind the build</span>
+  <h2 class="display-lg reveal" style="max-width:26ch;" data-es="Propiedad de BOTH Ventures. Construido con una red de aliados.">Owned by BOTH Ventures. Built with a network of allies.</h2>
+
+  <div class="qualia-band reveal">
+    <span class="lbl" data-es="— Plataforma incubadora">— Incubating platform</span>
+    <p class="qbody" data-es="<strong>BOTH Ventures</strong> sostiene e incuba Photonic Labs (con Manantial). No es un build en solitario: la <strong>ciencia</strong>, el <strong>sitio</strong>, el <strong>capital</strong> y la <strong>ejecución</strong> vienen de una red coordinada de aliados estratégicos — nombrados abajo."><strong>BOTH Ventures</strong> holds and incubates Photonic Labs (with Manantial). It is not a solo build: the <strong>science</strong>, the <strong>site</strong>, the <strong>capital</strong> and the <strong>execution</strong> come from a coordinated network of strategic allies — named below.</p>
+  </div>
+
+  <div class="team-grid reveal-stagger">
+    <div class="team-card">
+      <span class="role" data-es="— Advisory y profundidad GMP">— Advisory &amp; GMP depth</span>
+      <span class="name">Qualia+</span>
+      <span class="bio" data-es="Alejandro San Juan (neurocirujano, formado en biotech) + Juan Eduardo «JEC» Ceriani (AmegaLabs, ex-Cámara Argentina de Biotecnología). Acceso al ecosistema médico-científico y profundidad operativa GMP que BOTH no tiene por linaje propio.">Alejandro San Juan (neurosurgeon, biotech-trained) + Juan Eduardo “JEC” Ceriani (AmegaLabs, ex-Cámara Argentina de Biotecnología). Medical-scientific ecosystem access and the operational GMP depth BOTH does not hold by lineage.</span>
+    </div>
+    <div class="team-card">
+      <span class="role" data-es="— Institucional y sitio">— Institutional &amp; site</span>
+      <span class="name">Parque de las Ciencias</span>
+      <span class="bio" data-es="Sitio en Zona Franca (Canelones), junto a Uruguay XXI —el hilo soberano de promoción de inversiones— y el camino regulatorio del MSP. Las instituciones que alojan, regulan y promueven el build.">Free-zone site in Canelones, alongside Uruguay XXI — the sovereign investment-promotion thread — and the MSP regulatory pathway. The institutions that host, regulate and promote the build.</span>
+    </div>
+    <div class="team-card">
+      <span class="role" data-es="— Capital y grants">— Capital &amp; grants</span>
+      <span class="name">ANII · BID Lab</span>
+      <span class="bio" data-es="ANII — 70% de cofinanciamiento no reembolsable, disponible dentro de Zona Franca. BID Lab vía el nodo proyecto-ecosistema. Más el cornerstone soberano / alineado a misión (USD 2—3M) y capital de impacto.">ANII — 70% non-reimbursable co-financing, available inside Zona Franca. BID Lab via the project-ecosystem node. Plus the sovereign / mission-aligned cornerstone (USD 2—3M) and impact capital.</span>
+    </div>
+    <div class="team-card">
+      <span class="role" data-es="— Ingeniería y ejecución">— Engineering &amp; execution</span>
+      <span class="name">Empresa de bioingeniería</span>
+      <span class="bio" data-es="La empresa de bioingeniería (Manantial.BUILD) ejecuta las Fases B y C —diseño ejecutivo, fit-out y commissioning— con Eleonora Scoseria en estrategia single-use y Equipo Inox en equipamiento de proceso. El equipo supervisa y valida.">The bioengineering firm (Manantial.BUILD) executes Phases B and C — executive design, fit-out and commissioning — with Eleonora Scoseria on single-use strategy and Equipo Inox on process equipment. The team supervises and validates.</span>
+    </div>
+    <div class="team-card">
+      <span class="role" data-es="— Demanda ancla">— Anchor demand</span>
+      <span class="name">El pipeline de residentes</span>
+      <span class="bio" data-es="Candidatos-cliente nombrados desde el sondeo de demanda —Eywa, Xeptiva (ZF), KinzBio, Nanogrow, Guska— más el portfolio Pasteur / LAB+. La cohorte ancla de 5—8 que sostiene el break-even se forma acá.">Named client candidates from the demand survey — Eywa, Xeptiva (ZF), KinzBio, Nanogrow, Guska — plus the Pasteur / LAB+ portfolio. The 5—8 anchor cohort that carries break-even forms here.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════ 12 · SUBSTRATE / TRACTION ═════════════════════════════ -->
+<section class="slide" id="s12">
+  <span class="slide-num">12 / 14</span>
+  <span class="slide-kicker reveal" data-es="Lo que ya está en su lugar">What is already in place</span>
+  <h2 class="display-lg reveal" style="max-width:22ch;" data-es="Sustrato, no slideware.">Substrate, not slideware.</h2>
+  <p class="body body-loose reveal" data-es="Photonic Labs entra a esta conversación con el sustrato de diseño, legal, mercado y operacional ya ensamblado. La presentación no introduce una tesis — resume una que el equipo viene construyendo, con socios identificados y entregables documentados, hace más de un año.">
+    Photonic Labs enters this conversation with the design, legal, market, and operational substrate already assembled. The deck does not introduce a thesis — it summarises one that the team has been building, with named partners and documented deliverables, for over a year.
+  </p>
+
+  <div class="substrate-grid reveal-stagger">
+    <div class="sub-tile"><span class="num">15</span><span class="lbl" data-es="Zonas en el<br>diseño Tramo 1">Zones in the<br>Tramo 1 lab design</span></div>
+    <div class="sub-tile"><span class="num">5</span><span class="lbl" data-es="Instrumentos<br>regulatorios verificados">Regulatory<br>instruments verified</span></div>
+    <div class="sub-tile"><span class="num">7</span><span class="lbl" data-es="Documentos fuente<br>en el vault">Qualia+ source<br>documents in vault</span></div>
+    <div class="sub-tile"><span class="num">62</span><span class="lbl" data-es="Empresas biotech<br>activas en Uruguay">Biotech firms<br>active in Uruguay</span></div>
+    <div class="sub-tile"><span class="num">74</span><span class="lbl" data-es="Respuestas a sondeo<br>de demanda (AR · parcial)">Demand survey<br>responses (AR · partial)</span></div>
+    <div class="sub-tile"><span class="num">20+</span><span class="lbl" data-es="Candidatos residentes<br>identificados">Named resident<br>candidates mapped</span></div>
+  </div>
+
+  <p class="serif-aside reveal" style="margin-top:2.5rem;max-width:60ch;" data-es="El trabajo de los próximos doce meses es convertir este sustrato en un edificio, una licencia, una cohorte ancla y un primer dossier entregado a un socio CDMO regional.">
+    The work of the next twelve months is to convert this substrate into a building, a license, an anchor cohort, and a first dossier handed to a regional CDMO partner.
+  </p>
+</section>
+
+<!-- ═════════════════════════════ 13 · BENCHMARK ═════════════════════════════ -->
+<section class="slide" id="s13">
+  <span class="slide-num">13 / 14</span>
+  <span class="slide-kicker reveal" data-es="La clase de referencia">The reference class</span>
+  <h2 class="display-lg reveal" style="max-width:24ch;" data-es="Photonic pertenece a una clase global de instalaciones ya probada.">Photonic belongs to a proven global facility class.</h2>
+
+  <div class="uy-grid">
+    <p class="body body-loose reveal" data-es="Un análisis de deep-research mapeó las diez instalaciones del mundo más similares estructuralmente al core de Photonic — multiplataforma, GMP-ready desde el diseño, que puentean la investigación validada (TRL 4—5) hasta un dossier piloto transferible (TRL 7—9). Photonic no está inventando una categoría: está trayendo a LATAM un modelo probado y anclado en lo público.">
+      A deep-research pass mapped the ten facilities worldwide most structurally similar to Photonic's core — multi-platform, GMP-ready by design, bridging validated research (TRL 4—5) to a transferable pilot dossier (TRL 7—9). Photonic is not inventing a category — it is bringing a proven, publicly-anchored model to LATAM.
+    </p>
+    <div class="uy-instruments reveal-stagger">
+      <div class="uy-row"><span class="n">— 01</span><span class="nm">National Biologics Facility</span><span class="dx" data-es="🇦🇺 Australia — El twin más fuerte. Cuatro sistemas de expresión bajo un mismo QMS, ISO 9001 + grado clínico, anclado por NCRIS (infraestructura nacional de investigación). NCRIS mapea a ANII.">🇦🇺 Australia — Strongest overall twin. Four expression systems under one QMS, ISO 9001 + clinical-grade, anchored by NCRIS national research infrastructure. NCRIS maps to ANII.</span></div>
+      <div class="uy-row"><span class="n">— 02</span><span class="nm">NRC Canada Bioprocess R&amp;D</span><span class="dx" data-es="🇨🇦 Canadá — La capacidad multiplataforma más amplia y el mandato más limpio: entregar un proceso documentado y con QA a un CMO, en lugar de comercializarlo.">🇨🇦 Canada — The broadest multi-platform capability and the cleanest mandate: hand a documented, QA'd process to a CMO rather than commercialise it.</span></div>
+      <div class="uy-row"><span class="n">— 03</span><span class="nm">CPI — NBMC</span><span class="dx" data-es="🇬🇧 Reino Unido — El modelo de propiedad más transferible. RTO público, dos «suites de simulación GMP», capitalizado por un grant de £38m de Innovate UK. ANII ≈ Innovate UK; Zona Franca = el envoltorio fiscal.">🇬🇧 UK — The most transferable ownership model. Public RTO, two “GMP-simulation suites,” capitalised by a £38m Innovate UK grant. ANII ≈ Innovate UK; Zona Franca = the tax wrapper.</span></div>
+      <div class="uy-row"><span class="n">— 04</span><span class="nm">Gates Biomanufacturing</span><span class="dx" data-es="🇺🇸 EE.UU. — El playbook de ingeniería «GMP-ready desde el diseño»: el equipamiento de desarrollo de proceso se construye para espejar la suite cGMP 1:1.">🇺🇸 US — The GMP-ready-by-design engineering playbook: process-development equipment built to mirror the cGMP suite 1:1.</span></div>
+      <div class="uy-row"><span class="n">— 05</span><span class="nm">Fraunhofer ITEM</span><span class="dx" data-es="🇩🇪 Alemania — El twin de instalación única más fiel: microbiano + mamífero, 10—400 L GMP, de la línea celular al lote clínico.">🇩🇪 Germany — The truest single-facility twin: microbial + mammalian, 10—400 L GMP, cell-line to clinical lot.</span></div>
+      <div class="uy-row"><span class="n">— 06</span><span class="nm">A*STAR — BTI</span><span class="dx" data-es="🇸🇬 Singapur — La postura exacta de Photonic: escalonándose hacia GMP, con el dossier transferible como propuesta de valor autónoma.">🇸🇬 Singapore — Photonic's exact posture: staged into GMP, with the transferable dossier as a standalone value proposition.</span></div>
+      <div class="uy-row"><span class="n">— 07</span><span class="nm">CGT Catapult — Stevenage</span><span class="dx" data-es="🇬🇧 Reino Unido — El blueprint de gobernanza multi-tenant: clientes co-residentes que retienen cada uno su PI, QMS y liberación de lote.">🇬🇧 UK — The multi-tenant governance blueprint: co-resident clients each own their IP, QMS and batch release.</span></div>
+      <div class="uy-row"><span class="n">— 08</span><span class="nm">Bio Base Europe Pilot Plant</span><span class="dx" data-es="🇧🇪 Bélgica — La plantilla de neutralidad: un nonprofit independiente sin accionistas industriales — así ganó 270+ clientes.">🇧🇪 Belgium — The neutrality template: an independent nonprofit with no industrial shareholders — which is how it won 270+ clients.</span></div>
+    </div>
+  </div>
+
+  <p class="serif-aside reveal" style="margin-top:2.5rem;max-width:66ch;" data-es="El patrón es inequívoco: toda instalación top está anclada en lo público, universitario o sin fines de lucro — ningún CDMO puramente privado califica. GMP-ready desde el diseño (no certificación día-uno) es la norma del sector, y la neutralidad de «el cliente es dueño de todo» es lo que hace funcionar la infraestructura compartida. Photonic nombró la postura correcta — y el ANII + Zona Franca de Uruguay aporta exactamente el ancla pública de la que depende esta clase de instalación.">
+    The pattern is unambiguous: every top facility is publicly, university, or nonprofit-anchored — no pure private CDMO qualifies. GMP-ready by design (not day-one certification) is the sector norm, and client-owns-everything neutrality is what makes shared infrastructure work. Photonic has named the right posture — and Uruguay's ANII + Zona Franca supplies exactly the public anchor this facility class depends on.
+  </p>
+</section>
+
+<!-- ═════════════════════════════ 13 · CLOSE ═════════════════════════════ -->
+<section class="slide close-slide" id="s14">
+  <span class="slide-num">14 / 14</span>
+
+  <div class="close-stage">
+    <h2 class="close-line reveal" data-es="Construido desde Uruguay,<br><span class='em-it'>secuenciado</span> antes<br>del ciclo.">
+      Built from Uruguay,<br>
+      <span class="em-it">sequenced</span> ahead<br>
+      of the cycle.
+    </h2>
+    <p class="close-coda reveal" data-es="El ciclo regional de capital todavía está cargando. La capa de infraestructura que va a necesitar, no. Photonic Labs se está construyendo en la ventana entre esos dos hechos — y estamos invitando a Uruguay, a pharma tier-1, al capital de desarrollo y a operadores alineados a construirla con nosotros.">
+      The regional capital cycle is still loading. The infrastructure layer it will need is not. Photonic Labs is being built in the window between those two facts — and we are inviting Uruguay, top-tier pharma, development capital, and aligned operators to build it with us.
+    </p>
+  </div>
+
+  <div class="contact-footer reveal-stagger">
+    <div class="blk">
+      <span data-es="— Contacto">— Contact</span>
+      <span class="v">René Labarthe</span>
+      <span class="v lower">rene@both.ventures</span>
+    </div>
+    <div class="blk">
+      <span data-es="— Sponsor">— Sponsor</span>
+      <span class="v">BOTH Ventures</span>
+      <span class="v lower">Punta del Este · Uruguay</span>
+    </div>
+    <div class="blk">
+      <span data-es="— Documento">— Document</span>
+      <span class="v">Photonic Labs · V0.3.0</span>
+      <span class="v lower" data-es="Q-03.26 · Institucional">Q-03.26 · Institutional</span>
+    </div>
+    <div class="blk">
+      <span data-es="— Estado">— Status</span>
+      <span class="v" data-es="Pre-construcción · capital abierto">Pre-build · capital open</span>
+      <span class="v lower" data-es="Soberano · Pharma · DFI">Sovereign · Pharma · DFI</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   PL-HERO ENGINE · Bitmap-spectral metaball field
+   Self-contained IIFE — no globals, no conflicts with deck JS below.
+   ════════════════════════════════════════════════════════════════ */
+(function () {
+  const cnv = document.getElementById('pl-bitmap');
+  if (!cnv) return;
+  const heroEl = document.querySelector('.pl-hero');
+  const stageEl = document.querySelector('.pl-stage');
+  const cursorEl = document.getElementById('pl-cursor');
+  const togglesEl = document.getElementById('pl-toggles');
+  if (!heroEl || !stageEl || !cnv) return;
+
+  const ctx = cnv.getContext('2d');
+  const off = document.createElement('canvas');
+  const offCtx = off.getContext('2d', { willReadFrequently: false });
+
+  const HUES = [330, 290, 245, 200, 85, 50];
+
+  function oklchToRgb(L, C, h) {
+    const hr = h * Math.PI / 180;
+    const a = C * Math.cos(hr);
+    const b = C * Math.sin(hr);
+    const l_ = L + 0.3963377774 * a + 0.2158037573 * b;
+    const m_ = L - 0.1055613458 * a - 0.0638541728 * b;
+    const s_ = L - 0.0894841775 * a - 1.291485548 * b;
+    const lc = l_*l_*l_, mc = m_*m_*m_, sc = s_*s_*s_;
+    let r =  4.0767416621*lc - 3.3077115913*mc + 0.2309699292*sc;
+    let g = -1.2684380046*lc + 2.6097574011*mc - 0.3413193965*sc;
+    let bl= -0.0041960863*lc - 0.7034186147*mc + 1.707614701 *sc;
+    const enc = v => {
+      v = Math.max(0, Math.min(1, v));
+      return v <= 0.0031308 ? 12.92*v : 1.055*Math.pow(v, 1/2.4) - 0.055;
+    };
+    return [Math.round(enc(r)*255), Math.round(enc(g)*255), Math.round(enc(bl)*255)];
+  }
+
+  const RIM_LUT = new Uint8Array(360 * 3);
+  const RIM_LUT_SOFT = new Uint8Array(360 * 3);
+  for (let h = 0; h < 360; h++) {
+    const [r,g,b] = oklchToRgb(0.55, 0.24, h);
+    RIM_LUT[h*3] = r; RIM_LUT[h*3+1] = g; RIM_LUT[h*3+2] = b;
+    const [r2,g2,b2] = oklchToRgb(0.72, 0.14, h);
+    RIM_LUT_SOFT[h*3] = r2; RIM_LUT_SOFT[h*3+1] = g2; RIM_LUT_SOFT[h*3+2] = b2;
+  }
+  const THEMES = {
+    light: { paper: oklchToRgb(0.94, 0.012, 85), ink: oklchToRgb(0.15, 0.020, 85), inkSoft: oklchToRgb(0.30, 0.020, 85) },
+    dark:  { paper: oklchToRgb(0.10, 0.010, 85), ink: oklchToRgb(0.92, 0.014, 85), inkSoft: oklchToRgb(0.72, 0.012, 85) }
+  };
+  let PAPER = THEMES.light.paper, INK = THEMES.light.ink, INK_SOFT = THEMES.light.inkSoft;
+
+  let W = 0, H = 0, PX_W = 0, PX_H = 0, GRID = 5;
+  const dpr = window.devicePixelRatio || 1;
+  const params = Object.freeze({ mode:'spectral', dither:'atkinson', pitch:2, grain:0.38, speed:1.0, chroma:1.0 });
+
+  const seeds = [
+    { ang: 0.0, angSpeed: 0.052, orbitR: 0.010, wobble: 0.008, wobblePhase: 0.5, wobbleSpeed: 0.22, r2: 0.0220, ax: 1.25, ay: 0.85, axRotSpeed: 0.06 },
+    { ang: 1.1, angSpeed: 0.118, orbitR: 0.052, wobble: 0.014, wobblePhase: 2.7, wobbleSpeed: 0.58, r2: 0.0125, ax: 1.55, ay: 0.78, axRotSpeed: 0.11 },
+    { ang: 3.6, angSpeed: 0.084, orbitR: 0.058, wobble: 0.016, wobblePhase: 1.4, wobbleSpeed: 0.38, r2: 0.0118, ax: 0.78, ay: 1.55, axRotSpeed: -0.08 },
+    { ang: 5.1, angSpeed: 0.195, orbitR: 0.068, wobble: 0.020, wobblePhase: 3.8, wobbleSpeed: 0.72, r2: 0.0075, ax: 1.10, ay: 1.10, axRotSpeed: 0.14 },
+  ];
+  const BLOB_CX = 0.68, BLOB_CY = 0.52;
+
+  const mouse = { x: 0.5, y: 0.5, sx: 0.5, sy: 0.5, active: false, inControls: false };
+  const state = { cx: 0.68, cy: 0.52 };
+
+  function resize() {
+    const rect = cnv.getBoundingClientRect();
+    W = rect.width; H = rect.height;
+    cnv.width = Math.floor(W * dpr);
+    cnv.height = Math.floor(H * dpr);
+    GRID = params.pitch;
+    PX_W = Math.max(40, Math.floor(W / GRID));
+    PX_H = Math.max(24, Math.floor(H / GRID));
+    off.width = PX_W; off.height = PX_H;
+    ctx.imageSmoothingEnabled = false;
+    offCtx.imageSmoothingEnabled = false;
+  }
+
+  const BAYER8 = new Float32Array([0,32,8,40,2,34,10,42,48,16,56,24,50,18,58,26,12,44,4,36,14,46,6,38,60,28,52,20,62,30,54,22,3,35,11,43,1,33,9,41,51,19,59,27,49,17,57,25,15,47,7,39,13,45,5,37,63,31,55,23,61,29,53,21].map(v => (v + 0.5) / 64));
+
+  let startT = performance.now(), lastT = startT, rafId = 0, running = true;
+
+  function frame(now) {
+    if (!running) return;
+    const dt = Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+    const t = (now - startT) / 1000;
+    const tt = t * params.speed;
+    mouse.sx += (mouse.x - mouse.sx) * 0.10;
+    mouse.sy += (mouse.y - mouse.sy) * 0.10;
+    for (const p of seeds) p.ang += p.angSpeed * dt * params.speed;
+    const aspect = W / H;
+    const N = PX_W * PX_H;
+    const brightness = new Float32Array(N);
+    const hueIdxArr = new Float32Array(N);
+    const fieldArr = new Float32Array(N);
+    const cursorActive = mouse.active && !mouse.inControls;
+    const targetCX = cursorActive ? (BLOB_CX * 0.7 + mouse.sx * 0.3) : BLOB_CX;
+    const targetCY = cursorActive ? (BLOB_CY * 0.7 + mouse.sy * 0.3) : BLOB_CY;
+    state.cx += (targetCX - state.cx) * 0.06;
+    state.cy += (targetCY - state.cy) * 0.06;
+    const cx = state.cx, cy = state.cy;
+    const positions = [];
+    for (const p of seeds) {
+      const wob = p.wobble * Math.sin(tt * p.wobbleSpeed + p.wobblePhase);
+      const orbit = p.orbitR + wob;
+      const ppx = cx + Math.cos(p.ang) * orbit;
+      const ppy = cy + Math.sin(p.ang) * orbit;
+      const axRot = tt * p.axRotSpeed + p.wobblePhase;
+      const cR = Math.cos(axRot), sR = Math.sin(axRot);
+      positions.push({ x: (ppx - 0.5) * aspect, y: (ppy - 0.5), r2: p.r2, ax2: p.ax*p.ax, ay2: p.ay*p.ay, cR, sR });
+    }
+    if (cursorActive) positions.push({ x: (mouse.sx - 0.5) * aspect, y: (mouse.sy - 0.5), r2: 0.0040, ax2: 1, ay2: 1, cR: 1, sR: 0 });
+    const mouseAngOffset = cursorActive ? Math.atan2(mouse.sy - cy, mouse.sx - cx) : 0;
+    const phaseRot = tt * 0.08;
+    for (let py = 0; py < PX_H; py++) {
+      const v = (py + 0.5) / PX_H;
+      const yw = v - 0.5;
+      for (let px = 0; px < PX_W; px++) {
+        const u = (px + 0.5) / PX_W;
+        const xw = (u - 0.5) * aspect;
+        let f = 0;
+        for (let i = 0; i < positions.length; i++) {
+          const pp = positions[i];
+          const dx = xw - pp.x, dy = yw - pp.y;
+          const lx = dx * pp.cR + dy * pp.sR;
+          const ly = -dx * pp.sR + dy * pp.cR;
+          const d2 = (lx*lx)/pp.ax2 + (ly*ly)/pp.ay2 + 0.0002;
+          f += pp.r2 / d2;
+        }
+        const rimDist = Math.abs(f - 1);
+        const rim = Math.exp(-rimDist * 11);
+        let b;
+        if (f >= 1) {
+          const interiorShade = 0.988 - 0.022 * Math.exp(-(f - 1) * 0.8);
+          b = interiorShade - 0.72 * rim;
+        } else {
+          b = 1 - 0.96 * rim;
+        }
+        if (b < 0) b = 0; else if (b > 1) b = 1;
+        const blobCx_w = (cx - 0.5) * aspect;
+        const blobCy_w = (cy - 0.5);
+        const ang = Math.atan2(yw - blobCy_w, xw - blobCx_w);
+        let norm = (ang - mouseAngOffset + phaseRot) / (Math.PI * 2) + 0.5;
+        norm = norm - Math.floor(norm);
+        const hueIdx = norm * 6;
+        const idx = py * PX_W + px;
+        brightness[idx] = b;
+        hueIdxArr[idx] = hueIdx;
+        fieldArr[idx] = f;
+      }
+    }
+    const img = offCtx.createImageData(PX_W, PX_H);
+    const data = img.data;
+    const work = new Float32Array(brightness);
+    for (let py = 0; py < PX_H; py++) {
+      for (let px = 0; px < PX_W; px++) {
+        const idx = py * PX_W + px;
+        let v = work[idx] + (Math.random() - 0.5) * params.grain * 0.35;
+        const out = v > 0.5 ? 1 : 0;
+        const err = v - out;
+        const e8 = err / 8;
+        if (px+1 < PX_W) work[idx+1] += e8;
+        if (px+2 < PX_W) work[idx+2] += e8;
+        if (py+1 < PX_H) {
+          if (px > 0) work[idx + PX_W - 1] += e8;
+          work[idx + PX_W] += e8;
+          if (px+1 < PX_W) work[idx + PX_W + 1] += e8;
+        }
+        if (py+2 < PX_H) work[idx + 2*PX_W] += e8;
+        paintCell(data, idx, out, hueIdxArr[idx], fieldArr[idx]);
+      }
+    }
+    offCtx.putImageData(img, 0, 0);
+    ctx.clearRect(0, 0, cnv.width, cnv.height);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(off, 0, 0, cnv.width, cnv.height);
+    rafId = requestAnimationFrame(frame);
+  }
+
+  function paintCell(data, idx, out, hueIdx, field) {
+    const o = idx * 4;
+    if (out === 1) {
+      data[o] = PAPER[0]; data[o+1] = PAPER[1]; data[o+2] = PAPER[2]; data[o+3] = 255;
+      return;
+    }
+    const i0 = Math.floor(hueIdx) % 6;
+    const i1 = (i0 + 1) % 6;
+    const fr = hueIdx - Math.floor(hueIdx);
+    let h0 = HUES[i0], h1 = HUES[i1];
+    if (h1 - h0 > 180) h1 -= 360;
+    if (h0 - h1 > 180) h1 += 360;
+    let hue = h0 * (1 - fr) + h1 * fr;
+    hue = ((hue % 360) + 360) % 360;
+    const hi = Math.floor(hue) % 360;
+    const rimness = Math.exp(-Math.abs(field - 1) * 5.5);
+    const chr = params.chroma;
+    if (rimness > 0.35 && field > 0.6) {
+      const t = Math.min(1, (rimness - 0.35) / 0.65);
+      const rA = RIM_LUT_SOFT[hi*3], gA = RIM_LUT_SOFT[hi*3+1], bA = RIM_LUT_SOFT[hi*3+2];
+      const rB = RIM_LUT[hi*3], gB = RIM_LUT[hi*3+1], bB = RIM_LUT[hi*3+2];
+      const r = (rA*(1-t) + rB*t) | 0;
+      const g = (gA*(1-t) + gB*t) | 0;
+      const b = (bA*(1-t) + bB*t) | 0;
+      data[o]   = INK[0] + (r - INK[0]) * chr;
+      data[o+1] = INK[1] + (g - INK[1]) * chr;
+      data[o+2] = INK[2] + (b - INK[2]) * chr;
+      data[o+3] = 255;
+    } else if (field > 1) {
+      data[o] = INK_SOFT[0]; data[o+1] = INK_SOFT[1]; data[o+2] = INK_SOFT[2]; data[o+3] = 255;
+    } else {
+      data[o] = INK[0]; data[o+1] = INK[1]; data[o+2] = INK[2]; data[o+3] = 255;
+    }
+  }
+
+  // mouse — track only when inside the stage
+  stageEl.addEventListener('mousemove', e => {
+    const rect = cnv.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    if (x >= 0 && x <= 1 && y >= 0 && y <= 1) { mouse.x = x; mouse.y = y; mouse.active = true; }
+    const stageRect = stageEl.getBoundingClientRect();
+    cursorEl.style.left = (e.clientX - stageRect.left) + 'px';
+    cursorEl.style.top  = (e.clientY - stageRect.top)  + 'px';
+  });
+  stageEl.addEventListener('mouseleave', () => { mouse.active = false; });
+
+  if (togglesEl) {
+    togglesEl.addEventListener('mouseenter', () => { mouse.inControls = true; cursorEl.classList.add('over-controls'); });
+    togglesEl.addEventListener('mouseleave', () => { mouse.inControls = false; cursorEl.classList.remove('over-controls'); });
+  }
+
+  // theme toggle — sets data-theme on the document root (whole deck reskins) AND on the hero (canvas palette)
+  function setTheme(name) {
+    document.documentElement.setAttribute('data-theme', name);
+    heroEl.setAttribute('data-pl-theme', name);
+    PAPER = THEMES[name].paper; INK = THEMES[name].ink; INK_SOFT = THEMES[name].inkSoft;
+    document.querySelectorAll('.pl-toggles .pl-theme').forEach(btn => btn.classList.toggle('on', btn.dataset.theme === name));
+    try { localStorage.setItem('pl-theme', name); } catch (e) {}
+  }
+  document.querySelectorAll('.pl-toggles .pl-theme').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme)));
+
+  // Hero-only translations (kept for hero-specific strings; deck-wide translation handled by setLang below)
+  const I18N_HERO = {
+    en: {
+      eyebrow: 'Built for the LATAM pipeline',
+      headline: 'Uruguay’s first <em>Biotech</em> <em>scale‑up</em> facility',
+      definition: '<span class="pl-lead">Photonic Lab</span> is Uruguay’s deep-tech bioproduction node — a multi-platform, GMP-ready facility with an integrated <em>LLM</em> computational layer for <em>in-silico</em> candidate design, process modeling, analytical characterization, and <em>cryptographically protected biological IP</em>.',
+      cursorHint: '↳ MOVE CURSOR TO REFRACT · SCROLL TO ADVANCE',
+    },
+    es: {
+      eyebrow: 'Hecho para el pipeline LATAM',
+      headline: 'La primera planta de <em>scale‑up</em> <em>biotech</em> de Uruguay',
+      definition: '<span class="pl-lead">Photonic Lab</span> es el nodo de bioproducción deep-tech de Uruguay — una instalación multi-plataforma con certificación GMP y una capa computacional <em>LLM</em> integrada para diseño <em>in-silico</em> de candidatos, modelado de procesos, caracterización analítica y <em>propiedad intelectual biológica criptográficamente protegida</em>.',
+      cursorHint: '↳ MUEVE EL CURSOR PARA REFRACTAR · SCROLL PARA AVANZAR',
+    }
+  };
+  // Deck-wide translation: every element with data-es swaps innerHTML between cached EN (data-en) and data-es.
+  function setLang(lang) {
+    // hero-specific keys
+    const dict = I18N_HERO[lang] || I18N_HERO.en;
+    heroEl.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      if (!(key in dict)) return;
+      if (el.hasAttribute('data-i18n-html')) el.innerHTML = dict[key];
+      else el.textContent = dict[key];
+    });
+    // deck-wide [data-es]
+    document.querySelectorAll('[data-es]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.innerHTML.trim();
+      el.innerHTML = lang === 'es' ? el.dataset.es : el.dataset.en;
+    });
+    document.documentElement.setAttribute('lang', lang);
+    document.querySelectorAll('.pl-toggles .pl-lang').forEach(btn => btn.classList.toggle('on', btn.dataset.lang === lang));
+    try { localStorage.setItem('pl-lang', lang); } catch (e) {}
+  }
+  document.querySelectorAll('.pl-toggles .pl-lang').forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
+
+  // init theme / lang
+  let savedTheme = null, savedLang = null;
+  try { savedTheme = localStorage.getItem('pl-theme'); savedLang = localStorage.getItem('pl-lang'); } catch (e) {}
+  const prefersDark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+  const browserLang = (navigator.language || 'en').slice(0,2);
+  setLang(savedLang || (browserLang === 'es' ? 'es' : 'en'));
+
+  // pause animation when hero scrolls out of view — save CPU
+  const visObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !running) { running = true; lastT = performance.now(); rafId = requestAnimationFrame(frame); }
+      else if (!e.isIntersecting && running) { running = false; cancelAnimationFrame(rafId); }
+    });
+  }, { threshold: 0.05 });
+  visObs.observe(stageEl);
+
+  window.addEventListener('resize', resize);
+  resize();
+  rafId = requestAnimationFrame(frame);
+})();
+
+/* scroll-driven reveal — single named curve, intersection observer */
+(function () {
+  const reveals = document.querySelectorAll('.reveal, .reveal-stagger');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) e.target.classList.add('in');
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+  reveals.forEach((el) => obs.observe(el));
+
+  /* nav active state */
+  const navLinks = document.querySelectorAll('.slide-nav a');
+  const slides = document.querySelectorAll('.slide');
+  const navObs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { threshold: 0.5 });
+  slides.forEach((s) => navObs.observe(s));
+
+  /* keyboard advance */
+  let idx = 0;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault();
+      idx = Math.min(idx + 1, slides.length - 1);
+      slides[idx].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      idx = Math.max(idx - 1, 0);
+      slides[idx].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+})();
+</script>
+</body>
+</html>
