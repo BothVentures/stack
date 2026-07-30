@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photonic Labs · Pack de Pre-Incubación · 2026-07-31</title>
+<meta name="description" content="La carpeta del cierre de pre-incubación de Photonic Labs: el pitch institucional, la wiki del proyecto, el roadmap de incubación extendido y el home de PM en Notion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<!-- Same localStorage key as the other three pack documents — one theme choice across all four. -->
+<script>(function(){try{var s=localStorage.getItem('pl-theme');var d=(s==='dark')||(s!=='light'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<style>
+:root{
+  --ink:oklch(20% 0.024 250);--ink2:oklch(34% 0.022 250);--ink3:oklch(50% 0.018 250);--mut:oklch(60% 0.016 250);
+  --paper:oklch(96.5% 0.012 85);--paper-deep:oklch(93.2% 0.017 82);--paper-elev:oklch(98.4% 0.008 85);
+  --line:oklch(83% 0.015 82);--line-soft:oklch(89% 0.012 82);
+  --accent:oklch(46% 0.245 295);--accent-d:oklch(40% 0.20 295);--accent-faint:oklch(46% 0.245 295 / .09);
+  --g:oklch(42% 0.09 168);--amber:oklch(47% 0.09 72);
+  --wash-g:oklch(94% 0.04 168);--wash-amber:oklch(94% 0.045 78);--wash-slate:oklch(93.5% 0.012 250);
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:light dark;
+}
+:root[data-theme="dark"]{
+  --ink:oklch(93% 0.014 85);--ink2:oklch(78% 0.014 85);--ink3:oklch(62% 0.014 85);--mut:oklch(64% 0.014 85);
+  --paper:oklch(13% 0.014 255);--paper-deep:oklch(16.5% 0.016 255);--paper-elev:oklch(19% 0.016 255);
+  --line:oklch(31% 0.018 255);--line-soft:oklch(24% 0.014 255);
+  --accent:oklch(74% 0.19 300);--accent-d:oklch(82% 0.16 300);--accent-faint:oklch(74% 0.19 300 / .14);
+  --g:oklch(80% 0.10 168);--amber:oklch(84% 0.09 78);
+  --wash-g:oklch(28% 0.05 168);--wash-amber:oklch(30% 0.05 78);--wash-slate:oklch(24% 0.01 255);
+  color-scheme:dark;
+}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
+  line-height:1.62;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  font-feature-settings:"ss01","ss02","kern"}
+.wrap{max-width:min(1080px,100%);margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+
+/* chrome */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in oklab,var(--paper) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.top-in{max-width:min(1080px,100%);margin:0 auto;padding:.7rem clamp(1rem,4vw,2.5rem);
+  display:flex;align-items:center;gap:1rem}
+.brand{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.brand b{color:var(--ink);font-weight:500}
+.sp{flex:1}
+.tog{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--ink3);border-radius:2px;
+  padding:.3rem .6rem;cursor:pointer;transition:all .2s var(--ease)}
+.tog:hover{border-color:var(--accent);color:var(--accent)}
+.tog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* hero */
+header.hero{padding:clamp(2.6rem,7vw,5.2rem) 0 0}
+.kick{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.1rem}
+.kick::before{content:"—— ";color:var(--mut)}
+h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:200;line-height:1.06;letter-spacing:-.024em;margin:0 0 1.1rem}
+.stand{font-family:var(--serif);font-style:italic;font-size:clamp(1.02rem,1.8vw,1.24rem);
+  color:var(--ink2);max-width:64ch;margin:0}
+.meta{margin-top:1.7rem;padding-top:1.1rem;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--mut);
+  display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
+
+/* section heads */
+h2{font-size:clamp(1.1rem,2.1vw,1.36rem);font-weight:300;letter-spacing:-.008em;
+  margin:3.6rem 0 1.3rem;padding-top:1.4rem;border-top:1px solid var(--line)}
+.h2n{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--mut);margin-right:.5rem}
+p{margin:0 0 1.05rem;max-width:74ch}
+
+/* the spine diagram */
+.spine{overflow-x:auto;margin:0 0 1.4rem;border:1px solid var(--line-soft);border-radius:3px;
+  background:var(--paper-deep);padding:1.1rem 1.2rem}
+.spine pre{margin:0;font-family:var(--mono);font-size:.7rem;line-height:1.62;color:var(--ink2);white-space:pre}
+
+/* doc cards */
+/* four documents → a balanced 2×2, never 3-up with an orphan on the second row */
+.cards{display:grid;grid-template-columns:1fr;gap:1rem;margin:0 0 1.6rem}
+@media (min-width:780px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{position:relative;display:flex;flex-direction:column;background:var(--paper-elev);
+  border:1px solid var(--line-soft);border-radius:3px;padding:1.4rem 1.4rem 1.2rem;
+  text-decoration:none;color:inherit;transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.card .n{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;color:var(--accent);margin-bottom:.7rem}
+.card h3{font-size:1.08rem;font-weight:500;letter-spacing:-.006em;margin:0 0 .55rem;line-height:1.24}
+.card .d{font-size:.88rem;color:var(--ink2);margin:0 0 1rem;flex:1}
+.card dl{margin:0;padding-top:.85rem;border-top:1px solid var(--line-soft);
+  display:grid;grid-template-columns:auto 1fr;gap:.3rem .8rem;font-size:.76rem}
+.card dt{font-family:var(--mono);font-size:.62rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mut)}
+.card dd{margin:0;color:var(--ink2)}
+.card .go{margin-top:1rem;font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent)}
+.card .go::after{content:" →"}
+
+/* open / closed ledger */
+.ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:1rem;margin:0 0 1.4rem}
+.col{border:1px solid var(--line-soft);border-radius:3px;padding:1.15rem 1.25rem;background:var(--paper-elev)}
+.col.closed{background:var(--wash-g);border-color:color-mix(in oklab,var(--g) 26%,transparent)}
+.col.open{background:var(--wash-amber);border-color:color-mix(in oklab,var(--amber) 26%,transparent)}
+.col h3{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  margin:0 0 .85rem;font-weight:500}
+.col.closed h3{color:var(--g)}
+.col.open h3{color:var(--amber)}
+.col ul{margin:0;padding-left:1.05rem}
+.col li{margin:.42rem 0;font-size:.86rem;color:var(--ink2)}
+.col li b{color:var(--ink);font-weight:500}
+.col .who{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;color:var(--mut);display:block}
+
+/* tier table */
+.tw{overflow-x:auto;margin:0 0 1.5rem;border:1px solid var(--line-soft);border-radius:3px;background:var(--paper-elev)}
+table{border-collapse:collapse;width:100%;font-size:.83rem;min-width:32rem}
+th,td{text-align:left;padding:.58rem .8rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink3);font-weight:500;background:var(--paper-deep);border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td b{font-weight:500;color:var(--ink)}
+a{color:var(--accent)}
+a.plain{text-decoration:none;border-bottom:1px solid var(--accent-faint)}
+a.plain:hover{border-bottom-color:var(--accent)}
+
+blockquote{margin:1.5rem 0;padding:1rem 1.2rem;background:var(--wash-slate);border:1px solid var(--line-soft);
+  border-left:2px solid var(--accent);border-radius:3px;font-size:.9rem;color:var(--ink2);max-width:74ch}
+blockquote>*:last-child{margin-bottom:0}
+code{font-family:var(--mono);font-size:.86em;background:var(--paper-deep);padding:.1em .34em;border-radius:2px}
+
+footer{border-top:1px solid var(--line);margin-top:3.4rem;padding:2rem 0 4rem;
+  font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;color:var(--mut);
+  display:flex;flex-wrap:wrap;gap:.45rem 1.5rem}
+
+@media (max-width:640px){html{font-size:14.5px}th,td{padding:.5rem .6rem}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+@media print{.top{display:none}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-in">
+  <span class="brand"><b>Photonic Labs</b> &middot; Both_Ventures</span>
+  <span class="sp"></span>
+  <button class="tog" id="tog" type="button" aria-label="Cambiar tema">tema</button>
+</div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="kick">Pack de Pre-Incubación &middot; cierre 2026-07-31</div>
+  <h1>La carpeta del cierre</h1>
+  <p class="stand">Cuatro documentos. El pitch para afuera, la wiki para adentro, el roadmap para ejecutar y el Notion para hacer seguimiento. Todo lo demás que circuló hasta hoy quedó retirado o marcado como snapshot histórico.</p>
+  <div class="meta">
+    <span>Etapa &middot; pre-incubación → incubación</span>
+    <span>Scope &middot; Biotech wet-lab (Pillar 01)</span>
+    <span>Champion &middot; Rene &middot; gate Gastón</span>
+    <span>Ops &middot; Mariano</span>
+  </div>
+</header>
+
+<h2><span class="h2n">01</span>Dónde estamos</h2>
+
+<p>La pre-incubación —seis meses de SOW con <b>Qualia+</b>, firmado el 2026-02-02— cierra el <b>2026-07-31</b>. El engagement cierra nominalmente ~2026-08-02 y la incubación arranca en agosto. Lo que la etapa entregó es una tesis validada en campo y un camino regulatorio de-riskeado; lo que se transfiere a incubación es la economía consolidada y el costeo real de la planta: las piezas que convierten <em>financiable</em> en <em>financiado</em>.</p>
+
+<div class="spine"><pre>PRE-INCUBACIÓN        ─Gate 0─▶   INCUBACIÓN            ─Gate 1─▶   GO-LIVE / v1
+(6 meses, Qualia+)     entrada     (des-riesgo físico)   EL gate     (operación piloto)
+✓ cierra 2026-07-31    a incub.    TRL 5-6 / BRL 4-5      duro        TRL 7-8 / BRL 6-7
+tesis → ejecutable                 diseño+capital+build   go/kill     residentes + revenue
+
+  este pack           [ahora]      Q3'26 ──────▶ Q3'27   ~Q4'27      Q4'27 ─▶ 2028</pre></div>
+
+<blockquote>
+  <b>🔒 Canon estructural (Type-1, Gastón, 2026-07-19).</b> Photonic va <b>all-in Zona Franca desde el día uno</b> y es un <b>wet-lab stand-alone GMP-ready</b> (T0 analítica core + in-silico booster C1–C3 · quantum periférico). El outside-first → dual-entity y el framing "caminos A / A+ / B" quedan <b>retirados</b>. Los cuatro documentos de este pack ejecutan contra eso.
+</blockquote>
+
+<h2><span class="h2n">02</span>Los cuatro documentos</h2>
+
+<div class="cards">
+
+  <a class="card" href="https://bothventures.github.io/stack/pages/venture/photonic-labs-institutional-v03/">
+    <div class="n">01 · EL PITCH</div>
+    <h3>Institutional Pitch V0.3.0</h3>
+    <p class="d">El deck institucional. Catorce slides: la tesis, el gap TRL 5–8, qué es Photonic, la planta, la capa computacional, el camino al go-live, por qué Uruguay y la red de aliados. Sin cifras financieras — es material que sale.</p>
+    <dl>
+      <dt>Para</dt><dd>Soberano · Pharma · DFI · inversores</dd>
+      <dt>Idioma</dt><dd>EN / ES con toggle</dd>
+      <dt>Lectura</dt><dd>~12 min</dd>
+      <dt>Tier</dt><dd>Público</dd>
+    </dl>
+    <div class="go">Abrir el pitch</div>
+  </a>
+
+  <a class="card" href="https://bothventures.github.io/stack/pages/venture/photonic-labs-wiki/">
+    <div class="n">02 · LA WIKI</div>
+    <h3>Project Wiki B · 0.2</h3>
+    <p class="d">La referencia completa: quince secciones más el benchmark global de 10 símiles y la Biblia del Proyecto embebida (toda la data dura en 12 capítulos). Incluye la economía del modelo v3, la tabla de discrepancias y las preguntas abiertas.</p>
+    <dl>
+      <dt>Para</dt><dd>Equipo BOTH · Qualia+</dd>
+      <dt>Idioma</dt><dd>Español</dd>
+      <dt>Lectura</dt><dd>referencia · navegable</dd>
+      <dt>Tier</dt><dd>Equipo</dd>
+    </dl>
+    <div class="go">Abrir la wiki</div>
+  </a>
+
+  <a class="card" href="https://bothventures.github.io/stack/pages/venture/photonic-labs-roadmap-extendido/">
+    <div class="n">03 · EL ROADMAP</div>
+    <h3>Roadmap de Incubación Extendido</h3>
+    <p class="d">Los doce meses de incubación como plan comprometido —fases, gates, owners, ruta crítica— y el roadmap de desarrollo como <b>especulación estructurada</b>, con las cuatro variables que hoy no existen dichas en voz alta. Nuevo en este pack.</p>
+    <dl>
+      <dt>Para</dt><dd>Equipo BOTH · gate Gastón</dd>
+      <dt>Idioma</dt><dd>Español</dd>
+      <dt>Lectura</dt><dd>~20 min</dd>
+      <dt>Tier</dt><dd>Equipo</dd>
+    </dl>
+    <div class="go">Abrir el roadmap</div>
+  </a>
+
+  <a class="card" href="https://app.notion.com/p/Photonic-Labs-Both_Ventures-8f81b13cc74f83c38271014f39978236">
+    <div class="n">04 · EL SEGUIMIENTO</div>
+    <h3>Notion — home de PM</h3>
+    <p class="d">Dónde vive el seguimiento vivo: cinco bases — Biblioteca de documentos, Gates &amp; Milestones, Decisiones, Entregables y Ecosistema / Partners. El repo es el motor; Notion es el home. Requiere login del workspace BOTH.</p>
+    <dl>
+      <dt>Para</dt><dd>Equipo BOTH</dd>
+      <dt>Idioma</dt><dd>Español</dd>
+      <dt>Uso</dt><dd>tracker vivo, no lectura</dd>
+      <dt>Tier</dt><dd>Equipo</dd>
+    </dl>
+    <div class="go">Abrir Notion</div>
+  </a>
+
+</div>
+
+<h2><span class="h2n">03</span>Qué está cerrado y qué está abierto</h2>
+
+<p>Leer esto antes que cualquier documento. La diferencia entre las dos columnas es la diferencia entre lo que ya no se discute y lo que la incubación tiene que resolver.</p>
+
+<div class="ledger">
+
+  <div class="col closed">
+    <h3>✓ Cerrado — no se re-abre</h3>
+    <ul>
+      <li><b>Estructura: all-in Zona Franca day-one.</b> ANII está disponible dentro de ZF desde 2025, así que el argumento de arrancar fuera quedó superado por los hechos. <span class="who">Type-1 · Gastón · 2026-07-19 · permanente</span></li>
+      <li><b>Modelo: wet-lab stand-alone GMP-ready.</b> T0 analítica como core de caja + capa in-silico C1–C3 como booster. <span class="who">Type-1 · Gastón · 2026-07-19</span></li>
+      <li><b>Framing "caminos A / A+ / B": retirado.</b> Camino B (lab + fondo) archivado como ambición separada, fuera del scope de incubación. <span class="who">Type-1 · Gastón · 2026-07-19</span></li>
+      <li><b>Quantum y AI/Data-Center: periféricos por diseño.</b> Fuera de todo gate de esta ruta. <span class="who">scope guard · 2026-07-21</span></li>
+    </ul>
+  </div>
+
+  <div class="col open">
+    <h3>⬜ Abierto — bloquea la incubación</h3>
+    <ul>
+      <li><b>Costeo real de facility.</b> El cuello de la etapa: sin obra costeada no hay CAPEX, sin CAPEX no hay tamaño de ronda. Precio de mercado USD 35–50K. <span class="who">dueña: Eleonora Scoseria · vía Rene</span></li>
+      <li><b>Commitment interno 5+ años.</b> Compromiso plurianual para sostener el build. <span class="who">equipo / Gastón</span></li>
+      <li><b>Entidad propia de Photonic dentro de ZF.</b> Hoy Manantial.BUILD LLC como paraguas. <span class="who">Andres · deadline 31-ago</span></li>
+      <li><b>Presupuesto de la etapa de incubación.</b> Sin esto no arranca Fase A — es gasto real. <span class="who">Daiana + Gastón</span></li>
+      <li><b>Numeración de los gates.</b> Adoptar la Definición A ("la incubación termina en la ronda") renumera el gate de go-live y <b>corre el go-live a 2028</b>. Es una decisión de tesis, no de cronograma. <span class="who">Type-1 · Gastón · ver §2 del Roadmap</span></li>
+    </ul>
+  </div>
+
+</div>
+
+<blockquote>
+  <b>Lo que todavía no se puede usar afuera.</b> Hay números que el pitch del 07-23 dijo y que todavía no cierran: los <b>m² de la planta no existen</b>, el tamaño de la ronda no está definido, el TAM no está anclado con fuente, y hay <b>tres numeraciones de tramos</b> conviviendo. La lista completa está en <a class="plain" href="https://bothventures.github.io/stack/pages/venture/photonic-labs-roadmap-extendido/">§10 del Roadmap Extendido</a>. Ninguno de esos números debería salir en material externo hasta que se resuelva.
+</blockquote>
+
+<h2><span class="h2n">04</span>Tiers de acceso</h2>
+
+<div class="tw"><table>
+<thead><tr><th>Tier</th><th>Qué incluye</th><th>Dónde vive</th></tr></thead>
+<tbody>
+<tr><td><b>Público</b></td><td>Pitch institucional V0.3.0 · tesis institucional</td><td>GitHub Pages — compartible con externos</td></tr>
+<tr><td><b>Equipo</b></td><td>Project Wiki (+ Biblia + benchmark) · Roadmap Extendido · Notion PM home</td><td>Pages + Notion + el repo <code>both_os</code></td></tr>
+<tr><td><b>Confidencial</b></td><td>Modelo financiero v3 (xlsx) · deal terms · data-room LP</td><td>Drive privado <code>Photonic®</code> — acceso curado, no público</td></tr>
+</tbody>
+</table></div>
+
+<h2><span class="h2n">05</span>Lo que quedó retirado</h2>
+
+<p>Para cerrar el pack hizo falta retirar cinco superficies que seguían vivas y contradecían el canon. Las URLs siguen funcionando —el equipo y algunos externos ya las circularon— pero ahora redirigen o avisan que son snapshots.</p>
+
+<div class="tw"><table>
+<thead><tr><th>Superficie</th><th>Qué pasó</th></tr></thead>
+<tbody>
+<tr><td><code>photonic-labs-consolidado</code></td><td>Servía la Wiki A del 08-jul. <b>Redirige</b> a la Project Wiki vigente</td></tr>
+<tr><td><code>photonic-labs-b-preview</code></td><td>Dejó de ser un preview al volverse canónica. <b>Redirige</b> a <code>photonic-labs-wiki</code></td></tr>
+<tr><td><code>photonic-labs-institutional-v02</code></td><td>Superseded por V0.3.0. Snapshot con aviso</td></tr>
+<tr><td><code>photonic-labs-one-pager-2026-07</code></td><td>Su §04 presentaba A / A+ / B como opciones vivas — framing retirado el 07-19. <b>Snapshot fechado, con aviso</b></td></tr>
+<tr><td><code>photonic-caminos-a-aplus-b</code></td><td>Framing retirado. Snapshot histórico con aviso</td></tr>
+<tr><td><code>photonic-labs-control-panel-2026-06-12</code></td><td>Assessment del SOW al 12-jun. Snapshot fechado</td></tr>
+</tbody>
+</table></div>
+
+<footer>
+  <span>Photonic Labs &middot; Both_Ventures</span>
+  <span>Pack de Pre-Incubación &middot; 2026-07-31</span>
+  <span>Interno &middot; V0.1.0</span>
+  <span>Motor: <code>projects/photonic-labs/</code></span>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var r=document.documentElement,b=document.getElementById('tog');
+  function lbl(){b.textContent=(r.getAttribute('data-theme')==='dark'?'☀ claro':'☾ oscuro');}
+  lbl();
+  b.addEventListener('click',function(){
+    var n=r.getAttribute('data-theme')==='dark'?'light':'dark';
+    r.setAttribute('data-theme',n);
+    try{localStorage.setItem('pl-theme',n);}catch(e){}
+    lbl();
+  });
+})();
+</script>
+</body>
+</html>

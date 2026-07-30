@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Photonic Labs — Roadmap de Incubación Extendido</title>
+<meta name="description" content="Ago 2026 → 2028 · Biotech wet-lab core · dentro de Zona Franca">
+<script>(function(){try{var s=localStorage.getItem('pl-theme');var d=(s==='dark')||(s!=='light'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:oklch(20% 0.024 250);--ink2:oklch(34% 0.022 250);--ink3:oklch(50% 0.018 250);--mut:oklch(60% 0.016 250);
+  --paper:oklch(96.5% 0.012 85);--paper-deep:oklch(93.2% 0.017 82);--paper-elev:oklch(98.4% 0.008 85);
+  --line:oklch(83% 0.015 82);--line-soft:oklch(89% 0.012 82);
+  --accent:oklch(46% 0.245 295);--accent-d:oklch(40% 0.20 295);--accent-faint:oklch(46% 0.245 295 / .09);
+  --g:oklch(54% 0.10 168);--g-d:oklch(42% 0.09 168);
+  --blue:oklch(52% 0.11 248);--blue-d:oklch(41% 0.10 248);
+  --amber:oklch(60% 0.10 72);--amber-d:oklch(47% 0.09 72);
+  --coral:oklch(56% 0.15 30);
+  --wash-g:oklch(94% 0.04 168);--wash-blue:oklch(94% 0.04 250);--wash-amber:oklch(94% 0.045 78);
+  --wash-slate:oklch(93.5% 0.012 250);--wash-violet:oklch(94% 0.04 300);--wash-coral:oklch(93% 0.05 30);
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --serif:'IBM Plex Serif',Georgia,serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --wrap:min(78ch,100%);
+}
+:root[data-theme="dark"]{
+  --ink:oklch(93% 0.014 85);--ink2:oklch(78% 0.014 85);--ink3:oklch(62% 0.014 85);--mut:oklch(64% 0.014 85);
+  --paper:oklch(13% 0.014 255);--paper-deep:oklch(16.5% 0.016 255);--paper-elev:oklch(19% 0.016 255);
+  --line:oklch(31% 0.018 255);--line-soft:oklch(24% 0.014 255);
+  --accent:oklch(74% 0.19 300);--accent-d:oklch(82% 0.16 300);--accent-faint:oklch(74% 0.19 300 / .14);
+  --g:oklch(72% 0.11 168);--g-d:oklch(80% 0.10 168);
+  --blue:oklch(72% 0.11 250);--blue-d:oklch(82% 0.10 250);
+  --amber:oklch(76% 0.10 78);--amber-d:oklch(84% 0.09 78);
+  --coral:oklch(72% 0.14 30);
+  --wash-g:oklch(28% 0.05 168);--wash-blue:oklch(28% 0.05 250);--wash-amber:oklch(30% 0.05 78);
+  --wash-slate:oklch(24% 0.01 255);--wash-violet:oklch(28% 0.055 300);--wash-coral:oklch(30% 0.06 30);
+}
+*{box-sizing:border-box}
+html{font-size:15px;scroll-behavior:smooth;color-scheme:light dark}
+:root[data-theme="dark"]{color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
+  line-height:1.62;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  font-feature-settings:"ss01","ss02","kern"}
+
+/* ---- chrome ---- */
+.top{position:sticky;top:0;z-index:40;background:color-mix(in oklab,var(--paper) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.top-in{max-width:min(1100px,100%);margin:0 auto;padding:.7rem clamp(1rem,4vw,2.5rem);
+  display:flex;align-items:center;gap:1rem}
+.brand{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink3);white-space:nowrap}
+.brand b{color:var(--ink);font-weight:500}
+.top .sp{flex:1}
+.tog{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--line);color:var(--ink3);border-radius:2px;
+  padding:.3rem .6rem;cursor:pointer;transition:all .2s var(--ease)}
+.tog:hover{border-color:var(--accent);color:var(--accent)}
+.tog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---- hero ---- */
+header.hero{max-width:min(1100px,100%);margin:0 auto;padding:clamp(2.6rem,7vw,5rem) clamp(1rem,4vw,2.5rem) 0}
+.kick{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.1rem}
+.kick::before{content:"—— ";color:var(--mut)}
+h1{font-size:clamp(1.9rem,4.6vw,3.1rem);font-weight:200;line-height:1.08;letter-spacing:-.022em;margin:0 0 1rem}
+.sub{font-family:var(--serif);font-style:italic;font-size:clamp(1rem,1.7vw,1.18rem);
+  color:var(--ink2);max-width:62ch;margin:0}
+.meta{margin-top:1.6rem;padding-top:1.1rem;border-top:1px solid var(--line-soft);
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--mut);
+  display:flex;flex-wrap:wrap;gap:.5rem 1.4rem}
+
+/* ---- body ---- */
+main{max-width:min(1100px,100%);margin:0 auto;padding:clamp(2rem,5vw,3.2rem) clamp(1rem,4vw,2.5rem) 6rem}
+main>*{max-width:var(--wrap)}
+main>table,main>.tw,main>pre{max-width:100%}
+h2{font-size:clamp(1.24rem,2.5vw,1.62rem);font-weight:300;letter-spacing:-.012em;line-height:1.2;
+  margin:3.4rem 0 1rem;padding-top:1.5rem;border-top:1px solid var(--line);max-width:100%}
+h2:first-of-type{margin-top:1rem}
+/* an <hr> already draws the rule — don't double it with h2's border-top */
+hr+h2{border-top:0;padding-top:0;margin-top:1.4rem}
+h3{font-size:clamp(1.02rem,1.8vw,1.16rem);font-weight:500;letter-spacing:-.005em;margin:2.4rem 0 .7rem}
+h4{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink3);font-weight:500;margin:1.9rem 0 .55rem}
+p{margin:0 0 1.05rem}
+strong,b{font-weight:500;color:var(--ink)}
+em{font-family:var(--serif);font-style:italic}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-faint);
+  transition:border-color .18s var(--ease)}
+a:hover{border-bottom-color:var(--accent)}
+a b,a strong{color:inherit}
+ul,ol{margin:0 0 1.1rem;padding-left:1.3rem}
+li{margin:.32rem 0}
+li::marker{color:var(--mut)}
+hr{border:0;border-top:1px solid var(--line);margin:2.6rem 0}
+del{color:var(--mut);text-decoration-color:var(--mut)}
+
+/* ---- tables: always scroll inside their own box ---- */
+.tw{overflow-x:auto;margin:0 0 1.5rem;border:1px solid var(--line-soft);border-radius:3px;
+  background:var(--paper-elev)}
+table{border-collapse:collapse;width:100%;font-size:.83rem;min-width:34rem}
+th,td{text-align:left;padding:.58rem .8rem;border-bottom:1px solid var(--line-soft);vertical-align:top}
+thead th{font-family:var(--mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink3);font-weight:500;background:var(--paper-deep);
+  border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--accent-faint)}
+
+/* ---- code / ascii diagrams ---- */
+code{font-family:var(--mono);font-size:.86em;background:var(--paper-deep);
+  padding:.1em .34em;border-radius:2px;color:var(--ink2)}
+pre{background:var(--paper-deep);border:1px solid var(--line-soft);border-left:2px solid var(--accent);
+  border-radius:3px;padding:1rem 1.1rem;overflow-x:auto;margin:0 0 1.6rem;max-width:100%}
+pre code{background:none;padding:0;font-size:.76rem;line-height:1.5;color:var(--ink2);white-space:pre}
+
+/* ---- blockquote = the callout primitive ---- */
+blockquote{margin:1.6rem 0;padding:1rem 1.2rem;background:var(--wash-slate);
+  border:1px solid var(--line-soft);border-left:2px solid var(--accent);border-radius:3px;
+  font-size:.92rem;color:var(--ink2);max-width:100%}
+blockquote>*:first-child{margin-top:0}
+blockquote>*:last-child{margin-bottom:0}
+blockquote h3,blockquote h4{margin-top:0}
+blockquote .tw{background:var(--paper-elev)}
+
+/* Semantic tinting driven by the leading glyph of the callout — no extra markup needed. */
+blockquote:has(>p:first-child>strong:first-child):not(:has(em)){background:var(--wash-slate)}
+
+footer{max-width:min(1100px,100%);margin:0 auto;padding:2rem clamp(1rem,4vw,2.5rem) 4rem;
+  border-top:1px solid var(--line);font-family:var(--mono);font-size:.64rem;
+  letter-spacing:.06em;color:var(--mut);display:flex;flex-wrap:wrap;gap:.45rem 1.4rem}
+
+@media (max-width:640px){
+  html{font-size:14.5px}
+  th,td{padding:.5rem .6rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none!important;animation:none!important}
+}
+@media print{
+  .top{display:none}
+  body{background:#fff;color:#000}
+  pre,blockquote,.tw{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="top"><div class="top-in">
+  <span class="brand"><b>Photonic Labs</b> &middot; Both_Ventures</span>
+  <span class="sp"></span>
+  <button class="tog" id="tog" type="button" aria-label="Cambiar tema">tema</button>
+</div></div>
+
+<header class="hero">
+  <div class="kick">Pack de Pre-Incubación · documento 4 de 4 · tier equipo</div>
+  <h1>Roadmap de Incubación Extendido</h1>
+  <p class="sub">Ago 2026 → 2028 · Biotech wet-lab core · dentro de Zona Franca</p>
+  <div class="meta"><span>Horizonte 2026-08 → 2028 (desarrollo especulativo)</span><span>Actualizado 2026-07-30</span><span>Autor Mariano</span><span>Tier equipo</span><span>Lectura · 20 min</span></div>
+</header>
+
+<main>
+<blockquote>
+<p>🔒 <strong>Estructura dada, no discutida</strong> (canon Type-1, Gastón, 2026-07-19): all-in <strong>Zona Franca day-one</strong> · <strong>wet-lab stand-alone GMP-ready</strong> (T0 analítica core + in-silico booster C1–C3 · quantum periférico). El outside-first → dual-entity y el framing "caminos A / A+ / B" quedan retirados. La incubación ejecuta contra eso; no lo re-abre.</p>
+</blockquote>
+<hr />
+<h2>0 · Qué es este documento — y qué no</h2>
+<p>Este documento cubre <strong>dos horizontes con dos regímenes epistémicos distintos</strong>, y la distinción es el punto central de leerlo:</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Roadmap de Incubación</strong> (§2–§6)</th>
+<th><strong>Roadmap de Desarrollo</strong> (§7)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Naturaleza</td>
+<td><strong>Plan comprometido</strong></td>
+<td><strong>Especulación estructurada</strong></td>
+</tr>
+<tr>
+<td>Ventana</td>
+<td>Ago 2026 → Jul 2027 (12 meses)</td>
+<td>Post-gate de capital → 2028</td>
+</tr>
+<tr>
+<td>Tiene</td>
+<td>Fases, owners nombrados, fechas, criterios de gate</td>
+<td>Secuencia, dependencias, órdenes de magnitud</td>
+</tr>
+<tr>
+<td>No tiene</td>
+<td>—</td>
+<td><strong>Fechas comprometidas. Ninguna.</strong></td>
+</tr>
+<tr>
+<td>Se puede exigir</td>
+<td>Sí — cada línea es aceptable o rechazable</td>
+<td>No — se puede <em>planificar contra</em>, no <em>prometer</em></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Por qué la separación.</strong> El roadmap de desarrollo —obra, calificación, encendido del lab— sólo se vuelve nítido <strong>después</strong> de que la incubación fije cuatro variables que hoy no existen: el costeo real de obra, los m², greenfield vs brownfield, y el tamaño de la ronda. Publicar fechas de desarrollo hoy sería inventar precisión. Lo que sí se puede hacer —y es lo que hace §7— es dejar la <strong>secuencia, las dependencias y las bandas de duración</strong> listas, marcadas como estimate-grade, para que cuando los números lleguen el roadmap se rellene en vez de escribirse de cero.</p>
+<p><strong>Qué no es este documento.</strong> No es el SOW (alcance y criterios de aceptación → <a href="sow-incubacion.md"><code>sow-incubacion.md</code></a>). No es el working file de la etapa (fases y riesgos en detalle → <a href="roadmap-incubacion-12m.md"><code>roadmap-incubacion-12m.md</code></a>, que sigue siendo el archivo vivo de trabajo). No es la wiki (referencia narrativa completa → §9 de la Project Wiki). Este documento es <strong>la vista de punta a punta</strong> para el equipo: de dónde venimos, qué se compromete, y qué recién se puede intuir.</p>
+<hr />
+<h2>1 · La espina — tres etapas, dos gates</h2>
+<pre><code>PRE-INCUBACIÓN        ─Gate 0─▶   INCUBACIÓN            ─Gate 1─▶   GO-LIVE / v1
+(6 meses, Qualia+)     entrada     (des-riesgo físico)   EL gate     (operación piloto)
+✓ cierra 2026-07-31    a incub.    TRL 5-6 / BRL 4-5      duro        TRL 7-8 / BRL 6-7
+tesis → ejecutable                 diseño+capital+build   go/kill     residentes + revenue
+                                                          liberador
+                                                          de capital
+
+  handoff.md          [ahora]     Q3'26 ──────▶ Q3'27    ~Q4'27      Q4'27 ─▶ 2028
+</code></pre>
+<p><strong>Modelo de gating:</strong> stage-gate de I+D (Cooper + TRL + <strong>BRL de NIIMBL/NIST</strong>), <strong>no</strong> el batch de YC. El CAPEX se libera <strong>en tramos gateados</strong>, no en un desembolso único. Veredictos admisibles en cada gate: Go / Kill / Hold / Recycle / Conditional Go. Autoridad de liberación: <strong>Gastón</strong> (capital). Cadencia: Tuesday Sync / <code>/vu</code>.</p>
+<p><strong>BRL 7 = "GMP-Ready System"</strong> es, en lenguaje textual de la fuente, <em>"a key stage gate before implementation of technology for cGMP use"</em> — un espejo externo casi exacto del diseño Modelo 3. El go-live de Photonic es GMP-<strong>ready</strong>, no GMP pleno.</p>
+<hr />
+<h2>2 · ⚠️ Decisión abierta — la numeración de los gates</h2>
+<p><strong>Esto no está resuelto y el documento no lo va a resolver por decreto.</strong> Hay dos definiciones vivas de dónde termina la incubación, y cambian qué se mide y cuándo se libera capital.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Definición A — "termina en la ronda"</strong></th>
+<th><strong>Definición B — "termina en go-live"</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fuente</td>
+<td>Rene, pitch 07-23: <em>"Incubación termina en la ronda. En incubación terminamos levantando."</em></td>
+<td><a href="../roadmap.md"><code>../roadmap.md</code></a> + <a href="_index.md"><code>_index.md</code></a> + Wiki §9 + Pitch V0.3.0 + seed de Notion</td>
+</tr>
+<tr>
+<td>Duración</td>
+<td>~12 meses (Ago'26 → Jul'27)</td>
+<td>~12–15 meses (Q3'26 → Q4'27)</td>
+</tr>
+<tr>
+<td>Gate de salida</td>
+<td><strong>Financial close</strong> — capital comprometido, obra autorizada</td>
+<td><strong>Go-live</strong> — lab operando con ARR firmado</td>
+</tr>
+<tr>
+<td>Gate liberador</td>
+<td>Ocurre <strong>antes</strong> de la obra y es un cierre de ronda verificable (binario)</td>
+<td>El CAPEX se compromete por tramos, pero no hay un hito de financial close nombrado</td>
+</tr>
+</tbody>
+</table></div>
+<p>Si se adopta la <strong>Definición A</strong>, la espina se renumera así:</p>
+<pre><code>PRE-INCUBACIÓN ─G0─▶ INCUBACIÓN (12m) ─G1─▶ CONSTRUCCIÓN (8-20m) ─G2─▶ GO-LIVE / v1
+✓ kit 31-jul         de-risk · capital    FINANCIAL   fit-out 6-14m       residentes
+                     · diseño             CLOSE       + IQ/OQ/PQ 2-6m     + revenue
+                     Ago'26 → Jul'27      ~Jul'27     Q3'27 → 2028        2028
+</code></pre>
+<p><strong>Dos consecuencias, a ratificar y no a asumir:</strong></p>
+<ol>
+<li><strong>Renumeración.</strong> El "Gate 1 = go-live" pasa a ser <strong>Gate 2</strong>. Los 5 criterios de salida no cambian — cambia el número y el momento.</li>
+<li><strong>⚠️ El go-live se corre a 2028.</strong> Hoy los docs lo ubican en Q4'27 → ppio 2028, alcanzable <em>"únicamente por fit-out en un shell existente"</em>. Si el financial close es Jul'27 y la obra arranca después, el go-live cae en <strong>2028 incluso por la vía del shell</strong>. Esto <strong>habilita</strong> la opción greenfield (que la ventana 2027/28 descartaba) pero cuesta un año.</li>
+</ol>
+<blockquote>
+<p><strong>Autoridad: Gastón (Type-1).</strong> De esta decisión dependen greenfield/brownfield, el tamaño de la ronda, y qué se le puede exigir contractualmente a un ancla en el gate de capital. <strong>Este documento publica la numeración vigente (Definición B) como la que rige hoy, y la Definición A como propuesta abierta.</strong> Cuando se ratifique, se actualizan <code>../roadmap.md</code>, la Wiki §9, el Pitch y las bases de Notion en una sola pasada.</p>
+</blockquote>
+<p><em>Nota de método: la banda "12–18 meses" de construcción modular que circula en el research está marcada en la fuente como </em><em>no citable sin reanclar</em><em>. Acá se usa la suma verificada: fit-out 6–14m + IQ/OQ/PQ 2–6m = </em><em>8–20 meses</em><em>.</em></p>
+<hr />
+<h2>3 · Gate 0 — Entrada a incubación (cerrar en agosto)</h2>
+<p>La incubación arranca igual; estos son los ítems que se cierran en las primeras semanas, no prerrequisitos del 31-jul.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Criterio</th>
+<th>Estado (2026-07-30)</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modelo + estructura cerrados</td>
+<td>✅ Canon 07-19: wet-lab stand-alone · all-in ZF</td>
+<td>Gastón</td>
+</tr>
+<tr>
+<td><strong>Costeo real de facility</strong> <em>(gate vigente)</em></td>
+<td>⬜ <strong>Abierto</strong> — dueña <strong>Eleonora Scoseria</strong>; precio de mercado USD 35–50K</td>
+<td>Eleonora · vía Rene</td>
+</tr>
+<tr>
+<td><strong>Commitment interno 5+ años</strong> <em>(gate vigente)</em></td>
+<td>⬜ <strong>Abierto</strong></td>
+<td>Equipo / Gastón</td>
+</tr>
+<tr>
+<td>Entidad legal de Photonic constituida en ZF</td>
+<td>⬜ <strong>Abierto</strong> — hoy Manantial.BUILD LLC como paraguas · deadline <strong>31-ago</strong></td>
+<td><strong>Andres</strong></td>
+</tr>
+<tr>
+<td>Ingeniería contratada (order-of-magnitude)</td>
+<td>⬜ <strong>Abierto</strong> — contraparte: Eleonora Scoseria / su empresa de bioingeniería · deadline <strong>31-ago</strong></td>
+<td>Rene</td>
+</tr>
+<tr>
+<td>Presupuesto de la etapa de incubación aprobado</td>
+<td>⬜ <strong>Abierto</strong> — pedido de la mesa 07-23</td>
+<td>Daiana + Gastón</td>
+</tr>
+<tr>
+<td>≥1 LOI de ancla firmada <strong>o</strong> term sheet de grant creíble</td>
+<td>⬜ Pipeline mapeado (Eywa, Xeptiva, KinzBio, Scaffold, Guska)</td>
+<td>Rene</td>
+</tr>
+<tr>
+<td>Site Director / CTO identificado</td>
+<td>🟡 Candidato: <strong>Augusto Desuque</strong> (ex-Sartorius)</td>
+<td>Rene</td>
+</tr>
+<tr>
+<td>QA Director identificado <em>(no contratado)</em></td>
+<td>🟡 Fuente: alumni mAbxience / Pasteur. <strong>No-negociable antes de GMP</strong>, no antes del gate de capital</td>
+<td>Rene</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Veredicto requerido: GO.</strong> Sin presupuesto de etapa aprobado no arranca Fase A — es gasto real (entidad + ingeniería + assessments).</p>
+<blockquote>
+<p><strong>Reasignación a registrar:</strong> el action item minado del 07-23 pone la constitución de la entidad con owner <strong>Rene</strong>; por autoridad (legal / estructuración) corresponde a <strong>Andres</strong>. Corregir en Asana.</p>
+</blockquote>
+<hr />
+<h2>4 · Las tres fases de la incubación</h2>
+<p>Cuatro workstreams corren en paralelo dentro de cada fase: <strong>Estructura</strong> (legal/regulatorio) · <strong>Ingeniería</strong> (sitio/diseño) · <strong>Capital</strong> (economía/ronda) · <strong>Demanda</strong> (cohorte ancla).</p>
+<p><strong>La regla de oro:</strong> <em>congelar el diseño antes de mover una pared.</em> Es el control de mayor palanca sobre el ~80% de sobrecosto documentado de fit-out, y la razón operativa de que la incubación exista como etapa separada.</p>
+<h3>FASE A — De-risk y business case · Ago → Nov 2026</h3>
+<blockquote>
+<p><em>"Acá es donde tenemos algunos costos, apenas empecemos con la etapa de incubación."</em></p>
+</blockquote>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>WS</th>
+<th>Qué se hace</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Estructura</strong></td>
+<td>Constituir la entidad Photonic dentro de ZF · resolver deducibilidad IRAE Ley 19.566 (tributarista) · abrir el path con MSP + ANII</td>
+<td>Andres</td>
+</tr>
+<tr>
+<td><strong>Ingeniería</strong></td>
+<td>Contratar a Eleonora Scoseria / su empresa de bioingeniería · <strong>quoting de obra civil</strong> (order-of-magnitude) · <strong>fijar m²</strong> · comparativa <strong>greenfield vs brownfield</strong> (decisión Sep–Oct, sitio lockeado Oct) · anteproyecto de zonificación (21 zonas, 5 bandas, ISO 8)</td>
+<td>Rene + Eleonora</td>
+</tr>
+<tr>
+<td><strong>Capital</strong></td>
+<td>Modelo financiero <strong>validado por un tercero financiero</strong> · presupuesto de la etapa · filing de grants públicos UY · brief de mercado con TAM anclado</td>
+<td>Daiana + JEC · Rene (mercado)</td>
+</tr>
+<tr>
+<td><strong>Demanda</strong></td>
+<td>Convertir los 9 contactos de campo en LOIs · shortlist de 5–8 anclas (de 20+ candidatos) <strong>con mix UY / no-UY compatible con ZF</strong> · pricing con cost-to-serve real</td>
+<td>Rene</td>
+</tr>
+<tr>
+<td><strong>Equipo</strong></td>
+<td><strong>Contratar Site Director / CTO</strong> — posee URS/DQ, HVAC y flujos; son decisiones irreversibles post-diseño, así que entra <strong>antes</strong> del diseño ejecutivo</td>
+<td>Rene</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Gate A — "Business case financiable" (fin Nov 2026).</strong> Todos verdaderos:</p>
+<ol>
+<li>m² definidos y costo de obra civil con <strong>quote real</strong> (no estimate-grade).</li>
+<li>Greenfield vs brownfield <strong>decidido</strong>.</li>
+<li>Modelo financiero validado por tercero, con OpEx bottom-up y contingencia <strong>fondeada, no enunciada</strong>.</li>
+<li>Entidad viva + habilitación ZF en trámite.</li>
+<li>≥2 LOIs firmadas, con composición de cartera compatible con el régimen de ZF.</li>
+<li>Brief de mercado con TAM anclado y fuente por dato.</li>
+<li>Site Director / CTO contratado — o decisión explícita de congelar diseño sin él, <strong>con dueño del riesgo nombrado</strong>.</li>
+</ol>
+<blockquote>
+<p>Si (1) o (3) no cierran, <strong>HOLD.</strong> No se avanza a diseño ejecutivo con un CAPEX que no se puede defender frente a un inversor.</p>
+</blockquote>
+<h3>FASE B — Diseño ejecutivo y compromisos · Dic 2026 → Mar 2027</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>WS</th>
+<th>Qué se hace</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Estructura</strong></td>
+<td>Permisos de obra + habilitación ZF · aprobación de bioseguridad BSL-2 (IBC-equivalente u oficial contratado)</td>
+<td>Andres + firma de ingeniería</td>
+</tr>
+<tr>
+<td><strong>Ingeniería</strong></td>
+<td><strong>Diseño ejecutivo</strong> (m²/zona, servicios, drenajes) · <strong>congelar HVAC</strong>: cascada de presión, ACH, HEPA — <strong>30–50% del costo total</strong>, y donde vive el sobrecosto · URS/DQ del equipamiento crítico · specs de procurement</td>
+<td>Eleonora · Site Director valida</td>
+</tr>
+<tr>
+<td><strong>Capital</strong></td>
+<td>Cerrar grants no dilutivos — <strong>ANII Implementación 70% no-reembolsable financia honorarios, consultorías, software e IP; NO equipamiento ni activos fijos</strong> (sirve para pagar ingeniería, no la obra) · in-kind y EaaS de equipo (Sartorius/Cytiva) · estructurar la ronda (cornerstone + tramos)</td>
+<td>Gastón + Rene</td>
+</tr>
+<tr>
+<td><strong>Demanda</strong></td>
+<td>LOIs → compromisos vinculantes · definir términos de capital-por-LOI sin abrir el vehículo de equity</td>
+<td>Rene · gate Gastón</td>
+</tr>
+<tr>
+<td><strong>Calidad</strong></td>
+<td>Andamiaje de QMS liviano (control documental, desvíos, CAPA) — <strong>antes de PQ, no después</strong>. QA Director completo queda para el salto a GMP (Año 2+)</td>
+<td>Rene</td>
+</tr>
+<tr>
+<td><strong>In-silico</strong></td>
+<td><strong>POC de la capa computacional con la primera ancla</strong> (digital twin sobre un proceso real) — es la línea que sostiene el EBITDA temprano y hoy tiene margen <strong>modelado, no medido</strong></td>
+<td>Rene + Mariano</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Gate B — "Diseño congelado" (fin Mar 2027).</strong> Diseño ejecutivo firmado · HVAC congelado · permisos presentados · ≥1 ancla vinculante · ≥1 grant confirmado · POC in-silico corrido <strong>o descartado con dato</strong>.</p>
+<h3>FASE C — Cierre de la ronda · Abr → Jul 2027</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>WS</th>
+<th>Qué se hace</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Capital</strong></td>
+<td>Cornerstone comprometido · <strong>cierre de la ronda</strong> · CAPEX estructurado <strong>en tramos gateados</strong>, no en un desembolso único</td>
+<td>Gastón</td>
+</tr>
+<tr>
+<td><strong>Estructura</strong></td>
+<td>Permisos otorgados · contratos de obra firmados</td>
+<td>Andres</td>
+</tr>
+<tr>
+<td><strong>Ingeniería</strong></td>
+<td>Licitación y adjudicación de obra · órdenes de compra de equipamiento crítico con lead time largo</td>
+<td>Site Director</td>
+</tr>
+<tr>
+<td><strong>Demanda</strong></td>
+<td>Cohorte ancla contractualizada · calendario de ingreso de residentes atado a la fecha de switch-on</td>
+<td>Rene</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>5 · El gate de capital (~Jul 2027)</h2>
+<p>El gate que libera capital y autoriza la obra. En la numeración vigente forma parte del Gate 1; bajo la Definición A <strong>es</strong> el Gate 1. <strong>Conditional Go admisible sólo con contingencia fechada.</strong></p>
+<ol>
+<li><strong>Capital</strong> — ronda cerrada o cornerstone comprometido en firme, con el tramo 1 de CAPEX disponible.</li>
+<li><strong>Costo</strong> — CAPEX con quote real de obra + equipamiento, contingencia fondeada (<strong>~80% de sobrecosto como caso base, no caso de estrés</strong>).</li>
+<li><strong>Diseño</strong> — ejecutivo firmado y congelado; HVAC cerrado.</li>
+<li><strong>Permisos</strong> — habilitación ZF + permiso de obra otorgados.</li>
+<li><strong>Demanda</strong> — cohorte ancla con compromisos <strong>contractados condicionales al switch-on</strong> que cubran la trayectoria al break-even (~USD 420K ARR con 5–8 residentes). <em>El ARR por suscripciones firmadas y facturables es criterio del gate de go-live, no de éste: con go-live a 18 meses vista, pedirle a un residente que firme volumen hoy mata anclas buenas.</em></li>
+<li><strong>Equipo</strong> — Site Director/CTO a bordo; plan de contratación de operadores fechado 6–9 meses antes del ingreso de residentes.</li>
+</ol>
+<p>Si uno solo falla → <strong>HOLD o RECYCLE, nunca un GO blando.</strong> Autoridad de liberación: <strong>Gastón</strong>.</p>
+<hr />
+<h2>6 · Ruta crítica de los 12 meses</h2>
+<pre><code>Costeo obra civil ──▶ m² + green/brownfield ──▶ Diseño ejecutivo ──▶ Permisos ──▶ Ronda ──▶ GATE
+   Ago-Oct'26            Nov'26                   Dic'26-Mar'27      Mar-Jun'27   Abr-Jul'27   Jul'27
+        │                                                                            ▲
+        └──▶ Modelo financiero validado ──▶ Dossier de ronda ──▶ Cornerstone ─────────┘
+                  Sep-Nov'26                    Nov'26-Ene'27      Feb-Jun'27
+</code></pre>
+<p><strong>El cuello de los 12 meses es el costeo de obra civil.</strong> No el equipamiento (ya modelado, con opciones de sourcing), no la demanda (validada en campo). <strong>Sin el número de obra no hay CAPEX, sin CAPEX no hay tamaño de ronda, sin tamaño de ronda no hay ronda.</strong> Es el gate vigente del canon 07-19, tiene dueña nombrada (Eleonora Scoseria, USD 35–50K), y es el primer cheque que la etapa tiene que firmar.</p>
+<hr />
+<h2>7 · Roadmap de Desarrollo — <strong>especulativo</strong></h2>
+<blockquote>
+<h3>⚠️ Leer esto antes de leer la sección</h3>
+<p><strong>Nada de lo que sigue es un compromiso.</strong> Es la secuencia y las dependencias del desarrollo físico, con bandas de duración <strong>estimate-grade</strong>, listas para rellenarse cuando la incubación produzca los números. Se puede planificar contra esta sección. <strong>No se puede prometer.</strong></p>
+<p><strong>Las cuatro variables que la vuelven real —y que hoy no existen:</strong></p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Estado hoy</th>
+<th>Se fija en</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Costeo real de obra civil</strong></td>
+<td>⬜ No existe. Es el gate vigente (Eleonora)</td>
+<td>Fase A, Ago–Oct'26</td>
+</tr>
+<tr>
+<td><strong>m² de la planta</strong></td>
+<td>⬜ <strong>No existen.</strong> Textual del pitch 07-23: <em>"El diseño de las 21 zonas… está todo. Menos cuántos metros cuadrados."</em> El "400 m²" que circuló en la sala fue una estimación al vuelo, no un dato</td>
+<td>Fase A, Nov'26</td>
+</tr>
+<tr>
+<td><strong>Greenfield vs brownfield</strong></td>
+<td>⬜ Abierto — con Parque de las Ciencias. <strong>Fija los tiempos y costos reales de todo §7</strong></td>
+<td>Fase A, Sep–Oct'26</td>
+</tr>
+<tr>
+<td><strong>Tamaño de la ronda</strong></td>
+<td>⬜ Sin definir. Depende del costeo</td>
+<td>Fase C, Abr–Jul'27</td>
+</tr>
+</tbody>
+</table></div>
+<p>Hasta que las cuatro cierren, <strong>cualquier fecha de esta sección es aritmética sobre supuestos</strong>, no un cronograma. La empresa de bioingeniería seleccionada es la que las firma.</p>
+</blockquote>
+<h3>7.1 · Fase C — Construcción y fit-out</h3>
+<p>Ejecuta la empresa de bioingeniería; el equipo Photonic supervisa y valida hitos.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Qué</th>
+<th>Banda de referencia <em>(a validar)</em></th>
+<th>Nota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>C1</strong></td>
+<td><strong>Obra civil</strong> — HVAC · agua · gases · eléctrica · clasificación de zonas</td>
+<td>Ingeniería básica + detalle <strong>3–6 m</strong> · obra <strong>12–18 m</strong></td>
+<td>HVAC es el sistema más crítico y caro: <strong>30–50% del costo total</strong></td>
+</tr>
+<tr>
+<td><strong>C2</strong></td>
+<td><strong>Instalación de equipos</strong> — bioingeniería + distribuidores + fabricantes, según planos</td>
+<td>en paralelo al tramo final de C1</td>
+<td>Photonic coordina proveedores. Import ZF exonerada</td>
+</tr>
+<tr>
+<td><strong>C3</strong></td>
+<td><strong>Commissioning IQ/OQ</strong> — + empresa de calificaciones · clasificación de áreas ISO 7/8</td>
+<td><strong>2–6 m</strong></td>
+<td>Salida: <strong>lab GMP-ready para operar</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>La restricción de la ruta crítica no es el equipamiento — es IQ/OQ/PQ.</strong> Hay que presupuestarlo explícitamente como lo que desplaza la fecha. Criterio basado en riesgo: IQ/OQ/PQ completo <strong>sólo en equipamiento crítico con contacto de producto</strong>, abreviado en el resto — cumple y controla costo.</p>
+<p><strong>La calificación corre en paralelo al comisionamiento, no después.</strong> Por eso los operadores se contratan 6–9 meses antes del ingreso de residentes (lead time total 5–7 meses hasta operación independiente) y el QMS se monta <strong>antes de que empiece PQ</strong>.</p>
+<p><strong>Suma verificada de la ventana de desarrollo: fit-out 6–14 m + IQ/OQ/PQ 2–6 m = 8–20 meses</strong> post-autorización de obra. La banda de 12–18 m de construcción modular que circula en el research está marcada como no citable sin reanclar.</p>
+<h3>7.2 · El gate de go-live</h3>
+<p>El <strong>único go/kill real</strong> del venture. Es donde la infraestructura biotech regional suele morir — el cruce literal del valle de la muerte entre TRL 4 y 7 — y debe ser la decisión más escrutada. Los cinco criterios, <strong>todos verdaderos</strong>:</p>
+<ol>
+<li><strong>Físico</strong> — fit-out completo, HVAC comisionado, IQ/OQ/PQ ejecutada con protocolos firmados.</li>
+<li><strong>Calidad</strong> — QA Director contratado y QMS vivo (control documental, desvíos, CAPA).</li>
+<li><strong>Comercial</strong> — residentes contratados que cierren el break-even, con ARR por suscripciones <strong>firmadas, no pipeline</strong>.</li>
+<li><strong>Financiero</strong> — <strong>≥12 meses de runway operativo fondeado post-CAPEX</strong>, con contingencia intacta.</li>
+<li><strong>Regulatorio</strong> — criterios de aceptación de <strong>BRL 7</strong> documentados, para que el salto a GMP posterior no exija reconstrucción.</li>
+</ol>
+<p>Si uno solo falla → <strong>HOLD o RECYCLE, nunca un GO blando.</strong></p>
+<h3>7.3 · Fase D — Puesta en marcha → operación</h3>
+<p>Ejecuta el equipo Photonic. Revenue vivo.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Qué</th>
+<th>Salida</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D1</strong></td>
+<td><strong>Equipo core</strong> — Lab Manager + QA Lead + técnico. La búsqueda inicia temprano, no acá</td>
+<td>Coordinado con la bioingeniería durante C3</td>
+</tr>
+<tr>
+<td><strong>D2</strong></td>
+<td><strong>Soft launch</strong> — primer cliente piloto (el ancla con LOI)</td>
+<td>Primer cliente dentro del lab</td>
+</tr>
+<tr>
+<td><strong>D3</strong></td>
+<td><strong>Operación general</strong> — apertura a clientes, 3 tiers</td>
+<td>Revenue · 3–5 clientes</td>
+</tr>
+<tr>
+<td><strong>D4</strong></td>
+<td><strong>Evaluación Tramo 2</strong> — con datos reales de operación, no proyectados</td>
+<td>Decisión de expansión → <strong>V1</strong></td>
+</tr>
+</tbody>
+</table></div>
+<h3>7.4 · Trayectoria de construcción — <strong>triggers, no fechas</strong></h3>
+<p>Ortogonal a las fases. Lo que dispara cada salto es una condición cumplida, no un trimestre del calendario. Ésta es la parte más robusta de §7 precisamente porque no depende de fechas.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th></th>
+<th><strong>MVP</strong> · Modelo 3 · Tramo 1</th>
+<th><strong>V1</strong> · Modelo 4 · Tramo 2</th>
+<th><strong>V2</strong> · Modelo 5 híbrido</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Qué</strong></td>
+<td>10–50 L · GMP-ready</td>
+<td>200–300 L · GMP</td>
+<td>tier-1 AAA · Yr 4+</td>
+</tr>
+<tr>
+<td><strong>Alcance</strong></td>
+<td>15–21 zonas · single-use · 5–8 residentes</td>
+<td>+ línea 300 L · downstream expandido</td>
+<td>Multi-plataforma · hub regional</td>
+</tr>
+<tr>
+<td><strong>CAPEX</strong></td>
+<td>$1.48M hard <em>(estimate-grade)</em></td>
+<td>por costear</td>
+<td>por costear</td>
+</tr>
+<tr>
+<td><strong>Trigger</strong></td>
+<td>Cornerstone + primeras LOIs</td>
+<td>Anchor + 2–3 clientes + <strong>&gt;$400K ARR</strong></td>
+<td>Data operativa + capital de escala</td>
+</tr>
+<tr>
+<td><strong>Ancla identificada</strong></td>
+<td>—</td>
+<td><strong>Aquí cae Eywa</strong> (300 L GMP, downstream integrado, &lt;$1000/g)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>Eywa es el product-market-fit más claro del pipeline: psilocibina por biosíntesis, hoy fragmentada en 3 facilities y topada por regulatoria en un cowork compartido. <strong>La fragmentación de Eywa valida el modelo integrado</strong> — y ubica el primer cliente ancla real en V1, no en el MVP. Es un dato de secuenciación, no de marketing.</p>
+<h3>7.5 · Qué haría colapsar este roadmap</h3>
+<p>Las tres dependencias que lo reescriben, no que lo retrasan:</p>
+<ol>
+<li><strong>Greenfield en vez de brownfield.</strong> La ventana 2027/28 es alcanzable <strong>únicamente por fit-out en un shell existente</strong>. Construcción desde cero = 18–36 meses y desborda el horizonte: <strong>+1 año, mínimo</strong>. Se decide en Fase A con Parque de las Ciencias. Si además se ratifica la Definición A (financial close Jul'27), greenfield se vuelve <em>posible</em> pero empuja el go-live bien dentro de 2028.</li>
+<li><strong>Gap de financiamiento Fase A→B.</strong> El modelo v3 tiene <strong>~USD 2,05M (ZF)</strong> como referencia estimate-grade; hay un riesgo abierto High/High que estima <strong>USD 2–5M+</strong> para el full build. <strong>Los dos números no son compatibles</strong> — y el apetito de capital privado por infraestructura biotech en LATAM está <strong>no probado</strong>. Mitigación: stack no dilutivo primero (ANII/BID/CAF), VC recién para el scale-up GMP de Año 2+.</li>
+<li><strong>La CDMO regional no existe todavía.</strong> El hito narrativo <em>"primer dossier entregado a un CDMO regional"</em> asume una contraparte que <strong>hoy no opera en LATAM</strong>. Hay que tratar la transferencia como una opción a construir (partnership, o vía Brasil), no como salida dada. Está fuera de la ventana de 12 meses y fuera del gate de go-live — es Go-Live + 1.</li>
+</ol>
+<h3>7.6 · La frase del pitch, leída con honestidad</h3>
+<blockquote>
+<p><em>"The work of the next 12 months is to convert this substrate into a building. A license, an anchor cohort, and a first dossier handed to a regional CDMO."</em></p>
+</blockquote>
+<p>Es la tesis correcta y el norte del deck. <strong>No es el plan.</strong> El dossier entregado a un CDMO exige un lab operando, y el lab no opera hasta después de obra más IQ/OQ/PQ.</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Frase del pitch</th>
+<th>Qué es realmente en 12 meses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"into a building"</td>
+<td><strong>Obra arrancada</strong> — permisos + diseño ejecutivo + capital liberado en tramo 1</td>
+</tr>
+<tr>
+<td>"a license"</td>
+<td><strong>Path regulatorio en trámite</strong> con MSP/ANII + habilitación ZF — realista</td>
+</tr>
+<tr>
+<td>"an anchor cohort"</td>
+<td><strong>5–8 LOIs convertidas en compromisos vinculantes</strong> — realista</td>
+</tr>
+<tr>
+<td>"a first dossier to a regional CDMO"</td>
+<td><strong>Fuera de horizonte.</strong> Requiere lab operativo. Es el hito de Go-Live + 1</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Usar la frase para afuera. Adentro, planificar contra la columna derecha.</strong></p>
+<hr />
+<h2>8 · KPIs por gate</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Objetivo</th>
+<th>Gate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Presupuesto de incubación aprobado</td>
+<td>Ago 2026</td>
+<td>Gate 0</td>
+</tr>
+<tr>
+<td>Entidad propia constituida en ZF</td>
+<td>31-ago 2026</td>
+<td>Gate 0</td>
+</tr>
+<tr>
+<td>Greenfield vs brownfield decidido + sitio lockeado</td>
+<td>Sep–Oct 2026</td>
+<td>Gate A</td>
+</tr>
+<tr>
+<td>m² definidos + quote real de obra</td>
+<td>Nov 2026</td>
+<td>Gate A</td>
+</tr>
+<tr>
+<td>Site Director / CTO contratado</td>
+<td>Nov 2026</td>
+<td>Gate A</td>
+</tr>
+<tr>
+<td>Modelo financiero validado por tercero</td>
+<td>Nov 2026</td>
+<td>Gate A</td>
+</tr>
+<tr>
+<td>LOIs firmadas</td>
+<td>≥2 (Nov) → ≥1 vinculante (Mar) → cohorte contractualizada (Jul)</td>
+<td>A · B · capital</td>
+</tr>
+<tr>
+<td>Grants no dilutivos confirmados</td>
+<td>≥1</td>
+<td>Gate B</td>
+</tr>
+<tr>
+<td>Diseño ejecutivo + HVAC congelados</td>
+<td>Mar 2027</td>
+<td>Gate B</td>
+</tr>
+<tr>
+<td>POC in-silico corrido o descartado con dato</td>
+<td>Mar 2027</td>
+<td>Gate B</td>
+</tr>
+<tr>
+<td>Permisos ZF + obra otorgados</td>
+<td>Jun 2027</td>
+<td>capital</td>
+</tr>
+<tr>
+<td>Capital comprometido, tramo 1 disponible</td>
+<td>Jul 2027</td>
+<td>capital</td>
+</tr>
+<tr>
+<td>IQ/OQ/PQ con protocolos firmados</td>
+<td>100% equipo crítico</td>
+<td>go-live</td>
+</tr>
+<tr>
+<td>ARR por suscripciones firmadas</td>
+<td>~USD 420K (5–8 residentes)</td>
+<td>go-live</td>
+</tr>
+<tr>
+<td>Runway operativo post-CAPEX</td>
+<td>≥12 meses</td>
+<td>go-live</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>9 · Riesgos de la ruta</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Riesgo</th>
+<th>Mitigación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>El costeo de obra llega tarde</strong> → toda la cadena se corre</td>
+<td>Contratar ingeniería en agosto; pedir el order-of-magnitude como tramo separado y de precio cerrado, antes del anteproyecto completo</td>
+</tr>
+<tr>
+<td><strong>CAPEX estimate-grade frente a un inversor</strong> (contingencia 30% modelada vs ~80% documentado)</td>
+<td>Quote real + contingencia fondeada como criterio de <strong>Gate A</strong>, no del gate de capital</td>
+</tr>
+<tr>
+<td><strong>Gap de financiamiento Fase A→B</strong> <em>(abierto, High/High)</em>: full build podría requerir USD 2–5M+; apetito privado por infra biotech en LATAM <strong>no probado</strong></td>
+<td>Los ~USD 2,05M del modelo v3 son referencia estimate-grade, no target. Stack no dilutivo primero (ANII/BID/CAF); VC recién para el scale-up GMP</td>
+</tr>
+<tr>
+<td><strong>Timeline de la ronda sin anclar</strong> <em>(abierto)</em>: sin targets de inversores nombrados ni fecha de cierre comprometida</td>
+<td>El dossier (Fase A) sale con <strong>lista de targets</strong>, no sólo con materiales</td>
+</tr>
+<tr>
+<td><strong>La CDMO regional no existe todavía</strong> <em>(abierto, High/High)</em></td>
+<td>Tratar la transferencia como opción a construir, no como salida dada. Fuera de la ventana</td>
+</tr>
+<tr>
+<td><strong>Path regulatorio alineado pero no formalizado</strong> (MSP + ANII)</td>
+<td>Convertirlo en trámite con plazo en Fase A. Si el permiso se corre, se corre el gate</td>
+</tr>
+<tr>
+<td><strong>Restricción de cartera de ZF</strong>: los clientes uruguayos están habilitados pero <strong>no pueden ser mayoría</strong> — y su gasto no les es deducible de IRAE <em>(abierto)</em></td>
+<td>Fijar el mix UY / no-UY como criterio de aceptación del shortlist de anclas. Es la única tensión estructural que el canon ZF no cerró</td>
+</tr>
+<tr>
+<td><strong>Conversión demanda → cohorte no modelada</strong>: 900+ startups validadas, pero la tasa a residente pagador es supuesto</td>
+<td>Cost-to-serve + pricing real en Fase A; la cohorte se mide en compromisos, no en pipeline</td>
+</tr>
+<tr>
+<td><strong>La capa in-silico sostiene el EBITDA temprano con margen modelado, no medido</strong></td>
+<td>POC con la primera ancla en Fase B. Si no se sostiene, el break-even se corre ~1 año — <strong>y hay que decirlo antes de la ronda</strong></td>
+</tr>
+<tr>
+<td><strong>Riesgo commodity / diferenciación</strong> <em>(abierto)</em>: un wet-lab fee-for-service es replicable</td>
+<td>Matriz metodológica explícita + embedding institucional (ZF, ANII, nodo BID) + la capa propietaria</td>
+</tr>
+<tr>
+<td><strong>Tensión de nicho no resuelta</strong> (07-23: <em>"no me siento muy a broad"</em> / <em>"si te especializás en uno solo, perdiste — no tenés volumen"</em>)</td>
+<td>Cerrarla con dato en Fase A: mix de demanda por plataforma en el shortlist. Es una pregunta empírica, no de opinión</td>
+</tr>
+<tr>
+<td><strong>Deriva al vehículo de equity/growth</strong> antes de cruzar el gate de capital</td>
+<td>Fuera del modelo y del scope de incubación. Vehículo separado, gate exclusivo de Gastón, reconciliación con Panambi</td>
+</tr>
+<tr>
+<td><strong>Sobrecarga de Rene</strong> (champion + narrativa + ingeniería + ronda + LOIs)</td>
+<td>La capa operacional está delegada en Mariano desde 07-2026. Fase A reparte owners explícitos por workstream</td>
+</tr>
+<tr>
+<td><strong>Deriva de scope</strong> (Quantum / AI-DC hacia el core)</td>
+<td>Periféricos por diseño. Fuera de todo gate de esta ruta</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>10 · Números a resolver antes de usarlos afuera</h2>
+<p>Marcados porque el pitch los dijo y todavía no cierran. <strong>Ninguno de estos debe salir en material externo hasta que se resuelva.</strong></p>
+<ul>
+<li><strong>m² de la planta</strong> — no existen. Textual: <em>"El diseño de las 21 zonas… está todo. Menos cuántos metros cuadrados."</em> El "400 m²" que circuló fue una estimación al vuelo. Lo fija la ingeniería en Fase A.</li>
+<li><strong>"57 sin lab"</strong> — el pitch dice "62 activas, de las cuales 57 no tienen lab" y en la frase siguiente "el 57% no tiene lab". No cierran (57/62 ≈ 92%). La wiki usa <strong>57%</strong>. Corregir en el deck.</li>
+<li><strong>Grants públicos UY "300–400 lucas"</strong> — unidad no especificada en voz; el minado del 07-23 lo registró como UYU. El tope de ANII Implementación es <strong>UYU 4M (~USD 100K)</strong> y <strong>no cubre equipamiento ni activos fijos</strong>. Fijar cifra, moneda y destino antes del dossier.</li>
+<li><strong>Tamaño de la ronda</strong> — no se dijo. Depende del costeo. Modelo v3: ~USD 2,05M (ZF) estimate-grade; riesgo abierto estima USD 2–5M+. <strong>No son compatibles.</strong></li>
+<li><strong>TAM</strong> — no está. La base declarada son las <strong>900+ startups regionales en TRL 3-5</strong>; anclarla con fuente antes de usarla como TAM.</li>
+<li><strong>Numeración de tramos</strong> — <strong>tres versiones vivas</strong>: el pitch 07-23 dice <em>"50 L upstream + 50 L downstream, escalar a 300 L"</em>; la decisión minada habla de <strong>4 tramos</strong> con 300 L en el tramo 4; la wiki dice <strong>Tramo 1 = 10–50 L / Tramo 2 = 200–300 L</strong>. Unificar antes de que salga material externo.</li>
+<li><strong>Zonas: 15 vs 21</strong> — el Pitch V0.3.0 dice "15 zones in Tramo 1 design"; la wiki dice 21 zonas (y "15–21"). Unificar.</li>
+<li><strong>Pricing de comparables</strong> — no se consiguió. Deep dive pendiente.</li>
+<li><strong>Atribuciones del 07-23</strong> — el transcript viene con diarización sucia (<code>Speaker 1/2/3</code> sin mapeo). Los pedidos citados acá (modelo financiero, presupuesto de etapa, mercado, nicho) están atribuidos <strong>por contexto, no verificados</strong>. Confirmar con los dueños antes de tratarlos como compromiso.</li>
+</ul>
+<hr />
+<h2>11 · Punteros</h2>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Working file de la etapa (fases, gates, riesgos en detalle)</td>
+<td><a href="roadmap-incubacion-12m.md"><code>roadmap-incubacion-12m.md</code></a></td>
+</tr>
+<tr>
+<td>SOW de incubación (alcance + criterios de aceptación + anexos de terceros)</td>
+<td><a href="sow-incubacion.md"><code>sow-incubacion.md</code></a></td>
+</tr>
+<tr>
+<td>Síntesis del research (stage-gate, comparables, playbook, fondeo)</td>
+<td><a href="_index.md"><code>_index.md</code></a> + <a href="research/"><code>research/</code></a></td>
+</tr>
+<tr>
+<td>Espina de 2 años</td>
+<td><a href="../roadmap.md"><code>../roadmap.md</code></a></td>
+</tr>
+<tr>
+<td>Handoff / delivery kit de pre-incubación</td>
+<td><a href="../pre-incubacion/handoff.md"><code>../pre-incubacion/handoff.md</code></a></td>
+</tr>
+<tr>
+<td>Canon estructural Type-1</td>
+<td><a href="../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md"><code>../../../vault/decisions/2026-07-19-photonic-zf-all-in-canonical.md</code></a></td>
+</tr>
+<tr>
+<td>Referencia narrativa completa</td>
+<td>Project Wiki §9 · Pitch Institucional V0.3.0</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<blockquote>
+<p><em>Nota de rigor: todas las cifras internas de Photonic (bandas TRL/BRL, CAPEX, ARR, residentes, plazos, sobrecosto, IQ/OQ/PQ) son </em><em>supuestos de la venture</em><em> y no fueron corroborados de forma independiente. Los benchmarks externos (Cooper, NIIMBL/BRL, ISPE, McKinsey, LAB+/Pasteur, BID) están citados en <a href="research/"><code>research/</code></a>. El mapeo regulatorio uruguayo (MSP, bioseguridad, condiciones ANII) debe verificarse localmente antes del build. Las bandas de duración de §7 son estimate-grade y se firman con la empresa de bioingeniería seleccionada.</em></p>
+</blockquote>
+</main>
+
+<footer>Photonic Labs &middot; Both_Ventures · Fuente: <code>projects/photonic-labs/incubacion/roadmap-incubacion-extendido.md</code> · Interno</footer>
+<script>
+(function(){
+  var r=document.documentElement,b=document.getElementById('tog');
+  if(!b)return;
+  function lbl(){b.textContent=(r.getAttribute('data-theme')==='dark'?'\u2600 claro':'\u263e oscuro');}
+  lbl();
+  b.addEventListener('click',function(){
+    var n=r.getAttribute('data-theme')==='dark'?'light':'dark';
+    r.setAttribute('data-theme',n);
+    try{localStorage.setItem('pl-theme',n);}catch(e){}
+    lbl();
+  });
+})();
+</script>
+</body>
+</html>
