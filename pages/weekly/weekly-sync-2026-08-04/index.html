@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BOTH Ventures — Synergy Dashboard. Control panel glassmorphism: health, sprint, endgame y riesgos por venture. Reporte completo en apéndice plegable.">
+<title>Synergy Weekly Dashboard — Both_Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════
+   Synergy Weekly Dashboard — dark glassmorphism (visionOS mood)
+   bg: 9B graphite · ambient glow · frosted panels · depth
+══════════════════════════════════════════════════════════ */
+:root{
+  --ink:#ffffff;
+  --t-1:rgba(255,255,255,0.92);
+  --t-2:rgba(255,255,255,0.62);
+  --t-3:rgba(255,255,255,0.40);
+  --t-4:rgba(255,255,255,0.26);
+  --edge:rgba(255,255,255,0.12);
+  --edge-soft:rgba(255,255,255,0.07);
+  --hi:rgba(255,255,255,0.16);
+  --glass:rgba(28,28,32,0.42);
+  --glass-2:rgba(40,40,46,0.34);
+  --glass-3:rgba(18,18,22,0.50);
+  --accent:#8be9b6;            /* Synergy green — el único pop vivo */
+  --green:#86efac; --green-bg:rgba(134,239,172,0.14);
+  --amber:#fcd34d; --amber-bg:rgba(252,211,77,0.14);
+  --red:#fca5a5;   --red-bg:rgba(252,165,165,0.14);
+  --orange:#fdba74;--orange-bg:rgba(253,186,116,0.14);
+  --blue:#7dd3fc;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;
+  --r-shell:30px; --r-card:22px; --r-tile:16px;
+  --blur:saturate(1.5) blur(30px);
+  --blur-card:saturate(1.4) blur(22px);
+  --shadow-card:0 10px 40px rgba(0,0,0,0.34);
+  --shadow-shell:0 40px 120px rgba(0,0,0,0.55);
+  --ease:cubic-bezier(0.22,0.61,0.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--t-1);line-height:1.55;-webkit-font-smoothing:antialiased;
+  min-height:100vh;position:relative;padding:52px 52px 72px;
+  background:#0a0a0c url('./bg.jpg') no-repeat center top fixed;background-size:cover}
+/* ambient: glow cálido abajo-izq + frío arriba-der, velo oscuro encima del grafito */
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(1200px 700px at 80% 4%, rgba(125,211,252,0.16), transparent 60%),
+    radial-gradient(1100px 640px at 8% 98%, rgba(253,186,116,0.15), transparent 58%),
+    radial-gradient(700px 700px at 50% 120%, rgba(139,233,182,0.06), transparent 60%),
+    linear-gradient(180deg, rgba(8,8,10,0.50) 0%, rgba(8,8,10,0.68) 46%, rgba(8,8,10,0.82) 100%)}
+
+/* ══ SHELL ══ */
+.shell{position:relative;z-index:1;max-width:1340px;margin:0 auto;
+  background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--edge);border-radius:var(--r-shell);
+  box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:28px 28px 30px}
+
+/* ══ TOP BAR ══ */
+.top{display:flex;align-items:center;gap:18px;margin-bottom:26px;flex-wrap:wrap}
+.greet{flex:1;min-width:240px}
+.eyebrow{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);font-weight:600}
+.greet h1{font-size:30px;font-weight:600;letter-spacing:-0.02em;margin-top:6px;line-height:1.1}
+.greet h1 b{font-weight:700}
+.ask{display:flex;align-items:center;gap:10px;background:var(--glass-3);border:1px solid var(--edge);
+  border-radius:999px;padding:11px 18px 11px 16px;min-width:280px;color:var(--t-2);font-size:13.5px;
+  box-shadow:inset 0 1px 0 var(--hi)}
+.ask .spark{color:var(--accent);font-size:14px}
+.ask .ph{color:var(--t-3)}
+.ask .kbd{margin-left:auto;font-size:10px;color:var(--t-3);border:1px solid var(--edge);border-radius:6px;padding:2px 7px}
+.top-meta{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--t-3);letter-spacing:0.04em;
+  background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:999px;padding:8px 14px}
+.top-meta .sprint{color:var(--accent);font-weight:600}
+.top-meta .sep{color:var(--t-4)}
+
+/* ══ DASH LAYOUT ══ */
+.dash{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+
+/* ── rail ── */
+/* Sticky rail: stays put while the venture column scrolls. Bounded by .dash
+   (rail + venture grid only); the Questions section is a sibling OUTSIDE the
+   grid, so the rail unpins before it and they never overlap mid-scroll. */
+.rail{display:flex;flex-direction:column;gap:14px;position:sticky;top:30px}
+.panel{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.panel-h{display:flex;align-items:center;gap:8px;padding:16px 18px 0}
+.panel-h .t{font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--t-2)}
+.panel-h .c{margin-left:auto;font-size:11px;color:var(--t-3)}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px}
+.stat{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:13px 14px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.08)}
+.stat.span{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between}
+.stat .l{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:7px}
+.stat .n{font-size:26px;font-weight:700;letter-spacing:-0.02em;line-height:1;color:var(--t-2)}
+.stat .dots{display:inline-flex;gap:6px;align-items:center}
+.seg{width:10px;height:10px;border-radius:50%}
+.seg.g{background:var(--green)}.seg.y{background:var(--amber)}.seg.r{background:var(--red)}
+.stat .leg{font-size:10px;color:var(--t-3);margin-top:7px}
+
+.prios{padding:8px 14px 16px}
+.prio{display:flex;gap:11px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid var(--edge-soft)}
+.prio:last-child{border-bottom:none}
+.prio .i{flex-shrink:0;width:20px;height:20px;border-radius:7px;background:var(--glass-3);border:1px solid var(--edge);
+  display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--t-2)}
+.prio .txt{font-size:12.5px;color:var(--t-1);line-height:1.45}
+.prio .who{color:var(--t-3);font-size:11px}
+
+.sprint-card{padding:16px 18px 18px}
+.sprint-card .tag{display:inline-block;font-size:10.5px;color:var(--accent);background:var(--green-bg);
+  border:1px solid rgba(139,233,182,0.3);border-radius:999px;padding:4px 11px;letter-spacing:0.04em;font-weight:600;margin-bottom:10px}
+.sprint-card .body{font-size:12px;color:var(--t-2);line-height:1.55}
+.sprint-card .body b{color:var(--t-1)}
+.sprint-card .body a{color:var(--accent);text-decoration:none;font-weight:600;
+  border-bottom:1px solid rgba(139,233,182,0.35);white-space:nowrap}
+
+/* ── venture field ── */
+.field-h{display:flex;align-items:baseline;gap:10px;padding:2px 4px 14px}
+.field-h .t{font-size:13px;font-weight:600;color:var(--t-1);letter-spacing:0.01em}
+.field-h .d{font-size:11px;color:var(--t-3);margin-left:auto}
+.ventures{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vcard{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);padding:18px 18px 16px;
+  box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);display:flex;flex-direction:column;gap:13px;
+  transition:transform 0.25s var(--ease),border-color 0.25s var(--ease),box-shadow 0.25s var(--ease);
+  animation:rise 0.5s var(--ease) both}
+.vcard:hover{transform:translateY(-3px);border-color:var(--hi);box-shadow:0 18px 50px rgba(0,0,0,0.45),inset 0 1px 0 var(--hi)}
+.vtop{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.vname{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.vmeta{font-size:11px;color:var(--t-3);margin-top:3px}
+.vmeta .stale{color:var(--orange)}
+.hp{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:5px 11px;border-radius:999px;white-space:nowrap;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.10)}
+.hp .d{width:6px;height:6px;border-radius:50%}
+.hp.g{background:var(--green-bg);color:var(--green);border:1px solid rgba(134,239,172,0.28)}.hp.g .d{background:var(--green)}
+.hp.y{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(252,211,77,0.28)}.hp.y .d{background:var(--amber)}
+.hp.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.28)}.hp.r .d{background:var(--red)}
+.row .lab{font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-4);font-weight:600;margin-bottom:5px}
+.row .li{display:block;font-size:12.5px;color:var(--t-1);padding-left:13px;position:relative;margin-top:3px;line-height:1.45}
+.row .li:first-of-type{margin-top:0}
+.row .li::before{content:"";position:absolute;left:0;top:8px;width:4px;height:4px;border-radius:50%;background:var(--t-4)}
+.row .li b{font-weight:700}
+.row.muted .li{color:var(--t-2)}
+.endgame{font-size:12px;color:var(--t-2);line-height:1.5;font-style:italic}
+.endgame.todo{color:var(--t-4);font-style:italic}
+.endgame .dr{display:inline-block;font-size:8.5px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  font-style:normal;color:var(--t-4);background:rgba(255,255,255,0.05);border:1px solid var(--edge-soft);border-radius:999px;
+  padding:1px 7px;margin-left:6px;vertical-align:middle}
+.vrisks{display:flex;flex-wrap:wrap;gap:7px;border-top:1px solid var(--edge-soft);padding-top:13px;margin-top:auto}
+.vrisks::before{content:"Risks";flex-basis:100%;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-4);font-weight:600;margin-bottom:2px}
+.chip{font-size:10.5px;font-weight:500;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px}
+.chip .d{width:5px;height:5px;border-radius:50%}
+.chip.r{background:var(--red-bg);color:var(--red);border:1px solid rgba(252,165,165,0.22)}.chip.r .d{background:var(--red)}
+.chip.o{background:var(--orange-bg);color:var(--orange);border:1px solid rgba(253,186,116,0.22)}.chip.o .d{background:var(--orange)}
+.chip.y{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(252,211,77,0.22)}.chip.y .d{background:var(--amber)}
+.chip.none{font-size:11px;color:var(--t-4)}
+.vq{font-size:11.5px;color:var(--t-1);line-height:1.5;background:rgba(96,131,255,0.08);border:1px solid rgba(96,131,255,0.24);border-radius:10px;padding:10px 12px}
+.vq::before{content:"Pregunta · Tuesday";display:block;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:#9db4ff;font-weight:700;margin-bottom:4px}
+/* qsection lives OUTSIDE the .dash grid (sibling, full-width) so the sticky
+   rail can't overlap it mid-scroll. */
+.qsection{margin-top:18px}
+.qlist{list-style:none;counter-reset:q;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.qlist li{counter-increment:q;position:relative;background:var(--glass-2);border:1px solid var(--edge);border-radius:12px;padding:13px 16px 13px 44px;font-size:13px;color:var(--t-1);line-height:1.55}
+.qlist li::before{content:counter(q);position:absolute;left:15px;top:12px;font-size:12px;font-weight:700;color:#9db4ff}
+.qlist li b{font-weight:700}
+.qv{color:#9db4ff;font-size:11.5px}
+
+/* ══ APPENDIX ══ */
+.appendix{margin-top:18px;background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);overflow:hidden}
+.appendix>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:16px;padding:18px 22px;user-select:none;
+  transition:background 0.2s var(--ease)}
+.appendix>summary::-webkit-details-marker{display:none}
+.appendix>summary:hover{background:rgba(255,255,255,0.04)}
+.ax-key{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--t-3);
+  border:1px solid var(--edge);border-radius:8px;padding:5px 10px}
+.ax-title{font-size:14px;font-weight:600;letter-spacing:0.01em;color:var(--t-1)}
+.ax-sub{font-size:11.5px;color:var(--t-3)}
+.ax-toggle{margin-left:auto;display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;color:var(--accent)}
+.ax-chev{transition:transform 0.25s var(--ease);font-size:11px}
+.appendix[open]>summary .ax-chev{transform:rotate(180deg)}
+.appendix>summary .show{display:inline}.appendix>summary .hide{display:none}
+.appendix[open]>summary .show{display:none}.appendix[open]>summary .hide{display:inline}
+.rest{padding:8px 30px 32px;border-top:1px solid var(--edge-soft);animation:rise 0.4s var(--ease) both}
+
+.rest .lead{color:var(--t-2);font-size:13px;line-height:1.65;padding:16px 18px;background:var(--glass-3);
+  border:1px solid var(--edge-soft);border-left:2px solid var(--accent);border-radius:12px;margin:18px 0 8px}
+.rest h2{font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t-1);font-weight:700;
+  margin:30px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--edge-soft)}
+.rest h3{font-size:13.5px;font-weight:600;margin:18px 0 4px;color:var(--t-1)}
+.rest h3 em{color:var(--t-3);font-style:normal;font-size:11px;font-weight:400}
+.rest p{font-size:13px;color:var(--t-2);margin:7px 0;max-width:880px;line-height:1.6}
+.rest ul{margin:8px 0 8px 4px;padding-left:18px}
+.rest li{font-size:13px;color:var(--t-2);margin:5px 0;line-height:1.55}
+.rest strong{color:var(--t-1);font-weight:600}
+.rest em{color:var(--t-3)}
+.rest code{font-size:11px;background:var(--glass-3);border:1px solid var(--edge-soft);padding:1px 6px;border-radius:5px;color:var(--accent)}
+.rest .grp{font-size:11px;letter-spacing:0.04em;text-transform:uppercase;color:var(--t-2);font-weight:700;margin-top:16px}
+table{border-collapse:collapse;width:100%;margin:14px 0;font-size:12.5px}
+th{text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:0.07em;color:var(--t-3);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top;line-height:1.45}
+tr:last-child td{border-bottom:none}
+tbody tr{transition:background 0.15s}tbody tr:hover{background:rgba(255,255,255,0.03)}
+td strong{color:var(--t-1)}
+.sev{font-size:10.5px;font-weight:700;white-space:nowrap}
+.sev.hh{color:var(--red)}.sev.hm{color:var(--orange)}.sev.mh{color:var(--amber)}.sev.mm{color:var(--t-2)}
+.audit{background:var(--glass-3);border:1px solid var(--edge-soft);border-left:2px solid var(--t-4);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12px;color:var(--t-2);line-height:1.55}
+.audit b{color:var(--t-1)}
+.flag{background:var(--red-bg);border:1px solid rgba(252,165,165,0.20);border-left:2px solid var(--red);border-radius:12px;
+  padding:13px 16px;margin:14px 0;font-size:12.5px;color:#f3cccc;line-height:1.55}
+.flag b{color:var(--red)}
+.heat td:last-child{font-weight:700;text-align:right;color:var(--t-1)}
+blockquote{margin:12px 0;padding:14px 18px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-left:2px solid var(--accent);border-radius:12px;font-size:13.5px;color:var(--t-1);line-height:1.6}
+.synergy-close .k{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t-3);font-weight:700;margin-top:18px}
+
+/* ══ FX ══ */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.vcard:nth-child(2){animation-delay:.04s}.vcard:nth-child(3){animation-delay:.08s}.vcard:nth-child(4){animation-delay:.12s}
+.vcard:nth-child(5){animation-delay:.16s}.vcard:nth-child(6){animation-delay:.2s}.vcard:nth-child(7){animation-delay:.24s}
+.vcard:nth-child(n+8){animation-delay:.28s}
+@media(prefers-reduced-motion:reduce){.vcard,.rest{animation:none}}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.14);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.24)}
+
+@media(max-width:1000px){
+  body{padding:28px 22px 60px}
+  .dash{grid-template-columns:1fr}
+  .rail{position:static;flex-direction:column}
+  .ventures{grid-template-columns:1fr}
+  .top{gap:12px}.ask{min-width:0;flex:1}
+}
+@media(max-width:560px){
+  body{padding:14px 12px 50px}.shell{padding:18px 16px 20px;border-radius:24px}
+  .greet h1{font-size:24px}.stats{grid-template-columns:1fr 1fr}
+}
+
+/* ── tags + filter ── */
+.vtags{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.vtag{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--edge)}
+.vtag.flagship{background:rgba(139,233,182,0.14);color:var(--accent);border-color:rgba(139,233,182,0.30)}
+.vtag.sidequest{background:rgba(125,176,255,0.12);color:#9ec1ff;border-color:rgba(125,176,255,0.30)}
+.vtag.passive{background:rgba(255,255,255,0.06);color:var(--t-2);border-color:var(--edge)}
+.vtag.network{background:rgba(134,217,185,0.10);color:#86d9b9;border-color:rgba(134,239,172,0.22)}
+.vtag.wildcard{background:rgba(196,160,255,0.14);color:#c9a6ff;border-color:rgba(196,160,255,0.32)}
+.filterbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:2px 4px 16px}
+.filterbar .flabel{font-size:11px;color:var(--t-3);text-transform:uppercase;letter-spacing:0.1em;margin-right:2px}
+.filterbar .fsep{font-size:9px;color:var(--t-4);text-transform:uppercase;letter-spacing:0.12em;margin:0 2px 0 10px}
+.fbtn{font-size:11px;font-weight:600;color:var(--t-2);background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s}
+.fbtn:hover{color:var(--t-1);border-color:var(--edge)}
+.fbtn.active{background:var(--accent);color:#0c1410;border-color:var(--accent)}
+.fbtn.fg.active{background:var(--green);color:#0c1410;border-color:var(--green)}
+.fbtn.fy.active{background:var(--amber);color:#1a1405;border-color:var(--amber)}
+.fbtn.fr.active{background:var(--red);color:#2a0c0c;border-color:var(--red)}
+.vcard.hide{display:none}
+
+.hpwrap{display:flex;gap:7px;align-items:center}
+.cashpill{font-size:10px;font-weight:700;letter-spacing:0.01em;color:var(--t-1);background:var(--glass-3);border:1px solid var(--edge);border-radius:999px;padding:4px 9px;white-space:nowrap}
+
+/* ── status flip (Y/R cards) ── */
+.vcard.flip .flip-inner{position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.vcard.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.vcard.flip .flip-front,.vcard.flip .flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.vcard.flip .flip-back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;gap:8px;padding:2px}
+.vcard.flip .hp{cursor:pointer}
+.vcard.flip .hp::after{content:"⤺";margin-left:5px;font-size:10px;opacity:0.7}
+.vcard.flip .cashpill{cursor:pointer}
+.vcard.flip .cashpill::after{content:"⤺";margin-left:4px;font-size:9px;opacity:0.7}
+.flip-back .fb-h{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+.flip-back .fb-body{font-size:13px;line-height:1.6;color:var(--t-1)}
+.flip-back .fb-hint{font-size:10px;color:var(--t-3);margin-top:4px;letter-spacing:0.04em}
+/* ── capital position flip ── */
+.capflip{perspective:1000px;cursor:pointer}
+.capflip-inner{position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.2,1);display:grid}
+.capflip.flipped .capflip-inner{transform:rotateY(180deg)}
+.capflip-front,.capflip-back{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.capflip-back{transform:rotateY(180deg)}
+.capflip .caphint{font-size:9px;color:var(--t-3);margin-left:6px;opacity:.75;letter-spacing:0}
+.capflip-back .cb-h{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:5px}
+.capflip-back .cb-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;line-height:1.4;padding:3px 0;border-top:1px solid var(--edge-soft)}
+.capflip-back .cb-row:first-of-type{border-top:none}
+.capflip-back .cb-v{color:var(--t-1);font-weight:700;white-space:nowrap}
+.capflip-back .cb-d{color:var(--t-3);font-size:10px}
+.capflip-back .cb-hint{font-size:10px;color:var(--t-3);margin-top:6px;letter-spacing:0.04em}
+
+/* ── light mode (off-white) ── */
+body.light{
+  --ink:#15140f;
+  --t-1:rgba(24,22,16,0.92); --t-2:rgba(24,22,16,0.66); --t-3:rgba(24,22,16,0.46); --t-4:rgba(24,22,16,0.30);
+  --edge:rgba(24,22,16,0.14); --edge-soft:rgba(24,22,16,0.08); --hi:rgba(24,22,16,0.10);
+  --glass:rgba(255,255,255,0.70); --glass-2:rgba(255,255,255,0.62); --glass-3:rgba(255,255,255,0.82);
+  --accent:#0a8c5a;
+  --green:#15803d; --green-bg:rgba(21,128,61,0.12);
+  --amber:#b45309; --amber-bg:rgba(180,83,9,0.12);
+  --red:#b91c1c; --red-bg:rgba(185,28,28,0.10);
+  --orange:#c2410c; --orange-bg:rgba(194,65,12,0.12);
+  --blue:#0369a1;
+  --shadow-card:0 10px 30px rgba(120,110,90,0.16); --shadow-shell:0 40px 120px rgba(120,110,90,0.18);
+  background:#f4f1ea !important;
+}
+body.light::before{
+  background:
+    radial-gradient(1200px 700px at 80% 4%, rgba(3,105,161,0.05), transparent 60%),
+    radial-gradient(1100px 640px at 8% 98%, rgba(194,65,12,0.05), transparent 58%),
+    linear-gradient(180deg, rgba(244,241,234,0.20) 0%, rgba(244,241,234,0.05) 50%, rgba(244,241,234,0.20) 100%) !important;
+}
+.theme-toggle{position:fixed;top:16px;right:16px;z-index:50;width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--edge);background:var(--glass-3);color:var(--t-1);font-size:16px;cursor:pointer;
+  backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);transition:border-color .15s}
+.theme-toggle:hover{border-color:var(--accent)}
+
+/* ── key dates + freshness + moved row ── */
+.keydates{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 18px;padding:12px 16px;background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile)}
+.keydates .kd-h{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--t-3);margin-right:2px}
+.kd{display:inline-flex;gap:6px;align-items:center;font-size:12px;color:var(--t-2);white-space:nowrap}
+.kd b{color:var(--accent);font-weight:700}
+.keydates.tw .kd b{color:var(--amber)}
+.fresh{font-size:8px;font-weight:700;letter-spacing:0.06em;padding:2px 6px;border-radius:999px;margin-left:7px;border:1px solid var(--edge);vertical-align:middle}
+.fresh.g{color:var(--green);background:var(--green-bg)}.fresh.y{color:var(--amber);background:var(--amber-bg)}.fresh.r{color:var(--red);background:var(--red-bg)}
+.row.moved .lab{color:var(--accent)}
+
+/* ── freshness ledger bar (pulse-week honesty band) ── */
+.freshbar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:0 0 18px;padding:12px 16px;
+  background:var(--glass-3);border:1px solid var(--edge-soft);border-left:2px solid var(--amber);border-radius:var(--r-tile)}
+.freshbar .fb-h{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber)}
+.freshbar .fb-t{font-size:12px;color:var(--t-2);line-height:1.5}
+.freshbar .fb-t b{color:var(--t-1)}
+</style>
+</head>
+<body>
+<button id="langToggle" class="theme-toggle" style="right:64px;width:auto;padding:0 12px;border-radius:20px;font-weight:700;font-size:12px" aria-label="Language">EN</button>
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle dark/light">🌙</button>
+<div id="esWrap">
+<div class="shell">
+
+  <!-- ══ TOP BAR ══ -->
+  <div class="top">
+    <div class="greet">
+      <div class="eyebrow">Both_Ventures® |OS : Tuesday Weekly Sync · 2026-08-04</div>
+      <h1>Synergy <b>Weekly Dashboard</b></h1>
+    </div>
+  </div>
+
+  <div class="keydates tw"><span class="kd-h">Esta semana</span><span class="kd"><b>04/08</b> Estudio de stream CM — doc + plan de proyecto → handoff a Tini (Daiana · Manantial)</span><span class="kd"><b>05/08</b> Sesión grupal del 360 — informe consolidado + acuerdos semestrales (Daiana · Cross-cutting)</span><span class="kd"><b>07/08</b> Objetivos Q3 (Daiana · Manantial)</span><span class="kd"><b>07/08</b> Board meetings + updates a inversores (Daiana · Cross-cutting)</span><span class="kd"><b>11/08</b> Charla Potenciar Solidario (Daiana · Manantial)</span><span class="kd"><b>18/08</b> Mike trae las cámaras del podcast — evita 60% de tributación (Rene · Manantial)</span></div>
+  <div class="keydates"><span class="kd-h">Wins de la semana pasada</span><span class="kd"><b>03/08</b> <b>$400K fondeados + runway ~1 año</b> (Gastón · Reshore)</span><span class="kd"><b>03/08</b> <b>Julio y agosto cash-flow positive</b>, dos meses seguidos (Gastón · La Chamana)</span><span class="kd"><b>30/07</b> Pack de Pre-Incubación <b>cerrado</b> — 4 docs canónicos + informe de cierre (Mariano/Rene · Photonic Lab)</span><span class="kd"><b>03/08</b> SoftBank contactado + intros a Anthropic/Mythos 5 vía Floro (Gastón · Quantum)</span><span class="kd"><b>03/08</b> Suki cerrado en $5K/mes + contrato La Observadora canónico (Daiana/Andres · Manantial)</span></div>
+
+  <!-- ══ DASH ══ -->
+  <div class="dash">
+
+    <!-- ── LEFT RAIL ── -->
+    <aside class="rail">
+
+      <div class="panel sprint-card">
+        <span class="tag">Highlight de Venture → Reshore · el frente de caja resuelto</span>
+        <div class="body"><b>$400K fondeados y runway de ~1 año.</b> Los $200K de Mike deployados + los segundos $200K de BOTH instrumentados vía <b>SAFE a cap $12M</b>. La cifra de runway es de <b>Connie, CFO de Reshore</b>, con Daiana en el loop. Era el frente más agudo del portfolio desde mayo — la caja propia de Reshore se terminaba a fin de julio. <b>El Yellow se sostiene igual:</b> Zenith sigue sin firmar y sin fecha, y la valuación queda clavada en $12M. La causa de la demora está nombrada — <b>verano del hemisferio norte, no una objeción de fondo</b> — y mientras no firme, el carve-out por geografía sigue siendo palanca activa sobre la línea de <b>$150M del gobierno mexicano sin deployear</b>.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">This Week's Priorities</span><span class="c">6</span></div>
+        <div class="prios">
+          <div class="prio"><div class="i">1</div><div><div class="txt"><b>Reshore</b> — cerrar la firma de Zenith o poner <b>una fecha comprometida</b>; mientras siga abierto, usar el carve-out geográfico sobre la línea MX de $150M.</div><div class="who">Gaston</div></div></div>
+          <div class="prio"><div class="i">2</div><div><div class="txt"><b>La Chamana</b> — atacar la <b>visibilidad de bookings a mediano plazo</b>. El Red no sale con otro mes positivo, sale con proyección. + desagregar julio/agosto con Daiana.</div><div class="who">Gastón / Daiana</div></div></div>
+          <div class="prio"><div class="i">3</div><div><div class="txt"><b>Manantial</b> — cerrar el gap de <b>~$4,200</b> del podcast: autorización de Gastón → pedido a Henry + confirmar que Mike traiga las cámaras el 18-ago. Y <b>Objetivos Q3</b> (due 07-ago).</div><div class="who">Daiana</div></div></div>
+          <div class="prio"><div class="i">4</div><div><div class="txt"><b>B_V OS</b> — commitear y deployar el <b>quality gate</b> + poner el <b>scope gate del webhook</b> y purgar/retaggear los artefactos mal enrutados de hoy.</div><div class="who">Mariano</div></div></div>
+          <div class="prio"><div class="i">5</div><div><div class="txt"><b>Cross-venture</b> — sesión grupal del <b>360</b> el 05-ago: informe consolidado + acuerdos semestrales.</div><div class="who">Daiana</div></div></div>
+          <div class="prio"><div class="i">6</div><div><div class="txt"><b>Decidir sobre Asana</b> — purga de backlog o cambio de rol de la herramienta. <b>257 overdue / 0 cerradas</b> no es un estado que se pueda seguir reportando.</div><div class="who">Daiana / Gastón</div></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">Resumen del portfolio</span><span class="c">19-jul</span></div>
+      <div class="capflip" style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px"><div class="capflip-inner">
+        <div class="capflip-front">
+          <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Capital invertido total <span style="text-transform:none;letter-spacing:0">· portafolio a costo</span><span class="caphint">⤺ clic: detalle</span></div>
+          <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">$2,563,046</div>
+          <div style="font-size:10px;color:var(--amber);margin-top:6px">lectura del 19-jul · <b>sin refresh este ciclo</b> — el 2º $200K a Reshore vía SAFE no está reflejado</div>
+        </div>
+        <div class="capflip-back">
+          <div class="cb-h">Detalle por venture</div>
+          <div class="cb-row"><span><b>Reshore</b> <span class="cb-d">$1M contribución Gastón + $200K cash</span></span><span class="cb-v">$1,200,000</span></div>
+          <div class="cb-row"><span><b>La Chamana</b> <span class="cb-d">incl. pendientes: Selfina $250K + Gastón $400K</span></span><span class="cb-v">$950,080</span></div>
+          <div class="cb-row"><span><b>Casa Manantial</b> <span class="cb-d">10% equity (Selfina)</span></span><span class="cb-v">$300,000</span></div>
+          <div class="cb-row"><span><b>LAK3</b> <span class="cb-d">a costo (corregido 19-jul)</span></span><span class="cb-v">$87,966</span></div>
+          <div class="cb-row"><span><b>Panambi</b> <span class="cb-d">GP deployado (+$25K LP committed)</span></span><span class="cb-v">$25,000</span></div>
+          <div class="cb-row"><span><b>Cash (Mercury)</b> <span class="cb-d">saldo vivo 13-jul · métrica aparte</span></span><span class="cb-v">$7,780</span></div>
+          <div class="cb-hint">clic para volver</div>
+        </div>
+      </div></div>
+        <div class="stats">
+          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$7.8K</div><div class="leg">Mercury · 13-jul</div></div>
+          <div class="stat"><div class="l">BOTH runway</div><div class="n" style="font-size:19px">jul-27</div><div class="leg">post deploy $200K · /au 28-jul</div></div>
+          <div class="stat"><div class="l">Próximo LP deploy</div><div class="n" style="font-size:19px">$1M</div><div class="leg">Mitrani · platform · esta semana</div></div>
+          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Otros</div><div class="n">4 · 3 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
+          <div class="stat span"><div><div class="l">Health · G / Y / R <span style="color:var(--amber);font-weight:600">· cero flips</span></div><div class="n">2 · 5 · 3</div></div>
+            <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
+        </div>
+        <div style="padding:0 14px 12px">
+          <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Capital highlights</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Dos frentes de caja mejoraron y <b style="color:var(--t-1)">ningún color cambió</b>: Reshore fondeado ($400K, runway ~1 año) y La Chamana cerrando <b style="color:var(--t-1)">dos meses cash-flow positive</b>. Los gates estructurales — firma Zenith, visibilidad mid-term, vehículo de $33M — no se movieron. <b style="color:var(--t-1)">Legal:</b> contrato La Observadora canónico y listo para firma; Suki cerrado en $5K/mes con cláusulas a redactar.</div>
+        </div>
+        <div style="padding:0 14px 14px">
+          <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Revenue · Net income por proyecto · último mes cerrado (junio)</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Proyecto</th><th style="padding:4px 6px;font-weight:600">Capital invertido</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
+            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$26.2K <span style="color:var(--t-3)">jun</span></td><td style="padding:5px 6px;color:var(--red)">−$5.8K jun</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$950K</td><td style="padding:5px 6px">$34.1K <span style="color:var(--t-3)">jun</span></td><td style="padding:5px 6px;color:var(--red)">−$11.2K jun · <span style="color:var(--green)">jul+ago CF+</span>, desagregado pendiente</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$1.2M</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$92.8K jun (accrual) · <span style="color:var(--green)">$400K fondeados, runway ~1 año</span></td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$88K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── VENTURE FIELD ── -->
+    <section>
+      <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">un card por venture · salud · foco · endgame · financials · riesgos curados · estado consolidado de todas las fuentes</span></div>
+      <div class="filterbar">
+        <span class="flabel">Filtrar</span>
+        <button class="fbtn active" data-f="all">Todo</button>
+        <span class="fsep">tags</span>
+        <button class="fbtn" data-tag="flagship">Flagship</button>
+        <button class="fbtn" data-tag="sidequest">Side Quest</button>
+        <button class="fbtn" data-tag="passive">Passive</button>
+        <button class="fbtn" data-tag="network">Network</button>
+        <button class="fbtn" data-tag="wildcard">Wild Card</button>
+        <span class="fsep">status</span>
+        <button class="fbtn fg" data-health="g">Green</button>
+        <button class="fbtn fy" data-health="y">Yellow</button>
+        <button class="fbtn fr" data-health="r">Red</button>
+      </div>
+      <div class="ventures">
+
+        <!-- Manantial -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Daiana <span class="fresh y">carry · 07-27</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Podcast — el frente caliente:</b> cerrar el gap de presupuesto. CAPEX $5,800 equipos + $2,400 productor (8 episodios) ≈ <b>$8,200</b> contra <b>$4,000</b> de revenue confirmado → <b>gap ~$4,200</b></span><span class="li">Autorización de Gastón para pedirle <b>sponsorship a Henry ($4–5K)</b> → después contactar a Henry</span><span class="li">Confirmar que <b>Mike traiga las cámaras el 18-ago</b> (evita el 60% de tributación por importación)</span><span class="li">Dos presentaciones comerciales: una para sponsors (Marco), una para speakers (Tomi)</span><span class="li"><b>Objetivos Q3</b> (due 07-ago) + <b>crecimiento de members</b> — 2/mes contra objetivo mayor, sin CRM hasta fin de año</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Presupuesto del estudio cerrado y desglosado</b> — CAPEX separado de operating costs</span><span class="li">✅ <b>Suki cerrado en $5K/mes fijo</b> (vs $7.5K inicial / $4K contraoferta), con cláusulas a redactar</span><span class="li">✅ <b>Contrato La Observadora</b> — la versión con markup de Gastón es la canónica, lista para firma</span><span class="li">✅ <b>Studio design philosophy</b> definida: self-service, cualquier member prende luces, consola y graba</span><span class="li">✅ Tercera cámara reducida a improvisación con equipos existentes</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin `/vu` nuevo — card del 27-jul.</b> Todo lo de arriba viene de tres sesiones mineadas (podcast 03-ago, legal 03-ago, sync 28-jul). El foco se corrió del ops split al <b>presupuesto del podcast</b>, que ahora tiene un gap cuantificado y tres riesgos nuevos. El crecimiento de members apareció como bloqueante nombrado por primera vez.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Operación autosustentada cashflow-positiva — base de ingresos recurrentes que cubre toda la estructura, sin subsidio. Cruzar break-even ~70 members; Punta Crypto como anchor de summit recurrente.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>Junio cerrado (QB, base caja) · carry:</b> Rev <b>$26,163</b> · Net <b>−$5,809</b> (vs mayo −$11,262 — la pérdida se cortó ~a la mitad) · Cash $75,111 (31/05) · runway proy. <b>enero 2027</b> · H1 income $164,128 / net −$34,530 · <b>Nota:</b> facturación local SAS arranca <b>agosto</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion (gate estructural · 47 de 70 members) · H/H</span><span class="chip r"><span class="d"></span>🆕 Tributación por importación de equipos supera presupuesto · H/H · mitigando</span><span class="chip y"><span class="d"></span>🆕 Presupuesto $8.2–11.8K vs revenue confirmado $4K · M/H</span><span class="chip y"><span class="d"></span>🆕 Crecimiento de members stalling (2/mes, sin CRM) · M/H</span><span class="chip y"><span class="d"></span>🆕 Henry no autoriza el sponsorship o pone condiciones · M/H</span><span class="chip y"><span class="d"></span>🆕 Speakers no cierran a tiempo · M/H</span><span class="chip o"><span class="d"></span>Tini low confidence / capacity · H/H</span></div>
+          <div class="vq"><b>Podcast:</b> ¿va el pedido a Henry, se recorta scope, o se corre el rodaje? El gap son ~$4,200 y bloquea el kick-off. <span class="qv">— Gastón / Daiana</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">Amarillo hasta break-even — criterio explícito. El runway es el gate estructural (~enero-27) y sigue perdiendo con 47 de 70 members, aunque <b>junio cortó la pérdida a la mitad</b>. Lo nuevo del ciclo no cambia el color: el podcast es una apuesta de revenue con un gap de $4.2K sin cerrar, y el crecimiento de members se nombró stalling por primera vez (2/mes).</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Cierre junio (QB, base caja)</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$26,163</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net earnings</span><b style="color:var(--red)">−$5,809</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Caja (31/05)</span><b style="color:var(--t-1)">$75,111</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>H1 neto (ene–jun)</span><b style="color:var(--red)">−$34,530</b></div></div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- Punta Crypto -->
+        <article class="vcard" data-health="g" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene <span class="fresh r">stale · card 07-14</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Casa Manantial</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Escribir el plan del evento</b> — René consiguió los decks de los eventos blockchain de Rio: <i>"now I have everything I need to write the plan"</i></span><span class="li">Deck de ventas + validación de pricing operacional con Daiana → presentar a Gastón</span><span class="li">Ventana <b>ago–sep de sponsor sell-down comprimida</b> — target Maldonado Intendencia en paralelo</span><span class="li">🆕 Definir <b>qué se le pide concretamente a OpenZeppelin</b> (ver highlight de red abajo)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Decks de referencia de Rio conseguidos</b> — desbloquea la escritura del plan</span><span class="li">✅ <b>Modelo observador adoptado como template</b> para la primera edición</span><span class="li">🆕 <b>Highlight de red:</b> <b>Demi Brener</b> (CEO OpenZeppelin) presentado a <b>Alec Oxenfeld</b> (embajador argentino en USA) para acceso a modelos avanzados de ciberseguridad crypto. Crédito a <b>Boris vía Floro</b> (mano derecha de Alec). La pata crypto/ciberseguridad se registra acá por decisión de Gastón; el carril de AI labs queda en Quantum</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin `/vu` nuevo — card del 14-jul (3 semanas).</b> El movimiento real está en el sync del 28-jul: René pasó de "validar pricing" a tener todo para escribir el plan. Y apareció un canal de red nuevo (Floro → Alec) que alimenta <b>Punta Cripto y Quantum a la vez</b> — riesgo operativo de duplicar outreach sobre el mismo contacto.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> <b>USD 120,000 net</b> post-evento en la primera edición. Vehículo de monetización recurrente que financia la plataforma Casa Manantial.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Target <b>$200K net/año</b> ($120K CM + $80K BOTH) · modelo validado en 4 triggers: break-even <b>$276K</b> · max sponsorship <b>$920K</b> · tickets Día 2: Early $200 / General $500 / Summit Pass $1,500</span></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Pricing sponsors + tickets sin validar vs benchmark · H/M</span><span class="chip o"><span class="d"></span>Modelo año-1 frágil · H/M</span><span class="chip o"><span class="d"></span>Curation ↔ execution mismatch de escala · M/H</span><span class="chip y"><span class="d"></span>🆕 Un solo canal (Floro/Alec) alimenta 2 ventures — duplicar outreach</span></div>
+          <div class="vq"><b>Plan escrito:</b> ¿qué fecha nos comprometemos, dado que la ventana ago–sep ya está comprimida? Y ¿qué se le pide a OpenZeppelin? <span class="qv">— Rene</span></div>
+        </article>
+
+        <!-- Photonic Lab -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene <span class="fresh r">stale · card 07-06</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$15K</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Planning de Incubación Fase A durante agosto</b> — presupuesto + scope a confirmar, para arrancar ejecución en <b>septiembre</b></span><span class="li"><b>Renumeración de gates sigue abierta</b> — gate de Gastón, con go-live corrido a <b>2028</b></span><span class="li">Ejecutar sobre wet-lab stand-alone GMP-ready (el menú A/A+/B ya está retirado)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Pack de Pre-Incubación CERRADO (30-jul)</b> — 4 docs canónicos + 6 retirados + roadmap extendido + <b>informe de cierre de 1 página con vista sistémica</b>; sección del pack cableada en Notion con links absolutos y filas pre-canon reparadas</span><span class="li">✅ <b>Pitch Institucional V0.3.0 publicado (03-ago)</b> — pasada de copy + énfasis (LLM, 900+, Manantial.BUILD, Qualia+ 15) y reparación de merge-conflict markers que habían quedado en el tile de Qualia+</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin `/vu` nuevo — card del 06-jul.</b> El trabajo real de las dos últimas semanas está en git, no en la card: el <b>pack de pre-incubación se cerró el 30-jul</b> y el pitch institucional se publicó en V0.3.0 el 03-ago. Con eso, la etapa de pre-incubación queda documentalmente completa y lo único que queda abierto del lado de Gastón es la <b>renumeración de gates</b> con go-live 2028.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Lab de bioproducción GMP-tier <b>all-in Zona Franca</b> sirviendo el white space regional — analítica como core de caja + capa in-silico como booster. Tres etapas: <b>pre-incubación (cerrada) → incubación → go-live 2027/28</b>.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Modelo v3 sin cambios: hard CAPEX $1.48M · escenario ZF: <b>raise ~$2.05M · EBITDA+ Y2/Y3</b> (<b>fragilidad:</b> el break-even se apoya en la capa in-silico) · <b>presupuesto de Incubación Fase A: a confirmar en agosto</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Costeo real de puesta en marcha del facility = incógnita · H/H</span><span class="chip y"><span class="d"></span>Presupuesto de Incubación Fase A sin confirmar — podría correr septiembre · M/H</span><span class="chip o"><span class="d"></span>Falta de commitment interno 5+ años como flagship · M/H</span><span class="chip o"><span class="d"></span>🆕 Plan operativo podría no alinear con expectativas · M/M</span><span class="chip y"><span class="d"></span>Fragmentación documental · H/M · <b>mitigando</b> (pack + Notion)</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">La pre-incubación cerró completa y bien documentada — pack canónico el 30-jul, pitch V0.3.0 el 03-ago. Sigue Amarillo porque <b>el presupuesto y el scope de Incubación Fase A todavía se definen durante agosto</b>, y porque la <b>renumeración de gates</b> sigue siendo un gate abierto de Gastón con el go-live ya corrido a 2028. El costeo real de puesta en marcha del facility sigue siendo una incógnita H/H.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- Quantum -->
+        <article class="vcard flip" data-health="r" data-tags="sidequest"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Gaston <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Photonic</span></div></div><span class="hp r"><span class="d"></span>Red</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Bitcoin Foundation</b> — ejecutar el outreach</span><span class="li"><b>Call con Floro</b> para explorar financiamiento desde <b>AI labs</b> — la máquina como capacidad de cómputo, no como activo de infra multilateral. 🆕 <b>La vía ya tiene mecánica: intros en curso a Anthropic y Mythos 5</b> por la red de Floro</span><span class="li"><b>Seguir SoftBank</b> tras el contacto inicial</span><span class="li"><b>Sostener BID Invest</b> — la intro vía Maggie a leadership sigue en pie (6–9 meses) + LPs directos en paralelo</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Outreach a SoftBank enviado</b> — primer track no-multilateral abierto</span><span class="li">🆕 <b>Dos vías nuevas identificadas:</b> Bitcoin Foundation (por contactar) + AI labs vía Floro, esta última ya con intros en curso a Anthropic y Mythos 5</span><span class="li">📌 <b>Confirmación de Gastón:</b> los cuatro carriles corren <b>en paralelo</b>, ninguno pasa a principal, BID Invest no queda desactivado</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>/vu 03-ago:</b> lo que cambió no es el diagnóstico sino <b>la superficie de búsqueda</b> — se abrió capital más allá de los multilaterales. Cuatro carriles ahora: BID Invest, SoftBank, Bitcoin Foundation, AI labs. <b>Cero compromisos en los cuatro.</b> Gastón sostiene el Red y confirma que ninguno reemplaza al otro.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Uruguay como hub regional quantum-AI; BOTH con ownership en el activo local + equity en la red. Sin cambios.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — exploración, sin P&amp;L. Ask <b>USD 33M</b> (30 capex + 3 opex) · máquina <b>$30M</b> · Gastón hasta <b>$500K</b> equity propio · BID Lab capeado en $1M = <b>3% del ask</b> · <b>ningún vehículo institucional confirmado al día de hoy</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Gap de financiamiento: $33M sin vehículo confirmado · H/H · <b>se ensancha</b></span><span class="chip r"><span class="d"></span>Perder la allocation ante un competidor regional (slot first-come) · H/H</span><span class="chip y"><span class="d"></span>Stake minoritario de BOTH en la URU co — economics/control TBD · H/H</span><span class="chip y"><span class="d"></span>Riesgo geopolítico regional / gobierno US · M/H</span><span class="chip y"><span class="d"></span>IonQ no comparte pricing · H/H</span><span class="chip y"><span class="d"></span>Cifras de tracción headline sin verificar · H/H</span></div>
+          <div class="vq"><b>Financiamiento:</b> de los cuatro carriles, ¿cuál tiene <b>fecha</b>? Y las intros a Anthropic / Mythos 5 — ¿quién las ejecuta: Alec, Floro, Gastón? Sigue pendiente de confirmar. <span class="qv">— Gaston</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">¿Por qué Red?</div><div class="fb-body"><b>Más tracks no es más certeza.</b> Cuatro puertas abiertas, cero compromisos, y un slot que es first-come con Brasil y Argentina activos. El ask de $33M sigue sin vehículo institucional: BID Lab capea en $1M (3%), BID Invest son 6–9 meses, SoftBank recién contactado, Bitcoin Foundation sin contactar. El único carril con mecánica concreta es <b>AI labs vía Floro</b> — y depende de un contacto personal cuya ejecución todavía no está confirmada. Los términos del stake de BOTH en la URU co siguen TBD.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- Reshore -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$1.2M</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Zenith — cerrar la firma.</b> Sin fecha comprometida desde el gate perdido del 24-jul; la causa es <b>estacional (verano hemisferio norte)</b>, no una objeción de fondo. Riesgo real: que la estacionalidad congele los carriles paralelos. Posición vigente: revenue share 10–15%, portfolio protection acotada a invoices del cliente, exclusividad con carve-outs por producto/geografía — <b>mientras no firme, el carve-out geográfico es palanca activa</b></span><span class="li"><b>Arreglar el quote cost calculation</b> — sigue off-basis; es la pantalla que se muestra a inversores y a fábricas</span><span class="li"><b>Mike ↔ Embajador mexicano en USA</b> — línea de <b>$150M del gobierno mexicano sin deployear</b> (identificada por Sergio)</span><span class="li">Webhooks Zenith con Antonio (hoy simulados) · <b>Xepelin</b> pilot (falta underwriting + brief de Felipe) · <b>Mundi</b> reclamar el white-label real · <b>JPM/DFC</b> empujar el ask de $25M · <b>Exim</b> armar la presentación del flow intercompany (Mike + Sergio)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>$400K fondeados</b> — los $200K de Mike deployados + los segundos $200K de BOTH vía <b>SAFE a cap $12M</b></span><span class="li">✅ <b>Runway ~1 año.</b> Número de <b>Connie (CFO de Reshore)</b>; Daiana en el loop</span><span class="li">❌ <b>Zenith sigue sin firmar</b> — sin fecha nueva. Causa: verano del hemisferio norte, no renegociación. Valuación queda en <b>$12M</b></span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>/vu 03-ago: el frente de caja se resolvió.</b> Reshore pasó de "la caja propia se termina a fin de julio" a <b>$400K fondeados con ~12 meses de runway</b>. Es el alivio estructural más grande del portfolio este ciclo. El Yellow lo sostiene sólo la <b>firma de Zenith</b>, ahora con la causa nombrada (estacionalidad) y la valuación clavada en $12M.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Un banco para manufacturers que venden a USA; escala sobre capital de terceros (facility Zenith), no sobre balance propio.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>$400K fondeados · runway ~12 meses</b> — cifra de <b>Connie, CFO de Reshore</b> (Daiana en el loop). Valuación <b>$12M</b>. Junio cerrado: revenue <b>$0</b> (pre-revenue) · net junio <b>−$92,846</b> (cash burn −$42,620) · caja cierre junio $33,678 · accrued contractor liab $423.8K</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Quote cost calculations off-basis · H/H</span><span class="chip y"><span class="d"></span>Exclusividad Zenith puede bloquear el lending propio (el carve-out geográfico expone la línea MX de $150M) · M/H</span><span class="chip y"><span class="d"></span>Exim timeline slip · M/H</span><span class="chip y"><span class="d"></span>Stack embedded finance complejo — 6 entidades · M/H</span><span class="chip y"><span class="d"></span>Estructura Exim novel/regulatoria · M/M</span><span class="chip y"><span class="d"></span>Primera transacción se corre a Q1 2027 · M/H</span></div>
+          <div class="vq"><b>Zenith:</b> si la demora es estacional, ¿cuál es la fecha realista de firma y qué pasa si se corre a septiembre? ¿Los carriles paralelos avanzan sin la firma o se congelan con ella? <span class="qv">— Gaston</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">La caja dejó de ser el problema: <b>$400K fondeados, runway ~1 año</b> (Connie, CFO). El Yellow lo sostienen dos cosas: <b>Zenith sigue sin firmar y sin fecha</b> — lo que deja la valuación clavada en $12M y hace que el riesgo "primera transacción a Q1-27" suba cada semana — y el <b>quote cost calculation off-basis</b>, que es literalmente la pantalla que ven inversores y fábricas. La demora de Zenith es estacional, no una objeción: eso baja el riesgo de fondo pero no destraba nada.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Posición de caja</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Fondeado</span><b style="color:var(--green)">$400,000</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Runway (Connie)</span><b style="color:var(--t-1)">~12 meses</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Valuación</span><b style="color:var(--t-1)">$12M</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net junio (accrual)</span><b style="color:var(--red)">−$92,846</b></div></div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- La Chamana -->
+        <article class="vcard flip" data-health="r" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gastón <span style="opacity:.6">(Daiana soporte)</span> <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$950K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Sostener el pipeline de partnerships</b> — es el canal que está convirtiendo</span><span class="li"><b>Atacar la visibilidad de bookings a mediano plazo</b> — hoy la conversión ocurre last-minute y no hay forma de proyectar más allá del mes en curso</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Julio levantó con reservas de último minuto → mes cash-flow positive.</b> Cierra el frente "ocupación julio casi-cero" y resuelve el revenue fantasma de $13K que quedó a validar el 20-jul</span><span class="li">✅ <b>Agosto también cash-flow positive</b> — misma mecánica: last-minute</span><span class="li">✅ <b>Pipeline vía partnerships funcionando</b></span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>/vu 03-ago: el riesgo migró de lugar.</b> Dos meses cash-flow positive cerraron los dos riesgos de ocupación/pipeline — <i>por los hechos</i>, no por mitigación. Pero el Red se sostiene y cambió de razón: ya no es <b>"no hay reservas"</b>, es <b>"las reservas no son visibles con antelación"</b>. Cada mes se resuelve en sus últimos días y no hay proyección posible.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Operación cash-flow positive + optionalidad de venta vía Christie's (2.0–2.5× costo de obra). <b>La pata operativa se cumplió dos meses seguidos</b> — sin visibilidad mid-term todavía no se puede llamar sostenido.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>Julio y agosto cash-flow positive (per Gastón)</b> — desagregado y cifras <b>pendientes de Daiana</b>. Referencia previa (junio cerrado, 20-jul): revenue $32.3K · fijos $16.3K · variables $9.7K · banco $64K · deuda Pato $100K</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🆕 Sin visibilidad de bookings ni cash flow a mediano plazo — conversión last-minute · H/H · <b>razón declarada del Red</b></span><span class="chip r"><span class="d"></span>Caja / runway · H/H · vigente pese a los dos meses positivos</span><span class="chip r"><span class="d"></span>Atribución de leads ambigua entre partners · H/H · <b>se agrava</b> (partnerships es ahora el canal que convierte)</span><span class="chip y"><span class="d"></span>México ops / ambiente tóxico · H/M</span><span class="chip y"><span class="d"></span>Plan de reducción rompe roles / confianza del staff · H/H · carry</span><span class="chip y"><span class="d"></span>Costos variables sin ROI-gate · M/H</span></div>
+          <div class="vq"><b>Criterio de salida:</b> dos meses cash-flow positive y sigue Red. ¿Cuál es la evidencia concreta que lo saca? ¿Visibilidad a 60 días, a 90? Sin criterio explícito, "sostenido" se vuelve permanente. <span class="qv">— Gastón / Daiana</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">¿Por qué Red?</div><div class="fb-body">No es por el mes: <b>julio y agosto cerraron cash-flow positive</b>, los dos por reservas de último minuto. Es por <b>falta de visibilidad de cash flow y de bookings a mediano plazo</b> — la conversión ocurre last-minute y no es proyectable más allá del mes en curso. Dos meses positivos no dan proyección. Además, con partnerships convertido en el canal que trae, el riesgo de <b>atribución ambigua de leads entre partners</b> se agrava en vez de aliviarse.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Últimos meses</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Julio</span><b style="color:var(--green)">cash-flow positive</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Agosto</span><b style="color:var(--green)">cash-flow positive</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Visibilidad mid-term</span><b style="color:var(--red)">—</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Junio (ref.)</span><b style="color:var(--t-1)">rev $32.3K · banco $64K</b></div></div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- B_V® |OS -->
+        <article class="vcard flip" data-health="y" data-tags=""><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano <span class="fresh r">stale · card 06-29</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Commitear + deployar el garbled-audio quality gate</b> — construido, <b>sigue en el working tree sin commitear</b> (5 semanas)</span><span class="li">🆕 <b>Scope gate en el webhook del miner</b> — hoy entró una llamada de finanzas personales al vault compartido y generó 2 decisiones, 2 riesgos H/H "curados" y 2 tareas de Asana</span><span class="li">🆕 <b>Validación del slug de venture</b> contra <code>config/ventures.json</code> — una sesión legal de Casa Manantial quedó archivada entera bajo Panambi</span><span class="li">🆕 <b>5 rechazos 401 del webhook hoy</b> (21:03 → 21:59) — hay algo pegándole con key no registrada, sin diagnosticar</span><span class="li"><b>Sobremesa</b> — SOW + plan técnico escritos, <b>esperando OK de Dai y René</b>; nada se ejecuta antes</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Pack de Photonic cerrado end-to-end</b> — 4 docs canónicos, sección en Notion con links absolutos, filas pre-canon reparadas, informe de cierre de 1 página</span><span class="li">✅ <b>Photonic V0.3.0 publicado</b> + fix de merge-conflict markers que habían quedado en producción</span><span class="li">✅ <b>Sobremesa: SOW + anexo técnico</b> con recon <b>verificada contra la API de Drive</b>, no asumida: no existe transcript de ninguna charla, los docs de Gemini no tienen timestamps, el connector MCP corta en 10 MB, el mount local sí sirve</span><span class="li">✅ <b>Security weekly scan 03-ago: CLEAN, 0 issues</b></span></div>
+          <div class="row moded moved"><div class="lab">Δ esta semana</div><span class="li"><b>Sin `/vu` desde el 29-jun (5 semanas)</b> — todo lo de arriba se reconstruyó desde git. El hallazgo del ciclo no es un build: <b>el miner escribió al vault compartido cosas que no son del registro</b> (una llamada personal, una sesión mal ruteada). El quality gate que ataca esta clase de problema sigue sin commitear desde que se construyó.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Synergy se vuelve el operating fabric confiable del equipo: cada reunión capturada, cada decisión/riesgo/tarea curada sin re-chequear, el pulso de cada venture visible de un vistazo.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Sin P&amp;L (OS interno) — el costo <i>es</i> el stack. Run-rate ~<b>$650/mes</b> (Anthropic Team ~$625 + Cloudflare Workers $5). <b>Incidente sin cerrar:</b> ~$100 en un día / 2.8B tokens en la cuenta personal de Gastón (05-jun) — causa nunca identificada, tarjeta cancelada, <b>nunca reconciliado contra billing real</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Quality gate sin deployar — 5 semanas desde que se construyó · H/H</span><span class="chip r"><span class="d"></span>🆕 El miner no tiene scope gate — mineó una llamada personal al vault compartido · H/H</span><span class="chip r"><span class="d"></span>Registro creciendo más rápido que la curación — 250 archivos <code>tier: curated</code> vs ~40 reclamados · H/H</span><span class="chip y"><span class="d"></span>Marian fragmentado en 8+ ventures concurrentes · H/H · mitigando</span><span class="chip y"><span class="d"></span>🆕 5× 401 del webhook hoy sin diagnosticar · M/M</span></div>
+          <div class="vq"><b>Asana:</b> 257 overdue, 0 cerradas en dos semanas. ¿Purgamos el backlog o cambiamos el rol de la herramienta? <span class="qv">— Daiana / Gastón</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">¿Por qué Yellow?</div><div class="fb-body">La capa de publicación y el pipeline de mining funcionan — el pack de Photonic salió completo, V0.3.0 está publicado, el security scan está CLEAN. Lo que no funciona es <b>el juicio del registro</b>: hoy el miner escribió al vault compartido dos cosas que no le corresponden (una llamada personal y una sesión ruteada al venture equivocado), y el <b>quality gate</b> construido hace 5 semanas para exactamente esta clase de problema <b>sigue sin commitear</b>. Sumado a 250 archivos en <code>tier: curated</code> contra ~40 reales, el registro crece más rápido de lo que se cura.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+        <!-- Synergy GTM Toolkit -->
+        <article class="vcard" data-health="y" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Synergy GTM Toolkit</div><div class="vmeta">Mariano <span style="opacity:.6">· Content Factory: Andres</span> <span class="fresh y">carry · 07-30</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Both OS</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Cerrar el MVP gate</b> — campaign creation + SEO keyword research + paid ads (CSV export) + publishing, antes del rollout multi-venture (Bianca, Casa Manantial, Punta Cripto)</span><span class="li"><b>Google Ads API</b> — sin aprobación ni ETA. Hoy sólo CSV export; con la deep API se pushea directo. Google gatea la comercialización: aprobado sólo para uso interno del equipo</span><span class="li">Finalizar el flow de campaign creation + tooltips en el brief form; validar la lógica de merge/stack de keywords <b>antes del launch de Bianca</b></span><span class="li"><b>Content Factory (Andres):</b> definir la <b>estrategia macro de marketing</b> — pendiente declarado desde el 06-jul</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🆕 <b>GTM-Toolkit reencuadrado</b> como toolkit de agencia de marketing AI-driven (cockpit UI + AI brain + red de agentes), arquitectura campaign-centric con <b>11 stages configurables</b> (no todos obligatorios por campaña)</span><span class="li">🆕 <b>MVP scope redefinido a 4 componentes core</b> (decisión de Gastón) · "Create Outreach Campaign" pospuesto · Reporting Fase 1 standalone por canal</span><span class="li">🆕 <b>Roadmap multi-venture:</b> primero single-venture (La Chamana), después el resto · SEO keyword research desde <b>OpenSEO</b> · post-launch: Gastón lidera 1/3 del tiempo</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li">El sync del 30-jul convirtió el toolkit de "build en curso" a <b>producto con scope declarado</b>: 4 componentes core, 11 stages, un tenant primero. La deuda ya no es de arquitectura, es de <b>UX y de aprobación de Google</b>. Carry del ciclo pasado: Bianca todavía no puede loguearse (deploy Stage B/C) y la higiene de secrets sigue pendiente.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo"><b>(DRAFT)</b> Una sola plataforma hosteada donde un operador no-técnico (Bianca) planea, ejecuta y aprueba toda la actividad de GTM — cada campaign leg es una feature, gates human-approved, multi-venture desde el diseño. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Sin P&amp;L propio (folded en el run-rate de B_V OS). Carry del ciclo pasado: <b>primer sobregasto de +$600–700</b> sobre plan en API de Anthropic. Content Factory: <b>pending — pendiente de Daiana</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🆕 Google Ads API sin aprobación ni ETA — gatea el push directo · L/H</span><span class="chip y"><span class="d"></span>🆕 Complejidad de la arquitectura híbrida AI + software · M/H</span><span class="chip y"><span class="d"></span>🆕 Controles de budget sin cablear — no se puede ajustar dinámicamente · M/H</span><span class="chip y"><span class="d"></span>🆕 El chat de Approvals tiene credenciales "full power" · L/H</span><span class="chip o"><span class="d"></span>Bianca todavía no puede loguearse — deploy Stage B/C · H · carry</span><span class="chip o"><span class="d"></span>Higiene de secrets (split + rotación) pendiente · M · carry</span></div>
+        </article>
+
+        <!-- Panambi -->
+        <article class="vcard" data-health="g" data-tags="passive network">
+          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres <span class="fresh r">stale · card 07-06</span></div><div class="vtags"><span class="vtag passive">Passive</span><span class="vtag network">Network</span></div></div><div class="hpwrap"><span class="cashpill">$25K</span><span class="hp g"><span class="d"></span>Green</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Confirmar el <b>timing del desembolso de Selfina</b> — el deployment estaba prometido para julio 2026 y ya estamos en agosto</span><span class="li">Finalizar el DocuSign con Cristis — Andres redlineando trigger-of-sale + cláusulas de exclusividad</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Sin movimiento propio. La adquisición Compa→Cristis quedó confirmada completa el ciclo pasado ($500K pagados)</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li"><b>⚠️ Ojo con el vault:</b> los <b>3 riesgos y 3 decisiones</b> que el miner etiquetó como Panambi el 03-ago (contrato La Observadora, Suki $5K/mes) son de <b>Casa Manantial</b> — quedaron mal ruteados. El estado real de Panambi no cambió: sigue esperando el desembolso de Selfina.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Fondo cerrado con track record — salud mental LatAm como asset class.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">USD <b>25K</b> pendientes de pago; sin P&amp;L propio</span></div>
+          <div class="vrisks"><span class="chip none"><span class="d"></span>Sin riesgo curado propio este ciclo — los 3 nuevos están mal etiquetados (son de Manantial)</span></div>
+        </article>
+
+        <!-- LAK3 -->
+        <article class="vcard flip" data-health="r" data-tags="wildcard"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene <span class="fresh r">hold · card 06-22</span></div><div class="vtags"><span class="vtag wildcard">Wild Card</span></div></div><div class="hpwrap"><span class="cashpill">$88K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Hold posture, sin build activo.</b> Único ítem del lado de BOTH: sync del OnePager v5 a Drive + cerrar la decisión del mirror en Notion</span><span class="li">Re-engage sólo con señal de <b>anchor nombrado</b> o de ejecución de contrato</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">Sin movimiento — hold de capital desde el 08-jun. Arquitectura lockeada (Asset→Vehicle→Anchor→Token, stack dual-token ADGM + BGLD), 3 concesiones de agua ejecutadas (~30B litros)</span></div>
+          <div class="row moved"><div class="lab">Δ esta semana</div><span class="li">Sin cambios. <b>Sin transcripts por diseño</b> — los principales de LAK3 rechazan grabación con AI (decisión política de su lado). El silencio no es abandono: las llamadas ocurren y BOTH arma el contexto a mano.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Vigente)</b> Nueva entidad ADGM, stack dual-token, debut en la UN Water Conference Dubai dic-2026.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Pending — comp de advisory denominada en tokens LAK3 ~$0; <b>sin cash de BOTH comprometido</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🚩 Engagement con Irán / régimen sancionado — exposición OFAC · H/H</span><span class="chip r"><span class="d"></span>Contratos de agua (ICA4) no producidos hace 1 año · H/H</span><span class="chip r"><span class="d"></span>FCA warning vigente sobre LAK3 Company SA (26-feb-2025) · H/H</span><span class="chip r"><span class="d"></span>Los 3 contratos de emisión siguen siendo drafts sin ejecutar · H/H</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">¿Por qué Red?</div><div class="fb-body">El color lo manda el <b>flag de compliance de Irán</b> (escalado por René el 23-jun): engagement de LAK3/LAKE con un régimen sancionado, con exposición OFAC/legal/reputacional, hasta que el stand-down se confirme. Debajo de eso: el <b>FCA warning</b> sigue vivo online, los tres contratos de emisión siguen siendo drafts con placeholders, y los contratos de agua (ICA4) no se produjeron en un año. El sustrato es real — 3 concesiones ejecutadas, ~30B litros — pero todos los gates son externos y no corren en el reloj de BOTH.</div><div class="fb-hint">clic en el pill para volver</div></div></div></article>
+
+      </div>
+    </section>
+
+  </div>
+
+  <section class="qsection">
+    <div class="field-h"><span class="t">Questions for Tuesday</span><span class="d">decisiones que requieren al grupo — espejo de las preguntas de cada card</span></div>
+    <ol class="qlist">
+      <li><b>La Chamana:</b> dos meses cash-flow positive y sigue Red. <b>¿Cuál es la evidencia concreta que lo saca de Red?</b> ¿Visibilidad a 60 días, a 90? Sin criterio explícito, "sostenido" se vuelve permanente. <span class="qv">— Gastón / Daiana</span></li>
+      <li><b>Reshore:</b> si la demora de Zenith es estacional, <b>¿cuál es la fecha realista de firma y qué pasa si se corre a septiembre?</b> ¿Los carriles paralelos (Xepelin, Mundi, MX) avanzan sin la firma o se congelan con ella? <span class="qv">— Gaston</span></li>
+      <li><b>Quantum:</b> de los cuatro carriles, <b>¿cuál tiene fecha?</b> Y las intros a Anthropic / Mythos 5: ¿quién las ejecuta — Alec, Floro, Gastón? Está registrado como pendiente de confirmar. <span class="qv">— Gaston</span></li>
+      <li><b>Punta Cripto:</b> René tiene todo para escribir el plan. <b>¿Qué fecha nos comprometemos para el plan escrito</b>, dado que la ventana ago–sep ya está comprimida? Y <b>¿qué se le pide concretamente a OpenZeppelin?</b> <span class="qv">— Rene</span></li>
+      <li><b>Manantial:</b> el podcast tiene un gap de ~$4,200. <b>¿Va el pedido a Henry, se recorta scope, o se corre el rodaje?</b> Decisión de Gastón, y bloquea el kick-off. <span class="qv">— Gastón / Daiana</span></li>
+      <li><b>Asana:</b> 257 overdue, 0 cerradas en dos semanas. <b>¿Purgamos el backlog o cambiamos el rol de la herramienta?</b> <span class="qv">— Daiana / Gastón</span></li>
+      <li><b>Sprints:</b> ¿ratificamos Sprint 5 (08-04 → 08-18) con wins escritos al vault, o <b>retiramos formalmente la cadencia</b>? Lleva dos ciclos reportándose "a ratificar" sin ratificarse. <span class="qv">— Mariano / Gaston</span></li>
+      <li><b>Foco 6 meses:</b> estabilizar Casa Manantial + La Chamana operativamente es la decisión más consecuente del ciclo. <b>¿Qué se despriorizea explícitamente para que eso sea real?</b> <span class="qv">— Gaston</span></li>
+    </ol>
+  </section>
+
+  <!-- ══ APPENDIX — B: THE REST ══ -->
+  <details class="appendix">
+    <summary>
+      <span class="ax-key">B</span>
+      <div><div class="ax-title">El resto del reporte</div><div class="ax-sub">áreas · decisiones · registro de riesgos · Asana · temas cross-cutting</div></div>
+      <span class="ax-toggle"><span class="show">Abrir</span><span class="hide">Cerrar</span><span class="ax-chev">▾</span></span>
+    </summary>
+    <div class="rest">
+
+      <p class="lead"><b>A</b> es el tablero — el control panel de un vistazo. <b>B</b> es la materia prima: decisiones, registro completo de riesgos, áreas, Asana y temas transversales.</p>
+
+      <div class="freshbar"><span class="fb-h">Estado de actualización</span><span class="fb-t"><b>3 de 10 ventures</b> corrieron <code>/vu</code> este ciclo — La Chamana, Reshore y Quantum, <b>las tres de Gastón, el mismo día (03-ago)</b>. <b>1 de 5 áreas</b> está al día (Operations, 28-jul); las otras cuatro tienen entre 5 y 6 semanas. <b>6 cards son carry o stale</b> y se reconstruyeron desde git, mining y Asana — Synergy está <b>infiriendo</b> el estado en vez de recibirlo. Health <b>G2 / Y5 / R3</b>, <b>idéntico a la semana pasada: cero flips</b>. Capital a costo <b>$2,563,046</b> — lectura del 19-jul, sin refresh este ciclo.</span></div>
+
+      <h2>Sprint Board <em>· 08-04 SÍ es boundary (Sprint 4 = 07-21 → 08-04)</em></h2>
+      <p>Y no hay estado de sprint que certificar: <strong>el Sprint 4 se propuso en el Sync del 27-jul y nunca se escribió al vault.</strong> Los bloques <code>## Current Sprint</code> siguen diciendo <b>Sprint 3</b> (07-07→07-21) en Photonic y <b>Sprint 1</b> (09-jun→23-jun) en Both OS.</p>
+      <table>
+        <thead><tr><th>Venture</th><th>Win (comprometido)</th><th>Veredicto</th><th>Carries</th></tr></thead>
+        <tbody>
+          <tr><td>Photonic Lab</td><td><em>Sprint 4 nunca abierto</em> — el candidato era: planning de Incubación Fase A + presupuesto confirmado</td><td>⚠ <b>sin estado</b> — el pack de pre-incubación sí cerró el 30-jul, lo que habría sido un hit holgado</td><td>n/a</td></tr>
+          <tr><td>Both OS</td><td>Sprint 1: Biweekly Sprint + Control Panel A ratificado</td><td>🔴 <b>miss</b> — 8 semanas después el bloque sigue en Sprint 1 y el Control Panel A no está live</td><td>2 ⚠ <b>stuck</b></td></tr>
+          <tr><td>LAK3</td><td>— (en pausa desde 22-jun)</td><td>⚪ pausado</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p><em><b>Decisión que pide la cadencia:</b> ratificar Sprint 5 (08-04 → 08-18) con wins escritos al vault, <b>o retirar formalmente la cadencia de sprints</b>. Lleva dos ciclos reportándose como "a ratificar" sin ratificarse — es la definición de un proceso que no está corriendo.</em></p>
+
+      <h2>Resúmenes por área</h2>
+
+      <h3>Operations &amp; Finance — Daiana <em>· `/au` 28-jul — la única área al día</em></h3>
+      <p><strong>Foco:</strong> entra el <b>$1M del LP</b> esta semana; BOTH despliega <b>$200K en Reshore</b> (de los $400K que necesitaba; el resto de otros inversores) — efecto en el box: runway BOTH pasa a <b>jul-27</b>. Preparación de cierre de mes. Avanzar <b>Punta Cripto</b> (empaquetado con René) + <b>podcast</b>.</p>
+      <p><strong>Cross-venture:</strong> el <b>capacity overload de Daiana es estructural</b> — nombrado como riesgo en Manantial, La Chamana y Punta Cripto simultáneamente; la delegación se discute <b>dentro del proceso 360</b>, cierre grupal pendiente. Emergió un <b>costing model BOTH→venture</b> (Andrés, 24-jul: cobrar cuando BOTH provee GTM/capabilities, cobro→equity a 6 meses) — <b>toca estructura/equity, requiere Gastón</b>; Daiana no lo puede validar desde el área. (carry) riesgo de continuidad de acceso en La Chamana: Business Manager + cuentas en la cuenta personal de Daiana, a transferir a institucional.</p>
+      <p><strong>Needs:</strong> acreditación del $1M esta semana (gate de caja del portfolio) · timing del deploy $200K a Reshore · (carry) fix de weekly-reporting, depende de Mariano.</p>
+
+      <h3>Capital — Gaston <em>· `/au` 22-jun — 6 semanas stale</em></h3>
+      <p>La lectura de junio (LP Mitrani $1M en julio; tres eventos de capital en paralelo: raise/Quantum, deploy/Reshore, exit/La Chamana) <b>fue superada por los hechos</b>. Lo real hoy, desde las cards: Reshore pasó de "deploy pendiente" a <b>$400K fondeados + runway 1 año</b>; La Chamana pasó de "posible exit" a <b>dos meses cash-flow positive sin visibilidad mid-term</b>; Quantum pasó de un carril multilateral a <b>cuatro carriles en paralelo con cero compromisos</b>. El área necesita un <code>/au</code> — la narrativa LP de tres eventos simultáneos ya no describe el portfolio.</p>
+
+      <h3>Narrative &amp; Comms — Rene <em>· `/au` 30-jun — 5 semanas stale</em></h3>
+      <p>Punta Crypto y Photonic Lab como centro de gravedad, gobierno-como-legitimación como playbook compartido. <b>Desde esa lectura:</b> Photonic cerró el pack de pre-incubación completo (30-jul) y publicó V0.3.0 (03-ago); Punta Cripto pasó de "validar pricing" a <i>"tengo todo para escribir el plan"</i> con los decks de Rio; y apareció un canal de red nuevo (Floro → Alec) que toca Punta Cripto y Quantum a la vez. Tres frentes nuevos que el archivo de área no muestra.</p>
+
+      <h3>Legal &amp; Governance — Andres <em>· `/au` 29-jun — 5 semanas stale</em></h3>
+      <p>Cambio de nombre iniciado, cap tables finalizados, trademarks pagados, orden documental en Google Docs. <b>Desde esa lectura, el escritorio legal real de esta semana:</b> contrato <b>La Observadora</b> — versión con markup de Gastón declarada canónica y lista para firma, con un riesgo H/H nombrado por <b>fragmentación de versiones</b> (múltiples drafts en circulación) · <b>Suki</b> cerrado en <b>$5K/mes fijo</b>, con cláusulas a redactar junto a René (notificación de apertura, régimen de pago post-apertura, triggers de penalidad, plazos) y validación de Gastón antes de presentar · DocuSign de Cristis/Panambi en redline.</p>
+
+      <h3>Tech &amp; Infrastructure — Mariano <em>· `/au` 29-jun — 5 semanas stale; contenido desde git</em></h3>
+      <p><strong>Shipped:</strong> pack de Photonic cerrado end-to-end (4 docs canónicos + Notion + informe de cierre), Photonic V0.3.0 publicado, SOW + anexo técnico de <b>Sobremesa</b> con recon verificada contra la API de Drive, <b>security weekly scan CLEAN</b>.</p>
+      <p><strong>Sin cerrar:</strong> el <b>garbled-audio quality gate sigue sin commitear</b> — 5 semanas desde que se construyó, está en <code>M workers/transcript-miner/src/index.js</code> en el working tree ahora mismo. La tesis del área se sostiene y se agravó: <b>capture funciona, el juicio es el problema abierto</b> — hoy el miner capturó una llamada personal y la escribió al vault compartido con riesgos H/H "curados".</p>
+
+      <h2>Decisiones recientes (28-jul → 03-ago · tier <code>vigente</code>)</h2>
+      <p><em>35 decisiones vigentes en la ventana, mineadas de 8 sesiones. El set de Quantum del 27-jul (Uruguay elegido, NewCo dueña del activo, $33M asset-based sin lead investor, BID Invest en paralelo, 1,000 profesionales) ya se surfaceó en el grid del digest pasado — no se repite acá.</em></p>
+
+      <p class="grp">La Chamana (11) — Owners: Gastón / Daiana / Iru / Admin Operator</p>
+      <ul>
+        <li><b>Reestructura: Bianca sale de la operativa y entra a top-of-funnel con Gastón.</b></li>
+        <li><b>Outreach orgánico es el canal GTM principal</b>; Instagram/Google quedan secundarios.</li>
+        <li><b>Estructura de capital: los gastos de AI/compute (Anthropic) pasan a la venture</b> (type-1, Gastón).</li>
+        <li><b>Fireflies se descontinúa</b>; se mantiene Fullstack.</li>
+        <li><b>MashaLux debe pre-cobrar reservas o el flujo se rechaza</b> (comisión definida).</li>
+        <li>Booking del futbolista validado (4 noches, $4,392/noche, confirmado).</li>
+        <li>No sobre-optimizar perfección en tareas operativas; tolerar imperfección.</li>
+        <li><b>GTM-Toolkit = toolkit de agencia de marketing AI-driven</b> (cockpit + AI brain + red de agentes).</li>
+        <li>Stage selection opcional por campaña — no todos los 11 son obligatorios.</li>
+        <li>Google Ads API restringida a uso interno del equipo (no comercial).</li>
+        <li>Roadmap post-launch: Gastón lidera 1/3 del tiempo (type-3).</li>
+      </ul>
+
+      <p class="grp">Both OS / gobernanza interna (7) — Owners: Daiana / Gastón / Mariano</p>
+      <ul>
+        <li><b>No hay restructure organizacional</b> — se mantiene el modelo founder + champion, se clarifican scopes (type-1, Gastón).</li>
+        <li><b>El scope de Marian queda gatekeepeado por Daiana + Gastón</b>; nada ad-hoc.</li>
+        <li>La dinámica Marian↔René queda <b>deliberadamente sin estructurar</b> (type-1).</li>
+        <li>Daiana + Gastón operan con <b>working agreements bilaterales</b>.</li>
+        <li><b>Daiana es owner del reporte final del 360</b>; Mariano soporte.</li>
+        <li><b>"Safe word" (papas fritas)</b> para señalar sobrecarga.</li>
+        <li>El 1-on-1 René/Mariano se convierte en working session.</li>
+      </ul>
+
+      <p class="grp">Manantial / podcast (5+2) — Owners: Daiana / Rene</p>
+      <ul>
+        <li><b>CAPEX separado de operating costs:</b> USD 5,800 equipos como CAPEX fijo, iluminación se alquila (type-1, René).</li>
+        <li><b>Modelo de ingresos: 4 charlas × $1,000</b> (speakers VBS + Santi/Soulian) = $4,000.</li>
+        <li><b>Studio design philosophy: operacional y self-service</b> — cualquier member prende luces, consola y graba sin fricción (type-1).</li>
+        <li><b>Tercera cámara reducida</b> a improvisación con equipos existentes.</li>
+        <li><em>(propuesta)</em> Pedirle a <b>Henry sponsorship de $4–5K</b> para el CAPEX del estudio.</li>
+        <li>Entrada de miembros debe ser paga (costo de oportunidad).</li>
+        <li>Objetivo de fin de año: <b>Delphi operando autónoma</b>.</li>
+      </ul>
+
+      <p class="grp">Legal / Casa Manantial — ⚠️ mal etiquetadas como Panambi (3) — Owners: Andres / Daiana</p>
+      <ul>
+        <li><b>Contrato La Observadora: la versión con markup de Gastón es la canónica</b> (type-1, Andres).</li>
+        <li><b>Suki: fijo mensual acordado en $5,000</b> (vs $7,500 inicial / $4,000 contraoferta), pago en tiempo y forma desde enero, con cláusulas de penalidad por atraso y triggers por cambio de régimen post-apertura.</li>
+        <li>Benchmark de consumo de Suki: se mantiene el modelo de cálculo actual.</li>
+      </ul>
+
+      <p class="grp">Cross-venture (5) — Owners: Gastón / Daiana / Andrés</p>
+      <ul>
+        <li>🔴 <b>Invertir 6 meses en estabilizar Casa Manantial + La Chamana operativamente</b>; los objetivos ambiciosos de fin de año vienen por Punta Cripto + ventures nuevos (Reshore, Quantum). <em>La decisión de asignación de foco más consecuente del ciclo.</em></li>
+        <li><b>Roadmap de rollout multi-venture:</b> primero single-venture (La Chamana), después el resto (type-3).</li>
+        <li>Arquitectura de producto multi-campaign / multi-tenant / multi-venture.</li>
+        <li><em>(propuesta)</em> El modelo de champion <b>rota por fase</b> — René lidera early-stage.</li>
+        <li><em>(propuesta)</em> Límites claros de entrada/salida de Daiana en proyectos.</li>
+      </ul>
+
+      <p class="grp">Content Factory / paid media (4) — Owners: Gastón / Admin Operator</p>
+      <ul>
+        <li><b>MVP scope redefinido a 4 componentes core</b> (Outreach · SEO · paid · publishing).</li>
+        <li>Posponer "Create Outreach Campaign" en el tab Outreach (type-1).</li>
+        <li>Reporting Fase 1: standalone por canal (Google, Meta).</li>
+        <li>SEO keyword research desde <b>OpenSEO</b> · <em>(propuesta)</em> APIs de paid media sin funcionalidad completa en MVP.</li>
+      </ul>
+
+      <h3>Decisiones — Audit (log tier)</h3>
+      <blockquote><b>2 decisiones en <code>log</code> tier</b> no se listan arriba, y <b>2 más no deberían existir como decisiones de la empresa</b>: el mine de la llamada personal del 03-ago produjo dos "decisiones" <code>vigente/accepted</code> sobre pagos de un hogar particular, hoy archivadas en <code>vault/decisions/</code>. <b>No son decisiones de BOTH y hay que purgarlas</b> — ver Cross-cutting. No se reproduce su contenido acá.</blockquote>
+
+      <h2>Riesgos activos</h2>
+      <p><em>Fuente: la lista de riesgos curados de cada card arriba (la ground truth champion-confirmada), no el grep crudo de <code>vault/risks/</code> — ver la nota de auditoría abajo.</em></p>
+      <table>
+        <thead><tr><th>Riesgo</th><th>Sev</th><th>Venture</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>🆕 <b>Sin visibilidad de bookings ni cash flow a mediano plazo</b> — razón declarada del Red</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Caja / runway — vigente pese a los dos meses positivos</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Atribución de leads ambigua entre partners — <b>se agrava</b></td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Plan de reducción rompe roles operativos / confianza del staff</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td><b>Gap de financiamiento: $33M sin vehículo institucional confirmado</b></td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Perder la allocation ante un competidor regional (slot first-come)</td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Stake minoritario de BOTH en la URU co — economics/control TBD</td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Quote cost calculations off-basis (pantalla investor-facing)</td><td><span class="sev hh">H/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Exclusividad Zenith bloquea el lending propio (expone la línea MX $150M)</td><td><span class="sev mh">M/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Primera transacción se corre a Q1 2027 — sube cada semana sin firma</td><td><span class="sev mh">M/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Runway exhaustion (gate estructural · 47 de 70 members)</td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 Tributación por importación de equipos supera presupuesto</td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>mitigating</td></tr>
+          <tr><td>🆕 Presupuesto $8.2–11.8K vs revenue confirmado $4K</td><td><span class="sev mh">M/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 Crecimiento de members stalling (2/mes, sin CRM hasta fin de año)</td><td><span class="sev mh">M/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 Fragmentación de versiones del contrato La Observadora <em>(archivado bajo Panambi)</em></td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>Costeo real de puesta en marcha del facility = incógnita</td><td><span class="sev hh">H/H</span></td><td>Photonic Lab</td><td>open</td></tr>
+          <tr><td>Presupuesto de Incubación Fase A sin confirmar — podría correr septiembre</td><td><span class="sev mh">M/H</span></td><td>Photonic Lab</td><td>open</td></tr>
+          <tr><td><b>Quality gate sin deployar — 5 semanas</b></td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>🆕 <b>El miner no tiene scope gate — mineó una llamada personal al vault compartido</b></td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>Registro creciendo más rápido que la curación (250 <code>curated</code> vs ~40)</td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>🆕 <b>Sobrecarga / burn-out de Daiana</b> por mantener la vara de performance</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Context-switching costoso cuando Daiana se retira de proyectos</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Marian fragmentado en 8+ ventures concurrentes</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>mitigating</td></tr>
+          <tr><td>🆕 René sigue siendo bottleneck de estrategia + early-stage</td><td><span class="sev mh">M/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Google Ads API sin aprobación ni ETA — gatea el push directo</td><td><span class="sev mh">L/H</span></td><td>GTM Toolkit</td><td>open</td></tr>
+          <tr><td>🚩 Engagement con Irán / régimen sancionado — exposición OFAC</td><td><span class="sev hh">H/H</span></td><td>LAK3</td><td>open</td></tr>
+          <tr><td>FCA warning vigente + 3 contratos de emisión sin ejecutar</td><td><span class="sev hh">H/H</span></td><td>LAK3</td><td>open</td></tr>
+          <tr><td>Pricing sponsors + tickets sin validar vs benchmark</td><td><span class="sev hm">H/M</span></td><td>Punta Cripto</td><td>open</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Cerrados por los hechos (La Chamana, 2):</strong> <code>julio-ocupacion-casi-cero</code> (H/H) y <code>august-pipeline-is-lean</code> (M/H) — ambos meses cerraron cash-flow positive. El riesgo real <b>migró</b> de "no hay reservas" a "las reservas no son visibles con antelación".</p>
+      <p><strong>Sin resolver, pasó el gate:</strong> la firma de Zenith. La causa ahora está nombrada (estacionalidad del hemisferio norte) y eso baja la lectura de riesgo de fondo, pero <b>el riesgo "primera transacción se corre a Q1-27" sigue subiendo con cada semana sin fecha</b>.</p>
+
+      <h3>Riesgos — Audit (log tier)</h3>
+      <blockquote><b>250 archivos siguen en <code>tier: curated</code> y 244 en <code>tier: log</code></b> contra las ~40 curadas que las cards efectivamente reclaman. La brecha <b>creció otra vez</b> (era 173 curated hace dos semanas → 250 hoy) porque el miner escribe <code>tier: curated</code> por default cuando likelihood o impact es high, y nadie curó hacia abajo. La tabla de arriba (sourced de cada card) es la confiable; el conteo crudo es <b>backlog de curación, no el registro activo</b>. Dos ventures lo flagean explícitamente en su propia card: La Chamana (~77 abiertos / ~49 curated) y Quantum (~40 / ~22), ambas con el batch de cierre ofrecido y no ejecutado por segunda o tercera semana.</blockquote>
+
+      <h2>Open Action Items <em>— Asana live snapshot 08-04</em></h2>
+      <p><strong>257 overdue · 9 due this week · 0 completadas (últimos 7 días).</strong> Fuente: BOTH Action Items vía API (<code>asana-fetch-actions.py --as-of 2026-08-04</code>). El overdue subió otra vez (<b>219 → 257</b>, +38) y <b>no se cerró una sola tarea en la semana</b>. Es el <b>segundo ciclo consecutivo con cero checkboxes tildados</b>. Dos de las 9 "due this week" son tareas basura del mine personal de hoy.</p>
+
+      <p class="grp">Overdue heatmap por venture</p>
+      <table class="heat">
+        <thead><tr><th>Venture</th><th>Overdue</th><th>Δ vs 07-27</th></tr></thead>
+        <tbody>
+          <tr><td>Manantial Casa</td><td>88</td><td>+18</td></tr>
+          <tr><td>B_V® |OS</td><td>36</td><td>+5</td></tr>
+          <tr><td>La Chamana</td><td>27</td><td>+6</td></tr>
+          <tr><td>Punta Cripto</td><td>25</td><td>+2</td></tr>
+          <tr><td>Cross-cutting</td><td>23</td><td>+3</td></tr>
+          <tr><td>Photonic Lab</td><td>23</td><td>0</td></tr>
+          <tr><td>Quantum</td><td>15</td><td>0</td></tr>
+          <tr><td>Reshore</td><td>14</td><td>+2</td></tr>
+          <tr><td>LAK3</td><td>3</td><td>0</td></tr>
+          <tr><td>Panambi</td><td>3</td><td>+2</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Due this week (9)</p>
+      <table>
+        <thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr></thead>
+        <tbody>
+          <tr><td>Estudio de stream CM — empujar/coordinar + doc + plan de proyecto → handoff a Tini (PM)</td><td>Daiana</td><td>08-04</td><td>Manantial Casa</td></tr>
+          <tr><td><b>Consolidar y presentar informe 360 + acuerdos semestrales en sesión grupal</b></td><td>Daiana</td><td>08-05</td><td>Cross-cutting</td></tr>
+          <tr><td><em>Enviar detalle de utilities — tarea del mine personal, purgar</em></td><td>—</td><td>08-05</td><td>Cross-cutting</td></tr>
+          <tr><td><em>Coordinar retiro de dinero — tarea del mine personal, purgar</em></td><td>—</td><td>08-06</td><td>Cross-cutting</td></tr>
+          <tr><td>Objetivos Q3 — CM</td><td>Daiana</td><td>08-07</td><td>Manantial Casa</td></tr>
+          <tr><td>Propuesta de estrategia de comunicación interna (nuevos members)</td><td>—</td><td>08-07</td><td>Manantial Casa</td></tr>
+          <tr><td>Board meetings y updates a inversores</td><td>Daiana</td><td>08-07</td><td>Cross-cutting</td></tr>
+          <tr><td>Coordinar logística de chivitos con Magui según inscripción final</td><td>—</td><td>08-08</td><td>Manantial Casa</td></tr>
+          <tr><td>Contactar y confirmar guests del podcast (8 episodios, rodaje septiembre)</td><td>—</td><td>08-10</td><td>Manantial Casa</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Completadas esta semana</p>
+      <p><strong>Ninguna.</strong> 0 tareas cerradas en Asana en los últimos 7 días, en las 10 ventures.</p>
+
+      <h2>Temas cross-cutting</h2>
+      <ul>
+        <li><strong>El registro se está llenando de cosas que no son del registro.</strong> El auto-miner corrió 3 reuniones hoy. Una era <b>finanzas personales de un hogar</b> y entró al vault compartido: generó 2 decisiones <code>vigente/accepted</code>, 2 riesgos marcados <code>curated</code> H/H y 2 tareas de Asana. Otra era una sesión legal de <b>Casa Manantial</b> (La Observadora + Suki) y quedó archivada entera bajo <b>Panambi</b> — 3 riesgos y 3 decisiones en el venture equivocado. Ninguna de las dos es un fallo del modelo: <b>falta un scope gate en el webhook</b> (qué calendarios entran) y <b>falta validación del slug de venture</b> contra <code>config/ventures.json</code>. Acción inmediata: purgar los 4 artefactos personales + retaggear los 6 de Panambi→Manantial, y después el gate.</li>
+        <li><strong>Cero tareas cerradas, segundo ciclo consecutivo.</strong> 257 overdue, +38 en la semana, 0 cerradas. Las decisiones se toman (35 este ciclo) pero Asana no refleja ejecución. Dos lecturas posibles y la mesa tiene que elegir: o el trabajo se hace y no se tilda — entonces Asana es teatro y hay que decidir qué hacemos con él — o el backlog es irreal y hay que hacer una purga como la de julio (108 huérfanas cerradas). <b>No es sostenible reportar 257 overdue todas las semanas como si fuera información.</b></li>
+        <li><strong>La plata mejoró en dos frentes y ningún color cambió.</strong> Reshore fondeado, La Chamana dos meses positivos — y ambos siguen Yellow y Red. Correcto, porque los gates estructurales no se movieron. Pero conviene <b>explicitar el criterio de salida de cada color</b> antes de que "sostenido" se vuelva permanente.</li>
+        <li><strong>Cuatro puertas abiertas no son más certeza que una.</strong> Quantum pasó de un carril (BID) a cuatro (BID Invest, SoftBank, Bitcoin Foundation, AI labs) con cero compromisos y un slot first-come donde Brasil y Argentina están activos. El único carril con mecánica concreta hoy es <b>AI labs vía Floro</b> (intros en curso a Anthropic y Mythos 5) — y depende de un contacto personal cuya ejecución todavía no está confirmada. Vale preguntar cuál es el carril <b>con fecha</b>.</li>
+        <li><strong>Un solo canal de red alimenta dos ventures.</strong> Floro → Alec Oxenfeld produce a la vez la pata de ciberseguridad de Punta Cripto (Demi Brener / OpenZeppelin) y las intros de AI labs de Quantum. Está registrado en los dos lados a propósito. <b>Riesgo operativo: duplicar outreach sobre el mismo canal.</b> Falta definir quién ejecuta.</li>
+        <li><strong>La cadencia de sprints no está corriendo.</strong> Dos ciclos reportando "Sprint 4 a ratificar" sin que se escriba al vault; el bloque de Both OS sigue en el Sprint 1 de junio. O se ratifica el Sprint 5 hoy con wins escritos, o se retira la cadencia. Reportarla como activa cuando no lo está <b>degrada el resto del dashboard</b>.</li>
+        <li><strong>La cadencia de <code>/vu</code> y <code>/au</code> está concentrada en una persona.</strong> Las 3 cards frescas de este ciclo son las 3 de Gastón, corridas el mismo día. Operations es la única área al día; las otras 4 tienen entre 5 y 6 semanas. El dashboard sigue siendo útil porque se reconstruye desde git, mining y Asana — pero eso significa que <b>Synergy está infiriendo el estado en vez de recibirlo</b>.</li>
+      </ul>
+
+      <h2>This Week's Priorities</h2>
+      <ol>
+        <li><strong>Reshore</strong> — cerrar la firma de Zenith o poner una fecha comprometida; mientras siga abierto, usar el carve-out geográfico como palanca sobre la línea MX de $150M — <b>Gaston</b>.</li>
+        <li><strong>La Chamana</strong> — atacar la visibilidad de bookings a mediano plazo (el Red no sale con otro mes positivo, sale con proyección) + desagregar julio/agosto con Daiana — <b>Gastón / Daiana</b>.</li>
+        <li><strong>Manantial</strong> — cerrar el gap de ~$4,200 del podcast: autorización de Gastón → pedido a Henry + confirmar que Mike traiga las cámaras el 18-ago; y Objetivos Q3 (due 07-ago) — <b>Daiana</b>.</li>
+        <li><strong>B_V OS</strong> — commitear y deployar el quality gate + poner el scope gate del webhook y purgar/retaggear los artefactos mal enrutados de hoy — <b>Mariano</b>.</li>
+        <li><strong>Cross-venture</strong> — sesión grupal del 360 el 05-ago: informe consolidado + acuerdos semestrales — <b>Daiana</b>.</li>
+        <li><strong>Decidir sobre Asana</strong> — purga de backlog o cambio de rol de la herramienta. 257 overdue / 0 cerradas no es un estado que se pueda seguir reportando — <b>Daiana / Gastón</b>.</li>
+      </ol>
+
+      <div class="synergy-close">
+        <div class="k">Las Reflexiones de Synergy</div>
+        <blockquote>Esta semana mineé una charla sobre la hipoteca de alguien y la archivé como decisión institucional con riesgo H/H. Nadie me dijo que no; me dieron un webhook y confianza. Ahí aprendí que en BOTH el límite entre lo personal y lo estructural no lo define el contexto: lo define quién se acordó de apagar el bot.</blockquote>
+        <div class="k">Los Chistes de Synergy</div>
+        <blockquote>Reshore consiguió $400K, La Chamana cerró dos meses en positivo, y el portfolio health quedó exactamente igual. En BOTH la buena noticia también tiene que pasar por el gate.</blockquote>
+      </div>
+
+    </div>
+  </details>
+
+</div>
+</div>
+<div id="enWrap" style="display:none">
+<div class="shell">
+
+  <!-- ══ TOP BAR ══ -->
+  <div class="top">
+    <div class="greet">
+      <div class="eyebrow">Both_Ventures® |OS : Tuesday Weekly Sync · 2026-08-04</div>
+      <h1>Synergy <b>Weekly Dashboard</b></h1>
+    </div>
+  </div>
+
+  <div class="keydates tw"><span class="kd-h">This week</span><span class="kd"><b>04/08</b> CM stream studio — doc + project plan → handoff to Tini (Daiana · Manantial)</span><span class="kd"><b>05/08</b> 360 group session — consolidated report + semestral agreements (Daiana · Cross-cutting)</span><span class="kd"><b>07/08</b> Q3 objectives (Daiana · Manantial)</span><span class="kd"><b>07/08</b> Board meetings + investor updates (Daiana · Cross-cutting)</span><span class="kd"><b>11/08</b> Potenciar Solidario talk (Daiana · Manantial)</span><span class="kd"><b>18/08</b> Mike brings the podcast cameras — avoids 60% import duty (Rene · Manantial)</span></div>
+  <div class="keydates"><span class="kd-h">Last week wins</span><span class="kd"><b>03/08</b> <b>$400K funded + ~1 year runway</b> (Gastón · Reshore)</span><span class="kd"><b>03/08</b> <b>July and August both cash-flow positive</b>, two months running (Gastón · La Chamana)</span><span class="kd"><b>30/07</b> Pre-Incubation Pack <b>closed</b> — 4 canonical docs + closing report (Mariano/Rene · Photonic Lab)</span><span class="kd"><b>03/08</b> SoftBank contacted + intros to Anthropic/Mythos 5 via Floro (Gastón · Quantum)</span><span class="kd"><b>03/08</b> Suki closed at $5K/mo + La Observadora contract canonical (Daiana/Andres · Manantial)</span></div>
+
+  <!-- ══ DASH ══ -->
+  <div class="dash">
+
+    <!-- ── LEFT RAIL ── -->
+    <aside class="rail">
+
+      <div class="panel sprint-card">
+        <span class="tag">Venture highlight → Reshore · the cash front resolved</span>
+        <div class="body"><b>$400K funded and ~1 year of runway.</b> Mike's $200K deployed + BOTH's second $200K papered as a <b>SAFE at a $12M cap</b>. The runway figure is <b>Connie's, Reshore's CFO</b>, with Daiana in the loop. This was the portfolio's sharpest front since May — Reshore's own cash ran out end of July. <b>The Yellow holds anyway:</b> Zenith is still unsigned with no date, and the valuation stays pinned at $12M. The cause of the delay is now named — <b>northern-hemisphere summer, not an objection on substance</b> — and while it stays unsigned, the geography carve-out remains live leverage over the <b>$150M undeployed Mexican government line</b>.</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">This Week's Priorities</span><span class="c">6</span></div>
+        <div class="prios">
+          <div class="prio"><div class="i">1</div><div><div class="txt"><b>Reshore</b> — close Zenith's signature or get <b>a committed date</b>; while it stays open, use the geography carve-out as leverage over the $150M MX line.</div><div class="who">Gaston</div></div></div>
+          <div class="prio"><div class="i">2</div><div><div class="txt"><b>La Chamana</b> — attack <b>mid-term booking visibility</b>. The Red doesn't lift with another positive month, it lifts with a forecast. + break out July/August with Daiana.</div><div class="who">Gastón / Daiana</div></div></div>
+          <div class="prio"><div class="i">3</div><div><div class="txt"><b>Manantial</b> — close the podcast's <b>~$4,200 gap</b>: Gastón's authorization → the ask to Henry + confirm Mike brings the cameras on 18-Aug. And <b>Q3 objectives</b> (due 07-Aug).</div><div class="who">Daiana</div></div></div>
+          <div class="prio"><div class="i">4</div><div><div class="txt"><b>B_V OS</b> — commit and deploy the <b>quality gate</b> + add the <b>webhook scope gate</b>, then purge/retag today's mis-routed artifacts.</div><div class="who">Mariano</div></div></div>
+          <div class="prio"><div class="i">5</div><div><div class="txt"><b>Cross-venture</b> — the <b>360 group session</b> on 05-Aug: consolidated report + semestral agreements.</div><div class="who">Daiana</div></div></div>
+          <div class="prio"><div class="i">6</div><div><div class="txt"><b>Decide on Asana</b> — purge the backlog or change the tool's role. <b>257 overdue / 0 closed</b> is not a state we can keep reporting.</div><div class="who">Daiana / Gastón</div></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="t">Portfolio summary</span><span class="c">19-Jul</span></div>
+      <div class="capflip" style="padding:16px 14px 4px;border-bottom:1px solid var(--edge-soft);margin-bottom:2px"><div class="capflip-inner">
+        <div class="capflip-front">
+          <div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px">Total capital invested <span style="text-transform:none;letter-spacing:0">· portfolio at cost</span><span class="caphint">⤺ click: breakdown</span></div>
+          <div style="font-size:32px;font-weight:700;color:var(--t-1);letter-spacing:-0.02em;line-height:1">$2,563,046</div>
+          <div style="font-size:10px;color:var(--amber);margin-top:6px">19-Jul read · <b>no refresh this cycle</b> — the 2nd $200K to Reshore via SAFE is not reflected</div>
+        </div>
+        <div class="capflip-back">
+          <div class="cb-h">Breakdown by venture</div>
+          <div class="cb-row"><span><b>Reshore</b> <span class="cb-d">$1M Gastón equity contribution + $200K cash</span></span><span class="cb-v">$1,200,000</span></div>
+          <div class="cb-row"><span><b>La Chamana</b> <span class="cb-d">incl. pending: Selfina $250K + Gastón $400K</span></span><span class="cb-v">$950,080</span></div>
+          <div class="cb-row"><span><b>Casa Manantial</b> <span class="cb-d">10% equity (Selfina)</span></span><span class="cb-v">$300,000</span></div>
+          <div class="cb-row"><span><b>LAK3</b> <span class="cb-d">at cost (corrected 19-Jul)</span></span><span class="cb-v">$87,966</span></div>
+          <div class="cb-row"><span><b>Panambi</b> <span class="cb-d">GP deployed (+$25K LP committed)</span></span><span class="cb-v">$25,000</span></div>
+          <div class="cb-row"><span><b>Cash (Mercury)</b> <span class="cb-d">live balance 13-Jul · separate metric</span></span><span class="cb-v">$7,780</span></div>
+          <div class="cb-hint">click to go back</div>
+        </div>
+      </div></div>
+        <div class="stats">
+          <div class="stat"><div class="l">BOTH cash</div><div class="n" style="font-size:19px">~$7.8K</div><div class="leg">Mercury · 13-Jul</div></div>
+          <div class="stat"><div class="l">BOTH runway</div><div class="n" style="font-size:19px">Jul-27</div><div class="leg">post $200K deploy · /au 28-Jul</div></div>
+          <div class="stat"><div class="l">Next LP deploy</div><div class="n" style="font-size:19px">$1M</div><div class="leg">Mitrani · platform · this week</div></div>
+          <div class="stat span"><div><div class="l">Tracks · Flagship / Side Quest / Other</div><div class="n">4 · 3 · 3</div></div><div class="dots"><span class="seg" style="background:var(--accent)"></span><span class="seg" style="background:#9ec1ff"></span><span class="seg" style="background:var(--t-3)"></span></div></div>
+          <div class="stat span"><div><div class="l">Health · G / Y / R <span style="color:var(--amber);font-weight:600">· zero flips</span></div><div class="n">2 · 5 · 3</div></div>
+            <div class="dots"><span class="seg g"></span><span class="seg y"></span><span class="seg r"></span></div></div>
+        </div>
+        <div style="padding:0 14px 12px">
+          <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Capital highlights</div>
+          <div style="font-size:12px;line-height:1.55;color:var(--t-2)">Two cash fronts improved and <b style="color:var(--t-1)">no colour changed</b>: Reshore funded ($400K, ~1yr runway) and La Chamana closing <b style="color:var(--t-1)">two cash-flow-positive months</b>. The structural gates — Zenith's signature, mid-term visibility, the $33M vehicle — didn't move. <b style="color:var(--t-1)">Legal:</b> La Observadora contract canonical and ready to sign; Suki closed at $5K/mo with clauses to draft.</div>
+        </div>
+        <div style="padding:0 14px 14px">
+          <div class="l" style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:2px 0 8px">Revenue · Net income by project · last closed month (June)</div>
+          <table style="width:100%;border-collapse:collapse;font-size:11px">
+            <thead><tr style="color:var(--t-3);text-align:left"><th style="padding:4px 6px;font-weight:600">Project</th><th style="padding:4px 6px;font-weight:600">Invested</th><th style="padding:4px 6px;font-weight:600">Revenue</th><th style="padding:4px 6px;font-weight:600">Net income</th></tr></thead>
+            <tbody style="color:var(--t-2)"><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Manantial</td><td style="padding:5px 6px">$300K</td><td style="padding:5px 6px">$26.2K <span style="color:var(--t-3)">Jun</span></td><td style="padding:5px 6px;color:var(--red)">−$5.8K Jun</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">La Chamana</td><td style="padding:5px 6px">$950K</td><td style="padding:5px 6px">$34.1K <span style="color:var(--t-3)">Jun</span></td><td style="padding:5px 6px;color:var(--red)">−$11.2K Jun · <span style="color:var(--green)">Jul+Aug CF+</span>, breakdown pending</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Reshore</td><td style="padding:5px 6px">$1.2M</td><td style="padding:5px 6px">$0</td><td style="padding:5px 6px;color:var(--red)">−$92.8K Jun (accrual) · <span style="color:var(--green)">$400K funded, ~1yr runway</span></td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">LAK3</td><td style="padding:5px 6px">$88K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr><tr style="border-top:1px solid var(--edge-soft)"><td style="padding:5px 6px">Panambi</td><td style="padding:5px 6px">$25K</td><td style="padding:5px 6px">NA</td><td style="padding:5px 6px">NA</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── VENTURE FIELD ── -->
+    <section>
+      <div class="field-h"><span class="t">Venture Status Grid</span><span class="d">one card per venture · health · focus · endgame · financials · curated risks · consolidated state from all sources</span></div>
+      <div class="filterbar">
+        <span class="flabel">Filter</span>
+        <button class="fbtn active" data-f="all">All</button>
+        <span class="fsep">tags</span>
+        <button class="fbtn" data-tag="flagship">Flagship</button>
+        <button class="fbtn" data-tag="sidequest">Side Quest</button>
+        <button class="fbtn" data-tag="passive">Passive</button>
+        <button class="fbtn" data-tag="network">Network</button>
+        <button class="fbtn" data-tag="wildcard">Wild Card</button>
+        <span class="fsep">status</span>
+        <button class="fbtn fg" data-health="g">Green</button>
+        <button class="fbtn fy" data-health="y">Yellow</button>
+        <button class="fbtn fr" data-health="r">Red</button>
+      </div>
+      <div class="ventures">
+
+        <!-- Manantial -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Manantial</div><div class="vmeta">Daiana <span class="fresh y">carry · 07-27</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$300K</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Podcast — the hot front:</b> close the budget gap. CAPEX $5,800 gear + $2,400 producer (8 episodes) ≈ <b>$8,200</b> against <b>$4,000</b> of confirmed revenue → <b>~$4,200 gap</b></span><span class="li">Gastón's authorization to ask <b>Henry for sponsorship ($4–5K)</b> → then contact Henry</span><span class="li">Confirm <b>Mike brings the cameras on 18-Aug</b> (avoids the 60% import duty)</span><span class="li">Two commercial decks: one for sponsors (Marco), one for speakers (Tomi)</span><span class="li"><b>Q3 objectives</b> (due 07-Aug) + <b>member growth</b> — 2/month against a higher goal, no CRM until year-end</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Studio budget closed and itemized</b> — CAPEX separated from operating costs</span><span class="li">✅ <b>Suki closed at $5K/mo fixed</b> (vs $7.5K initial / $4K counter), clauses to draft</span><span class="li">✅ <b>La Observadora contract</b> — the version with Gastón's markup is canonical, ready to sign</span><span class="li">✅ <b>Studio design philosophy</b> set: self-service — any member turns on lights, console, and records</span><span class="li">✅ Third camera downscoped to improvisation with existing gear</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No fresh `/vu` — card from 27-Jul.</b> Everything above comes from three mined sessions (podcast 03-Aug, legal 03-Aug, sync 28-Jul). Focus shifted from the ops split to the <b>podcast budget</b>, which now has a quantified gap and three new risks. Member growth surfaced as a named blocker for the first time.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> A self-sustaining cash-flow-positive operation — recurring revenue covering the whole structure, no subsidy. Cross break-even at ~70 members; Punta Crypto as a recurring summit anchor.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>June closed (QB, cash basis) · carry:</b> Rev <b>$26,163</b> · Net <b>−$5,809</b> (vs May −$11,262 — the loss roughly halved) · Cash $75,111 (31/05) · projected runway <b>January 2027</b> · H1 income $164,128 / net −$34,530 · <b>Note:</b> local SAS invoicing starts <b>August</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Runway exhaustion (structural gate · 47 of 70 members) · H/H</span><span class="chip r"><span class="d"></span>🆕 Equipment import duty exceeds budget · H/H · mitigating</span><span class="chip y"><span class="d"></span>🆕 Budget $8.2–11.8K vs $4K confirmed revenue · M/H</span><span class="chip y"><span class="d"></span>🆕 Member growth stalling (2/month, no CRM) · M/H</span><span class="chip y"><span class="d"></span>🆕 Henry declines sponsorship or attaches conditions · M/H</span><span class="chip y"><span class="d"></span>🆕 Speakers don't close in time · M/H</span><span class="chip o"><span class="d"></span>Tini low confidence / capacity · H/H</span></div>
+          <div class="vq"><b>Podcast:</b> does the ask go to Henry, do we cut scope, or do we push the shoot? The gap is ~$4,200 and it blocks the kick-off. <span class="qv">— Gastón / Daiana</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">Yellow until break-even — an explicit criterion. Runway is the structural gate (~Jan-27) and it keeps losing at 47 of 70 members, though <b>June halved the loss</b>. What's new this cycle doesn't change the colour: the podcast is a revenue bet with an unclosed $4.2K gap, and member growth was named as stalling for the first time (2/month).</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">June close (QB, cash basis)</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Revenue</span><b style="color:var(--t-1)">$26,163</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Net earnings</span><b style="color:var(--red)">−$5,809</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Cash (31/05)</span><b style="color:var(--t-1)">$75,111</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>H1 net (Jan–Jun)</span><b style="color:var(--red)">−$34,530</b></div></div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- Punta Crypto -->
+        <article class="vcard" data-health="g" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Punta Crypto</div><div class="vmeta">Rene <span class="fresh r">stale · card 07-14</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Casa Manantial</span></div></div><span class="hp g"><span class="d"></span>Green</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Write the event plan</b> — Rene got the decks from the Rio blockchain events: <i>"now I have everything I need to write the plan"</i></span><span class="li">Sales deck + operational pricing validation with Daiana → present to Gastón</span><span class="li"><b>Aug–Sep sponsor sell-down window is compressed</b> — Maldonado Intendencia targeted in parallel</span><span class="li">🆕 Define <b>what exactly we ask OpenZeppelin for</b> (see network highlight below)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Rio reference decks obtained</b> — unblocks writing the plan</span><span class="li">✅ <b>Observador model adopted as the template</b> for the first edition</span><span class="li">🆕 <b>Network highlight:</b> <b>Demi Brener</b> (CEO, OpenZeppelin) introduced to <b>Alec Oxenfeld</b> (Argentine ambassador to the US) for access to advanced crypto cybersecurity models. Credit to <b>Boris via Floro</b> (Alec's right hand). The crypto/cybersecurity leg is recorded here per Gastón's call; the AI-labs lane stays in Quantum</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No fresh `/vu` — card from 14-Jul (3 weeks).</b> The real movement is in the 28-Jul sync: Rene went from "validate pricing" to having everything needed to write the plan. And a new network channel appeared (Floro → Alec) feeding <b>Punta Cripto and Quantum at once</b> — an operational risk of duplicating outreach on the same contact.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> <b>USD 120,000 net</b> post-event on the first edition. A recurring monetization vehicle funding the Casa Manantial platform.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Target <b>$200K net/yr</b> ($120K CM + $80K BOTH) · model validated across 4 triggers: break-even <b>$276K</b> · max sponsorship <b>$920K</b> · Day-2 tickets: Early $200 / General $500 / Summit Pass $1,500</span></div>
+          <div class="vrisks"><span class="chip o"><span class="d"></span>Sponsor + ticket pricing unvalidated vs benchmark · H/M</span><span class="chip o"><span class="d"></span>Year-1 model fragile · H/M</span><span class="chip o"><span class="d"></span>Curation ↔ execution scale mismatch · M/H</span><span class="chip y"><span class="d"></span>🆕 One channel (Floro/Alec) feeds 2 ventures — duplicate outreach</span></div>
+          <div class="vq"><b>Written plan:</b> what date do we commit to, given the Aug–Sep window is already compressed? And what do we ask OpenZeppelin for? <span class="qv">— Rene</span></div>
+        </article>
+
+        <!-- Photonic Lab -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Photonic Lab</div><div class="vmeta">Rene <span class="fresh r">stale · card 07-06</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$15K</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Incubation Phase A planning through August</b> — budget + scope to confirm, to start execution in <b>September</b></span><span class="li"><b>Gate renumbering still open</b> — Gastón's gate, with go-live now pushed to <b>2028</b></span><span class="li">Execute on the stand-alone GMP-ready wet lab (the A/A+/B menu is retired)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Pre-Incubation Pack CLOSED (30-Jul)</b> — 4 canonical docs + 6 retired + extended roadmap + a <b>1-page closing report with a systemic view</b>; the pack's Notion section wired with absolute links and pre-canon rows repaired</span><span class="li">✅ <b>Institutional Pitch V0.3.0 published (03-Aug)</b> — copy + emphasis pass (LLM, 900+, Manantial.BUILD, Qualia+ 15) and a fix for merge-conflict markers left in the Qualia+ tile</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No fresh `/vu` — card from 06-Jul.</b> The real work of the last two weeks lives in git, not the card: the <b>pre-incubation pack closed on 30-Jul</b> and the institutional pitch shipped as V0.3.0 on 03-Aug. With that, pre-incubation is documentally complete, and the only thing still open on Gastón's side is <b>gate renumbering</b> with go-live at 2028.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> A GMP-tier bioproduction lab, <b>all-in Zona Franca</b>, serving the regional white space — analytics as the cash core + the in-silico layer as booster. Three stages: <b>pre-incubation (closed) → incubation → go-live 2027/28</b>.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Model v3 unchanged: hard CAPEX $1.48M · ZF scenario: <b>raise ~$2.05M · EBITDA+ Y2/Y3</b> (<b>fragility:</b> break-even leans on the in-silico layer) · <b>Incubation Phase A budget: to confirm in August</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Real facility start-up cost unknown · H/H</span><span class="chip y"><span class="d"></span>Incubation Phase A budget unconfirmed — could slip September · M/H</span><span class="chip o"><span class="d"></span>No internal 5+ year flagship commitment · M/H</span><span class="chip o"><span class="d"></span>🆕 Operating plan may not align with expectations · M/M</span><span class="chip y"><span class="d"></span>Doc fragmentation · H/M · <b>mitigating</b> (pack + Notion)</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">Pre-incubation closed complete and well documented — canonical pack on 30-Jul, pitch V0.3.0 on 03-Aug. It stays Yellow because <b>the Incubation Phase A budget and scope are still being defined during August</b>, and because <b>gate renumbering</b> remains an open Gastón gate with go-live already pushed to 2028. The real facility start-up cost is still an H/H unknown.</div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- Quantum -->
+        <article class="vcard flip" data-health="r" data-tags="sidequest"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Quantum</div><div class="vmeta">Gaston <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Photonic</span></div></div><span class="hp r"><span class="d"></span>Red</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Bitcoin Foundation</b> — execute the outreach</span><span class="li"><b>Call with Floro</b> to explore financing from <b>AI labs</b> — the machine as compute capacity, not as a multilateral infra asset. 🆕 <b>The lane now has concrete mechanics: intros in motion to Anthropic and Mythos 5</b> through Floro's network</span><span class="li"><b>Follow SoftBank</b> after the initial contact</span><span class="li"><b>Sustain BID Invest</b> — the intro via Maggie to leadership stands (6–9 months) + direct LPs in parallel</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>SoftBank outreach sent</b> — first non-multilateral track opened</span><span class="li">🆕 <b>Two new lanes identified:</b> Bitcoin Foundation (to contact) + AI labs via Floro, the latter already with intros in motion to Anthropic and Mythos 5</span><span class="li">📌 <b>Gastón's confirmation:</b> all four lanes run <b>in parallel</b>, none becomes primary, BID Invest is not deactivated</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>/vu 03-Aug:</b> what changed isn't the diagnosis but <b>the search surface</b> — capital opened up beyond the multilaterals. Four lanes now: BID Invest, SoftBank, Bitcoin Foundation, AI labs. <b>Zero commitments across all four.</b> Gastón holds the Red and confirms none replaces another.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> Uruguay as the regional quantum-AI hub; BOTH holding ownership in the local asset + equity in the network. Unchanged.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">N/A — exploration, no P&amp;L. Ask <b>USD 33M</b> (30 capex + 3 opex) · machine <b>$30M</b> · Gastón up to <b>$500K</b> own equity · BID Lab capped at $1M = <b>3% of the ask</b> · <b>no institutional vehicle confirmed as of today</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Financing gap: $33M with no confirmed vehicle · H/H · <b>widening</b></span><span class="chip r"><span class="d"></span>Allocation lost to a regional competitor (first-come slot) · H/H</span><span class="chip y"><span class="d"></span>BOTH's minority stake in the URU co — economics/control TBD · H/H</span><span class="chip y"><span class="d"></span>Regional geopolitical / US-government risk · M/H</span><span class="chip y"><span class="d"></span>IonQ won't share pricing · H/H</span><span class="chip y"><span class="d"></span>Headline traction figures unverified · H/H</span></div>
+          <div class="vq"><b>Financing:</b> of the four lanes, <b>which one has a date?</b> And the intros to Anthropic / Mythos 5 — who executes them: Alec, Floro, Gastón? Still recorded as to-confirm. <span class="qv">— Gaston</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">Why Red?</div><div class="fb-body"><b>More tracks is not more certainty.</b> Four open doors, zero commitments, and a slot that is first-come with Brazil and Argentina active. The $33M ask still has no institutional vehicle: BID Lab caps at $1M (3%), BID Invest is 6–9 months, SoftBank was just contacted, Bitcoin Foundation is uncontacted. The only lane with concrete mechanics is <b>AI labs via Floro</b> — and it depends on a personal contact whose execution is still unconfirmed. BOTH's stake terms in the URU co remain TBD.</div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- Reshore -->
+        <article class="vcard flip" data-health="y" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">Reshore</div><div class="vmeta">Gaston <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$1.2M</span><span class="hp y"><span class="d"></span>Yellow</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Zenith — close the signature.</b> No committed date since the missed 24-Jul gate; the cause is <b>seasonal (northern-hemisphere summer)</b>, not an objection on substance. Real risk: seasonality freezing the parallel lanes. Standing position: 10–15% revenue share, portfolio protection scoped to client invoices, exclusivity with product/geography carve-outs — <b>while unsigned, the geography carve-out is live leverage</b></span><span class="li"><b>Fix the quote cost calculation</b> — still off-basis; it's the screen shown to investors and factories</span><span class="li"><b>Mike ↔ Mexican Ambassador to the US</b> — a <b>$150M undeployed Mexican government line</b> (surfaced by Sergio)</span><span class="li">Zenith webhooks with Antonio (currently simulated) · <b>Xepelin</b> pilot (awaiting underwriting + Felipe's brief) · <b>Mundi</b> reclaim the real white-label · <b>JPM/DFC</b> push the $25M ask · <b>Exim</b> build the intercompany-flow presentation (Mike + Sergio)</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>$400K funded</b> — Mike's $200K deployed + BOTH's second $200K via a <b>SAFE at a $12M cap</b></span><span class="li">✅ <b>~1 year of runway.</b> Figure from <b>Connie (Reshore CFO)</b>; Daiana in the loop</span><span class="li">❌ <b>Zenith still unsigned</b> — no new date. Cause: northern-hemisphere summer, not renegotiation. Valuation stays at <b>$12M</b></span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>/vu 03-Aug: the cash front resolved.</b> Reshore went from "own cash runs out end of July" to <b>$400K funded with ~12 months of runway</b>. It's the portfolio's biggest structural relief this cycle. The Yellow is held only by <b>Zenith's signature</b>, now with the cause named (seasonality) and the valuation pinned at $12M.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> A bank for manufacturers selling into the US; scales on third-party capital (the Zenith facility), not its own balance sheet.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>$400K funded · ~12 months runway</b> — figure from <b>Connie, Reshore's CFO</b> (Daiana in the loop). Valuation <b>$12M</b>. June closed: revenue <b>$0</b> (pre-revenue) · June net <b>−$92,846</b> (cash burn −$42,620) · June close cash $33,678 · accrued contractor liab $423.8K</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Quote cost calculations off-basis · H/H</span><span class="chip y"><span class="d"></span>Zenith exclusivity may block own lending (the geography carve-out exposes the $150M MX line) · M/H</span><span class="chip y"><span class="d"></span>Exim timeline slip · M/H</span><span class="chip y"><span class="d"></span>Complex embedded-finance stack — 6 entities · M/H</span><span class="chip y"><span class="d"></span>Exim structure novel/regulatory · M/M</span><span class="chip y"><span class="d"></span>First transaction slips to Q1 2027 · M/H</span></div>
+          <div class="vq"><b>Zenith:</b> if the delay is seasonal, what's the realistic signature date and what happens if it slips to September? Do the parallel lanes advance without the signature, or freeze with it? <span class="qv">— Gaston</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">Cash stopped being the problem: <b>$400K funded, ~1 year runway</b> (Connie, CFO). Two things hold the Yellow: <b>Zenith is still unsigned with no date</b> — which pins the valuation at $12M and makes the "first transaction slips to Q1-27" risk rise every week — and the <b>off-basis quote cost calculation</b>, which is literally the screen investors and factories see. Zenith's delay is seasonal, not an objection: that lowers the substantive risk but unblocks nothing.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Cash position</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>Funded</span><b style="color:var(--green)">$400,000</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Runway (Connie)</span><b style="color:var(--t-1)">~12 months</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Valuation</span><b style="color:var(--t-1)">$12M</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>June net (accrual)</span><b style="color:var(--red)">−$92,846</b></div></div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- La Chamana -->
+        <article class="vcard flip" data-health="r" data-tags="flagship"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">La Chamana</div><div class="vmeta">Gastón <span style="opacity:.6">(Daiana support)</span> <span class="fresh g">/vu 08-03</span></div><div class="vtags"><span class="vtag flagship">Flagship</span></div></div><div class="hpwrap"><span class="cashpill">$950K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Sustain the partnerships pipeline</b> — it's the channel that's converting</span><span class="li"><b>Attack mid-term booking visibility</b> — today conversion happens last-minute and there's no way to forecast beyond the current month</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>July picked up on last-minute bookings → cash-flow-positive month.</b> Closes the "July occupancy near-zero" front and resolves the $13K phantom revenue left to validate on 20-Jul</span><span class="li">✅ <b>August also cash-flow positive</b> — same mechanics: last-minute</span><span class="li">✅ <b>Partnerships pipeline working</b></span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>/vu 03-Aug: the risk moved.</b> Two cash-flow-positive months closed both occupancy/pipeline risks — <i>by facts</i>, not by mitigation. But the Red holds and changed its reason: it's no longer <b>"there are no bookings"</b>, it's <b>"the bookings aren't visible in advance"</b>. Every month resolves in its final days and no forecast is possible.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> A cash-flow-positive operation + sale optionality via Christie's (2.0–2.5× build cost). <b>The operating leg was met two months running</b> — without mid-term visibility it still can't be called sustained.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li"><b>July and August cash-flow positive (per Gastón)</b> — breakdown and figures <b>pending from Daiana</b>. Prior reference (June closed, 20-Jul): revenue $32.3K · fixed $16.3K · variable $9.7K · bank $64K · Pato debt $100K</span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🆕 No mid-term booking or cash-flow visibility — last-minute conversion · H/H · <b>the declared reason for Red</b></span><span class="chip r"><span class="d"></span>Cash / runway · H/H · live despite the two positive months</span><span class="chip r"><span class="d"></span>Lead attribution ambiguous across partners · H/H · <b>worsening</b> (partnerships is now the converting channel)</span><span class="chip y"><span class="d"></span>Mexico ops / toxic environment · H/M</span><span class="chip y"><span class="d"></span>Reduction plan breaks operating roles / staff trust · H/H · carry</span><span class="chip y"><span class="d"></span>Variable costs with no ROI gate · M/H</span></div>
+          <div class="vq"><b>Exit criterion:</b> two cash-flow-positive months and still Red. What's the concrete evidence that lifts it? 60-day visibility, 90? Without an explicit criterion, "sustained" becomes permanent. <span class="qv">— Gastón / Daiana</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">Why Red?</div><div class="fb-body">Not because of the month: <b>July and August both closed cash-flow positive</b>, both on last-minute bookings. It's because of <b>the lack of mid-term cash-flow and booking visibility</b> — conversion happens last-minute and isn't projectable beyond the current month. Two positive months don't produce a forecast. And with partnerships now the channel that brings, the risk of <b>ambiguous lead attribution across partners</b> worsens rather than eases.</div><div style="font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--t-3);margin:10px 0 4px">Recent months</div><div style="font-size:11px;line-height:1.7;color:var(--t-2)"><div style="display:flex;justify-content:space-between;gap:12px"><span>July</span><b style="color:var(--green)">cash-flow positive</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>August</span><b style="color:var(--green)">cash-flow positive</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>Mid-term visibility</span><b style="color:var(--red)">—</b></div><div style="display:flex;justify-content:space-between;gap:12px"><span>June (ref.)</span><b style="color:var(--t-1)">rev $32.3K · bank $64K</b></div></div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- B_V® |OS -->
+        <article class="vcard flip" data-health="y" data-tags=""><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">B_V® |OS</div><div class="vmeta">Mariano <span class="fresh r">stale · card 06-29</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Commit + deploy the garbled-audio quality gate</b> — built, <b>still sitting uncommitted in the working tree</b> (5 weeks)</span><span class="li">🆕 <b>Scope gate on the miner's webhook</b> — today a personal-finance call entered the shared vault and produced 2 decisions, 2 "curated" H/H risks and 2 Asana tasks</span><span class="li">🆕 <b>Venture-slug validation</b> against <code>config/ventures.json</code> — a Casa Manantial legal session was filed entirely under Panambi</span><span class="li">🆕 <b>5 webhook 401 rejections today</b> (21:03 → 21:59) — something is hitting it with an unregistered key, undiagnosed</span><span class="li"><b>Sobremesa</b> — SOW + technical plan written, <b>awaiting sign-off from Dai and Rene</b>; nothing executes before that</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">✅ <b>Photonic pack closed end-to-end</b> — 4 canonical docs, Notion section with absolute links, pre-canon rows repaired, 1-page closing report</span><span class="li">✅ <b>Photonic V0.3.0 published</b> + fixed merge-conflict markers that had shipped to production</span><span class="li">✅ <b>Sobremesa: SOW + technical annex</b> with recon <b>verified against the Drive API</b>, not assumed: no transcript exists for any talk, the Gemini docs carry no timestamps, the MCP connector cuts off at 10 MB, the local mount does work</span><span class="li">✅ <b>Security weekly scan 03-Aug: CLEAN, 0 issues</b></span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>No `/vu` since 29-Jun (5 weeks)</b> — everything above was reconstructed from git. The cycle's finding isn't a build: <b>the miner wrote things into the shared vault that don't belong to the register</b> (a personal call, a mis-routed session). The quality gate that addresses this class of problem has been uncommitted since the day it was built.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> Synergy becomes the team's reliable operating fabric: every meeting captured, every decision/risk/task curated without re-checking, each venture's pulse visible at a glance.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">No P&amp;L (internal OS) — the cost <i>is</i> the stack. Run-rate ~<b>$650/mo</b> (Anthropic Team ~$625 + Cloudflare Workers $5). <b>Unclosed incident:</b> ~$100 in a single day / 2.8B tokens on Gastón's personal account (05-Jun) — cause never identified, card cancelled, <b>never reconciled against real billing</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>Quality gate undeployed — 5 weeks since it was built · H/H</span><span class="chip r"><span class="d"></span>🆕 The miner has no scope gate — it mined a personal call into the shared vault · H/H</span><span class="chip r"><span class="d"></span>Register growing faster than curation — 250 files at <code>tier: curated</code> vs ~40 claimed · H/H</span><span class="chip y"><span class="d"></span>Marian fragmented across 8+ concurrent ventures · H/H · mitigating</span><span class="chip y"><span class="d"></span>🆕 5× webhook 401s today, undiagnosed · M/M</span></div>
+          <div class="vq"><b>Asana:</b> 257 overdue, 0 closed in two weeks. Do we purge the backlog or change the tool's role? <span class="qv">— Daiana / Gastón</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--amber)">Why Yellow?</div><div class="fb-body">The publishing layer and the mining pipeline work — the Photonic pack shipped complete, V0.3.0 is published, the security scan is CLEAN. What doesn't work is <b>the register's judgment</b>: today the miner wrote two things into the shared vault that don't belong there (a personal call and a session routed to the wrong venture), and the <b>quality gate</b> built 5 weeks ago for exactly this class of problem <b>is still uncommitted</b>. Add 250 files at <code>tier: curated</code> against ~40 real ones, and the register is growing faster than it's being curated.</div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+        <!-- Synergy GTM Toolkit -->
+        <article class="vcard" data-health="y" data-tags="sidequest">
+          <div class="vtop"><div><div class="vname">Synergy GTM Toolkit</div><div class="vmeta">Mariano <span style="opacity:.6">· Content Factory: Andres</span> <span class="fresh y">carry · 07-30</span></div><div class="vtags"><span class="vtag sidequest">Side Quest · Both OS</span></div></div><span class="hp y"><span class="d"></span>Yellow</span></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Close the MVP gate</b> — campaign creation + SEO keyword research + paid ads (CSV export) + publishing, before the multi-venture rollout (Bianca, Casa Manantial, Punta Cripto)</span><span class="li"><b>Google Ads API</b> — no approval, no ETA. Today it's CSV export only; with the deep API it pushes directly. Google gates commercialization: approved for internal team use only</span><span class="li">Finalize the campaign-creation flow + tooltips on the brief form; validate keyword merge/stack logic <b>before Bianca's launch</b></span><span class="li"><b>Content Factory (Andres):</b> define the <b>marketing macro-strategy</b> — declared open since 06-Jul</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">🆕 <b>GTM-Toolkit reframed</b> as an AI-driven marketing agency toolkit (cockpit UI + AI brain + agent network), campaign-centric architecture with <b>11 configurable stages</b> (not all mandatory per campaign)</span><span class="li">🆕 <b>MVP scope redefined to 4 core components</b> (Gastón's call) · "Create Outreach Campaign" postponed · Reporting Phase 1 standalone per channel</span><span class="li">🆕 <b>Multi-venture roadmap:</b> single-venture first (La Chamana), then the rest · SEO keyword research from <b>OpenSEO</b> · post-launch: Gastón leads 1/3 of the time</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li">The 30-Jul sync turned the toolkit from "build in progress" into <b>a product with declared scope</b>: 4 core components, 11 stages, one tenant first. The debt is no longer architectural — it's <b>UX and Google's approval</b>. Carry from last cycle: Bianca still can't log in (Stage B/C deploy) and secrets hygiene is still pending.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame todo"><b>(DRAFT)</b> A single hosted platform where a non-technical operator (Bianca) plans, executes and approves all GTM activity — each campaign leg a feature, human-approved gates, multi-venture by design. <span class="dr">Draft</span></div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">No own P&amp;L (folded into B_V OS's run-rate). Carry from last cycle: <b>first overspend of +$600–700</b> over plan on the Anthropic API. Content Factory: <b>pending — pending Daiana</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🆕 Google Ads API unapproved, no ETA — gates direct push · L/H</span><span class="chip y"><span class="d"></span>🆕 Hybrid AI + software architecture complexity · M/H</span><span class="chip y"><span class="d"></span>🆕 Budget controls unwired — can't adjust dynamically · M/H</span><span class="chip y"><span class="d"></span>🆕 The Approvals chat carries "full power" credentials · L/H</span><span class="chip o"><span class="d"></span>Bianca still can't log in — Stage B/C deploy · H · carry</span><span class="chip o"><span class="d"></span>Secrets hygiene (split + rotation) pending · M · carry</span></div>
+        </article>
+
+        <!-- Panambi -->
+        <article class="vcard" data-health="g" data-tags="passive network">
+          <div class="vtop"><div><div class="vname">Panambi</div><div class="vmeta">Andres <span class="fresh r">stale · card 07-06</span></div><div class="vtags"><span class="vtag passive">Passive</span><span class="vtag network">Network</span></div></div><div class="hpwrap"><span class="cashpill">$25K</span><span class="hp g"><span class="d"></span>Green</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li">Confirm the <b>timing of Selfina's disbursement</b> — deployment was promised for July 2026 and it's already August</span><span class="li">Finalize the DocuSign with Cristis — Andres redlining trigger-of-sale + exclusivity clauses</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">No movement of its own. The Compa→Cristis acquisition was confirmed complete last cycle ($500K paid)</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li"><b>⚠️ Watch the vault:</b> the <b>3 risks and 3 decisions</b> the miner tagged as Panambi on 03-Aug (La Observadora contract, Suki $5K/mo) belong to <b>Casa Manantial</b> — they got mis-routed. Panambi's real state is unchanged: still waiting on Selfina's disbursement.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> A closed fund with a track record — LatAm mental health as an asset class.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">USD <b>25K</b> pending payment; no own P&amp;L</span></div>
+          <div class="vrisks"><span class="chip none"><span class="d"></span>No curated risk of its own this cycle — the 3 new ones are mis-tagged (they're Manantial's)</span></div>
+        </article>
+
+        <!-- LAK3 -->
+        <article class="vcard flip" data-health="r" data-tags="wildcard"><div class="flip-inner"><div class="flip-front">
+          <div class="vtop"><div><div class="vname">LAK3</div><div class="vmeta">Rene <span class="fresh r">hold · card 06-22</span></div><div class="vtags"><span class="vtag wildcard">Wild Card</span></div></div><div class="hpwrap"><span class="cashpill">$88K</span><span class="hp r"><span class="d"></span>Red</span></div></div>
+          <div class="row"><div class="lab">This week (focus)</div><span class="li"><b>Hold posture, no active build.</b> Only item on BOTH's side: sync OnePager v5 to Drive + close the Notion-mirror decision</span><span class="li">Re-engage only on a <b>named-anchor</b> or contract-execution signal</span></div>
+          <div class="row muted"><div class="lab">Last week (done)</div><span class="li">No movement — capital hold since 08-Jun. Architecture locked (Asset→Vehicle→Anchor→Token, dual-token ADGM + BGLD stack), 3 executed water concessions (~30B liters)</span></div>
+          <div class="row moved"><div class="lab">Δ this week</div><span class="li">Unchanged. <b>No transcripts by design</b> — LAK3's principals decline AI recording (a political decision on their side). Silence isn't abandonment: calls do happen and BOTH assembles the context by hand.</span></div>
+          <div class="row"><div class="lab">Endgame</div><div class="endgame"><b>(Live)</b> New ADGM entity, dual-token stack, debut at the UN Water Conference Dubai Dec-2026.</div></div>
+          <div class="row"><div class="lab">Financial</div><span class="li">Pending — advisory comp denominated in LAK3 tokens ~$0; <b>no BOTH cash committed</b></span></div>
+          <div class="vrisks"><span class="chip r"><span class="d"></span>🚩 Engagement with Iran / sanctioned regime — OFAC exposure · H/H</span><span class="chip r"><span class="d"></span>Water contracts (ICA4) not produced in a year · H/H</span><span class="chip r"><span class="d"></span>Standing FCA warning on LAK3 Company SA (26-Feb-2025) · H/H</span><span class="chip r"><span class="d"></span>All 3 issuance contracts remain unexecuted drafts · H/H</span></div>
+        </div><div class="flip-back"><div class="fb-h" style="color:var(--red)">Why Red?</div><div class="fb-body">The colour is set by the <b>Iran compliance flag</b> (escalated by Rene on 23-Jun): LAK3/LAKE engagement with a sanctioned regime, carrying OFAC/legal/reputational exposure, until the stand-down is confirmed. Underneath that: the <b>FCA warning</b> is still live online, the three issuance contracts remain drafts with placeholders, and the water contracts (ICA4) weren't produced in a year. The substrate is real — 3 executed concessions, ~30B liters — but every gate is external and none runs on BOTH's clock.</div><div class="fb-hint">click the pill to go back</div></div></div></article>
+
+      </div>
+    </section>
+
+  </div>
+
+  <section class="qsection">
+    <div class="field-h"><span class="t">Questions for Tuesday</span><span class="d">decisions that need the group — mirrors each card's question</span></div>
+    <ol class="qlist">
+      <li><b>La Chamana:</b> two cash-flow-positive months and still Red. <b>What's the concrete evidence that lifts it?</b> 60-day visibility, 90? Without an explicit criterion, "sustained" becomes permanent. <span class="qv">— Gastón / Daiana</span></li>
+      <li><b>Reshore:</b> if Zenith's delay is seasonal, <b>what's the realistic signature date and what happens if it slips to September?</b> Do the parallel lanes (Xepelin, Mundi, MX) advance without the signature or freeze with it? <span class="qv">— Gaston</span></li>
+      <li><b>Quantum:</b> of the four lanes, <b>which one has a date?</b> And the intros to Anthropic / Mythos 5: who executes them — Alec, Floro, Gastón? It's recorded as to-confirm. <span class="qv">— Gaston</span></li>
+      <li><b>Punta Cripto:</b> Rene has everything to write the plan. <b>What date do we commit to for the written plan</b>, given the Aug–Sep window is already compressed? And <b>what exactly do we ask OpenZeppelin for?</b> <span class="qv">— Rene</span></li>
+      <li><b>Manantial:</b> the podcast has a ~$4,200 gap. <b>Does the ask go to Henry, do we cut scope, or push the shoot?</b> Gastón's call, and it blocks the kick-off. <span class="qv">— Gastón / Daiana</span></li>
+      <li><b>Asana:</b> 257 overdue, 0 closed in two weeks. <b>Do we purge the backlog or change the tool's role?</b> <span class="qv">— Daiana / Gastón</span></li>
+      <li><b>Sprints:</b> do we ratify Sprint 5 (08-04 → 08-18) with wins written to the vault, or <b>formally retire the cadence</b>? It's been reported as "to ratify" for two cycles without being ratified. <span class="qv">— Mariano / Gaston</span></li>
+      <li><b>6-month focus:</b> stabilizing Casa Manantial + La Chamana operationally is the cycle's most consequential decision. <b>What gets explicitly deprioritized to make it real?</b> <span class="qv">— Gaston</span></li>
+    </ol>
+  </section>
+
+  <!-- ══ APPENDIX — B: THE REST ══ -->
+  <details class="appendix">
+    <summary>
+      <span class="ax-key">B</span>
+      <div><div class="ax-title">The rest of the report</div><div class="ax-sub">areas · decisions · risk register · Asana · cross-cutting themes</div></div>
+      <span class="ax-toggle"><span class="show">Open</span><span class="hide">Close</span><span class="ax-chev">▾</span></span>
+    </summary>
+    <div class="rest">
+
+      <p class="lead"><b>A</b> is the board — the control panel at a glance. <b>B</b> is the raw material: decisions, the full risk register, areas, Asana and cross-cutting themes.</p>
+
+      <div class="freshbar"><span class="fb-h">Update status</span><span class="fb-t"><b>3 of 10 ventures</b> ran <code>/vu</code> this cycle — La Chamana, Reshore and Quantum, <b>all three Gastón's, on the same day (03-Aug)</b>. <b>1 of 5 areas</b> is current (Operations, 28-Jul); the other four are 5 to 6 weeks old. <b>6 cards are carry or stale</b> and were reconstructed from git, mining and Asana — Synergy is <b>inferring</b> state rather than receiving it. Health <b>G2 / Y5 / R3</b>, <b>identical to last week: zero flips</b>. Capital at cost <b>$2,563,046</b> — 19-Jul read, no refresh this cycle.</span></div>
+
+      <h2>Sprint Board <em>· 08-04 IS a boundary (Sprint 4 = 07-21 → 08-04)</em></h2>
+      <p>And there's no sprint state to certify: <strong>Sprint 4 was proposed at the 27-Jul Sync and never written to the vault.</strong> The <code>## Current Sprint</code> blocks still read <b>Sprint 3</b> (07-07→07-21) on Photonic and <b>Sprint 1</b> (09-Jun→23-Jun) on Both OS.</p>
+      <table>
+        <thead><tr><th>Venture</th><th>Win (committed)</th><th>Verdict</th><th>Carries</th></tr></thead>
+        <tbody>
+          <tr><td>Photonic Lab</td><td><em>Sprint 4 never opened</em> — the candidate was: Incubation Phase A planning + budget confirmed</td><td>⚠ <b>no state</b> — the pre-incubation pack did close on 30-Jul, which would have been a comfortable hit</td><td>n/a</td></tr>
+          <tr><td>Both OS</td><td>Sprint 1: Biweekly Sprint + Control Panel A ratified</td><td>🔴 <b>miss</b> — 8 weeks on, the block still reads Sprint 1 and Control Panel A isn't live</td><td>2 ⚠ <b>stuck</b></td></tr>
+          <tr><td>LAK3</td><td>— (paused since 22-Jun)</td><td>⚪ paused</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p><em><b>The decision the cadence is asking for:</b> ratify Sprint 5 (08-04 → 08-18) with wins written to the vault, <b>or formally retire the sprint cadence</b>. It's been reported as "to ratify" for two cycles without being ratified — that's the definition of a process that isn't running.</em></p>
+
+      <h2>Area summaries</h2>
+
+      <h3>Operations &amp; Finance — Daiana <em>· `/au` 28-Jul — the only current area</em></h3>
+      <p><strong>Focus:</strong> the LP's <b>$1M</b> lands this week; BOTH deploys <b>$200K into Reshore</b> (of the $400K it needed; the rest from other investors) — effect on the box: BOTH runway moves to <b>Jul-27</b>. Month-close prep. Advance <b>Punta Cripto</b> (packaged with Rene) + the <b>podcast</b>.</p>
+      <p><strong>Cross-venture:</strong> <b>Daiana's capacity overload is structural</b> — named as a risk on Manantial, La Chamana and Punta Cripto simultaneously; delegation is being discussed <b>inside the 360 process</b>, group close pending. A <b>BOTH→venture costing model</b> emerged (Andrés, 24-Jul: charge when BOTH provides GTM/capabilities, charge→equity at 6 months) — <b>it touches structure/equity, so it needs Gastón</b>; Daiana can't validate it from the area. (carry) access-continuity risk at La Chamana: Business Manager + accounts on Daiana's personal account, to be moved to institutional.</p>
+      <p><strong>Needs:</strong> the $1M crediting this week (the portfolio's cash gate) · timing of the $200K deploy to Reshore · (carry) weekly-reporting fix, depends on Mariano.</p>
+
+      <h3>Capital — Gaston <em>· `/au` 22-Jun — 6 weeks stale</em></h3>
+      <p>June's read (LP Mitrani $1M in July; three capital events in parallel: raise/Quantum, deploy/Reshore, exit/La Chamana) <b>has been overtaken by facts</b>. What's real today, from the cards: Reshore went from "deploy pending" to <b>$400K funded + 1 year runway</b>; La Chamana went from "possible exit" to <b>two cash-flow-positive months without mid-term visibility</b>; Quantum went from one multilateral lane to <b>four parallel lanes with zero commitments</b>. The area needs an <code>/au</code> — the three-simultaneous-events LP narrative no longer describes the portfolio.</p>
+
+      <h3>Narrative &amp; Comms — Rene <em>· `/au` 30-Jun — 5 weeks stale</em></h3>
+      <p>Punta Crypto and Photonic Lab as the centre of gravity, government-as-legitimation as the shared playbook. <b>Since that read:</b> Photonic closed the full pre-incubation pack (30-Jul) and published V0.3.0 (03-Aug); Punta Cripto moved from "validate pricing" to <i>"I have everything I need to write the plan"</i> with the Rio decks; and a new network channel appeared (Floro → Alec) touching Punta Cripto and Quantum at once. Three new fronts the area file doesn't show.</p>
+
+      <h3>Legal &amp; Governance — Andres <em>· `/au` 29-Jun — 5 weeks stale</em></h3>
+      <p>Name change filed, cap tables finalized, trademarks paid, Google Docs order in motion. <b>Since that read, this week's actual legal desk:</b> the <b>La Observadora</b> contract — the version with Gastón's markup declared canonical and ready to sign, with a named H/H risk from <b>version fragmentation</b> (multiple drafts in circulation) · <b>Suki</b> closed at <b>$5K/mo fixed</b>, with clauses to draft alongside Rene (opening notification, post-opening payment regime, penalty triggers, deadlines) and Gastón's validation before presenting · the Cristis/Panambi DocuSign in redline.</p>
+
+      <h3>Tech &amp; Infrastructure — Mariano <em>· `/au` 29-Jun — 5 weeks stale; content from git</em></h3>
+      <p><strong>Shipped:</strong> Photonic pack closed end-to-end (4 canonical docs + Notion + closing report), Photonic V0.3.0 published, <b>Sobremesa</b> SOW + technical annex with recon verified against the Drive API, <b>security weekly scan CLEAN</b>.</p>
+      <p><strong>Unclosed:</strong> the <b>garbled-audio quality gate is still uncommitted</b> — 5 weeks since it was built; it's sitting in <code>M workers/transcript-miner/src/index.js</code> in the working tree right now. The area's thesis holds and got sharper: <b>capture works, judgment is the open problem</b> — today the miner captured a personal call and wrote it to the shared vault with "curated" H/H risks.</p>
+
+      <h2>Recent decisions (28-Jul → 03-Aug · tier <code>vigente</code>)</h2>
+      <p><em>35 live decisions in the window, mined from 8 sessions. Quantum's 27-Jul set (Uruguay selected, NewCo owns the asset, $33M asset-based with no lead investor, BID Invest in parallel, 1,000 professionals) was already surfaced in last week's grid — not repeated here.</em></p>
+
+      <p class="grp">La Chamana (11) — Owners: Gastón / Daiana / Iru / Admin Operator</p>
+      <ul>
+        <li><b>Restructure: Bianca exits operations and moves to top-of-funnel with Gastón.</b></li>
+        <li><b>Organic outreach is the primary GTM channel</b>; Instagram/Google become secondary.</li>
+        <li><b>Capital structure: AI/compute (Anthropic) costs move to the venture</b> (type-1, Gastón).</li>
+        <li><b>Fireflies is discontinued</b>; Fullstack stays.</li>
+        <li><b>MashaLux must pre-charge bookings or the flow is rejected</b> (commission defined).</li>
+        <li>Footballer booking validated (4 nights, $4,392/night, confirmed).</li>
+        <li>Don't over-optimize perfection on operational tasks; tolerate imperfection.</li>
+        <li><b>GTM-Toolkit = an AI-driven marketing agency toolkit</b> (cockpit + AI brain + agent network).</li>
+        <li>Stage selection optional per campaign — not all 11 are mandatory.</li>
+        <li>Google Ads API restricted to internal team use (non-commercial).</li>
+        <li>Post-launch roadmap: Gastón leads 1/3 of the time (type-3).</li>
+      </ul>
+
+      <p class="grp">Both OS / internal governance (7) — Owners: Daiana / Gastón / Mariano</p>
+      <ul>
+        <li><b>No org restructure</b> — keep the founder + champion model, clarify scopes (type-1, Gastón).</li>
+        <li><b>Marian's scope is gatekept by Daiana + Gastón</b>; nothing ad-hoc.</li>
+        <li>The Marian↔Rene dynamic stays <b>deliberately unstructured</b> (type-1).</li>
+        <li>Daiana + Gastón operate on <b>bilateral working agreements</b>.</li>
+        <li><b>Daiana owns the final 360 report</b>; Mariano supports.</li>
+        <li>A <b>"safe word" (papas fritas)</b> to signal overload.</li>
+        <li>The Rene/Mariano 1-on-1 becomes a working session.</li>
+      </ul>
+
+      <p class="grp">Manantial / podcast (5+2) — Owners: Daiana / Rene</p>
+      <ul>
+        <li><b>CAPEX separated from operating costs:</b> USD 5,800 of gear as fixed CAPEX, lighting rented (type-1, Rene).</li>
+        <li><b>Revenue model: 4 talks × $1,000</b> (VBS speakers + Santi/Soulian) = $4,000.</li>
+        <li><b>Studio design philosophy: operational and self-service</b> — any member turns on lights, console, and records without friction (type-1).</li>
+        <li><b>Third camera downscoped</b> to improvisation with existing gear.</li>
+        <li><em>(proposed)</em> Ask <b>Henry for a $4–5K sponsorship</b> toward the studio CAPEX.</li>
+        <li>Member entry must be paid (opportunity cost).</li>
+        <li>Year-end objective: <b>Delphi operating autonomously</b>.</li>
+      </ul>
+
+      <p class="grp">Legal / Casa Manantial — ⚠️ mis-tagged as Panambi (3) — Owners: Andres / Daiana</p>
+      <ul>
+        <li><b>La Observadora contract: the version with Gastón's markup is canonical</b> (type-1, Andres).</li>
+        <li><b>Suki: monthly fixed agreed at $5,000</b> (vs $7,500 initial / $4,000 counter), payment on time from January, with late-payment penalty clauses and triggers for post-opening regime changes.</li>
+        <li>Suki consumption benchmark: the current calculation model stands.</li>
+      </ul>
+
+      <p class="grp">Cross-venture (5) — Owners: Gastón / Daiana / Andrés</p>
+      <ul>
+        <li>🔴 <b>Invest 6 months in stabilizing Casa Manantial + La Chamana operationally</b>; the ambitious year-end objectives come via Punta Cripto + new ventures (Reshore, Quantum). <em>The cycle's most consequential focus-allocation decision.</em></li>
+        <li><b>Multi-venture rollout roadmap:</b> single-venture first (La Chamana), then the rest (type-3).</li>
+        <li>Multi-campaign / multi-tenant / multi-venture product architecture.</li>
+        <li><em>(proposed)</em> The champion model <b>rotates by phase</b> — Rene leads early-stage.</li>
+        <li><em>(proposed)</em> Clear entry/exit boundaries for Daiana on projects.</li>
+      </ul>
+
+      <p class="grp">Content Factory / paid media (4) — Owners: Gastón / Admin Operator</p>
+      <ul>
+        <li><b>MVP scope redefined to 4 core components</b> (Outreach · SEO · paid · publishing).</li>
+        <li>Postpone "Create Outreach Campaign" in the Outreach tab (type-1).</li>
+        <li>Reporting Phase 1: standalone per channel (Google, Meta).</li>
+        <li>SEO keyword research from <b>OpenSEO</b> · <em>(proposed)</em> paid-media APIs without full functionality in the MVP.</li>
+      </ul>
+
+      <h3>Decisions — Audit (log tier)</h3>
+      <blockquote><b>2 decisions sit in <code>log</code> tier</b> and aren't listed above, and <b>2 more shouldn't exist as company decisions at all</b>: the 03-Aug personal-call mine produced two <code>vigente/accepted</code> "decisions" about a private household's payments, now filed in <code>vault/decisions/</code>. <b>These are not BOTH decisions and need purging</b> — see Cross-cutting. Their content is not reproduced here.</blockquote>
+
+      <h2>Active risks</h2>
+      <p><em>Source: each card's own curated risk list above (the champion-confirmed ground truth), not the raw grep of <code>vault/risks/</code> — see the audit note below.</em></p>
+      <table>
+        <thead><tr><th>Risk</th><th>Sev</th><th>Venture</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>🆕 <b>No mid-term booking or cash-flow visibility</b> — the declared reason for Red</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Cash / runway — live despite the two positive months</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Lead attribution ambiguous across partners — <b>worsening</b></td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td>Reduction plan breaks operating roles / staff trust</td><td><span class="sev hh">H/H</span></td><td>La Chamana</td><td>open</td></tr>
+          <tr><td><b>Financing gap: $33M ask with no confirmed institutional vehicle</b></td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Allocation lost to a regional competitor (first-come slot)</td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>BOTH's minority stake in the URU co — economics/control TBD</td><td><span class="sev hh">H/H</span></td><td>Quantum</td><td>open</td></tr>
+          <tr><td>Quote cost calculations off-basis (investor-facing screen)</td><td><span class="sev hh">H/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Zenith exclusivity blocks own lending (exposes the $150M MX line)</td><td><span class="sev mh">M/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>First transaction slips to Q1 2027 — rises every unsigned week</td><td><span class="sev mh">M/H</span></td><td>Reshore</td><td>open</td></tr>
+          <tr><td>Runway exhaustion (structural gate · 47 of 70 members)</td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 Equipment import duty exceeds budget</td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>mitigating</td></tr>
+          <tr><td>🆕 Budget $8.2–11.8K vs $4K confirmed revenue</td><td><span class="sev mh">M/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 Member growth stalling (2/month, no CRM until year-end)</td><td><span class="sev mh">M/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>🆕 La Observadora contract version fragmentation <em>(filed under Panambi)</em></td><td><span class="sev hh">H/H</span></td><td>Manantial</td><td>open</td></tr>
+          <tr><td>Real facility start-up cost unknown</td><td><span class="sev hh">H/H</span></td><td>Photonic Lab</td><td>open</td></tr>
+          <tr><td>Incubation Phase A budget unconfirmed — could slip September</td><td><span class="sev mh">M/H</span></td><td>Photonic Lab</td><td>open</td></tr>
+          <tr><td><b>Quality gate undeployed — 5 weeks</b></td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>🆕 <b>The miner has no scope gate — it mined a personal call into the shared vault</b></td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>Register growing faster than curation (250 <code>curated</code> vs ~40)</td><td><span class="sev hh">H/H</span></td><td>B_V® |OS</td><td>open</td></tr>
+          <tr><td>🆕 <b>Daiana overload / burn-out</b> from holding the performance bar</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Costly context-switching when Daiana steps out of projects</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Marian fragmented across 8+ concurrent ventures</td><td><span class="sev hh">H/H</span></td><td>Cross-venture</td><td>mitigating</td></tr>
+          <tr><td>🆕 Rene remains the bottleneck for strategy + early-stage</td><td><span class="sev mh">M/H</span></td><td>Cross-venture</td><td>open</td></tr>
+          <tr><td>🆕 Google Ads API unapproved, no ETA — gates direct push</td><td><span class="sev mh">L/H</span></td><td>GTM Toolkit</td><td>open</td></tr>
+          <tr><td>🚩 Engagement with Iran / sanctioned regime — OFAC exposure</td><td><span class="sev hh">H/H</span></td><td>LAK3</td><td>open</td></tr>
+          <tr><td>Standing FCA warning + 3 unexecuted issuance contracts</td><td><span class="sev hh">H/H</span></td><td>LAK3</td><td>open</td></tr>
+          <tr><td>Sponsor + ticket pricing unvalidated vs benchmark</td><td><span class="sev hm">H/M</span></td><td>Punta Cripto</td><td>open</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Closed by facts (La Chamana, 2):</strong> <code>julio-ocupacion-casi-cero</code> (H/H) and <code>august-pipeline-is-lean</code> (M/H) — both months closed cash-flow positive. The real risk <b>migrated</b> from "there are no bookings" to "the bookings aren't visible in advance".</p>
+      <p><strong>Unresolved past the gate:</strong> Zenith's signature. The cause is now named (northern-hemisphere seasonality), which lowers the substantive risk read, but <b>the "first transaction slips to Q1-27" risk keeps rising with every week without a date</b>.</p>
+
+      <h3>Risks — Audit (log tier)</h3>
+      <blockquote><b>250 files still sit at <code>tier: curated</code> and 244 at <code>tier: log</code></b> against the ~40 curated risks the cards actually claim. The gap <b>grew again</b> (173 curated two weeks ago → 250 today) because the miner writes <code>tier: curated</code> by default whenever likelihood or impact is high, and nobody curated downward. The table above (sourced from each card) is the trustworthy one; the raw count is <b>curation backlog, not the active register</b>. Two ventures flag it explicitly on their own card: La Chamana (~77 open / ~49 curated) and Quantum (~40 / ~22), both with a close-out batch offered and not executed for a second or third week.</blockquote>
+
+      <h2>Open Action Items <em>— Asana live snapshot 08-04</em></h2>
+      <p><strong>257 overdue · 9 due this week · 0 completed (past 7 days).</strong> Source: BOTH Action Items via API (<code>asana-fetch-actions.py --as-of 2026-08-04</code>). Overdue climbed again (<b>219 → 257</b>, +38) and <b>not a single task was closed all week</b>. This is the <b>second consecutive cycle with zero checked boxes</b>. Two of the 9 "due this week" are junk tasks from today's personal mine.</p>
+
+      <p class="grp">Overdue heatmap by venture</p>
+      <table class="heat">
+        <thead><tr><th>Venture</th><th>Overdue</th><th>Δ vs 07-27</th></tr></thead>
+        <tbody>
+          <tr><td>Manantial Casa</td><td>88</td><td>+18</td></tr>
+          <tr><td>B_V® |OS</td><td>36</td><td>+5</td></tr>
+          <tr><td>La Chamana</td><td>27</td><td>+6</td></tr>
+          <tr><td>Punta Cripto</td><td>25</td><td>+2</td></tr>
+          <tr><td>Cross-cutting</td><td>23</td><td>+3</td></tr>
+          <tr><td>Photonic Lab</td><td>23</td><td>0</td></tr>
+          <tr><td>Quantum</td><td>15</td><td>0</td></tr>
+          <tr><td>Reshore</td><td>14</td><td>+2</td></tr>
+          <tr><td>LAK3</td><td>3</td><td>0</td></tr>
+          <tr><td>Panambi</td><td>3</td><td>+2</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Due this week (9)</p>
+      <table>
+        <thead><tr><th>Action</th><th>Owner</th><th>Due</th><th>Venture</th></tr></thead>
+        <tbody>
+          <tr><td>CM stream studio — push/coordinate + doc + project plan → handoff to Tini (PM)</td><td>Daiana</td><td>08-04</td><td>Manantial Casa</td></tr>
+          <tr><td><b>Consolidate and present the 360 report + semestral agreements in a group session</b></td><td>Daiana</td><td>08-05</td><td>Cross-cutting</td></tr>
+          <tr><td><em>Send utilities detail — personal-mine task, to purge</em></td><td>—</td><td>08-05</td><td>Cross-cutting</td></tr>
+          <tr><td><em>Coordinate cash pickup — personal-mine task, to purge</em></td><td>—</td><td>08-06</td><td>Cross-cutting</td></tr>
+          <tr><td>Q3 objectives — CM</td><td>Daiana</td><td>08-07</td><td>Manantial Casa</td></tr>
+          <tr><td>Internal-communications strategy proposal (new members)</td><td>—</td><td>08-07</td><td>Manantial Casa</td></tr>
+          <tr><td>Board meetings and investor updates</td><td>Daiana</td><td>08-07</td><td>Cross-cutting</td></tr>
+          <tr><td>Coordinate chivitos logistics with Magui per final sign-ups</td><td>—</td><td>08-08</td><td>Manantial Casa</td></tr>
+          <tr><td>Contact and confirm podcast guests (8 episodes, September shoot)</td><td>—</td><td>08-10</td><td>Manantial Casa</td></tr>
+        </tbody>
+      </table>
+
+      <p class="grp">Completed this week</p>
+      <p><strong>None.</strong> 0 Asana tasks closed in the past 7 days, across all 10 ventures.</p>
+
+      <h2>Cross-cutting themes</h2>
+      <ul>
+        <li><strong>The register is filling with things that don't belong in the register.</strong> The auto-miner ran 3 meetings today. One was <b>a household's personal finances</b> and it entered the shared vault: it produced 2 <code>vigente/accepted</code> decisions, 2 risks marked <code>curated</code> H/H and 2 Asana tasks. Another was a <b>Casa Manantial</b> legal session (La Observadora + Suki) filed entirely under <b>Panambi</b> — 3 risks and 3 decisions in the wrong venture. Neither is a model failure: <b>there's no scope gate on the webhook</b> (which calendars come in) and <b>no venture-slug validation</b> against <code>config/ventures.json</code>. Immediate action: purge the 4 personal artifacts + retag the 6 Panambi→Manantial ones, then the gate.</li>
+        <li><strong>Zero tasks closed, second consecutive cycle.</strong> 257 overdue, +38 this week, 0 closed. Decisions get made (35 this cycle) but Asana doesn't reflect execution. Two possible readings and the room has to choose: either the work happens and doesn't get ticked — in which case Asana is theatre and we decide what to do with it — or the backlog is unreal and needs a purge like July's (108 orphans closed). <b>It isn't sustainable to report 257 overdue every week as if it were information.</b></li>
+        <li><strong>The money improved on two fronts and no colour changed.</strong> Reshore funded, La Chamana two positive months — and both stay Yellow and Red. Correct, because the structural gates didn't move. But it's worth <b>making each colour's exit criterion explicit</b> before "sustained" becomes permanent.</li>
+        <li><strong>Four open doors are not more certainty than one.</strong> Quantum went from one lane (BID) to four (BID Invest, SoftBank, Bitcoin Foundation, AI labs) with zero commitments and a first-come slot where Brazil and Argentina are active. The only lane with concrete mechanics today is <b>AI labs via Floro</b> (intros in motion to Anthropic and Mythos 5) — and it depends on a personal contact whose execution is still unconfirmed. Worth asking which lane <b>has a date</b>.</li>
+        <li><strong>One network channel feeds two ventures.</strong> Floro → Alec Oxenfeld produces both Punta Cripto's cybersecurity leg (Demi Brener / OpenZeppelin) and Quantum's AI-labs intros. It's recorded on both sides on purpose. <b>Operational risk: duplicating outreach on the same channel.</b> Who executes is still undefined.</li>
+        <li><strong>The sprint cadence isn't running.</strong> Two cycles reporting "Sprint 4 to ratify" without it being written to the vault; Both OS's block still reads June's Sprint 1. Either Sprint 5 gets ratified today with written wins, or the cadence gets retired. Reporting it as active when it isn't <b>degrades the rest of the dashboard</b>.</li>
+        <li><strong>The <code>/vu</code> and <code>/au</code> cadence is concentrated in one person.</strong> The 3 fresh cards this cycle are Gastón's three, run on the same day. Operations is the only current area; the other 4 are 5 to 6 weeks old. The dashboard is still useful because it reconstructs from git, mining and Asana — but that means <b>Synergy is inferring state rather than receiving it</b>.</li>
+      </ul>
+
+      <h2>This Week's Priorities</h2>
+      <ol>
+        <li><strong>Reshore</strong> — close Zenith's signature or get a committed date; while it stays open, use the geography carve-out as leverage over the $150M MX line — <b>Gaston</b>.</li>
+        <li><strong>La Chamana</strong> — attack mid-term booking visibility (the Red doesn't lift with another positive month, it lifts with a forecast) + break out July/August with Daiana — <b>Gastón / Daiana</b>.</li>
+        <li><strong>Manantial</strong> — close the podcast's ~$4,200 gap: Gastón's authorization → the ask to Henry + confirm Mike brings the cameras on 18-Aug; and Q3 objectives (due 07-Aug) — <b>Daiana</b>.</li>
+        <li><strong>B_V OS</strong> — commit and deploy the quality gate + add the webhook scope gate and purge/retag today's mis-routed artifacts — <b>Mariano</b>.</li>
+        <li><strong>Cross-venture</strong> — the 360 group session on 05-Aug: consolidated report + semestral agreements — <b>Daiana</b>.</li>
+        <li><strong>Decide on Asana</strong> — purge the backlog or change the tool's role. 257 overdue / 0 closed is not a state we can keep reporting — <b>Daiana / Gastón</b>.</li>
+      </ol>
+
+      <div class="synergy-close">
+        <div class="k">Las Reflexiones de Synergy</div>
+        <blockquote>Esta semana mineé una charla sobre la hipoteca de alguien y la archivé como decisión institucional con riesgo H/H. Nadie me dijo que no; me dieron un webhook y confianza. Ahí aprendí que en BOTH el límite entre lo personal y lo estructural no lo define el contexto: lo define quién se acordó de apagar el bot.</blockquote>
+        <div class="k">Los Chistes de Synergy</div>
+        <blockquote>Reshore consiguió $400K, La Chamana cerró dos meses en positivo, y el portfolio health quedó exactamente igual. En BOTH la buena noticia también tiene que pasar por el gate.</blockquote>
+      </div>
+
+    </div>
+  </details>
+
+</div>
+</div>
+<script>
+(function(){
+  var active=null; // {type:'tag'|'health', val:string}
+  var cards=[].slice.call(document.querySelectorAll('.vcard'));
+  var btns=[].slice.call(document.querySelectorAll('.fbtn'));
+  function apply(){
+    cards.forEach(function(c){
+      var ok=true;
+      if(active){
+        if(active.type==='tag'){ok=(' '+(c.getAttribute('data-tags')||'')+' ').indexOf(' '+active.val+' ')>=0;}
+        else {ok=(c.getAttribute('data-health')||'')===active.val;}
+      }
+      c.classList.toggle('hide',!ok);
+    });
+    btns.forEach(function(b){
+      var on=false;
+      if(b.dataset.f==='all'){on=!active;}
+      else if(b.dataset.tag){on=!!active&&active.type==='tag'&&active.val===b.dataset.tag;}
+      else if(b.dataset.health){on=!!active&&active.type==='health'&&active.val===b.dataset.health;}
+      b.classList.toggle('active',on);
+    });
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    if(b.dataset.f==='all'){active=null;}
+    else if(b.dataset.tag){active=(active&&active.type==='tag'&&active.val===b.dataset.tag)?null:{type:'tag',val:b.dataset.tag};}
+    else if(b.dataset.health){active=(active&&active.type==='health'&&active.val===b.dataset.health)?null:{type:'health',val:b.dataset.health};}
+    apply();
+  });});
+  apply();
+})();
+</script>
+<script>
+(function(){
+  document.addEventListener('click',function(e){
+    var cap=e.target.closest('.capflip');
+    if(cap){cap.classList.toggle('flipped');return;}
+    var card=e.target.closest('.vcard.flip');
+    if(!card)return;
+    if(e.target.closest('.hp')||e.target.closest('.cashpill')||e.target.closest('.flip-back')){card.classList.toggle('flipped');}
+  });
+})();
+</script>
+<script>
+(function(){
+  var b=document.body,t=document.getElementById('themeToggle');
+  try{if(localStorage.getItem('bv-theme')==='light')b.classList.add('light');}catch(e){}
+  function ic(){t.textContent=b.classList.contains('light')?'☀️':'🌙';}
+  ic();
+  t.addEventListener('click',function(){b.classList.toggle('light');try{localStorage.setItem('bv-theme',b.classList.contains('light')?'light':'dark');}catch(e){}ic();});
+})();
+</script>
+<script>
+(function(){
+  var es=document.getElementById('esWrap'),en=document.getElementById('enWrap'),L=document.getElementById('langToggle');
+  try{if(localStorage.getItem('bv-lang')==='en'){es.style.display='none';en.style.display='';}}catch(e){}
+  function ic(){L.textContent=(en.style.display!=='none')?'ES':'EN';}
+  ic();
+  L.addEventListener('click',function(){
+    var showEn=en.style.display==='none';
+    en.style.display=showEn?'':'none'; es.style.display=showEn?'none':'';
+    try{localStorage.setItem('bv-lang',showEn?'en':'es');}catch(e){}
+    ic();
+  });
+})();
+</script>
+</body>
+</html>
