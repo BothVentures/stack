@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punta Blockchain 2027 — VB0.1-A · El Índice</title>
+<meta name="description" content="Punta Blockchain — First Edition. The institutional gateway to the Southern Cone. March 2027, Punta del Este, Uruguay.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="hover-media.css">
+
+<style>
+/* ════════════════════════════════════════════════════════════
+   PUNTA BLOCKCHAIN 2027 · VB0.1-A "EL ÍNDICE"
+   The dossier. Terminal on linen.
+   ──────────────────────────────────────────────────────────
+   bg     #EDE6D8  warm linen
+   ink    #141210
+   drift  #8A8069  secondary
+   pine   #0F3B2E  block
+   signal #00E576  live-data only — one accent per screen
+   ════════════════════════════════════════════════════════════ */
+
+:root{
+  --linen:  #EDE6D8;
+  --ink:    #141210;
+  --drift:  #8A8069;
+  --pine:   #0F3B2E;
+  --signal: #00E576;
+  --rule:   rgba(20,18,16,0.14);
+  --rule-soft: rgba(20,18,16,0.08);
+
+  --f-disp: "Fraunces", Georgia, serif;
+  --f-ui:   "Space Grotesk", Helvetica, Arial, sans-serif;
+  --f-mono: "IBM Plex Mono", "SF Mono", Menlo, monospace;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --pad: clamp(20px, 4vw, 64px);
+  --rail-w: 76px;
+
+  /* hover-media: square-cut for the dossier */
+  --hm-radius: 0;
+  --hm-width: min(30vw, 420px);
+  --hm-ratio: 3 / 2;
+}
+
+*, *::before, *::after{
+  box-sizing: border-box;
+  border-radius: 0 !important;
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+}
+
+body{
+  background: var(--linen);
+  color: var(--ink);
+  font-family: var(--f-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection{ background: var(--pine); color: var(--linen); }
+
+a{ color: inherit; text-decoration: none; }
+
+/* ── film grain overlay (canvas-generated, tiled) ─────────── */
+.grain{
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: multiply;
+  background-repeat: repeat;
+}
+
+/* ── mono utility ──────────────────────────────────────────── */
+.mono{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+/* ── the exposed grid: column rules spanning full sections ── */
+.sheet{
+  position: relative;
+}
+.sheet::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(to right, var(--rule-soft) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+  background-position: 0 0;
+  z-index: 0;
+}
+.sheet > *{ position: relative; z-index: 1; }
+@media (max-width: 760px){
+  .sheet::before{ background-size: calc(100% / 3) 100%; }
+}
+
+/* ── sticky left index rail (desktop) ─────────────────────── */
+.rail{
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--rail-w);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  z-index: 90;
+  background: transparent;
+}
+.rail a{
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--drift);
+  position: relative;
+  padding: 4px 2px;
+  transition: color 0.35s var(--ease);
+  writing-mode: horizontal-tb;
+}
+.rail a::before{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -9px;
+  transform: translateX(-50%) scale(0);
+  width: 5px;
+  height: 5px;
+  background: var(--signal);
+  transition: transform 0.35s var(--ease);
+}
+.rail a.on{ color: var(--ink); }
+.rail a.on::before{ transform: translateX(-50%) scale(1); }
+.rail a:hover{ color: var(--ink); }
+.rail .rail-cap{
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--drift);
+  writing-mode: vertical-rl;
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-transform: uppercase;
+}
+@media (max-width: 1023px){
+  .rail{ display: none; }
+}
+@media (min-width: 1024px){
+  main{ padding-left: var(--rail-w); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   V1 — COVER SHEET
+   ════════════════════════════════════════════════════════════ */
+.cover{
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--ink);
+  overflow: hidden;
+}
+
+.cover-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 18px var(--pad) 14px;
+  border-bottom: 1px solid var(--rule);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.cover-top .mono{ color: var(--drift); }
+.cover-top .ed{ color: var(--ink); }
+
+.stamp-status{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+}
+.dot-live{
+  width: 6px;
+  height: 6px;
+  background: var(--signal);
+  display: inline-block;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%, 100%{ opacity: 1; box-shadow: 0 0 0 0 rgba(0,229,118,0.45); }
+  50%     { opacity: 0.55; box-shadow: 0 0 0 5px rgba(0,229,118,0); }
+}
+
+.cover-title{
+  padding: clamp(28px, 5vh, 64px) 0 clamp(18px, 3vh, 40px);
+  flex: 0 0 auto;
+}
+.cover-title h1{
+  font-family: var(--f-disp);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 144;
+  font-weight: 560;
+  font-size: clamp(64px, 14.5vw, 250px);
+  line-height: 0.86;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.cover-title .tl{
+  display: block;
+  white-space: nowrap;
+}
+/* the title crops slightly at the edges — deliberate */
+.cover-title .tl-1{ margin-left: calc(var(--pad) * -0.28); }
+.cover-title .tl-2{
+  margin-left: clamp(8px, 6vw, 140px);
+  margin-right: calc(var(--pad) * -0.6);
+  text-align: right;
+}
+
+.cover-sub{
+  padding: 0 var(--pad);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.cover-sub .sub-line{
+  font-family: var(--f-disp);
+  font-style: italic;
+  font-weight: 420;
+  font-variation-settings: "opsz" 40;
+  font-size: clamp(17px, 2vw, 26px);
+  color: var(--ink);
+}
+.cover-sub .mono{ color: var(--drift); }
+
+/* dot-leader index (table of contents = nav) */
+.toc{
+  margin-top: auto;
+  border-top: 1px solid var(--ink);
+}
+.toc-head{
+  display: flex;
+  justify-content: space-between;
+  padding: 12px var(--pad) 10px;
+  color: var(--drift);
+  border-bottom: 1px solid var(--rule);
+}
+.toc-row{
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 13px var(--pad);
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1.15vw, 14px);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  position: relative;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.toc-row:last-child{ border-bottom: 0; }
+.toc-row .n{ color: var(--drift); flex: 0 0 auto; transition: color 0.3s var(--ease); }
+.toc-row .t{ flex: 0 0 auto; font-weight: 500; }
+.toc-row .leader{
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--drift);
+  opacity: 0.8;
+  min-width: 24px;
+  transition: color 0.3s var(--ease);
+}
+.toc-row .leader::after{
+  content: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .";
+  letter-spacing: 2px;
+}
+.toc-row .d{ flex: 0 0 auto; color: var(--drift); transition: color 0.3s var(--ease); }
+.toc-row .go{
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  background: var(--signal);
+  transform: scale(0);
+  transition: transform 0.3s var(--ease);
+  align-self: center;
+}
+.toc-row:hover{ background: var(--ink); color: var(--linen); }
+.toc-row:hover .n,
+.toc-row:hover .d,
+.toc-row:hover .leader{ color: var(--linen); }
+.toc-row:hover .go{ transform: scale(1); }
+
+/* ════════════════════════════════════════════════════════════
+   MARQUEE TICKER
+   ════════════════════════════════════════════════════════════ */
+.ticker{
+  border-bottom: 1px solid var(--ink);
+  background: var(--pine);
+  color: var(--linen);
+  overflow: hidden;
+  padding: 11px 0;
+}
+.ticker-track{
+  display: flex;
+  width: max-content;
+  animation: tick 46s linear infinite;
+  will-change: transform;
+}
+.ticker:hover .ticker-track{ animation-play-state: paused; }
+.ticker span{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding-right: 0.5em;
+}
+.ticker b{
+  font-weight: 400;
+  color: var(--signal);
+}
+@keyframes tick{
+  from{ transform: translate3d(0,0,0); }
+  to  { transform: translate3d(-50%,0,0); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   SHARED SECTION FURNITURE
+   ════════════════════════════════════════════════════════════ */
+section.doc{
+  border-bottom: 1px solid var(--ink);
+  padding: clamp(64px, 10vh, 128px) var(--pad);
+}
+.sec-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: clamp(32px, 5vh, 64px);
+  flex-wrap: wrap;
+}
+.sec-head .mono{ color: var(--ink); }
+.sec-head .mono .bkt{ color: var(--drift); }
+.sec-head .mono.right{ color: var(--drift); }
+
+.lede{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 72;
+  font-weight: 470;
+  font-size: clamp(26px, 3.6vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  max-width: 21ch;
+}
+.lede em{
+  font-style: italic;
+  font-weight: 430;
+}
+
+/* masked line-by-line entrances */
+.ln{
+  display: block;
+  overflow: hidden;
+}
+.ln > .ln-i{
+  display: block;
+  transform: translateY(112%);
+  transition: transform 1s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.in .ln > .ln-i{ transform: translateY(0); }
+
+.rise{
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.in .rise, .rise.in{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ln > .ln-i{ transform: none !important; transition: none !important; }
+  .rise{ opacity: 1 !important; transform: none !important; transition: none !important; }
+  .ticker-track{ animation: none !important; }
+  .dot-live{ animation: none !important; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   V2 — THESIS AS LEDGER  (01) + THE PLACE (02)
+   ════════════════════════════════════════════════════════════ */
+.stats{
+  border-top: 1px solid var(--ink);
+  margin-top: clamp(36px, 6vh, 72px);
+}
+.stat-row{
+  display: grid;
+  grid-template-columns: minmax(56px, 0.6fr) minmax(0, 3fr) minmax(0, 2.2fr);
+  gap: clamp(12px, 2vw, 32px);
+  align-items: baseline;
+  padding: clamp(20px, 3.2vh, 36px) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.35s var(--ease);
+}
+.stat-row:hover{ background: rgba(20,18,16,0.035); }
+.stat-row .idx{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--drift);
+}
+.stat-num{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 144;
+  font-weight: 500;
+  font-size: clamp(52px, 8.2vw, 128px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.stat-num .u{
+  display: inline-block;
+  border-bottom: 3px solid var(--signal);
+  padding-bottom: 0.04em;
+}
+.stat-cap{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.stat-cap .sub{ color: var(--drift); display: block; }
+
+.thesis-close{
+  margin-top: clamp(40px, 7vh, 88px);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(16px, 3vw, 48px);
+}
+.thesis-close .tag{ color: var(--drift); }
+.thesis-close p{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 60;
+  font-weight: 460;
+  font-size: clamp(20px, 2.5vw, 34px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  max-width: 30ch;
+}
+.thesis-close p em{ font-style: italic; }
+
+/* WHY PUNTA — compact ledger rows */
+.ledger{
+  border-top: 1px solid var(--ink);
+}
+.ledger-row{
+  display: grid;
+  grid-template-columns: minmax(48px, 0.5fr) minmax(0, 1.6fr) minmax(0, 3fr);
+  gap: clamp(12px, 2vw, 32px);
+  padding: clamp(18px, 2.6vh, 28px) 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+  transition: background 0.35s var(--ease), color 0.35s var(--ease);
+}
+.ledger-row .idx{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--drift);
+  transition: color 0.35s var(--ease);
+}
+.ledger-row h3{
+  font-family: var(--f-ui);
+  font-weight: 500;
+  font-size: clamp(15px, 1.5vw, 19px);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.ledger-row p{
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1.05vw, 13px);
+  letter-spacing: 0.02em;
+  line-height: 1.75;
+  color: var(--ink);
+  opacity: 0.85;
+  transition: color 0.35s var(--ease);
+}
+.ledger-row:hover{
+  background: var(--ink);
+  color: var(--linen);
+}
+.ledger-row:hover .idx{ color: var(--signal); }
+.ledger-row:hover p{ color: var(--linen); opacity: 0.85; }
+
+.place-note{
+  margin-top: clamp(28px, 4vh, 48px);
+  font-family: var(--f-disp);
+  font-style: italic;
+  font-weight: 430;
+  font-variation-settings: "opsz" 40;
+  font-size: clamp(16px, 1.8vw, 22px);
+  color: var(--ink);
+  max-width: 52ch;
+}
+
+/* ════════════════════════════════════════════════════════════
+   V3 — THE WEEKEND AS RAW TIMETABLE  (03)
+   ════════════════════════════════════════════════════════════ */
+.tt{
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.tt-head, .tt-row{
+  display: grid;
+  grid-template-columns: minmax(92px, 0.9fr) minmax(0, 1.7fr) minmax(0, 1.2fr) minmax(0, 2.6fr) minmax(0, 1.3fr);
+  gap: clamp(10px, 1.6vw, 28px);
+}
+.tt-head{
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--drift);
+}
+.tt-row{
+  padding: clamp(22px, 3.4vh, 40px) 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+  transition: background 0.35s var(--ease);
+}
+.tt-row:last-child{ border-bottom: 0; }
+.tt-row:hover{ background: rgba(15,59,46,0.05); }
+
+.tt-time{
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1.05vw, 13px);
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.tt-time .tc{ display: block; color: var(--drift); transition: color 0.35s var(--ease); }
+.tt-row:hover .tt-time .tc{ color: var(--signal); }
+
+.tt-name{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 72;
+  font-weight: 520;
+  font-size: clamp(22px, 2.6vw, 38px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.tt-venue{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.tt-venue .v2l{ color: var(--drift); display: block; }
+.tt-brief{
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1vw, 12.5px);
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  opacity: 0.85;
+}
+.tt-cap{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.tt-cap .sub{ color: var(--drift); display: block; }
+
+.venue-note{
+  margin-top: clamp(28px, 4vh, 48px);
+  font-family: var(--f-disp);
+  font-weight: 440;
+  font-style: italic;
+  font-variation-settings: "opsz" 40;
+  font-size: clamp(16px, 1.9vw, 23px);
+  line-height: 1.5;
+  max-width: 56ch;
+}
+
+@media (max-width: 860px){
+  .tt-head{ display: none; }
+  .tt-row{
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "time venue"
+      "name name"
+      "brief brief"
+      "cap cap";
+    row-gap: 12px;
+  }
+  .tt-time{ grid-area: time; }
+  .tt-name{ grid-area: name; }
+  .tt-venue{ grid-area: venue; text-align: right; }
+  .tt-brief{ grid-area: brief; }
+  .tt-cap{ grid-area: cap; border-top: 1px solid var(--rule-soft); padding-top: 10px; }
+  .tt-cap .sub{ display: inline; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   V4 — CLASSIFIED LISTINGS (04) + ACCESS (05)
+   ════════════════════════════════════════════════════════════ */
+.houses-lede{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 72;
+  font-weight: 470;
+  font-size: clamp(24px, 3.2vw, 46px);
+  line-height: 1.14;
+  letter-spacing: -0.015em;
+  max-width: 24ch;
+  margin-bottom: clamp(32px, 5vh, 64px);
+}
+
+.listing{
+  border-top: 1px solid var(--ink);
+}
+.listing-row{
+  display: grid;
+  grid-template-columns: minmax(48px, 0.5fr) minmax(0, 1.8fr) minmax(0, 3fr);
+  gap: clamp(12px, 2vw, 32px);
+  padding: clamp(18px, 2.6vh, 30px) 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+  transition: background 0.35s var(--ease), color 0.35s var(--ease);
+}
+.listing-row .idx{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--drift);
+  transition: color 0.35s var(--ease);
+}
+.listing-row h3{
+  font-family: var(--f-ui);
+  font-weight: 500;
+  font-size: clamp(15px, 1.5vw, 19px);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.listing-row p{
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1.05vw, 13px);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.listing-row:hover{ background: var(--ink); color: var(--linen); }
+.listing-row:hover .idx{ color: var(--signal); }
+
+.listing-note{
+  padding: 14px 0 0;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--drift);
+}
+
+/* access index table */
+.access-block{
+  margin-top: clamp(64px, 10vh, 120px);
+}
+.tiers{
+  border-top: 1px solid var(--ink);
+}
+.tier-head, .tier-row{
+  display: grid;
+  grid-template-columns: minmax(120px, 1.4fr) minmax(56px, 0.6fr) minmax(0, 3fr) minmax(96px, 1fr);
+  gap: clamp(10px, 1.8vw, 28px);
+  align-items: baseline;
+}
+.tier-head{
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ink);
+  color: var(--drift);
+}
+.tier-row{
+  padding: clamp(16px, 2.4vh, 26px) 0;
+  border-bottom: 1px solid var(--rule);
+  transition: background 0.35s var(--ease), color 0.35s var(--ease);
+}
+.tier-row .tier-name{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 60;
+  font-weight: 530;
+  font-size: clamp(18px, 2.1vw, 28px);
+  letter-spacing: -0.01em;
+}
+.tier-row .tier-x{
+  font-family: var(--f-mono);
+  font-size: clamp(12px, 1.2vw, 15px);
+  letter-spacing: 0.06em;
+  color: var(--drift);
+  transition: color 0.35s var(--ease);
+}
+.tier-row .tier-what{
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1vw, 12.5px);
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.tier-row .tier-pass{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  white-space: nowrap;
+}
+.tier-row:hover{ background: var(--ink); color: var(--linen); }
+.tier-row:hover .tier-x{ color: var(--signal); }
+
+@media (max-width: 700px){
+  .tier-head{ display: none; }
+  .tier-row{
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name x"
+      "what what"
+      "pass pass";
+    row-gap: 8px;
+  }
+  .tier-row .tier-name{ grid-area: name; }
+  .tier-row .tier-x{ grid-area: x; align-self: baseline; }
+  .tier-row .tier-what{ grid-area: what; }
+  .tier-row .tier-pass{ grid-area: pass; text-align: left; color: var(--drift); }
+  .tier-row:hover .tier-pass{ color: var(--linen); }
+}
+
+.access-notes{
+  margin-top: clamp(24px, 4vh, 40px);
+  display: grid;
+  gap: 6px;
+}
+.access-notes p{
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.9;
+  color: var(--ink);
+}
+.access-notes p .dim{ color: var(--drift); }
+
+/* timeline strip */
+.timeline{
+  margin-top: clamp(40px, 6vh, 72px);
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding: 16px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-family: var(--f-mono);
+  font-size: clamp(11px, 1.1vw, 13px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.timeline .arrow{ color: var(--signal); }
+.timeline .tstep{ color: var(--ink); }
+.timeline .tstep .dim{ color: var(--drift); }
+
+/* CTA — underlined mono links, not buttons */
+.cta{
+  margin-top: clamp(48px, 8vh, 96px);
+  display: flex;
+  gap: clamp(24px, 6vw, 96px);
+  flex-wrap: wrap;
+}
+.cta a{
+  font-family: var(--f-mono);
+  font-size: clamp(13px, 1.4vw, 17px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 6px;
+  position: relative;
+  transition: color 0.3s var(--ease);
+}
+.cta a::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease);
+}
+.cta a:hover{ color: var(--pine); }
+.cta a:hover::after{ transform: scaleX(1); }
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════ */
+footer{
+  padding: clamp(40px, 6vh, 72px) var(--pad) 28px;
+}
+.foot-id{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px 32px;
+  flex-wrap: wrap;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--rule);
+}
+.foot-id .l{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 2;
+  color: var(--ink);
+}
+.foot-id .l .dim{ color: var(--drift); }
+.foot-id .r{
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--drift);
+}
+
+.switcher{
+  padding-top: 20px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--drift);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.switcher .cur{ color: var(--ink); }
+.switcher a{
+  color: var(--drift);
+  border-bottom: 1px solid var(--rule);
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.switcher a:hover{ color: var(--ink); border-color: var(--signal); }
+
+/* ════════════════════════════════════════════════════════════
+   HOVER-MEDIA TRIGGERS — dossier restyle
+   ════════════════════════════════════════════════════════════ */
+.hm-trigger{
+  background-image: linear-gradient(to right, var(--drift) 34%, transparent 0);
+  background-size: 6px 1px;
+  transition: opacity 0.3s, background-image 0.3s;
+}
+.hm-trigger:hover{
+  opacity: 1;
+  background-image: linear-gradient(to right, var(--signal) 34%, transparent 0);
+}
+.hm-frame{
+  border: 1px solid var(--ink);
+  background: var(--ink);
+}
+.hm-caption{
+  font-family: var(--f-mono);
+  letter-spacing: 0.14em;
+}
+
+/* ── small screens: keep the cover honest ─────────────────── */
+@media (max-width: 760px){
+  .cover-title h1{ font-size: clamp(52px, 16.5vw, 96px); }
+  .cover-title .tl-2{ margin-left: 10vw; margin-right: -4vw; }
+  .toc-row{ flex-wrap: nowrap; }
+  .toc-row .d{ display: none; }
+  .stat-row{ grid-template-columns: 40px 1fr; }
+  .stat-row .stat-cap{ grid-column: 2; padding-top: 6px; }
+  .ledger-row, .listing-row{
+    grid-template-columns: 40px 1fr;
+  }
+  .ledger-row p, .listing-row p{ grid-column: 2; padding-top: 4px; }
+  .thesis-close{ grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- film grain (painted by JS onto this element) -->
+<div class="grain" id="grain" aria-hidden="true"></div>
+
+<!-- sticky left index rail -->
+<nav class="rail" aria-label="Section index">
+  <a href="#thesis"  data-spy="thesis">01</a>
+  <a href="#place"   data-spy="place">02</a>
+  <a href="#weekend" data-spy="weekend">03</a>
+  <a href="#houses"  data-spy="houses">04</a>
+  <a href="#access"  data-spy="access">05</a>
+  <span class="rail-cap">VB0.1-A · El Índice</span>
+</nav>
+
+<main>
+
+  <!-- ══════════════════════════════════════════════════════
+       V1 — COVER SHEET
+       ══════════════════════════════════════════════════════ -->
+  <header class="cover sheet" id="top" data-spy-sec="top">
+
+    <div class="cover-top">
+      <span class="mono ed">Edition 01</span>
+      <span class="mono">LAT&nbsp;-34.9608&nbsp;/&nbsp;LON&nbsp;-54.9433</span>
+      <span class="mono stamp-status"><i class="dot-live" aria-hidden="true"></i>Status:&nbsp;Building</span>
+      <span class="mono">Q-01.27</span>
+    </div>
+
+    <div class="cover-title rv">
+      <h1>
+        <span class="ln"><span class="ln-i tl tl-1" style="--d:0.05s">Punta</span></span>
+        <span class="ln"><span class="ln-i tl tl-2" style="--d:0.18s">Blockchain</span></span>
+      </h1>
+    </div>
+
+    <div class="cover-sub">
+      <p class="sub-line">The Institutional Gateway to the Southern&nbsp;Cone</p>
+      <span class="mono">March 2027 · <span data-hm="punta">Punta del Este</span>, Uruguay</span>
+    </div>
+
+    <nav class="toc" aria-label="Contents">
+      <div class="toc-head">
+        <span class="mono">Index / Contents</span>
+        <span class="mono">Filed — First Edition</span>
+      </div>
+      <a class="toc-row" href="#thesis">
+        <span class="n">01</span><span class="t">Thesis</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">Market Signal</span><span class="go" aria-hidden="true"></span>
+      </a>
+      <a class="toc-row" href="#place">
+        <span class="n">02</span><span class="t">The Place</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">Why Punta</span><span class="go" aria-hidden="true"></span>
+      </a>
+      <a class="toc-row" href="#weekend">
+        <span class="n">03</span><span class="t">The Weekend</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">Two Layers</span><span class="go" aria-hidden="true"></span>
+      </a>
+      <a class="toc-row" href="#houses">
+        <span class="n">04</span><span class="t">The Houses</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">21 Positions</span><span class="go" aria-hidden="true"></span>
+      </a>
+      <a class="toc-row" href="#access">
+        <span class="n">05</span><span class="t">Access</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">Partner Brief</span><span class="go" aria-hidden="true"></span>
+      </a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════
+       TICKER — the manifesto, in transit
+       ══════════════════════════════════════════════════════ -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tickerTrack">
+      <span>Legitimacy arrives before proof — <b>Policy · Capital · Intelligence</b> — March 2027 — Punta del Este —&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       V2 — 01 THESIS · the ledger
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="thesis" data-spy-sec="thesis">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;01 / Thesis&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Market Signal · Source: On-chain volume, 12-mo trailing</span>
+    </div>
+
+    <h2 class="lede rv">
+      <span class="ln"><span class="ln-i" style="--d:0s">The region is not emerging.</span></span>
+      <span class="ln"><span class="ln-i" style="--d:0.1s"><em>It has emerged</em> — on-chain,</span></span>
+      <span class="ln"><span class="ln-i" style="--d:0.2s">at scale, ahead of its institutions.</span></span>
+    </h2>
+
+    <div class="stats">
+      <div class="stat-row rise" style="--d:0s">
+        <span class="idx">S.01</span>
+        <span class="stat-num"><span class="u">$<span data-count="415" data-dur="1700">0</span>B</span></span>
+        <span class="stat-cap">LATAM on-chain volume
+          <span class="sub">Jul 2023 – Jun 2024</span></span>
+      </div>
+      <div class="stat-row rise" style="--d:0.08s">
+        <span class="idx">S.02</span>
+        <span class="stat-num"><span class="u">+<span data-count="42.5" data-decimals="1" data-dur="1700">0</span>%</span></span>
+        <span class="stat-cap">Year over year
+          <span class="sub">Fastest-accelerating region on record</span></span>
+      </div>
+      <div class="stat-row rise" style="--d:0.16s">
+        <span class="idx">S.03</span>
+        <span class="stat-num"><span class="u">$<span data-count="91.9" data-decimals="1" data-dur="1700">0</span>B</span></span>
+        <span class="stat-cap">Argentina alone
+          <span class="sub">The most stablecoin-dense market on earth</span></span>
+      </div>
+    </div>
+
+    <div class="thesis-close rv">
+      <span class="mono tag rise" style="--d:0s">Reading / 01</span>
+      <p>
+        <span class="ln"><span class="ln-i" style="--d:0.05s">The Southern Cone operates the most</span></span>
+        <span class="ln"><span class="ln-i" style="--d:0.13s">crypto-active population per capita on the</span></span>
+        <span class="ln"><span class="ln-i" style="--d:0.21s">planet. Its capital concentrates in one place</span></span>
+        <span class="ln"><span class="ln-i" style="--d:0.29s">every season. <em>Punta Blockchain is the</em></span></span>
+        <span class="ln"><span class="ln-i" style="--d:0.37s"><em>institutional platform built on that fact.</em></span></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       V2b — 02 THE PLACE · why Punta
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="place" data-spy-sec="place">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;02 / The Place&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Why Punta · Four entries</span>
+    </div>
+
+    <div class="ledger rv">
+      <div class="ledger-row rise" style="--d:0s">
+        <span class="idx">01</span>
+        <h3>Regulation in force</h3>
+        <p>Law 20,345 live · The Central Bank active on digital-asset oversight. Not a promise of a framework — a framework, operating.</p>
+      </div>
+      <div class="ledger-row rise" style="--d:0.07s">
+        <span class="idx">02</span>
+        <h3>Capital in season</h3>
+        <p>Highest concentration of family offices &amp; HNW capital in LATAM. ARG · BRA · CHL · URY — every southern-hemisphere summer, one town.</p>
+      </div>
+      <div class="ledger-row rise" style="--d:0.14s">
+        <span class="idx">03</span>
+        <h3>Institutional stability</h3>
+        <p>#1 in LATAM on rule of law · USD contracts standard. The jurisdiction is the product.</p>
+      </div>
+      <div class="ledger-row rise" style="--d:0.21s">
+        <span class="idx">04</span>
+        <h3>The brand mechanism</h3>
+        <p>"Punta del Este" carries premium weight. The same mechanism that makes Dubai work for Token2049 — a name that pre-sells the room.</p>
+      </div>
+    </div>
+
+    <p class="place-note rise" style="--d:0.1s">A market this loud has never had an institutional address. This is the filing for one.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       V3 — 03 THE WEEKEND · raw timetable
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="weekend" data-spy-sec="weekend">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;03 / The Weekend&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Two layers · Fri–Sat · March 2027</span>
+    </div>
+
+    <div class="tt rv">
+      <div class="tt-head">
+        <span class="mono">Day / Code</span>
+        <span class="mono">Session</span>
+        <span class="mono">Venue</span>
+        <span class="mono">Brief</span>
+        <span class="mono">Capacity</span>
+      </div>
+
+      <div class="tt-row rise" style="--d:0s">
+        <div class="tt-time">FRI<span class="tc">PB-27 · 09:30</span></div>
+        <div class="tt-name"><span data-hm="forum">Leaders Forum</span></div>
+        <div class="tt-venue">MACA<span class="v2l">Closed floor</span></div>
+        <div class="tt-brief">Central bank fireside, on the record · closed regulatory roundtable · capital session. No exhibition floor.</div>
+        <div class="tt-cap">100–150 seats<span class="sub">Restricted</span></div>
+      </div>
+
+      <div class="tt-row rise" style="--d:0.07s">
+        <div class="tt-time">FRI<span class="tc">PB-27 · 21:00</span></div>
+        <div class="tt-name"><span data-hm="dinner">The Dinner</span></div>
+        <div class="tt-venue">Casa Manantial<span class="v2l">One table</span></div>
+        <div class="tt-brief">Regulators, allocators and anchors at one table · off the record, no stage, no press. Held within the top two partner tiers — never sold separately.</div>
+        <div class="tt-cap">60–80 seats<span class="sub">Invitation only</span></div>
+      </div>
+
+      <div class="tt-row rise" style="--d:0.14s">
+        <div class="tt-time">SAT<span class="tc">PB-27 · 10:00</span></div>
+        <div class="tt-name"><span data-hm="summit">Institutional Summit</span></div>
+        <div class="tt-venue">MACA<span class="v2l">Main stage</span></div>
+        <div class="tt-brief">Opening keynote · anchor panel · Stablecoins &amp; Payments / RWA &amp; Tokenization / AI × On-chain. Tickets open November 2026.</div>
+        <div class="tt-cap">400–600<span class="sub">Public, curated</span></div>
+      </div>
+
+      <div class="tt-row rise" style="--d:0.21s">
+        <div class="tt-time">SAT<span class="tc">PB-27 · 19:30</span></div>
+        <div class="tt-name"><span data-hm="party">The Party</span></div>
+        <div class="tt-venue">Casa Manantial<span class="v2l">The house opens</span></div>
+        <div class="tt-brief">The summit closes, the house opens · sunset over Manantiales.</div>
+        <div class="tt-cap">150–200 guests<span class="sub">By list</span></div>
+      </div>
+    </div>
+
+    <p class="venue-note rise" style="--d:0.1s">A museum and a house. <span data-hm="maca">MACA — Atchugarry</span> gives the platform a gravitas no convention center can fake. <span data-hm="casa">Casa Manantial</span> is where the weekend is remembered.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       V4 — 04 THE HOUSES · classified listings
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="houses" data-spy-sec="houses">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;04 / The Houses&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Classified · Three listings</span>
+    </div>
+
+    <h2 class="houses-lede rv">
+      <span class="ln"><span class="ln-i" style="--d:0s"><span data-hm="houses">Three houses.</span> Three partners.</span></span>
+      <span class="ln"><span class="ln-i" style="--d:0.1s"><em>The town becomes the venue.</em></span></span>
+    </h2>
+
+    <div class="listing rv">
+      <div class="listing-row rise" style="--d:0s">
+        <span class="idx">H.01</span>
+        <h3>Housing, solved</h3>
+        <p>Delegation sleeps on-site · fully staffed · pool · three nights. The logistics line item disappears from the partner's ledger.</p>
+      </div>
+      <div class="listing-row rise" style="--d:0.07s">
+        <span class="idx">H.02</span>
+        <h3>A private venue</h3>
+        <p>Firesides, client dinners, side sessions — on the partner's brand, behind the partner's door.</p>
+      </div>
+      <div class="listing-row rise" style="--d:0.14s">
+        <span class="idx">H.03</span>
+        <h3>A content stage</h3>
+        <p>Podcasts and interviews shot in situ — the partner keeps the footage.</p>
+      </div>
+    </div>
+
+    <p class="listing-note rise" style="--d:0.1s">Note — held within Diamond and Master positions · never sold separately.</p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       V4b — 05 ACCESS · the index table
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="access" data-spy-sec="access">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;05 / Access&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Partnership index · 21 positions</span>
+    </div>
+
+    <div class="tiers rv">
+      <div class="tier-head">
+        <span class="mono">Position</span>
+        <span class="mono">Count</span>
+        <span class="mono">Carries</span>
+        <span class="mono" style="text-align:right">Passports</span>
+      </div>
+
+      <div class="tier-row rise" style="--d:0s">
+        <span class="tier-name">Master</span>
+        <span class="tier-x">×1</span>
+        <span class="tier-what">Naming level · both layers · flagship house</span>
+        <span class="tier-pass">40 passports</span>
+      </div>
+      <div class="tier-row rise" style="--d:0.06s">
+        <span class="tier-name">Diamond</span>
+        <span class="tier-x">×2</span>
+        <span class="tier-what">Category exclusivity · branded house</span>
+        <span class="tier-pass">25 passports</span>
+      </div>
+      <div class="tier-row rise" style="--d:0.12s">
+        <span class="tier-name">Titanium</span>
+        <span class="tier-x">×4</span>
+        <span class="tier-what">Keynote + panel</span>
+        <span class="tier-pass">15 passports</span>
+      </div>
+      <div class="tier-row rise" style="--d:0.18s">
+        <span class="tier-name">Gold</span>
+        <span class="tier-x">×6</span>
+        <span class="tier-what">Panel seat</span>
+        <span class="tier-pass">8 passports</span>
+      </div>
+      <div class="tier-row rise" style="--d:0.24s">
+        <span class="tier-name">Supporter</span>
+        <span class="tier-x">×8</span>
+        <span class="tier-what">Official media + website</span>
+        <span class="tier-pass">4 passports</span>
+      </div>
+    </div>
+
+    <div class="access-notes rv">
+      <p class="rise" style="--d:0s">Twenty-one positions. Category exclusivity at every tier.</p>
+      <p class="rise" style="--d:0.06s">Seven carry both layers — <span class="dim">three include a house.</span></p>
+      <p class="rise" style="--d:0.12s">Pricing in the Partner Brief.</p>
+    </div>
+
+    <div class="timeline rise" style="--d:0.1s" role="list" aria-label="Timeline">
+      <span class="tstep" role="listitem">Anchors close <span class="dim">Oct 2026</span></span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="tstep" role="listitem">Tickets <span class="dim">Nov 2026</span></span>
+      <span class="arrow" aria-hidden="true">→</span>
+      <span class="tstep" role="listitem">Agenda locks <span class="dim">Jan 2027</span></span>
+    </div>
+
+    <div class="cta rv">
+      <a href="#" class="rise" style="--d:0s">→ Request the Partner Brief</a>
+      <a href="#" class="rise" style="--d:0.08s">→ Join the Guest List</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       FOOTER
+       ══════════════════════════════════════════════════════ -->
+  <footer class="sheet">
+    <div class="foot-id">
+      <p class="l">
+        Punta Blockchain — First Edition<br>
+        Punta del Este, Uruguay · March 2027<br>
+        <span class="dim">The evolution of Punta Crypto · By BOTH Ventures</span>
+      </p>
+      <span class="r">VB0.1-A · Q-01.27</span>
+    </div>
+    <div class="switcher">
+      <span>VB0.1 —</span>
+      <span class="cur">[ A ]</span>
+      <span>/</span>
+      <a href="../vb01-b-marea/">B</a>
+      <span>/</span>
+      <a href="../vb01-c-afiche/">C</a>
+      <span>·</span>
+      <a href="../../punta-blockchain-2027/">V1</a>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── film grain: offscreen noise canvas, tiled ──────────── */
+  (function grain() {
+    var el = document.getElementById('grain');
+    if (!el) return;
+    var size = 144;
+    var c = document.createElement('canvas');
+    c.width = size;
+    c.height = size;
+    var ctx = c.getContext('2d');
+    var img = ctx.createImageData(size, size);
+    var d = img.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var v = (Math.random() * 255) | 0;
+      d[i] = v; d[i + 1] = v; d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    el.style.backgroundImage = 'url(' + c.toDataURL('image/png') + ')';
+  })();
+
+  /* ── ticker: duplicate content until 2× viewport width ──── */
+  (function ticker() {
+    var track = document.getElementById('tickerTrack');
+    if (!track) return;
+    var unit = track.firstElementChild;
+    if (!unit) return;
+    var copies = 1;
+    while (track.scrollWidth < window.innerWidth * 2 && copies < 12) {
+      track.appendChild(unit.cloneNode(true));
+      copies++;
+    }
+    /* one more full duplication so -50% loops seamlessly */
+    var half = track.innerHTML;
+    track.innerHTML = half + half;
+  })();
+
+  /* ── count-up numerals ──────────────────────────────────── */
+  function countUp(el) {
+    var target = parseFloat(el.getAttribute('data-count'));
+    if (isNaN(target)) return;
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var dur = parseInt(el.getAttribute('data-dur') || '1600', 10);
+    if (reduceMotion) {
+      el.textContent = target.toFixed(decimals);
+      return;
+    }
+    var t0 = null;
+    function frame(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min((t - t0) / dur, 1);
+      /* easeOutExpo */
+      var e = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
+      el.textContent = (target * e).toFixed(decimals);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  /* ── scroll-into-view choreography ──────────────────────── */
+  (function reveals() {
+    var groups = [];
+    document.querySelectorAll('.rv').forEach(function (n) { groups.push(n); });
+    document.querySelectorAll('.rise').forEach(function (n) {
+      if (!n.closest('.rv')) groups.push(n);
+    });
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      document.querySelectorAll('.rv, .rise').forEach(function (n) {
+        n.classList.add('in');
+      });
+      document.querySelectorAll('[data-count]').forEach(countUp);
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        entry.target.querySelectorAll('[data-count]').forEach(function (n) {
+          if (!n.__counted) { n.__counted = true; countUp(n); }
+        });
+        if (entry.target.hasAttribute('data-count') && !entry.target.__counted) {
+          entry.target.__counted = true;
+          countUp(entry.target);
+        }
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -6% 0px' });
+    groups.forEach(function (n) { io.observe(n); });
+  })();
+
+  /* ── sticky rail scrollspy ──────────────────────────────── */
+  (function spy() {
+    var links = {};
+    document.querySelectorAll('.rail a[data-spy]').forEach(function (a) {
+      links[a.getAttribute('data-spy')] = a;
+    });
+    var sections = document.querySelectorAll('[data-spy-sec]');
+    if (!sections.length || !('IntersectionObserver' in window)) return;
+    var current = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var key = entry.target.getAttribute('data-spy-sec');
+        if (key === current) return;
+        current = key;
+        Object.keys(links).forEach(function (k) {
+          links[k].classList.toggle('on', k === key);
+        });
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+    sections.forEach(function (s) { io.observe(s); });
+  })();
+
+})();
+</script>
+
+<script src="hover-media.js"></script>
+<script>
+var HM_CDN = 'https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/';
+HoverMedia.register({
+  maca:  { src: HM_CDN + 'hf_20260803_214601_4ad4b88d-3534-4612-900b-00940033f260.mp4' },
+  casa:  { src: HM_CDN + 'hf_20260803_214601_db26b354-82a1-4750-adb8-91901cfee1bf.mp4' },
+  punta: { src: HM_CDN + 'hf_20260803_214545_319b0e68-d313-493c-b5e0-e388dcdb2f3f.mp4' },
+  party: { src: HM_CDN + 'hf_20260803_214545_3965067f-9184-447f-bbe6-9a4080dac674.mp4' },
+  dinner:{ src: HM_CDN + 'hf_20260803_214545_fb7b5c71-fc19-4b6c-8608-2157177a7673.mp4' },
+  houses:{ src: HM_CDN + 'hf_20260803_214601_ea003dae-caa5-488c-a011-b0abe8648695.mp4' },
+  forum: { src: HM_CDN + 'hf_20260803_214601_8dc6c31b-6a8b-4e1e-b0e9-490b431b3d04.mp4' },
+  summit:{ src: HM_CDN + 'hf_20260803_214545_3989df42-62be-4356-b551-a6f50f657d07.mp4' }
+});
+HoverMedia.init();
+</script>
+
+</body>
+</html>
