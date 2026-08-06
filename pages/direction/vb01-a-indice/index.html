@@ -924,6 +924,377 @@ footer{
   .ledger-row p, .listing-row p{ grid-column: 2; padding-top: 4px; }
   .thesis-close{ grid-template-columns: 1fr; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   04 — THE MAP · the territory (survey sheet)
+   ════════════════════════════════════════════════════════════ */
+.map-wrap{
+  border: 1px solid var(--ink);
+}
+
+/* ── plate: the drawing ──────────────────────────────────── */
+.map-plate{
+  position: relative;
+  border-bottom: 1px solid var(--ink);
+  padding: 18px 20px 12px;
+  min-width: 0;
+}
+.map-plate-head{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 6px;
+}
+.map-plate-head .mono{ color: var(--drift); }
+.map-plate-head .mono b{ color: var(--ink); font-weight: 400; }
+
+#surveySvg{
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+/* geography */
+.geo-coast{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.geo-surf{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.2;
+  stroke-dasharray: 1 5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.geo-route{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.42;
+  stroke-dasharray: 5 4;
+  vector-effect: non-scaling-stroke;
+}
+.geo-stream{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.3;
+  vector-effect: non-scaling-stroke;
+}
+.geo-label{
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  fill: var(--drift);
+  text-transform: uppercase;
+}
+.geo-tick{
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.18;
+  vector-effect: non-scaling-stroke;
+}
+.geo-sea{
+  fill: rgba(20,18,16,0.045);
+  stroke: none;
+}
+.geo-water{
+  fill: rgba(20,18,16,0.045);
+  stroke: none;
+}
+.geo-bridge{
+  stroke: var(--ink);
+  stroke-width: 2.4;
+  vector-effect: non-scaling-stroke;
+}
+.geo-area{
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  fill: var(--drift);
+  opacity: 0.55;
+  text-transform: uppercase;
+}
+.lbl-tick{
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.28;
+  vector-effect: non-scaling-stroke;
+}
+.node.on .lbl-tick{ opacity: 0.8; }
+
+/* locator inset */
+.inset-box{
+  fill: var(--linen);
+  stroke: var(--ink);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.inset-coast{
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+  opacity: 0.6;
+  vector-effect: non-scaling-stroke;
+}
+.inset-frame{
+  fill: none;
+  stroke: var(--pine);
+  stroke-width: 1;
+  stroke-dasharray: 3 2.5;
+  vector-effect: non-scaling-stroke;
+}
+.inset-lbl{
+  font-family: var(--f-mono);
+  font-size: 7.5px;
+  letter-spacing: 0.12em;
+  fill: var(--drift);
+  text-transform: uppercase;
+}
+.inset-lbl.on{ fill: var(--pine); }
+
+/* the corridor spine — signal green, the live layer */
+.geo-spine{
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: var(--spine-len, 1200);
+  stroke-dashoffset: var(--spine-len, 1200);
+  transition: stroke-dashoffset 2.2s var(--ease) 0.25s;
+}
+.in .geo-spine{ stroke-dashoffset: 0; }
+
+/* nodes */
+.node{ cursor: pointer; }
+.node .hit{ fill: transparent; stroke: none; }
+.node .ring{
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 1.4;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.4);
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+  vector-effect: non-scaling-stroke;
+}
+.node .pin{
+  fill: var(--linen);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+  transition: fill 0.3s var(--ease), r 0.3s var(--ease);
+}
+.node .lbl{
+  font-family: var(--f-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.09em;
+  fill: var(--drift);
+  text-transform: uppercase;
+  transition: fill 0.3s var(--ease);
+  pointer-events: none;
+}
+.node .num{
+  font-family: var(--f-mono);
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  fill: var(--drift);
+  opacity: 0.75;
+  pointer-events: none;
+}
+.node:hover .lbl,
+.node:focus-visible .lbl{ fill: var(--ink); }
+.node:hover .pin{ fill: var(--ink); }
+
+.node.on .pin{ fill: var(--ink); }
+.node.on .ring{ opacity: 1; transform: scale(1); }
+.node.on .lbl{ fill: var(--ink); font-weight: 500; }
+.node.on .num{ fill: var(--ink); opacity: 1; }
+
+/* venue nodes read heavier than scouting spots */
+.node.venue .pin{ stroke-width: 2; }
+
+/* scale bar + compass */
+.map-foot{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 1px solid var(--rule);
+  flex-wrap: wrap;
+}
+.map-foot .mono{ color: var(--drift); font-size: 9.5px; }
+.scale-bar{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.scale-bar i{
+  display: block;
+  width: 74px;
+  height: 5px;
+  border: 1px solid var(--ink);
+  border-top: none;
+  opacity: 0.5;
+}
+
+/* ── panel: the readout + index strip ────────────────────── */
+.map-panel{
+  display: grid;
+  grid-template-columns: minmax(260px, 34%) 1fr;
+  min-width: 0;
+}
+.map-panel-head{
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.map-panel-head .mono{ color: var(--drift); }
+
+.readout{
+  padding: 18px;
+  border-right: 1px solid var(--ink);
+  min-width: 0;
+}
+.readout .r-kind{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--drift);
+  margin-bottom: 10px;
+}
+.readout .r-kind i{
+  width: 6px;
+  height: 6px;
+  background: var(--signal);
+  display: block;
+}
+.readout .r-name{
+  font-family: var(--f-disp);
+  font-variation-settings: "opsz" 60;
+  font-weight: 460;
+  font-size: clamp(22px, 2.1vw, 31px);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin-bottom: 12px;
+}
+.readout .r-desc{
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  opacity: 0.82;
+  margin-bottom: 16px;
+}
+.r-data{
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 5px 10px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.r-data dt{ color: var(--drift); }
+.r-data dd{ color: var(--ink); }
+.r-data dd.sig{ color: var(--pine); }
+
+/* the spot index — two columns beside the readout */
+.spot-index{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  min-width: 0;
+}
+.spot-index .spot-row:nth-child(odd){ border-right: 1px solid var(--rule-soft); }
+.spot-row{
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule-soft);
+  background: transparent;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--drift);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+.spot-row:hover{ color: var(--ink); background: rgba(20,18,16,0.035); }
+.spot-row .sr-n{ opacity: 0.7; }
+.spot-row .sr-t{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.spot-row .sr-k{ font-size: 8.5px; opacity: 0.6; }
+.spot-row.on{
+  color: var(--ink);
+  background: rgba(20,18,16,0.05);
+}
+.spot-row.on .sr-n{ color: var(--pine); opacity: 1; }
+.spot-row.on .sr-k{ opacity: 1; }
+
+.map-note{
+  margin-top: 22px;
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--drift);
+  line-height: 1.7;
+}
+.map-note b{ color: var(--ink); font-weight: 400; }
+
+@media (max-width: 900px){
+  .map-panel{ grid-template-columns: 1fr; }
+  .readout{
+    border-right: none;
+    border-bottom: 1px solid var(--ink);
+  }
+  .map-plate{ padding: 14px 12px 10px; }
+  .readout .r-name{ font-size: 24px; }
+
+  /* the drawing is a wide plate — let it scroll in its own frame */
+  .map-scroll{
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+  #surveySvg{ min-width: 820px; }
+  .node .lbl{ font-size: 11px; }
+  .geo-label{ font-size: 10.5px; }
+  .geo-area{ font-size: 11px; }
+}
+@media (max-width: 620px){
+  .spot-index{ grid-template-columns: 1fr; }
+  .spot-index .spot-row:nth-child(odd){ border-right: none; }
+}
 </style>
 </head>
 <body>
@@ -936,8 +1307,9 @@ footer{
   <a href="#thesis"  data-spy="thesis">01</a>
   <a href="#place"   data-spy="place">02</a>
   <a href="#weekend" data-spy="weekend">03</a>
-  <a href="#houses"  data-spy="houses">04</a>
-  <a href="#access"  data-spy="access">05</a>
+  <a href="#map"     data-spy="map">04</a>
+  <a href="#houses"  data-spy="houses">05</a>
+  <a href="#access"  data-spy="access">06</a>
   <span class="rail-cap">VB0.1-A · El Índice</span>
 </nav>
 
@@ -987,13 +1359,18 @@ footer{
         <span class="leader" aria-hidden="true"></span>
         <span class="d">Two Layers</span><span class="go" aria-hidden="true"></span>
       </a>
+      <a class="toc-row" href="#map">
+        <span class="n">04</span><span class="t">The Map</span>
+        <span class="leader" aria-hidden="true"></span>
+        <span class="d">The Territory</span><span class="go" aria-hidden="true"></span>
+      </a>
       <a class="toc-row" href="#houses">
-        <span class="n">04</span><span class="t">The Houses</span>
+        <span class="n">05</span><span class="t">The Houses</span>
         <span class="leader" aria-hidden="true"></span>
         <span class="d">21 Positions</span><span class="go" aria-hidden="true"></span>
       </a>
       <a class="toc-row" href="#access">
-        <span class="n">05</span><span class="t">Access</span>
+        <span class="n">06</span><span class="t">Access</span>
         <span class="leader" aria-hidden="true"></span>
         <span class="d">Partner Brief</span><span class="go" aria-hidden="true"></span>
       </a>
@@ -1147,11 +1524,217 @@ footer{
   </section>
 
   <!-- ══════════════════════════════════════════════════════
-       V4 — 04 THE HOUSES · classified listings
+       04 THE MAP · the territory — survey sheet
+       ══════════════════════════════════════════════════════ -->
+  <section class="doc sheet" id="map" data-spy-sec="map">
+    <div class="sec-head">
+      <span class="mono"><span class="bkt">[</span>&nbsp;04 / The Map&nbsp;<span class="bkt">]</span></span>
+      <span class="mono right">Survey · Península → José Ignacio · ±30 km of coast</span>
+    </div>
+
+    <h2 class="lede rv" style="margin-bottom:clamp(28px,4vh,52px)">
+      <span class="ln"><span class="ln-i" style="--d:0s">There is no convention center.</span></span>
+      <span class="ln"><span class="ln-i" style="--d:0.1s"><em>The town is the venue</em> — two</span></span>
+      <span class="ln"><span class="ln-i" style="--d:0.2s">anchors, three houses, one corridor.</span></span>
+    </h2>
+
+    <div class="map-wrap rise" style="--d:0.06s">
+
+      <!-- ── the drawing ─────────────────────────────────── -->
+      <div class="map-plate">
+        <div class="map-plate-head">
+          <span class="mono">Fig. 01 — <b>Maldonado corridor</b></span>
+          <span class="mono">Ruta 10 · Ruta 104</span>
+        </div>
+
+        <div class="map-scroll">
+        <svg id="surveySvg" viewBox="-46 76 1078 456" role="img"
+             aria-label="Oblique survey map of the La Barra – Manantiales corridor, showing MACA, Casa Manantial, three partner houses and the points of contact between the peninsula and José Ignacio.">
+
+          <!-- ocean body, seaward of the coast -->
+          <path class="geo-sea" d="M-140,286 C-80,296 -16,304 49,319 C72,326 96,334 118,338 C140,341 162,338 186,335 C214,332 240,331 262,332 C286,334 308,336 330,335 C356,331 386,325 412,319 C442,321 480,323 512,325 C544,327 574,329 604,331 C654,334 706,337 755,340 C860,347 980,352 1130,358 L1130,560 L-140,560 Z"/>
+
+          <!-- arroyo maldonado — the estuary behind the bridge -->
+          <path class="geo-water" d="M44,322 C34,294 28,262 24,232 C21,206 19,186 16,168 L26,168 C29,188 31,208 34,234 C38,264 48,294 74,316 Z"/>
+
+          <!-- coastline -->
+          <path class="geo-coast" d="M-140,286 C-80,296 -16,304 49,319 C72,326 96,334 118,338 C140,341 162,338 186,335 C214,332 240,331 262,332 C286,334 308,336 330,335 C356,331 386,325 412,319 C442,321 480,323 512,325 C544,327 574,329 604,331 C654,334 706,337 755,340 C860,347 980,352 1130,358"/>
+
+          <!-- surf echo -->
+          <path class="geo-surf" d="M-140,299 C-80,309 -16,317 49,332 C72,339 96,347 118,351 C140,354 162,351 186,348 C214,345 240,344 262,345 C286,347 308,349 330,348 C356,344 386,338 412,332 C442,334 480,336 512,338 C544,340 574,342 604,344 C654,347 706,350 755,353 C860,360 980,365 1130,371"/>
+
+          <!-- ruta 10 — the coastal road, threading the corridor -->
+          <path class="geo-route" d="M-40,318 C-10,308 26,302 60,299 C90,306 112,311 135,312 C158,304 182,290 203,286 C232,292 262,298 287,300 C330,298 380,296 412,294 C450,292 480,291 512,290 C545,288 566,286 581,284 C650,288 700,294 755,304 C850,318 940,328 1032,334"/>
+
+          <!-- ruta 104 — the spur inland -->
+          <path class="geo-route" d="M436,292 C470,266 512,224 542,190 C620,178 730,180 888,187"/>
+
+          <!-- bridge deck over the arroyo -->
+          <line class="geo-bridge" x1="34" y1="304" x2="86" y2="298"/>
+
+          <!-- edge stubs: the corridor continues -->
+          <path class="geo-route" d="M-60,330 L16,344"/>
+          <path class="geo-route" d="M932,120 L1060,102"/>
+
+          <!-- the live corridor: puerto → la barra → manantiales → maca -->
+          <path class="geo-spine" d="M16,344 C36,320 46,304 60,301 C90,308 112,313 135,314 C158,306 182,292 203,288 C232,294 262,300 287,302 C330,300 380,298 412,296 C424,296 434,296 442,295 C470,275 512,225 542,190"/>
+
+          <!-- district names -->
+          <text class="geo-area" x="120" y="236" text-anchor="middle">La Barra</text>
+          <text class="geo-area" x="404" y="236" text-anchor="middle">Manantiales</text>
+          <text class="geo-area" x="640" y="236" text-anchor="middle">El Chorro</text>
+
+          <!-- geography labels -->
+          <text class="geo-label" x="700" y="440">Océano Atlántico</text>
+          <text class="geo-label" x="92" y="176">Arroyo Maldonado</text>
+          <text class="geo-label" x="690" y="300">Ruta 10</text>
+          <text class="geo-label" x="452" y="252" text-anchor="end">Ruta 104</text>
+
+          <!-- compass — oblique, north is not up -->
+          <g transform="translate(946,420) rotate(25.3)">
+            <line class="geo-tick" x1="0" y1="28" x2="0" y2="0"/>
+            <line class="geo-tick" x1="0" y1="0" x2="-4.5" y2="7"/>
+            <line class="geo-tick" x1="0" y1="0" x2="4.5" y2="7"/>
+            <text class="geo-label" x="0" y="-6" text-anchor="middle">N</text>
+          </g>
+
+          <!-- scale bar: 2 km -->
+          <g transform="translate(700,470)">
+            <line class="geo-tick" x1="0" y1="0" x2="124" y2="0"/>
+            <line class="geo-tick" x1="0" y1="-4" x2="0" y2="4"/>
+            <line class="geo-tick" x1="62" y1="-3" x2="62" y2="3"/>
+            <line class="geo-tick" x1="124" y1="-4" x2="124" y2="4"/>
+            <text class="geo-label" x="0" y="16">0</text>
+            <text class="geo-label" x="124" y="16" text-anchor="end">2 km</text>
+          </g>
+
+          <!-- locator inset -->
+          <g transform="translate(-30,386)">
+            <rect class="inset-box" x="0" y="0" width="212" height="120"/>
+            <path class="inset-coast" d="M18,100 C24,88 27,78 29,66 C33,76 41,84 51,90 C67,84 81,76 95,68 C113,60 131,52 149,46 C167,40 185,34 203,28"/>
+            <rect class="inset-frame" x="72" y="40" width="112" height="42"/>
+            <text class="inset-lbl" x="14" y="114">Península PDE</text>
+            <text class="inset-lbl" x="202" y="20" text-anchor="end">J. Ignacio</text>
+            <text class="inset-lbl on" x="78" y="36">Detail</text>
+          </g>
+
+          <!-- ── nodes ──────────────────────────────────── -->
+          <g id="nodeLayer">
+            <g class="node venue on" data-i="0" tabindex="0" role="button" aria-label="MACA — Museo de Arte Contemporáneo Atchugarry">
+              <line class="lbl-tick" x1="542" y1="183" x2="542" y2="174"/>
+              <circle class="ring" cx="542" cy="190" r="11"/>
+              <circle class="pin"  cx="542" cy="190" r="4.6"/>
+              <circle class="hit"  cx="542" cy="190" r="20"/>
+              <text class="lbl" x="542" y="168" text-anchor="middle"><tspan class="num">01</tspan> · MACA</text>
+            </g>
+            <g class="node venue" data-i="1" tabindex="0" role="button" aria-label="Casa Manantial">
+              <line class="lbl-tick" x1="442" y1="288" x2="442" y2="279"/>
+              <circle class="ring" cx="442" cy="295" r="11"/>
+              <circle class="pin"  cx="442" cy="295" r="4.6"/>
+              <circle class="hit"  cx="442" cy="295" r="20"/>
+              <text class="lbl" x="442" y="273" text-anchor="middle"><tspan class="num">02</tspan> · Casa Manantial</text>
+            </g>
+            <g class="node" data-i="2" tabindex="0" role="button" aria-label="El Puente — the La Barra bridge">
+              <line class="lbl-tick" x1="60" y1="295" x2="58" y2="284"/>
+              <circle class="ring" cx="60" cy="301" r="10"/>
+              <circle class="pin"  cx="60" cy="301" r="3.8"/>
+              <circle class="hit"  cx="60" cy="301" r="18"/>
+              <text class="lbl" x="54" y="278" text-anchor="end"><tspan class="num">03</tspan> · El Puente</text>
+            </g>
+            <g class="node" data-i="3" tabindex="0" role="button" aria-label="La Barra">
+              <line class="lbl-tick" x1="135" y1="307" x2="135" y2="300"/>
+              <circle class="ring" cx="135" cy="314" r="10"/>
+              <circle class="pin"  cx="135" cy="314" r="3.8"/>
+              <circle class="hit"  cx="135" cy="314" r="18"/>
+              <text class="lbl" x="135" y="295" text-anchor="middle"><tspan class="num">04</tspan> · La Barra</text>
+            </g>
+            <g class="node" data-i="4" tabindex="0" role="button" aria-label="Bikini, Manantiales">
+              <line class="lbl-tick" x1="287" y1="295" x2="287" y2="288"/>
+              <circle class="ring" cx="287" cy="302" r="10"/>
+              <circle class="pin"  cx="287" cy="302" r="3.8"/>
+              <circle class="hit"  cx="287" cy="302" r="18"/>
+              <text class="lbl" x="287" y="283" text-anchor="middle"><tspan class="num">05</tspan> · Bikini</text>
+            </g>
+            <g class="node" data-i="5" tabindex="0" role="button" aria-label="El Puerto — the peninsula, 15 kilometres west">
+              <circle class="ring" cx="16" cy="344" r="10"/>
+              <circle class="pin"  cx="16" cy="344" r="3.8"/>
+              <circle class="hit"  cx="16" cy="344" r="18"/>
+              <text class="lbl" x="32" y="370"><tspan class="num">06</tspan> · El Puerto — 15 km W</text>
+            </g>
+            <g class="node" data-i="6" tabindex="0" role="button" aria-label="José Ignacio, 16 kilometres east">
+              <circle class="ring" cx="932" cy="120" r="10"/>
+              <circle class="pin"  cx="932" cy="120" r="3.8"/>
+              <circle class="hit"  cx="932" cy="120" r="18"/>
+              <text class="lbl" x="918" y="106" text-anchor="end"><tspan class="num">07</tspan> · José Ignacio — 16 km E</text>
+            </g>
+            <g class="node" data-i="7" tabindex="0" role="button" aria-label="House 01, beach, La Barra">
+              <line class="lbl-tick" x1="203" y1="278" x2="203" y2="271"/>
+              <circle class="ring" cx="203" cy="285" r="10"/>
+              <circle class="pin"  cx="203" cy="285" r="3.8"/>
+              <circle class="hit"  cx="203" cy="285" r="18"/>
+              <text class="lbl" x="203" y="266" text-anchor="middle"><tspan class="num">08</tspan> · House 01</text>
+            </g>
+            <g class="node" data-i="8" tabindex="0" role="button" aria-label="House 02, woods, El Chorro">
+              <line class="lbl-tick" x1="581" y1="276" x2="581" y2="269"/>
+              <circle class="ring" cx="581" cy="283" r="10"/>
+              <circle class="pin"  cx="581" cy="283" r="3.8"/>
+              <circle class="hit"  cx="581" cy="283" r="18"/>
+              <text class="lbl" x="581" y="264" text-anchor="middle"><tspan class="num">09</tspan> · House 02</text>
+            </g>
+            <g class="node" data-i="9" tabindex="0" role="button" aria-label="House 03, campo, Ruta 104">
+              <line class="lbl-tick" x1="888" y1="180" x2="888" y2="173"/>
+              <circle class="ring" cx="888" cy="187" r="10"/>
+              <circle class="pin"  cx="888" cy="187" r="3.8"/>
+              <circle class="hit"  cx="888" cy="187" r="18"/>
+              <text class="lbl" x="888" y="168" text-anchor="middle"><tspan class="num">10</tspan> · House 03</text>
+            </g>
+          </g>
+        </svg>
+        </div>
+
+        <div class="map-foot">
+          <span class="mono">Oblique projection · corridor aligned · north 25°</span>
+          <span class="mono">Hover or tap a point to read it</span>
+        </div>
+      </div>
+
+      <!-- ── the readout ─────────────────────────────────── -->
+      <div class="map-panel">
+        <div class="readout">
+          <div class="map-panel-head">
+            <span class="mono">Readout</span>
+            <span class="mono">Fig. 01</span>
+          </div>
+          <div class="r-kind mono"><i aria-hidden="true"></i><span id="rKind">Anchor venue</span></div>
+          <div class="r-name" id="rName">MACA</div>
+          <p class="r-desc" id="rDesc">The institutional layer. Forum on Friday, Summit on Saturday — a museum gives the platform a gravitas no convention center can fake.</p>
+          <dl class="r-data">
+            <dt>Index</dt><dd id="rIdx">01 / 10</dd>
+            <dt>Lat</dt><dd id="rLat">-34.8680</dd>
+            <dt>Lon</dt><dd id="rLon">-54.7930</dd>
+            <dt>Ref</dt><dd id="rRef">Ruta 104 · km 4.5</dd>
+            <dt>From CM</dt><dd id="rDist">3.3 km</dd>
+            <dt>Status</dt><dd class="sig" id="rStatus">Institutional layer</dd>
+          </dl>
+        </div>
+
+        <div class="spot-index" id="spotIndex"></div>
+      </div>
+    </div>
+
+    <p class="map-note rise" style="--d:0.12s">
+      <b>Two anchors</b> · MACA and Casa Manantial — <b>three houses</b> held within Master and Diamond —
+      <b>five points of contact</b> across La Barra and Manantiales.
+      Venues are contracted; points of contact are under survey for the first edition.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       V4 — 05 THE HOUSES · classified listings
        ══════════════════════════════════════════════════════ -->
   <section class="doc sheet" id="houses" data-spy-sec="houses">
     <div class="sec-head">
-      <span class="mono"><span class="bkt">[</span>&nbsp;04 / The Houses&nbsp;<span class="bkt">]</span></span>
+      <span class="mono"><span class="bkt">[</span>&nbsp;05 / The Houses&nbsp;<span class="bkt">]</span></span>
       <span class="mono right">Classified · Three listings</span>
     </div>
 
@@ -1186,7 +1769,7 @@ footer{
        ══════════════════════════════════════════════════════ -->
   <section class="doc sheet" id="access" data-spy-sec="access">
     <div class="sec-head">
-      <span class="mono"><span class="bkt">[</span>&nbsp;05 / Access&nbsp;<span class="bkt">]</span></span>
+      <span class="mono"><span class="bkt">[</span>&nbsp;06 / Access&nbsp;<span class="bkt">]</span></span>
       <span class="mono right">Partnership index · 21 positions</span>
     </div>
 
@@ -1392,6 +1975,104 @@ footer{
       });
     }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
     sections.forEach(function (s) { io.observe(s); });
+  })();
+
+  /* ── 04 the map · survey readout ─────────────────────────── */
+  (function () {
+    var SPOTS = [
+      { n: '01', name: 'MACA', kind: 'Anchor venue', lat: '-34.8680', lon: '-54.7930',
+        ref: 'Ruta 104 · km 4.5', dist: '3.3 km', status: 'Institutional layer',
+        desc: 'Museo de Arte Contemporáneo Atchugarry. Forum on Friday, Summit on Saturday — a museum gives the platform a gravitas no convention center can fake.' },
+      { n: '02', name: 'Casa Manantial', kind: 'Anchor venue', lat: '-34.8970', lon: '-54.8030',
+        ref: 'Manantiales', dist: '—', status: 'Experience layer',
+        desc: 'The platform’s own house. The dinner, the party, and the private conversations the weekend is remembered by. Never priced, never sold separately.' },
+      { n: '03', name: 'El Puente', kind: 'Point of contact', lat: '-34.9190', lon: '-54.8600',
+        ref: 'Ruta 10 · Arroyo Maldonado', dist: '5.7 km', status: 'Under survey',
+        desc: 'The undulating bridge into La Barra — the crossing everyone photographs, and the natural marker where the corridor begins.' },
+      { n: '04', name: 'La Barra', kind: 'Point of contact', lat: '-34.9160', lon: '-54.8480',
+        ref: 'Ruta 10 · km 161', dist: '4.6 km', status: 'Under survey',
+        desc: 'The strip. Restaurants and galleries at walking density — where the side conversations happen without anyone scheduling them.' },
+      { n: '05', name: 'Bikini', kind: 'Point of contact', lat: '-34.9020', lon: '-54.8150',
+        ref: 'Playa Bikini · Manantiales', dist: '1.2 km', status: 'Under survey',
+        desc: 'Beach club territory, minutes from the house. Daylight meetings with sand instead of a hotel lobby.' },
+      { n: '06', name: 'El Puerto', kind: 'Arrival', lat: '-34.9660', lon: '-54.9480',
+        ref: 'Península · Puerto', dist: '15.3 km', status: 'Gateway',
+        desc: 'The peninsula: arrivals, hotels and the port. Where delegations land before the corridor starts. Laguna del Sauce international sits 22 km west.' },
+      { n: '07', name: 'José Ignacio', kind: 'Point of contact', lat: '-34.8450', lon: '-54.6380',
+        ref: 'Ruta 10 · km 185', dist: '16.1 km', status: 'Under survey',
+        desc: 'The eastern anchor. Forty minutes out, and the address that closes a weekend for the capital that already summers here.' },
+      { n: '08', name: 'House 01 · Beach', kind: 'Partner house', lat: '-34.9060', lon: '-54.8300',
+        ref: 'La Barra', dist: '2.7 km', status: 'Held — Diamond',
+        desc: 'Beach house. The delegation sleeps on-site; firesides and client dinners run on the partner’s brand, behind the partner’s door.' },
+      { n: '09', name: 'House 02 · Woods', kind: 'Partner house', lat: '-34.8850', lon: '-54.7750',
+        ref: 'El Chorro', dist: '2.9 km', status: 'Held — Diamond',
+        desc: 'Woods house. Pine and quiet between Manantiales and José Ignacio — the private venue for sessions off the main stage.' },
+      { n: '10', name: 'House 03 · Campo', kind: 'Partner house', lat: '-34.8550', lon: '-54.7400',
+        ref: 'Ruta 104 · interior', dist: '7.4 km', status: 'Held — Master',
+        desc: 'Countryside house, flagship position. Open land, one long table, and a content stage that runs all weekend.' }
+    ];
+
+    var svg = document.getElementById('surveySvg');
+    var indexWrap = document.getElementById('spotIndex');
+    if (!svg || !indexWrap) return;
+
+    var nodes = Array.prototype.slice.call(svg.querySelectorAll('.node'));
+    var out = {
+      kind: document.getElementById('rKind'),
+      name: document.getElementById('rName'),
+      desc: document.getElementById('rDesc'),
+      idx: document.getElementById('rIdx'),
+      lat: document.getElementById('rLat'),
+      lon: document.getElementById('rLon'),
+      ref: document.getElementById('rRef'),
+      dist: document.getElementById('rDist'),
+      status: document.getElementById('rStatus')
+    };
+
+    /* build the index rows from the same source */
+    var rows = SPOTS.map(function (s, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'spot-row' + (i === 0 ? ' on' : '');
+      b.setAttribute('data-i', i);
+      b.innerHTML = '<span class="sr-n">' + s.n + '</span>' +
+                    '<span class="sr-t">' + s.name + '</span>' +
+                    '<span class="sr-k">' + s.kind + '</span>';
+      indexWrap.appendChild(b);
+      return b;
+    });
+
+    var active = 0;
+    function setActive(i) {
+      if (i === active || !SPOTS[i]) return;
+      active = i;
+      var s = SPOTS[i];
+      out.kind.textContent = s.kind;
+      out.name.textContent = s.name;
+      out.desc.textContent = s.desc;
+      out.idx.textContent = s.n + ' / 10';
+      out.lat.textContent = s.lat;
+      out.lon.textContent = s.lon;
+      out.ref.textContent = s.ref;
+      out.dist.textContent = s.dist;
+      out.status.textContent = s.status;
+      nodes.forEach(function (n, k) { n.classList.toggle('on', k === i); });
+      rows.forEach(function (r, k) { r.classList.toggle('on', k === i); });
+    }
+
+    nodes.forEach(function (n, i) {
+      n.addEventListener('mouseenter', function () { setActive(i); });
+      n.addEventListener('focus', function () { setActive(i); });
+      n.addEventListener('click', function () { setActive(i); });
+      n.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActive(i); }
+      });
+    });
+    rows.forEach(function (r, i) {
+      r.addEventListener('mouseenter', function () { setActive(i); });
+      r.addEventListener('focus', function () { setActive(i); });
+      r.addEventListener('click', function () { setActive(i); });
+    });
   })();
 
 })();
