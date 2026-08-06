@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punta Blockchain 2027 — VB0.1-D · Temporada</title>
+<meta name="description" content="Punta Blockchain 2027 — the institutional gateway to the Southern Cone. First edition, March 2027, Punta del Este, Uruguay. Direction concept VB0.1-D · Temporada.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   PUNTA BLOCKCHAIN 2027 — VB0.1-D "TEMPORADA"
+   The season, not the document. A deck: every block is a card,
+   a tile or a sticker. Text hides on the back and behind toggles
+   so the surface stays image + type.
+   Brutalism = structure & honesty. Awwwards = pacing & precision.
+   Nature/place = the media, never decoration.
+   ══════════════════════════════════════════════════════════════ */
+
+:root{
+  --void:  #0E0E0C;
+  --lime:  #D8FF3E;
+  --flare: #FF4A1C;
+  --cream: #F3EFE4;
+  --blue:  #1B32FF;
+
+  --dim:   rgba(243,239,228,0.58);
+  --faint: rgba(243,239,228,0.30);
+  --hair:  rgba(243,239,228,0.16);
+
+  --f-dis: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"Space Mono", "SF Mono", Menlo, monospace;
+
+  --ease:  cubic-bezier(0.16, 1, 0.3, 1);
+  --pad:   clamp(16px, 4vw, 56px);
+}
+
+*, *::before, *::after{ margin:0; padding:0; box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+html, body{ overflow-x:clip; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+body{
+  background:var(--void);
+  color:var(--cream);
+  font-family:var(--f-dis);
+  font-optical-sizing:auto;
+  font-size:16px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+img, video{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+
+.mono{
+  font-family:var(--f-mono);
+  font-size:11px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  line-height:1.6;
+}
+
+/* ── grain ─────────────────────────────────────────────────── */
+.grain{
+  position:fixed; inset:-40%;
+  width:180%; height:180%;
+  z-index:900;
+  pointer-events:none;
+  opacity:0.06;
+  background-repeat:repeat;
+}
+
+/* ── cursor badge (only over flip zones — contained by design) ─ */
+.cursor-badge{
+  position:fixed;
+  top:0; left:0;
+  z-index:950;
+  padding:7px 13px 6px;
+  border-radius:999px;
+  background:var(--lime);
+  color:var(--void);
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  pointer-events:none;
+  opacity:0;
+  transform:translate3d(-50%,-50%,0) scale(0.5);
+  transition:opacity 0.25s var(--ease), transform 0.35s var(--ease);
+  white-space:nowrap;
+}
+.cursor-badge.on{ opacity:1; transform:translate3d(-50%,-50%,0) scale(1); }
+@media (hover:none){ .cursor-badge{ display:none; } }
+
+/* ── reveal ────────────────────────────────────────────────── */
+[data-rise]{
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity 0.85s var(--ease), transform 0.95s var(--ease);
+  transition-delay:calc(var(--i, 0) * 85ms);
+}
+[data-rise].in{ opacity:1; transform:none; }
+
+/* ── marquee ───────────────────────────────────────────────── */
+.mq{
+  border-top:2px solid var(--void);
+  border-bottom:2px solid var(--void);
+  background:var(--lime);
+  color:var(--void);
+  overflow:hidden;
+  padding:9px 0;
+}
+.mq.alt{ background:var(--flare); color:var(--cream); }
+.mq-track{
+  display:flex;
+  align-items:center;
+  gap:26px;
+  width:max-content;
+  animation:mq 42s linear infinite;
+}
+.mq.alt .mq-track{ animation-duration:56s; animation-direction:reverse; }
+.mq:hover .mq-track{ animation-play-state:paused; }
+.mq-track span{
+  font-family:var(--f-mono);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.mq-chip{
+  width:34px; height:22px;
+  object-fit:cover;
+  flex:none;
+  filter:grayscale(1) contrast(1.15);
+}
+@keyframes mq{ from{ transform:translate3d(0,0,0); } to{ transform:translate3d(-50%,0,0); } }
+
+/* ══════════════════════════════════════════════════════════
+   01 — PORTADA
+   ══════════════════════════════════════════════════════════ */
+.por{
+  position:relative;
+  min-height:100svh;
+  display:flex;
+  flex-direction:column;
+  padding-top:clamp(12px,2vh,22px);
+  overflow:hidden;
+}
+.por-chrome{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:0 var(--pad) clamp(10px,2vh,20px);
+  color:var(--dim);
+}
+.por-chrome b{ color:var(--lime); font-weight:400; }
+
+.por-type{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:clamp(6px,1.4vh,16px);
+  padding:0 var(--pad);
+}
+.por-type h1{ margin:0; }
+.wline{
+  display:block;
+  font-weight:800;
+  font-variation-settings:"wdth" 76;
+  text-transform:uppercase;
+  line-height:0.78;
+  letter-spacing:-0.02em;
+  white-space:nowrap;
+}
+/* flush-set: fill the width, but never let the stack outgrow the viewport */
+.w1{ font-size:clamp(64px, min(37vw, 60vh), 520px); color:var(--cream); }
+.w2{ font-size:clamp(30px, min(19.6vw, 32vh), 276px); color:var(--lime); }
+.w2 em{ font-style:normal; color:var(--flare); }
+
+/* the strip that cuts the wordmark in half */
+.strip{
+  display:grid;
+  grid-template-columns:repeat(6, 1fr);
+  gap:3px;
+  height:clamp(42px, min(7vw, 8vh), 104px);
+}
+.strip figure{ overflow:hidden; background:#1a1a17; }
+.strip img{
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:grayscale(0.55) contrast(1.1);
+  transition:filter 0.5s var(--ease), transform 0.7s var(--ease);
+}
+.strip figure:hover img{ filter:none; transform:scale(1.08); }
+.strip figure:nth-child(5){ background:var(--flare); }
+.strip figure:nth-child(2){ background:var(--blue); }
+
+.por-foot{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  flex-wrap:wrap;
+  padding:clamp(14px,2.4vh,26px) var(--pad) clamp(12px,2vh,20px);
+  color:var(--dim);
+}
+.por-foot .lead{
+  max-width:46ch;
+  font-size:clamp(14px,1.35vw,19px);
+  line-height:1.35;
+  color:var(--cream);
+  font-weight:400;
+}
+
+/* stickers */
+.sticker{
+  position:absolute;
+  z-index:6;
+  padding:8px 15px 7px;
+  border-radius:999px;
+  font-family:var(--f-mono);
+  font-size:clamp(9px,0.85vw,12px);
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  background:var(--lime);
+  color:var(--void);
+  animation:float 7s ease-in-out infinite;
+}
+/* the sticker cluster lives right of the type — collage, not collision */
+.st-1{ top:11%;   right:4%;  transform:rotate(9deg);  background:var(--flare); color:var(--cream); }
+.st-2{ top:25%;   right:13%; transform:rotate(-6deg); animation-delay:-2.2s; }
+.st-3{ top:38%;   right:5%;  transform:rotate(-3deg); background:var(--blue); color:var(--cream); animation-delay:-4s; }
+.st-4{ bottom:25%;right:14%; transform:rotate(4deg);  background:var(--cream); color:var(--void); animation-delay:-5.4s; }
+@keyframes float{ 0%,100%{ translate:0 0; } 50%{ translate:0 -8px; } }
+
+.scroll-cue{
+  position:absolute;
+  bottom:calc(var(--pad) * 0.4);
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--faint);
+  z-index:6;
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTION FURNITURE
+   ══════════════════════════════════════════════════════════ */
+section{ padding:clamp(56px,9vh,120px) var(--pad); position:relative; }
+.kick{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:14px;
+  flex-wrap:wrap;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--cream);
+  margin-bottom:clamp(24px,4vh,48px);
+}
+.kick .k-l{ color:var(--lime); }
+.kick .k-r{ color:var(--dim); }
+
+h2.big{
+  font-weight:800;
+  font-variation-settings:"wdth" 82;
+  font-size:clamp(38px,7.4vw,124px);
+  line-height:0.86;
+  letter-spacing:-0.03em;
+  text-transform:uppercase;
+  margin-bottom:clamp(22px,3.6vh,44px);
+}
+h2.big em{ font-style:normal; color:var(--flare); }
+h2.big .out{
+  color:transparent;
+  -webkit-text-stroke:1.5px var(--cream);
+  text-stroke:1.5px var(--cream);
+}
+
+/* ══════════════════════════════════════════════════════════
+   02 — THE DECK (flip cards)
+   ══════════════════════════════════════════════════════════ */
+.deck-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom:clamp(18px,3vh,34px);
+}
+.flip-all{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 19px 10px;
+  border-radius:999px;
+  border:2px solid var(--cream);
+  font-family:var(--f-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:background 0.3s var(--ease), color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.flip-all:hover{ background:var(--cream); color:var(--void); transform:translateY(-2px); }
+.flip-all[aria-pressed="true"]{ background:var(--lime); border-color:var(--lime); color:var(--void); }
+.flip-all i{
+  width:9px; height:9px;
+  border-radius:999px;
+  background:currentColor;
+  display:block;
+}
+
+.deck{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+}
+.fcard{
+  position:relative;
+  aspect-ratio:3 / 4.35;
+  perspective:1400px;
+  background:none;
+  border:none;
+  padding:0;
+  text-align:left;
+  cursor:pointer;
+}
+.fc-in{
+  position:relative;
+  width:100%; height:100%;
+  transform-style:preserve-3d;
+  transition:transform 0.75s var(--ease);
+}
+.fcard.on .fc-in{ transform:rotateY(180deg); }
+.fc-face{
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* front */
+.fc-front{ background:#17170f; }
+.fc-media{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:grayscale(0.35) contrast(1.06) brightness(0.82);
+  transition:filter 0.6s var(--ease), transform 0.9s var(--ease);
+}
+.fcard:hover .fc-media{ filter:none; transform:scale(1.05); }
+.fc-front::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(14,14,12,0.5) 0%, rgba(14,14,12,0.05) 42%, rgba(14,14,12,0.88) 100%);
+}
+.fc-front > :not(.fc-media){ position:relative; z-index:2; }
+.fc-n{
+  align-self:flex-start;
+  margin:12px 0 0 12px;
+  padding:5px 11px 4px;
+  border-radius:999px;
+  background:var(--lime);
+  color:var(--void);
+  font-family:var(--f-mono);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.08em;
+}
+.fc-body{ margin-top:auto; padding:12px; }
+.fc-body h3{
+  font-weight:800;
+  font-variation-settings:"wdth" 80;
+  font-size:clamp(19px,1.9vw,31px);
+  line-height:0.92;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+.fc-meta{ color:var(--dim); display:block; font-size:10px; }
+.fc-hint{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:11px;
+  color:var(--lime);
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+/* back */
+.fc-back{
+  transform:rotateY(180deg);
+  background:var(--lime);
+  color:var(--void);
+  padding:15px 14px;
+  justify-content:space-between;
+}
+.fcard:nth-child(2) .fc-back{ background:var(--cream); }
+.fcard:nth-child(3) .fc-back{ background:var(--flare); color:var(--cream); }
+.fcard:nth-child(4) .fc-back{ background:var(--blue); color:var(--cream); }
+.fc-back h4{
+  font-weight:800;
+  font-variation-settings:"wdth" 82;
+  font-size:clamp(17px,1.6vw,25px);
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+.fc-back p{
+  font-size:clamp(12px,0.95vw,14px);
+  line-height:1.4;
+  margin-bottom:12px;
+}
+.fc-data{
+  font-family:var(--f-mono);
+  font-size:9.5px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  border-top:1.5px solid currentColor;
+  padding-top:8px;
+}
+.fc-data div{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:2.5px 0;
+}
+.fc-data span:first-child{ opacity:0.62; }
+
+/* ══════════════════════════════════════════════════════════
+   03 — WHY PUNTA (stats + toggles)
+   ══════════════════════════════════════════════════════════ */
+.why{ background:var(--cream); color:var(--void); }
+.why .kick{ border-bottom-color:var(--void); }
+.why .kick .k-l{ color:var(--flare); }
+.why .kick .k-r{ color:rgba(14,14,12,0.55); }
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:2px;
+  background:var(--void);
+  border:2px solid var(--void);
+  margin-bottom:clamp(28px,4.5vh,56px);
+}
+.stat{
+  background:var(--cream);
+  padding:clamp(14px,2vw,26px);
+  position:relative;
+  overflow:hidden;
+}
+.stat:nth-child(2){ background:var(--lime); }
+.stat b{
+  display:block;
+  font-weight:800;
+  font-variation-settings:"wdth" 78;
+  font-size:clamp(34px,6.4vw,104px);
+  line-height:0.86;
+  letter-spacing:-0.035em;
+}
+.stat small{
+  display:block;
+  margin-top:9px;
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  line-height:1.55;
+  opacity:0.68;
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:1.05fr 0.95fr;
+  gap:clamp(20px,3vw,52px);
+  align-items:start;
+}
+.claim{
+  font-weight:800;
+  font-variation-settings:"wdth" 84;
+  font-size:clamp(24px,3.2vw,50px);
+  line-height:0.98;
+  letter-spacing:-0.028em;
+  text-transform:uppercase;
+}
+.claim em{ font-style:normal; color:var(--flare); }
+
+/* native details — the one deliberately raw control */
+.toggles{ border-top:2px solid var(--void); }
+details.tg{ border-bottom:2px solid var(--void); }
+details.tg summary{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px 2px;
+  cursor:pointer;
+  list-style:none;
+  font-weight:800;
+  font-variation-settings:"wdth" 88;
+  font-size:clamp(15px,1.45vw,22px);
+  letter-spacing:-0.015em;
+  text-transform:uppercase;
+  transition:padding-left 0.35s var(--ease), color 0.3s var(--ease);
+}
+details.tg summary::-webkit-details-marker{ display:none; }
+details.tg summary:hover{ padding-left:9px; color:var(--flare); }
+details.tg summary .tn{
+  font-family:var(--f-mono);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:0.06em;
+  opacity:0.5;
+  flex:none;
+}
+details.tg summary .plus{
+  margin-left:auto;
+  flex:none;
+  width:22px; height:22px;
+  position:relative;
+  transition:transform 0.45s var(--ease);
+}
+details.tg summary .plus::before,
+details.tg summary .plus::after{
+  content:"";
+  position:absolute;
+  top:50%; left:50%;
+  translate:-50% -50%;
+  background:currentColor;
+}
+details.tg summary .plus::before{ width:15px; height:2px; transition:opacity 0.3s var(--ease); }
+details.tg summary .plus::after{ width:2px; height:15px; }
+/* rotate the cross and drop the horizontal bar — the vertical one lands as a minus */
+details.tg[open] summary .plus{ transform:rotate(90deg); }
+details.tg[open] summary .plus::before{ opacity:0; }
+details.tg .tg-body{
+  padding:0 2px 18px;
+  font-size:clamp(13px,1.05vw,16px);
+  line-height:1.5;
+  max-width:52ch;
+}
+details.tg .tg-body ul{ list-style:none; margin-top:9px; }
+details.tg .tg-body li{
+  font-family:var(--f-mono);
+  font-size:10.5px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  padding:4px 0 4px 16px;
+  position:relative;
+  opacity:0.72;
+}
+details.tg .tg-body li::before{
+  content:"→";
+  position:absolute;
+  left:0;
+}
+
+/* collage behind the claim */
+.collage{
+  position:relative;
+  margin-top:26px;
+  height:clamp(180px,26vw,330px);
+}
+.collage figure{
+  position:absolute;
+  overflow:hidden;
+  border:2px solid var(--void);
+  background:var(--void);
+}
+.collage img{ width:100%; height:100%; object-fit:cover; }
+.cg-1{ width:52%; height:74%; left:0;    top:6%;  transform:rotate(-4deg); z-index:2; }
+.cg-2{ width:44%; height:66%; left:38%;  top:24%; transform:rotate(5deg);  z-index:3; }
+.cg-3{ width:34%; height:52%; right:0;   top:0;   transform:rotate(-2deg); z-index:1; }
+.cg-tag{
+  position:absolute;
+  right:2%;
+  bottom:2%;
+  z-index:5;
+  padding:7px 14px 6px;
+  border-radius:999px;
+  background:var(--flare);
+  color:var(--cream);
+  font-family:var(--f-mono);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transform:rotate(-3deg);
+}
+
+/* ══════════════════════════════════════════════════════════
+   04 — THE HOUSES (rail)
+   ══════════════════════════════════════════════════════════ */
+.rail{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+.hcard{
+  border:2px solid var(--cream);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+.hc-img{
+  position:relative;
+  aspect-ratio:4 / 3;
+  overflow:hidden;
+  background:#17170f;
+}
+.hc-img img{
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:grayscale(0.4) contrast(1.08);
+  transition:filter 0.6s var(--ease), transform 0.9s var(--ease);
+}
+.hcard:hover .hc-img img{ filter:none; transform:scale(1.06); }
+.hc-tag{
+  position:absolute;
+  top:10px; left:10px;
+  padding:5px 12px 4px;
+  border-radius:999px;
+  background:var(--void);
+  color:var(--lime);
+  font-family:var(--f-mono);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.hc-body{ padding:14px; }
+.hc-body h3{
+  font-weight:800;
+  font-variation-settings:"wdth" 82;
+  font-size:clamp(20px,2vw,32px);
+  line-height:0.94;
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hcard details{ border-top:1.5px solid var(--hair); }
+.hcard details summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:11px 0 0;
+  cursor:pointer;
+  list-style:none;
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--lime);
+}
+.hcard details summary::-webkit-details-marker{ display:none; }
+.hcard details p{
+  padding-top:9px;
+  font-size:13.5px;
+  line-height:1.45;
+  color:var(--dim);
+}
+.house-note{
+  margin-top:22px;
+  color:var(--dim);
+}
+.house-note b{ color:var(--lime); font-weight:400; }
+
+/* ══════════════════════════════════════════════════════════
+   05 — THE ROOM (sticker cloud + agenda)
+   ══════════════════════════════════════════════════════════ */
+.room-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:clamp(22px,3.4vw,60px);
+  align-items:start;
+}
+.cloud{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+}
+.chip{
+  padding:9px 16px 8px;
+  border-radius:999px;
+  border:2px solid var(--cream);
+  font-family:var(--f-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  transition:transform 0.35s var(--ease), background 0.35s var(--ease), color 0.35s var(--ease);
+}
+.chip:nth-child(3n){ transform:rotate(-2.5deg); }
+.chip:nth-child(4n){ transform:rotate(2deg); }
+.chip:hover{ background:var(--lime); border-color:var(--lime); color:var(--void); transform:rotate(0) translateY(-3px); }
+.chip.hot{ background:var(--flare); border-color:var(--flare); color:var(--cream); }
+.chip.cold{ background:var(--blue); border-color:var(--blue); color:var(--cream); }
+
+.agenda{ counter-reset:ag; }
+.ag-row{
+  display:flex;
+  align-items:baseline;
+  gap:14px;
+  padding:15px 0;
+  border-bottom:2px solid var(--hair);
+  transition:padding-left 0.4s var(--ease);
+}
+.ag-row:hover{ padding-left:10px; }
+.ag-row:first-child{ border-top:2px solid var(--hair); }
+.ag-row .agn{
+  font-family:var(--f-mono);
+  font-size:10px;
+  color:var(--lime);
+  flex:none;
+}
+.ag-row h3{
+  font-weight:800;
+  font-variation-settings:"wdth" 84;
+  font-size:clamp(19px,2.3vw,38px);
+  line-height:0.95;
+  letter-spacing:-0.025em;
+  text-transform:uppercase;
+}
+.ag-row p{
+  margin-left:auto;
+  text-align:right;
+  max-width:24ch;
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--dim);
+  flex:none;
+}
+
+/* ══════════════════════════════════════════════════════════
+   06 — ACCESS
+   ══════════════════════════════════════════════════════════ */
+.pos-bar{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:2px;
+  background:var(--cream);
+  border:2px solid var(--cream);
+  margin-bottom:clamp(22px,3.4vh,44px);
+}
+.pos-cell{
+  background:var(--void);
+  padding:clamp(14px,2vw,26px);
+}
+.pos-cell b{
+  display:block;
+  font-weight:800;
+  font-variation-settings:"wdth" 78;
+  font-size:clamp(38px,6.6vw,108px);
+  line-height:0.84;
+  letter-spacing:-0.035em;
+  color:var(--lime);
+}
+.pos-cell:nth-child(2) b{ color:var(--flare); }
+.pos-cell:nth-child(3) b{ color:var(--cream); }
+.pos-cell small{
+  display:block;
+  margin-top:8px;
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+
+.tiers{
+  border-top:2px solid var(--hair);
+  margin-bottom:clamp(24px,3.6vh,46px);
+}
+.tier{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) 58px minmax(0,2fr) auto;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:2px solid var(--hair);
+  transition:padding-left 0.4s var(--ease), color 0.3s var(--ease);
+}
+.tier:hover{ padding-left:10px; color:var(--lime); }
+.tier .tname{
+  font-weight:800;
+  font-variation-settings:"wdth" 84;
+  font-size:clamp(16px,1.7vw,27px);
+  letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+.tier .tqty{
+  font-family:var(--f-mono);
+  font-size:11px;
+  color:var(--flare);
+}
+.tier .tperk,
+.tier .tpass{
+  font-family:var(--f-mono);
+  font-size:10px;
+  letter-spacing:0.05em;
+  text-transform:uppercase;
+  color:var(--dim);
+}
+.tier .tpass{ text-align:right; white-space:nowrap; }
+.tier-note{ color:var(--dim); margin-bottom:clamp(26px,4vh,52px); }
+.tier-note b{ color:var(--cream); font-weight:400; }
+
+.cta{
+  background:var(--lime);
+  color:var(--void);
+  padding:clamp(28px,5vw,72px);
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:26px;
+  flex-wrap:wrap;
+}
+.cta h2{
+  font-weight:800;
+  font-variation-settings:"wdth" 80;
+  font-size:clamp(30px,6vw,96px);
+  line-height:0.85;
+  letter-spacing:-0.035em;
+  text-transform:uppercase;
+  max-width:14ch;
+}
+.cta-acts{ display:flex; gap:10px; flex-wrap:wrap; }
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:15px 26px 14px;
+  border-radius:999px;
+  border:2px solid var(--void);
+  font-family:var(--f-mono);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  transition:transform 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.btn.solid{ background:var(--void); color:var(--lime); }
+.btn:hover{ transform:translateY(-3px); }
+.btn.solid:hover{ background:var(--flare); color:var(--cream); border-color:var(--flare); }
+.btn.ghost:hover{ background:var(--void); color:var(--lime); }
+
+/* footer */
+footer{
+  padding:clamp(26px,4vh,48px) var(--pad);
+  border-top:2px solid var(--hair);
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  color:var(--dim);
+}
+footer b{ color:var(--cream); font-weight:400; }
+.switch a{ border-bottom:1px solid var(--faint); }
+.switch a:hover{ color:var(--lime); border-color:var(--lime); }
+.switch .cur{ color:var(--lime); }
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 1000px){
+  .deck{ grid-template-columns:repeat(2, 1fr); }
+  .why-grid, .room-grid{ grid-template-columns:1fr; }
+  .rail{ grid-template-columns:1fr; }
+  .stats{ grid-template-columns:1fr; }
+  .pos-bar{ grid-template-columns:1fr; }
+  .st-4{ display:none; }
+}
+@media (max-width: 620px){
+  .deck{ grid-template-columns:1fr; }
+  .fcard{ aspect-ratio:3 / 3.7; }
+  /* three tiles only — six would wrap into squeezed rows */
+  .strip{ grid-template-columns:repeat(3, 1fr); }
+  .strip figure:nth-child(n+4){ display:none; }
+  .st-3{ display:none; }
+  .tier{ grid-template-columns:1fr auto; row-gap:4px; }
+  .tier .tperk{ grid-column:1 / -1; }
+  .tier .tpass{ grid-column:1 / -1; text-align:left; }
+  .ag-row{ flex-wrap:wrap; }
+  .ag-row p{ margin-left:0; text-align:left; }
+  .st-2{ display:none; }
+  .cta{ flex-direction:column; align-items:flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  [data-rise]{ opacity:1 !important; transform:none !important; transition:none !important; }
+  .mq-track{ animation:none !important; }
+  .sticker{ animation:none !important; }
+  .fc-in{ transition:none !important; }
+  .cursor-badge{ display:none !important; }
+  .fc-media, .strip img, .hc-img img{ transition:none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain" id="grain" aria-hidden="true"></div>
+<div class="cursor-badge" id="cursorBadge" aria-hidden="true">Flip ↻</div>
+
+<!-- ══════════════════════════════════════════════════
+     01 — PORTADA
+     ══════════════════════════════════════════════════ -->
+<header class="por">
+  <div class="por-chrome">
+    <span class="mono">Punta del Este · Uruguay</span>
+    <span class="mono"><b>●</b>&nbsp; Marzo 2027</span>
+    <span class="mono">1ª edición</span>
+    <span class="mono">The evolution of Punta Crypto</span>
+  </div>
+
+  <span class="sticker st-1">Temporada alta</span>
+  <span class="sticker st-2">MACA + Casa Manantial</span>
+  <span class="sticker st-3">21 posiciones</span>
+  <span class="sticker st-4">2 días · 2 capas</span>
+
+  <div class="por-type">
+    <h1>
+      <span class="wline w1">Punta</span>
+    </h1>
+
+    <div class="strip" aria-hidden="true">
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_72aaf395-c674-441d-a243-7b0b748c4162_min.webp" alt="" loading="eager"></figure>
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_e2f025ab-aada-455e-866c-86a5e1a28a8c_min.webp" alt="" loading="eager"></figure>
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_b4a2d700-b60a-4d34-9a5b-ba315b6e47c7_min.webp" alt="" loading="eager"></figure>
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_419803e5-d406-4d58-af58-115a8353d09c_min.webp" alt="" loading="eager"></figure>
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_77e5e9ae-342b-47da-b7fd-72060128d204_min.webp" alt="" loading="eager"></figure>
+      <figure><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_8f838761-c3da-4bc5-b422-c1f7f98f769f_min.webp" alt="" loading="eager"></figure>
+    </div>
+
+    <span class="wline w2">Block<em>chain</em></span>
+  </div>
+
+  <div class="por-foot">
+    <p class="lead">Regulators on the record. Capital at the table. The builders they fund — for one weekend, in the town where the Southern Cone already spends its summer.</p>
+    <span class="mono">↓ &nbsp;001 / 006</span>
+  </div>
+</header>
+
+<div class="mq" aria-hidden="true">
+  <div class="mq-track" data-mq>
+    <span>Policy</span><span>·</span><span>Capital</span><span>·</span><span>Intelligence</span>
+    <img class="mq-chip" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_2ccd0296-e3e5-40c8-8cd2-df81cc740073_min.webp" alt="">
+    <span>Marzo 2027</span><span>—</span><span>Punta del Este</span>
+    <img class="mq-chip" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_a134c5c2-c83a-4506-a044-15a93e1c7849_min.webp" alt="">
+    <span>Legitimacy arrives before proof</span><span>—</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     02 — THE DECK
+     ══════════════════════════════════════════════════ -->
+<section id="deck">
+  <div class="kick">
+    <span class="mono k-l">[ 01 ] &nbsp;El fin de semana</span>
+    <span class="mono k-r">Two days · two layers · four rooms</span>
+  </div>
+
+  <div class="deck-head">
+    <h2 class="big" data-rise style="margin-bottom:0">Four rooms.<br><span class="out">One weekend.</span></h2>
+    <button class="flip-all" id="flipAll" type="button" aria-pressed="false"><i aria-hidden="true"></i><span id="flipAllLabel">Show all text</span></button>
+  </div>
+
+  <div class="deck">
+    <button class="fcard" type="button" aria-pressed="false" data-rise style="--i:0">
+      <div class="fc-in">
+        <div class="fc-face fc-front">
+          <video class="fc-media" muted loop playsinline preload="none"
+                 poster="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_72aaf395-c674-441d-a243-7b0b748c4162_min.webp"
+                 data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_214601_8dc6c31b-6a8b-4e1e-b0e9-490b431b3d04.mp4"></video>
+          <span class="fc-n">01 · Fri</span>
+          <div class="fc-body">
+            <h3>Leaders<br>Forum</h3>
+            <span class="fc-meta mono">MACA · 100–150 · Restricted</span>
+            <span class="fc-hint">Flip for the detail ↻</span>
+          </div>
+        </div>
+        <div class="fc-face fc-back">
+          <div>
+            <h4>Leaders Forum</h4>
+            <p>Central bank fireside, on the record. A closed regulatory roundtable. A capital session behind doors. No exhibition floor, no badge scanners.</p>
+          </div>
+          <div class="fc-data">
+            <div><span>Day</span><span>Friday · 09:30</span></div>
+            <div><span>Venue</span><span>MACA</span></div>
+            <div><span>Seats</span><span>100–150</span></div>
+            <div><span>Access</span><span>Restricted</span></div>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="fcard" type="button" aria-pressed="false" data-rise style="--i:1">
+      <div class="fc-in">
+        <div class="fc-face fc-front">
+          <video class="fc-media" muted loop playsinline preload="none"
+                 poster="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_e2f025ab-aada-455e-866c-86a5e1a28a8c_min.webp"
+                 data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_214545_fb7b5c71-fc19-4b6c-8608-2157177a7673.mp4"></video>
+          <span class="fc-n">02 · Fri</span>
+          <div class="fc-body">
+            <h3>The<br>Dinner</h3>
+            <span class="fc-meta mono">Casa Manantial · 60–80 · Invite</span>
+            <span class="fc-hint">Flip for the detail ↻</span>
+          </div>
+        </div>
+        <div class="fc-face fc-back">
+          <div>
+            <h4>The Dinner</h4>
+            <p>Regulators, allocators and anchors at one table. Off the record — no stage, no press. Held within the top two partner tiers, never sold separately.</p>
+          </div>
+          <div class="fc-data">
+            <div><span>Day</span><span>Friday · 21:00</span></div>
+            <div><span>Venue</span><span>Casa Manantial</span></div>
+            <div><span>Seats</span><span>60–80</span></div>
+            <div><span>Access</span><span>Invitation only</span></div>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="fcard" type="button" aria-pressed="false" data-rise style="--i:2">
+      <div class="fc-in">
+        <div class="fc-face fc-front">
+          <video class="fc-media" muted loop playsinline preload="none"
+                 poster="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_b4a2d700-b60a-4d34-9a5b-ba315b6e47c7_min.webp"
+                 data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_214545_3989df42-62be-4356-b551-a6f50f657d07.mp4"></video>
+          <span class="fc-n">03 · Sat</span>
+          <div class="fc-body">
+            <h3>Institutional<br>Summit</h3>
+            <span class="fc-meta mono">MACA · 400–600 · Public</span>
+            <span class="fc-hint">Flip for the detail ↻</span>
+          </div>
+        </div>
+        <div class="fc-face fc-back">
+          <div>
+            <h4>Institutional Summit</h4>
+            <p>Opening keynote and anchor panel. Three blocks: Stablecoins &amp; Payments · RWA &amp; Tokenization · AI × On-chain. Tickets open November 2026.</p>
+          </div>
+          <div class="fc-data">
+            <div><span>Day</span><span>Saturday · 10:00</span></div>
+            <div><span>Venue</span><span>MACA</span></div>
+            <div><span>Seats</span><span>400–600</span></div>
+            <div><span>Access</span><span>Public, curated</span></div>
+          </div>
+        </div>
+      </div>
+    </button>
+
+    <button class="fcard" type="button" aria-pressed="false" data-rise style="--i:3">
+      <div class="fc-in">
+        <div class="fc-face fc-front">
+          <video class="fc-media" muted loop playsinline preload="none"
+                 poster="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_419803e5-d406-4d58-af58-115a8353d09c_min.webp"
+                 data-src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_214545_3965067f-9184-447f-bbe6-9a4080dac674.mp4"></video>
+          <span class="fc-n">04 · Sat</span>
+          <div class="fc-body">
+            <h3>The<br>Party</h3>
+            <span class="fc-meta mono">Casa Manantial · 150–200 · List</span>
+            <span class="fc-hint">Flip for the detail ↻</span>
+          </div>
+        </div>
+        <div class="fc-face fc-back">
+          <div>
+            <h4>The Party</h4>
+            <p>The summit closes, the house opens. Sunset over Manantiales — the night the weekend is remembered by. Partner-visible, never partner-saturated.</p>
+          </div>
+          <div class="fc-data">
+            <div><span>Day</span><span>Saturday · 19:30</span></div>
+            <div><span>Venue</span><span>Casa Manantial</span></div>
+            <div><span>Guests</span><span>150–200</span></div>
+            <div><span>Access</span><span>By list</span></div>
+          </div>
+        </div>
+      </div>
+    </button>
+  </div>
+</section>
+
+<div class="mq alt" aria-hidden="true">
+  <div class="mq-track" data-mq>
+    <span>Stablecoins &amp; Payments</span><span>◆</span><span>RWA &amp; Tokenization</span><span>◆</span><span>AI × On-chain</span>
+    <img class="mq-chip" src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_77e5e9ae-342b-47da-b7fd-72060128d204_min.webp" alt="">
+    <span>MACA</span><span>◆</span><span>Casa Manantial</span><span>◆</span><span>La Barra</span><span>◆</span><span>Manantiales</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     03 — WHY PUNTA
+     ══════════════════════════════════════════════════ -->
+<section class="why" id="why">
+  <div class="kick">
+    <span class="mono k-l">[ 02 ] &nbsp;Por qué Punta</span>
+    <span class="mono k-r">On-chain volume · 12-mo trailing</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat" data-rise><b>$<span data-count="415">0</span>B</b><small>LATAM on-chain volume<br>Jul 2023 – Jun 2024</small></div>
+    <div class="stat" data-rise style="--i:1"><b>+<span data-count="42.5" data-dec="1">0</span>%</b><small>Year over year<br>Fastest-accelerating region</small></div>
+    <div class="stat" data-rise style="--i:2"><b>$<span data-count="91.9" data-dec="1">0</span>B</b><small>Argentina alone<br>Most stablecoin-dense market on earth</small></div>
+  </div>
+
+  <div class="why-grid">
+    <div>
+      <p class="claim" data-rise>The region is not emerging.<br><em>It already emerged</em> — on-chain, at scale, ahead of its institutions.</p>
+
+      <div class="collage" data-rise style="--i:1" aria-hidden="true">
+        <figure class="cg-1"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_8f838761-c3da-4bc5-b422-c1f7f98f769f_min.webp" alt=""></figure>
+        <figure class="cg-2"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_2ccd0296-e3e5-40c8-8cd2-df81cc740073_min.webp" alt=""></figure>
+        <figure class="cg-3"><img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_a134c5c2-c83a-4506-a044-15a93e1c7849_min.webp" alt=""></figure>
+        <span class="cg-tag">Punta del Este</span>
+      </div>
+    </div>
+
+    <div class="toggles" data-rise style="--i:1">
+      <details class="tg">
+        <summary><span class="tn">01</span> Regulation in force <span class="plus" aria-hidden="true"></span></summary>
+        <div class="tg-body">
+          Uruguay's virtual-asset framework is live, and the Central Bank is active on digital-asset oversight. The rules exist before the room does.
+          <ul><li>Law 20,345 · in force</li><li>BCU · active supervision</li></ul>
+        </div>
+      </details>
+      <details class="tg">
+        <summary><span class="tn">02</span> Capital in season <span class="plus" aria-hidden="true"></span></summary>
+        <div class="tg-body">
+          The highest concentration of family offices and private capital in LATAM, and it arrives on its own every southern summer.
+          <ul><li>ARG · BRA · CHL · URY</li><li>One town, every season</li></ul>
+        </div>
+      </details>
+      <details class="tg">
+        <summary><span class="tn">03</span> Institutional stability <span class="plus" aria-hidden="true"></span></summary>
+        <div class="tg-body">
+          First in LATAM on political stability and rule of law. Contracts are denominated in dollars as standard — the boring part is already solved.
+          <ul><li>#1 LATAM · rule of law</li><li>USD contracts · standard</li></ul>
+        </div>
+      </details>
+      <details class="tg">
+        <summary><span class="tn">04</span> The brand mechanism <span class="plus" aria-hidden="true"></span></summary>
+        <div class="tg-body">
+          "Punta del Este" carries premium weight in LATAM capital circles. It is the same mechanism that makes Dubai work for Token2049 — a destination people already want to be in.
+          <ul><li>Destination format</li><li>Dubai · Token2049 precedent</li></ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     04 — THE HOUSES
+     ══════════════════════════════════════════════════ -->
+<section id="houses">
+  <div class="kick">
+    <span class="mono k-l">[ 03 ] &nbsp;Las casas</span>
+    <span class="mono k-r">Three exist · never sold separately</span>
+  </div>
+
+  <h2 class="big" data-rise>Three houses.<br><span class="out">The town becomes</span> the venue.</h2>
+
+  <div class="rail">
+    <article class="hcard" data-rise>
+      <div class="hc-img">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_72aaf395-c674-441d-a243-7b0b748c4162_min.webp" alt="Beach house, La Barra" loading="lazy">
+        <span class="hc-tag">H.01 · La Barra</span>
+      </div>
+      <div class="hc-body">
+        <h3>Housing,<br>solved</h3>
+        <details>
+          <summary><span>Read the detail</span><span aria-hidden="true">+</span></summary>
+          <p>Delegation sleeps on-site — fully staffed, pool, breakfast, three nights Friday to Sunday. The logistics line item disappears from the partner's ledger.</p>
+        </details>
+      </div>
+    </article>
+
+    <article class="hcard" data-rise style="--i:1">
+      <div class="hc-img">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212122_e2f025ab-aada-455e-866c-86a5e1a28a8c_min.webp" alt="Woods house, El Chorro" loading="lazy">
+        <span class="hc-tag">H.02 · El Chorro</span>
+      </div>
+      <div class="hc-body">
+        <h3>A private<br>venue</h3>
+        <details>
+          <summary><span>Read the detail</span><span aria-hidden="true">+</span></summary>
+          <p>Firesides, client dinners and side sessions produced by the platform — on the partner's brand, behind the partner's door, off the main stage.</p>
+        </details>
+      </div>
+    </article>
+
+    <article class="hcard" data-rise style="--i:2">
+      <div class="hc-img">
+        <img src="https://d8j0ntlcm91z4.cloudfront.net/user_3Ch1eFGVAVfz5AvMg8oIfBSXV6p/hf_20260803_212121_b4a2d700-b60a-4d34-9a5b-ba315b6e47c7_min.webp" alt="Campo house, Ruta 104" loading="lazy">
+        <span class="hc-tag">H.03 · Ruta 104</span>
+      </div>
+      <div class="hc-body">
+        <h3>A content<br>stage</h3>
+        <details>
+          <summary><span>Read the detail</span><span aria-hidden="true">+</span></summary>
+          <p>Podcasts, interviews and sessions shot in situ, all weekend — and the partner keeps the footage.</p>
+        </details>
+      </div>
+    </article>
+  </div>
+
+  <p class="house-note mono" data-rise>Held within <b>Diamond</b> and <b>Master</b> positions · never sold separately · only three exist.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     05 — THE ROOM
+     ══════════════════════════════════════════════════ -->
+<section id="room">
+  <div class="kick">
+    <span class="mono k-l">[ 04 ] &nbsp;Quién viene</span>
+    <span class="mono k-r">Three rooms inside the room</span>
+  </div>
+
+  <div class="room-grid">
+    <div data-rise>
+      <h2 class="big" style="font-size:clamp(28px,4.4vw,64px)">Who's<br><span class="out">in the room</span></h2>
+      <div class="cloud">
+        <span class="chip hot">Central banks</span>
+        <span class="chip">Regulators</span>
+        <span class="chip">Policymakers</span>
+        <span class="chip cold">Family offices</span>
+        <span class="chip">Funds</span>
+        <span class="chip">Banks</span>
+        <span class="chip">Allocators</span>
+        <span class="chip hot">Founders</span>
+        <span class="chip">Exchanges</span>
+        <span class="chip">Infrastructure</span>
+        <span class="chip cold">Operators</span>
+        <span class="chip">Anchors</span>
+      </div>
+      <p class="mono" style="margin-top:18px;color:var(--dim);max-width:44ch;">Policy sets the terms · capital decides where the cycle lands · builders run the rails the other two regulate and fund.</p>
+    </div>
+
+    <div class="agenda" data-rise style="--i:1">
+      <div class="ag-row"><span class="agn">01</span><h3>Stablecoins &amp; Payments</h3><p>The rails LATAM already uses — formalized</p></div>
+      <div class="ag-row"><span class="agn">02</span><h3>RWA &amp; Tokenization</h3><p>Real assets · transparent ownership · liquidity</p></div>
+      <div class="ag-row"><span class="agn">03</span><h3>AI × On-chain</h3><p>The agentic economy — where the next cycle compounds</p></div>
+      <div class="ag-row"><span class="agn">04</span><h3>Anchors &amp; Voices</h3><p>MEF opening · BCU fireside · global keynote Oct 2026</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     06 — ACCESS
+     ══════════════════════════════════════════════════ -->
+<section id="access">
+  <div class="kick">
+    <span class="mono k-l">[ 05 ] &nbsp;Acceso</span>
+    <span class="mono k-r">First edition · first names</span>
+  </div>
+
+  <div class="pos-bar">
+    <div class="pos-cell" data-rise><b><span data-count="21">0</span></b><small>Positions · category exclusivity at every tier</small></div>
+    <div class="pos-cell" data-rise style="--i:1"><b><span data-count="3">0</span></b><small>Houses · held within Master and Diamond</small></div>
+    <div class="pos-cell" data-rise style="--i:2"><b><span data-count="1">0</span></b><small>Weekend · two layers, four rooms</small></div>
+  </div>
+
+  <div class="tiers" data-rise>
+    <div class="tier"><span class="tname">Master</span><span class="tqty">×1</span><span class="tperk">Naming level · both layers · flagship house</span><span class="tpass">40 passports</span></div>
+    <div class="tier"><span class="tname">Diamond</span><span class="tqty">×2</span><span class="tperk">Category exclusivity · branded house</span><span class="tpass">25 passports</span></div>
+    <div class="tier"><span class="tname">Titanium</span><span class="tqty">×4</span><span class="tperk">Keynote + panel seat</span><span class="tpass">15 passports</span></div>
+    <div class="tier"><span class="tname">Gold</span><span class="tqty">×6</span><span class="tperk">Panel seat · curated topic</span><span class="tpass">8 passports</span></div>
+    <div class="tier"><span class="tname">Supporter</span><span class="tqty">×8</span><span class="tperk">Official media + website</span><span class="tpass">4 passports</span></div>
+  </div>
+
+  <p class="tier-note mono" data-rise>Seven positions carry both layers — three include a house. <b>Pricing in the Partner Brief.</b><br>Anchors close Oct 2026 → tickets open Nov 2026 → agenda locks Jan 2027.</p>
+
+  <div class="cta" data-rise>
+    <h2>Be in the room when the rules get written.</h2>
+    <div class="cta-acts">
+      <a class="btn solid" href="#">Request the Partner Brief →</a>
+      <a class="btn ghost" href="#">Join the guest list</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="mono"><b>Punta Blockchain</b> — First edition · Punta del Este, Uruguay · March 2027<br>The evolution of Punta Crypto · By BOTH Ventures</span>
+  <span class="mono switch">VB0.1 — <a href="../vb01-a-indice/">A</a> / <a href="../vb01-b-marea/">B</a> / <a href="../vb01-c-afiche/">C</a> / <span class="cur">[ D ]</span> · <a href="../../punta-blockchain-2027/">V1</a><br>VB0.1-D · Temporada · Q-01.27</span>
+</footer>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ── grain ─────────────────────────────────────────────── */
+  (function () {
+    var s = 190, c = document.createElement('canvas');
+    c.width = c.height = s;
+    var ctx = c.getContext('2d'), img = ctx.createImageData(s, s), d = img.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var v = 20 + Math.random() * 215;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    document.getElementById('grain').style.backgroundImage = 'url(' + c.toDataURL() + ')';
+  })();
+
+  /* ── marquee: duplicate the track so the loop is seamless ── */
+  document.querySelectorAll('[data-mq]').forEach(function (t) {
+    t.innerHTML = t.innerHTML + t.innerHTML;
+  });
+
+  /* ── scroll reveal + count-up ──────────────────────────── */
+  function countUp(el) {
+    if (el.__done) return;
+    el.__done = true;
+    var target = parseFloat(el.getAttribute('data-count'));
+    var dec = parseInt(el.getAttribute('data-dec') || '0', 10);
+    if (reduce) { el.textContent = target.toFixed(dec); return; }
+    var t0 = null, dur = 1500;
+    function step(ts) {
+      if (!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (target * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toFixed(dec);
+    }
+    requestAnimationFrame(step);
+  }
+
+  var risers = document.querySelectorAll('[data-rise]');
+  if (!('IntersectionObserver' in window)) {
+    risers.forEach(function (n) { n.classList.add('in'); });
+    document.querySelectorAll('[data-count]').forEach(countUp);
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        e.target.querySelectorAll('[data-count]').forEach(countUp);
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+    risers.forEach(function (n) { io.observe(n); });
+  }
+
+  /* ── flip cards ────────────────────────────────────────── */
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.fcard'));
+  function setCard(card, on) {
+    card.classList.toggle('on', on);
+    card.setAttribute('aria-pressed', on ? 'true' : 'false');
+    var v = card.querySelector('.fc-media');
+    if (v && on) pauseVideo(v);
+  }
+  cards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      setCard(card, !card.classList.contains('on'));
+      syncFlipAll();
+    });
+  });
+
+  var flipAll = document.getElementById('flipAll');
+  var flipAllLabel = document.getElementById('flipAllLabel');
+  function syncFlipAll() {
+    var all = cards.every(function (c) { return c.classList.contains('on'); });
+    flipAll.setAttribute('aria-pressed', all ? 'true' : 'false');
+    flipAllLabel.textContent = all ? 'Hide all text' : 'Show all text';
+  }
+  flipAll.addEventListener('click', function () {
+    var turnOn = flipAll.getAttribute('aria-pressed') !== 'true';
+    cards.forEach(function (c) { setCard(c, turnOn); });
+    syncFlipAll();
+  });
+
+  /* ── video: load and play only on intent ───────────────── */
+  function playVideo(v) {
+    if (reduce) return;
+    if (!v.getAttribute('src')) {
+      var src = v.getAttribute('data-src');
+      if (!src) return;
+      v.setAttribute('src', src);
+    }
+    var p = v.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  function pauseVideo(v) {
+    if (!v.paused) v.pause();
+  }
+  cards.forEach(function (card) {
+    var v = card.querySelector('.fc-media');
+    if (!v) return;
+    card.addEventListener('pointerenter', function () {
+      if (!card.classList.contains('on')) playVideo(v);
+    });
+    card.addEventListener('pointerleave', function () { pauseVideo(v); });
+    card.addEventListener('focus', function () {
+      if (!card.classList.contains('on')) playVideo(v);
+    });
+    card.addEventListener('blur', function () { pauseVideo(v); });
+  });
+
+  /* ── cursor badge, only over the flip zone ─────────────── */
+  var badge = document.getElementById('cursorBadge');
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (fine && !reduce) {
+    var bx = 0, by = 0, raf = null;
+    function paint() {
+      badge.style.transform = 'translate3d(' + bx + 'px,' + by + 'px,0) scale(' +
+        (badge.classList.contains('on') ? 1 : 0.5) + ')';
+      raf = null;
+    }
+    document.addEventListener('pointermove', function (e) {
+      bx = e.clientX; by = e.clientY;
+      if (!raf) raf = requestAnimationFrame(paint);
+    }, { passive: true });
+    cards.forEach(function (card) {
+      card.addEventListener('pointerenter', function () {
+        badge.textContent = card.classList.contains('on') ? 'Back ↺' : 'Flip ↻';
+        badge.classList.add('on');
+      });
+      card.addEventListener('pointerleave', function () { badge.classList.remove('on'); });
+      card.addEventListener('click', function () {
+        badge.textContent = card.classList.contains('on') ? 'Back ↺' : 'Flip ↻';
+      });
+    });
+    badge.style.transition = 'opacity 0.25s cubic-bezier(0.16,1,0.3,1)';
+  }
+})();
+</script>
+</body>
+</html>
