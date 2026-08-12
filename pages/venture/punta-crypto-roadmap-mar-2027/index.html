@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Punta Blockchain roadmap Aug 2026 to Mar 2027 — 5-lane board, 6 phases, 7 decision gates, T0-T3 scenarios. Draft V0.2.">
+<title>Punta Blockchain — Roadmap to March 2027 — Both_Ventures</title>
+<style>
+/* ─────────────────────────────────────────────────────────────
+   PUNTA BLOCKCHAIN — ROADMAP V0.2
+   BOTH web standard: paper #ebe1cd, Helvetica 400, weight over size.
+   Lane hues retuned from the source Gantt draft's own colour logic.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --paper:   #ebe1cd;
+  --plate:   #f2ebda;
+  --off:     #e2d7bf;
+  --rule:    #d6cbb1;
+  --rule2:   #c2b696;
+  --ink:     #111110;
+  --ink2:    #55534a;
+  --ink3:    #918b7c;
+
+  --acc:     #7d7d1f;
+  --acc-tint:rgba(125,125,31,.13);
+
+  --gov:     #7d7d1f;  --gov-t:  rgba(125,125,31,.13);
+  --comms:   #54468a;  --comms-t:rgba(84,70,138,.12);
+  --sales:   #1f635c;  --sales-t:rgba(31,99,92,.12);
+  --spk:     #92650f;  --spk-t:  rgba(146,101,15,.13);
+  --prod:    #41403a;  --prod-t: rgba(65,64,58,.11);
+  --alert:   #a8402f;
+
+  --grid-line: rgba(17,17,16,.07);
+  --phase-line:rgba(17,17,16,.20);
+
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --lane-w: 178px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:   #16150f;
+    --plate:   #1c1b14;
+    --off:     #221f18;
+    --rule:    #302d23;
+    --rule2:   #443f31;
+    --ink:     #ece5d3;
+    --ink2:    #a8a291;
+    --ink3:    #736d5e;
+    --acc:     #b9b93c;
+    --acc-tint:rgba(185,185,60,.16);
+    --gov:     #b9b93c;  --gov-t:  rgba(185,185,60,.16);
+    --comms:   #9d8ed6;  --comms-t:rgba(157,142,214,.15);
+    --sales:   #59b3a8;  --sales-t:rgba(89,179,168,.15);
+    --spk:     #d4a13c;  --spk-t:  rgba(212,161,60,.15);
+    --prod:    #b0aa98;  --prod-t: rgba(176,170,152,.12);
+    --alert:   #e07a63;
+    --grid-line: rgba(236,229,211,.07);
+    --phase-line:rgba(236,229,211,.22);
+  }
+}
+:root[data-theme="dark"] {
+  --paper:   #16150f;
+  --plate:   #1c1b14;
+  --off:     #221f18;
+  --rule:    #302d23;
+  --rule2:   #443f31;
+  --ink:     #ece5d3;
+  --ink2:    #a8a291;
+  --ink3:    #736d5e;
+  --acc:     #b9b93c;
+  --acc-tint:rgba(185,185,60,.16);
+  --gov:     #b9b93c;  --gov-t:  rgba(185,185,60,.16);
+  --comms:   #9d8ed6;  --comms-t:rgba(157,142,214,.15);
+  --sales:   #59b3a8;  --sales-t:rgba(89,179,168,.15);
+  --spk:     #d4a13c;  --spk-t:  rgba(212,161,60,.15);
+  --prod:    #b0aa98;  --prod-t: rgba(176,170,152,.12);
+  --alert:   #e07a63;
+  --grid-line: rgba(236,229,211,.07);
+  --phase-line:rgba(236,229,211,.22);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink2);
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
+
+/* ── MASTHEAD ───────────────────────────────────────────── */
+.mast {
+  border-bottom: 1px solid var(--ink);
+  padding: 34px 0 16px;
+  display: flex; flex-wrap: wrap; gap: 20px;
+  align-items: flex-end; justify-content: space-between;
+}
+.mark { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.dot-f, .dot-o { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dot-f { background: var(--ink); }
+.dot-o { border: 1px solid var(--ink); }
+.wordmark {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .10em;
+  text-transform: uppercase; color: var(--ink);
+}
+h1 {
+  font-family: var(--sans); font-weight: 400;
+  font-size: clamp(30px, 4.6vw, 50px);
+  line-height: 1.02; letter-spacing: -.022em;
+  color: var(--ink); margin: 0; text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--ink3); }
+.read-time {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--acc); margin: 14px 0 0;
+}
+.mast-meta {
+  font-family: var(--mono); font-size: 10px; line-height: 1.9;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--ink3);
+  text-align: right;
+}
+.mast-meta b { color: var(--ink); font-weight: 400; }
+.health {
+  display: inline-block; padding: 2px 7px; border: 1px solid var(--alert);
+  color: var(--alert); border-radius: 2px; letter-spacing: .1em;
+}
+
+/* ── STAT STRIP ─────────────────────────────────────────── */
+.strip {
+  display: grid; gap: 1px; background: var(--rule);
+  grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+  border: 1px solid var(--rule); margin: 22px 0 8px;
+}
+.stat { background: var(--plate); padding: 13px 15px 14px; }
+.stat dt {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 5px;
+}
+.stat dd {
+  margin: 0; font-size: 14px; color: var(--ink); line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+.stat dd span { color: var(--ink2); font-size: 12px; }
+
+.note {
+  display: flex; gap: 10px; align-items: baseline;
+  border-left: 2px solid var(--alert);
+  background: var(--plate);
+  padding: 11px 15px; margin: 14px 0 0; font-size: 13px;
+}
+.note.calm { border-left-color: var(--acc); }
+.note-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--alert); flex: none;
+}
+.note.calm .note-tag { color: var(--acc); }
+
+/* ── SECTION HEADS ──────────────────────────────────────── */
+.sec { margin-top: 54px; }
+.sec > h2 {
+  font-family: var(--mono); font-size: 10px; font-weight: 400;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+  margin: 0 0 3px; padding-bottom: 8px; border-bottom: 1px solid var(--ink);
+  display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+}
+.sec > h2 span { color: var(--ink3); letter-spacing: .07em; }
+.sec-lede { font-size: 13px; margin: 12px 0 20px; max-width: 68ch; }
+
+/* ── GANTT ──────────────────────────────────────────────── */
+.chart-scroll {
+  overflow-x: auto; border: 1px solid var(--rule2);
+  background: var(--plate); -webkit-overflow-scrolling: touch;
+}
+.chart { min-width: 1330px; }
+
+.band { display: grid; grid-template-columns: var(--lane-w) 1fr; }
+.band > .cells { display: grid; grid-template-columns: repeat(35, 1fr); }
+
+.hd-months { border-bottom: 1px solid var(--rule); }
+.hd-months .stub { border-right: 1px solid var(--rule2); background: var(--off); }
+.mo {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink);
+  padding: 8px 0 7px; text-align: center;
+  border-left: 1px solid var(--rule2); background: var(--off);
+}
+.hd-weeks { border-bottom: 1px solid var(--rule2); }
+.hd-weeks .stub {
+  border-right: 1px solid var(--rule2);
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink3);
+  display: flex; align-items: center; padding: 0 12px;
+}
+.wk {
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: .02em;
+  color: var(--ink3); text-align: center; padding: 6px 0 7px;
+  border-left: 1px solid var(--grid-line);
+  font-variant-numeric: tabular-nums;
+}
+.wk.mo-start { border-left: 1px solid var(--rule2); }
+.wk.now { color: var(--acc); background: var(--acc-tint); }
+
+.hd-gates { border-bottom: 1px solid var(--ink); background: var(--off); }
+.hd-gates .stub {
+  border-right: 1px solid var(--rule2);
+  font-family: var(--mono); font-size: 9px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink);
+  display: flex; align-items: center; padding: 0 12px;
+}
+.hd-gates .cells { padding: 9px 0 10px; }
+.gate {
+  align-self: center; justify-self: center; position: relative;
+  width: 9px; height: 9px; transform: rotate(45deg);
+  background: var(--plate); border: 1.5px solid var(--ink);
+}
+.gate.crit { background: var(--acc); border-color: var(--acc); }
+.gate::after {
+  content: attr(data-g); position: absolute;
+  left: 50%; top: 50%; transform: translate(-50%,-50%) rotate(-45deg);
+  font-family: var(--mono); font-size: 8px; color: var(--ink);
+  white-space: nowrap; padding-left: 22px;
+}
+.gate.crit::after { color: var(--acc); }
+
+.lane { border-bottom: 1px solid var(--rule2); }
+.lane:last-child { border-bottom: 0; }
+.lane-head {
+  border-right: 1px solid var(--rule2); padding: 12px 12px 14px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lane-name {
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink);
+  border-left: 3px solid var(--lane-c); padding-left: 8px;
+}
+.lane-owner {
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ink3); padding-left: 11px;
+}
+.lane-rows {
+  padding: 8px 0 9px;
+  background-image:
+    linear-gradient(90deg,
+      transparent 0 calc(8.5714% - 1px), var(--phase-line) calc(8.5714% - 1px) 8.5714%,
+      transparent 8.5714% calc(25.7143% - 1px), var(--phase-line) calc(25.7143% - 1px) 25.7143%,
+      transparent 25.7143% calc(37.1429% - 1px), var(--phase-line) calc(37.1429% - 1px) 37.1429%,
+      transparent 37.1429% calc(62.8571% - 1px), var(--phase-line) calc(62.8571% - 1px) 62.8571%,
+      transparent 62.8571% calc(85.7143% - 1px), var(--phase-line) calc(85.7143% - 1px) 85.7143%,
+      transparent 85.7143% 100%),
+    repeating-linear-gradient(90deg,
+      var(--grid-line) 0 1px, transparent 1px calc(100% / 35));
+}
+.row { display: grid; grid-template-columns: repeat(35, 1fr); min-height: 24px; }
+.row + .row { margin-top: 3px; }
+
+.bar {
+  grid-row: 1; min-width: 0; height: 22px; border-radius: 2px;
+  display: flex; align-items: center; padding: 0 7px;
+  background: var(--lane-t);
+  border: 1px solid transparent; border-left: 3px solid var(--lane-c);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: .015em;
+  color: var(--ink); white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; cursor: default;
+}
+.bar.add {
+  background: transparent;
+  border: 1px dashed var(--lane-c);
+  border-left: 3px solid var(--lane-c);
+  color: var(--ink2);
+}
+.bar.pin {
+  background: var(--lane-c); color: var(--plate);
+  justify-content: center; padding: 0 4px;
+}
+.bar .n {
+  font-size: 8.5px; color: var(--ink3); margin-left: 7px;
+  letter-spacing: .06em; text-transform: uppercase;
+}
+.bar.blk { border-left-color: var(--alert); }
+.bar.blk .n { color: var(--alert); }
+
+.hd-phases { border-bottom: 1px solid var(--rule2); }
+.hd-phases .stub {
+  border-right: 1px solid var(--rule2); background: var(--plate);
+  font-family: var(--mono); font-size: 9px; letter-spacing: .11em;
+  text-transform: uppercase; color: var(--ink3);
+  display: flex; align-items: center; padding: 0 12px;
+}
+.hd-phases .cells { padding: 8px 0; }
+.ph {
+  grid-row: 1; margin: 0 2px; height: 20px; border-radius: 2px;
+  background: var(--acc-tint); border-left: 2px solid var(--acc);
+  display: flex; align-items: center; gap: 7px; padding: 0 8px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink);
+  white-space: nowrap; overflow: hidden;
+}
+.ph b { font-weight: 400; color: var(--acc); }
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--ink3);
+}
+.legend span { display: flex; align-items: center; gap: 7px; }
+.sw { width: 22px; height: 11px; border-radius: 2px; flex: none; }
+.sw.solid { background: var(--acc-tint); border-left: 3px solid var(--acc); }
+.sw.dash  { border: 1px dashed var(--acc); border-left: 3px solid var(--acc); }
+.sw.gd {
+  width: 9px; height: 9px; transform: rotate(45deg); border-radius: 0;
+  background: var(--acc); border: 0;
+}
+
+/* ── PHASE CARDS ────────────────────────────────────────── */
+.phases {
+  display: grid; gap: 1px; background: var(--rule);
+  border: 1px solid var(--rule); margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+}
+.pcard {
+  background: var(--plate); padding: 20px 20px 22px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.pcard-top { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; }
+.pcode {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--acc);
+}
+.pdates {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ink3);
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+.pcard h3 {
+  margin: -6px 0 0; font-size: 19px; font-weight: 400;
+  line-height: 1.2; letter-spacing: -.012em; color: var(--ink);
+  text-wrap: balance;
+}
+.pthesis { margin: 0; font-size: 13px; color: var(--ink2); }
+.pcard ul { margin: 0; padding-left: 0; list-style: none; display: grid; gap: 9px; }
+.pcard li {
+  font-size: 13px; line-height: 1.5; color: var(--ink2);
+  padding-left: 14px; position: relative;
+}
+.pcard li::before {
+  content: ""; position: absolute; left: 0; top: 8px;
+  width: 5px; height: 5px; background: var(--rule2);
+}
+.pcard li.key::before { background: var(--acc); }
+.pcard li b { color: var(--ink); font-weight: 400; }
+.pcard li i { font-style: italic; }
+.who {
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3); margin-left: 4px;
+}
+.exit {
+  margin-top: auto; padding-top: 13px; border-top: 1px solid var(--rule);
+  display: flex; gap: 9px; align-items: baseline;
+  font-size: 12.5px; color: var(--ink);
+}
+.exit-tag {
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--acc); flex: none;
+}
+
+/* ── TABLES ─────────────────────────────────────────────── */
+.tbl-scroll { overflow-x: auto; margin-top: 20px; }
+table { width: 100%; min-width: 660px; border-collapse: collapse; font-size: 13px; }
+th {
+  font-family: var(--mono); font-size: 9px; font-weight: 400;
+  letter-spacing: .11em; text-transform: uppercase; color: var(--ink3);
+  text-align: left; padding: 0 14px 8px 0; border-bottom: 1px solid var(--ink);
+  white-space: nowrap;
+}
+td {
+  padding: 11px 14px 11px 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink2); vertical-align: top;
+}
+td.c { font-family: var(--mono); font-size: 11px; color: var(--ink);
+       white-space: nowrap; font-variant-numeric: tabular-nums; }
+td.num { font-family: var(--mono); font-size: 12px; color: var(--ink);
+         text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+th.r { text-align: right; }
+td b { color: var(--ink); font-weight: 400; }
+tr.crit td.c { color: var(--acc); }
+tr.hi td.num { color: var(--acc); }
+
+/* ── OPEN LIST ──────────────────────────────────────────── */
+.opens { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 20px; }
+.open {
+  background: var(--plate); padding: 15px 18px;
+  display: grid; grid-template-columns: 30px 1fr auto; gap: 14px; align-items: baseline;
+}
+.open .ix { font-family: var(--mono); font-size: 10px; color: var(--ink3); }
+.open p { margin: 0; font-size: 13px; }
+.open p b { color: var(--ink); font-weight: 400; }
+.open p i { font-style: italic; }
+.sev {
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: .1em;
+  text-transform: uppercase; padding: 3px 7px; border: 1px solid currentColor;
+  border-radius: 2px; white-space: nowrap;
+}
+.sev.hi { color: var(--alert); }
+.sev.md { color: var(--ink3); }
+
+footer {
+  margin-top: 62px; border-top: 1px solid var(--ink);
+  padding: 16px 0 46px; display: flex; flex-wrap: wrap; gap: 12px;
+  justify-content: space-between;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink3);
+}
+footer b { color: var(--ink); font-weight: 400; }
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 18px; }
+  .mast-meta { text-align: left; }
+  .pcard { padding: 17px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <div>
+      <div class="mark">
+        <div class="dot-f"></div><div class="dot-o"></div>
+        <span class="wordmark">Both_Ventures</span>
+      </div>
+      <h1>Punta Blockchain<br><em>Roadmap to March 2027</em></h1>
+      <p class="read-time">Lectura · 12 min</p>
+    </div>
+    <div class="mast-meta">
+      Version <b>V0.2 — draft</b><br>
+      Issued <b>2026-08-12</b><br>
+      Champion <b>Rene</b> · ops <b>Daiana</b><br>
+      Health <span class="health">Yellow</span>
+    </div>
+  </header>
+
+  <dl class="strip">
+    <div class="stat"><dt>Format</dt><dd>2 days · 2 layers <span>Fri forum · Sat summit</span></dd></div>
+    <div class="stat"><dt>Rooms</dt><dd>100–150 <span>Fri</span> · 400–600 <span>Sat</span></dd></div>
+    <div class="stat"><dt>Venues</dt><dd>MACA <span>institutional</span> + Casa Manantial <span>experience</span></dd></div>
+    <div class="stat"><dt>Sponsor inventory</dt><dd>21 positions <span>$10K–$100K + $200K Master</span></dd></div>
+    <div class="stat"><dt>Scenarios</dt><dd>T0 → T3 <span>$200K floor · $800K target</span></dd></div>
+    <div class="stat"><dt>Event</dt><dd>Mar 2027 <span>Fri 12 · Sat 13 (proposed)</span></dd></div>
+  </dl>
+
+  <p class="note">
+    <span class="note-tag">Live blocker</span>
+    <span><b>The real MACA quote.</b> Everything downstream — the T0–T3 model, the budget gate, the branding go/no-go — is waiting on it. Von Buch introduces us at MACA on 14/08; cost check with Bob and Marco follows. Until the number lands, the scenarios are estimates, not a plan.</span>
+  </p>
+
+  <p class="note calm">
+    <span class="note-tag">Name</span>
+    <span>Working name is <b>Punta Blockchain</b>; the registered mark is <b>Punta Crypto</b>, and the July concept memo ran <b>Punta Summit</b>. Three names, one venture. Legal check sits with <b>Andres</b>; the four VB0.1 art directions are published and waiting on Rene's pick. This has to close inside the branding sprint — every asset built afterwards carries whichever name wins.</span>
+  </p>
+
+  <!-- ══ TIMELINE ══════════════════════════════════════════ -->
+  <section class="sec">
+    <h2>The board <span>Aug 2026 → Mar 2027 · 35 weeks</span></h2>
+    <p class="sec-lede">
+      Solid bars are the existing Gantt draft, carried over on the same weeks. Dashed bars are the completion proposed here.
+      The <b>Institutional</b> lane is new — the draft has no row for the government track, which is what makes the Friday forum
+      a different product from the Saturday summit. Diamonds are decision gates; olive marks the critical path.
+      Three of the seven gates fall inside the next two weeks.
+    </p>
+
+    <div class="chart-scroll">
+      <div class="chart">
+
+        <div class="band hd-months">
+          <div class="stub"></div>
+          <div class="cells">
+            <div class="mo" style="grid-column:1/span 4">August</div>
+            <div class="mo" style="grid-column:5/span 5">September</div>
+            <div class="mo" style="grid-column:10/span 4">October</div>
+            <div class="mo" style="grid-column:14/span 5">November</div>
+            <div class="mo" style="grid-column:19/span 4">December</div>
+            <div class="mo" style="grid-column:23/span 4">January</div>
+            <div class="mo" style="grid-column:27/span 4">February</div>
+            <div class="mo" style="grid-column:31/span 5">March</div>
+          </div>
+        </div>
+
+        <div class="band hd-weeks">
+          <div class="stub">Week of</div>
+          <div class="cells">
+            <div class="wk mo-start">08/03</div><div class="wk now">08/10</div><div class="wk">08/17</div><div class="wk">08/24</div>
+            <div class="wk mo-start">08/31</div><div class="wk">09/07</div><div class="wk">09/14</div><div class="wk">09/21</div><div class="wk">09/28</div>
+            <div class="wk mo-start">10/05</div><div class="wk">10/12</div><div class="wk">10/19</div><div class="wk">10/26</div>
+            <div class="wk mo-start">11/02</div><div class="wk">11/09</div><div class="wk">11/16</div><div class="wk">11/23</div><div class="wk">11/30</div>
+            <div class="wk mo-start">12/07</div><div class="wk">12/14</div><div class="wk">12/21</div><div class="wk">12/28</div>
+            <div class="wk mo-start">01/04</div><div class="wk">01/11</div><div class="wk">01/18</div><div class="wk">01/25</div>
+            <div class="wk mo-start">02/01</div><div class="wk">02/08</div><div class="wk">02/15</div><div class="wk">02/22</div>
+            <div class="wk mo-start">03/01</div><div class="wk">03/08</div><div class="wk">03/15</div><div class="wk">03/22</div><div class="wk">03/29</div>
+          </div>
+        </div>
+
+        <div class="band hd-phases">
+          <div class="stub">Phase</div>
+          <div class="cells">
+            <div class="ph" style="grid-column:1/span 3"><b>F0</b> Internal gate</div>
+            <div class="ph" style="grid-column:4/span 6"><b>F1</b> Branding + platform</div>
+            <div class="ph" style="grid-column:10/span 4"><b>F2</b> Go live + anchor</div>
+            <div class="ph" style="grid-column:14/span 9"><b>F3</b> Sell-down + tickets</div>
+            <div class="ph" style="grid-column:23/span 8"><b>F4</b> Program lock</div>
+            <div class="ph" style="grid-column:31/span 5"><b>F5</b> Execution</div>
+          </div>
+        </div>
+
+        <div class="band hd-gates">
+          <div class="stub">Gates</div>
+          <div class="cells">
+            <div class="gate crit" style="grid-column:2"  data-g="G1"></div>
+            <div class="gate crit" style="grid-column:3"  data-g="G2"></div>
+            <div class="gate"      style="grid-column:4"  data-g="G3"></div>
+            <div class="gate crit" style="grid-column:10" data-g="G4"></div>
+            <div class="gate"      style="grid-column:17" data-g="G5"></div>
+            <div class="gate"      style="grid-column:26" data-g="G6"></div>
+            <div class="gate crit" style="grid-column:32" data-g="G7"></div>
+          </div>
+        </div>
+
+        <!-- LANE 1 — INSTITUTIONAL -->
+        <div class="band lane" style="--lane-c:var(--gov); --lane-t:var(--gov-t)">
+          <div class="lane-head">
+            <span class="lane-name">Institutional</span>
+            <span class="lane-owner">Rene + Daiana</span>
+          </div>
+          <div class="lane-rows">
+            <div class="row"><span class="bar add" style="grid-column:2/span 3">MACA partnership — Atchugarry<span class="n">Von Buch 14/08</span></span></div>
+            <div class="row"><span class="bar add" style="grid-column:1/span 6">Uruguay Innova letter → MEF + BCU participation ask</span></div>
+            <div class="row"><span class="bar add" style="grid-column:6/span 6">BCU President fireside — confirmed on the record</span></div>
+            <div class="row"><span class="bar add" style="grid-column:14/span 10">Regulatory roundtable — agenda + invitation list</span></div>
+            <div class="row"><span class="bar add" style="grid-column:27/span 6">Protocol + authorities logistics</span></div>
+          </div>
+        </div>
+
+        <!-- LANE 2 — COMMS -->
+        <div class="band lane" style="--lane-c:var(--comms); --lane-t:var(--comms-t)">
+          <div class="lane-head">
+            <span class="lane-name">Comms &amp; brand</span>
+            <span class="lane-owner">Rene · Content Factory</span>
+          </div>
+          <div class="lane-rows">
+            <div class="row"><span class="bar" style="grid-column:2/span 2">General Documentation</span></div>
+            <div class="row"><span class="bar" style="grid-column:3/span 2">Branding sprint <span class="n">7–10 days · VB0.1 pick</span></span></div>
+            <div class="row"><span class="bar" style="grid-column:4/span 3">Documentación de Venta — deck system</span></div>
+            <div class="row"><span class="bar" style="grid-column:5/span 2">Soft announce — teaser + hold</span></div>
+            <div class="row"><span class="bar add" style="grid-column:5/span 5">Landing + MVP build</span></div>
+            <div class="row"><span class="bar" style="grid-column:10/span 2">Website go live</span></div>
+            <div class="row"><span class="bar" style="grid-column:10/span 2">PR announcement</span></div>
+            <div class="row"><span class="bar add" style="grid-column:11/span 21">Content + KOL campaign — rolling</span></div>
+            <div class="row"><span class="bar add" style="grid-column:23/span 7">Accredited press + media partners</span></div>
+          </div>
+        </div>
+
+        <!-- LANE 3 — SPONSORS -->
+        <div class="band lane" style="--lane-c:var(--sales); --lane-t:var(--sales-t)">
+          <div class="lane-head">
+            <span class="lane-name">Sponsors &amp; ventas</span>
+            <span class="lane-owner">Rene · Daiana models</span>
+          </div>
+          <div class="lane-rows">
+            <div class="row"><span class="bar add blk" style="grid-column:2/span 2">MACA quote → re-run T0–T3<span class="n">blocker</span></span></div>
+            <div class="row"><span class="bar add" style="grid-column:4/span 3">Sponsorship architecture — 21 positions, 5 tiers</span></div>
+            <div class="row"><span class="bar" style="grid-column:4/span 6">Venta 1 — anchor search <span class="n">chain or regional bank</span></span></div>
+            <div class="row"><span class="bar add" style="grid-column:5/span 4">Ticket-side pricing benchmark <span class="n">still open</span></span></div>
+            <div class="row"><span class="bar" style="grid-column:10/span 10">Venta 2 — sell-down across the 21 positions</span></div>
+            <div class="row"><span class="bar add" style="grid-column:14/span 5">Tickets — seeding + early bird</span></div>
+            <div class="row"><span class="bar add" style="grid-column:19/span 13">Tickets — general</span></div>
+            <div class="row"><span class="bar add" style="grid-column:23/span 7">Venta 3 — supporter + last call</span></div>
+          </div>
+        </div>
+
+        <!-- LANE 4 — SPEAKERS -->
+        <div class="band lane" style="--lane-c:var(--spk); --lane-t:var(--spk-t)">
+          <div class="lane-head">
+            <span class="lane-name">Speakers &amp; program</span>
+            <span class="lane-owner">Rene · advisory board</span>
+          </div>
+          <div class="lane-rows">
+            <div class="row"><span class="bar" style="grid-column:1/span 8">Wish list — Tier 1 mapping</span></div>
+            <div class="row"><span class="bar add" style="grid-column:2/span 11">Advisory board close — 5 to 8 seats</span></div>
+            <div class="row"><span class="bar" style="grid-column:10/span 3">Speakers confirmation <span class="n">after go-live</span></span></div>
+            <div class="row"><span class="bar add" style="grid-column:14/span 7">Agenda v1 — forum + summit blocks</span></div>
+            <div class="row"><span class="bar add" style="grid-column:21/span 5">Agenda closed + lineup announced</span></div>
+            <div class="row"><span class="bar add" style="grid-column:27/span 5">Speaker briefings + prep</span></div>
+          </div>
+        </div>
+
+        <!-- LANE 5 — PRODUCTION -->
+        <div class="band lane" style="--lane-c:var(--prod); --lane-t:var(--prod-t)">
+          <div class="lane-head">
+            <span class="lane-name">Producción</span>
+            <span class="lane-owner">Marco · Daiana ops</span>
+          </div>
+          <div class="lane-rows">
+            <div class="row"><span class="bar" style="grid-column:1/span 4">Planning Beta</span></div>
+            <div class="row"><span class="bar add" style="grid-column:1/span 6">Legal · entity · name check <span class="n">Andres</span></span></div>
+            <div class="row"><span class="bar add" style="grid-column:2/span 4">Producer scope — Marco</span></div>
+            <div class="row"><span class="bar add" style="grid-column:3/span 6">MACA + Casa Manantial contracts</span></div>
+            <div class="row"><span class="bar" style="grid-column:6/span 4">Planning Live</span></div>
+            <div class="row"><span class="bar" style="grid-column:10/span 8">Execution Phase 1</span></div>
+            <div class="row"><span class="bar" style="grid-column:18/span 13">Execution Phase 2 — Preproducción</span></div>
+            <div class="row"><span class="bar pin" style="grid-column:32/span 1">Event</span></div>
+            <div class="row"><span class="bar add" style="grid-column:33/span 3">Post-event — P&amp;L, CM rent, Y2</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><i class="sw solid"></i>From the Gantt draft</span>
+      <span><i class="sw dash"></i>Proposed completion</span>
+      <span><i class="sw gd"></i>Decision gate</span>
+      <span>Olive = critical path</span>
+      <span>Scroll the board sideways →</span>
+    </div>
+  </section>
+
+  <!-- ══ PHASES ════════════════════════════════════════════ -->
+  <section class="sec">
+    <h2>Phases <span>What each one has to produce</span></h2>
+    <p class="sec-lede">
+      Six phases, each closed by a gate. A phase does not end because the calendar turns — it ends when its gate clears.
+      F0 is nine days long and holds three of them.
+    </p>
+
+    <div class="phases">
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F0 · Internal gate</span><span class="pdates">Aug 12 → Aug 21</span></div>
+        <h3>Decide whether this is a 2027 event at all</h3>
+        <p class="pthesis">Nine days that determine everything after them. Three gates, one blocker, and a go/no-go that Gastón owns.</p>
+        <ul>
+          <li class="key"><b>Financial model to Gastón — go/no-go.</b> Four scenarios T0–T3: T0 at $200K in sponsorships is break-even with a ~$15K result; T1–T3 scale to $800K and up to $200K+. Same session carries the design and branding gate. <span class="who">Daiana + Rene → Gastón · Tue 12/08</span></li>
+          <li class="key"><b>Get the real MACA quote.</b> Von Buch introduces us at the museum 14/08; cost check with Bob and Marco follows. This is the live blocker — the model cannot be validated against an estimated venue. <span class="who">Daiana + Rene</span></li>
+          <li><b>Budget gate ~$200K</b> — the number that has to be authorized before branding and MVP spend starts.</li>
+          <li><b>Anchor prospect list drawn</b> — a blockchain player or a regional bank. Search opens roughly two weeks after Gastón validates, so the list is built during F0, not after.</li>
+          <li><b>Wish list + Planning Beta continue</b> from the draft — speaker Tier 1 mapping and production scope, both cheap to advance while the gate is pending.</li>
+          <li><b>Name and art direction staged for decision</b> — four VB0.1 directions published, legal check with Andres on Punta Blockchain vs the registered Punta Crypto.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">G1–G3</span><span>Model validated · MACA cost confirmed · branding + MVP authorized (week of 19/08).</span></p>
+      </article>
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F1 · Branding + platform</span><span class="pdates">Aug 24 → Oct 2</span></div>
+        <h3>Build the thing you are going to sell</h3>
+        <p class="pthesis">A short branding sprint, then six weeks of platform and deck work. Nothing goes public in this phase — it exists so that October has something real to announce.</p>
+        <ul>
+          <li class="key"><b>Branding sprint — 7 to 10 days.</b> One VB0.1 direction chosen and extended into the full system. Name locked before the sprint closes.</li>
+          <li class="key"><b>Sponsorship architecture built out</b> — 21 positions across Master ($200K, 1 slot) · Diamond ($100K, 2) · Titanium (4) · Platinum · Supporter, on a $10K–$100K ladder. Top 7 slots present on both the MACA and Casa Manantial layers; the rest MACA only.</li>
+          <li><b>Three branded houses</b> specified as sellable inventory — this is the part of the offer Blockchain.RIO does not sell, and the only justification for a $200K Master.</li>
+          <li><b>Documentación de Venta / deck system</b> — main deck, forum deck, experience deck. The Rio package is the template, weighted our way.</li>
+          <li><b>Venta 1 opens — anchor search only.</b> Warm approaches to one chain-level player or one regional bank. No public pricing.</li>
+          <li><b>Landing + MVP build</b> toward the October go-live, plus a soft teaser hold at end of August.</li>
+          <li><b>MACA + Casa Manantial contracts</b> — main-stage hold across Oct–Mar, dinner and party rooms specified.</li>
+          <li><b>Ticket-side pricing benchmark</b> — the Rio decks carry no ticket pricing, so this half of the HIGH risk is still open. Close it here.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">Exit</span><span>Brand shipped, deck system complete, venues contracted, anchor conversations live.</span></p>
+      </article>
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F2 · Go live + anchor</span><span class="pdates">Oct 5 → Oct 30</span></div>
+        <h3>Go public, then cascade</h3>
+        <p class="pthesis">The draft stacks website, announcement and PR into one fortnight. Sequence them — site, announcement, press — so each has something new to point at. Landing goes live <i>before</i> speakers are confirmed, by design.</p>
+        <ul>
+          <li class="key"><b>Landing go-live + live announcement + PR push</b>, in that order across the fortnight.</li>
+          <li class="key"><b>Anchor partner targeted and closed.</b> Announce it, then sell Diamond and Titanium against a closed Master. The cascade only runs downward.</li>
+          <li><b>Venta 2 opens</b> — full sell-down across the 21 positions, priced off the benchmarked ladder.</li>
+          <li><b>Speakers confirmation round</b> — first names public, immediately after the site is live so the announcement has somewhere to land.</li>
+          <li><b>BCU President fireside confirmed on the record</b> — the piece that makes the Friday forum unrepeatable elsewhere in the region.</li>
+          <li><b>Execution Phase 1</b> — production build, supplier contracts, hospitality design across both venues.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">G4 · Oct</span><span>Site live and anchor signed. This is the commercial unlock for everything after.</span></p>
+      </article>
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F3 · Sell-down + tickets</span><span class="pdates">Nov 2 → Dec 18</span></div>
+        <h3>Turn the announcement into revenue</h3>
+        <p class="pthesis">Seven weeks of pure commercial work against a known inventory. Report positions closed, not meetings held.</p>
+        <ul>
+          <li class="key"><b>Tickets open in November</b> — seeding strategy first, then early bird. Tickets are secondary revenue by design; they build the room, sponsors build the P&amp;L.</li>
+          <li class="key"><b>Sell-down tracked against the scenario ladder</b> — which of T0/T1/T2/T3 the close rate is actually tracking toward, reported weekly, not at quarter end.</li>
+          <li><b>Master-unsold survivability</b> held as an explicit scenario. If the P&amp;L only works with a $200K Master, the venture has rebuilt the single-heroic-price problem it already rejected once — moved from tickets to sponsorship.</li>
+          <li><b>Closed-door regulatory roundtable</b> — agenda and invitation list built now. Regulators need lead time that sponsors do not.</li>
+          <li><b>Execution Phase 2 — Preproducción</b> opens 11/30 per the draft and runs through February.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">G5 · Nov</span><span>Tickets live and sell-down at or above the T1 line.</span></p>
+      </article>
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F4 · Program lock</span><span class="pdates">Jan 4 → Feb 26, 2027</span></div>
+        <h3>Close the content, then close the room</h3>
+        <p class="pthesis">Two months where the product stops changing. Logistics against a moving agenda is how premium experiences fail.</p>
+        <ul>
+          <li class="key"><b>Agenda closed + full lineup announced.</b> After this, no new sessions.</li>
+          <li><b>Venta 3</b> — Supporter and local last-call positions; branded-house slots that are still open get repriced or retired, not discounted quietly.</li>
+          <li><b>Ticket push #2</b> plus accredited press and media partners.</li>
+          <li><b>Speaker briefings</b>, roundtable prep with the regulators, and protocol logistics for the institutional opening.</li>
+          <li><b>Preproduction across both venues</b> — AV, staging, F&amp;B, transfers, accommodation blocks. March was chosen partly to dodge the January–February accommodation squeeze; hold that advantage by booking early.</li>
+          <li><b>Intelligence capture designed now</b> — attendee and deal-flow data architected to feed BOTH's portfolio system, not only the event CRM.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">G6 · Jan</span><span>Agenda and speakers closed. Production freezes against a fixed program.</span></p>
+      </article>
+
+      <article class="pcard">
+        <div class="pcard-top"><span class="pcode">F5 · Execution</span><span class="pdates">Mar 1 → Mar 26, 2027</span></div>
+        <h3>Two days, two layers</h3>
+        <p class="pthesis">MACA carries the institutional weight; Casa Manantial carries the money moments. The rent linkage stops being an accounting note and becomes the shape of the event.</p>
+        <ul>
+          <li class="key"><b>Friday — Leaders Forum.</b> MACA auditorium, 100–150. Controlled institutional format: opening, BCU fireside on the record, closed-door regulatory roundtable. Private dinner 60–80 at Casa Manantial.</li>
+          <li class="key"><b>Saturday — Institutional Summit.</b> MACA pabellones, 400–600 curated. Keynote, anchor panel, the branded houses live. Closing party 150–200 at Casa Manantial.</li>
+          <li><b>The venue is the argument.</b> A museum for the institutional layer and our own house for the experience layer is the whole positioning — protect the contrast in production, don't blur the two into one event.</li>
+          <li><b>Post-event close</b> — P&amp;L against the scenario that was actually sold, Casa Manantial rent transfer, Year 2 renewals opened while the room is still warm.</li>
+          <li><b>Governance resolves here.</b> The Rene / Daiana split was deliberately deferred to post-event; it comes back on the table with the P&amp;L.</li>
+        </ul>
+        <p class="exit"><span class="exit-tag">G7 · Mar 12–13</span><span>Event delivered. Result measured against T0–T3, not against effort.</span></p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ══ SCENARIOS ═════════════════════════════════════════ -->
+  <section class="sec">
+    <h2>Scenarios <span>Daiana's model, 2026-08-06 · pending Gastón validation</span></h2>
+    <p class="sec-lede">
+      Four trigger-based scenarios. Spend executes against sponsor-sale milestones, not against the calendar —
+      so a weak sell-down shrinks the event rather than sinking it. <b>Every figure below is re-run once the MACA quote lands.</b>
+    </p>
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th class="r">Sponsorships</th><th class="r">Result</th><th>What it means</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="c">T0</td><td class="num">$200K</td><td class="num">~$15K</td>
+            <td><b>Break-even floor.</b> The event happens and roughly pays for itself. Also the budget-gate figure.</td>
+          </tr>
+          <tr>
+            <td class="c">T1</td><td class="num">—</td><td class="num">—</td>
+            <td>First step above the floor. The line the F3 sell-down has to clear to be worth the operational load.</td>
+          </tr>
+          <tr>
+            <td class="c">T2</td><td class="num">—</td><td class="num">—</td>
+            <td>Mid case. Interpolated in the model; not pinned in the vault record.</td>
+          </tr>
+          <tr class="hi">
+            <td class="c">T3</td><td class="num">$800K</td><td class="num">$200K+</td>
+            <td><b>Target.</b> Depends on an anchor partner nobody has named yet — a chain-level player or a regional bank.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note calm">
+      <span class="note-tag">Reading it</span>
+      <span>T1 and T2 are in Daiana's sheet but were not carried into the vault record, so they are left blank here rather than guessed. Fill them from the model before this goes to anyone outside the team.</span>
+    </p>
+  </section>
+
+  <!-- ══ GATES ═════════════════════════════════════════════ -->
+  <section class="sec">
+    <h2>Gates <span>Seven decisions that move the whole board</span></h2>
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr><th>Gate</th><th>Due</th><th>Clears when</th><th>Owner</th><th>If it slips</th></tr>
+        </thead>
+        <tbody>
+          <tr class="crit">
+            <td class="c">G1</td><td class="c">Tue 12/08/26</td>
+            <td><b>Financial model validated</b> — go/no-go plus the design and branding gate</td>
+            <td>Gastón</td>
+            <td>Branding and MVP spend stays frozen. October go-live becomes unreachable.</td>
+          </tr>
+          <tr class="crit">
+            <td class="c">G2</td><td class="c">Fri 16/08/26</td>
+            <td><b>Real MACA cost confirmed</b> — the standing blocker</td>
+            <td>Daiana + Rene</td>
+            <td>T0–T3 stay estimates. No number can be authorized on an estimated venue.</td>
+          </tr>
+          <tr>
+            <td class="c">G3</td><td class="c">wk 19/08/26</td>
+            <td><b>Go/no-go on branding + MVP</b>, budget gate ~$200K authorized</td>
+            <td>Gastón · Rene</td>
+            <td>The 7–10 day branding sprint slides, and with it every dated asset.</td>
+          </tr>
+          <tr class="crit">
+            <td class="c">G4</td><td class="c">Oct 2026</td>
+            <td><b>Landing live + anchor partner signed</b></td>
+            <td>Rene</td>
+            <td>No cascade. Diamond and Titanium price down; T3 comes off the table.</td>
+          </tr>
+          <tr>
+            <td class="c">G5</td><td class="c">Nov 2026</td>
+            <td><b>Tickets live</b>, sell-down tracking at or above T1</td>
+            <td>Rene → Daiana</td>
+            <td>Ticket revenue compresses into a shorter window at lower prices.</td>
+          </tr>
+          <tr>
+            <td class="c">G6</td><td class="c">Jan 2027</td>
+            <td><b>Agenda + speaker lineup closed</b></td>
+            <td>Rene</td>
+            <td>Production runs against a moving target. Experience quality drops.</td>
+          </tr>
+          <tr class="crit">
+            <td class="c">G7</td><td class="c">12–13/03/27</td>
+            <td><b>Event delivered</b>; result measured against T0–T3</td>
+            <td>Gastón · all</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ OPEN ══════════════════════════════════════════════ -->
+  <section class="sec">
+    <h2>Open before this becomes V1 <span>Carried from the venture card</span></h2>
+    <div class="opens">
+      <div class="open">
+        <span class="ix">01</span>
+        <p><b>The MACA quote.</b> Named as the blocker on 04/08 and still open. Every figure on this page is downstream of it.</p>
+        <span class="sev hi">Blocker</span>
+      </div>
+      <div class="open">
+        <span class="ix">02</span>
+        <p><b>No anchor partner identified.</b> T3 — the only scenario that clears a real return — rests on one chain-level player or regional bank that nobody has named. The search does not open until Gastón validates.</p>
+        <span class="sev hi">High</span>
+      </div>
+      <div class="open">
+        <span class="ix">03</span>
+        <p><b>Master survivability.</b> Price Master at $200K with a named-prospect strategy, but the P&amp;L must survive Master unsold — otherwise the single-heroic-price problem killed on 07-14 is simply rebuilt on the sponsorship side.</p>
+        <span class="sev hi">High</span>
+      </div>
+      <div class="open">
+        <span class="ix">04</span>
+        <p><b>Ticket-side pricing benchmark still open.</b> The Blockchain.RIO package closed the sponsorship half of the HIGH risk — the Rio decks carry no ticket pricing at all.</p>
+        <span class="sev hi">High</span>
+      </div>
+      <div class="open">
+        <span class="ix">05</span>
+        <p><b>Three names for one venture</b> — <i>Punta Blockchain</i> (working) · <i>Punta Crypto</i> (registered) · <i>Punta Summit</i> (July memo). Legal check with Andres; art direction pick with Rene. Blocks the branding sprint from closing.</p>
+        <span class="sev md">Medium</span>
+      </div>
+      <div class="open">
+        <span class="ix">06</span>
+        <p><b>Dinner gradation undecided</b> — all 7 top slots at the Casa Manantial dinner, or Master + Diamond only. Seven delegations would consume roughly 30 of ~70 seats.</p>
+        <span class="sev md">Medium</span>
+      </div>
+      <div class="open">
+        <span class="ix">07</span>
+        <p><b>Champion / ops split deferred.</b> Rene stays champion, Daiana's role is unspecified, and the decision was parked until after the event — while the venture card also records Rene as strong on creation and thin on operational stability. Five lanes, and the two heaviest have no owner who is not already carrying another.</p>
+        <span class="sev hi">High</span>
+      </div>
+      <div class="open">
+        <span class="ix">08</span>
+        <p><b>The venture card is behind.</b> Its canon still reads Format V0.3 — Garzón, Posada Ayana, three sponsor tiers, an 80–120 Friday — while the August updates describe MACA, 21 positions and a 100–150 forum. This roadmap follows the August updates. Rene's next <code>/vu</code> should promote them into the card body.</p>
+        <span class="sev md">Medium</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span><b>Both_Ventures</b> · Punta Blockchain · Roadmap V0.2</span>
+    <span>Draft for Rene · not a committed plan</span>
+    <span>Issued 2026-08-12</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
