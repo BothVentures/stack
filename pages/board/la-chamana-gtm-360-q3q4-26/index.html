@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GTM 360 · La Chamana</title>
+<script>try{var _t=localStorage.getItem('hermes-theme');if(_t){document.documentElement.classList.toggle('light',_t==='light');document.documentElement.setAttribute('data-theme',_t)}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Factory Glass — dark default ─────────────────────────────────────── */
+:root{
+  --t-1:rgba(255,255,255,.92); --t-2:rgba(255,255,255,.60);
+  --t-3:rgba(255,255,255,.40); --t-4:rgba(255,255,255,.26);
+  --edge:rgba(255,255,255,.12); --edge-soft:rgba(255,255,255,.07); --hi:rgba(255,255,255,.16);
+  --glass:rgba(26,27,31,.42); --glass-2:rgba(40,42,48,.34); --glass-3:rgba(16,17,20,.50);
+  --accent:rgba(255,255,255,.92); --accent-soft:rgba(255,255,255,.13); --accent-ink:#0c0c0e;
+  --green:#9cc47f; --green-bg:rgba(134,176,107,.16); --green-bd:rgba(134,176,107,.34);
+  --amber:#e3b06f; --amber-bg:rgba(224,164,88,.15); --amber-bd:rgba(224,164,88,.34);
+  --red:#df8088; --red-bg:rgba(211,95,107,.15); --red-bd:rgba(211,95,107,.34);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code',ui-monospace,Menlo,monospace;
+  --r-shell:28px; --r-card:18px; --r-tile:12px;
+  --blur:saturate(1.4) blur(30px); --blur-card:saturate(1.3) blur(20px);
+  --shadow-card:0 10px 40px rgba(0,0,0,.34); --shadow-shell:0 40px 120px rgba(0,0,0,.55);
+  --bg:#0a0a0c;
+  --glow-a:rgba(188,202,216,.10); --glow-b:rgba(206,200,192,.06);
+  --wash-1:rgba(8,8,10,.40); --wash-2:rgba(8,8,10,.62); --wash-3:rgba(8,8,10,.80);
+}
+html.light, :root[data-theme="light"]{
+  --t-1:rgba(20,21,24,.92); --t-2:rgba(20,21,24,.60); --t-3:rgba(20,21,24,.42); --t-4:rgba(20,21,24,.28);
+  --edge:rgba(20,21,24,.12); --edge-soft:rgba(20,21,24,.07); --hi:rgba(255,255,255,.75);
+  --glass:rgba(255,255,255,.62); --glass-2:rgba(255,255,255,.55); --glass-3:rgba(255,255,255,.80);
+  --accent:rgba(20,21,24,.92); --accent-soft:rgba(20,21,24,.07); --accent-ink:#f7f7f5;
+  --green:#3f7d35; --green-bg:rgba(63,125,53,.12); --green-bd:rgba(63,125,53,.30);
+  --amber:#a4651a; --amber-bg:rgba(164,101,26,.12); --amber-bd:rgba(164,101,26,.30);
+  --red:#b3454f; --red-bg:rgba(179,69,79,.10); --red-bd:rgba(179,69,79,.30);
+  --shadow-card:0 10px 30px rgba(40,40,55,.12); --shadow-shell:0 40px 120px rgba(40,40,55,.16);
+  --bg:#e9e7e1;
+  --glow-a:rgba(120,140,170,.12); --glow-b:rgba(180,165,140,.10);
+  --wash-1:rgba(245,243,238,.28); --wash-2:rgba(238,235,228,.18); --wash-3:rgba(232,228,220,.34);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --t-1:rgba(20,21,24,.92); --t-2:rgba(20,21,24,.60); --t-3:rgba(20,21,24,.42); --t-4:rgba(20,21,24,.28);
+    --edge:rgba(20,21,24,.12); --edge-soft:rgba(20,21,24,.07); --hi:rgba(255,255,255,.75);
+    --glass:rgba(255,255,255,.62); --glass-2:rgba(255,255,255,.55); --glass-3:rgba(255,255,255,.80);
+    --accent:rgba(20,21,24,.92); --accent-soft:rgba(20,21,24,.07); --accent-ink:#f7f7f5;
+    --green:#3f7d35; --green-bg:rgba(63,125,53,.12); --green-bd:rgba(63,125,53,.30);
+    --amber:#a4651a; --amber-bg:rgba(164,101,26,.12); --amber-bd:rgba(164,101,26,.30);
+    --red:#b3454f; --red-bg:rgba(179,69,79,.10); --red-bd:rgba(179,69,79,.30);
+    --shadow-card:0 10px 30px rgba(40,40,55,.12); --shadow-shell:0 40px 120px rgba(40,40,55,.16);
+    --bg:#e9e7e1;
+    --glow-a:rgba(120,140,170,.12); --glow-b:rgba(180,165,140,.10);
+    --wash-1:rgba(245,243,238,.28); --wash-2:rgba(238,235,228,.18); --wash-3:rgba(232,228,220,.34);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{font-family:var(--font);color:var(--t-1);background:var(--bg);line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding:clamp(14px,3vw,36px);position:relative;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(1200px 700px at 82% 2%,var(--glow-a),transparent 60%),
+  radial-gradient(1000px 620px at 6% 100%,var(--glow-b),transparent 58%),
+  linear-gradient(180deg,var(--wash-1) 0%,var(--wash-2) 50%,var(--wash-3) 100%)}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;background:var(--glass);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--edge);
+  border-radius:var(--r-shell);box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:clamp(20px,4vw,52px)}
+/* type */
+h1{font-size:clamp(26px,4.4vw,38px);font-weight:300;letter-spacing:-.01em;text-wrap:balance}
+h1 b{font-weight:700}
+h2{font-size:clamp(19px,2.6vw,24px);font-weight:600;letter-spacing:-.01em;margin-bottom:6px;text-wrap:balance}
+h3{font-size:15px;font-weight:600;margin-bottom:4px}
+p{color:var(--t-2);font-size:14.5px;max-width:72ch;margin-bottom:10px}
+p strong,li strong{color:var(--t-1);font-weight:600}
+small,.src{color:var(--t-4);font-size:11.5px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t-3);margin-bottom:6px}
+section{margin-top:clamp(28px,4vw,44px)}
+ul{margin:6px 0 10px 18px;color:var(--t-2);font-size:14px}
+li{margin-bottom:5px;max-width:74ch}
+a{color:var(--t-1)}
+/* surfaces */
+.card{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);
+  padding:clamp(14px,2.4vw,22px)}
+.tile{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:12px 14px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+/* badges & chips */
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:11.5px;
+  font-weight:600;background:var(--glass-3);color:var(--t-3);border:1px solid var(--edge)}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.badge.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.badge.crit{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:10px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.chip.obs{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.chip.est{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.chip.unk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.chip.dec{background:var(--accent-soft);color:var(--t-1);border:1px solid var(--edge)}
+/* hero tiles */
+.big{font-size:clamp(26px,4vw,36px);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.tile .lbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t-3);margin-bottom:2px}
+.tile .sub{font-size:11.5px;color:var(--t-4);margin-top:2px}
+/* tables */
+.tblwrap{overflow-x:auto;border:1px solid var(--edge-soft);border-radius:var(--r-tile)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t-3);
+  text-align:left;padding:9px 12px;border-bottom:1px solid var(--edge)}
+td{padding:8px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top;
+  font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+td.n,th.n{text-align:right}
+td b{color:var(--t-1);font-weight:600}
+/* model */
+.model{display:grid;grid-template-columns:minmax(280px,380px) 1fr;gap:16px}
+@media(max-width:860px){.model{grid-template-columns:1fr}}
+.lever{margin-bottom:13px}
+.lever label{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12.5px;
+  font-weight:600;color:var(--t-2);margin-bottom:3px}
+.lever output{font-family:var(--mono);font-size:12.5px;color:var(--t-1);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--t-2);height:22px}
+select,input[type=number]{background:var(--glass-3);border:1px solid var(--edge);border-radius:8px;
+  color:var(--t-1);font-family:var(--mono);font-size:12.5px;padding:4px 8px;width:100%}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.btn{border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);border-radius:999px;
+  padding:6px 14px;font-size:12px;font-weight:600;font-family:var(--font);cursor:pointer;transition:all .18s}
+.btn:hover{color:var(--t-1);border-color:var(--hi)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent}
+.btn:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+.out-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.delta{font-size:12px;font-weight:600}
+.delta.ok{color:var(--green)} .delta.warn{color:var(--amber)} .delta.crit{color:var(--red)}
+/* chart */
+.chart{width:100%;height:auto;display:block}
+figure{margin:10px 0}
+figcaption{font-size:11.5px;color:var(--t-4);margin-top:6px;max-width:80ch}
+/* motor cards */
+.motor h3{font-size:16px}
+.motor .fields{display:grid;gap:8px;margin-top:10px}
+.motor .f{font-size:13px;color:var(--t-2)}
+.motor .f b{display:block;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t-3);margin-bottom:1px}
+.hr{border:none;border-top:1px solid var(--edge-soft);margin:14px 0}
+/* header */
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:8px}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.theme-toggle{cursor:pointer}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--edge-soft);color:var(--t-4);font-size:11.5px;line-height:1.7}
+.rise{animation:rise .5s var(--ease,cubic-bezier(.22,.61,.36,1)) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.rise{animation:none}}
+.callout{border-left:2px solid var(--amber-bd);padding:10px 14px;background:var(--amber-bg);
+  border-radius:0 var(--r-tile) var(--r-tile) 0;margin:12px 0}
+.callout p{margin-bottom:0;color:var(--t-1);font-size:13.5px}
+.callout.g{border-left-color:var(--green-bd);background:var(--green-bg)}
+.callout.r{border-left-color:var(--red-bd);background:var(--red-bg)}
+</style>
+</head>
+<body>
+<div class="wrap rise">
+
+<header>
+  <div>
+    <div class="eyebrow">La Chamana · El Chaman OS · Plan operativo</div>
+    <h1>GTM <b>360</b> — Q3–Q4 2026</h1>
+    <div class="badges">
+      <span class="badge">Publicado · 14 ago 2026</span>
+      <span class="badge ok">Modelo dinámico — las palancas son tuyas</span>
+      <span class="badge">Ventana · 1 ago → 31 dic</span>
+      <span class="badge warn">Propuesta para discutir, no plan cerrado</span>
+    </div>
+  </div>
+  <button class="badge theme-toggle" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()">◐ tema</button>
+</header>
+
+<p>Evolución del <a href="../la-chamana-q3-q4-26/">Board de Campañas Q3–Q4</a>. El board cuenta lo que
+pasa; este documento decide qué tiene que pasar. Tres escenarios calculados desde lo observado, cuatro
+motores con condiciones de kill/scale, el sistema operativo humano+agéntico, y un sprint de 14 días.
+Ningún número de acá es entusiasmo: cada cifra lleva su fuente, y donde no existe un número, esa
+ausencia se declara en rojo.</p>
+
+<!-- ══ 00 ══ -->
+<section>
+  <div class="eyebrow">§00</div>
+  <h2>Cómo leer este documento</h2>
+  <p>Cada dato lleva una de tres etiquetas. <span class="chip obs">observado</span> = medido en
+  Cloudbeds, el CRM o un ledger en disco. <span class="chip est">estimado</span> = derivado de algo
+  observado, con el supuesto a la vista. <span class="chip unk">desconocido</span> = nadie lo midió
+  nunca; el modelo lo expone como palanca en vez de inventarlo.</p>
+  <p><strong>Las unidades no se mezclan.</strong> Dólares, noches, reservas, acuerdos, replies y warm
+  leads son seis cosas distintas. Ninguna multiplicación warm→noches ocurre sin que la tasa de
+  conversión asumida esté visible como palanca. Esa regla viene de los memos del 10-ago y acá se
+  vuelve literal: los supuestos son los controles de §02.</p>
+</section>
+
+<!-- ══ 01 ══ -->
+<section>
+  <div class="eyebrow">§01</div>
+  <h2>La evidencia — de dónde partimos</h2>
+  <div class="grid g4" style="margin:14px 0">
+    <div class="tile"><div class="lbl">El activo</div><div class="big">1</div><div class="sub">villa · 8 suites · 16 pax <span class="chip obs">observado</span></div></div>
+    <div class="tile"><div class="lbl">Tarifa rack</div><div class="big">$4,500</div><div class="sub">/noche casa completa · mín 3 noches <span class="chip obs">locked 21-abr</span></div></div>
+    <div class="tile"><div class="lbl">Noches hoy</div><div class="big">7</div><div class="sub">de 75 · ventana ago–dic <span class="chip obs">Cloudbeds</span></div></div>
+    <div class="tile"><div class="lbl">Ritmo real</div><div class="big">1.2</div><div class="sub">reservas/mes vs ~3.5 que pide la rampa <span class="chip obs">observado</span></div></div>
+  </div>
+
+  <figure>
+    <svg id="chart-occ" class="chart" viewBox="0 0 960 300" role="img" aria-label="Noches ocupadas por mes: actuales marzo a agosto, proyección del modelo y rampa objetivo septiembre a diciembre"></svg>
+    <figcaption>Noches por mes. Barras sólidas = dormidas (Cloudbeds). Barras rayadas = proyección del
+    modelo de §02 (se mueven con las palancas). La marca horizontal = rampa objetivo 9·12·15·18·21.
+    Junio (20 noches, 67%) es el único mes que probó el ideal — y se vendió en primavera.</figcaption>
+  </figure>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card">
+      <h3>Lo que funcionó <span class="chip obs">observado</span></h3>
+      <ul>
+        <li><strong>Distribución / relaciones:</strong> 3 de los 6 wins históricos. Loco Luxury produjo
+        2 y dejó <strong>$305k warm</strong> vivo — cerrado formalmente en abril y sigue siendo el mejor
+        resultado comercial del venture, sin nadie asignado.</li>
+        <li><strong>Demanda directa:</strong> 2 wins + las 10 reservas de Cloudbeds entraron por acá —
+        el canal que nadie corría como campaña hasta el 9-ago.</li>
+        <li><strong>Junio:</strong> 20 noches / 67% — el ideal ya ocurrió una vez.</li>
+        <li><strong>La cadena de la máquina cerró HOY:</strong> promoción (8 prospectos→DIST) → envío
+        (9/9 agencias) → stamp al CRM. Primera vez en la historia del sistema, 14-ago 13:20–14:31.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Lo que todavía no <span class="chip obs">observado</span></h3>
+      <ul>
+        <li><strong>Paid:</strong> $148.77 gastados en toda la vida · 39 clicks · <strong>0
+        conversiones</strong>. Meta a oscuras (sin token; 6 campañas vivas ilegibles).</li>
+        <li><strong>Outreach frío:</strong> 53 emails de agencias → 1 warm lead (1.9%). 19 emails
+        provables por ledger en total; 197 contactos históricos pre-ledger.</li>
+        <li><strong>IG DM:</strong> 0 mensajes entregados, nunca. La cola existe; el envío es humano
+        por diseño (techo 15/día).</li>
+        <li><strong>Pipeline:</strong> Hot 0 · Warm 16 · los 6 Won son anteriores al contador — los 20
+        wins declarados del board están todos en 0 <em>ganado</em>, no bloqueado.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 ══ -->
+<section>
+  <div class="eyebrow">§02</div>
+  <h2>El modelo — palancas y escenarios</h2>
+  <p>Esto reemplaza la proyección estática. Movés una palanca y todo lo vinculado se recalcula:
+  noches, ocupación de diciembre, revenue bruto/neto, solvencia por mes. Los presets son las tres
+  historias posibles; <strong>la propuesta es el preset Base</strong>. El piso de $20k de Iru entra
+  con su pregunta abierta incluida — bruto vs neto cambia el piso de solvencia y podés ver cuánto.</p>
+
+  <div class="presets">
+    <button class="btn" data-preset="observado">Si nada cambia <small>(ritmo observado)</small></button>
+    <button class="btn primary" data-preset="base">Base — la propuesta</button>
+    <button class="btn" data-preset="stretch">Lo que exige el 75</button>
+    <button class="btn" data-preset="base" id="reset-btn">↺ reset a la propuesta</button>
+  </div>
+
+  <div class="model">
+    <div class="card" aria-label="Palancas del modelo">
+      <h3 style="margin-bottom:12px">Palancas</h3>
+
+      <div class="lever"><label>Reservas vendidas/mes · ago–oct <span><output id="o-r1"></output> <span class="chip est">estimado</span></span></label>
+        <input type="range" id="l-r1" min="0.5" max="5" step="0.1" aria-label="reservas vendidas por mes agosto a octubre"><small>observado: 1.2 · capacidad física: ~5</small></div>
+
+      <div class="lever"><label>Reservas vendidas/mes · nov–dic <span><output id="o-r2"></output> <span class="chip est">estimado</span></span></label>
+        <input type="range" id="l-r2" min="0.5" max="5" step="0.1" aria-label="reservas vendidas por mes noviembre a diciembre"><small>lo vendido en nov–dic duerme mayormente en Q1'27</small></div>
+
+      <div class="lever"><label>Lead time venta→estadía (meses) <span><output id="o-lt"></output> <span class="chip obs">obs 1–3</span></span></label>
+        <input type="range" id="l-lt" min="0.5" max="3" step="0.25" aria-label="lead time en meses"></div>
+
+      <div class="lever"><label>Estadía promedio (noches) <span><output id="o-stay"></output> <span class="chip obs">observado</span></span></label>
+        <input type="range" id="l-stay" min="3" max="9" step="0.5" aria-label="estadía promedio en noches"></div>
+
+      <div class="lever"><label>Acuerdos de distribución que refieren EN ventana <span><output id="o-agr"></output> <span class="chip dec">decisión</span></span></label>
+        <input type="range" id="l-agr" min="0" max="4" step="1" aria-label="acuerdos de distribución activos"><small>nadie declaró qué vale un acuerdo — palanca, no dato</small></div>
+
+      <div class="lever"><label>Noches referidas por acuerdo (en ventana) <span><output id="o-agrn"></output> <span class="chip unk">desconocido</span></span></label>
+        <input type="range" id="l-agrn" min="0" max="15" step="1" aria-label="noches referidas por acuerdo"></div>
+
+      <hr class="hr">
+
+      <div class="lever"><label>Base del break-even $20k <span class="chip unk">pregunta a Iru</span></label>
+        <select id="l-basis" aria-label="base del break-even">
+          <option value="gross">Bruto a rack → piso 4.4 noches/mes</option>
+          <option value="net" selected>Neto de comisión → piso más alto</option>
+          <option value="both">Sin resolver — mostrar ambos</option>
+        </select></div>
+
+      <div class="lever"><label>Comisión de canal <span><output id="o-comm"></output> <span class="chip est">rango doc. 15–25%</span></span></label>
+        <input type="range" id="l-comm" min="0" max="30" step="1" aria-label="comisión de canal en porcentaje"></div>
+
+      <div class="lever"><label>Share de noches por canal comisionado <span><output id="o-cshare"></output> <span class="chip unk">desconocido</span></span></label>
+        <input type="range" id="l-cshare" min="0" max="100" step="5" aria-label="porcentaje de noches vía canales con comisión"></div>
+
+      <div class="lever"><label>Paid mensual (envelope Boris: $500–1,500) <span><output id="o-paid"></output> <span class="chip dec">decisión</span></span></label>
+        <input type="range" id="l-paid" min="0" max="2000" step="50" aria-label="presupuesto paid mensual en dólares"></div>
+    </div>
+
+    <div>
+      <div class="out-tiles">
+        <div class="tile"><div class="lbl">Noches en ventana</div><div class="big" id="out-nights">—</div><div class="sub" id="out-nights-d">—</div></div>
+        <div class="tile"><div class="lbl">vs objetivo 75</div><div class="big" id="out-gap">—</div><div class="sub">brecha</div></div>
+        <div class="tile"><div class="lbl">Diciembre</div><div class="big" id="out-dec">—</div><div class="sub" id="out-dec-d">—</div></div>
+        <div class="tile"><div class="lbl">Revenue ventana</div><div class="big" id="out-rev">—</div><div class="sub" id="out-rev-d">—</div></div>
+      </div>
+
+      <div class="tblwrap">
+        <table id="out-table" aria-label="Proyección mensual del modelo">
+          <thead><tr><th>Mes</th><th class="n">Noches proy.</th><th class="n">Rampa</th><th>vs plan</th><th>vs solvencia</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="tile" style="margin-top:10px">
+        <div class="lbl">Paid — lo único honesto que puede decir hoy</div>
+        <div style="font-size:13px;color:var(--t-2)" id="out-paid-line">—</div>
+        <div class="sub">$3.81/click observado ($148.77 / 39 clicks). Click→consulta: <b>sin conversión
+        observada</b> — hasta la primera reserva atribuida, paid proyecta clicks, nunca noches.</div>
+      </div>
+
+      <div class="tile" style="margin-top:10px">
+        <div class="lbl">Fuera de ventana → H1 2027</div>
+        <div style="font-size:13px;color:var(--t-2)" id="out-spill">—</div>
+        <div class="sub">Lo vendido tarde no se pierde: duerme en enero–marzo. Es el puente a §08.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 03 ══ -->
+<section>
+  <div class="eyebrow">§03</div>
+  <h2>El desafío al 70% de diciembre</h2>
+  <p>El 70% (21 noches) no es imposible — junio hizo 20 — pero <strong>no es el caso base</strong>.
+  Corré los presets de §02 y mirá qué exige cada historia:</p>
+  <div class="grid g2" style="margin:12px 0">
+    <div class="card">
+      <h3><span class="badge crit">Si nada cambia</span></h3>
+      <p style="margin-top:8px">Al ritmo observado (1.2/mes) la ventana cierra en <strong>~25
+      noches</strong> — por debajo del piso declarado de 45 y rozando la solvencia. Diciembre queda
+      en ~23%, no 70%. Este es el escenario que el sistema entero existe para evitar, y hoy es el
+      único respaldado por datos.</p>
+    </div>
+    <div class="card">
+      <h3><span class="badge warn">Base — la propuesta</span></h3>
+      <p style="margin-top:8px">Con la cadena de envío ya probada (hoy), la wave de familias armada,
+      y Loco Luxury reactivado: ~2 reservas/mes vendidas + 1 acuerdo que refiera ≈ <strong>45–55
+      noches</strong>. Cubre el piso, deja diciembre en ~50%, y <strong>queda a ~20–30 noches del
+      75</strong>. Honesto: el base NO llega al norte.</p>
+    </div>
+  </div>
+  <div class="callout r">
+    <p><strong>Para que 75 ocurra</strong> hace falta ~2.7 reservas vendidas/mes sostenidas ago–dic
+    con lead time de UN mes (hoy: 1.2/mes con ~2 meses) — o ~3.5/mes si el lead sigue en 1.5 — más
+    2 acuerdos de distribución refiriendo noches reales. O un diciembre que repita junio. Nada de eso
+    es descartable; nada está respaldado por una serie. <strong>75 se mantiene como stretch declarado;
+    el plan operativo se gestiona contra el base y el piso.</strong></p>
+  </div>
+  <p>Los tres caminos del board (§05 del board) siguen abiertos: aceptar la brecha y decirlo ·
+  subir los targets de reservación (los takeovers ya lo hicieron: techo ~79) · ponerle número al
+  acuerdo de distribución. Este documento toma el primero <em>y</em> el tercero: la brecha queda
+  dicha, y la palanca "noches por acuerdo" de §02 existe para que el equipo la fije con Iru.</p>
+</section>
+
+<!-- ══ 04 ══ -->
+<section>
+  <div class="eyebrow">§04</div>
+  <h2>Los cuatro motores</h2>
+  <p>Un motor es más que una campaña: es una fuente de demanda con su propia unidad de valor, su
+  evidencia y su condición de kill/scale. Las 8 campañas del portfolio (§05) viven adentro de estos
+  cuatro.</p>
+
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card motor">
+      <h3>1 · Demanda Directa <span class="badge ok">el motor que ya convierte</span></h3>
+      <div class="fields">
+        <div class="f"><b>Rol</b>Reservas sin intermediario: red propia, huéspedes pasados, OTAs, landing + paid. Alimenta el norte directamente en noches.</div>
+        <div class="f"><b>Contribución esperada</b>12 wins de reserva declarados (5+3+2+2) ≈ techo ~72 noches si TODO cierra. <span class="chip est">estimado</span></div>
+        <div class="f"><b>Evidencia</b>2 wins baselined + las 10 reservas Cloudbeds entraron por acá. Convertía por accidente — sin dueño hasta hoy. <span class="chip obs">observado</span></div>
+        <div class="f"><b>Indicadores líderes</b>Consultas/semana · fechas en juego · propuestas enviadas. Hot en Pipeline = 0 hoy.</div>
+        <div class="f"><b>Campañas</b>direct-and-returning (5) · high-season-direct (3, EXPERIMENTO) · family-takeovers (2) · celebration-takeovers (2)</div>
+        <div class="f"><b>Riesgos</b>Sin dueño declarado sigue convirtiendo por accidente. Sargassum sin counter-positioning. Atribución booking→campaña no existe.</div>
+        <div class="f"><b>Próximos 14 días</b>Asignar dueño (decisión #10) · soltar la wave de familias (41 filas armadas) · past-guests de idea→live.</div>
+        <div class="f"><b>Kill / scale</b>High-Season Direct muere sin 1 reserva al 31-oct (ya declarado). Takeovers escalan si consultas &gt;0 en 14 días de wave.</div>
+      </div>
+    </div>
+
+    <div class="card motor">
+      <h3>2 · Distribución / Partners <span class="badge warn">la canilla, no la noche</span></h3>
+      <div class="fields">
+        <div class="f"><b>Rol</b>Acuerdos que refieren reservas durante meses. Su unidad es el ACUERDO — nunca se multiplica a noches sin la palanca de §02.</div>
+        <div class="f"><b>Contribución esperada</b>6 acuerdos declarados (3+2+1). Valor en noches: <span class="chip unk">sin precio</span> — decisión #2.</div>
+        <div class="f"><b>Evidencia</b>3 de 6 wins históricos. Loco Luxury: $305k warm vivo, 4 deals. 53 emails fríos → 1 warm (1.9%). <span class="chip obs">observado</span></div>
+        <div class="f"><b>Indicadores líderes</b>Warm leads (loco 4 · agencies 1) · reuniones agendadas · términos redactados.</div>
+        <div class="f"><b>Campañas</b>loco-luxury (3) · agencies-outreach (2) · retreats-a (1)</div>
+        <div class="f"><b>Riesgos</b>Un acuerdo firmado en nov no duerme noches en 2026 (los dos relojes). Net rate card inexistente = no se puede pitchear en serio (decisión #5).</div>
+        <div class="f"><b>Próximos 14 días</b>Conversación Loco Luxury (Iru, ESTA semana) · E2 agencias al gap de 3 días · net rate card borrador (Dai/Pato).</div>
+        <div class="f"><b>Kill / scale</b>Si al 30-sep ningún warm avanzó a términos, el frío se pausa y el motor se concentra en los 5 warm existentes.</div>
+      </div>
+    </div>
+
+    <div class="card motor">
+      <h3>3 · Retreat / Group Leaders <span class="badge warn">reseller de la casa entera</span></h3>
+      <div class="fields">
+        <div class="f"><b>Rol</b>El líder de retiro alquila la casa completa y trae su grupo — un solo cierre, 3–7 noches. Híbrido: se toca como distribución, duerme como reserva.</div>
+        <div class="f"><b>Contribución esperada</b>1 acuerdo declarado. Un cierre = un bloque entero. <span class="chip est">estimado</span></div>
+        <div class="f"><b>Evidencia</b>30 contactados → 0 wins. E2 10/10 enviado 12-ago (primer follow-up de la historia). Google $134.77, 0 conversiones. <span class="chip obs">observado</span></div>
+        <div class="f"><b>Indicadores líderes</b>Replies interesadas · consultas con fechas · IG DMs respondidos (piloto manual).</div>
+        <div class="f"><b>Campañas</b>retreats-a (1)</div>
+        <div class="f"><b>Riesgos</b>Rail de 2 toques (E3 cerrado por diseño) — el que no contestó E2 salió del sistema. Brand_Safety vacío bloquea TODA promoción nueva del rail.</div>
+        <div class="f"><b>Próximos 14 días</b>Review humano de Brand_Safety (despierta la promoción dormida desde el 11-ago) · piloto IG DM manual: Iru envía ≤10/día de la cola aprobada.</div>
+        <div class="f"><b>Kill / scale</b>Si 60 contactados acumulados no producen 1 consulta con fechas al 30-sep, el motor pasa a mantenimiento (solo replies) y su budget de research a Directa.</div>
+      </div>
+    </div>
+
+    <div class="card motor">
+      <h3>4 · Marca / Prensa / Autoridad Cultural <span class="badge">compra la conversación, no la noche</span></h3>
+      <div class="fields">
+        <div class="f"><b>Rol</b>Placements en trade HNW + curadores + contenido. Baja el costo de TODOS los otros motores; no duerme noches solo.</div>
+        <div class="f"><b>Contribución esperada</b>2 placements declarados. Un placement→reserva: <span class="chip unk">jamás observado acá</span>.</div>
+        <div class="f"><b>Evidencia</b>1 win histórico (baselined) — produjo incluso enterrado en otra campaña. <span class="chip obs">observado</span></div>
+        <div class="f"><b>Indicadores líderes</b>Curadores pitcheados (0 hoy) · respuestas · placements confirmados.</div>
+        <div class="f"><b>Campañas</b>press-curators (2) — <strong>sin rail</strong>: no puede prospectar ni enviar hasta que se le asigne uno (decisión de sprint).</div>
+        <div class="f"><b>Riesgos</b>El slug sin rail ya produjo colas IG DM inválidas. SEO/contenido quedan fuera del ciclo por lead-time (correcto) — el costo es cero autoridad orgánica en 2026.</div>
+        <div class="f"><b>Próximos 14 días</b>Decidir: railear press-curators (mínimo: research + pitch por email vía rail existente) o declararlo manual de Bianca con cuota semanal.</div>
+        <div class="f"><b>Kill / scale</b>2 placements = target cumplido → escala a programa 2027. 0 pitcheos en 14 días = se declara manual o se cierra el ciclo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 05 ══ -->
+<section>
+  <div class="eyebrow">§05</div>
+  <h2>El portfolio — 8 campañas, 20 wins declarados, 0 observados</h2>
+  <p>El board del 10-ago mostraba 6; los takeovers del 11-ago cerraron el agujero de 20 noches
+  (techo de reservación: ~55 → ~79). Los contadores están en cero <em>ganado</em>: el sistema solo
+  cuenta lo que ve cruzar la línea desde el 10-ago.</p>
+  <div class="tblwrap" style="margin-top:10px">
+    <table aria-label="Portfolio de campañas">
+      <thead><tr><th>Campaña</th><th>Motor</th><th>Funnel</th><th class="n">Target</th><th>Estado real</th><th>Kill / condición</th></tr></thead>
+      <tbody>
+        <tr><td><b>direct-and-returning</b></td><td>Directa</td><td>reservation</td><td class="n">5</td><td>network live · past-guests idea · <b>sin dueño</b></td><td>asignar dueño en sprint o bajar target</td></tr>
+        <tr><td><b>high-season-direct</b></td><td>Directa</td><td>reservation</td><td class="n">3</td><td>EXPERIMENTO · landing viva (Shopify 04-ago) · paid corriendo</td><td><b>1 reserva antes del 31-oct o cierra</b></td></tr>
+        <tr><td><b>family-takeovers</b></td><td>Directa</td><td>reservation</td><td class="n">2</td><td><b>wave de 41 armada</b> esperando la press</td><td>consultas &gt;0 a los 14 días de la wave</td></tr>
+        <tr><td><b>celebration-takeovers</b></td><td>Directa</td><td>reservation</td><td class="n">2</td><td>triggers activos · sin prospectos aún</td><td>reservoir poblado antes del 25-ago</td></tr>
+        <tr><td><b>loco-luxury</b></td><td>Distribución</td><td>distribution</td><td class="n">3</td><td>$305k warm · 4 deals · reactivación no-exclusiva</td><td>conversación esta semana (Iru)</td></tr>
+        <tr><td><b>agencies-outreach</b></td><td>Distribución</td><td>distribution</td><td class="n">2</td><td>E1 9/9 HOY · cadena completa probada</td><td>warm→términos antes del 30-sep</td></tr>
+        <tr><td><b>retreats-a</b></td><td>Retreat Leaders</td><td>distribution</td><td class="n">1</td><td>E2 10/10 12-ago · google live · 30→0</td><td>1 consulta con fechas al 30-sep</td></tr>
+        <tr><td><b>press-curators</b></td><td>Marca/Prensa</td><td>press</td><td class="n">2</td><td><b>sin rail</b> — no puede operar</td><td>railear o declarar manual en sprint</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout" style="margin-top:12px">
+    <p><strong>La aritmética que no cambia con el entusiasmo:</strong> 12 wins de reservación × ~6
+    noches + 7 dormidas ≈ techo ~79 — alcanza para 75 <em>solo si todo cierra</em>, cosa que ningún
+    portfolio hace. Los 6 acuerdos de distribución compran continuidad (2027), no diciembre. Por eso
+    el base de §02 gestiona contra 45–55 y deja 75 como stretch.</p>
+  </div>
+</section>
+
+<!-- ══ 06 ══ -->
+<section>
+  <div class="eyebrow">§06</div>
+  <h2>El sistema operativo — humanos, agentes, cadencia</h2>
+  <p>Coordinación top-down: <strong>El Chaman (AG-000)</strong> orquesta — es la sesión, rutea trabajo
+  y mantiene este documento. El nuevo <strong>lc-cmo (AG-011)</strong> es el especialista despachable:
+  comportamiento del sector luxury hospitality + herramientas de AI/marketing. Nada envía ni gasta sin
+  una press humana; eso no es una limitación del sistema, es su diseño.</p>
+
+  <figure>
+    <svg class="chart" viewBox="0 0 960 430" role="img" aria-label="El loop operativo: los motores preparan trabajo vía agentes, un gate humano aprueba, el envío deja ledger, el CRM y Cloudbeds acumulan evidencia, el consejo semanal recalibra los motores">
+      <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z" fill="currentColor"/></marker></defs>
+      <g fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.4" color="inherit">
+        <!-- nodes -->
+        <g stroke-opacity=".7">
+          <rect x="30"  y="170" width="150" height="64" rx="12"/>
+          <rect x="240" y="170" width="160" height="64" rx="12"/>
+          <rect x="460" y="150" width="150" height="104" rx="12" stroke-dasharray="5 4"/>
+          <rect x="670" y="170" width="150" height="64" rx="12"/>
+          <rect x="670" y="40"  width="150" height="64" rx="12"/>
+          <rect x="240" y="40"  width="190" height="64" rx="12"/>
+          <rect x="240" y="320" width="380" height="60" rx="12"/>
+          <rect x="700" y="320" width="180" height="60" rx="12" stroke-dasharray="5 4"/>
+        </g>
+        <!-- edges -->
+        <path d="M180 202 H236" marker-end="url(#arr)"/>
+        <path d="M400 202 H456" marker-end="url(#arr)"/>
+        <path d="M610 202 H666" marker-end="url(#arr)"/>
+        <path d="M745 170 V108" marker-end="url(#arr)"/>
+        <path d="M666 72 H434" marker-end="url(#arr)"/>
+        <path d="M240 72 H105 V164" marker-end="url(#arr)"/>
+        <path d="M690 234 V350 H626" marker-end="url(#arr)"/>
+        <path d="M240 350 H110 C80 350 105 260 105 238" marker-end="url(#arr)"/>
+      </g>
+      <g font-family="Inter,-apple-system,sans-serif" font-size="12.5" fill="currentColor" text-anchor="middle">
+        <text x="105" y="196" font-weight="600">4 motores</text><text x="105" y="212" opacity=".55" font-size="11">§04 · campañas</text>
+        <text x="320" y="196" font-weight="600">Agentes preparan</text><text x="320" y="212" opacity=".55" font-size="11">research · copy · colas</text>
+        <text x="535" y="188" font-weight="600">GATE humano</text><text x="535" y="205" opacity=".55" font-size="11">la press es de Boris</text>
+        <text x="535" y="222" opacity=".55" font-size="11">brand · CRM · send · spend</text>
+        <text x="745" y="196" font-weight="600">Envío + ledger</text><text x="745" y="212" opacity=".55" font-size="11">email · reply · DM manual</text>
+        <text x="745" y="66" font-weight="600">CRM + Cloudbeds</text><text x="745" y="82" opacity=".55" font-size="11">evidencia · noches</text>
+        <text x="335" y="66" font-weight="600">Consejo semanal GTM</text><text x="335" y="82" opacity=".55" font-size="11">El Chaman + lc-cmo + equipo</text>
+        <text x="430" y="343" font-weight="600">Brief diario del operador (AG-010)</text>
+        <text x="430" y="360" opacity=".55" font-size="11">gates armados · inbox · deltas de ledger · las 3 presses de hoy</text>
+        <text x="790" y="343" font-weight="600">Nunca automático</text>
+        <text x="790" y="360" opacity=".55" font-size="11">IG/Meta cuenta · spend</text>
+        <!-- edge labels -->
+        <text x="208" y="192" opacity=".5" font-size="10.5">brief</text>
+        <text x="428" y="192" opacity=".5" font-size="10.5">propone</text>
+        <text x="638" y="192" opacity=".5" font-size="10.5">aprueba</text>
+        <text x="760" y="140" opacity=".5" font-size="10.5">stamp</text>
+        <text x="550" y="62" opacity=".5" font-size="10.5">lee evidencia</text>
+        <text x="170" y="64" opacity=".5" font-size="10.5">recalibra motores</text>
+        <text x="652" y="298" opacity=".5" font-size="10.5">alimenta</text>
+        <text x="70" y="300" opacity=".5" font-size="10.5">orienta</text>
+      </g>
+    </svg>
+    <figcaption>El loop completo. Las cajas punteadas son las fronteras duras: el gate humano (nada
+    sale sin press) y lo nunca-automático (la cuenta IG/Meta — el ban de junio es la cicatriz — y todo
+    spend). El consejo semanal cierra el ciclo: lee evidencia, recalibra motores, actualiza este doc.</figcaption>
+  </figure>
+
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card">
+      <h3>Los humanos</h3>
+      <div class="tblwrap" style="margin-top:8px"><table style="min-width:0">
+        <thead><tr><th>Quién</th><th>Qué aprieta / posee</th></tr></thead>
+        <tbody>
+          <tr><td><b>Boris</b></td><td>toda press de send/spend · admin · Direct network</td></tr>
+          <tr><td><b>Iru</b></td><td>cierre comercial · Loco Luxury · credenciales IG (DM manual)</td></tr>
+          <tr><td><b>Bianca</b></td><td>apertura: outreach, press, follow-up del desk</td></tr>
+          <tr><td><b>Daiana / Pato</b></td><td>términos, net rate card, canales receptivos MX</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <h3>La workforce agéntica (mínima)</h3>
+      <ul style="font-size:13px">
+        <li><b>AG-000 El Chaman</b> — orquestador. Rutea, no ejecuta ventas.</li>
+        <li><b>AG-011 lc-cmo</b> <span class="chip dec">nuevo</span> — estratega: sector + tools. Propone, nunca aprieta.</li>
+        <li><b>AG-001/002/003/006</b> — copy · inbound · contenido · research (existen).</li>
+        <li><b>AG-004</b> — performance vs norte (existe, se refresca).</li>
+        <li><b>AG-009 CRM-evidence</b> <span class="chip dec">se construye</span> — el que mantiene la atribución viva.</li>
+        <li><b>AG-010 operator-brief</b> <span class="chip dec">se construye</span> — escribe el brief diario; jamás envía.</li>
+      </ul>
+      <small>Contratos completos (inputs/outputs/nunca-hace): <code>capabilities/agents/workforce-model-2026-08-14.md</code></small>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h3>La cadencia</h3>
+    <ul style="font-size:13px">
+      <li><b>Diario</b> — brief del operador (AG-010): gates armados, inbox, deltas de ledger, las 3 presses del día. Sweep del inbox ANTES de cualquier follow-up (regla existente).</li>
+      <li><b>Semanal</b> — consejo GTM (El Chaman + lc-cmo + equipo): evidencia de la semana en unidades separadas, recalibración de motores, memo de performance, update del board.</li>
+      <li><b>Por wave</b> — dry-run review antes de armar: copy (AG-001 + anti-ai) → gate → press → ledger → stamp. Ya probado end-to-end hoy.</li>
+      <li><b>Mensual</b> — el modelo de §02 se re-corre contra actuals de Cloudbeds; las palancas estimadas se reemplazan por observadas donde ya exista serie.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══ 07 ══ -->
+<section>
+  <div class="eyebrow">§07</div>
+  <h2>Sprint de activación — 14 días (15–28 ago)</h2>
+  <p>El sprint prueba que el sistema produce evidencia GTM real. Todo lo listado usa capacidad que ya
+  existe; ninguna fila requiere construir nada nuevo. Detalle completo con checkpoints:
+  <code>docs/sprint-14d-2026-08-15.md</code>.</p>
+  <div class="tblwrap" style="margin-top:10px">
+    <table aria-label="Sprint de 14 días">
+      <thead><tr><th>#</th><th>Acción</th><th>Dueño</th><th>Agente</th><th>Métrica / condición de éxito</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Conversación Loco Luxury</b> — reactivación no-exclusiva, harvest TV Show ($288k) + evento</td><td>Iru</td><td>lc-cmo prepara el brief</td><td>≥1 deal warm avanza de etapa en 14 días</td></tr>
+        <tr><td>2</td><td><b>Press de la wave familias</b> — 41 filas armadas desde el 14-ago 02:27</td><td>Boris</td><td>ya preparada</td><td>ledger ≥35 enviados · ≥1 reply en 7 días</td></tr>
+        <tr><td>3</td><td><b>Dueño para Direct & Returning</b> + past-guests de idea→live</td><td>Boris/equipo</td><td>AG-006 arma la lista</td><td>dueño nombrado · primera lista past-guests</td></tr>
+        <tr><td>4</td><td><b>Review Brand_Safety retreats</b> — despierta la promoción dormida (11-ago)</td><td>Bianca</td><td>AG-009 lista las filas</td><td>promoción retreats completada</td></tr>
+        <tr><td>5</td><td><b>Piloto IG DM manual</b> — cola aprobada, Iru envía a mano ≤10/día</td><td>Iru</td><td>cola ya gateada</td><td>≥20 DMs enviados · tasa de respuesta medida (primer dato del canal)</td></tr>
+        <tr><td>6</td><td><b>Los dos reply_batch fríos</b> (18 y 5 días) — despachar o cerrar</td><td>Boris</td><td>desk existente</td><td>0 gates de reply con &gt;7 días de edad</td></tr>
+        <tr><td>7</td><td><b>E2 agencias</b> al gap de 3 días de la wave de hoy</td><td>Boris press</td><td>rail existente</td><td>follow-up enviado a no-respondedores · sweep previo</td></tr>
+        <tr><td>8</td><td><b>Poblar celebrations</b> — research del reservoir (rail sin prospectos)</td><td>—</td><td>AG-006 / sniffer</td><td>≥20 prospectos fit≥5 al 25-ago</td></tr>
+        <tr><td>9</td><td><b>High-Season Direct</b> — paid dentro del envelope, mirar clicks→consultas</td><td>Boris</td><td>AG-007</td><td>kill del 31-oct sigue vigente; primera consulta atribuible o nada</td></tr>
+        <tr><td>10</td><td><b>Net rate card borrador</b> — desbloquea pitcheo B2B (decisión #5)</td><td>Daiana/Pato</td><td>lc-cmo propone estructura</td><td>tabla por canal en revisión de Iru</td></tr>
+        <tr><td>11</td><td><b>Meta: token + portfolio</b> — al menos LEER las 6 campañas vivas</td><td>Boris</td><td>AG-008 audita al conectar</td><td>spend Meta visible en el mirror</td></tr>
+        <tr><td>12</td><td><b>press-curators: railear o declarar manual</b></td><td>equipo</td><td>El Chaman propone</td><td>la campaña puede operar o baja del board</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:10px"><small>Regla del sprint: cada acción termina en un dato que hoy no existe
+  (una tasa de respuesta, un warm que avanza, un spend legible) — no en un artefacto más.</small></p>
+</section>
+
+<!-- ══ 08 ══ -->
+<section>
+  <div class="eyebrow">§08</div>
+  <h2>H1 2027 — el outlook grueso</h2>
+  <p>Menos detalle a propósito: lo de acá se decide en el consejo de noviembre con los datos del
+  sprint y de la ventana. Cuatro apuestas con fecha de decisión:</p>
+  <ul>
+    <li><strong>La temporada alta sigue hasta abril.</strong> Lo vendido en nov–dic duerme en Q1'27
+    (el spill del modelo, §02) — el "fracaso" de vender tarde para diciembre es el inventario de
+    enero. El norte de Q1'27 se declara en diciembre con la misma mecánica de nights.</li>
+    <li><strong>Ferias (modelo 4-ferias):</strong> Milán · NY · Barcelona + 1, ~$3.5–4k c/u, ROI+
+    con 3 noches vendidas. Decisión de asistencia: octubre, con el net rate card ya resuelto.</li>
+    <li><strong>SEO / contenido:</strong> fuera de este ciclo por lead-time (correcto). La inversión
+    se decide oct–nov para que rinda en 2027 — el lc-cmo trae el plan al consejo con costos de
+    tooling (SaaS vs OSS).</li>
+    <li><strong>Funnel creator:</strong> reabre cuando haya una estadía que valga el contenido —
+    los takeovers son las candidatas naturales.</li>
+    <li><strong>El track de venta ($10MM)</strong> corre en paralelo y no es de este documento —
+    pero cada mes de ocupación probada es también evidencia de valuación.</li>
+  </ul>
+</section>
+
+<!-- ══ 09 ══ -->
+<section>
+  <div class="eyebrow">§09</div>
+  <h2>Decisiones abiertas — el registro</h2>
+  <p>Doce decisiones, cada una con dueño. Ninguna es del modelo; por eso son palancas y no defaults.</p>
+  <div class="tblwrap" style="margin-top:10px">
+    <table aria-label="Registro de decisiones abiertas">
+      <thead><tr><th>#</th><th>Decisión</th><th>Dueño</th><th>Qué desbloquea</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>¿El break-even $20k es bruto a rack o neto de comisión?</td><td><b>Iru</b></td><td>el piso de solvencia del modelo (§02)</td></tr>
+        <tr><td>2</td><td>¿Cuánto vale un acuerdo de distribución en noches-en-ventana?</td><td><b>Iru + equipo</b></td><td>que distribución sea comparable con reservación</td></tr>
+        <tr><td>3</td><td>Targets de los "segundos números" (4 campañas los declaran sin meta)</td><td><b>equipo</b></td><td>distinguir campaña viva de campaña muerta antes del win</td></tr>
+        <tr><td>4</td><td>Be Mexico DMC y Elizabeth Sullivan: ¿reservation o distribution?</td><td><b>Boris/Iru</b></td><td>que el contador cuente el win donde se produjo</td></tr>
+        <tr><td>5</td><td>Net rate card por canal (pendiente desde el 10-abr)</td><td><b>Daiana/Pato</b></td><td>TODO el pitcheo B2B serio</td></tr>
+        <tr><td>6</td><td>Conversación Loco Luxury — esta semana, no en septiembre</td><td><b>Iru</b></td><td>el lever más corto a diciembre ($305k warm)</td></tr>
+        <tr><td>7</td><td>Meta: token de sistema + resolver los DOS portfolios "La Chamana"</td><td><b>Boris</b></td><td>leer $?/mes de 6 campañas vivas hoy ilegibles</td></tr>
+        <tr><td>8</td><td>Audiencia de @chamana.live — nadie tiene el número escrito</td><td><b>Iru</b></td><td>dimensionar el motor de marca</td></tr>
+        <tr><td>9</td><td>Reconciliar 7 bookings/$475k (Cloudbeds) vs 1/$98k (serie retirada)</td><td><b>Boris</b></td><td>la serie de revenue histórica</td></tr>
+        <tr><td>10</td><td>Dueño de Direct & Returning — hoy convierte por accidente</td><td><b>Boris</b></td><td>el motor con mejor evidencia deja de ser huérfano</td></tr>
+        <tr><td>11</td><td>Target máximo/upside — nunca se decidió (solo el piso)</td><td><b>Boris/Iru</b></td><td>la cara superior del modelo</td></tr>
+        <tr><td>12</td><td>Review Brand_Safety (retreats/celebrations) — columna vacía = rail mudo</td><td><b>Bianca</b></td><td>toda promoción nueva de esos 2 rails</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  La Chamana · El Chaman OS · GTM 360 Q3–Q4 2026 · publicado 14 ago 2026<br>
+  Fuentes: <code>.synergy/venture.yaml</code> (norte, machine-written) · Cloudbeds (noches, sync horario) ·
+  <code>synergy.db</code> (143 runs · $194.75) · ledgers <code>vault/campaigns/*/bodies/*.sent.jsonl</code> (19 emails provables) ·
+  <code>vault/campaigns/*/campaign.yaml</code> (8 activas) · memos 2026-08-10 (piso económico · aritmética del funnel · stage goals) ·
+  numbers-pack auditado 2026-08-14.<br>
+  Compañeros: <a href="../la-chamana-q3-q4-26/">Board de Campañas</a> (operativo, itera) ·
+  <code>capabilities/agents/workforce-model-2026-08-14.md</code> · <code>docs/sprint-14d-2026-08-15.md</code>
+</footer>
+
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ── the model ──────────────────────────────────────────────────────────
+   Selling months: ago(0, frac .5 remaining) sep(1) oct(2) nov(3) dic(4).
+   A reservation sold at month i sleeps at i+L (lead time). Nights landing
+   past index 4 fall out of the window (→ H1'27 spill). Banked: 7 (Cloudbeds).
+   Constants below are OBSERVED; lever defaults are the PROPOSAL (base). */
+var BANKED=7, TARGET=75, FLOOR=45, RAMP=[9,12,15,18,21], BREAK_USD=20000;
+var ACTUALS={mar:3,abr:4,may:4,jun:20,jul:4,ago:7}; // Cloudbeds a 10-ago
+var MONTHS=['ago','sep','oct','nov','dic'], FRAC=[0.5,1,1,1,1];
+var DAYS={ago:31,sep:30,oct:31,nov:30,dic:31};
+var CPC=3.81; // observado: $148.77 / 39 clicks
+
+var DEF={ r1:2.0, r2:2.5, lt:1.5, stay:6, agr:1, agrn:6, basis:'net', comm:20, cshare:50, paid:1000 };
+var PRESETS={
+  observado:{ r1:1.2, r2:1.2, lt:2, stay:6, agr:0, agrn:0, basis:'net', comm:20, cshare:50, paid:500 },
+  base: DEF,
+  stretch:{ r1:2.7, r2:2.7, lt:1, stay:6, agr:2, agrn:6, basis:'net', comm:20, cshare:50, paid:1500 }
+};
+var S=Object.assign({},DEF);
+
+function $(id){return document.getElementById(id)}
+function fmt(n,d){return n.toLocaleString('es-MX',{maximumFractionDigits:d==null?0:d,minimumFractionDigits:0})}
+function money(n){return '$'+fmt(Math.round(n))}
+
+function compute(s){
+  // distribute sold reservations into landing-month buckets (0..4), spill beyond
+  var land=[0,0,0,0,0], spill=0;
+  for(var i=0;i<5;i++){
+    var rate=(i<3? s.r1 : s.r2), res=rate*FRAC[i], t=i+s.lt;
+    var lo=Math.floor(t), f=t-lo;
+    var a=res*(1-f), b=res*f;
+    if(lo<=4) land[lo]+=a; else spill+=a;
+    if(lo+1<=4) land[lo+1]+=b; else spill+=b;
+  }
+  var nights=land.map(function(r){return r*s.stay});
+  nights[0]+=BANKED; // las 7 dormidas/en curso de agosto
+  // agreements lever: spread referred nights across oct–dic (a signed tap needs ramp-up)
+  var agrTotal=s.agr*s.agrn;
+  if(agrTotal>0){ nights[2]+=agrTotal*0.25; nights[3]+=agrTotal*0.35; nights[4]+=agrTotal*0.40; }
+  // physical cap: one villa
+  var capped=nights.map(function(n,i){return Math.min(n,DAYS[MONTHS[i]])});
+  var total=capped.reduce(function(a,b){return a+b},0);
+  var spillNights=spill*s.stay + nights.reduce(function(a,n,i){return a+Math.max(0,n-DAYS[MONTHS[i]])},0);
+  var netFactor=1 - (s.comm/100)*(s.cshare/100);
+  var beNightsGross=BREAK_USD/4500, beNightsNet=BREAK_USD/(4500*(1-(s.comm/100)));
+  return { monthly:capped, total:total, spill:spillNights, dec:capped[4],
+    revG:total*4500, revN:total*4500*netFactor,
+    beG:beNightsGross, beN:beNightsNet };
+}
+
+function badge(cls,txt){return '<span class="badge '+cls+'">'+txt+'</span>'}
+
+function render(){
+  var r=compute(S);
+  // lever outputs
+  $('o-r1').textContent=S.r1.toFixed(1); $('o-r2').textContent=S.r2.toFixed(1);
+  $('o-lt').textContent=S.lt.toFixed(2).replace(/\.?0+$/,'')+' m'; $('o-stay').textContent=S.stay+' n';
+  $('o-agr').textContent=S.agr; $('o-agrn').textContent=S.agrn+' n';
+  $('o-comm').textContent=S.comm+'%'; $('o-cshare').textContent=S.cshare+'%';
+  $('o-paid').textContent=money(S.paid)+'/mes';
+  // tiles
+  var tot=Math.round(r.total);
+  $('out-nights').textContent=tot;
+  $('out-nights-d').innerHTML= tot>=FLOOR? 'cubre el piso 45' : '<b>bajo el piso 45</b>';
+  var gap=tot-TARGET;
+  $('out-gap').textContent=(gap>=0?'+':'')+gap;
+  $('out-dec').textContent=Math.round(r.dec)+'n';
+  var decPct=Math.round(100*r.dec/31);
+  $('out-dec-d').textContent=decPct+'% de ocupación · objetivo 70%';
+  $('out-rev').textContent=money(r.revG);
+  $('out-rev-d').textContent= S.basis==='gross' ? 'bruto a rack' :
+    'neto est. '+money(r.revN)+' (comisión '+S.comm+'% × '+S.cshare+'% share)';
+  // monthly table
+  var be = S.basis==='gross'? r.beG : r.beN;
+  var tb=$('out-table').tBodies[0], rows='';
+  for(var i=0;i<5;i++){
+    var n=r.monthly[i], ramp=RAMP[i];
+    var plan = n>=ramp? badge('ok','en plan') : (n>=ramp*0.6? badge('warn','−'+fmt(ramp-n,0)+'n') : badge('crit','−'+fmt(ramp-n,0)+'n'));
+    var solv;
+    if(S.basis==='both'){
+      solv = n>=r.beN? badge('ok','cubre ambas') : (n>=r.beG? badge('warn','solo bruto') : badge('crit','insolvente'));
+    } else {
+      solv = n>=be? badge('ok','solvente') : badge('crit','bajo piso $20k');
+    }
+    rows+='<tr><td><b>'+MONTHS[i]+'</b>'+(i===0?' <small>(7 ya dormidas)</small>':'')+'</td><td class="n">'+fmt(n,1)+'</td><td class="n">'+ramp+'</td><td>'+plan+'</td><td>'+solv+'</td></tr>';
+  }
+  var beLbl = S.basis==='both'
+    ? 'piso solvencia: '+r.beG.toFixed(1)+'n (bruto) / '+r.beN.toFixed(1)+'n (neto '+S.comm+'%) — sin resolver'
+    : 'piso solvencia: '+be.toFixed(1)+' noches/mes ('+(S.basis==='gross'?'bruto a rack':'neto de comisión '+S.comm+'%')+')';
+  rows+='<tr><td colspan="5"><small>'+beLbl+' · decisión #1 (Iru)</small></td></tr>';
+  tb.innerHTML=rows;
+  // paid line
+  var clicks=Math.round(S.paid/CPC);
+  $('out-paid-line').innerHTML='<b>'+money(S.paid)+'/mes</b> ≈ '+fmt(clicks)+' clicks/mes → <b>? consultas</b> · dentro del envelope $500–1,500'+(S.paid>1500?' <span class="chip unk">fuera del envelope</span>':'');
+  // spill
+  $('out-spill').innerHTML='<b>'+fmt(r.spill,0)+' noches</b> vendidas en la ventana que duermen en 2027 — inventario de Q1, no pérdida.';
+  drawChart(r);
+}
+
+function drawChart(r){
+  var svg=$('chart-occ'); if(!svg) return;
+  var W=960,H=300,padL=34,padB=34,padT=16;
+  var labels=['mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var actual=[3,4,4,20,4,null,null,null,null,null];
+  var agoAct=7;
+  var proj=[null,null,null,null,null].concat(r.monthly.map(function(n){return n}));
+  // ago: actual 7 + projection remainder → show projection bar for ago too (includes banked)
+  var ramp=[null,null,null,null,null,9,12,15,18,21];
+  var max=32, iw=(W-padL-14)/10, bw=Math.min(46,iw*0.56);
+  var y=function(v){return padT+(H-padT-padB)*(1-v/max)};
+  var s='';
+  s+='<defs><pattern id="hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1.6" opacity=".55"/></pattern></defs>';
+  // gridlines
+  [0,10,20,30].forEach(function(g){
+    s+='<line x1="'+padL+'" x2="'+(W-10)+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="currentColor" stroke-opacity=".08"/>';
+    s+='<text x="'+(padL-6)+'" y="'+(y(g)+4)+'" text-anchor="end" font-size="10.5" fill="currentColor" opacity=".4">'+g+'</text>';
+  });
+  for(var i=0;i<10;i++){
+    var cx=padL+iw*i+iw/2, x=cx-bw/2;
+    // actual bars (solid)
+    var av=(i<5?actual[i]:(i===5?agoAct:null));
+    if(av!=null){ s+='<rect x="'+x+'" y="'+y(av)+'" width="'+bw+'" height="'+(y(0)-y(av))+'" rx="4" fill="currentColor" opacity="'+(i===3?'.85':'.6')+'"/>';
+      if(av>=8) s+='<text x="'+cx+'" y="'+(y(av)-5)+'" text-anchor="middle" font-size="11" font-weight="600" fill="currentColor" opacity=".8">'+av+'</text>'; }
+    // projection (hatched) sep–dic; ago projection above the 7 actual
+    if(i>=6&&proj[i]!=null){ var pv=proj[i];
+      s+='<rect x="'+x+'" y="'+y(pv)+'" width="'+bw+'" height="'+(y(0)-y(pv))+'" rx="4" fill="url(#hatch)" stroke="currentColor" stroke-opacity=".35"/>';
+      s+='<text x="'+cx+'" y="'+(y(pv)-5)+'" text-anchor="middle" font-size="11" fill="currentColor" opacity=".55">'+Math.round(pv)+'</text>'; }
+    if(i===5&&proj[5]>agoAct){ var p5=proj[5];
+      s+='<rect x="'+x+'" y="'+y(p5)+'" width="'+bw+'" height="'+(y(agoAct)-y(p5))+'" rx="4" fill="url(#hatch)" stroke="currentColor" stroke-opacity=".35"/>'; }
+    // ramp target tick
+    if(ramp[i]!=null){ s+='<line x1="'+(x-5)+'" x2="'+(x+bw+5)+'" y1="'+y(ramp[i])+'" y2="'+y(ramp[i])+'" stroke="currentColor" stroke-width="2" stroke-opacity=".85" stroke-dasharray="3 3"/>'; }
+    s+='<text x="'+cx+'" y="'+(H-12)+'" text-anchor="middle" font-size="11.5" fill="currentColor" opacity=".55">'+labels[i]+'</text>';
+  }
+  // legend
+  s+='<g font-size="11" fill="currentColor" opacity=".65">'
+    +'<rect x="'+(W-330)+'" y="'+(padT)+'" width="12" height="12" rx="3" fill="currentColor" opacity=".6"/><text x="'+(W-313)+'" y="'+(padT+10)+'">dormidas</text>'
+    +'<rect x="'+(W-240)+'" y="'+(padT)+'" width="12" height="12" rx="3" fill="url(#hatch)" stroke="currentColor" stroke-opacity=".35"/><text x="'+(W-223)+'" y="'+(padT+10)+'">proyección §02</text>'
+    +'<line x1="'+(W-115)+'" x2="'+(W-98)+'" y1="'+(padT+6)+'" y2="'+(padT+6)+'" stroke="currentColor" stroke-width="2" stroke-dasharray="3 3"/><text x="'+(W-93)+'" y="'+(padT+10)+'">rampa</text></g>';
+  svg.innerHTML=s;
+}
+
+function bind(id,key,parse){
+  var el=$(id);
+  el.addEventListener('input',function(){ S[key]=parse?parse(el.value):parseFloat(el.value); render(); });
+}
+function setInputs(){
+  $('l-r1').value=S.r1; $('l-r2').value=S.r2; $('l-lt').value=S.lt; $('l-stay').value=S.stay;
+  $('l-agr').value=S.agr; $('l-agrn').value=S.agrn; $('l-basis').value=S.basis;
+  $('l-comm').value=S.comm; $('l-cshare').value=S.cshare; $('l-paid').value=S.paid;
+}
+bind('l-r1','r1'); bind('l-r2','r2'); bind('l-lt','lt'); bind('l-stay','stay');
+bind('l-agr','agr'); bind('l-agrn','agrn'); bind('l-comm','comm'); bind('l-cshare','cshare'); bind('l-paid','paid');
+$('l-basis').addEventListener('change',function(){ S.basis=this.value; render(); });
+document.querySelectorAll('[data-preset]').forEach(function(b){
+  b.addEventListener('click',function(){ S=Object.assign({},PRESETS[b.getAttribute('data-preset')]); setInputs(); render(); });
+});
+setInputs(); render();
+})();
+</script>
+</body>
+</html>
