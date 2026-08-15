@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La máquina de leads — tracker de ejecución</title>
+<!--
+  FUENTE CANÓNICA: synergy-toolkit/docs/lead-machine-tracker.html
+  La copia publicada vive en BothVentures/stack → pages/board/la-chamana-lead-machine-tracker/index.html
+  PROTOCOLO DE ACTUALIZACIÓN (regla de docs/README.md: en la misma sesión que cambia el estado):
+    1. Editar ESTE archivo: cambiar los pills de estado, la evidencia y su as_of. Nunca pintar verde sin evidencia.
+    2. Actualizar data-updated en <body> (ISO date) — la página se pone amarilla sola a los 7 días.
+    3. Republicar: base64 → JSON payload (--input, nunca $(base64) inline) → gh api PUT con el sha vigente.
+    4. Verificar: descargar el contenido de vuelta por API y comparar SHA-256; curl -sSI la URL live.
+  Lo desconocido NUNCA se renderiza como 0 ni como verde. Un dato que no se pudo leer es "desconocido", con su fuente.
+-->
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --line:#30363d; --ink:#e6edf3; --dim:#8b949e;
+    --green:#2ea043; --amber:#d29922; --red:#f85149; --gray:#6e7681; --blue:#58a6ff;
+    --greenbg:rgba(46,160,67,.15); --amberbg:rgba(210,153,34,.15); --redbg:rgba(248,81,73,.15); --graybg:rgba(110,118,129,.18);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:0 16px 80px}
+  .wrap{max-width:980px;margin:0 auto}
+  header{padding:36px 0 8px;border-bottom:1px solid var(--line)}
+  h1{font-size:26px;margin:0 0 4px}
+  h2{font-size:19px;margin:40px 0 4px;padding-top:8px}
+  h2 .phasepill{float:right}
+  .sub{color:var(--dim);margin:0 0 12px}
+  .sub a{color:var(--blue);text-decoration:none}
+  .meta{color:var(--dim);font-size:13px}
+  #stale-banner{display:none;background:var(--amberbg);border:1px solid var(--amber);color:var(--amber);border-radius:8px;padding:10px 14px;margin:16px 0;font-weight:600}
+  .strip{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;flex:1;min-width:180px}
+  .tile b{display:block;font-size:20px}
+  .tile span{color:var(--dim);font-size:12.5px}
+  .pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:12px;font-weight:700;white-space:nowrap;vertical-align:middle}
+  .p-green{background:var(--greenbg);color:var(--green);border:1px solid var(--green)}
+  .p-amber{background:var(--amberbg);color:var(--amber);border:1px solid var(--amber)}
+  .p-red{background:var(--redbg);color:var(--red);border:1px solid var(--red)}
+  .p-gray{background:var(--graybg);color:var(--gray);border:1px solid var(--gray)}
+  .p-unk{background:var(--graybg);color:var(--dim);border:1px dashed var(--dim)}
+  .tblbox{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:10px 0 6px}
+  table{border-collapse:collapse;width:100%;min-width:720px}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--dim);text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  td{padding:9px 12px;border-bottom:1px solid rgba(48,54,61,.55);vertical-align:top;font-size:14px}
+  tr:last-child td{border-bottom:none}
+  td.ev,.ev{color:var(--dim);font-size:12.5px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0;color:var(--dim);font-size:13px;align-items:center}
+  .note{background:var(--panel);border-left:3px solid var(--amber);border-radius:6px;padding:10px 14px;color:var(--dim);font-size:13.5px;margin:10px 0}
+  .entry{color:var(--dim);font-size:13.5px;margin:4px 0 10px}
+  footer{margin-top:52px;border-top:1px solid var(--line);padding-top:16px;color:var(--dim);font-size:13px}
+  code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:0 5px;font-size:12.5px}
+</style>
+</head>
+<body data-updated="2026-08-15">
+<div class="wrap">
+
+<header>
+  <h1>La máquina de leads — tracker de ejecución</h1>
+  <p class="sub">Estrategia: <em>«La máquina de leads — Q3–Q4 2026» V0.3 · 15 ago 2026</em> (lc-chaman, commit <code>2b4b841</code>) ·
+  Plan de ejecución: <code>synergy-toolkit/docs/jor-lead-machine-2026-08-15.md</code> (Joint Operating Room, 15-ago) ·
+  Objetivo único: <b>140–400 quality leads</b> en la ventana, contra los 40–60 que pide el piso.</p>
+  <p class="meta">Última actualización: <span id="upd-label">2026-08-15</span> (<span id="upd-days"></span>) ·
+  la actualiza la sesión (TK-000 / El Chamán) que cambia un estado, nunca de memoria ·
+  cada celda lleva evidencia + as_of · <b>desconocido nunca se pinta verde ni 0</b>.</p>
+  <div id="stale-banner">⚠ Esta página lleva <span id="stale-days"></span> días sin actualizarse — trátala como potencialmente vieja hasta verificar contra los repos.</div>
+</header>
+
+<div class="strip">
+  <div class="tile"><b>7 / 75</b><span>noches (norte) · fuente venture.yaml · as_of 2026-08-10 — 5 días viejo al publicar</span></div>
+  <div class="tile"><b>19 / ~18.000</b><span>humanos contactados / alcanzables en ventana · 3 ledgers · as_of 15-ago</span></div>
+  <div class="tile"><b>0 / 10</b><span>decisiones de Boris resueltas · cola del 15-ago</span></div>
+  <div class="tile"><b>Fase 0 ✓</b><span>contratos escritos · Fases 1–4 esperan decisiones</span></div>
+</div>
+
+<div class="legend">
+  <span class="pill p-green">verde</span> hecho, con evidencia citada
+  <span class="pill p-amber">amarillo</span> en curso o bloqueado — la causa está escrita
+  <span class="pill p-red">rojo</span> vencido / en riesgo
+  <span class="pill p-gray">gris</span> no arrancado
+  <span class="pill p-unk">desconocido</span> dato que aún no existe — jamás un 0
+</div>
+
+<div class="note"><b>Hoy (15-ago):</b> la conversión del plan a contratos está completa y verificada (doctor 0 rojos).
+Todo lo ejecutable espera las decisiones #7 y #8 de Boris. Cinco de los siete canales siguen sin haber corrido jamás.
+No pasa nada más — y que no pase nada también se registra.</div>
+
+<h2>Fase 0 — Estrategia → contratos <span class="pill p-green phasepill">verde</span></h2>
+<p class="entry">Salida: los seis documentos existen, indexados, doctor verde. Cumplida 15-ago.</p>
+<div class="tblbox"><table>
+  <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · as_of</th></tr>
+  <tr><td>Extracción JOR (interpretación, dos lecturas, roadmap, verificación)</td><td>TK-000 + El Chamán</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/jor-lead-machine-2026-08-15.md · 15-ago</td></tr>
+  <tr><td>Definición operativa de quality lead</td><td>El Chamán (autoridad) / TK-000 (espejo)</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/quality-lead-definition.md · 15-ago · su aprobación es la decisión #8</td></tr>
+  <tr><td>Taxonomía de canales C1–C7 vs vocabulario real</td><td>TK-000 (medición)</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/channel-taxonomy.md · medido 15-ago: 4 de 7 canales hoy irrepresentables</td></tr>
+  <tr><td>Cola de decisiones de Boris (10 + 3)</td><td>TK-000</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/boris-decision-queue-2026-08-15.md · 15-ago</td></tr>
+  <tr><td>Spec del primer paquete de build (W18·W6·W13·W9)</td><td>TK-000</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/build-package-w18-w6-w13-w9.md · spec, sin construir</td></tr>
+  <tr><td>Formato file-only del brief de operador</td><td>TK-000</td><td><span class="pill p-green">verde</span></td><td class="ev">docs/operator-brief-dryrun-format.md · 15-ago</td></tr>
+  <tr><td>Commit de los contratos</td><td>Boris (/upc)</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">sin commitear al publicar esta página · 15-ago</td></tr>
+</table></div>
+
+<h2>Fase 1 — Sprint de validación (2 semanas · $0 de infra) <span class="pill p-gray phasepill">gris</span></h2>
+<p class="entry">Entrada: decisiones <b>#7</b> (paquete) y <b>#8</b> (definición QL) aprobadas. Salida: reply-rate por celda MMF conocido · bounce &lt;3% a 40/día · funnel legible por canal · primeras filas QL con canal.</p>
+<div class="tblbox"><table>
+  <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
+  <tr><td>Matriz message-market fit (4 segmentos × 2 ángulos × 25 = 200)</td><td>El Chamán diseña · Boris pressea cada wave</td><td><span class="pill p-gray">gris</span></td><td class="ev">bloqueada en #8 (la denominación es la definición QL) · cada wave es un gate press</td></tr>
+  <tr><td>W18 — cap con rampa + verificación de email en prepare + auto-pausa bounce &gt;3%</td><td>TK-000</td><td><span class="pill p-gray">gris</span></td><td class="ev">bloqueado en #7 · patrón: reply-send.ts (techo + circuit-breaker) · guardia spam SIN fuente de datos → queda «desconocido» hasta Fase 2</td></tr>
+  <tr><td>Rampa del cap 20→30→40/día</td><td>Boris (es su regla del 04-jul) · El Chamán edita el skill</td><td><span class="pill p-gray">gris</span></td><td class="ev">decisión #2 · condicionada a W18 vivo y demostrado</td></tr>
+  <tr><td>W6 — cuadrante ciego del guarda de duplicados (cross-campaña + DM)</td><td>TK-000</td><td><span class="pill p-gray">gris</span></td><td class="ev">el guarda intra-campaña YA existe (batch.ts:418) · medir FP antes de escribir</td></tr>
+  <tr><td>W9 — vocabulario de canales (mint + drift + colisión Referral)</td><td>El Chamán + Boris (mint gateado) · TK-000 sincroniza</td><td><span class="pill p-gray">gris</span></td><td class="ev">valores propuestos en channel-taxonomy.md · Airtable solo mintea por typecast en escritura gateada</td></tr>
+  <tr><td>W13 — panel de volumen (día 1 debe leer 19 / 18.000)</td><td>TK-000 (se construye último: lee a los otros tres)</td><td><span class="pill p-gray">gris</span></td><td class="ev">bloqueado en #7 + vocabulario W9 · una definición compartida con el reporte §2</td></tr>
+  <tr><td>Warm + Loco Luxury re-touch (16 filas Warm · $305k/4 deals)</td><td>Iru — si #4 la nombra</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">BLOQUEADO en decisión #4: canal sin dueño desde abril · 0 de 16 avanzó jamás de etapa</td></tr>
+  <tr><td>IG DM manual (techo 15/día · humano tipea · la máquina solo prepara)</td><td>Iru/Bianca (teléfono) · El Chamán prepara</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">colas armadas y NUNCA trabajadas: 3 filas esperando desde el 11-ago (doctor, 15-ago) · 0 DMs enviados en la historia</td></tr>
+  <tr><td>C6 — listados en BookRetreats + Retreat Guru (gratis, 14–15% solo si reservan)</td><td>El Chamán redacta · Boris pressea el publish</td><td><span class="pill p-gray">gris</span></td><td class="ev">decisión #10: recomendado arrancar YA — no espera ni al rate card ni al email</td></tr>
+  <tr><td>Gates viejos decididos (aunque sea rechazar)</td><td>Boris</td><td><span class="pill p-red">rojo</span></td><td class="ev">4 abiertos al 15-ago: 19d (changes_requested) · 12d (approved sin despachar) · 4d · 37h · /approvals</td></tr>
+  <tr><td>Briefs de operador, file-only (≥5 leídos antes de hablar de scheduler)</td><td>TK-000 produce · Boris lee</td><td><span class="pill p-gray">gris</span></td><td class="ev">formato listo · decisión #9</td></tr>
+</table></div>
+
+<h2>Fase 2 — Rampa de volumen guardada (Tier 2) <span class="pill p-gray phasepill">gris</span></h2>
+<p class="entry">Entrada (TODAS): celdas MMF ganadoras · W18/W6/W13/W9 vivos · warm-up 14–21d completo · calidad de listas Apollo muestreada. Salida: 200/día sostenido, bounce &lt;3%, spam &lt;0.1% <em>medido</em>, replies llegando al desk.</p>
+<div class="tblbox"><table>
+  <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
+  <tr><td>Compra del stack Tier 2 (~$400–650/mes + ~$300/año dominios)</td><td>Boris (plata)</td><td><span class="pill p-gray">gris</span></td><td class="ev">decisión #1 · recomendado: comprar ya, activar tras MMF (el warm-up tarda lo que la matriz)</td></tr>
+  <tr><td>Dominios secundarios + 10–14 buzones en warm-up (nunca chamana.live)</td><td>El Chamán configura</td><td><span class="pill p-gray">gris</span></td><td class="ev">rampa 20→50→100→200/día en 4 semanas — saltear el warm-up quema los dominios para siempre</td></tr>
+  <tr><td>W16 — Smartlead/Instantly: manifiesto gateado → campaña · replies → webhook</td><td>TK-000</td><td><span class="pill p-gray">gris</span></td><td class="ev">la leg instantly-phase2 está declarada desde julio y nunca activada · ledger idéntico al actual · sin gate no sale nada</td></tr>
+  <tr><td>W12 — supply Apollo: reservoir ≥2 semanas visible por rail</td><td>El Chamán</td><td><span class="pill p-gray">gris</span></td><td class="ev">6 de 8 rails con tanque vacío hoy · Clay SOLO si Apollo queda corto (medido, no asumido)</td></tr>
+  <tr><td>Guardia de spam-rate (&gt;0.1% pausa)</td><td>TK-000</td><td><span class="pill p-unk">desconocido</span></td><td class="ev">HOY NO EXISTE fuente del dato — llega con el ESP/Postmaster en esta fase; hasta entonces se reporta «desconocido», no se inventa un guarda</td></tr>
+</table></div>
+
+<h2>Fase 3 — Captura de intención <span class="pill p-gray phasepill">gris</span></h2>
+<p class="entry">Entrada: Meta Business Verification (#6) · rate card (#5) · W15 click→consulta vivo antes de escalar paid.</p>
+<div class="tblbox"><table>
+  <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
+  <tr><td>Meta Business Verification (teléfono US de Gastón)</td><td>Boris → Gastón</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">decisión #6 · bloquea C3 entero (est. 36–72 leads) · 5 campañas muertas en «Error en el pago» · antes del 28-ago</td></tr>
+  <tr><td>ManyChat — flujos inbound de calificación → CRM (ig_inbound)</td><td>El Chamán</td><td><span class="pill p-gray">gris</span></td><td class="ev">SOLO inbound: el DM frío automatizado está prohibido por Meta y la cuenta ya fue baneada en junio</td></tr>
+  <tr><td>C5 — listados Airbnb · Vrbo · MayaLuxe · Haute · Villa Experience</td><td>El Chamán redacta · Boris pressea</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">BLOQUEADO en rate card (#5, 127 días abierto) · kill: &lt;5 consultas/30d por listado</td></tr>
+  <tr><td>Oferta buyout last-minute (3 ventanas de octubre · precio publicado · WhatsApp a concierges/DMCs)</td><td>El Chamán diseña · Boris aprueba precio</td><td><span class="pill p-gray">gris</span></td><td class="ev">mediana de lead time observada: 11 días · el gate screen dio 0.90 a ese público</td></tr>
+  <tr><td>W15 — instrumentar click→consulta (Google Search sobrevive solo si atribuye)</td><td>TK-000</td><td><span class="pill p-amber">amarillo</span></td><td class="ev">49 clicks · 0 atribuibles · kill del canal: 30-sep — se ejecuta solo si W15 no llega</td></tr>
+</table></div>
+
+<h2>Fase 4 — Nurture y compounding <span class="pill p-gray phasepill">gris</span></h2>
+<div class="tblbox"><table>
+  <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
+  <tr><td>Klaviyo/Brevo — flujos de lista propia (fechas libres · post-estadía → referido)</td><td>El Chamán</td><td><span class="pill p-gray">gris</span></td><td class="ev">PROHIBIDO para frío (ToS) · hoy un lead que no cierra se evapora</td></tr>
+  <tr><td>Past guests + warm replies + urgencia de diciembre</td><td>Iru / El Chamán</td><td><span class="pill p-gray">gris</span></td><td class="ev">—</td></tr>
+  <tr><td>Libro Q1'27 (W4: nights_sold junto a nights_slept)</td><td>TK-000</td><td><span class="pill p-gray">gris</span></td><td class="ev">sin W4, cada venta Q1'27 renderiza como fracaso · forward book HOY VACÍO sep–dic (Cloudbeds)</td></tr>
+</table></div>
+
+<h2>Cola de decisiones de Boris <span class="pill p-amber phasepill">0 / 10 resueltas</span></h2>
+<p class="entry">Detalle completo (recomendación · consecuencia de no actuar · evidencia · superficie): <code>docs/boris-decision-queue-2026-08-15.md</code>. Los veredictos se registran en /decisions.</p>
+<div class="tblbox"><table>
+  <tr><th>#</th><th>Decisión</th><th>Recomendado</th><th>Estado</th><th>Vence</th></tr>
+  <tr><td>1</td><td>Stack Tier 2 (~$400–650/mes)</td><td>autorizar compra ya · activar tras MMF</td><td><span class="pill p-amber">pendiente</span></td><td>esta semana</td></tr>
+  <tr><td>2</td><td>Cap 20→30/40 con rampa</td><td>sí, condicionado a W18</td><td><span class="pill p-amber">pendiente</span></td><td>al demostrar W18</td></tr>
+  <tr><td>3</td><td>Fam trips (noches muertas sep–oct)</td><td>lista ya (Iru) · cada invitación es un press</td><td><span class="pill p-amber">pendiente</span></td><td>lista: esta semana</td></tr>
+  <tr><td>4</td><td>Dueño de Loco Luxury</td><td>Iru, esta semana</td><td><span class="pill p-amber">pendiente</span></td><td>esta semana</td></tr>
+  <tr><td>5</td><td>Net rate card (127 días abierto)</td><td>resolver a números esta semana</td><td><span class="pill p-red">pendiente · 127d</span></td><td>esta semana</td></tr>
+  <tr><td>6</td><td>Meta Business Verification</td><td>agendar los 30 min con Gastón</td><td><span class="pill p-amber">pendiente</span></td><td>antes del 28-ago</td></tr>
+  <tr><td>7</td><td>Primer paquete de build (W18·W6·W13·W9)</td><td>aprobar como está spec'd</td><td><span class="pill p-amber">pendiente</span></td><td>esta semana</td></tr>
+  <tr><td>8</td><td>Definición de quality lead</td><td>aprobar</td><td><span class="pill p-amber">pendiente</span></td><td>esta semana</td></tr>
+  <tr><td>9</td><td>Brief de operador file-only primero</td><td>sí — scheduler recién tras ≥5 leídos</td><td><span class="pill p-amber">pendiente</span></td><td>no bloquea</td></tr>
+  <tr><td>10</td><td>Marketplaces: ¿ya o tras 2 semanas de data?</td><td>C6 ya · C5 al resolverse #5 · no esperan al email</td><td><span class="pill p-amber">pendiente</span></td><td>C6: esta semana</td></tr>
+  <tr><td>11–13</td><td>Housekeeping: índice del brain · punteros GTM-360 viejos · publicar V0.3 en stack</td><td>una sesión de El Chamán (11–12) · press de Boris (13)</td><td><span class="pill p-amber">pendiente</span></td><td>—</td></tr>
+</table></div>
+
+<h2>Los cinco desconocidos <span class="pill p-unk phasepill">las primeras 4 semanas existen para esto</span></h2>
+<div class="tblbox"><table>
+  <tr><th>Dato</th><th>Estado</th><th>Qué lo convierte en número</th></tr>
+  <tr><td>Tasa reply → cierre</td><td><span class="pill p-unk">desconocido</span> <span class="ev">— 0 de 16 warm avanzó jamás; 10–15% es supuesto declarado</span></td><td>trabajar los 16 Warm (decisión #4) + primeras QL de la matriz</td></tr>
+  <tr><td>Yield de marketplaces (villa y retreat)</td><td><span class="pill p-unk">desconocido</span> <span class="ev">— jamás hubo un listado</span></td><td>listar (decisiones #5 y #10) y contar consultas/30d</td></tr>
+  <tr><td>Reply rate de IG DM</td><td><span class="pill p-unk">desconocido</span> <span class="ev">— 0 DMs enviados en la historia</span></td><td>trabajar las colas ya armadas (15/día, humano)</td></tr>
+  <tr><td>Meta spend → consultas</td><td><span class="pill p-unk">desconocido</span> <span class="ev">— cero filas en metrics_daily</span></td><td>Business Verification (#6) + W15</td></tr>
+  <tr><td>Audiencia de @chamana.live</td><td><span class="pill p-unk">desconocido</span></td><td>primeros flujos inbound (Fase 3)</td></tr>
+</table></div>
+
+<footer>
+  <p><b>Reglas que esta página obedece:</b> el gate no se saltea — ninguna herramienta envía lo que un humano no armó y presseó ·
+  DM frío automatizado: nunca · ningún email sale sin verificar (cuando W18 exista; hasta entonces, ningún aumento de cap) ·
+  ningún mensaje escala sin ganar su celda de test · cada canal nace con su kill escrito ·
+  chat/Claude/Slack proponen, jamás envían/gastan/publican/mutan CRM · unknown nunca se renderiza como 0.</p>
+  <p><b>Cómo se actualiza:</b> la fuente canónica es <code>synergy-toolkit/docs/lead-machine-tracker.html</code>; la sesión que cambia un estado
+  edita ese archivo (estado + evidencia + as_of), sube <code>data-updated</code>, y republica a
+  <code>BothVentures/stack → pages/board/la-chamana-lead-machine-tracker/</code> verificando el SHA-256 del byte publicado.
+  Esta página es una copia: si contradice a los repos, ganan los repos.</p>
+</footer>
+
+</div>
+<script>
+(function(){
+  var iso = document.body.getAttribute('data-updated');
+  var days = Math.floor((Date.now() - new Date(iso + 'T12:00:00Z').getTime()) / 86400000);
+  if (days < 0) days = 0;
+  document.getElementById('upd-days').textContent = days === 0 ? 'hoy' : 'hace ' + days + ' día' + (days === 1 ? '' : 's');
+  if (days > 7) {
+    document.getElementById('stale-days').textContent = days;
+    document.getElementById('stale-banner').style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>
