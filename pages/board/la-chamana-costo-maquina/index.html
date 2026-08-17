@@ -242,9 +242,9 @@ html{scroll-behavior:smooth}
     <div class="eyebrow">La Chamana · El Chaman OS · Registro financiero</div>
     <h1>Costo de la <b>máquina</b></h1>
     <div class="badges">
-      <span class="badge">v1.0 · 17 ago 2026</span>
+      <span class="badge">v1.1 · 17 ago 2026</span>
       <span class="badge crit">INTERNO — no circular fuera del equipo</span>
-      <span class="badge hot">$127.39 · 29 emails · 140 contactos</span>
+      <span class="badge hot">$129.00 · 31 emails · 140 contactos</span>
       <span class="badge warn" id="freshness">actualizado hoy</span>
     </div>
   </div>
@@ -254,23 +254,30 @@ html{scroll-behavior:smooth}
 <p><strong>El día en que la máquina corrió de punta a punta por primera vez, y lo que costó.</strong>
 El 17 de agosto la máquina de outreach hizo el ciclo completo sin que nadie la empujara paso a paso:
 buscó contactos nuevos, los calificó, escribió los emails uno por uno, los mandó espaciados y cerró
-los libros en el CRM. Salieron <strong>29 emails reales</strong> a organizaciones que nunca nos habían
-oído nombrar, y entraron <strong>140 contactos nuevos</strong> al reservorio.</p>
+los libros en el CRM. Salieron <strong>31 emails reales</strong> —29 en frío a organizaciones que
+nunca nos habían oído nombrar, más 2 respuestas contestadas— y entraron <strong>140 contactos
+nuevos</strong> al reservorio.</p>
 
 <p>Este documento mide qué costó eso. No es un pronóstico: cada cifra sale del registro de corridas de
 la máquina y de los transcripts que Claude Code escribe en disco. Todo lleva <span class="chip obs">obs</span>
 salvo lo que esté marcado de otra forma.</p>
 
-<div class="callout"><p><strong>La lectura en una línea:</strong> mandar emails es casi gratis
-($0.72 cada uno, con copy personalizada); <strong>buscar contactos nuevos se lleva el 70% de la
-factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p></div>
+<div class="callout"><p><strong>v1.1 — qué se corrigió.</strong> La v1.0 traía una columna que decía
+qué modelo corrió cada acción. Se quitó: al validar la tabla de precios pública contra lo facturado,
+el total del día cuadra al 0.6% pero <strong>corrida por corrida no reconcilia</strong>, así que esa
+atribución no se puede sostener. Los tokens y los dólares sí son verificables —salen de la base de
+datos y de los transcripts— y son lo único que este documento afirma.</p></div>
 
 <div class="strip">
-  <div class="tile"><b>$127.39</b><span>costo total del día · 21 corridas · 84.2M tokens</span></div>
+  <div class="tile"><b>$129.00</b><span>costo total del día · 22 corridas · 86.9M tokens</span></div>
   <div class="tile ok"><b>$0.63</b><span>por contacto capturado · 140 filas nuevas</span></div>
-  <div class="tile ok"><b>$0.72</b><span>por email escrito y enviado · 29 emails, 0 fallos</span></div>
-  <div class="tile hot"><b>$25.87</b><span>quemado sin producir nada · el número que duele</span></div>
+  <div class="tile ok"><b>$1.28</b><span>por email entregado, de punta a punta · 31 emails</span></div>
+  <div class="tile hot"><b>$25.88</b><span>quemado sin producir nada · el número que duele</span></div>
 </div>
+
+<p class="ev">El costo por email cubre la cadena completa: armar la lista, escribir la copy, lanzar la
+tanda y cerrar los libros ($39.68 entre las cuatro acciones). Escribir la copy sola sale
+<b>$0.72 por email</b>, personalizada una por una.</p>
 
 <section>
   <div class="eyebrow">§00 · para leer la tabla</div>
@@ -278,7 +285,7 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
   <p>Nadie fuera de la sesión que lo construyó usa este vocabulario. Antes de la tabla, entonces:</p>
   <div class="tblwrap"><table>
     <tr><th>palabra</th><th>qué es</th></tr>
-    <tr><td><b>corrida</b></td><td>Una invocación de la máquina que hace UNA cosa: buscar contactos, escribir emails, lanzar una tanda. Hoy hubo 21.</td></tr>
+    <tr><td><b>corrida</b></td><td>Una invocación de la máquina que hace UNA cosa: buscar contactos, escribir emails, lanzar una tanda. Hoy hubo 22.</td></tr>
     <tr><td><b>token</b></td><td>La unidad en que se mide y se cobra el trabajo de un modelo de lenguaje — aproximadamente ¾ de palabra. Se cobra distinto según sea de entrada o de salida.</td></tr>
     <tr><td><b>caché</b></td><td>Contexto que la máquina ya leyó antes y vuelve a leer. Cuesta una fracción de lo que cuesta texto nuevo, y es la mayoría del volumen.</td></tr>
     <tr><td><b>tanda</b></td><td>Un lote de emails que sale espaciado, 2 a 7 minutos entre uno y otro, para no quemar el dominio. Hoy salieron 4.</td></tr>
@@ -290,62 +297,58 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
   <div class="eyebrow">§01 · el desglose</div>
   <h2>Qué costó cada acción</h2>
   <div class="tblwrap"><table>
-    <tr><th>acción</th><th>tokens y modelo</th><th>dinero</th><th>resultado</th><th>cuenta</th></tr>
+    <tr><th>acción</th><th>tokens</th><th>dinero</th><th>resultado</th></tr>
     <tr>
-      <td><b>Buscar contactos nuevos</b><br><span class="ev">6 intentos</span></td>
-      <td>45.7M<br><span class="ev">Sonnet 5</span></td>
+      <td><b>Buscar contactos nuevos</b><br><span class="ev">6 intentos · 4 con éxito</span></td>
+      <td>45.7M</td>
       <td><b>$88.74</b></td>
       <td>140 filas nuevas: agency 55, retreat 50, family 35.<br><span class="ev">2 de los 6 intentos no dejaron nada</span></td>
-      <td class="ev">A · B · C</td>
     </tr>
     <tr>
-      <td><b>Escribir los emails</b><br><span class="ev">4 intentos</span></td>
-      <td>18.8M<br><span class="ev">Fable 5</span></td>
+      <td><b>Escribir los emails</b><br><span class="ev">4 intentos · 3 con éxito</span></td>
+      <td>18.8M</td>
       <td>$17.34</td>
       <td>24 bodies personalizadas una por una<br><span class="ev">revisión de voz sin fallos duros</span></td>
-      <td class="ev">B · C</td>
     </tr>
     <tr>
-      <td><b>Armar la lista de la tanda</b><br><span class="ev">3 intentos</span></td>
-      <td>6.8M<br><span class="ev">Fable 5</span></td>
+      <td><b>Cerrar libros en el CRM</b><br><span class="ev">4 intentos</span></td>
+      <td>9.6M</td>
+      <td>$8.35</td>
+      <td>Secuencia y último contacto escritos en las 4 tandas</td>
+    </tr>
+    <tr>
+      <td><b>Armar la lista de la tanda</b><br><span class="ev">3 intentos · 2 con éxito</span></td>
+      <td>6.8M</td>
       <td>$7.76</td>
       <td>3 listas: agency 14→10, family 5, retreat 9<br><span class="ev">el recorte de agency fue a mano: 3 de prensa + 1 marcada para llamada</span></td>
-      <td class="ev">B · C</td>
-    </tr>
-    <tr>
-      <td><b>Cerrar libros en el CRM</b><br><span class="ev">3 intentos</span></td>
-      <td>6.9M<br><span class="ev">Fable 5 + Opus 5</span></td>
-      <td>$6.74</td>
-      <td>Secuencia y último contacto escritos en las 3 tandas cerradas</td>
-      <td class="ev">B · C</td>
     </tr>
     <tr>
       <td><b>Lanzar la tanda</b><br><span class="ev">4 intentos</span></td>
-      <td>5.9M<br><span class="ev">Fable 5 + Opus 5</span></td>
+      <td>5.9M</td>
       <td>$6.24</td>
-      <td>4 tandas lanzadas · <b>29 emails · 0 fallos</b></td>
-      <td class="ev">B · C</td>
+      <td>4 tandas lanzadas · <b>31 emails · 0 fallos</b></td>
     </tr>
     <tr>
       <td><b>Leer respuestas del inbox</b><br><span class="ev">1 intento</span></td>
-      <td>0.1M<br><span class="ev">Opus 5</span></td>
+      <td>0.1M</td>
       <td>$0.57</td>
       <td>Barrido de respuestas clasificado</td>
-      <td class="ev">A</td>
     </tr>
   </table></div>
-  <p class="ev">Las cuatro tandas juntas costaron $6.24 — menos que una sola búsqueda fallida.
-  Esa es la asimetría central del día: <b>encontrar a quién escribirle es lo caro; escribirle es barato.</b></p>
+  <p><strong>Buscar contactos se lleva el 69% de la factura.</strong> Mandar emails, en cambio, es
+  barato en comparación: las cuatro tandas juntas costaron $6.24 — menos que una sola búsqueda
+  fallida. Esa es la asimetría central del día: <b>encontrar a quién escribirle es lo caro;
+  escribirle es barato.</b></p>
 </section>
 
 <section>
   <div class="eyebrow">§02 · el volumen</div>
-  <h2>Por qué 84 millones de tokens no son 84 millones de trabajo</h2>
+  <h2>Por qué 87 millones de tokens no son 87 millones de trabajo</h2>
   <div class="tblwrap"><table>
     <tr><th>tipo</th><th>volumen</th><th>qué es</th></tr>
-    <tr><td>Lectura de caché</td><td><b>76.1M</b> <span class="ev">(90%)</span></td><td>contexto releído — la parte barata</td></tr>
-    <tr><td>Escritura de caché</td><td>6.5M</td><td>contexto nuevo que se guarda para releer</td></tr>
-    <tr><td>Salida</td><td>1.42M <span class="ev">(1.7%)</span></td><td>lo que el modelo efectivamente escribió</td></tr>
+    <tr><td>Lectura de caché</td><td><b>78.5M</b> <span class="ev">(90%)</span></td><td>contexto releído — la parte barata</td></tr>
+    <tr><td>Escritura de caché</td><td>6.7M</td><td>contexto nuevo que se guarda para releer</td></tr>
+    <tr><td>Salida</td><td>1.44M <span class="ev">(1.7%)</span></td><td>lo que el modelo efectivamente escribió</td></tr>
     <tr><td>Entrada nueva</td><td>201k</td><td>instrucciones y datos frescos</td></tr>
   </table></div>
   <p>El 90% del tráfico es la máquina releyendo lo que ya sabe. <strong>El volumen no mide el
@@ -355,7 +358,7 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
 
 <section>
   <div class="eyebrow">§03 · la pérdida</div>
-  <h2>Los $25.87 que no compraron nada</h2>
+  <h2>Los $25.88 que no compraron nada</h2>
   <p>Dos modos de falla distintos, y el segundo es el peligroso.</p>
 
   <div class="callout"><p><strong>1 · Credencial caída — $10.48.</strong> Tres corridas murieron con
@@ -383,7 +386,7 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
     <tr><th>ventana</th><th>horario (UTC)</th><th>corridas</th><th>gasto</th><th>cómo terminó</th></tr>
     <tr><td><b>A</b></td><td>15:46 → 17:52</td><td>3</td><td>$27.92</td><td>murió con «Not logged in»</td></tr>
     <tr><td><b>B</b></td><td>17:55 → 19:34</td><td>14</td><td>$71.52</td><td>murió con «Not logged in» (3 seguidas)</td></tr>
-    <tr><td><b>C</b></td><td>19:36 → cierre</td><td>4</td><td>$27.95</td><td>viva</td></tr>
+    <tr><td><b>C</b></td><td>19:36 → cierre</td><td>5</td><td>$29.56</td><td>viva</td></tr>
   </table></div>
   <p>Los transcripts <strong>no registran el email de la cuenta</strong>
   <span class="chip unk">unk</span>. Se puede probar dónde están los cortes y qué credencial está
@@ -398,9 +401,9 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
     <tr><th>#</th><th>qué</th><th>por qué</th><th>efecto</th></tr>
     <tr>
       <td><b>1</b></td>
-      <td>Declarar modelo fijo por acción</td>
-      <td>Las corridas heredan el modelo activo en la sesión, no el que la tarea necesita: lanzar un loop de envío y escribir un campo del CRM salieron en <b>Opus</b> hoy. Son tareas mecánicas.</td>
-      <td>$4–6/día <span class="chip est">est</span></td>
+      <td>Declarar el modelo por acción</td>
+      <td>El mecanismo ya existe y está probado: el comando con que la máquina lanza cada corrida muestra que la búsqueda de contactos pide su modelo explícitamente, mientras que las demás salen <b>sin declarar</b> y heredan lo que esté activo en la sesión. Es una línea por acción.<br><span class="ev"><b>Con una cautela:</b> lanzar la tanda no es puramente mecánico — ese paso re-chequea el tope diario antes de enviar, y un tope leído de menos es justo el número que arma un envío que no debía salir. Ahí conviene un modelo intermedio, no el más chico. Cerrar los libros (transcripción pura del ledger a Airtable) sí admite el más chico.</span></td>
+      <td>$8–10/día <span class="chip est">est</span></td>
     </tr>
     <tr>
       <td><b>2</b></td>
@@ -425,11 +428,12 @@ factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p
 
 <footer>
   <p><b>Fuentes en disco:</b> <code>data/synergy.db</code> tabla <code>runs</code> — costo y estado
-  por corrida, 21 filas, as_of 2026-08-17T20:11Z · <code>~/.claude/projects/…-lc-chaman/*.jsonl</code>
-  — tokens por mensaje, 21 sesiones con datos, as_of 20:11Z ·
-  <code>vault/campaigns/*/bodies/*.sent.jsonl</code> — los 29 envíos, líneas <code>kind:"send"</code>
-  reales, nunca dry-run · Airtable <code>tblYka1Z7AK6RGjwv</code> — 519 filas de reservorio, 140 con
-  el <code>Run_Tag</code> de hoy.</p>
+  por corrida, 22 filas, as_of 2026-08-17T20:12Z · <code>~/.claude/projects/…-lc-chaman/*.jsonl</code>
+  — tokens por mensaje, 22 sesiones con datos, as_of 20:12Z ·
+  <code>vault/campaigns/*/bodies/*.sent.jsonl</code> y <code>*/replies.sent.jsonl</code> — los 31
+  envíos, líneas <code>kind:"send"</code> y <code>kind:"reply_send"</code> reales, nunca dry-run ·
+  Airtable <code>tblYka1Z7AK6RGjwv</code> — 519 filas de reservorio, 140 con el <code>Run_Tag</code>
+  de hoy.</p>
   <p><b>Fuentes externas:</b> ninguna. Todas las cifras salen del registro propio.</p>
   <p><b>Registro de verdad:</b> <code>synergy-toolkit/docs/costo-maquina-2026-08-17.md</code>. Si esta
   página y el markdown dicen cosas distintas, el markdown gana.</p>
