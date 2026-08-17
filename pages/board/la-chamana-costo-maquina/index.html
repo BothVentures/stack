@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Costo de la máquina</title>
+<script>try{var _t=localStorage.getItem('hermes-theme');if(_t){document.documentElement.classList.toggle('light',_t==='light');document.documentElement.setAttribute('data-theme',_t)}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  FUENTE CANONICA (markdown, registro de verdad): synergy-toolkit/docs/costo-maquina-2026-08-17.md
+  Esta pagina es su cara legible. Si las dos dicen cosas distintas, el markdown gana y esto esta viejo.
+
+  Publicado en BothVentures/stack, en pages/board/la-chamana-costo-maquina/index.html
+  El slug NO cambia aunque cambie el titulo: un URL que alguien ya tiene no se rompe.
+
+  TEMA: oxide-desk, el theme de las documentaciones GTM de La Chamana (Boris, 16-ago).
+  Receta: docs/design/theme-oxide-desk.md. Implementacion de referencia: docs/lead-machine-tracker.html,
+  de donde se copiaron estos estilos enteros, sin forkear nada.
+  Orange oxide reservado a UN numero: los 25,87 dolares quemados. Nada mas lo usa.
+  Lo desconocido se declara desconocido: la identidad de las cuentas A y B es unk, no un nombre inventado.
+
+  TRAMPA REGISTRADA (17-ago): no escribir la etiqueta de estilos literal dentro de este comentario.
+  Un reemplazo por regex la toma como el inicio del bloque real, se come el cierre del comentario, y
+  la pagina entera queda comentada. Se encontro mirando la captura, no en ningun test.
+-->
+<style>
+/* ── La Chamana · Blue Earth palette (canonical, AG-001) sobre arquitectura Factory Glass ──
+   Paleta: bone · petrol · coral · red oxide · orange oxide · bari stone · olive · mint · peach.
+   Nunca blanco puro, nunca negro puro. Orange oxide = action numbers / hot accents, nada más. ── */
+:root{
+  --bone:#EDEDE5; --petrol:#1C2934; --coral:#F5D5D1; --red-oxide:#632403; --orange:#994100;
+  --bari-dark:#444D51; --bari-light:#ABB9BC; --olive:#808266; --mint:#D7E2B5; --peach:#F4CBA6;
+
+  --bg:#111C24;
+  --glass:rgba(26,40,48,.55); --glass-2:rgba(26,40,48,.42); --glass-3:rgba(19,29,37,.55);
+  --t-1:rgba(237,237,229,.94); --t-2:rgba(171,185,188,.86); --t-3:rgba(171,185,188,.58); --t-4:rgba(171,185,188,.40);
+  --edge:rgba(171,185,188,.16); --edge-soft:rgba(171,185,188,.09); --hi:rgba(237,237,229,.08);
+  --edge-warm:rgba(153,65,0,.30);
+  --accent:var(--orange); --accent-soft:rgba(171,185,188,.08);
+
+  --green:var(--mint);  --green-bg:rgba(128,130,102,.18); --green-bd:rgba(128,130,102,.32);
+  --amber:var(--peach); --amber-bg:rgba(244,203,166,.12); --amber-bd:rgba(244,203,166,.26);
+  --red:var(--coral);   --red-bg:rgba(99,36,3,.28);       --red-bd:rgba(153,65,0,.38);
+  --hot:var(--peach);   --hot-bg:rgba(153,65,0,.22);      --hot-bd:rgba(153,65,0,.42);
+  --hot-ink:var(--peach);
+
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code','Fira Mono',ui-monospace,Menlo,monospace;
+
+  --r-shell:26px; --r-card:16px; --r-tile:12px;
+  --blur:saturate(1.25) blur(30px); --blur-card:saturate(1.15) blur(18px);
+  --shadow-card:0 10px 34px rgba(9,16,22,.42); --shadow-shell:0 40px 120px rgba(9,16,22,.62);
+  --wash-a:rgba(153,65,0,.12); --wash-b:rgba(68,77,81,.18);
+}
+html.light, :root[data-theme="light"]{
+  --bg:#EDEDE5;
+  --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+  --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.48);
+  --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+  --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+  --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+  --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+  --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+  --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+  --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+  --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#EDEDE5;
+    --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+    --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.48);
+    --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+    --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+    --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+    --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+    --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+    --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+    --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+    --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{font-family:var(--font);color:var(--t-1);background:var(--bg);line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding:clamp(14px,3vw,36px);position:relative;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 600px at 15% 0%,var(--wash-a),transparent 55%),
+  radial-gradient(ellipse 900px 600px at 85% 100%,var(--wash-b),transparent 50%)}
+.wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;background:var(--glass);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--edge);
+  border-radius:var(--r-shell);box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:clamp(20px,4vw,52px)}
+h1{font-family:var(--serif);font-size:clamp(30px,5vw,46px);font-weight:300;letter-spacing:-.005em;text-wrap:balance;line-height:1.1}
+h1 b{font-weight:600}
+h2{font-family:var(--serif);font-size:clamp(22px,3vw,28px);font-weight:500;letter-spacing:0;margin-bottom:6px;text-wrap:balance;line-height:1.2}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
+p{color:var(--t-2);font-size:15px;max-width:78ch;margin-bottom:10px}
+p strong,li strong,td strong{color:var(--t-1);font-weight:600}
+small,.src{color:var(--t-4);font-size:11.5px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--t-4);margin-bottom:8px}
+section{margin-top:clamp(26px,4vw,40px)}
+ul{margin:6px 0 10px 18px;color:var(--t-2);font-size:14px}
+ol{margin:6px 0 10px 20px;color:var(--t-2);font-size:14px}
+li{margin-bottom:7px;max-width:78ch}
+a{color:var(--t-1)}
+code{font-family:var(--mono);font-size:11.5px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-radius:5px;padding:1px 5px}
+.card{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);
+  padding:clamp(14px,2.4vw,22px)}
+.tile{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:12px 14px}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:11px;
+  font-family:var(--mono);font-weight:500;letter-spacing:.02em;background:var(--glass-3);color:var(--t-3);border:1px solid var(--edge)}
+.badge.hot{background:var(--hot-bg);color:var(--hot);border-color:var(--hot-bd)}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.badge.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.badge.crit{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:9.5px;font-weight:600;font-family:var(--mono);
+  letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.chip.obs{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.chip.est{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.chip.unk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.chip.dec{background:var(--accent-soft);color:var(--t-1);border:1px solid var(--edge)}
+.chip.none{background:transparent;color:var(--t-3);border:1px dashed var(--edge)}
+.tblwrap{overflow-x:auto;border:1px solid var(--edge-soft);border-radius:var(--r-tile);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t-4);
+  text-align:left;padding:10px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td b{color:var(--t-1);font-weight:600}
+.ev{color:var(--t-3);font-size:12px}
+.btn{border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);border-radius:999px;
+  padding:6px 14px;font-size:11.5px;font-weight:500;font-family:var(--mono);cursor:pointer;transition:all .18s}
+.btn:hover{color:var(--t-1);border-color:var(--hi)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:8px}
+header>div:first-child{flex:1 1 420px;min-width:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.theme-toggle{cursor:pointer}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--edge-soft);color:var(--t-4);font-size:11.5px;line-height:1.7}
+footer p{color:var(--t-4);font-size:11.5px;max-width:none;margin-bottom:8px}
+footer b{color:var(--t-3)}
+.rise{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.rise{animation:none}html{scroll-behavior:auto}}
+html{scroll-behavior:smooth}
+.callout{border-left:2px solid var(--amber-bd);padding:10px 14px;background:var(--amber-bg);
+  border-radius:0 var(--r-tile) var(--r-tile) 0;margin:12px 0}
+.callout p{margin-bottom:0;color:var(--t-1);font-size:13.5px}
+.callout.g{border-left-color:var(--green-bd);background:var(--green-bg)}
+.callout.r{border-left-color:var(--red-bd);background:var(--red-bg)}
+.callout.n{border-left-color:var(--edge);background:var(--glass-3)}
+
+/* ── strip de números ── */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0}
+.strip .tile b{display:block;font-family:var(--mono);font-size:27px;font-weight:600;color:var(--t-1);letter-spacing:-.02em;line-height:1.15}
+.strip .tile span{color:var(--t-4);font-size:11.5px;line-height:1.45;display:block;margin-top:5px}
+.strip .tile{padding:16px 18px}
+.tile.hot{background:var(--hot-bg);border-color:var(--hot-bd)}
+.tile.hot b{color:var(--hot-ink)}
+.tile.hot span{color:var(--hot)}
+.tile.ok{background:var(--green-bg);border-color:var(--green-bd)}
+.tile.ok b,.tile.ok span{color:var(--green)}
+
+/* ── mapa temporal ── */
+.tlbox{overflow-x:auto;background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);padding:16px 18px 12px;margin:12px 0}
+.tlchart{position:relative;min-width:900px}
+.tlrow{display:grid;grid-template-columns:250px repeat(20,1fr);align-items:center;min-height:34px;border-bottom:1px solid var(--edge-soft)}
+.tlrow.head{min-height:24px;border-bottom:1px solid var(--edge)}
+.tllabel{font-size:12px;color:var(--t-2);padding:5px 12px 5px 0;line-height:1.35}
+.tllabel b{color:var(--t-1);font-weight:600}
+.tlsub{display:block;font-size:10.5px;color:var(--t-4)}
+.tlmonth{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--t-4);border-left:1px solid var(--edge-soft);padding-left:6px}
+.tlbar{height:22px;border-radius:7px;font-family:var(--mono);font-size:10px;line-height:21px;padding:0 9px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;font-weight:600;z-index:1}
+.tlbar.done{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
+.tlbar.wait{background:var(--amber-bg);border:1px dashed var(--amber-bd);color:var(--amber)}
+.tlbar.plan{background:var(--glass-2);border:1px dashed var(--edge);color:var(--t-3)}
+.tlms{width:11px;height:11px;transform:rotate(45deg);border-radius:2.5px;background:var(--t-3);z-index:1;justify-self:start}
+.tlms.crit{background:var(--red)} .tlms.warn{background:var(--amber)} .tlms.ok{background:var(--green)}
+.tlgrid{position:absolute;top:26px;bottom:0;width:1px;background:var(--edge-soft);pointer-events:none}
+.tlhoy{position:absolute;top:22px;bottom:0;width:1px;background:var(--hot-bd);pointer-events:none}
+.tlhoylab{position:absolute;top:26px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.16em;color:var(--hot);transform:translateX(5px)}
+.tlgroup{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);padding:12px 0 3px}
+
+/* ── motores ── */
+.motors{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin:14px 0 8px}
+.motor{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);
+  padding:15px 17px 13px;display:flex;flex-direction:column;box-shadow:inset 0 1px 0 var(--hi)}
+.motor.strong{background:var(--glass-2);border-color:var(--edge)}
+.motor.cross{border-style:dashed}
+.motor.blocked{border-color:var(--edge-warm)}
+.mid{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4)}
+.mname{font-family:var(--serif);font-weight:600;font-size:20px;margin:4px 0 10px;line-height:1.2;color:var(--t-1);letter-spacing:0}
+.mrow{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:9px}
+.mnat{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t-2)}
+.mnat.soft{color:var(--t-4);font-weight:700}
+.mpay{color:var(--t-4);font-size:11px;margin-left:auto;text-align:right}
+.mfact{color:var(--t-2);font-size:12.5px;line-height:1.55;border-top:1px solid var(--edge-soft);padding-top:9px;margin-top:auto}
+
+/* ── nav de fases ── */
+.phasenav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.pnav{flex:1 1 180px;text-align:left;border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);
+  border-radius:var(--r-tile);padding:10px 13px;font-family:var(--font);cursor:pointer;transition:all .18s;
+  box-shadow:inset 0 1px 0 var(--hi)}
+.pnav:hover{border-color:var(--hi);color:var(--t-1);transform:translateY(-1px)}
+.pnav[aria-expanded="true"]{background:var(--glass-2);border-color:var(--hi);color:var(--t-1)}
+.pnav .pn-idx{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4)}
+.pnav .pn-name{display:block;font-family:var(--serif);font-size:17px;font-weight:600;margin:3px 0 7px;line-height:1.2}
+.navbar-actions{display:flex;gap:8px;align-items:center;margin:10px 0 4px;flex-wrap:wrap}
+
+/* ── fases colapsables ── */
+.phase{border:1px solid var(--edge-soft);border-radius:var(--r-card);background:var(--glass-3);margin:10px 0;
+  overflow:hidden;scroll-margin-top:14px}
+.phase[open]{background:var(--glass-2);border-color:var(--edge);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.phase>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.phase>summary::-webkit-details-marker{display:none}
+.phase>summary:hover{background:var(--accent-soft)}
+.ph-idx{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);flex:0 0 auto}
+.ph-name{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--t-1);letter-spacing:0;flex:1 1 260px;min-width:0;line-height:1.2}
+.ph-name span{display:block;font-family:var(--font);font-size:12px;font-weight:400;color:var(--t-3);letter-spacing:0;margin-top:3px}
+.ph-chev{color:var(--t-3);font-size:12px;transition:transform .2s;flex:0 0 auto;margin-left:auto}
+.phase[open] .ph-chev{transform:rotate(180deg)}
+.ph-body{padding:0 18px 18px;border-top:1px solid var(--edge-soft)}
+.ph-body>.objtitle:first-child{margin-top:14px}
+.objtitle{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);margin:18px 0 5px}
+.obj{border-left:2px solid var(--edge)}
+.obj td:first-child{color:var(--t-4);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;font-weight:700}
+.entry{color:var(--t-3);font-size:13px;margin:6px 0 10px;max-width:78ch}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;color:var(--t-3);font-size:12px;align-items:center}
+</style>
+</head><body data-updated="2026-08-17">
+<div class="wrap rise">
+
+<header>
+  <div>
+    <div class="eyebrow">La Chamana · El Chaman OS · Registro financiero</div>
+    <h1>Costo de la <b>máquina</b></h1>
+    <div class="badges">
+      <span class="badge">v1.0 · 17 ago 2026</span>
+      <span class="badge crit">INTERNO — no circular fuera del equipo</span>
+      <span class="badge hot">$127.39 · 29 emails · 140 contactos</span>
+      <span class="badge warn" id="freshness">actualizado hoy</span>
+    </div>
+  </div>
+  <button class="badge theme-toggle" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()">◐ theme</button>
+</header>
+
+<p><strong>El día en que la máquina corrió de punta a punta por primera vez, y lo que costó.</strong>
+El 17 de agosto la máquina de outreach hizo el ciclo completo sin que nadie la empujara paso a paso:
+buscó contactos nuevos, los calificó, escribió los emails uno por uno, los mandó espaciados y cerró
+los libros en el CRM. Salieron <strong>29 emails reales</strong> a organizaciones que nunca nos habían
+oído nombrar, y entraron <strong>140 contactos nuevos</strong> al reservorio.</p>
+
+<p>Este documento mide qué costó eso. No es un pronóstico: cada cifra sale del registro de corridas de
+la máquina y de los transcripts que Claude Code escribe en disco. Todo lleva <span class="chip obs">obs</span>
+salvo lo que esté marcado de otra forma.</p>
+
+<div class="callout"><p><strong>La lectura en una línea:</strong> mandar emails es casi gratis
+($0.72 cada uno, con copy personalizada); <strong>buscar contactos nuevos se lleva el 70% de la
+factura</strong>. Y $25.87 —una quinta parte del día— no compraron nada.</p></div>
+
+<div class="strip">
+  <div class="tile"><b>$127.39</b><span>costo total del día · 21 corridas · 84.2M tokens</span></div>
+  <div class="tile ok"><b>$0.63</b><span>por contacto capturado · 140 filas nuevas</span></div>
+  <div class="tile ok"><b>$0.72</b><span>por email escrito y enviado · 29 emails, 0 fallos</span></div>
+  <div class="tile hot"><b>$25.87</b><span>quemado sin producir nada · el número que duele</span></div>
+</div>
+
+<section>
+  <div class="eyebrow">§00 · para leer la tabla</div>
+  <h2>Cinco palabras que el equipo no comparte todavía</h2>
+  <p>Nadie fuera de la sesión que lo construyó usa este vocabulario. Antes de la tabla, entonces:</p>
+  <div class="tblwrap"><table>
+    <tr><th>palabra</th><th>qué es</th></tr>
+    <tr><td><b>corrida</b></td><td>Una invocación de la máquina que hace UNA cosa: buscar contactos, escribir emails, lanzar una tanda. Hoy hubo 21.</td></tr>
+    <tr><td><b>token</b></td><td>La unidad en que se mide y se cobra el trabajo de un modelo de lenguaje — aproximadamente ¾ de palabra. Se cobra distinto según sea de entrada o de salida.</td></tr>
+    <tr><td><b>caché</b></td><td>Contexto que la máquina ya leyó antes y vuelve a leer. Cuesta una fracción de lo que cuesta texto nuevo, y es la mayoría del volumen.</td></tr>
+    <tr><td><b>tanda</b></td><td>Un lote de emails que sale espaciado, 2 a 7 minutos entre uno y otro, para no quemar el dominio. Hoy salieron 4.</td></tr>
+    <tr><td><b>reservorio</b></td><td>La tabla de Airtable donde caen los contactos crudos, antes de ser aprobados para recibir un email.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <div class="eyebrow">§01 · el desglose</div>
+  <h2>Qué costó cada acción</h2>
+  <div class="tblwrap"><table>
+    <tr><th>acción</th><th>tokens y modelo</th><th>dinero</th><th>resultado</th><th>cuenta</th></tr>
+    <tr>
+      <td><b>Buscar contactos nuevos</b><br><span class="ev">6 intentos</span></td>
+      <td>45.7M<br><span class="ev">Sonnet 5</span></td>
+      <td><b>$88.74</b></td>
+      <td>140 filas nuevas: agency 55, retreat 50, family 35.<br><span class="ev">2 de los 6 intentos no dejaron nada</span></td>
+      <td class="ev">A · B · C</td>
+    </tr>
+    <tr>
+      <td><b>Escribir los emails</b><br><span class="ev">4 intentos</span></td>
+      <td>18.8M<br><span class="ev">Fable 5</span></td>
+      <td>$17.34</td>
+      <td>24 bodies personalizadas una por una<br><span class="ev">revisión de voz sin fallos duros</span></td>
+      <td class="ev">B · C</td>
+    </tr>
+    <tr>
+      <td><b>Armar la lista de la tanda</b><br><span class="ev">3 intentos</span></td>
+      <td>6.8M<br><span class="ev">Fable 5</span></td>
+      <td>$7.76</td>
+      <td>3 listas: agency 14→10, family 5, retreat 9<br><span class="ev">el recorte de agency fue a mano: 3 de prensa + 1 marcada para llamada</span></td>
+      <td class="ev">B · C</td>
+    </tr>
+    <tr>
+      <td><b>Cerrar libros en el CRM</b><br><span class="ev">3 intentos</span></td>
+      <td>6.9M<br><span class="ev">Fable 5 + Opus 5</span></td>
+      <td>$6.74</td>
+      <td>Secuencia y último contacto escritos en las 3 tandas cerradas</td>
+      <td class="ev">B · C</td>
+    </tr>
+    <tr>
+      <td><b>Lanzar la tanda</b><br><span class="ev">4 intentos</span></td>
+      <td>5.9M<br><span class="ev">Fable 5 + Opus 5</span></td>
+      <td>$6.24</td>
+      <td>4 tandas lanzadas · <b>29 emails · 0 fallos</b></td>
+      <td class="ev">B · C</td>
+    </tr>
+    <tr>
+      <td><b>Leer respuestas del inbox</b><br><span class="ev">1 intento</span></td>
+      <td>0.1M<br><span class="ev">Opus 5</span></td>
+      <td>$0.57</td>
+      <td>Barrido de respuestas clasificado</td>
+      <td class="ev">A</td>
+    </tr>
+  </table></div>
+  <p class="ev">Las cuatro tandas juntas costaron $6.24 — menos que una sola búsqueda fallida.
+  Esa es la asimetría central del día: <b>encontrar a quién escribirle es lo caro; escribirle es barato.</b></p>
+</section>
+
+<section>
+  <div class="eyebrow">§02 · el volumen</div>
+  <h2>Por qué 84 millones de tokens no son 84 millones de trabajo</h2>
+  <div class="tblwrap"><table>
+    <tr><th>tipo</th><th>volumen</th><th>qué es</th></tr>
+    <tr><td>Lectura de caché</td><td><b>76.1M</b> <span class="ev">(90%)</span></td><td>contexto releído — la parte barata</td></tr>
+    <tr><td>Escritura de caché</td><td>6.5M</td><td>contexto nuevo que se guarda para releer</td></tr>
+    <tr><td>Salida</td><td>1.42M <span class="ev">(1.7%)</span></td><td>lo que el modelo efectivamente escribió</td></tr>
+    <tr><td>Entrada nueva</td><td>201k</td><td>instrucciones y datos frescos</td></tr>
+  </table></div>
+  <p>El 90% del tráfico es la máquina releyendo lo que ya sabe. <strong>El volumen no mide el
+  trabajo</strong> — lo que se paga caro es ese 1.7% de salida, y es exactamente la parte que
+  produce los emails.</p>
+</section>
+
+<section>
+  <div class="eyebrow">§03 · la pérdida</div>
+  <h2>Los $25.87 que no compraron nada</h2>
+  <p>Dos modos de falla distintos, y el segundo es el peligroso.</p>
+
+  <div class="callout"><p><strong>1 · Credencial caída — $10.48.</strong> Tres corridas murieron con
+  <em>«Not logged in»</em> cuando la cuenta de Claude Code se desconectó a mitad del día. La peor se
+  llevó <b>$8.56</b> después de 17 minutos de trabajo ya hecho.</p></div>
+
+  <div class="callout r"><p><strong>2 · Éxito vacío — $15.40.</strong> Una búsqueda de contactos de
+  retreat reportó <code>success</code>, gastó 3.74M tokens, escribió su informe diciendo que todo
+  había salido bien — y <b>no escribió una sola fila en Airtable</b>. El reservorio quedó idéntico
+  antes y después.</p></div>
+
+  <p>El segundo caso es el que hay que vigilar, porque <strong>no aparece rojo en ningún
+  tablero</strong>: la corrida se declara exitosa. La captura de retreat terminó costando
+  <b>$50.09 por 50 contactos</b> porque hubo que intentarla tres veces. A la tercera funcionó.</p>
+
+  <p>La regla que queda escrita: <strong>el estado de una corrida no es evidencia de su
+  resultado.</strong> Para cada acción hay UN artefacto que es la verdad — el ledger del envío, el
+  conteo de filas en Airtable — y es lo único que se reporta.</p>
+</section>
+
+<section>
+  <div class="eyebrow">§04 · las cuentas</div>
+  <h2>Tres ventanas de credencial, dos cortes</h2>
+  <div class="tblwrap"><table>
+    <tr><th>ventana</th><th>horario (UTC)</th><th>corridas</th><th>gasto</th><th>cómo terminó</th></tr>
+    <tr><td><b>A</b></td><td>15:46 → 17:52</td><td>3</td><td>$27.92</td><td>murió con «Not logged in»</td></tr>
+    <tr><td><b>B</b></td><td>17:55 → 19:34</td><td>14</td><td>$71.52</td><td>murió con «Not logged in» (3 seguidas)</td></tr>
+    <tr><td><b>C</b></td><td>19:36 → cierre</td><td>4</td><td>$27.95</td><td>viva</td></tr>
+  </table></div>
+  <p>Los transcripts <strong>no registran el email de la cuenta</strong>
+  <span class="chip unk">unk</span>. Se puede probar dónde están los cortes y qué credencial está
+  activa al final <span class="chip obs">obs</span>, pero no a qué cuenta corresponde cada ventana.
+  Lo que sí es medible: <strong>cada corte costó plata.</strong></p>
+</section>
+
+<section>
+  <div class="eyebrow">§05 · qué sigue</div>
+  <h2>Cuatro cosas que bajarían la factura</h2>
+  <div class="tblwrap"><table>
+    <tr><th>#</th><th>qué</th><th>por qué</th><th>efecto</th></tr>
+    <tr>
+      <td><b>1</b></td>
+      <td>Declarar modelo fijo por acción</td>
+      <td>Las corridas heredan el modelo activo en la sesión, no el que la tarea necesita: lanzar un loop de envío y escribir un campo del CRM salieron en <b>Opus</b> hoy. Son tareas mecánicas.</td>
+      <td>$4–6/día <span class="chip est">est</span></td>
+    </tr>
+    <tr>
+      <td><b>2</b></td>
+      <td>Verificar el resultado antes de cerrar la corrida</td>
+      <td>Una búsqueda que escribe cero filas debería terminar en rojo, no en verde.</td>
+      <td>convierte el éxito vacío en reintento inmediato</td>
+    </tr>
+    <tr>
+      <td><b>3</b></td>
+      <td>Chequear la credencial antes de encolar trabajo caro</td>
+      <td>Evita perder 17 minutos y $8.56 a mitad de una búsqueda.</td>
+      <td>$8.56 por corte evitado <span class="chip obs">obs</span></td>
+    </tr>
+    <tr>
+      <td><b>4</b></td>
+      <td>Arreglar el campo <code>Brand_Safety</code> del motor de retreat</td>
+      <td>El motor no lo escribe y el escritorio de promoción retiene toda fila vacía: una búsqueda perfecta de 50 filas muestra <b>0 promovibles</b> hasta que una persona abre Airtable. Es el mismo síntoma que «la búsqueda no capturó nada».</td>
+      <td>desbloquea cada búsqueda de retreat</td>
+    </tr>
+  </table></div>
+</section>
+
+<footer>
+  <p><b>Fuentes en disco:</b> <code>data/synergy.db</code> tabla <code>runs</code> — costo y estado
+  por corrida, 21 filas, as_of 2026-08-17T20:11Z · <code>~/.claude/projects/…-lc-chaman/*.jsonl</code>
+  — tokens por mensaje, 21 sesiones con datos, as_of 20:11Z ·
+  <code>vault/campaigns/*/bodies/*.sent.jsonl</code> — los 29 envíos, líneas <code>kind:"send"</code>
+  reales, nunca dry-run · Airtable <code>tblYka1Z7AK6RGjwv</code> — 519 filas de reservorio, 140 con
+  el <code>Run_Tag</code> de hoy.</p>
+  <p><b>Fuentes externas:</b> ninguna. Todas las cifras salen del registro propio.</p>
+  <p><b>Registro de verdad:</b> <code>synergy-toolkit/docs/costo-maquina-2026-08-17.md</code>. Si esta
+  página y el markdown dicen cosas distintas, el markdown gana.</p>
+  <p><em>Propone. No aprieta nada, no envía nada, no gasta nada. La primera press es de Boris.</em></p>
+</footer>
+
+</div>
+<script>
+(function(){
+  var b=document.body, el=document.getElementById('freshness');
+  if(!b||!el) return;
+  var d=b.getAttribute('data-updated'); if(!d) return;
+  var days=Math.floor((Date.now()-new Date(d+'T00:00:00Z').getTime())/86400000);
+  if(days<=0){el.textContent='actualizado hoy'; el.className='badge ok'; return;}
+  el.textContent='actualizado hace '+days+(days===1?' día':' días');
+  el.className='badge '+(days>=7?'crit':'warn');
+})();
+</script>
+</body>
+</html>
