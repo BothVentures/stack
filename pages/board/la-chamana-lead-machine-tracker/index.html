@@ -245,7 +245,7 @@ html{scroll-behavior:smooth}
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;color:var(--t-3);font-size:12px;align-items:center}
 </style>
 </head>
-<body data-updated="2026-08-17">
+<body data-updated="2026-08-18">
 <div class="wrap rise">
 
 <header>
@@ -253,7 +253,7 @@ html{scroll-behavior:smooth}
     <div class="eyebrow">La Chamana · El Chaman OS · Tracker de ejecución</div>
     <h1>GTM <b>Q3/Q4 2026</b></h1>
     <div class="badges">
-      <span class="badge">v1.8 · 17 ago 2026</span>
+      <span class="badge">v1.9 · 18 ago 2026</span>
       <span class="badge crit">INTERNO — no circular fuera del equipo</span>
       <span class="badge hot">La máquina de leads · 140–400 quality leads</span>
       <span class="badge warn" id="freshness">actualizado hoy</span>
@@ -268,16 +268,29 @@ Esta página es el estado vivo de ese plan: la actualiza la sesión que cambia u
 <strong>cada celda lleva su evidencia y su as_of</strong>. Lo desconocido se declara desconocido: nunca se pinta
 verde ni se renderiza como 0.</p>
 
-<div class="callout"><p><strong>Hoy (17-ago):</strong> la conversión del plan a contratos está completa y verificada
-(doctor 0 rojos). <strong>#7 aprobada</strong> (W18 en build) y <strong>#2 decidida</strong>: la semana 17–21 corre a 30–40/día
-L·M·X·V — el plan diario vive en §00. Queda abierta <strong>#8</strong> (definición de quality lead: sin ella, lo que la semana
-produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin haber corrido jamás.</p></div>
+<div class="callout"><p><strong>Hoy (18-ago) · lo que cambió desde ayer, en orden de urgencia:</strong></p>
+<ol>
+  <li><b>Hay una wave esperando tu press ahora mismo</b> — follow-up E2 de agencias, 5 filas, en
+  <code>pending_approval</code> desde las <b>14:53Z</b> de hoy (gate <code>aa319064</code>). Nadie más la puede aprobar.</li>
+  <li><b>El corta-circuitos de rebotes se disparó por primera vez, en vivo.</b> La wave de retreats del 17
+  rebotó <b>2 de 9 (22,2%)</b> contra un techo de 3%, y el rail <b>retreats-a se refusa solo</b> en el dispatch hasta que
+  la lista se limpie. Detalle y evidencia en §00. Esto es W18 haciendo exactamente lo que se aprobó el 17 — y es la
+  primera vez que una guarda de esta máquina para algo real.</li>
+  <li><b>La máquina corrió de punta a punta por primera vez (17-ago):</b> 4 waves, 3 rails,
+  <b>29 emails fríos + 2 respuestas</b>, 140 prospectos nuevos al reservorio — y <b>29 contra un objetivo de 30</b>,
+  bajo objetivo por uno. Lo que costó ese día está medido: <b>$129,00</b> (registro completo:
+  <code>docs/costo-maquina-2026-08-17.md</code>) y mueve las cifras de §05.</li>
+  <li><b>#7 ya no está «en build»:</b> W18 está vivo desde el 17-ago (<code>0d70d39</code>). Lo único que le falta es el
+  verificador de direcciones — el adaptador existe y no tiene proveedor conectado.</li>
+</ol>
+<p>Sigue abierta <strong>#8</strong> (definición de quality lead: sin ella, lo que esta semana produzca solo cuenta como
+respuestas). Cinco de los siete motores siguen sin haber corrido jamás.</p></div>
 
 <div class="strip">
-  <div class="tile"><b>7 / 75</b><span>noches (norte) · venture.yaml · as_of 10-ago — 6 días viejo</span></div>
-  <div class="tile hot"><b>19 / ~18.000</b><span>humanos contactados / alcanzables en la ventana · 3 ledgers</span></div>
-  <div class="tile ok"><b>2 / 10</b><span>decisiones de Boris resueltas · cola del 15-ago (#2 16-ago · #7 17-ago)</span></div>
-  <div class="tile ok"><b>Fase 0 ✓</b><span>contratos escritos · las otras cuatro esperan decisiones</span></div>
+  <div class="tile"><b>7 / 75</b><span>noches (norte) · venture.yaml · as_of 10-ago — 8 días viejo: el sync de Cloudbeds no volvió a escribir</span></div>
+  <div class="tile hot"><b>48 / ~18.000</b><span>humanos contactados / alcanzables en la ventana · 3 ledgers · 48 direcciones únicas, 0 duplicados</span></div>
+  <div class="tile ok"><b>4 / 10</b><span>decisiones de Boris resueltas · #1 y #5 el 16-ago · #2 el 16-ago · #7 el 17-ago</span></div>
+  <div class="tile hot"><b>1 press</b><span>wave E2 de agencias (5 filas) esperando aprobación · gate <code>aa319064</code> · as_of 18-ago 15:00Z</span></div>
 </div>
 
 <!-- WEEK-STRIP:BEGIN (generado por scripts/week-strip.mjs — no editar a mano) -->
@@ -291,17 +304,33 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
   dentro de esa regla, no un recorte de la regla: si los primeros días vienen limpios, el techo del día es el de la regla (40).</p>
   <p class="ev">La columna <b>enviado</b> sale únicamente de los ledgers append-only
   (<code>vault/campaigns/*/bodies/*.sent.jsonl</code>, líneas <code>kind:"send"</code> reales, nunca dry-run) —
-  nadie la mantiene a mano. Regenerar: <code>node scripts/week-strip.mjs</code> + republicar. as_of <b>2026-08-17 02:37Z</b>
+  nadie la mantiene a mano. La columna <b>bounces</b> sale de las filas de <code>suppression</code> que citan
+  el manifiesto de esa wave — la MISMA fuente que juzga el corta-circuitos W18 (<code>exec/bounce-pause.ts</code>),
+  para que el tracker y el rail no puedan discrepar — y sigue <i>desconocida</i> mientras no haya corrido un sweep
+  POSTERIOR al día. Regenerar: <code>node scripts/week-strip.mjs</code> + republicar. as_of <b>2026-08-18 15:07Z</b>
   — los días corren en UTC, el mismo reloj del cap diario y de los ledgers (un sábado a la noche ART ya es domingo/lunes UTC).</p>
   <div class="tblwrap"><table>
     <tr><th>día</th><th>objetivo</th><th>enviado (ledger)</th><th>por campaña</th><th>bounces</th><th>estado</th></tr>
-    <tr><td><b>lun 17</b></td><td>30</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip est">hoy</span></td></tr>
-    <tr><td><b>mar 18</b></td><td>30</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip none">pendiente</span></td></tr>
+    <tr><td><b>lun 17</b></td><td>30</td><td><b>29</b></td><td class="ev">agencies-outreach 10 · family-takeovers 10 · retreats-a 9</td><td><span class="chip dec">2 duros · 6,9%</span></td><td><span class="chip dec">bajo objetivo</span></td></tr>
+    <tr><td><b>mar 18</b></td><td>30</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip est">hoy</span></td></tr>
     <tr><td><b>mié 19</b></td><td>30–35</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip none">pendiente</span></td></tr>
     <tr><td><b>vie 21</b></td><td>30–40</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip none">pendiente</span></td></tr>
-    <tr><td><b>semana</b></td><td>120–135</td><td><b>0</b></td><td class="ev">objetivo semanal mínimo 120</td><td></td><td></td></tr>
+    <tr><td><b>semana</b></td><td>120–135</td><td><b>29</b></td><td class="ev">objetivo semanal mínimo 120</td><td></td><td></td></tr>
   </table></div>
-  <p><b>Supply medido</b> <span class="chip obs">observado</span> · as_of 2026-08-16 (noche, Airtable read-only):</p>
+  
+  <div class="callout"><p><b>Rebotes por wave</b> — el denominador que juzga el
+  corta-circuitos (W18, <code>exec/bounce-pause.ts</code>): una tasa por DÍA esconde el rail que reventó.</p>
+  <ul>
+    <li><b>retreats-a</b> · lun 17 · 2 de 9 =
+      <b>22,2%</b> <span class="chip dec">sobre el techo de 3% · rail PAUSADO</span>
+      <span class="ev">hailey@haloholistics.com · stephanie@soulsanity.co — filas de <code>suppression</code> que citan
+      <code>manifest-first-2026-08-17.tsv</code></span></li>
+  </ul><p class="ev"><b>Consecuencia, ya en efecto:</b> el dispatch de
+  <b>retreats-a</b> REFUSA — no «avisa». W18 juzga la última wave completa
+  del rail en cada press, así que no vuelve a enviar hasta que se limpie la lista y una wave nueva quede bajo el 3%.
+  Nadie tiene que acordarse. (La regla interina de Boris del 16-ago — volver a ≤20 el próximo día de envío — era la
+  mitigación de mano ANTES de que esto existiera; el corta-circuitos es más duro que ella.)</p></div>
+  <p><b>Supply medido</b> <span class="chip obs">observado</span> · as_of 2026-08-16 (noche, Airtable read-only) — ANTERIOR al día 17: esa jornada consumió 29 de estos fríos y sumó 140 filas nuevas al reservorio, así que las tres cifras están desactualizadas en ambas direcciones. Re-medir pide una lectura viva de Airtable; el mirror local (pipeline_row) solo espeja deals, no el reservorio:</p>
   <ul>
     <li>E1 listos con email: <b>31</b> (family-takeovers 26 · retreats-a 3 · agencies 2)</li>
     <li>E2 vencidos por fecha: <b>~172</b> (agencies 96 · retreats-a 71) — pre-sweep: el barrido de inbox descuenta replies/bounces antes de cualquier wave</li>
@@ -334,12 +363,12 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
     </div>
     <div class="tlgroup">Fases</div>
     <div class="tlrow">
-      <div class="tllabel"><b>Fase 0</b> · contratos<span class="tlsub">6 docs + tracker · doctor 0 rojos</span></div>
+      <div class="tllabel"><b>Fase 0</b> · contratos<span class="tlsub">6 docs + tracker · doctor 0 rojos al cerrarla (15-ago)</span></div>
       <div class="tlbar done" style="grid-column:2/4">✓ 15-ago</div>
     </div>
     <div class="tlrow">
       <div class="tllabel"><b>Fase 1</b> · validación ($0)<span class="tlsub">matriz 200 · W18·W6·W9·W13 · IG DM · warm · C6</span></div>
-      <div class="tlbar wait" style="grid-column:3/6">espera #8 (W18 en build, #7 ✓)</div>
+      <div class="tlbar wait" style="grid-column:3/6">espera #8 (W18 vivo desde 17-ago, #7 ✓)</div>
     </div>
     <div class="tlrow">
       <div class="tllabel"><b>Fase 2</b> · volumen Tier 2<span class="tlsub">entra solo con celdas MMF ganadoras + guardas vivas</span></div>
@@ -411,8 +440,8 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
       <div class="mname">Email frío</div>
       <div class="mrow"><span class="mnat">creación de demanda</span><span class="mpay">paga en revenue</span></div>
       <div class="mrow"><span class="badge">ahora: la matriz</span><span class="badge">volumen: Fase 2</span></div>
-      <div class="mfact">19 humanos en 3 meses = <strong>1,4% del cap propio</strong>. El mensaje que gana su celda en
-      la matriz es el único que ve el volumen de Tier 2.</div>
+      <div class="mfact">48 humanos en 3 meses = <strong>3,5% del cap propio</strong> — y <b>29 de esos 48 salieron
+      en un solo día</b>, el 17-ago. El mensaje que gana su celda en la matriz es el único que ve el volumen de Tier 2.</div>
     </div>
     <div class="motor strong">
       <span class="mid">C2 · motor</span>
@@ -514,7 +543,7 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
     </button>
     <button class="pnav" data-target="fase-1" aria-expanded="false">
       <span class="pn-idx">Fase 1</span><span class="pn-name">Validación · 2 semanas · $0</span>
-      <span class="badge warn">espera #8 (W18 en build, #7 ✓)</span>
+      <span class="badge warn">espera #8 (W18 vivo desde 17-ago, #7 ✓)</span>
     </button>
     <button class="pnav" data-target="fase-2" aria-expanded="false">
       <span class="pn-idx">Fase 2</span><span class="pn-name">Volumen guardado · Tier 2</span>
@@ -566,7 +595,7 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
     <summary>
       <span class="ph-idx">Fase 1</span>
       <span class="ph-name">Sprint de validación · 2 semanas · $0 de infra<span>~370–420 contactos · convierte los desconocidos en números, sin plata nueva</span></span>
-      <span class="badge warn">espera #8 (W18 en build, #7 ✓)</span>
+      <span class="badge warn">espera #8 (W18 vivo desde 17-ago, #7 ✓)</span>
       <span class="ph-chev">▾</span>
     </summary>
     <div class="ph-body">
@@ -581,7 +610,7 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
       <div class="tblwrap"><table>
         <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
         <tr><td>Matriz message-market fit (4 segmentos × 2 ángulos × 25 = 200)</td><td>El Chamán diseña · Boris pressea cada wave</td><td><span class="badge">no arrancado</span></td><td class="ev">bloqueada en #8 (la denominación es la definición QL) · cada wave es un gate press</td></tr>
-        <tr><td>W18 — cap con rampa + verificación de email en prepare + auto-pausa bounce &gt;3%</td><td>TK-000</td><td><span class="badge warn">en build</span></td><td class="ev">#7 aprobada 17-ago · patrón: reply-send.ts (techo + circuit-breaker) · guardia de spam <span class="chip unk">sin fuente de datos</span> hasta Fase 2</td></tr>
+        <tr><td>W18 — cap con rampa + verificación de email en prepare + auto-pausa bounce &gt;3%</td><td>TK-000</td><td><span class="badge ok">vivo 17-ago</span></td><td class="ev">mergeado y pusheado <code>0d70d39</code> · <b>probado en vivo el 18-ago</b>: la auto-pausa se disparó sola sobre retreats-a (2/9 = 22,2%, §00) — la primera guarda de esta máquina que frena algo real · el cap vive en UNA constante con room por rail · <b>lo que falta:</b> el verificador de direcciones — <code>repo/verification.ts</code> existe con el adaptador escrito y <span class="chip unk">ningún proveedor conectado</span>, así que la selección solo-verificados sigue siendo a mano</td></tr>
         <tr><td>Rampa del cap 20→30→40/día</td><td>Boris (es su regla del 04-jul) · El Chamán edita el skill</td><td><span class="badge ok">viva desde 16-ago</span></td><td class="ev">decisión #2: Boris la adelantó a W18 · registrada en skill + rails + cockpit · mitigación interina: selección solo-verificados + freno bounce &gt;3% → ≤20 · §00 es el plan diario</td></tr>
         <tr><td>W6 — cuadrante ciego del guarda de duplicados (cross-campaña + DM)</td><td>TK-000</td><td><span class="badge">no arrancado</span></td><td class="ev">el guarda intra-campaña YA existe (batch.ts:418) · medir FP antes de escribir</td></tr>
         <tr><td>W9 — vocabulario de canales (mint + drift + colisión Referral)</td><td>El Chamán + Boris (mint gateado) · TK-000 sincroniza</td><td><span class="badge">no arrancado</span></td><td class="ev">valores propuestos en channel-taxonomy.md · Airtable solo mintea por typecast en escritura gateada</td></tr>
@@ -687,14 +716,14 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
   etiqueta y su fuente, y lo que nadie registró se declara <span class="chip unk">desconocido</span> — nunca $0.</p>
 
   <div class="strip">
-    <div class="tile"><b>$211,47</b><span>gasto LLM total de la plataforma (127 runs con costo / 144) · runs.cost_usd · as_of 15-ago</span></div>
-    <div class="tile"><b>$185,16</b><span>paid media total · 49 clicks · 0 conversiones · metrics_daily · as_of 15-ago</span></div>
-    <div class="tile hot"><b>$1,1–2,1k</b><span>/mes sep–dic si TODO se aprueba (Tier 2 + paid + inbound + LLM) · est</span></div>
-    <div class="tile ok"><b>~23–47×</b><span>piso de revenue ($202k = 45 noches a rack) sobre el costo total sep–dic estimado</span></div>
+    <div class="tile"><b>$358,61</b><span>gasto LLM total de la plataforma (157 runs con costo) · runs.cost_usd · as_of 18-ago 15:00Z</span></div>
+    <div class="tile"><b>$208,65</b><span>paid media total · 1.829 impresiones · 56 clicks · 0 conversiones atribuidas · metrics_daily · as_of 18-ago</span></div>
+    <div class="tile hot"><b>$129,00</b><span>lo que costó UN día de máquina completa (17-ago · 22 runs · 31 emails) <span class="chip obs">obs</span> — el número que rompe la proyección de abajo</span></div>
+    <div class="tile ok"><b>~22–37×</b><span>piso de revenue ($202k = 45 noches a rack) sobre el costo total sep–dic estimado ($5,4–9,3k) · as_of 18-ago</span></div>
   </div>
 
   <div class="callout g"><p><strong>El marco (el mismo de §02, ahora con la cuenta):</strong> a ~$27k por cierre
-  promedio y $13,5k de reserva mínima, el peor caso de toda la máquina sep–dic (~$8,7k) se paga con
+  promedio y $13,5k de reserva mínima, el peor caso de toda la máquina sep–dic (~$9,3k, recalculado el 18-ago con el ritmo LLM real) se paga con
   <strong>una tercera parte de UN cierre</strong> — y el piso pide 6,3. El costo nunca es el riesgo de este plan;
   el riesgo es quemar lista y marca. La única resta real que no aparece en ninguna factura: <strong>las comisiones
   de canal bajan los netos 10–25%</strong> — para eso existe el piso del tarifario ($3.150/noche).</p></div>
@@ -702,24 +731,34 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
   <div class="objtitle">A · Tokens / LLM — lo ya gastado, observado</div>
   <p class="entry">Fuente: <code>runs.cost_usd</code> en <code>data/synergy.db</code>, verificado contra la última
   línea <code>[result:]</code> de cada run (coinciden al centavo, 14-ago). Toda cifra anterior citada en otros docs
-  ($96 · $172 · $160 · $187 · $194) es una foto vieja del mismo contador: <strong>la vigente es esta</strong>.</p>
+  ($96 · $172 · $160 · $187 · $194 · $211) es una foto vieja del mismo contador: <strong>la vigente es esta</strong>.</p>
   <div class="tblwrap"><table>
     <tr><th>Función</th><th>Runs</th><th>Gasto</th><th>Lectura</th></tr>
-    <tr><td><b>Investigación de prospectos</b></td><td>8</td><td><b>$79,35</b> <span class="chip obs">obs</span></td><td class="ev">38% de todo · prospect-research promedia <b>$12,90/run</b> (máx $24,14) — el rail más caro por lejos; su cadencia es la palanca de costo #1</td></tr>
+    <tr><td><b>Investigación de prospectos</b></td><td>12</td><td><b>$166,15</b> <span class="chip obs">obs</span></td><td class="ev">46% de todo · prospect-research promedia <b>$13,85/run</b> (máx $26,13) — el rail más caro por lejos, y creció <b>$86,80 en tres días</b>; su cadencia sigue siendo la palanca de costo #1</td></tr>
     <tr><td>Contenido (artículos · social · landing · SEO · video)</td><td>52</td><td>$63,30 <span class="chip obs">obs</span></td><td class="ev">$1,22/run promedio</td></tr>
-    <tr><td>Outreach email (prepare · send · stamp · bodies · DM)</td><td>31</td><td>$43,94 <span class="chip obs">obs</span></td><td class="ev">$1,42/run — barato por unidad: el volumen de Fase 2 multiplica ESTA línea, no la cara</td></tr>
+    <tr><td>Outreach email (prepare · send · stamp · bodies · DM)</td><td>52</td><td>$100,62 <span class="chip obs">obs</span></td><td class="ev">$1,94/run — sigue siendo la línea barata por unidad, y es la que el volumen multiplica. Escribir la copy sola: <b>$0,72 por email</b> (costo-maquina-2026-08-17)</td></tr>
     <tr><td>Paid (ads-build · gads)</td><td>6</td><td>$12,76 <span class="chip obs">obs</span></td><td class="ev">—</td></tr>
-    <tr><td>Operación (status · triage · sweeps · campos)</td><td>30</td><td>$12,13 <span class="chip obs">obs</span></td><td class="ev">$0,40/run — el overhead de la máquina es marginal</td></tr>
-    <tr><td><b>Total</b> · jul $65,12 · ago (1–15) $146,35</td><td><b>127</b></td><td><b>$211,47</b> <span class="chip obs">obs</span></td><td class="ev">ago (1–15) proyecta ≈ <b>$290/mes</b> · as_of 15-ago</td></tr>
+    <tr><td>Operación (status · triage · sweeps · campos)</td><td>35</td><td>$15,79 <span class="chip obs">obs</span></td><td class="ev">$0,45/run — el overhead de la máquina sigue siendo marginal</td></tr>
+    <tr><td><b>Total</b> · jul $65,12 · ago (1–18) $293,49</td><td><b>157</b></td><td><b>$358,61</b> <span class="chip obs">obs</span></td><td class="ev">ago (1–18) proyecta ≈ <b>$505/mes</b> — <b>por encima</b> del techo de $350 que declara el sobre de abajo. $147,14 de ese total son los últimos DOS días (17 y 18) · as_of 18-ago</td></tr>
   </table></div>
-  <p class="entry">La unidad honesta y fea: <strong>$18,79 por email provable por ledger</strong> (10 emails contra
-  $187,88, as_of 14-ago) — carísimo porque casi todo el gasto fue construir e investigar, no enviar. Es el número
-  que Fase 1–2 tiene que aplastar: a volumen de Tier 2 el costo marginal por email es centavos.</p>
+  <p class="entry">La unidad honesta y fea, y cómo se movió: <strong>$7,47 por email provable por ledger</strong>
+  (48 emails únicos contra $358,61, as_of 18-ago) — era <b>$18,79</b> el 14-ago con 10 emails. Sigue siendo caro
+  porque casi todo el gasto acumulado fue construir e investigar, no enviar; el número que importa para proyectar es
+  el <b>marginal de un día ya andando</b>: <b>$1,28 por email entregado de punta a punta</b> el 17-ago
+  <span class="chip obs">obs</span>. Los dos son reales y miden cosas distintas — el primero incluye la construcción
+  de la máquina, el segundo es lo que cuesta usarla.</p>
+  <div class="callout"><p><strong>Lo que el 17-ago le enseñó al presupuesto:</strong> un día de máquina completa
+  cuesta <b>$129</b>, del cual <b>$25,88 se quemaron sin producir nada</b> (corridas que no dejaron artefacto —
+  el número que duele, medido en <code>costo-maquina-2026-08-17</code>). Cuatro días así en una semana son ~$500,
+  que es el sobre MENSUAL entero de LLM que declara la tabla C. <b>La proyección de $150–350/mes se escribió antes
+  de que la máquina corriera un solo día completo y ya no la sostiene ningún dato.</b> Rehacerla necesita 3–5 días
+  de operación real, no una estimación nueva hoy: la palanca sigue siendo la cadencia de prospect-research
+  ($13,85/run), no el envío ($1,94/run).</p></div>
   <div class="callout"><p><strong>El hecho estructural que sí necesita decisión:</strong> los runs facturan hoy contra
   la <strong>cuota interactiva de Claude</strong> — no hay línea de gasto separada, y esto ya mató la máquina 5 días
   (25-jul → reset). Separar el runtime a un <code>ANTHROPIC_API_KEY</code> propio convierte «la máquina se apagó» en
-  una factura visible y predecible. Proyección Fase 1–2: <b>$150–350/mes</b> <span class="chip est">est</span> —
-  el volumen multiplica los runs baratos ($1,42), no los caros.</p></div>
+  una factura visible y predecible. La proyección de Fase 1–2 que vivía acá ($150–350/mes) queda <b>retirada</b>
+  por el párrafo de arriba: agosto va en $293,49 al día 18 y el ritmo real proyecta ≈$505/mes; se rehace con 3–5 días de operación medidos. Lo que no cambia: el volumen multiplica los runs baratos ($1,94/run), no los caros.</p></div>
 
   <div class="objtitle">B · SaaS e infra — lo que cada fase pide</div>
   <div class="tblwrap"><table>
@@ -739,15 +778,16 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
   <div class="objtitle">C · El sobre mensual — lo que Boris aprueba</div>
   <div class="tblwrap"><table>
     <tr><th>Familia</th><th>ago</th><th>sep</th><th>oct</th><th>nov–dic</th><th>Etiqueta</th></tr>
-    <tr><td>LLM runs (plataforma)</td><td>~$150</td><td colspan="3">$150–350/mes</td><td class="ev"><span class="chip obs">obs</span> ago · <span class="chip est">est</span> resto</td></tr>
+    <tr><td>LLM runs (plataforma)</td><td><b>$293</b> (1–18)</td><td colspan="3">$150–350/mes <span class="chip dec">ya superado por el ritmo real</span></td><td class="ev"><span class="chip obs">obs</span> ago · el resto <b>ya no es estimación defendible</b>: a ritmo de agosto la línea cierra ≈$505/mes. Se rehace con 3–5 días de operación medidos, no antes</td></tr>
     <tr><td>Stack Tier 2</td><td>$0</td><td colspan="3">$400–650/mes (+$300 única vez, dominios)</td><td class="ev"><span class="chip dec">dec #1</span></td></tr>
     <tr><td>Inbound + marketplaces fee fijo</td><td>$0</td><td colspan="3">$15–90/mes</td><td class="ev"><span class="chip est">est</span></td></tr>
     <tr><td>Meta ads (C3)</td><td>$0</td><td colspan="3">$500–1.000/mes (techo envelope: $1.500)</td><td class="ev"><span class="chip dec">dec</span> · arranca con #6 resuelta</td></tr>
     <tr><td>Infra ya pagada (Workspace · VPS · Claude…)</td><td colspan="4"><span class="chip unk">desconocido</span> — se suma cuando tenga factura</td><td class="ev">nunca $0</td></tr>
-    <tr><td><b>Total nuevo</b></td><td><b>~$150</b></td><td colspan="3"><b>$1.065–2.090/mes → ~$4,3–8,7k sep–dic</b> (incl. los $300 de dominios, una vez)</td><td class="ev">vs piso de revenue <b>$202k</b> (45 noches a rack $4.500) · vs UN cierre promedio $27k</td></tr>
+    <tr><td><b>Total nuevo</b></td><td><b>~$293</b></td><td colspan="3"><b>$1.265–2.245/mes → ~$5,4–9,3k sep–dic</b> (incl. los $300 de dominios, una vez) — subió desde
+    $1.065–2.090 el 18-ago, y lo único que se movió fue la banda de LLM ($350–505 en vez de $150–350), medida</td><td class="ev">vs piso de revenue <b>$202k</b> (45 noches a rack $4.500) · vs UN cierre promedio $27k</td></tr>
   </table></div>
   <div class="callout n"><p><strong>Lo que esta sección le pide a Boris, en una línea:</strong> aprobar el sobre
-  sep–dic de <b>~$1,1–2,1k/mes</b> — que en la práctica son dos firmas que ya están en la cola (<b>#1</b> stack
+  sep–dic de <b>~$1,3–2,2k/mes</b> — que en la práctica son dos firmas que ya están en la cola (<b>#1</b> stack
   Tier 2 · el presupuesto Meta ya vive dentro de su propio envelope) — más <b>confirmar el stack de mayo</b> (¿se
   paga?) y <b>decidir la cuenta API</b> del runtime. Nada de esto gasta solo: cada alta y cada campaña sigue siendo
   un press.</p></div>
@@ -760,15 +800,16 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
     <li><strong>El LLM no tiene guarda equivalente:</strong> <code>--n</code> no es un presupuesto y <code>--dry-run</code>
     no es más barato. La palanca real es la cadencia de prospect-research ($12,90/run) — se decide por brief, no corre
     sola (R-001 muerto; no hay scheduler durable).</li>
-    <li><strong>Paid observado hasta hoy:</strong> $185,16 total · 1.591 impresiones · 49 clicks ·
-    <b>0 conversiones atribuibles</b> <span class="chip obs">obs</span> — por eso C4 tiene kill el 30-sep y C3 nace
-    con su benchmark en <span class="chip unk">desconocido</span> hasta medirlo.</li>
+    <li><strong>Paid observado hasta hoy:</strong> $208,65 total · 1.829 impresiones · 56 clicks ·
+    <b>0 conversiones atribuidas en el CRM</b> <span class="chip obs">obs</span> (la columna de conversiones de la
+    plataforma viene <span class="chip unk">sin dato</span>, que no es lo mismo que cero) — por eso C4 tiene kill el
+    30-sep y C3 nace con su benchmark en <span class="chip unk">desconocido</span> hasta medirlo. as_of 18-ago.</li>
   </ul>
 </section>
 
 <section id="decisiones">
   <div class="eyebrow">§06</div>
-  <h2>Cola de decisiones de Boris <span class="badge warn">2 / 10 resueltas</span></h2>
+  <h2>Cola de decisiones de Boris <span class="badge warn">4 / 10 resueltas</span></h2>
   <p>Detalle completo (recomendación · consecuencia de no actuar · evidencia · superficie de aprobación):
   <code>docs/boris-decision-queue-2026-08-15.md</code>. Los veredictos se registran en <code>/decisions</code>.</p>
   <div class="tblwrap"><table>
@@ -779,7 +820,7 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
     <tr><td>4</td><td>Dueño de Loco Luxury</td><td>Iru, esta semana</td><td><span class="badge warn">pendiente</span></td><td class="ev">esta semana</td></tr>
     <tr><td>5</td><td>Net rate card</td><td>—</td><td><span class="badge ok">resuelta 16-ago como hipótesis</span></td><td class="ev">rate-card-hypothesis-2026-08-16 · Iru negocia con ella en mano · inclusiones: Iru/Pato confirman antes de la primera llamada a agencia</td></tr>
     <tr><td>6</td><td>Meta Business Verification</td><td>agendar los 30 min con Gastón</td><td><span class="badge warn">pendiente</span></td><td class="ev">antes del 28-ago</td></tr>
-    <tr><td>7</td><td>Primer paquete de build (W18·W6·W13·W9)</td><td>aprobar como está spec'd</td><td><span class="badge ok">aprobada 17-ago</span></td><td class="ev">Boris, en chat ("dalo por verificado") · TK-000 construye · cada pieza se prueba con un browser walk frío</td></tr>
+    <tr><td>7</td><td>Primer paquete de build (W18·W6·W13·W9)</td><td>aprobar como está spec'd</td><td><span class="badge ok">aprobada 17-ago · W18 vivo</span></td><td class="ev">Boris, en chat ("dalo por verificado") · <b>W18 mergeado el 17-ago (<code>0d70d39</code>) y probado en vivo el 18</b> — su auto-pausa frenó retreats-a sola (§00) · W6·W13·W9 siguen sin construir · pendiente de W18: conectar el verificador de direcciones (~$0,003/check), que hoy no tiene proveedor</td></tr>
     <tr><td>8</td><td>Definición de quality lead</td><td>aprobar</td><td><span class="badge warn">pendiente</span></td><td class="ev">esta semana</td></tr>
     <tr><td>9</td><td>Brief de operador file-only primero</td><td>sí — scheduler recién tras ≥5 leídos</td><td><span class="badge warn">pendiente</span></td><td class="ev">no bloquea</td></tr>
     <tr><td>10</td><td>Marketplaces: ¿ya o tras 2 semanas de data?</td><td>C6 ya · C5 al resolverse #5 · no esperan al email</td><td><span class="badge warn">pendiente</span></td><td class="ev">C6: esta semana</td></tr>
@@ -819,8 +860,10 @@ produzca solo cuenta como respuestas). Cinco de los siete motores siguen sin hab
   <p><b>Fuentes:</b> <code>../lc-chaman/docs/lead-machine-q3q4-2026-08-15.html</code> V0.3 (15-ago) ·
   <code>docs/jor-lead-machine-2026-08-15.md</code> + los cinco contratos que produjo (15-ago) ·
   <code>.synergy/venture.yaml</code> (as_of 10-ago) · tabla <code>gate_item</code> y <code>npm run doctor</code>
-  (16-ago) · §05: <code>runs.cost_usd</code> en <code>data/synergy.db</code> (as_of 15-ago) y la reconciliación
-  paid de <code>metrics_daily</code> (15-ago). Tema: <b>oxide-desk</b> — el theme de las documentaciones de GTM de La Chamana (<code>docs/design/theme-oxide-desk.md</code>), compuesto de la paleta y tipografía <b>Blue Earth</b> (marca La Chamana, admin lc-art-director AG-001) sobre arquitectura <b>Factory Glass</b>. Ninguno de los dos se forkea. El modo claro es una derivación pendiente de revisión del art director.</p>
+  (18-ago) · §00: los ledgers <code>*.sent.jsonl</code> + la tabla <code>suppression</code>, generados por
+  <code>scripts/week-strip.mjs</code> (as_of 18-ago 15:02Z) · §05: <code>runs.cost_usd</code> en
+  <code>data/synergy.db</code> y la reconciliación paid de <code>metrics_daily</code> (as_of 18-ago), más el
+  registro <code>docs/costo-maquina-2026-08-17.md</code>. Tema: <b>oxide-desk</b> — el theme de las documentaciones de GTM de La Chamana (<code>docs/design/theme-oxide-desk.md</code>), compuesto de la paleta y tipografía <b>Blue Earth</b> (marca La Chamana, admin lc-art-director AG-001) sobre arquitectura <b>Factory Glass</b>. Ninguno de los dos se forkea. El modo claro es una derivación pendiente de revisión del art director.</p>
   <p>Propone. No aprieta nada, no envía nada, no gasta nada. La primera press es de Boris.</p>
 </footer>
 
