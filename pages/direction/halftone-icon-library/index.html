@@ -1,0 +1,2010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halftone Field — Icon Library</title>
+<style>
+  :root{
+    --ground:#4521D9; --ink:#FFFFFF; --ink-soft:rgba(255,255,255,.68);
+    --ink-dim:rgba(255,255,255,.42); --accent:#C9FF3D; --warn:#FFB13D;
+    --hf-dot:#FFFFFF; --hf-pitch:11; --hf-icon-pitch:6.4;
+    --hf-dot-r:1.35; --hf-dot-grow:1.9; --hf-rest:.17; --hf-lift:.30;
+    --hf-ring-gain:.95; --hf-ring-width:62; --hf-ring-speed:330;
+    --hf-ring-every:620; --hf-icon-box:126; --hf-icon-top:.30; --hf-morph-ms:620;
+    --step:8px;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  body.ink   {--ground:#0B0B0F;--hf-dot:#FFFFFF;--accent:#7B5CFF;--hf-rest:.16;--hf-lift:.30;}
+  body.paper {--ground:#F4F1EA;--ink:#14131A;--ink-soft:rgba(20,19,26,.68);
+              --ink-dim:rgba(20,19,26,.45);--hf-dot:#14131A;--accent:#5B3FD6;
+              --warn:#B5610A;--hf-rest:.14;--hf-lift:.26;}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--ground);color:var(--ink);font-family:var(--mono);
+       font-size:13px;line-height:1.55;-webkit-font-smoothing:antialiased;
+       padding:calc(var(--step)*7) calc(var(--step)*5) calc(var(--step)*14);
+       transition:background .4s ease,color .4s ease}
+  .wrap{max-width:1180px;margin:0 auto}
+
+  /* --------------------------------------------------------- masthead -- */
+  .top{display:flex;flex-wrap:wrap;gap:var(--step);align-items:baseline;
+       margin-bottom:calc(var(--step)*2)}
+  .kicker{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-dim)}
+  .count{margin-left:auto;font-size:10px;letter-spacing:.18em;
+         text-transform:uppercase;color:var(--ink-dim)}
+  h1{font-weight:400;font-size:clamp(18px,2vw,24px);line-height:1.35;
+     letter-spacing:-.005em;max-width:40ch;margin-bottom:calc(var(--step)*2)}
+  .intro{max-width:64ch;color:var(--ink-soft);margin-bottom:calc(var(--step)*4)}
+
+  /* --------------------------------------------------------- controls -- */
+  .bar{display:flex;flex-wrap:wrap;gap:var(--step);align-items:center;
+       padding:calc(var(--step)*2) 0 calc(var(--step)*4);
+       border-top:1px solid color-mix(in srgb,var(--ink) 20%,transparent)}
+  .bar b{font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+         color:var(--ink-dim);margin-right:calc(var(--step)*.5)}
+  button,input{font:inherit;color:var(--ink);background:transparent;
+    border:1px solid color-mix(in srgb,var(--ink) 30%,transparent);
+    padding:7px 13px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    transition:background .18s ease,border-color .18s ease}
+  button{cursor:pointer}
+  button:hover,button:focus-visible,input:focus{
+    background:color-mix(in srgb,var(--ink) 11%,transparent);
+    border-color:var(--ink);outline:none}
+  button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+  input{text-transform:none;letter-spacing:0;min-width:170px}
+  input::placeholder{color:var(--ink-dim)}
+
+  /* ---------------------------------------------------------- entries -- */
+  .grid{display:grid;gap:calc(var(--step)*4) calc(var(--step)*4);
+        grid-template-columns:repeat(auto-fill,minmax(228px,1fr))}
+  .entry{display:flex;flex-direction:column}
+  .entry[hidden]{display:none}
+  .card{position:relative;isolation:isolate;aspect-ratio:3/3.9;
+        display:flex;flex-direction:column;justify-content:flex-end;align-items:center;
+        padding-bottom:calc(var(--step)*5);cursor:crosshair}
+  .hf-canvas{position:absolute;inset:0;z-index:-1;pointer-events:none}
+  .card .label{position:relative;font-size:11px;letter-spacing:.22em;
+               text-transform:uppercase;text-align:center}
+  .card .label::before{content:"";position:absolute;inset:-7px -13px;
+                       background:var(--ground);z-index:-1}
+
+  .meta{margin-top:calc(var(--step)*2)}
+  .pairline{display:flex;gap:var(--step);align-items:baseline;
+            font-size:11px;color:var(--ink-dim);letter-spacing:.06em}
+  .pairline .ct{margin-left:auto;font-variant-numeric:tabular-nums}
+  .pairline .ct.warn{color:var(--warn)}
+  .desc{margin-top:calc(var(--step)*1.5);color:var(--ink-soft);
+        font-size:12.5px;line-height:1.6}
+  .tags{margin-top:calc(var(--step)*1.5);display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+       color:var(--ink-dim);border:1px solid color-mix(in srgb,var(--ink) 20%,transparent);
+       padding:2px 7px}
+  .reveal{margin-top:calc(var(--step)*2)}
+  .reveal summary{cursor:pointer;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-dim);list-style:none}
+  .reveal summary::-webkit-details-marker{display:none}
+  .reveal summary::before{content:"+ ";}
+  .reveal[open] summary::before{content:"– ";}
+  .reveal summary:hover{color:var(--ink)}
+  .maps{display:flex;gap:calc(var(--step)*2);margin-top:var(--step);overflow-x:auto}
+  pre{font-family:var(--mono);font-size:6.5px;line-height:1.28;color:var(--ink-soft);
+      white-space:pre;letter-spacing:.06em}
+  pre b{font-weight:400;color:var(--ink-dim);display:block;font-size:9px;
+        letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
+  .empty{color:var(--ink-dim);padding:calc(var(--step)*6) 0}
+
+  /* ------------------------------------------------------------- bench -- */
+  .bench{border-top:1px solid color-mix(in srgb,var(--ink) 20%,transparent);
+         border-bottom:1px solid color-mix(in srgb,var(--ink) 20%,transparent);
+         padding:calc(var(--step)*4) 0;margin-bottom:calc(var(--step)*5)}
+  .bench h2{font-weight:400;font-size:10px;letter-spacing:.24em;
+            text-transform:uppercase;color:var(--ink-dim);margin-bottom:calc(var(--step)*3)}
+  .benchgrid{display:grid;gap:calc(var(--step)*4);
+             grid-template-columns:minmax(190px,232px) 1fr}
+  @media (max-width:660px){.benchgrid{grid-template-columns:1fr}}
+  .stage .card{aspect-ratio:3/3.9}
+  .scrub{display:flex;align-items:center;gap:var(--step);margin-top:var(--step)}
+  .scrub input[type=range]{flex:1;padding:0;border:0;background:transparent;
+    -webkit-appearance:none;appearance:none;height:18px;cursor:ew-resize}
+  .scrub input[type=range]:focus{background:transparent}
+  .scrub input[type=range]::-webkit-slider-runnable-track{height:1px;
+    background:color-mix(in srgb,var(--ink) 34%,transparent)}
+  .scrub input[type=range]::-moz-range-track{height:1px;
+    background:color-mix(in srgb,var(--ink) 34%,transparent)}
+  .scrub input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;
+    width:9px;height:9px;background:var(--ink);margin-top:-4px;border-radius:0}
+  .scrub input[type=range]::-moz-range-thumb{width:9px;height:9px;
+    background:var(--ink);border:0;border-radius:0}
+  .scrub b{font-weight:400;font-size:10px;letter-spacing:.14em;color:var(--ink-dim);
+           font-variant-numeric:tabular-nums;min-width:3.4em;text-align:right}
+
+  .fields{display:flex;flex-direction:column;gap:calc(var(--step)*1.5)}
+  .row{display:flex;flex-wrap:wrap;gap:var(--step);align-items:center}
+  .row label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+             color:var(--ink-dim);min-width:5.5em}
+  .row input[type=text],.row textarea{flex:1;min-width:140px;text-transform:none;
+    letter-spacing:0;font-size:12.5px;padding:7px 10px}
+  /* From/To are short identifiers — let the long fields below have the width */
+  .row input.short{flex:0 1 168px;min-width:110px}
+  .row textarea{resize:vertical;min-height:52px;line-height:1.5}
+  .status{font-size:11px;letter-spacing:.04em;color:var(--ink-dim);
+          min-height:1.5em;font-variant-numeric:tabular-nums}
+  .status .ok{color:var(--ink-soft)} .status .bad{color:var(--warn)}
+  .status .miss{color:var(--warn)}
+  .actions{display:flex;flex-wrap:wrap;gap:var(--step);margin-top:var(--step)}
+  .mapedit{margin-top:calc(var(--step)*2)}
+  .mapedit summary{cursor:pointer;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink-dim);list-style:none}
+  .mapedit summary::-webkit-details-marker{display:none}
+  .mapedit summary::before{content:"+ "} .mapedit[open] summary::before{content:"– "}
+  .mapedit summary:hover{color:var(--ink)}
+  .editpair{display:grid;grid-template-columns:1fr 1fr;gap:calc(var(--step)*2);
+            margin-top:calc(var(--step)*1.5)}
+  @media (max-width:660px){.editpair{grid-template-columns:1fr}}
+  .editpair textarea{width:100%;min-height:230px;font-size:10px;line-height:1.18;
+    letter-spacing:.09em;white-space:pre;overflow-wrap:normal;overflow-x:auto;
+    text-transform:none;padding:9px}
+  .editpair small{display:block;font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-dim);margin-bottom:5px}
+  .hint{font-size:11.5px;color:var(--ink-dim);margin-top:var(--step);line-height:1.6}
+  /* 42 icons are useless if you cannot see what exists — the palette is not
+     a convenience, it is what makes the vocabulary discoverable. */
+  .palette{display:flex;flex-wrap:wrap;gap:5px;margin-top:var(--step);
+           max-height:104px;overflow-y:auto;padding-right:4px}
+  .chip{font:inherit;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;
+        padding:3px 8px;cursor:pointer;color:var(--ink-soft);background:transparent;
+        border:1px solid color-mix(in srgb,var(--ink) 22%,transparent)}
+  .chip:hover{border-color:var(--ink);color:var(--ink)}
+  .chip.on{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+  .palrow{display:flex;align-items:baseline;gap:var(--step);margin-top:calc(var(--step)*1.5)}
+  .palrow b{font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+            color:var(--ink-dim);white-space:nowrap}
+  .status button{font-size:10px;padding:2px 8px;margin-left:6px;vertical-align:baseline}
+  .new .card .label::before{background:var(--ground)}
+  .entry.new .pairline span:first-child::after{content:" · unsaved";color:var(--accent)}
+  .foot{margin-top:calc(var(--step)*10);padding-top:calc(var(--step)*3);
+    border-top:1px solid color-mix(in srgb,var(--ink) 20%,transparent);
+    color:var(--ink-soft);font-size:12px;max-width:76ch}
+  .foot code{background:color-mix(in srgb,var(--ink) 12%,transparent);padding:1px 5px}
+  @media (prefers-reduced-motion:reduce){.card{cursor:default}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <span class="kicker">Rick's Studio · Halftone Field</span>
+    <span class="count" id="count"></span>
+  </div>
+  <h1>Icon library</h1>
+  <p class="intro">Every pair in the system, live. Hover a card to run the ripple and
+  the morph; open <em>map</em> to read the dot maps behind it. Counts flag any pair
+  whose two states differ by more than half — that pair will arrive thin.
+  The bench below combines <strong id="vocabCount">the</strong> elements into any pair
+  you like; a name with no map offers the nearest ones to fork.</p>
+
+  <div class="bar">
+    <b>Ground</b>
+    <button data-ground="" aria-pressed="true">Indigo</button>
+    <button data-ground="ink" aria-pressed="false">Ink</button>
+    <button data-ground="paper" aria-pressed="false">Paper</button>
+    <b style="margin-left:calc(var(--step)*2)">Morph</b>
+    <button id="play" aria-pressed="false">Play all</button>
+    <input id="q" type="search" placeholder="filter by name or tag" aria-label="Filter">
+  </div>
+
+  <section class="bench">
+    <h2>Bench — try a pair before you lock it</h2>
+    <div class="benchgrid">
+      <div class="stage">
+        <div class="card" id="stageCard" tabindex="0"><span class="label" id="stageLabel">Untitled</span></div>
+        <div class="scrub">
+          <input type="range" id="scrub" min="0" max="100" value="0" aria-label="Morph position">
+          <b id="scrubVal">hover</b>
+        </div>
+      </div>
+
+      <div class="fields">
+        <div class="row">
+          <label for="from">From</label>
+          <input type="text" class="short" id="from" list="iconnames" value="dna" spellcheck="false">
+          <label for="to" style="min-width:2em">To</label>
+          <input type="text" class="short" id="to" list="iconnames" value="factory" spellcheck="false">
+          <button id="swap" title="Swap from and to">Swap</button>
+          <button id="shuffle">Shuffle</button>
+        </div>
+        <datalist id="iconnames"></datalist>
+        <p class="status" id="status"></p>
+        <div class="palrow"><b>Set&nbsp;To</b><div class="palette" id="palette"></div></div>
+
+        <div class="row"><label for="nm">Name</label>
+          <input type="text" id="nm" placeholder="DNA → Factory"></div>
+        <div class="row"><label for="ds">Description</label>
+          <textarea id="ds" placeholder="What the pair means, and what rhymes between the two states."></textarea></div>
+        <div class="row"><label for="tg">Tags</label>
+          <input type="text" id="tg" placeholder="bio, industry, narrative"></div>
+
+        <div class="actions">
+          <button id="add">+ Add to gallery</button>
+          <button id="copy">Copy entry</button>
+          <button id="dl">Download library</button>
+        </div>
+
+        <details class="mapedit" id="mapedit">
+          <summary>edit maps</summary>
+          <div class="editpair">
+            <div><small id="fromName">from</small>
+              <textarea id="fromMap" spellcheck="false"></textarea></div>
+            <div><small id="toName">to</small>
+              <textarea id="toMap" spellcheck="false"></textarea></div>
+          </div>
+          <p class="hint">One character per lattice cell — <code>#</code> lights a dot,
+          space leaves it dark. Design on 20&times;20. Edits render live and are saved
+          under the <em>From</em> / <em>To</em> names when you add the card.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" hidden>Nothing matches that filter.</p>
+
+  <p class="foot">
+    Cards added on the bench live in this tab only — the page keeps no browser
+    storage by design, so <strong>the file is the save format</strong>.
+    <em>Download library</em> writes a fresh copy of this page with your cards
+    and any maps you wrote baked into it; open that copy and they are simply
+    there. <em>Copy entry</em> puts the map and the
+    <code>{id, name, pair, desc, tags}</code> object on your clipboard to paste
+    back for a permanent add. Everything on this page renders from the
+    <code>CATALOGUE</code> array — that is still the one thing to edit by hand.
+  </p>
+</div>
+
+<script>
+/* ==========================================================================
+   HALFTONE FIELD — dot-matrix art direction engine
+   --------------------------------------------------------------------------
+   Four gestures, one material:
+     1. FIELD    a lattice of dots that is the card's background
+     2. RIPPLE   concentric rings that pulse outward from the icon on hover
+     3. MORPH    icons rasterised onto a finer lattice, dot-lerped A -> B
+     4. SCRAMBLE mono text that resolves out of glyph noise
+
+   Everything is one substance: background, icon and halo are the same dot.
+   Nothing here draws a box, a border or a shadow. The grid IS the surface.
+
+   No dependencies. Reads its palette from CSS custom properties so it drops
+   onto any ground. ~11 KB unminified.
+   ========================================================================== */
+(function (global) {
+  'use strict';
+
+  /* ---------------------------------------------------------------- utils */
+  var TAU = Math.PI * 2;
+  var easeOutCubic = function (t) { return 1 - Math.pow(1 - t, 3); };
+  var easeInOutCubic = function (t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
+  var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+  var lerp = function (a, b, t) { return a + (b - a) * t; };
+
+  function cssVar(el, name, fallback) {
+    var v = getComputedStyle(el).getPropertyValue(name).trim();
+    return v === '' ? fallback : v;
+  }
+  function cssNum(el, name, fallback) {
+    var v = parseFloat(cssVar(el, name, ''));
+    return isNaN(v) ? fallback : v;
+  }
+
+  /* Parse any CSS colour to [r,g,b] once, so the hot loop only touches alpha. */
+  var _probe = null;
+  function toRGB(color) {
+    if (!_probe) {
+      _probe = document.createElement('canvas').getContext('2d');
+      _probe.canvas.width = _probe.canvas.height = 1;
+    }
+    _probe.clearRect(0, 0, 1, 1);
+    _probe.fillStyle = '#000';
+    _probe.fillStyle = color;
+    _probe.fillRect(0, 0, 1, 1);
+    var d = _probe.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2]];
+  }
+
+  /* ------------------------------------------------------------ icon paths */
+  /* Each icon draws into a normalised 0..1 space on a scratch 2D context.
+     The second argument `u` is ONE LATTICE CELL expressed in that normalised
+     space. Every stroke and every solid must be quantised to it — a stroke
+     wider than ~1.2u stops reading as a line and collapses into a blob, which
+     is the single most common way this technique is got wrong.
+     Add your own: HalftoneField.icons.myIcon = function (c, u) { ... }      */
+  /* Cell-unit drawing helper. Coordinates are lattice cells; a 1/u-wide box
+     is ~20 cells across at the default pitch, so design on a 20x20 grid. */
+  function cells(c, u) {
+    return {
+      fill:   function (x, y, w, h) { c.fillRect(x * u, y * u, w * u, h * u); },
+      stroke: function (x, y, w, h) {
+        c.lineWidth = u;
+        c.strokeRect((x + 0.5) * u, (y + 0.5) * u, (w - 1) * u, (h - 1) * u);
+      },
+      rule:   function (x, y, w) { c.fillRect(x * u, y * u, w * u, u); }
+    };
+  }
+
+  var icons = {
+    /* two counter-phase zigzags weaving over a baseline — "hazard".
+       Angular, not sinusoidal: a sine's flat crest lights three cells in a
+       row and the line reads as a lozenge. Straight runs at 45deg keep it
+       one cell thick everywhere. */
+    wave: function (c, u) {
+      c.lineWidth = u * 0.92;
+      var cycles = 2.5, amp = 0.15, mid = 0.40, steps = cycles * 2;
+      for (var s = 0; s < 2; s++) {
+        c.beginPath();
+        for (var i = 0; i <= steps; i++) {
+          var x = 0.05 + (i / steps) * 0.90;
+          var y = mid + (((i + s) % 2) ? amp : -amp);
+          i ? c.lineTo(x, y) : c.moveTo(x, y);
+        }
+        c.stroke();
+      }
+      c.beginPath(); c.moveTo(0.05, 0.80); c.lineTo(0.95, 0.80); c.stroke();
+    },
+    /* mountain / terrain profile over a baseline — "hazard", morphed */
+    terrain: function (c, u) {
+      c.lineWidth = u * 0.92;
+      /* Two ridges, not one. A single ridge line renders ~49 dots against
+         wave's 81 — outside the pairing band, so the morph arrives visibly
+         thin. The near ridge fixes the count and reads better besides:
+         terrain has depth, a horizon does not. */
+      var ridges = [
+        [[0.05, 0.58], [0.21, 0.28], [0.33, 0.44], [0.47, 0.21],
+         [0.62, 0.46], [0.75, 0.32], [0.95, 0.58]],
+        [[0.05, 0.70], [0.19, 0.52], [0.32, 0.64], [0.46, 0.49],
+         [0.60, 0.66], [0.74, 0.54], [0.95, 0.70]]
+      ];
+      ridges.forEach(function (pts) {
+        c.beginPath();
+        pts.forEach(function (p, i) { i ? c.lineTo(p[0], p[1]) : c.moveTo(p[0], p[1]); });
+        c.stroke();
+      });
+      c.beginPath(); c.moveTo(0.05, 0.80); c.lineTo(0.95, 0.80); c.stroke();
+    },
+    /* two towers with punched windows over a baseline — "exposure".
+       Built in CELL units, not fractions. A block icon whose edges land
+       between lattice centres reads as fuzz; snapping every edge to a
+       multiple of u is what makes it look drawn rather than sampled. */
+    buildings: function (c, u) {
+      var g = cells(c, u);
+      g.stroke(3, 3, 7, 12);       /* tall tower  */
+      g.stroke(11, 7, 6, 8);       /* short tower */
+      for (var r = 0; r < 4; r++) for (var k = 0; k < 2; k++) g.fill(5 + k * 2, 5 + r * 2, 1, 1);
+      for (var r2 = 0; r2 < 2; r2++) for (var k2 = 0; k2 < 2; k2++) g.fill(13 + k2 * 2, 9 + r2 * 2, 1, 1);
+      g.rule(1, 16, 18);
+    },
+    /* the same footprint seen from above — "exposure", morphed */
+    parcels: function (c, u) {
+      var g = cells(c, u);
+      g.stroke(2, 9, 8, 5);
+      g.stroke(11, 7, 6, 7);
+      g.stroke(5, 4, 7, 3);
+      g.rule(1, 16, 18);
+    },
+    /* descending bars over a baseline — "loss" */
+    barsDesc: function (c, u) {
+      var g = cells(c, u), h = [11, 8, 6, 4, 2];
+      for (var i = 0; i < h.length; i++) g.fill(3 + i * 3, 14 - h[i], 2, h[i]);
+      g.rule(1, 15, 18);
+    },
+    /* the same series levelled — "loss", morphed */
+    barsLevel: function (c, u) {
+      var g = cells(c, u), h = [5, 9, 7, 10, 6];
+      for (var i = 0; i < h.length; i++) g.fill(3 + i * 3, 14 - h[i], 2, h[i]);
+      g.rule(1, 15, 18);
+    },
+
+    /* ---- map-authored icons -------------------------------------------
+       Written as pictures, not as code. Apple and tree share the ground
+       rule and, more usefully, the apple's stem sits where the tree's trunk
+       does — so the morph reads as the stem growing down into a trunk while
+       the fruit opens into a canopy, rather than as two shapes swapping. */
+    apple: [
+      '                    ',
+      '                    ',
+      '          #         ',
+      '          #  ###    ',
+      '          # #   #   ',
+      '          #  ###    ',
+      '     ####  ####     ',
+      '   ##          ##   ',
+      '  #              #  ',
+      ' #                # ',
+      ' #                # ',
+      ' #                # ',
+      ' #                # ',
+      ' #                # ',
+      '  #              #  ',
+      '   #            #   ',
+      '    ##        ##    ',
+      '      ########      ',
+      '                    ',
+      ' ################## '
+    ],
+    tree: [
+      '                    ',
+      '       ######       ',
+      '     ##      ##     ',
+      '    #          #    ',
+      '   #            #   ',
+      '  #              #  ',
+      '  #              #  ',
+      '  #              #  ',
+      '   #            #   ',
+      '    ##        ##    ',
+      '      ###  ###      ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      '         ##         ',
+      ' ################## '
+    ],
+
+    /* DNA -> factory. The rhyme is columnar: the helix's two strands swing
+       between columns 4 and 16, and those are exactly where the factory's
+       walls stand — so the helix appears to STRAIGHTEN into the building
+       rather than dissolve into it. The base-pair rows land on the floor
+       slabs. Northlight sawtooth rather than a smokestack: this is a
+       production facility, not a foundry. */
+    dna: [
+      '                    ',
+      '                    ',
+      '    ### # # # ###   ',
+      '      ##     ##     ',
+      '        #####       ',
+      '        ## ##       ',
+      '      ##     ##     ',
+      '    ### # # # ###   ',
+      '      ##     ##     ',
+      '        #####       ',
+      '        ## ##       ',
+      '      ##     ##     ',
+      '    ### # # # ###   ',
+      '      ##     ##     ',
+      '        #####       ',
+      '        ## ##       ',
+      '      ##     ##     ',
+      '    ### # # # ###   ',
+      '                    ',
+      ' ################## '
+    ],
+    factory: [
+      '                    ',
+      '                    ',
+      '        #     #     ',
+      '       ##    ##     ',
+      '      # #   # #     ',
+      '     #  #  #  #     ',
+      '    #############   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #############   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #############   ',
+      '    #           #   ',
+      '    #           #   ',
+      '    #           #   ',
+      ' ################## '
+    ],
+
+    /* ---- forged vocabulary -------------------------------------------
+       32 maps drawn to system rules (whole-cell geometry, one-cell strokes,
+       Bresenham-filled diagonals) so the bench has something to combine.
+       All share the ground rule at the last row, so any two of them pair. */
+    arrowUp: [
+      '',
+      '',
+      '          #',
+      '         # #',
+      '        #   #',
+      '       #     #',
+      '      #       #',
+      '     #         #',
+      '    #           #',
+      '   #####     #####',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #######',
+      ' ##################'
+    ],
+    cell: [
+      '',
+      '',
+      '',
+      '        #####',
+      '      ##     ##',
+      '     #         #',
+      '    #           #',
+      '    #           #',
+      '   #     ###     #',
+      '   #    #####    #',
+      '   #    #####    #',
+      '   #    #####    #',
+      '   #     ###     #',
+      '    #           #',
+      '    #           #',
+      '     #         #',
+      '      ##     ##',
+      '        #####',
+      '',
+      ' ##################'
+    ],
+    clock: [
+      '',
+      '',
+      '',
+      '        #####',
+      '      ##     ##',
+      '     #    #    #',
+      '    #     #     #',
+      '    #     #     #',
+      '   #      #      #',
+      '   #      #      #',
+      '   #      #      #',
+      '   #       #     #',
+      '   #        #    #',
+      '    #        #  #',
+      '    #           #',
+      '     #         #',
+      '      ##     ##',
+      '        #####',
+      '',
+      ' ##################'
+    ],
+    compass: [
+      '',
+      '',
+      '',
+      '        #####',
+      '      ##  #  ##',
+      '     #   ##    #',
+      '    #    # #    #',
+      '    #   #  #    #',
+      '   #    #   #    #',
+      '   #   #    #    #',
+      '   #   #     #   #',
+      '   #    #    #   #',
+      '   #    #   #    #',
+      '    #    #  #   #',
+      '    #    # #    #',
+      '     #    ##   #',
+      '      ##  #  ##',
+      '        #####',
+      '',
+      ' ##################'
+    ],
+    conveyor: [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '       ######',
+      '       #    #',
+      '       #    #',
+      '       #    #',
+      '       #    #',
+      '       ######',
+      '  #################',
+      '  #   # #   # #   #',
+      '  #   # #   # #   #',
+      '  #   # #   # #   #',
+      '   ###   ###   ###',
+      ' ##################'
+    ],
+    crate: [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '    #############',
+      '    ##         ##',
+      '    # #       # #',
+      '    #  #     #  #',
+      '    #   #   #   #',
+      '    #    ###    #',
+      '    #    # #    #',
+      '    #   #   #   #',
+      '    #  #     #  #',
+      '    # #       # #',
+      '    ##         ##',
+      '    #############',
+      '',
+      ' ##################'
+    ],
+    database: [
+      '',
+      '',
+      '',
+      '       #######',
+      '      #       #',
+      '     ###########',
+      '     #         #',
+      '     #         #',
+      '     # ####### #',
+      '     ##       ##',
+      '     ###########',
+      '     #         #',
+      '     #         #',
+      '     # ####### #',
+      '     ##       ##',
+      '     ###########',
+      '',
+      '',
+      '',
+      ' ##################'
+    ],
+    doc: [
+      '',
+      '',
+      '    ##########',
+      '    #        ##',
+      '    #        # #',
+      '    #        ####',
+      '    #           #',
+      '    #           #',
+      '    #  #######  #',
+      '    #           #',
+      '    #           #',
+      '    #  #######  #',
+      '    #           #',
+      '    #           #',
+      '    #  #######  #',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '    #############',
+      ' ##################'
+    ],
+    drop: [
+      '',
+      '',
+      '',
+      '          #',
+      '         # #',
+      '         # #',
+      '        #   #',
+      '        #   #',
+      '       #     #',
+      '      #       #',
+      '      #       #',
+      '     #         #',
+      '     #         #',
+      '     #        #',
+      '      #       #',
+      '      ##      #',
+      '        ##  ##',
+      '          ##',
+      '',
+      ' ##################'
+    ],
+    eye: [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '      #########',
+      '     #         #',
+      '    #    ###    #',
+      '    #   #   #   #',
+      '   #   #     #   #',
+      '  #    #     #    #',
+      '   #   #     #   #',
+      '    #   #   #   #',
+      '    #    ###    #',
+      '     #         #',
+      '      #########',
+      '',
+      '',
+      '',
+      ' ##################'
+    ],
+    flask: [
+      '',
+      '',
+      '',
+      '        #####',
+      '        #   #',
+      '        #   #',
+      '        #   #',
+      '        #   #',
+      '        #   #',
+      '        #   #',
+      '       #     #',
+      '       #     #',
+      '      #       #',
+      '      #       #',
+      '     ## # # # ##',
+      '     #         #',
+      '    #############',
+      '',
+      '',
+      ' ##################'
+    ],
+    gear: [
+      '',
+      '',
+      '         ###',
+      '         ###',
+      '    ##  ##### ##',
+      '    ## #     ###',
+      '      #       #',
+      '     #         #',
+      '    #    ###    #',
+      '  ###   #   #  ###',
+      '  ###   #   #  ###',
+      '  ###   #   #  ###',
+      '    #    ###    #',
+      '     #         #',
+      '    ###       ##',
+      '    ## # ### ###',
+      '        #####',
+      '         ###',
+      '',
+      ' ##################'
+    ],
+    globe: [
+      '',
+      '',
+      '',
+      '        #####',
+      '      ## # # ##',
+      '     #  #   #  #',
+      '    #  #     #  #',
+      '    # #       # #',
+      '   #  #       #  #',
+      '   #  #       #  #',
+      '   ###############',
+      '   #  #       #  #',
+      '   #  #       #  #',
+      '    # #       # #',
+      '    #  #     #  #',
+      '     #  #   #  #',
+      '      ## # # ##',
+      '        #####',
+      '',
+      ' ##################'
+    ],
+    key: [
+      '',
+      '',
+      '',
+      '',
+      '     ###',
+      '   ##   ##',
+      '   #     #',
+      '  #       #',
+      '  #       #',
+      '  #       #',
+      '   #     #',
+      '   ##   ####',
+      '     ###    # #',
+      '             ##',
+      '             ####',
+      '             #  #',
+      '               # #',
+      '               #',
+      '',
+      ' ##################'
+    ],
+    leaf: [
+      '',
+      '',
+      '',
+      '            #',
+      '          ## #',
+      '        ##    #',
+      '       #      ##',
+      '       #     #  #',
+      '      #     #   #',
+      '      #    #   #',
+      '     #    #    #',
+      '     #   #     #',
+      '     #  #      #',
+      '    #  #      #',
+      '    # #       #',
+      '     ##     ##',
+      '       ## ##',
+      '         #',
+      '',
+      ' ##################'
+    ],
+    lineChart: [
+      '',
+      '',
+      '',
+      '',
+      '   #',
+      '   #',
+      '   #         ##',
+      '   #        #  ##',
+      '   #        #    #',
+      '   #       #',
+      '   #   #   #',
+      '   #  # ###',
+      '   # #    #',
+      '   ##',
+      '   #',
+      '   #',
+      '   ###############',
+      '',
+      '',
+      ' ##################'
+    ],
+    lock: [
+      '',
+      '',
+      '',
+      '',
+      '          #',
+      '        ## ##',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '       #     #',
+      '    #############',
+      '    #           #',
+      '    #     #     #',
+      '    #    ###    #',
+      '    #     #     #',
+      '    #           #',
+      '    #           #',
+      '    #############',
+      '',
+      ' ##################'
+    ],
+    matrix: [
+      '',
+      '',
+      '',
+      '',
+      '   ###############',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   ###############',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   ###############',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   ###############',
+      '',
+      '',
+      ' ##################'
+    ],
+    molecule: [
+      '',
+      '',
+      '',
+      '',
+      '    ###       ###',
+      '   #   #     #   #',
+      '   #   #######   #',
+      '   #   #     #   #',
+      '    ###       ###',
+      '       #     #',
+      '       #     #',
+      '        #   #',
+      '        #   #',
+      '         ###',
+      '        #   #',
+      '        #   #',
+      '        #   #',
+      '         ###',
+      '',
+      ' ##################'
+    ],
+    node: [
+      '',
+      '',
+      '              ###',
+      '   ###       #   #',
+      '  #   #      #   #',
+      '  #   #      #   #',
+      '  #   #     # ###',
+      '   ### #    #',
+      '        ####',
+      '        ##  #',
+      '        #   #',
+      '        #   #',
+      '         ### ##',
+      '        #      ###',
+      '   ### #      #   #',
+      '  #   #       #   #',
+      '  #   #       #   #',
+      '  #   #        ###',
+      '   ###',
+      ' ##################'
+    ],
+    pin: [
+      '',
+      '',
+      '        #####',
+      '       #     #',
+      '      #       #',
+      '     #         #',
+      '     #    #    #',
+      '     #   ###   #',
+      '     #    #    #',
+      '     #         #',
+      '      #       #',
+      '       #     #',
+      '       #######',
+      '        #   #',
+      '        #   #',
+      '         # #',
+      '         # #',
+      '          #',
+      '',
+      ' ##################'
+    ],
+    scales: [
+      '',
+      '',
+      '',
+      '',
+      '          #',
+      '          #',
+      '   ###############',
+      '   #      #      #',
+      ' # # #    #    # # #',
+      '  # #     #     # #',
+      '  # #     #     # #',
+      '   #      #      #',
+      '          #',
+      '          #',
+      '          #',
+      '      #########',
+      '',
+      '',
+      '',
+      ' ##################'
+    ],
+    seed: [
+      '',
+      '',
+      '',
+      '',
+      '            ###',
+      '          # #  ##',
+      '          ##   #',
+      '          ###  #',
+      '          #  ##',
+      '          #',
+      '          #',
+      '          #',
+      '         # ##',
+      '       ##    #',
+      '      #       #',
+      '      #       #',
+      '       #     #',
+      '       ##   ##',
+      '         ###',
+      ' ##################'
+    ],
+    shield: [
+      '',
+      '',
+      '',
+      '    #############',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '    #           #',
+      '     #         #',
+      '      #        #',
+      '      #       #',
+      '       #     #',
+      '        #   #',
+      '         #  #',
+      '         # #',
+      '          #',
+      ' ##################'
+    ],
+    signal: [
+      '',
+      '                ##',
+      '                ##',
+      '                ##',
+      '                ##',
+      '            ##  ##',
+      '            ##  ##',
+      '            ##  ##',
+      '            ##  ##',
+      '        ##  ##  ##',
+      '        ##  ##  ##',
+      '        ##  ##  ##',
+      '        ##  ##  ##',
+      '    ##  ##  ##  ##',
+      '    ##  ##  ##  ##',
+      '    ##  ##  ##  ##',
+      '    ##  ##  ##  ##',
+      '',
+      '',
+      ' ##################'
+    ],
+    spark: [
+      '',
+      '',
+      '          #',
+      '          #',
+      '          #',
+      '     #    #    #',
+      '      #   #   #',
+      '       #  #  #',
+      '        # # #',
+      '         ###',
+      '  #################',
+      '         ###',
+      '        # # #',
+      '       #  #  #',
+      '      #   #   #',
+      '     #    #    #',
+      '          #',
+      '          #',
+      '          #',
+      ' ##################'
+    ],
+    steps: [
+      '',
+      '               #####',
+      '               #',
+      '               #',
+      '               #',
+      '           #####',
+      '           #',
+      '           #',
+      '           #',
+      '       #####',
+      '       #',
+      '       #',
+      '       #',
+      '   #####',
+      '   #',
+      '   #',
+      '   #',
+      '   ################',
+      '',
+      ' ##################'
+    ],
+    target: [
+      '',
+      '',
+      '',
+      '        #####',
+      '      ##     ##',
+      '     #         #',
+      '    #    ###    #',
+      '    #  ##   ##  #',
+      '   #   #     #   #',
+      '   #  #   #   #  #',
+      '   #  #  ###  #  #',
+      '   #  #   #   #  #',
+      '   #   #     #   #',
+      '    #  ##   ##  #',
+      '    #    ###    #',
+      '     #         #',
+      '      ##     ##',
+      '        #####',
+      '',
+      ' ##################'
+    ],
+    terminal: [
+      '',
+      '',
+      '',
+      '',
+      '  #################',
+      '  #               #',
+      '  #               #',
+      '  #################',
+      '  #               #',
+      '  #               #',
+      '  #  #            #',
+      '  #   #           #',
+      '  #    #          #',
+      '  #   #           #',
+      '  #  #   ######   #',
+      '  #               #',
+      '  #################',
+      '',
+      '',
+      ' ##################'
+    ],
+    tower: [
+      '',
+      '',
+      '          #',
+      '          #',
+      '       #######',
+      '         # #',
+      '         # #',
+      '         ###',
+      '         # #',
+      '        #   #',
+      '        #   #',
+      '        #####',
+      '        #   #',
+      '       #     #',
+      '       #     #',
+      '       #######',
+      '       #     #',
+      '      #       #',
+      '      #       #',
+      ' ##################'
+    ],
+    truck: [
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '  #########',
+      '  #       #',
+      '  #       #####',
+      '  #       ##   #',
+      '  #       ##   #',
+      '  #       ##    #',
+      '  ###############',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '   #   #   #   #',
+      '    ###     ###',
+      ' ##################'
+    ],
+    vessel: [
+      '',
+      '',
+      '',
+      '         ###',
+      '        #   #',
+      '       #     #',
+      '      #       #',
+      '      #       #',
+      '      #       #',
+      '      #       #',
+      '      # ##### #',
+      '      #       #',
+      '      #       #',
+      '      #       #',
+      '      #       #',
+      '      #       #',
+      '      #########',
+      '       #     #',
+      '      #       #',
+      ' ##################'
+    ]
+  };
+
+  /* Rasterise a draw fn (or an SVG path string, or a glyph) into dot centres
+     on a lattice of `pitch` px inside a `size` px box. Returns [{x,y}]. */
+  function rasterise(drawFn, size, pitch) {
+    var c = document.createElement('canvas');
+    c.width = c.height = size;
+    var g = c.getContext('2d');
+    g.save();
+    g.scale(size, size);
+    g.strokeStyle = '#fff'; g.fillStyle = '#fff';
+    g.lineJoin = 'miter'; g.lineCap = 'butt';
+    drawFn(g, pitch / size);
+    g.restore();
+    var d = g.getImageData(0, 0, size, size).data;
+    var pts = [], half = pitch / 2;
+    /* Sample mean coverage over the whole cell, not the centre pixel. Point
+       sampling a 3px stroke on a 7px lattice drops dots wherever the stroke
+       passes between centres, which shreds diagonals into confetti. Averaging
+       the cell is the difference between a drawn icon and a dusting. */
+    var cell = Math.max(2, Math.round(pitch));
+    for (var y = half; y < size; y += pitch) {
+      for (var x = half; x < size; x += pitch) {
+        var x0 = Math.max(0, Math.round(x - cell / 2)), y0 = Math.max(0, Math.round(y - cell / 2));
+        var x1 = Math.min(size, x0 + cell), y1 = Math.min(size, y0 + cell);
+        var sum = 0, n = 0;
+        for (var yy = y0; yy < y1; yy++) {
+          var row = yy * size * 4 + 3;
+          for (var xx = x0; xx < x1; xx++) { sum += d[row + xx * 4]; n++; }
+        }
+        if (n && sum / n > 118) pts.push({ x: x, y: y });
+      }
+    }
+    return pts;
+  }
+
+  /* Dot map: an icon written as ASCII art, one character per lattice cell.
+     '#' (or any non-space, non-dot character) lights a dot.
+
+     This is the primary authoring route, not a novelty. Everything else here
+     draws a shape and then asks the lattice what it caught; a map states the
+     dots outright, so what is written is exactly what renders — no coverage
+     threshold, no stroke landing between centres, no surprises. For organic
+     silhouettes (fruit, foliage, animals, anything without straight runs) it
+     is the only route that reliably reads at 20 cells.
+
+     The map is centred in the icon box, so maps of different sizes still
+     register against each other for a morph. */
+  function fromMap(rows, size, pitch) {
+    var h = rows.length, w = 0, i, j;
+    for (i = 0; i < h; i++) w = Math.max(w, rows[i].length);
+    var ox = (size - (w - 1) * pitch) / 2, oy = (size - (h - 1) * pitch) / 2;
+    var pts = [];
+    for (j = 0; j < h; j++) {
+      for (i = 0; i < rows[j].length; i++) {
+        var ch = rows[j][i];
+        if (ch !== ' ' && ch !== '.' && ch !== '\t') {
+          pts.push({ x: ox + i * pitch, y: oy + j * pitch });
+        }
+      }
+    }
+    return pts;
+  }
+
+  /* One entry point for every way an icon can be specified. */
+  function toPoints(spec, size, pitch) {
+    if (!spec) return null;
+    if (typeof spec === 'string') spec = icons[spec];
+    if (!spec) return null;
+    if (typeof spec === 'function') return rasterise(spec, size, pitch);
+    if (typeof spec[0] === 'string') return fromMap(spec, size, pitch);
+    return spec;                      /* already an array of {x,y} */
+  }
+
+  /* Build the A->B correspondence.
+
+     Greedy nearest-neighbour is the obvious choice and it is wrong here: the
+     two dot sets are never the same size, so every surplus dot in the larger
+     set picks the same nearest partner, dozens of dots stack on one point,
+     and the smaller icon arrives looking eaten — sparse and broken. Visible
+     immediately on wave(94 dots) -> terrain(61).
+
+     Instead: order both sets along a shared reading direction (left to right,
+     then top to bottom) and map proportionally. Every target dot receives a
+     roughly equal share of sources, so density is preserved at both ends and
+     the travel stays horizontally coherent — the icon reorganises rather than
+     cross-dissolves, which is the entire point of doing it with dots. */
+  function pair(a, b) {
+    var byReading = function (p, q) { return (p.x - q.x) || (p.y - q.y); };
+    var A = a.slice().sort(byReading), B = b.slice().sort(byReading);
+    var n = Math.max(A.length, B.length), out = [];
+    if (!n) return out;
+    for (var i = 0; i < n; i++) {
+      var t = n === 1 ? 0 : i / (n - 1);
+      out.push({
+        a: A[Math.min(A.length - 1, Math.round(t * (A.length - 1)))],
+        b: B[Math.min(B.length - 1, Math.round(t * (B.length - 1)))]
+      });
+    }
+    return out;
+  }
+
+  /* ------------------------------------------------------------ the field */
+  function Field(el, opts) {
+    opts = opts || {};
+    this.el = el;
+    this.canvas = document.createElement('canvas');
+    this.canvas.className = 'hf-canvas';
+    this.canvas.setAttribute('aria-hidden', 'true');
+    var cs = getComputedStyle(el);
+    if (cs.position === 'static') el.style.position = 'relative';
+    el.insertBefore(this.canvas, el.firstChild);
+    this.ctx = this.canvas.getContext('2d');
+
+    this.pitch = opts.pitch || cssNum(el, '--hf-pitch', 11);
+    this.iconPitch = opts.iconPitch || cssNum(el, '--hf-icon-pitch', this.pitch * 0.62);
+    this.rest = opts.rest || cssNum(el, '--hf-rest', 0.20);
+    this.lift = opts.lift || cssNum(el, '--hf-lift', 0.34);
+    this.ringGain = opts.ringGain || cssNum(el, '--hf-ring-gain', 0.85);
+    this.ringWidth = opts.ringWidth || cssNum(el, '--hf-ring-width', 62);
+    this.ringSpeed = opts.ringSpeed || cssNum(el, '--hf-ring-speed', 330); /* px/s */
+    this.ringEvery = opts.ringEvery || cssNum(el, '--hf-ring-every', 620); /* ms  */
+    this.dotR = opts.dotR || cssNum(el, '--hf-dot-r', 1.35);
+    this.dotGrow = opts.dotGrow || cssNum(el, '--hf-dot-grow', 1.55);
+    this.morphMs = opts.morphMs || cssNum(el, '--hf-morph-ms', 620);
+    this.rgb = toRGB(opts.dot || cssVar(el, '--hf-dot', '#ffffff'));
+
+    this.iconBox = opts.iconBox || cssNum(el, '--hf-icon-box', 132);
+    this.iconTop = opts.iconTop || cssNum(el, '--hf-icon-top', 0.30);
+
+    var A = toPoints(opts.icon, this.iconBox, this.iconPitch);
+    var B = toPoints(opts.morphTo, this.iconBox, this.iconPitch) || A;
+    this.pairs = A ? pair(A, B) : [];
+
+    this.hover = 0;          /* 0..1 eased hover state          */
+    this.target = 0;
+    this.morph = 0;          /* 0..1 eased morph state          */
+    this.rings = [];         /* live ripples: {t0}              */
+    this.lastEmit = -1e9;
+    this.raf = null;
+    this.reduced = global.matchMedia &&
+      global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    this._resize = this.resize.bind(this);
+    this._frame = this.frame.bind(this);
+    this.resize();
+    global.addEventListener('resize', this._resize);
+
+    var self = this;
+    el.addEventListener('pointerenter', function () { self.target = 1; self.wake(); });
+    el.addEventListener('pointerleave', function () { self.target = 0; self.wake(); });
+    /* Keyboard parity: the gesture is decoration, but if the card is
+       focusable the same state should be reachable without a pointer. */
+    el.addEventListener('focusin', function () { self.target = 1; self.wake(); });
+    el.addEventListener('focusout', function () { self.target = 0; self.wake(); });
+
+    this.wake();
+  }
+
+  /* Repoint a live field at a new icon pair without remounting it. */
+  Field.prototype.setIcons = function (from, to) {
+    var A = toPoints(from, this.iconBox, this.iconPitch);
+    var B = toPoints(to, this.iconBox, this.iconPitch) || A;
+    this.pairs = A ? pair(A, B) : [];
+    this.wake();
+  };
+
+  Field.prototype.resize = function () {
+    var r = this.el.getBoundingClientRect();
+    var dpr = Math.min(global.devicePixelRatio || 1, 2);
+    this.w = r.width; this.h = r.height;
+    this.canvas.width = Math.max(1, Math.round(this.w * dpr));
+    this.canvas.height = Math.max(1, Math.round(this.h * dpr));
+    this.canvas.style.width = this.w + 'px';
+    this.canvas.style.height = this.h + 'px';
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    /* Centre the lattice on the card so the grid never looks cropped on one
+       side — this is what separates a designed field from a CSS background. */
+    var nx = Math.floor(this.w / this.pitch), ny = Math.floor(this.h / this.pitch);
+    this.ox = (this.w - (nx - 1) * this.pitch) / 2;
+    this.oy = (this.h - (ny - 1) * this.pitch) / 2;
+    this.nx = nx; this.ny = ny;
+
+    this.cx = this.w / 2;
+    this.cy = this.iconTop * this.h;
+    this.maxR = Math.hypot(Math.max(this.cx, this.w - this.cx),
+                           Math.max(this.cy, this.h - this.cy));
+    this.dirty = true;
+  };
+
+  Field.prototype.wake = function () {
+    if (!this.raf) this.raf = requestAnimationFrame(this._frame);
+  };
+
+  Field.prototype.frame = function (now) {
+    this.raf = null;
+    var k = this.reduced ? 1 : 0.12;
+    this.hover += (this.target - this.hover) * k;
+    /* pinned: the morph is being scrubbed by hand (the library's bench).
+       Hover, ripple and field lift keep behaving normally underneath. */
+    var pinned = this.pinned != null;
+    var mTarget = pinned ? this.pinned : this.target;
+    if (pinned) this.morph = this.pinned;
+    else this.morph += (mTarget - this.morph) * (this.reduced ? 1 : 0.10);
+
+    if (!this.reduced && this.target > 0.5 && now - this.lastEmit > this.ringEvery) {
+      this.rings.push({ t0: now });
+      this.lastEmit = now;
+    }
+    var life = (this.maxR + this.ringWidth) / this.ringSpeed * 1000;
+    this.rings = this.rings.filter(function (r) { return now - r.t0 < life; });
+
+    this.draw(now);
+
+    var settled = Math.abs(this.target - this.hover) < 0.004 &&
+                  Math.abs(mTarget - this.morph) < 0.004 &&
+                  this.rings.length === 0;
+    if (!settled) this.wake();
+  };
+
+  Field.prototype.draw = function (now) {
+    var c = this.ctx, i, j;
+    c.clearRect(0, 0, this.w, this.h);
+    var rgb = this.rgb, pre = 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',';
+
+    /* --- 1. the field, with ripple gain --------------------------------- */
+    var base = lerp(this.rest, this.lift, this.hover);
+    var rings = this.rings, nR = rings.length;
+    var rr = [];
+    for (i = 0; i < nR; i++) {
+      var age = (now - rings[i].t0) / 1000;
+      rr.push({ r: age * this.ringSpeed, fade: clamp01(1 - age * this.ringSpeed / this.maxR) });
+    }
+    for (j = 0; j < this.ny; j++) {
+      var y = this.oy + j * this.pitch, dy = y - this.cy;
+      for (i = 0; i < this.nx; i++) {
+        var x = this.ox + i * this.pitch, dx = x - this.cx;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        var gain = 0;
+        for (var k2 = 0; k2 < nR; k2++) {
+          var t = 1 - Math.abs(d - rr[k2].r) / this.ringWidth;
+          if (t > 0) gain += t * t * rr[k2].fade;   /* squared = tight ring   */
+        }
+        gain = gain > 1 ? 1 : gain;
+        var a = base + gain * this.ringGain * this.hover;
+        if (a <= 0.012) continue;
+        var rad = this.dotR * (1 + (this.dotGrow - 1) * gain * this.hover);
+        c.fillStyle = pre + (a > 1 ? 1 : a).toFixed(3) + ')';
+        c.beginPath(); c.arc(x, y, rad, 0, TAU); c.fill();
+      }
+    }
+
+    /* --- 2. the icon, dot-lerped A -> B --------------------------------- */
+    if (this.pairs.length) {
+      var m = easeInOutCubic(clamp01(this.morph));
+      var bx = this.cx - this.iconBox / 2, by = this.cy - this.iconBox / 2;
+      c.fillStyle = pre + '1)';
+      var ir = this.dotR * 1.12;
+      for (i = 0; i < this.pairs.length; i++) {
+        var p = this.pairs[i];
+        var px = bx + lerp(p.a.x, p.b.x, m), py = by + lerp(p.a.y, p.b.y, m);
+        c.beginPath(); c.arc(px, py, ir, 0, TAU); c.fill();
+      }
+    }
+  };
+
+  /* Hold the morph at t (0..1), or pass null to hand it back to hover. */
+  Field.prototype.pin = function (t) {
+    this.pinned = (t == null) ? null : clamp01(t);
+    this.wake();
+  };
+
+  Field.prototype.destroy = function () {
+    global.removeEventListener('resize', this._resize);
+    if (this.raf) cancelAnimationFrame(this.raf);
+    if (this.canvas.parentNode) this.canvas.parentNode.removeChild(this.canvas);
+  };
+
+  /* --------------------------------------------------------- text scramble */
+  /* Resolves text out of glyph noise, per character, staggered left to right.
+     Only ever mutates textContent of a node it owns, so it is safe on copy
+     that also has to be selectable and searchable once settled. */
+  /* ASCII only, deliberately. Block-drawing glyphs (U+2580 block) look great
+     until a fallback face supplies them at a different advance width, at which
+     point every line reflows on every frame and the copy appears to shiver.
+     Anything here is guaranteed present in the mono stack. */
+  var GLYPHS = '/\\|-_=+*<>[]{}#$%&@!?:;0123456789';
+
+  /* Original markup, so an accent span inside a scrambled headline survives.
+     Held off-DOM rather than in an attribute — attributes would need escaping
+     and would show up in the user's copy-paste. */
+  var ORIGINAL = new (global.WeakMap || Object)();
+
+  function scramble(el, opts) {
+    opts = opts || {};
+    var dur = opts.duration || 760;
+    var real, html;
+    if (ORIGINAL.get && ORIGINAL.get(el)) {
+      real = ORIGINAL.get(el).text; html = ORIGINAL.get(el).html;
+    } else {
+      real = el.textContent; html = el.innerHTML;
+      if (ORIGINAL.set) ORIGINAL.set(el, { text: real, html: html });
+    }
+    el.setAttribute('data-hf-text', real);
+
+    /* Stagger has to be capped against length or a 150-character paragraph
+       takes four seconds to finish its last glyph — the block reads as broken
+       rather than resolving. Budget the whole sweep and divide. */
+    var span = opts.staggerSpan || 620;
+    var stagger = opts.stagger || Math.min(26, span / Math.max(1, real.length));
+
+    if (global.matchMedia &&
+        global.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.innerHTML = html; return;
+    }
+    var chars = real.split('');
+    var start = null;
+    el.style.whiteSpace = 'pre-wrap';
+    function step(now) {
+      if (start === null) start = now;
+      var t = now - start, out = '', done = true;
+      for (var i = 0; i < chars.length; i++) {
+        var ch = chars[i];
+        if (ch === ' ' || ch === '\n') { out += ch; continue; }
+        var local = clamp01((t - i * stagger) / dur);
+        if (local >= 1) { out += ch; continue; }
+        done = false;
+        /* Hold the glyph steady for short bursts rather than re-rolling every
+           frame — re-rolling at 60fps reads as static, not as decryption. */
+        var seed = (i * 977 + Math.floor(t / 55) * 131) % GLYPHS.length;
+        out += local < 0.08 ? ' ' : GLYPHS[seed];
+      }
+      if (done) { el.innerHTML = html; el.style.whiteSpace = ''; return; }
+      el.textContent = out;
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* Fire scramble when the element first crosses into view. */
+  function scrambleOnView(nodes, opts) {
+    nodes = Array.prototype.slice.call(nodes);
+    if (!global.IntersectionObserver) {
+      nodes.forEach(function (n) { scramble(n, opts); }); return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var d = parseFloat(e.target.getAttribute('data-hf-delay')) || 0;
+        setTimeout(function () { scramble(e.target, opts); }, d);
+      });
+    }, { threshold: 0.25 });
+    nodes.forEach(function (n) {
+      /* Capture before first paint, without touching the DOM — assigning
+         textContent here would strip inline markup permanently. */
+      if (ORIGINAL.set && !ORIGINAL.get(n)) {
+        ORIGINAL.set(n, { text: n.textContent, html: n.innerHTML });
+      }
+      io.observe(n);
+    });
+  }
+
+  /* ------------------------------------------------------------------ api */
+  global.HalftoneField = {
+    icons: icons,
+    rasterise: rasterise,
+    fromMap: fromMap,
+    toPoints: toPoints,
+    mount: function (el, opts) { return new Field(el, opts); },
+    mountAll: function (sel, resolve) {
+      return Array.prototype.map.call(document.querySelectorAll(sel), function (el, i) {
+        return new Field(el, resolve ? resolve(el, i) : {
+          icon: el.getAttribute('data-icon'),
+          morphTo: el.getAttribute('data-morph')
+        });
+      });
+    },
+    scramble: scramble,
+    scrambleOnView: scrambleOnView
+  };
+})(window);
+
+/* ===========================================================================
+   THE CATALOGUE — the only thing you edit to add a card.
+   { id, name, pair:[from,to], desc, tags }
+   =========================================================================== */
+var CATALOGUE = [
+  {
+    id: 'hazard', name: 'Hazard Models', pair: ['wave', 'terrain'],
+    tags: ['risk', 'data', 'reference'],
+    desc: 'Crossing hazard waveforms settling into a terrain profile — the ' +
+          'signal resolving into the ground it describes. Counter-phase ' +
+          'zigzags rather than sines, so the weave stays one cell thick at ' +
+          'every crossing. Shared baseline anchors the morph.'
+  },
+  {
+    id: 'exposure', name: 'Exposure Models', pair: ['buildings', 'parcels'],
+    tags: ['property', 'geo', 'reference'],
+    desc: 'Two towers in elevation dropping to the same footprint in plan — ' +
+          'the built asset seen from the side, then from above. Drawn in whole ' +
+          'cells, which is why the punched windows stay crisp at this pitch.'
+  },
+  {
+    id: 'loss', name: 'Loss Models', pair: ['barsDesc', 'barsLevel'],
+    tags: ['finance', 'chart', 'reference'],
+    desc: 'A decaying series levelling out. Parametric rather than mapped: the ' +
+          'bar heights come from an array, so the same icon re-renders against ' +
+          'real numbers without redrawing anything.'
+  },
+  {
+    id: 'growth', name: 'Apple → Tree', pair: ['apple', 'tree'],
+    tags: ['nature', 'narrative', 'map-authored'],
+    desc: 'The worked example for map authoring. The apple’s stem sits in the ' +
+          'tree’s trunk column and both share a ground rule, so the morph reads ' +
+          'as the stem growing down while the fruit opens into a canopy — not ' +
+          'as two shapes swapping places.'
+  },
+  {
+    id: 'bioprocess', name: 'DNA → Factory', pair: ['dna', 'factory'],
+    tags: ['bio', 'industry', 'narrative', 'map-authored'],
+    desc: 'Genome to production line. The helix’s two strands swing between ' +
+          'columns 4 and 16 — exactly where the factory’s walls stand — so it ' +
+          'reads as the helix straightening into the building rather than ' +
+          'dissolving into it. Base-pair rows land on the floor slabs. ' +
+          'Northlight sawtooth rather than a smokestack: a production ' +
+          'facility, not a foundry.'
+  }
+];
+
+/* Cards added on the bench and exported via "Download library" come back as
+   a __EXTRA block in <head>, so a downloaded copy reopens with them baked in. */
+if (window.__EXTRA_ICONS) Object.assign(HalftoneField.icons, window.__EXTRA_ICONS);
+if (window.__EXTRA_ENTRIES) CATALOGUE = CATALOGUE.concat(window.__EXTRA_ENTRIES);
+
+/* ---------------------------------------------------------------- render */
+var BOX = 126, PITCH = 6.4;
+
+/* Reconstruct an ASCII map from whatever the icon actually resolves to, so
+   function-authored and map-authored icons document themselves identically —
+   and so what you read is what the lattice really got, not what was intended. */
+function toMap(spec) {
+  var pts = HalftoneField.toPoints(spec, BOX, PITCH);
+  if (!pts || !pts.length) return '';
+  var xs = pts.map(function (p) { return p.x; }), ys = pts.map(function (p) { return p.y; });
+  var x0 = Math.min.apply(null, xs), y0 = Math.min.apply(null, ys);
+  var w = Math.round((Math.max.apply(null, xs) - x0) / PITCH) + 1;
+  var h = Math.round((Math.max.apply(null, ys) - y0) / PITCH) + 1;
+  var g = [], r;
+  for (r = 0; r < h; r++) { g.push(new Array(w).fill(' ')); }
+  pts.forEach(function (p) {
+    g[Math.round((p.y - y0) / PITCH)][Math.round((p.x - x0) / PITCH)] = '█';
+  });
+  return g.map(function (row) { return row.join('').replace(/\s+$/, ''); }).join('\n');
+}
+function count(spec) {
+  var p = HalftoneField.toPoints(spec, BOX, PITCH);
+  return p ? p.length : 0;
+}
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+var grid = document.getElementById('grid');
+function renderEntry(e, isNew) {
+  var a = count(e.pair[0]), b = count(e.pair[1]);
+  /* The pairing rule, enforced rather than remembered: a pair whose counts
+     differ by more than half will render the smaller state sparse. */
+  var ratio = Math.max(a, b) / Math.max(1, Math.min(a, b));
+  var warn = ratio > 1.5;
+  var el = document.createElement('div');
+  el.className = 'entry';
+  el.dataset.search = (e.name + ' ' + e.id + ' ' + e.pair.join(' ') + ' ' +
+                       (e.tags || []).join(' ')).toLowerCase();
+  el.innerHTML =
+    '<div class="card" tabindex="0"><span class="label">' + esc(e.name) + '</span></div>' +
+    '<div class="meta">' +
+      '<div class="pairline"><span>' + esc(e.pair[0]) + ' → ' + esc(e.pair[1]) + '</span>' +
+        '<span class="ct' + (warn ? ' warn' : '') + '" title="dot counts">' +
+        a + '/' + b + (warn ? ' ⚠' : '') + '</span></div>' +
+      '<p class="desc">' + esc(e.desc) + '</p>' +
+      '<div class="tags">' + (e.tags || []).map(function (t) {
+        return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+      '<details class="reveal"><summary>map</summary><div class="maps">' +
+        '<pre><b>' + esc(e.pair[0]) + '</b>' + esc(toMap(e.pair[0])) + '</pre>' +
+        '<pre><b>' + esc(e.pair[1]) + '</b>' + esc(toMap(e.pair[1])) + '</pre>' +
+      '</div></details>' +
+    '</div>';
+  var card = el.querySelector('.card');
+  card.dataset.icon = e.pair[0];
+  card.dataset.morph = e.pair[1];
+  if (isNew) el.classList.add('new');
+  grid.appendChild(el);
+  return el;
+}
+function setCount() {
+  document.getElementById('count').textContent = CATALOGUE.length + ' pairs';
+}
+CATALOGUE.forEach(function (e) { renderEntry(e, false); });
+setCount();
+
+var fields = HalftoneField.mountAll('.grid .card');
+
+/* ---------------------------------------------------------------- ground */
+document.querySelectorAll('[data-ground]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('[data-ground]').forEach(function (o) {
+      o.setAttribute('aria-pressed', String(o === b));
+    });
+    document.body.className = b.getAttribute('data-ground');
+    requestAnimationFrame(function () {          /* let the tokens settle */
+      fields.forEach(function (f) { f.destroy(); });
+      fields = HalftoneField.mountAll('.grid .card');
+      if (playing) fields.forEach(function (f) { f.target = 1; f.wake(); });
+      remountStage();
+    });
+  });
+});
+
+/* ------------------------------------------------------------- play all */
+/* Deliberately opt-in. Every card animating at once is a screensaver, but for
+   reviewing a growing library side by side it beats hovering twenty cards. */
+var playing = false, timer = null;
+var playBtn = document.getElementById('play');
+playBtn.addEventListener('click', function () {
+  playing = !playing;
+  playBtn.setAttribute('aria-pressed', String(playing));
+  playBtn.textContent = playing ? 'Stop' : 'Play all';
+  if (playing) {
+    var on = true;
+    var tick = function () {
+      fields.forEach(function (f) { f.target = on ? 1 : 0; f.wake(); });
+      on = !on;
+      timer = setTimeout(tick, 1500);
+    };
+    tick();
+  } else {
+    clearTimeout(timer);
+    fields.forEach(function (f) { f.target = 0; f.wake(); });
+  }
+});
+
+/* ---------------------------------------------------------------- filter */
+var q = document.getElementById('q'), empty = document.getElementById('empty');
+q.addEventListener('input', function () {
+  var v = q.value.trim().toLowerCase(), shown = 0;
+  document.querySelectorAll('.entry').forEach(function (el) {
+    var hit = !v || el.dataset.search.indexOf(v) > -1;
+    el.hidden = !hit; if (hit) shown++;
+  });
+  empty.hidden = shown > 0;
+  document.getElementById('count').textContent =
+    (v ? shown + ' of ' + CATALOGUE.length : CATALOGUE.length + ' pairs');
+});
+
+/* ===========================================================================
+   THE BENCH
+   Explore any combination of what exists, edit or write new maps live, then
+   lock the result into the gallery. Nothing here can invent an icon from a
+   word — if a name has no map, the bench says so and opens the editor.
+   =========================================================================== */
+var CUSTOM = {};                      /* maps written on the bench this session */
+var ADDED  = [];                      /* entries locked into the gallery        */
+
+var $ = function (id) { return document.getElementById(id); };
+var fromEl = $('from'), toEl = $('to'), statusEl = $('status');
+var fromMapEl = $('fromMap'), toMapEl = $('toMap');
+var scrubEl = $('scrub'), scrubVal = $('scrubVal');
+var stage = null;
+
+function iconNames() {
+  return Object.keys(HalftoneField.icons).sort();
+}
+function refreshNames() {
+  var names = iconNames();
+  $('iconnames').innerHTML = names.map(function (n) {
+    return '<option value="' + n + '">'; }).join('');
+  var pal = $('palette');
+  pal.innerHTML = names.map(function (n) {
+    return '<button class="chip" data-n="' + esc(n) + '">' + esc(n) + '</button>';
+  }).join('');
+  Array.prototype.forEach.call(pal.children, function (c) {
+    c.addEventListener('click', function () {
+      /* Alt-click sets From; a plain click sets To — the common case is
+         "keep what I have on the left, try this on the right". */
+      (c.dataset.n && (window.event && (window.event.altKey || window.event.shiftKey))
+        ? fromEl : toEl).value = c.dataset.n;
+      applyPair(); markChips();
+    });
+  });
+  markChips();
+}
+function markChips() {
+  Array.prototype.forEach.call($('palette').children, function (c) {
+    var n = c.dataset.n;
+    c.classList.toggle('on', n === fromEl.value.trim() || n === toEl.value.trim());
+  });
+}
+
+/* Cheap edit distance — enough to turn "plnat" or "molecul" into a suggestion. */
+function near(q) {
+  q = q.toLowerCase();
+  return iconNames().map(function (n) {
+    var l = n.toLowerCase(), d;
+    if (l === q) d = 0;
+    else if (l.indexOf(q) === 0) d = 1;
+    else if (l.indexOf(q) > -1 || q.indexOf(l) > -1) d = 2;
+    else {
+      var m = 0, i;
+      for (i = 0; i < Math.min(l.length, q.length); i++) if (l[i] === q[i]) m++;
+      d = 6 - m;
+    }
+    return { n: n, d: d };
+  }).sort(function (a, b) { return a.d - b.d; });
+}
+/* Suggest by name where the name is close; otherwise offer neutral bases.
+   This is string matching, not meaning — "windmill" has no near neighbour, and
+   a circle or a box is a more honest starting point than a bad guess. */
+function starters(q) {
+  var r = near(q), out = r.filter(function (x) { return x.d <= 2; })
+                          .slice(0, 3).map(function (x) { return x.n; });
+  ['target', 'crate', 'vessel'].forEach(function (n) {
+    if (out.length < 3 && out.indexOf(n) < 0 && HalftoneField.icons[n]) out.push(n);
+  });
+  return out;
+}
+function known(n) { return !!HalftoneField.icons[n]; }
+function slug(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'untitled';
+}
+
+function remountStage() {
+  if (stage) stage.destroy();
+  stage = HalftoneField.mount($('stageCard'), {});
+  applyPair();
+}
+
+/* Read the two fields, render whatever is resolvable, and report honestly. */
+function applyPair() {
+  var a = fromEl.value.trim(), b = toEl.value.trim();
+  var ia = HalftoneField.icons[a], ib = HalftoneField.icons[b];
+  var missing = [];
+  if (a && !ia) missing.push(a);
+  if (b && !ib) missing.push(b);
+
+  if (stage) stage.setIcons(ia || ib || null, ib || ia || null);
+  $('stageLabel').textContent = $('nm').value.trim() ||
+    (a && b ? a + ' → ' + b : 'Untitled');
+
+  var na = ia ? HalftoneField.toPoints(ia, BOX, PITCH).length : 0;
+  var nb = ib ? HalftoneField.toPoints(ib, BOX, PITCH).length : 0;
+
+  if (missing.length) {
+    /* A blank textarea is a dead end — nobody hand-draws 20x20 from nothing.
+       Offer the nearest existing maps as a starting point to fork. */
+    var m0 = missing[0], sug = starters(m0);
+    statusEl.innerHTML = '<span class="miss">no map called “' + esc(m0) + '”</span> — ' +
+      'fork one: ' + sug.map(function (n) {
+        return '<button class="fork" data-src="' + esc(n) + '" data-dst="' + esc(m0) + '">' +
+               esc(n) + '</button>'; }).join('') +
+      ' <span style="opacity:.6">then edit it below.</span>';
+    Array.prototype.forEach.call(statusEl.querySelectorAll('.fork'), function (btn) {
+      btn.addEventListener('click', function () {
+        var rows = mapText(btn.dataset.src).split('\n');
+        HalftoneField.icons[btn.dataset.dst] = rows;
+        CUSTOM[btn.dataset.dst] = rows;
+        refreshNames(); applyPair();
+        (fromEl.value.trim() === btn.dataset.dst ? fromMapEl : toMapEl).focus();
+      });
+    });
+    $('mapedit').open = true;
+  } else if (!a || !b) {
+    statusEl.textContent = 'pick a From and a To.';
+  } else {
+    var ratio = Math.max(na, nb) / Math.max(1, Math.min(na, nb));
+    var ok = ratio <= 1.5;
+    statusEl.innerHTML = '<span class="' + (ok ? 'ok' : 'bad') + '">' + na + '/' + nb +
+      ' · ' + ratio.toFixed(2) + '×' + (ok ? ' ✓ in band' : ' ⚠ the smaller state will arrive thin') +
+      '</span>';
+  }
+  /* Keep the editors in step, but never stomp on what is being typed. */
+  if (document.activeElement !== fromMapEl) fromMapEl.value = mapText(a);
+  if (document.activeElement !== toMapEl) toMapEl.value = mapText(b);
+  $('fromName').textContent = a || 'from';
+  $('toName').textContent = b || 'to';
+}
+
+/* An icon's editable text: its own map if it has one, otherwise the map the
+   lattice actually resolved it to — so a drawn icon can be forked by hand. */
+function mapText(name) {
+  var spec = HalftoneField.icons[name];
+  if (!spec) return '';
+  if (Array.isArray(spec) && typeof spec[0] === 'string') return spec.join('\n');
+  return toMap(spec).replace(/█/g, '#');
+}
+
+function commitMap(which) {
+  var name = (which === 'from' ? fromEl : toEl).value.trim();
+  if (!name) return;
+  var text = (which === 'from' ? fromMapEl : toMapEl).value;
+  var rows = text.replace(/\t/g, '    ').split('\n');
+  CUSTOM[name] = rows;
+  HalftoneField.icons[name] = rows;
+  refreshNames();
+  applyPair();
+}
+
+fromMapEl.addEventListener('input', function () { commitMap('from'); });
+toMapEl.addEventListener('input',   function () { commitMap('to'); });
+[fromEl, toEl].forEach(function (el) {
+  el.addEventListener('input', function () { applyPair(); markChips(); });
+});
+$('nm').addEventListener('input', applyPair);
+
+$('swap').addEventListener('click', function () {
+  var t = fromEl.value; fromEl.value = toEl.value; toEl.value = t; applyPair(); markChips();
+});
+$('shuffle').addEventListener('click', function () {
+  var n = iconNames(); if (n.length < 2) return;
+  var i = Math.floor(Math.random() * n.length), j = i;
+  while (j === i) j = Math.floor(Math.random() * n.length);
+  fromEl.value = n[i]; toEl.value = n[j]; applyPair(); markChips();
+});
+
+/* Scrub pins the morph so a pair can be judged mid-transition — where a bad
+   pairing actually shows itself. Dragging to 0 hands it back to hover. */
+scrubEl.addEventListener('input', function () {
+  var v = +scrubEl.value;
+  if (v === 0) { stage.pin(null); scrubVal.textContent = 'hover'; }
+  else { stage.pin(v / 100); scrubVal.textContent = (v / 100).toFixed(2); }
+});
+
+/* ------------------------------------------------------------- locking -- */
+function draftEntry() {
+  var a = fromEl.value.trim(), b = toEl.value.trim();
+  if (!a || !b || !known(a) || !known(b)) return null;
+  var tags = $('tg').value.split(',').map(function (t) { return t.trim(); })
+              .filter(Boolean);
+  var name = $('nm').value.trim() || (a + ' → ' + b);
+  return { id: slug(name), name: name, pair: [a, b],
+           desc: $('ds').value.trim() || '—', tags: tags };
+}
+
+$('add').addEventListener('click', function () {
+  var e = draftEntry();
+  if (!e) { statusEl.innerHTML = '<span class="bad">both maps must exist before you can lock the card.</span>'; return; }
+  CATALOGUE.push(e); ADDED.push(e);
+  var el = renderEntry(e, true);
+  setCount();
+  fields = fields.concat(HalftoneField.mountAll('.entry.new:last-child .card'));
+  el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+$('copy').addEventListener('click', function () {
+  var e = draftEntry(); if (!e) return;
+  var out = '';
+  [e.pair[0], e.pair[1]].forEach(function (n) {
+    if (CUSTOM[n]) out += 'HalftoneField.icons.' + n + ' = ' +
+      JSON.stringify(CUSTOM[n], null, 2).replace(/\n/g, '\n  ') + ';\n\n';
+  });
+  out += JSON.stringify(e, null, 2);
+  navigator.clipboard.writeText(out).then(function () {
+    $('copy').textContent = 'Copied'; setTimeout(function () { $('copy').textContent = 'Copy entry'; }, 1400);
+  });
+});
+
+/* Download a copy of this page with the session's cards baked in. The page
+   has no storage of its own by design — the file IS the save format. */
+$('dl').addEventListener('click', function () {
+  var doc = document.documentElement.cloneNode(true);
+  doc.querySelector('#grid').innerHTML = '';
+  doc.querySelectorAll('.hf-canvas').forEach(function (c) { c.remove(); });
+  var old = doc.querySelector('#hf-extra'); if (old) old.remove();
+  var sc = document.createElement('script');
+  sc.id = 'hf-extra';
+  sc.textContent = 'window.__EXTRA_ICONS=' + JSON.stringify(CUSTOM) +
+                   ';window.__EXTRA_ENTRIES=' + JSON.stringify(ADDED) + ';';
+  doc.querySelector('head').appendChild(sc);
+  var blob = new Blob(['<!DOCTYPE html>\n' + doc.outerHTML], { type: 'text/html' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'halftone-library.html';
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+});
+
+refreshNames();
+$('vocabCount').textContent = iconNames().length;
+remountStage();
+
+</script>
+</body>
+</html>
