@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cobranzas y Administración Local · Casa Manantial</title>
+<style>
+  :root{
+    --bg:#f7f5f1; --panel:#ffffff; --ink:#23281f; --muted:#6b7566;
+    --line:#e4e0d7; --green:#4f7a4a; --green-d:#3c5f38; --green-l:#eaf1e8;
+    --blue:#3f6d86; --blue-l:#e5eef2; --amber:#b0803a; --amber-l:#f6ecda;
+    --sand:#8a7d5f; --shadow:0 1px 3px rgba(30,40,25,.06),0 8px 24px rgba(30,40,25,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  header{padding:26px 28px 18px;border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0;z-index:20}
+  header h1{margin:0;font-size:21px;letter-spacing:-.2px}
+  header p{margin:5px 0 0;color:var(--muted);font-size:13.5px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-top:20px}
+  .card h2{margin:0;padding:13px 18px;font-size:12.5px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted);border-bottom:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;align-items:center}
+  .zoombtns{display:flex;gap:6px}
+  .zoombtns button{border:1px solid var(--line);background:var(--bg);border-radius:7px;width:26px;height:24px;
+    cursor:pointer;font-size:14px;line-height:1;color:var(--muted)}
+  .zoombtns button:hover{border-color:var(--green);color:var(--green-d)}
+  .mapbox{padding:14px;overflow:auto}
+  .mapbox svg{width:100%;height:auto;max-width:100%;transform-origin:top left;transition:transform .12s}
+  svg g.click{cursor:pointer}
+  svg g.click:hover polygon,svg g.click:hover path{stroke-width:2.6px;filter:brightness(.97)}
+  svg g.click:hover text{font-weight:bold}
+  .hint{padding:0 18px 14px;color:var(--muted);font-size:12px}
+
+  /* TOC */
+  .toc{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 2px}
+  .toc a{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 13px;font-size:12.5px;
+    cursor:pointer;color:var(--ink);text-decoration:none;transition:.15s}
+  .toc a:hover{border-color:var(--green);color:var(--green-d)}
+
+  /* readable doc */
+  .doc{padding:8px 0 30px}
+  section.pr{padding:26px 30px;border-bottom:1px solid var(--line);scroll-margin-top:90px}
+  section.pr:last-child{border-bottom:none}
+  .doc{max-width:900px;margin:0 auto}
+  .kicker{font-size:11.5px;font-weight:800;letter-spacing:.7px;text-transform:uppercase}
+  .k-green{color:var(--green-d)} .k-blue{color:var(--blue)} .k-amber{color:#8a6d2f} .k-grey{color:var(--muted)}
+  section.pr h3{margin:4px 0 4px;font-size:22px;letter-spacing:-.3px}
+  .who{display:inline-block;font-size:11px;font-weight:800;color:#fff;border-radius:999px;padding:2px 10px;vertical-align:middle;margin-left:2px}
+  .w-green{background:var(--green)} .w-blue{background:var(--blue)} .w-amber{background:var(--amber)} .w-grey{background:var(--muted)}
+  section.pr h4{margin:20px 0 4px;font-size:15px;color:var(--ink)}
+  section.pr p{font-size:14.5px;margin:9px 0}
+  section.pr ul,section.pr ol{padding-left:20px;margin:9px 0}
+  section.pr li{margin:7px 0;font-size:14.5px}
+  .lead{font-weight:600}
+  .callout{border-radius:8px;padding:11px 13px;font-size:13.5px;margin:13px 0}
+  .c-tip{background:var(--green-l);color:var(--green-d)}
+  .c-todo{background:var(--amber-l);border:1px solid #e8d3ab;border-left:3px solid var(--amber);color:#6d4f22}
+  .c-note{background:#f1efe9;color:#5a5346;font-style:italic}
+  table.t{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  table.t th,table.t td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  table.t th{background:var(--green-l);color:var(--green-d)}
+  a.x{color:var(--green-d);text-decoration:underline;cursor:pointer;font-weight:600}
+  details{margin:13px 0;border:1px solid var(--line);border-radius:9px;background:#faf9f6;overflow:hidden}
+  details>summary{cursor:pointer;padding:11px 14px;font-size:13.5px;font-weight:700;color:var(--green-d);list-style:none;
+    display:flex;align-items:center;gap:8px}
+  details>summary::-webkit-details-marker{display:none}
+  details>summary::before{content:"▸";transition:.15s;color:var(--muted)}
+  details[open]>summary::before{transform:rotate(90deg)}
+  details .dd{padding:2px 16px 14px;font-size:13.5px}
+  .flash{animation:fl 1.6s ease}
+  @keyframes fl{0%{background:#fdf3d9}60%{background:#fdf3d9}100%{background:transparent}}
+  .foot{color:var(--muted);font-size:12px;text-align:center;padding:14px 0 30px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>💸 Cobranzas y Administración Local · Casa Manantial</h1>
+    <p>El flujo arriba; el detalle debajo, en orden, para leerlo de corrido. Click en una caja del diagrama → salta a esa parte del texto.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="card">
+    <h2>🔄 El flujo de un vistazo
+      <span class="zoombtns"><button onclick="zoom(-1)">–</button><button onclick="zoom(0)">⟲</button><button onclick="zoom(1)">+</button></span>
+    </h2>
+    <div class="mapbox" id="mapbox">
+<svg
+ viewBox="0.00 0.00 1011.00 772.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 768)">
+<title>CM</title>
+<g id="clust1" class="cluster">
+<title>cluster_consumos</title>
+<path fill="#f2f6f0" stroke="#cfe0c9" d="M20,-298C20,-298 453,-298 453,-298 459,-298 465,-304 465,-310 465,-310 465,-744 465,-744 465,-750 459,-756 453,-756 453,-756 20,-756 20,-756 14,-756 8,-750 8,-744 8,-744 8,-310 8,-310 8,-304 14,-298 20,-298"/>
+<text text-anchor="middle" x="88" y="-740.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00" fill="#3c5f38">CONSUMOS &#160;· &#160;Tini</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_mem</title>
+<path fill="#eef3f6" stroke="#c7dce6" d="M719,-382C719,-382 983,-382 983,-382 989,-382 995,-388 995,-394 995,-394 995,-744 995,-744 995,-750 989,-756 983,-756 983,-756 719,-756 719,-756 713,-756 707,-750 707,-744 707,-744 707,-394 707,-394 707,-388 713,-382 719,-382"/>
+<text text-anchor="middle" x="797" y="-740.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00" fill="#3f6d86">MEMBRESÍAS &#160;· &#160;Delfi</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_inv</title>
+<path fill="#f7f1e6" stroke="#e6d3ad" d="M485,-379C485,-379 687,-379 687,-379 693,-379 699,-385 699,-391 699,-391 699,-744 699,-744 699,-750 693,-756 687,-756 687,-756 485,-756 485,-756 479,-756 473,-750 473,-744 473,-744 473,-391 473,-391 473,-385 479,-379 485,-379"/>
+<text text-anchor="middle" x="583.5" y="-740.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00" fill="#8a6d2f">INVITADOS (Luma) &#160;· &#160;Delfi</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_cierres</title>
+<path fill="#f1efe9" stroke="#ddd8cd" d="M128,-8C128,-8 346,-8 346,-8 352,-8 358,-14 358,-20 358,-20 358,-259 358,-259 358,-265 352,-271 346,-271 346,-271 128,-271 128,-271 122,-271 116,-265 116,-259 116,-259 116,-20 116,-20 116,-14 122,-8 128,-8"/>
+<text text-anchor="middle" x="157.5" y="-255.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="14.00" fill="#6b7566">CIERRES</text>
+</g>
+<!-- c_start -->
+<g id="consumos" class="node click">
+<title>c_start</title>
+<path fill="#23281f" stroke="#23281f" stroke-width="1.3" d="M305,-717C305,-717 169,-717 169,-717 163,-717 157,-711 157,-705 157,-705 157,-693 157,-693 157,-687 163,-681 169,-681 169,-681 305,-681 305,-681 311,-681 317,-687 317,-693 317,-693 317,-705 317,-705 317,-711 311,-717 305,-717"/>
+<text text-anchor="middle" x="237" y="-695.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#ffffff">Consumo del member</text>
+</g>
+<!-- c_inv -->
+<g id="consumos" class="node click">
+<title>c_inv</title>
+<path fill="#eaf1e8" stroke="#4f7a4a" stroke-width="1.6" d="M324,-640C324,-640 150,-640 150,-640 144,-640 138,-634 138,-628 138,-628 138,-610 138,-610 138,-604 144,-598 150,-598 150,-598 324,-598 324,-598 330,-598 336,-604 336,-610 336,-610 336,-628 336,-628 336,-634 330,-640 324,-640"/>
+<text text-anchor="middle" x="237" y="-622.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Factura en QuickBooks</text>
+<text text-anchor="middle" x="237" y="-609.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">en el momento del consumo</text>
+</g>
+<!-- c_start&#45;&gt;c_inv -->
+<g id="edge1" class="edge">
+<title>c_start&#45;&gt;c_inv</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M237,-680.69C237,-670.82 237,-658.24 237,-647.09"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="239.45,-647.02 237,-640.02 234.55,-647.02 239.45,-647.02"/>
+</g>
+<!-- c_cobro -->
+<g id="consumos" class="node click">
+<title>c_cobro</title>
+<path fill="#f6ecda" stroke="#b0803a" stroke-width="1.6" d="M226.13,-551.92C226.13,-551.92 185.87,-533.08 185.87,-533.08 180.43,-530.54 180.43,-525.46 185.87,-522.92 185.87,-522.92 226.13,-504.08 226.13,-504.08 231.57,-501.54 242.43,-501.54 247.87,-504.08 247.87,-504.08 288.13,-522.92 288.13,-522.92 293.57,-525.46 293.57,-530.54 288.13,-533.08 288.13,-533.08 247.87,-551.92 247.87,-551.92 242.43,-554.46 231.57,-554.46 226.13,-551.92"/>
+<text text-anchor="middle" x="237" y="-524.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Cobro</text>
+</g>
+<!-- c_inv&#45;&gt;c_cobro -->
+<g id="edge2" class="edge">
+<title>c_inv&#45;&gt;c_cobro</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M237,-597.8C237,-587.96 237,-575.83 237,-564.5"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="239.45,-564.21 237,-557.21 234.55,-564.21 239.45,-564.21"/>
+</g>
+<!-- m_link -->
+<g id="consumos" class="node click">
+<title>m_link</title>
+<path fill="#eef4ec" stroke="#4f7a4a" stroke-width="1.3" d="M104.5,-434C104.5,-434 35.5,-434 35.5,-434 29.5,-434 23.5,-428 23.5,-422 23.5,-422 23.5,-410 23.5,-410 23.5,-404 29.5,-398 35.5,-398 35.5,-398 104.5,-398 104.5,-398 110.5,-398 116.5,-404 116.5,-410 116.5,-410 116.5,-422 116.5,-422 116.5,-428 110.5,-434 104.5,-434"/>
+<text text-anchor="middle" x="70" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Link Handy</text>
+</g>
+<!-- c_cobro&#45;&gt;m_link -->
+<g id="edge3" class="edge">
+<title>c_cobro&#45;&gt;m_link</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M212,-510.53C182.74,-491.26 134.22,-459.3 102.18,-438.19"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="103.19,-435.93 96,-434.12 100.5,-440.02 103.19,-435.93"/>
+</g>
+<!-- m_pos -->
+<g id="consumos" class="node click">
+<title>m_pos</title>
+<path fill="#eef4ec" stroke="#4f7a4a" stroke-width="1.3" d="M222.5,-434C222.5,-434 153.5,-434 153.5,-434 147.5,-434 141.5,-428 141.5,-422 141.5,-422 141.5,-410 141.5,-410 141.5,-404 147.5,-398 153.5,-398 153.5,-398 222.5,-398 222.5,-398 228.5,-398 234.5,-404 234.5,-410 234.5,-410 234.5,-422 234.5,-422 234.5,-428 228.5,-434 222.5,-434"/>
+<text text-anchor="middle" x="188" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">POS Handy</text>
+</g>
+<!-- c_cobro&#45;&gt;m_pos -->
+<g id="edge4" class="edge">
+<title>c_cobro&#45;&gt;m_pos</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M226.61,-503.67C218.35,-485.14 206.85,-459.32 198.55,-440.69"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="200.74,-439.58 195.65,-434.18 196.26,-441.57 200.74,-439.58"/>
+</g>
+<!-- m_cash -->
+<g id="consumos" class="node click">
+<title>m_cash</title>
+<path fill="#eef4ec" stroke="#4f7a4a" stroke-width="1.3" d="M304,-434C304,-434 272,-434 272,-434 266,-434 260,-428 260,-422 260,-422 260,-410 260,-410 260,-404 266,-398 272,-398 272,-398 304,-398 304,-398 310,-398 316,-404 316,-410 316,-410 316,-422 316,-422 316,-428 310,-434 304,-434"/>
+<text text-anchor="middle" x="288" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Cash</text>
+</g>
+<!-- c_cobro&#45;&gt;m_cash -->
+<g id="edge5" class="edge">
+<title>c_cobro&#45;&gt;m_cash</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M247.69,-503.94C256.28,-485.42 268.29,-459.52 276.96,-440.81"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="279.27,-441.65 279.99,-434.27 274.83,-439.59 279.27,-441.65"/>
+</g>
+<!-- m_transf -->
+<g id="consumos" class="node click">
+<title>m_transf</title>
+<path fill="#eef4ec" stroke="#4f7a4a" stroke-width="1.3" d="M436.5,-434C436.5,-434 353.5,-434 353.5,-434 347.5,-434 341.5,-428 341.5,-422 341.5,-422 341.5,-410 341.5,-410 341.5,-404 347.5,-398 353.5,-398 353.5,-398 436.5,-398 436.5,-398 442.5,-398 448.5,-404 448.5,-410 448.5,-410 448.5,-422 448.5,-422 448.5,-428 442.5,-434 436.5,-434"/>
+<text text-anchor="middle" x="395" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Transferencia</text>
+</g>
+<!-- c_cobro&#45;&gt;m_transf -->
+<g id="edge6" class="edge">
+<title>c_cobro&#45;&gt;m_transf</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M261.34,-510.05C289.1,-490.73 334.5,-459.12 364.57,-438.18"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="366.03,-440.16 370.37,-434.15 363.23,-436.14 366.03,-440.16"/>
+</g>
+<!-- c_recibo -->
+<g id="consumos" class="node click">
+<title>c_recibo</title>
+<path fill="#eaf1e8" stroke="#4f7a4a" stroke-width="1.3" d="M330.5,-350C330.5,-350 143.5,-350 143.5,-350 137.5,-350 131.5,-344 131.5,-338 131.5,-338 131.5,-326 131.5,-326 131.5,-320 137.5,-314 143.5,-314 143.5,-314 330.5,-314 330.5,-314 336.5,-314 342.5,-320 342.5,-326 342.5,-326 342.5,-338 342.5,-338 342.5,-344 336.5,-350 330.5,-350"/>
+<text text-anchor="middle" x="237" y="-328.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Recibo de pago en QuickBooks</text>
+</g>
+<!-- m_link&#45;&gt;c_recibo -->
+<g id="edge7" class="edge">
+<title>m_link&#45;&gt;c_recibo</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M96.26,-397.85C106.31,-391.59 118.01,-384.66 129,-379 147.32,-369.57 168.01,-360.42 186.34,-352.79"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="187.45,-354.99 192.98,-350.05 185.58,-350.46 187.45,-354.99"/>
+</g>
+<!-- m_pos&#45;&gt;c_recibo -->
+<g id="edge8" class="edge">
+<title>m_pos&#45;&gt;c_recibo</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M198.39,-397.61C205.59,-385.57 215.24,-369.41 223.1,-356.26"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="225.3,-357.35 226.79,-350.08 221.1,-354.84 225.3,-357.35"/>
+</g>
+<!-- m_cash&#45;&gt;c_recibo -->
+<g id="edge9" class="edge">
+<title>m_cash&#45;&gt;c_recibo</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M277.18,-397.61C269.7,-385.57 259.65,-369.41 251.47,-356.26"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="253.4,-354.73 247.63,-350.08 249.24,-357.32 253.4,-354.73"/>
+</g>
+<!-- m_transf&#45;&gt;c_recibo -->
+<g id="edge10" class="edge">
+<title>m_transf&#45;&gt;c_recibo</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M364.23,-397.92C353.17,-391.86 340.57,-385.04 329,-379 312.66,-370.46 294.53,-361.33 278.72,-353.47"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="279.46,-351.1 272.1,-350.18 277.28,-355.49 279.46,-351.1"/>
+</g>
+<!-- ci_d -->
+<g id="cierres" class="node click">
+<title>ci_d</title>
+<path fill="#ffffff" stroke="#9aa891" stroke-width="1.3" d="M294,-232C294,-232 180,-232 180,-232 174,-232 168,-226 168,-220 168,-220 168,-202 168,-202 168,-196 174,-190 180,-190 180,-190 294,-190 294,-190 300,-190 306,-196 306,-202 306,-202 306,-220 306,-220 306,-226 300,-232 294,-232"/>
+<text text-anchor="middle" x="237" y="-214.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">DIARIO</text>
+<text text-anchor="middle" x="237" y="-201.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">cierre de lote (Tini)</text>
+</g>
+<!-- c_recibo&#45;&gt;ci_d -->
+<g id="edge21" class="edge">
+<title>c_recibo&#45;&gt;ci_d</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" stroke-dasharray="5,2" d="M237,-298C237,-291.82 237,-285.15 237,-278.36"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="239.45,-278 237,-271 234.55,-278 239.45,-278"/>
+<text text-anchor="middle" x="258" y="-282" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#6b7566">cada día</text>
+</g>
+<!-- mem_start -->
+<g id="membresias" class="node click">
+<title>mem_start</title>
+<path fill="#23281f" stroke="#23281f" stroke-width="1.3" d="M885.5,-717C885.5,-717 816.5,-717 816.5,-717 810.5,-717 804.5,-711 804.5,-705 804.5,-705 804.5,-693 804.5,-693 804.5,-687 810.5,-681 816.5,-681 816.5,-681 885.5,-681 885.5,-681 891.5,-681 897.5,-687 897.5,-693 897.5,-693 897.5,-705 897.5,-705 897.5,-711 891.5,-717 885.5,-717"/>
+<text text-anchor="middle" x="851" y="-695.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#ffffff">Membresía</text>
+</g>
+<!-- mem_fact -->
+<g id="membresias" class="node click">
+<title>mem_fact</title>
+<path fill="#e5eef2" stroke="#3f6d86" stroke-width="1.6" d="M934.5,-640C934.5,-640 767.5,-640 767.5,-640 761.5,-640 755.5,-634 755.5,-628 755.5,-628 755.5,-610 755.5,-610 755.5,-604 761.5,-598 767.5,-598 767.5,-598 934.5,-598 934.5,-598 940.5,-598 946.5,-604 946.5,-610 946.5,-610 946.5,-628 946.5,-628 946.5,-634 940.5,-640 934.5,-640"/>
+<text text-anchor="middle" x="851" y="-622.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Factura recurrente</text>
+<text text-anchor="middle" x="851" y="-609.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">(automática) → QuickBooks</text>
+</g>
+<!-- mem_start&#45;&gt;mem_fact -->
+<g id="edge11" class="edge">
+<title>mem_start&#45;&gt;mem_fact</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M851,-680.69C851,-670.82 851,-658.24 851,-647.09"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="853.45,-647.02 851,-640.02 848.55,-647.02 853.45,-647.02"/>
+</g>
+<!-- mem_cobro -->
+<g id="membresias" class="node click">
+<title>mem_cobro</title>
+<path fill="#e5eef2" stroke="#3f6d86" stroke-width="1.3" d="M839.3,-554.35C839.3,-554.35 734.7,-530.65 734.7,-530.65 728.85,-529.33 728.85,-526.67 734.7,-525.35 734.7,-525.35 839.3,-501.65 839.3,-501.65 845.15,-500.33 856.85,-500.33 862.7,-501.65 862.7,-501.65 967.3,-525.35 967.3,-525.35 973.15,-526.67 973.15,-529.33 967.3,-530.65 967.3,-530.65 862.7,-554.35 862.7,-554.35 856.85,-555.67 845.15,-555.67 839.3,-554.35"/>
+<text text-anchor="middle" x="851" y="-524.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Cobro recurrente</text>
+</g>
+<!-- mem_fact&#45;&gt;mem_cobro -->
+<g id="edge12" class="edge">
+<title>mem_fact&#45;&gt;mem_cobro</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M851,-597.8C851,-587.96 851,-575.83 851,-564.5"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="853.45,-564.21 851,-557.21 848.55,-564.21 853.45,-564.21"/>
+</g>
+<!-- mem_stripe -->
+<g id="membresias" class="node click">
+<title>mem_stripe</title>
+<path fill="#eaf0f3" stroke="#3f6d86" stroke-width="1.3" d="M836,-434C836,-434 798,-434 798,-434 792,-434 786,-428 786,-422 786,-422 786,-410 786,-410 786,-404 792,-398 798,-398 798,-398 836,-398 836,-398 842,-398 848,-404 848,-410 848,-410 848,-422 848,-422 848,-428 842,-434 836,-434"/>
+<text text-anchor="middle" x="817" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Stripe</text>
+</g>
+<!-- mem_cobro&#45;&gt;mem_stripe -->
+<g id="edge13" class="edge">
+<title>mem_cobro&#45;&gt;mem_stripe</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M842.86,-500.65C837.29,-482.63 829.96,-458.92 824.53,-441.35"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="826.73,-440.19 822.32,-434.22 822.05,-441.63 826.73,-440.19"/>
+</g>
+<!-- mem_handy -->
+<g id="membresias" class="node click">
+<title>mem_handy</title>
+<path fill="#eaf0f3" stroke="#3f6d86" stroke-width="1.3" d="M926.5,-434C926.5,-434 885.5,-434 885.5,-434 879.5,-434 873.5,-428 873.5,-422 873.5,-422 873.5,-410 873.5,-410 873.5,-404 879.5,-398 885.5,-398 885.5,-398 926.5,-398 926.5,-398 932.5,-398 938.5,-404 938.5,-410 938.5,-410 938.5,-422 938.5,-422 938.5,-428 932.5,-434 926.5,-434"/>
+<text text-anchor="middle" x="906" y="-412.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">Handy</text>
+</g>
+<!-- mem_cobro&#45;&gt;mem_handy -->
+<g id="edge14" class="edge">
+<title>mem_cobro&#45;&gt;mem_handy</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M863.62,-501.76C872.83,-483.35 885.22,-458.56 894.23,-440.55"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="896.44,-441.6 897.38,-434.25 892.06,-439.41 896.44,-441.6"/>
+</g>
+<!-- ci_s -->
+<g id="cierres" class="node click">
+<title>ci_s</title>
+<path fill="#ffffff" stroke="#9aa891" stroke-width="1.3" d="M330,-149C330,-149 144,-149 144,-149 138,-149 132,-143 132,-137 132,-137 132,-119 132,-119 132,-113 138,-107 144,-107 144,-107 330,-107 330,-107 336,-107 342,-113 342,-119 342,-119 342,-137 342,-137 342,-143 336,-149 330,-149"/>
+<text text-anchor="middle" x="237" y="-131.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">SEMANAL · lunes</text>
+<text text-anchor="middle" x="237" y="-118.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">gestión de cobros (Delfi + Tini)</text>
+</g>
+<!-- mem_handy&#45;&gt;ci_s -->
+<g id="edge22" class="edge">
+<title>mem_handy&#45;&gt;ci_s</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" stroke-dasharray="5,2" d="M887.19,-397.91C879.45,-391.43 870.16,-384.34 861,-379 674.73,-270.39 432.31,-188.33 311.81,-151.07"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="312.51,-148.73 305.1,-149.01 311.07,-153.41 312.51,-148.73"/>
+</g>
+<!-- inv_start -->
+<g id="invitados" class="node click">
+<title>inv_start</title>
+<path fill="#23281f" stroke="#23281f" stroke-width="1.3" d="M667,-717C667,-717 505,-717 505,-717 499,-717 493,-711 493,-705 493,-705 493,-693 493,-693 493,-687 499,-681 505,-681 505,-681 667,-681 667,-681 673,-681 679,-687 679,-693 679,-693 679,-705 679,-705 679,-711 673,-717 667,-717"/>
+<text text-anchor="middle" x="586" y="-695.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#ffffff">Invitado se anota en Luma</text>
+</g>
+<!-- inv1 -->
+<g id="invitados" class="node click">
+<title>inv1</title>
+<path fill="#f3ead7" stroke="#b0803a" stroke-width="1.6" d="M671.5,-640C671.5,-640 500.5,-640 500.5,-640 494.5,-640 488.5,-634 488.5,-628 488.5,-628 488.5,-610 488.5,-610 488.5,-604 494.5,-598 500.5,-598 500.5,-598 671.5,-598 671.5,-598 677.5,-598 683.5,-604 683.5,-610 683.5,-610 683.5,-628 683.5,-628 683.5,-634 677.5,-640 671.5,-640"/>
+<text text-anchor="middle" x="586" y="-622.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">① Factura QB + creación de</text>
+<text text-anchor="middle" x="586" y="-609.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">cliente (con script)</text>
+</g>
+<!-- inv_start&#45;&gt;inv1 -->
+<g id="edge15" class="edge">
+<title>inv_start&#45;&gt;inv1</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M586,-680.69C586,-670.82 586,-658.24 586,-647.09"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="588.45,-647.02 586,-640.02 583.55,-647.02 588.45,-647.02"/>
+</g>
+<!-- inv2 -->
+<g id="invitados" class="node click">
+<title>inv2</title>
+<path fill="#f3ead7" stroke="#b0803a" stroke-width="1.3" d="M659.5,-546C659.5,-546 512.5,-546 512.5,-546 506.5,-546 500.5,-540 500.5,-534 500.5,-534 500.5,-522 500.5,-522 500.5,-516 506.5,-510 512.5,-510 512.5,-510 659.5,-510 659.5,-510 665.5,-510 671.5,-516 671.5,-522 671.5,-522 671.5,-534 671.5,-534 671.5,-540 665.5,-546 659.5,-546"/>
+<text text-anchor="middle" x="586" y="-524.9" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">② Envío del link de pago</text>
+</g>
+<!-- inv1&#45;&gt;inv2 -->
+<g id="edge16" class="edge">
+<title>inv1&#45;&gt;inv2</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M586,-597.8C586,-584.65 586,-567.41 586,-553.47"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="588.45,-553.12 586,-546.12 583.55,-553.12 588.45,-553.12"/>
+</g>
+<!-- inv3 -->
+<g id="invitados" class="node click">
+<title>inv3</title>
+<path fill="#f3ead7" stroke="#b0803a" stroke-width="1.3" d="M652,-437C652,-437 520,-437 520,-437 514,-437 508,-431 508,-425 508,-425 508,-407 508,-407 508,-401 514,-395 520,-395 520,-395 652,-395 652,-395 658,-395 664,-401 664,-407 664,-407 664,-425 664,-425 664,-431 658,-437 652,-437"/>
+<text text-anchor="middle" x="586" y="-419.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">③ Cuando paga:</text>
+<text text-anchor="middle" x="586" y="-406.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">factura local + recibo</text>
+</g>
+<!-- inv2&#45;&gt;inv3 -->
+<g id="edge17" class="edge">
+<title>inv2&#45;&gt;inv3</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" d="M586,-509.81C586,-492.27 586,-464.78 586,-444.26"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="588.45,-444.05 586,-437.05 583.55,-444.05 588.45,-444.05"/>
+</g>
+<!-- inv3&#45;&gt;c_cobro -->
+<g id="edge20" class="edge">
+<title>inv3&#45;&gt;c_cobro</title>
+<path fill="none" stroke="#9aa891" stroke-width="1.4" stroke-dasharray="5,2" d="M522.53,-437.01C452.15,-459.19 340.56,-494.36 279.83,-513.5"/>
+<polygon fill="#9aa891" stroke="#9aa891" stroke-width="1.4" points="278.97,-511.2 273.03,-515.64 280.45,-515.87 278.97,-511.2"/>
+<text text-anchor="middle" x="485" y="-471" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#6b7566">paga por link</text>
+<text text-anchor="middle" x="485" y="-460" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#6b7566">/ POS si llega</text>
+</g>
+<!-- ci_d&#45;&gt;ci_s -->
+<!-- ci_m -->
+<g id="cierres" class="node click">
+<title>ci_m</title>
+<path fill="#ffffff" stroke="#9aa891" stroke-width="1.3" d="M320.5,-66C320.5,-66 153.5,-66 153.5,-66 147.5,-66 141.5,-60 141.5,-54 141.5,-54 141.5,-36 141.5,-36 141.5,-30 147.5,-24 153.5,-24 153.5,-24 320.5,-24 320.5,-24 326.5,-24 332.5,-30 332.5,-36 332.5,-36 332.5,-54 332.5,-54 332.5,-60 326.5,-66 320.5,-66"/>
+<text text-anchor="middle" x="237" y="-48.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">MENSUAL</text>
+<text text-anchor="middle" x="237" y="-35.4" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#23281f">costos y retenciones Handy</text>
+</g>
+<!-- ci_s&#45;&gt;ci_m -->
+</g>
+</svg>
+
+    </div>
+    <div class="hint">Consumos · Tini &nbsp;|&nbsp; Membresías · Delfi &nbsp;|&nbsp; Invitados/Luma · Delfi &nbsp;|&nbsp; Cierres — click en cualquier caja para saltar al detalle.</div>
+  </div>
+
+  <nav class="toc">
+    <a onclick="go('consumos')">Consumos</a>
+    <a onclick="go('membresias')">Membresías</a>
+    <a onclick="go('invitados')">Invitados</a>
+    <a onclick="go('cierres')">Cierres</a>
+    <a onclick="go('medios')">Medios y roles</a>
+    <a onclick="go('facturacion')">Facturación</a>
+    <a onclick="go('reportes')">Reportes QB</a>
+    <a onclick="go('pendientes')">Pendientes</a>
+  </nav>
+
+  <div class="card doc">
+
+    <section class="pr" id="consumos">
+      <div class="kicker k-green">Flujo principal</div>
+      <h3>Cobro de Consumos <span class="who w-green">Tini</span></h3>
+      <p>Cada vez que un member o invitado consume en la casa (un almuerzo, un asado, uso del espacio), ese consumo se factura y se cobra. <span class="lead">Tini ejecuta este proceso</span>, desde el momento del consumo hasta que el pago queda registrado y archivado.</p>
+
+      <h4>1. 🧾 Factura en QuickBooks</h4>
+      <p>En el <b>momento del consumo</b>, Tini genera la <b>factura en QuickBooks</b>. Esto crea la deuda del cliente y habilita el cobro. Si es invitado, el cliente lleva un <b>asterisco (*) adelante del nombre</b> (ver <a class="x" onclick="go('invitados')">Invitados</a>).</p>
+      <div class="callout c-tip">💡 Las facturas de <b>consumos</b> las genera siempre Tini. Las de <b>membresías</b> se generan solas → ver <a class="x" onclick="go('membresias')">Membresías</a>.</div>
+
+      <h4>2. 💳 Cobro</h4>
+      <p>Con la deuda generada, se cobra por el medio que corresponda (sin orden de prioridad):</p>
+      <ul>
+        <li><b>Link Handy</b> — a distancia, típicamente antes de que la persona llegue. Factura en Factura Express, link en Handy con el nombre de la persona. Único por persona, vence a ~15 días.</li>
+        <li><b>POS Handy</b> — presencial. Handy emite la factura local automáticamente.</li>
+        <li><b>Cash</b> — efectivo. Se factura igual (Factura Express), junto con los links los lunes.</li>
+        <li><b>Transferencia</b> — Itaú. Delfi lo ve en QuickBooks (conexión activa) y adjudica el pago.</li>
+      </ul>
+
+      <h4>3. ✅ Recibo de pago en QuickBooks</h4>
+      <p>Cobrado el consumo: hacer el <b>recibo en QuickBooks</b> con medio de pago = Handy (o el que corresponda), y <b>N° recibo = N° factura</b> de Handy. Esto permite trackear cada cobro punta a punta.</p>
+
+      <h4>4. 🗂️ Archivo del ticket</h4>
+      <p>La copia física: escribir el nombre a mano, engrampar el ticket con la factura de Handy, y guardar en la carpeta (un sobre por día; a fin de mes se archiva todo junto).</p>
+      <div class="callout c-note">La factura electrónica ya queda en el sistema; este ticket físico de Handy es el respaldo que no vive en ningún otro lado.</div>
+
+      <p style="margin-top:14px">Al final del día todo se controla en el <a class="x" onclick="go('cierres')">Cierre de lote</a>, y los pendientes en el <a class="x" onclick="go('cierres')">Cierre semanal</a>.</p>
+
+      <details><summary>Profundizar: pasos exactos del POS de Handy</summary>
+        <div class="dd"><div class="callout c-todo">⚠️ A completar por Tini — documentar el clic-a-clic del POS de Handy la próxima vez que se cobre (cómo se toca, se selecciona el monto y se confirma).</div></div></details>
+    </section>
+
+    <section class="pr" id="membresias">
+      <div class="kicker k-blue">Recurrente automático</div>
+      <h3>Cobro de Membresías <span class="who w-blue">Delfi</span></h3>
+      <p>A diferencia de los consumos, las membresías <span class="lead">se cobran solas</span>: el cobro recurrente y la factura quedan configurados una vez, en el Onboarding del member.</p>
+      <h4>1. 🔁 Cobro recurrente</h4>
+      <p>La membresía se cobra de forma automática y recurrente por dos vías: <b>Stripe</b> (tarjeta, el default para la mayoría) y <b>Handy</b> (para los members que se cobran por ahí). La <b>factura recurrente</b> se emite sola y queda registrada en QuickBooks.</p>
+      <div class="callout c-note">Existen pocas excepciones donde, si el member demuestra responsabilidad, se le permite pagar en efectivo. Si no cumple los plazos, se le revoca la excepción.</div>
+      <h4>2. 🧭 Dónde se setea</h4>
+      <p>El alta del cobro recurrente y la emisión de la factura se dejan configurados en el <b>proceso de Onboarding</b>, cuando el member entra.</p>
+      <div class="callout c-todo">📌 Ver el proceso de <b>Onboarding de New Members</b> — ahí se detalla cómo se da de alta al member en Stripe / Handy y cómo queda seteada la recurrencia y la factura.</div>
+    </section>
+
+    <section class="pr" id="invitados">
+      <div class="kicker k-amber">Eventos</div>
+      <h3>Invitados y Eventos (Luma) <span class="who w-amber">Delfi</span></h3>
+      <p>Cómo cobramos a los invitados externos que se anotan por <b>Luma</b>. El objetivo: que paguen antes de llegar y que cada invitado quede como ficha en QuickBooks. <span class="lead">Delfi ejecuta este proceso.</span></p>
+      <h4>1. 📝 Registro y aceptación en Luma</h4>
+      <p>El invitado se anota y Delfi lo acepta. Luma le manda el correo de confirmación (customizado) con: los <b>medios de pago</b> (transferencia Itaú + link Handy), el pedido de <b>pagar hasta el día anterior</b>, y el aviso de que, si necesitan <b>factura con RUT</b>, manden los datos.</p>
+      <h4>2. 🗂️ Ficha del invitado en QuickBooks</h4>
+      <p>Se crea la ficha de cliente con los datos de Luma, con <b>asterisco (*)</b> adelante del nombre. Antes de crear, se busca si ya existe (puede venir recurrente).</p>
+      <h4>3. 🔗 Envío del link de pago</h4>
+      <p>Un link de Handy <b>por invitado</b>, con su nombre, mandado por mail y <b>sin factura adjunta</b>.</p>
+      <div class="callout c-tip">💡 No mandamos la factura con el link a propósito: si la persona no vino o no pagó, nos quedarían facturas colgadas.</div>
+      <h4>4. ✅ Cuando paga: factura local + recibo</h4>
+      <p>Recién <b>cuando el invitado paga</b> se emite la factura local y se hace el recibo. Se hace en el <a class="x" onclick="go('cierres')">Cierre semanal</a>.</p>
+      <h4>5. 🚪 Si llega sin pagar</h4>
+      <p>Tini le cobra en el momento por <a class="x" onclick="go('consumos')">POS</a>.</p>
+      <details><summary>Profundizar: automatización y pruebas pendientes</summary>
+        <div class="dd">
+          <div class="callout c-todo">⚠️ Automatizar <b>Luma → Google Sheet → QuickBooks</b> (crear ficha + factura). Hoy el tramo Luma → Sheet ya está; falta Sheet → QB vía API / Google Apps Script.</div>
+          <div class="callout c-todo">⚠️ Probar que el POS deja cobrar una factura ya emitida (cuando el script ya generó la del evento).</div>
+          <p>🌅 Para el verano / eventos grandes: protocolo aparte (control en la puerta, CRM con cruce QuickBooks + Luma). Ver <a class="x" onclick="go('pendientes')">Pendientes</a>.</p>
+        </div></details>
+    </section>
+
+    <section class="pr" id="cierres">
+      <div class="kicker k-grey">Control</div>
+      <h3>Cierres de Cobranzas</h3>
+      <p>El control de que todo lo cobrado está bien registrado y de que no quede deuda sin gestionar. Tres cadencias.</p>
+      <h4>📆 Diario — Cierre de lote <span class="who w-green">Tini</span></h4>
+      <p>Al final del día se controla que todo lo cobrado por Handy cuadre:</p>
+      <ol>
+        <li>Hacer el <b>cierre de lote en Handy</b>.</li>
+        <li>Cruzar tres fuentes: tickets del día (con nombre + factura) ↔ detalle del cierre de lote ↔ reporte de QuickBooks (pagos del día, medio Handy).</li>
+        <li>Los tres totales tienen que <b>coincidir</b> — significa que todos los recibos se hicieron bien.</li>
+        <li>Archivar: imprimir el reporte de QB y guardarlo con los tickets y el cierre de lote.</li>
+      </ol>
+      <div class="callout c-tip">💡 Diario y no semanal: si se acumula una semana movida, ordenar todo junto se vuelve un lío.</div>
+      <h4>🗓️ Semanal — lunes <span class="who w-blue">Delfi + Tini</span></h4>
+      <p>Sobre la semana anterior, para arrancar la semana limpia:</p>
+      <ol>
+        <li><b>Control aleatorio</b> de facturas de consumos: Delfi elige un día random y verifica que estén todas creadas.</li>
+        <li>Sacar el <b>reporte de deuda por cliente</b> (ver <a class="x" onclick="go('reportes')">Reportes QB</a>).</li>
+        <li><b>Gestionar cobros pendientes, juntas:</b> Delfi membresías, Tini consumos.</li>
+        <li><b>Emitir facturas</b> de la semana: pagos con link, cash, e invitados que pagaron.</li>
+        <li><b>Chequear todos los medios de pago</b>: cash, Itaú, etc.</li>
+      </ol>
+      <h4>📊 Mensual</h4>
+      <p>A fin de mes: <b>costos, comisiones y retenciones de Handy</b> y las transferencias de Handy a Itaú. Sacar el reporte de Handy y separar retención vs costo; lo que va a pérdida debería tener su factura con IVA.</p>
+      <div class="callout c-note">El cierre financiero mensual completo (conciliación bancaria, Cashflow, P&L) tiene su propio SOP aparte.</div>
+      <details><summary>Profundizar: pasos exactos del cierre de lote en Handy</summary>
+        <div class="dd"><div class="callout c-todo">⚠️ A completar por Tini — documentar el paso a paso para hacer el cierre de lote en Handy. Y el criterio fino de comisiones/retenciones está por definir (ver <a class="x" onclick="go('pendientes')">Pendientes</a>).</div></div></details>
+    </section>
+
+    <section class="pr" id="medios">
+      <div class="kicker k-grey">Referencia</div>
+      <h3>Medios de Cobro y División de Roles</h3>
+      <p>Todos los medios por los que puede entrar plata, cómo se maneja cada uno y quién es responsable.</p>
+      <table class="t">
+        <tr><th>Medio</th><th>Herramienta</th><th>Factura local</th><th>Resp.</th></tr>
+        <tr><td>Handy</td><td>POS + Link</td><td>Sí</td><td>Tini</td></tr>
+        <tr><td>Cash</td><td>Efectivo</td><td>Según caso</td><td>Tini</td></tr>
+        <tr><td>Stripe</td><td>Tarjeta (membresías)</td><td>No</td><td>Delfi</td></tr>
+        <tr><td>Itaú</td><td>Transferencia local</td><td>Sí</td><td>Delfi</td></tr>
+        <tr><td>Mercury</td><td>Transf. internacional</td><td>No (solo QB)</td><td>Delfi</td></tr>
+        <tr><td>Crypto</td><td>Wallet</td><td>No</td><td>Delfi</td></tr>
+      </table>
+      <p><b>Regla base:</b> consumos = siempre Tini · membresías = siempre Delfi. Back office por canal: Tini = Handy + Cash; Delfi = Mercury, Itaú, Crypto, Stripe, Drive, Trezor, Grateful.</p>
+      <div class="callout c-tip">🔑 Cash y Handy no están integrados (se ven al registrarlos). Itaú, Mercury, Crypto y Stripe se reflejan en QuickBooks — ✅ Itaú ↔ QuickBooks está <b>live</b>.</div>
+    </section>
+
+    <section class="pr" id="facturacion">
+      <div class="kicker k-grey">Referencia</div>
+      <h3>Criterios de Facturación</h3>
+      <ul>
+        <li><b>Factura local sin desglose;</b> solo circulamos la oficial electrónica.</li>
+        <li><b>Nombres de productos con guiño</b> (evitar "almuerzo"/"ticket"; ej. "Viernes"). <i>A definir en el grupo.</i></li>
+        <li><b>Members:</b> factura por total; el detalle (qué día comió) se da si lo piden — para casos recurrentes como Sil, un reporte de QB, no una factura.</li>
+        <li><b>Factura con RUT</b> a quien quiera descontar IVA: que pase RUT y datos.</li>
+        <li><b>Factura Express:</b> agregar logo y mejorarla (se manda a todos).</li>
+      </ul>
+    </section>
+
+    <section class="pr" id="reportes">
+      <div class="kicker k-grey">Referencia</div>
+      <h3>Reportes de QuickBooks</h3>
+      <p>Los reportes que dejamos customizados y guardados. Delfi los arma; Tini los usa.</p>
+      <ul>
+        <li><b>Pagos recibidos por día · medio de pago</b> (fecha editable) → se usa en el <a class="x" onclick="go('cierres')">Cierre de lote</a>.</li>
+        <li><b>Deuda por cliente</b> → se usa en el <a class="x" onclick="go('cierres')">Cierre semanal</a>.</li>
+      </ul>
+      <div class="callout c-tip">🎯 Tienen que ser rápidos de sacar para Tini. Si es trabajoso, no se hace: mejor varios reportes simples que uno complejo.</div>
+      <details><summary>Profundizar: cómo armar cada reporte</summary>
+        <div class="dd"><div class="callout c-todo">⚠️ A completar por Delfi — el paso a paso para armar y guardar cada reporte (reporte base, filtros, cómo se guarda como favorito). Si QB no deja cambiar rápido medio/fecha, dejar un reporte por cada medio de pago.</div></div></details>
+    </section>
+
+    <section class="pr" id="pendientes">
+      <div class="kicker k-amber">Vivo</div>
+      <h3>Pendientes y Decisiones Abiertas <span class="who w-grey">Daiana + Delfi</span></h3>
+      <h4>🔧 Operativos</h4>
+      <ul>
+        <li><b>Ver proceso de Onboarding</b> — confirmar dónde se setea el cobro recurrente de la membresía y la emisión de la factura.</li>
+        <li>Nombres de tickets · logo en Factura Express · link recurrente de Handy · automatización Luma→Sheet→QB · alias de correo para eventos · WhatsApp Business compartido · probar POS sobre factura emitida.</li>
+      </ul>
+      <h4>📅 De cadencia</h4>
+      <ul><li>Comisiones y retenciones de Handy (definir retención vs costo) · transferencias Handy → Itaú.</li></ul>
+      <h4>✅ Resuelto</h4>
+      <ul><li>Conexión Itaú ↔ QuickBooks — live.</li></ul>
+      <h4>🌅 Estratégicos</h4>
+      <ul><li>CRM de invitados (verano) · protocolo de eventos grandes · automatizaciones de facturación.</li></ul>
+      <div class="callout c-note">🧭 Criterio rector: el proceso es construcción — hacerlo a mano, perfeccionarlo, y recién después automatizar.</div>
+    </section>
+
+  </div>
+  <div class="foot">Casa Manantial · flujo de cobranzas — basado en el mapa de la call. Borrador para validar y subir a Notion.</div>
+</div>
+
+<script>
+function go(id){
+  const el=document.getElementById(id); if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+// wire SVG node clicks → scroll to section
+document.querySelectorAll('svg g.click').forEach(g=>{ g.addEventListener('click',()=>go(g.id)); });
+// zoom
+let z=1;function zoom(d){z=d===0?1:Math.min(2.2,Math.max(.6,z+d*0.15));
+  const s=document.querySelector('#mapbox svg'); if(s) s.style.transform='scale('+z+')';}
+</script>
+</body>
+</html>
