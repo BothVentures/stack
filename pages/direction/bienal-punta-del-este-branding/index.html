@@ -75,7 +75,7 @@ h1{
 h1 span{display:block}
 h1 span.dim{color:var(--ink3)}
 .read-time{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-hi);margin:-4px 0 28px;padding-top:36px}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:stretch}
 .lede{font-size:14.5px;line-height:1.7;color:var(--ink2);max-width:52ch;margin:0}
 .lede b{color:var(--ink);font-weight:700}
 .lede+.lede{margin-top:18px}
@@ -83,10 +83,11 @@ h1 span.dim{color:var(--ink3)}
 .kv b{color:var(--ink);font-weight:400}
 
 /* imagen computacional — flotante, sin marco, sin sombra */
-.figs{display:grid;gap:22px}
-.field{margin:0;overflow:hidden;color:var(--ink3);font-size:8.6px;line-height:1;letter-spacing:.02em;white-space:pre;user-select:none}
-.tide{display:block;width:100%;height:190px}
-.fig-cap{font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3)}
+.figs-hold{position:relative;min-height:400px}
+.figs{position:absolute;inset:0;display:grid;grid-template-rows:1fr 1fr auto;gap:18px;min-height:0}
+.field{margin:0;height:100%;min-height:0;overflow:hidden;color:var(--ink3);font-size:8.6px;line-height:1;letter-spacing:.02em;white-space:pre;user-select:none}
+.tide{display:block;width:100%;height:100%;min-height:0}
+.fig-cap{margin:0;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3)}
 .fig-cap b{color:var(--acc-hi);font-weight:400}
 
 /* ── riel numérico + strip ────────────────────────────── */
@@ -211,7 +212,10 @@ footer b{color:var(--ink);font-weight:400}
   .axis .pole.from{text-align:left}
   .axis .link{margin:9px 0;width:70px}
   .axis .link em{left:0;transform:none;top:-18px;padding:0 7px 0 0}
-  .field{font-size:7px}
+  .figs-hold{position:static;min-height:0}
+  .figs{position:static;display:grid;grid-template-rows:none;gap:18px}
+  .field{font-size:7px;height:190px}
+  .tide{height:160px}
   .crit-wrap{grid-template-columns:1fr}
   .rail{display:none}
   .mast{grid-template-columns:1fr auto}
@@ -219,7 +223,8 @@ footer b{color:var(--ink);font-weight:400}
 }
 @media (max-width:560px){
   .wrap{padding:0 20px}
-  .field{font-size:5.4px}
+  .field{font-size:5.4px;height:150px}
+  .tide{height:130px}
   .del{grid-template-columns:28px 1fr}
   .del .fmt{grid-column:2;margin-top:5px}
   .crit div{grid-template-columns:1fr;gap:8px}
@@ -259,10 +264,12 @@ footer b{color:var(--ink);font-weight:400}
           <span>Estado · <b>V0.1.0 · pendiente de 5 decisiones</b></span>
         </div>
       </div>
-      <div class="figs rv">
-        <pre class="field" id="field" aria-hidden="true"></pre>
-        <canvas class="tide" id="tide" aria-hidden="true"></canvas>
-        <p class="fig-cap"><b>Fig. 00</b> — Campo de interferencia y marea. Dos lógicas —capital y cultura— sobre una misma superficie. No se mezclan: interfieren.</p>
+      <div class="figs-hold rv">
+        <div class="figs">
+          <pre class="field" id="field" aria-hidden="true"></pre>
+          <canvas class="tide" id="tide" aria-hidden="true"></canvas>
+          <p class="fig-cap"><b>Fig. 00</b> — Campo de interferencia y marea. Dos lógicas —capital y cultura— sobre una misma superficie. No se mezclan: interfieren.</p>
+        </div>
       </div>
     </div>
 
@@ -606,6 +613,15 @@ footer b{color:var(--ink);font-weight:400}
   var pre=document.getElementById('field');if(!pre)return;
   var RAMP=' .:-=+*#%@',COLS=76,ROWS=22;
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* el campo se ajusta a la caja: la columna de figuras copia el alto del texto */
+  function fit(){
+    var cs=getComputedStyle(pre),fs=parseFloat(cs.fontSize)||9;
+    var lh=parseFloat(cs.lineHeight)||fs;                 /* line-height:1 */
+    var adv=fs*0.6+parseFloat(cs.letterSpacing||0||0);    /* Space Mono = .6em */
+    if(!isFinite(adv)||adv<=0)adv=fs*0.62;
+    COLS=Math.max(24,Math.floor(pre.clientWidth/adv));
+    ROWS=Math.max(6,Math.floor(pre.clientHeight/lh));
+  }
   function frame(t){
     var out='',y,x;
     for(y=0;y<ROWS;y++){
@@ -621,10 +637,15 @@ footer b{color:var(--ink);font-weight:400}
     }
     pre.textContent=out;
   }
+  var tNow=0;
+  fit();
+  if('ResizeObserver' in window){
+    var rt;new ResizeObserver(function(){clearTimeout(rt);rt=setTimeout(function(){fit();frame(tNow)},120)}).observe(pre);
+  }
   if(reduce){frame(0.9);return}
   var t=0,last=0;
   (function loop(ts){
-    if(ts-last>95){t+=0.085;frame(t);last=ts}
+    if(ts-last>95){t+=0.085;tNow=t;frame(t);last=ts}
     requestAnimationFrame(loop);
   })(0);
 })();
@@ -665,7 +686,10 @@ footer b{color:var(--ink);font-weight:400}
     if(ts-last>110){t+=.05;draw(t);last=ts}
     requestAnimationFrame(loop);
   })(0);
-  var to;window.addEventListener('resize',function(){clearTimeout(to);to=setTimeout(function(){size();draw(t)},160)});
+  var to;
+  function refit(){clearTimeout(to);to=setTimeout(function(){size();draw(t)},140)}
+  window.addEventListener('resize',refit);
+  if('ResizeObserver' in window){new ResizeObserver(refit).observe(c)}
 })();
 </script>
 </body>
