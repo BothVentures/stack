@@ -1,0 +1,1245 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<title>Guidelines · Bienal Blockchain Punta 2027</title>
+<meta name="description" content="Brand guidelines V0.3.0 «Máscaras» — Bienal Blockchain Punta 2027. Sistema operable: reglas, tokens y chequeos. Cada regla es un token, un chequeo binario o un juicio humano nombrado.">
+<style>
+/* ===========================================================================
+   Bienal Blockchain Punta — tokens del sistema V0.3.0 "Máscaras"
+   ---------------------------------------------------------------------------
+   UNA hoja de tokens. Antes los valores vivían en cuatro representaciones sin
+   ningún vínculo: hex en CSS, vec3 en GLSL, strings en JS y rgba() inline. Y
+   dos azules distintos se llamaban los dos "sky" (#7FC3EE en el hero,
+   #1E8FE0 en la hoja). Se reconcilian acá.
+
+   El companion CSS publicado vive en templates/themes/bienal-punta.css y se
+   genera de este archivo — es el hook de propagación de dirección de arte.
+   =========================================================================== */
+:root{
+  /* --- tintas: DOS, más la fotografía como único tono medio -------------- */
+  --acid:    #C8F52D;   /* ink 01 — campo dominante. Nunca acento suelto */
+  --void:    #12140F;   /* ink 02 — casi negro con sesgo verde */
+  --acid-d:  #A5CE1E;   /* ácido oscurecido — sólo estados :active */
+  --quiet:   #1D2016;   /* tercer VALOR, no tercera tinta: masa negra sobre
+                           negro, legible sólo como textura (etherfuse) */
+  --paper:   #F4F1E8;   /* modo fondo claro — print y papelería */
+  --sky-mid: #7FC3EE;   /* el tono medio propio del cielo, nunca un gris */
+
+  /* --- tipografía: cuatro familias, cada una con su trabajo -------------- */
+  --disp:  "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --pixel: "Handjet", "Archivo", monospace;          /* slots FIJOS del nombre */
+  --tema:  "Instrument Serif", Georgia, serif;       /* slot VARIABLE del nombre */
+  --mono:  "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* escala display — las tres voces del nombre, en el orden del canon:
+     BIENAL (pixel) · Blockchain (serif itálica, slot variable) · PUNTA 2027
+     (pixel). Topes bajados respecto de VB0.1-B (258 px) porque acá el bloque
+     conviven con eyebrow, pie y una segunda columna: a 258 px el nombre se
+     salía del primer viewport. */
+  --t-formato: clamp(30px, 6.6vw, 92px);
+  --t-tema:    clamp(46px, 10.4vw, 158px);
+  --t-lugar:   clamp(38px, 8.2vw, 118px);
+  /* escala general */
+  --t-display: clamp(1.9rem, 5.4vw, 4.9rem);
+  --t-h2:      clamp(1.05rem, 2vw, 1.5rem);
+  --t-sub:     clamp(1rem, 1.9vw, 1.35rem);
+  --t-lead:    clamp(.95rem, 1.55vw, 1.22rem);
+  --t-body:    .93rem;
+  --t-mono:    .74rem;
+  --t-lbl:     clamp(.58rem, .95vw, .68rem);
+  --t-micro:   .6rem;
+
+  /* --- ritmo -------------------------------------------------------------- */
+  --pad:   clamp(1rem, 2.8vw, 2.2rem);
+  --sheet: 1180px;
+  --hair:  1px;
+  --rule:  1px solid rgba(18, 20, 15, .26);
+
+  /* --- curvas nombradas: TF3 pedía beziers, no palabras clave ------------- */
+  --ease-out:  cubic-bezier(.22, .61, .36, 1);
+  --ease-step: cubic-bezier(.85, 0, .15, 1);   /* para lo que debe leerse duro */
+  --ease-in:   cubic-bezier(.55, .06, .68, .19);
+}
+
+/* El radio del sistema es cero. No es una preferencia, es la regla No-05. */
+*, *::before, *::after{ border-radius: 0; }
+
+
+*{ box-sizing: border-box; }
+body{
+  margin: 0; background: var(--acid); color: var(--void);
+  font-family: var(--disp); font-weight: 600;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+.sheet{ max-width: var(--sheet); margin: 0 auto; padding: var(--pad); }
+
+/* ---------- portada ---------- */
+.masthead{ position: relative; min-height: clamp(340px, 46vw, 560px); overflow: hidden; }
+.masthead canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+.masthead .inner{ position: relative; width: fit-content; max-width: 100%;
+                  padding: clamp(1rem,2.4vw,1.8rem) clamp(1.1rem,2.6vw,2rem); }
+.lbl{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
+      letter-spacing: .17em; text-transform: uppercase; }
+.masthead h1{ margin: .5rem 0 0; line-height: .86; text-transform: uppercase; }
+.masthead h1 .a{ display: block; font-family: var(--pixel); font-weight: 800;
+                 font-size: clamp(38px, 8.4vw, 116px); letter-spacing: .03em; }
+.masthead h1 .b{ display: block; font-family: var(--tema); font-style: italic;
+                 font-weight: 400; text-transform: none;
+                 font-size: clamp(40px, 9.2vw, 128px); line-height: .9; margin-top: -.05em; }
+.masthead .sub{ margin: .9rem 0 0; font-size: var(--t-sub); font-weight: 600; max-width: 40ch; }
+
+/* ---------- nav de anclas ---------- */
+.jump{ border-top: 2px solid var(--void); border-bottom: 2px solid var(--void);
+       padding: .8rem 0; margin: clamp(1.6rem,4vw,2.6rem) 0; }
+.jump ul{ list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem .9rem; }
+.jump a{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
+         letter-spacing: .1em; text-transform: uppercase; color: var(--void); text-decoration: none; }
+.jump a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+.jump .n{ opacity: .5; margin-right: .35em; font-variant-numeric: tabular-nums; }
+
+/* ---------- secciones ---------- */
+section{ margin: 0 0 clamp(2.6rem, 6vw, 5rem); scroll-margin-top: 1rem; }
+.head{ display: flex; align-items: baseline; gap: 1rem;
+       border-top: 2px solid var(--void); padding-top: .5rem; margin-bottom: clamp(1rem,2.4vw,1.6rem); }
+.head h2{ margin: 0; font-size: var(--t-h2); font-weight: 900; letter-spacing: -.02em; text-transform: uppercase; }
+.head .num{ margin-left: auto; font-family: var(--mono); font-weight: 600; font-size: var(--t-micro);
+            letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+.body{ margin: 0 0 1rem; font-size: var(--t-body); line-height: 1.52; font-weight: 500; max-width: 62ch; }
+.mono-body{ font-family: var(--mono); font-size: var(--t-mono); line-height: 1.6; max-width: 68ch; margin: 0 0 1rem; }
+blockquote{ margin: 1rem 0; padding: .7rem 0 .7rem 1rem; border-left: 3px solid var(--void);
+            font-size: var(--t-sub); font-weight: 600; max-width: 52ch; }
+
+/* ---------- la regla de tres vías: cada regla lleva su clase ---------- */
+.rules{ display: grid; gap: 1px; background: var(--void); border: 2px solid var(--void); margin: 1.2rem 0; }
+.rule{ background: var(--acid); padding: .8rem .95rem; display: grid;
+       grid-template-columns: 5.4rem 1fr; gap: .5rem 1rem; align-items: start; }
+@media (max-width: 640px){ .rule{ grid-template-columns: 1fr; } }
+.rule .cls{ font-family: var(--mono); font-size: .54rem; font-weight: 600; letter-spacing: .1em;
+            text-transform: uppercase; padding: .3em .45em; text-align: center; align-self: start; }
+.cls-a{ background: var(--void); color: var(--acid); }              /* token */
+.cls-b{ background: var(--void); color: var(--acid); outline: 2px solid var(--void); outline-offset: -5px; }
+.cls-c{ background: transparent; color: var(--void); border: var(--hair) solid var(--void); }
+.rule .txt{ font-size: .84rem; font-weight: 500; line-height: 1.45; }
+.rule .txt b{ font-weight: 900; }
+.rule code{ font-family: var(--mono); font-size: .78em; background: rgba(18,20,15,.1); padding: .1em .3em; }
+.rule .who{ display: block; font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+            text-transform: uppercase; opacity: .68; margin-top: .35em; }
+
+/* ---------- do / don't ---------- */
+.dd{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px;
+     background: var(--void); border: 2px solid var(--void); margin: 1.2rem 0; }
+.dd > div{ padding: .85rem .95rem; }
+.dd .si{ background: var(--acid); color: var(--void); }
+.dd .no{ background: var(--void); color: var(--acid); }
+.dd h4{ margin: 0 0 .4rem; font-family: var(--mono); font-size: .58rem; font-weight: 600;
+        letter-spacing: .16em; text-transform: uppercase; }
+.dd ul{ margin: 0; padding-left: 1.05rem; }
+.dd li{ font-size: .8rem; font-weight: 500; line-height: 1.42; margin-bottom: .4rem; }
+
+/* ---------- tablas de tokens ---------- */
+table.tk{ width: 100%; border-collapse: collapse; margin: 1.1rem 0; }
+table.tk th{ text-align: left; font-family: var(--mono); font-size: .56rem; font-weight: 600;
+             letter-spacing: .14em; text-transform: uppercase; padding: .4rem .5rem;
+             border-bottom: 2px solid var(--void); }
+table.tk td{ padding: .52rem .5rem; border-bottom: var(--rule); font-size: .78rem; font-weight: 500;
+             vertical-align: baseline; }
+table.tk td.m{ font-family: var(--mono); font-size: .72rem; }
+.sw{ display: inline-block; width: 1.05em; height: 1.05em; vertical-align: -.16em;
+     margin-right: .45em; border: var(--hair) solid var(--void); }
+
+/* ---------- demos vivos ---------- */
+.demos{ display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: clamp(.6rem,1.6vw,1rem); margin: 1.2rem 0; }
+.demo{ }
+.demo .frame{ position: relative; aspect-ratio: 4 / 3; background: var(--void); overflow: hidden; }
+.demo .frame canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+.demo .anchor{ position: absolute; left: 16%; top: 34%; width: 56%; height: 30%; }
+.demo .cap{ font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+            text-transform: uppercase; margin-top: .45rem; line-height: 1.4; }
+.demo .cap b{ font-weight: 600; }
+
+/* especimen tipográfico */
+.spec{ border-bottom: var(--rule); padding: .9rem 0; display: grid;
+       grid-template-columns: 9.5rem 1fr; gap: 1rem; align-items: baseline; }
+@media (max-width: 700px){ .spec{ grid-template-columns: 1fr; } }
+.spec .meta{ font-family: var(--mono); font-size: .56rem; letter-spacing: .1em;
+             text-transform: uppercase; line-height: 1.5; }
+.v-pixel{ font-family: var(--pixel); font-weight: 800; font-size: clamp(1.9rem,5.4vw,3.4rem);
+          letter-spacing: .03em; line-height: .9; text-transform: uppercase; }
+.v-tema{ font-family: var(--tema); font-style: italic; font-weight: 400;
+         font-size: clamp(2rem,5.8vw,3.6rem); line-height: .92; }
+.v-disp{ font-family: var(--disp); font-weight: 900; font-size: clamp(1.4rem,3.4vw,2.2rem);
+         letter-spacing: -.025em; line-height: 1; }
+.v-lead{ font-family: var(--disp); font-weight: 600; font-size: var(--t-lead); }
+.v-mono{ font-family: var(--mono); font-weight: 600; font-size: var(--t-mono); letter-spacing: .15em;
+         text-transform: uppercase; }
+
+/* lockup */
+.lock{ border: 2px solid var(--void); padding: clamp(1rem,2.6vw,1.8rem); margin: 1.2rem 0; }
+.lock .l1{ font-family: var(--pixel); font-weight: 800; font-size: clamp(1.3rem,4.2vw,2.4rem);
+           letter-spacing: .03em; text-transform: uppercase; }
+.lock .l1 em{ font-family: var(--tema); font-style: italic; font-weight: 400; text-transform: none; }
+.lock .l2{ font-size: var(--t-lead); font-weight: 600; margin-top: .4rem; }
+.lock .l3{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
+           letter-spacing: .15em; text-transform: uppercase; margin-top: .5rem; }
+.lock .slots{ display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1rem; }
+.lock .slot{ font-family: var(--mono); font-size: .54rem; font-weight: 600; letter-spacing: .1em;
+             text-transform: uppercase; padding: .35em .5em; border: var(--hair) solid var(--void); }
+.lock .slot.var{ background: var(--void); color: var(--acid); border-color: var(--void); }
+
+/* abierto y en disputa */
+.open{ background: var(--void); color: var(--acid); padding: clamp(1.1rem,3vw,2rem); }
+.open .head{ border-color: var(--acid); }
+.open ol{ margin: 0; padding-left: 1.3rem; }
+.open li{ font-size: .84rem; font-weight: 500; line-height: 1.5; margin-bottom: .9rem; max-width: 66ch; }
+.open li b{ font-weight: 900; }
+.open .was{ display: block; font-family: var(--mono); font-size: .62rem; opacity: .78; margin-top: .35em; }
+
+.dl{ display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1px;
+     background: var(--void); border: 2px solid var(--void); }
+.dl > div{ background: var(--acid); padding: .8rem .95rem; }
+.dl .p{ font-family: var(--mono); font-size: .68rem; font-weight: 600; }
+.dl .d{ font-size: .76rem; font-weight: 500; line-height: 1.4; margin-top: .3rem; }
+
+footer{ border-top: 2px solid var(--void); padding-top: 1rem; margin-top: clamp(2rem,5vw,3.4rem);
+        font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase;
+        display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; opacity: .75; }
+
+@media print{
+  @page{ size: A3 portrait; margin: 12mm; }
+  body{ background: var(--acid) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .jump{ display: none; }
+  section{ break-inside: avoid; }
+}
+</style>
+
+<div class="sheet">
+
+<div class="masthead" id="mast">
+  <canvas data-blob="void" data-seed="11.3" data-cell="24" data-fringe-cells="3.4"
+          data-from=".inner" data-bleed="left bottom" aria-hidden="true"></canvas>
+  <div class="inner" style="color:var(--acid)">
+    <span class="lbl" id="mLbl"></span>
+    <h1><span class="a">Máscaras</span><span class="b">Guidelines</span></h1>
+    <p class="sub" id="mSub"></p>
+  </div>
+</div>
+
+<nav class="jump"><ul id="jump"></ul></nav>
+
+<p class="body" id="intro"></p>
+<div class="rules" id="threeway"></div>
+
+<main id="sections"></main>
+
+<footer>
+  <span id="fVer"></span><span id="fPie"></span><span id="fAuthor"></span>
+  <span>Sistema generado — cada masa de esta hoja la produjo el mismo algoritmo que corre en la landing</span>
+</footer>
+</div>
+
+<script>
+/* ===========================================================================
+   Bienal Blockchain Punta — copy canónico, UNA fuente
+   ---------------------------------------------------------------------------
+   Existe porque la línea de pie estaba escrita en tres lugares y los TRES
+   diferían del lockup fijo:
+     hero:222     "Punta del Este · Uruguay — Marzo 2027"
+     sistema:346  "Punta del Este · Uruguay — Marzo 2027"
+     sistema:403  "Punta del Este — Marzo 2027"      (perdía Uruguay)
+     canon §1     "Punta del Este, Uruguay · Marzo 2027"   ← el fijo
+   Ninguna pieza vuelve a escribir estas cadenas a mano.
+
+   Fuente: vault/ventures/bienal-blockchain-punta-naming-narrativa-2026-08.md
+   (capa verbal CERRADA el 2026-08-26). Todo lo marcado `verbatim` se cita tal
+   cual. `interno: true` = doctrina, NO va en superficie pública.
+   =========================================================================== */
+(function (root) {
+  "use strict";
+
+  const C = {
+
+    /* --- el nombre: [formato] [tema] [lugar] [edición] -------------------
+       El slot del TEMA es el que la sintaxis declara variable. Por eso la voz
+       tipográfica distinta va ahí y no en la edición.                      */
+    nombre: {
+      completo: "BIENAL BLOCKCHAIN PUNTA 2027",
+      formato:  "Bienal",
+      tema:     "Blockchain",   /* ← slot VARIABLE. Voz serif itálica */
+      lugar:    "Punta",
+      edicion:  "2027",
+      regla:    "El nombre completo, siempre. Sin acrónimo público."
+    },
+
+    /* --- lockup, verbatim canon §1 -------------------------------------- */
+    lockup: {
+      es: { bajada: "Oportunidades y amenazas en un mundo post-dinero",
+            pie:    "Punta del Este, Uruguay · Marzo 2027" },
+      en: { bajada: "Opportunities and threats in a post-money world",
+            pie:    "Punta del Este, Uruguay · March 2027" }
+    },
+
+    /* --- bajada de DOS registros, verbatim canon §2 ----------------------
+       Son dos registros con dos audiencias, no una frase en dos idiomas.
+       El registro institucional mapea 1:1 con las tres personas del deck.  */
+    bajada: {
+      publico: {
+        linea: "Oportunidades y amenazas en un mundo post-dinero",
+        donde: "Web, deck de sponsors, prensa, redes, señalética"
+      },
+      institucional: {
+        linea: "Capital, reglas e infraestructura del nuevo sistema financiero",
+        donde: "Piezas a BCU, MEF, Presidencia, Uruguay Innova",
+        ejes:  ["Capital", "Reglas", "Infraestructura"]
+        /* los tres siempre juntos y en ese orden */
+      }
+      /* El registro institucional NO tiene traducción aprobada al inglés.
+         No inventar una. */
+    },
+
+    posicionamiento:
+      "La plataforma institucional donde el capital del Cono Sur, quienes lo " +
+      "regulan y quienes construyen su infraestructura se sientan a la misma " +
+      "mesa. Cada dos años. En Punta del Este.",
+
+    /* --- bienalidad: 2029 y 2031 aparecían en CERO de las cinco piezas --- */
+    ediciones: [
+      { n: "001", anio: "2027", estado: "en construcción" },
+      { n: "002", anio: "2029", estado: "por venir" },
+      { n: "003", anio: "2031", estado: "por venir" }
+    ],
+    ritmo: "Cada dos años. El ritmo es producto.",
+
+    /* --- qué es y qué no es, verbatim canon §5 --------------------------- */
+    esNoEs: [
+      { t: "Es una bienal, no un summit anual.",
+        d: "Literal: 2027 · 2029 · 2031. El ritmo es producto." },
+      { t: "Es institucional, no experimental.",
+        d: "El BCU y el MEF tienen que poder co-firmar." },
+      { t: "Es destino, no sede.",
+        d: "MACA, Casa Manantial y la costa son contenido, no logística." },
+      { t: "El arte es periferia.",
+        d: "Aporta gravitas y prensa cultural, no agenda." },
+      { t: "AI entra por la puerta del capital.",
+        d: "Pagos agénticos, infraestructura — nunca por la del hype. " +
+           "No competimos con Punta Tech: somos complemento." }
+    ],
+    /* doctrina de lenguaje: regla del sistema, no copy de superficie */
+    esNoEsInterno: [
+      { t: "La cultura no se declara, se ejerce.",
+        d: "La palabra «cultura» no va en ninguna pieza.", interno: true },
+      { t: "Nunca: innovador, disruptivo, revolucionario.", d: "", interno: true }
+    ],
+
+    /* --- los seis ejes de tensión, verbatim canon §4 --------------------- */
+    ejes: [
+      { de: "Cripto",             eje: "alcance",   a: "Capital, reglas e infraestructura" },
+      { de: "Evento",             eje: "formato",   a: "Bienal y plataforma" },
+      { de: "Experimental",       eje: "tono",      a: "Institucional" },
+      { de: "Local",              eje: "anclaje",   a: "Internacional" },
+      { de: "Una edición",        eje: "horizonte", a: "Sistema de ediciones" },
+      { de: "Vertical de sector", eje: "amplitud",  a: "Núcleo blockchain con periferia" }
+    ],
+    pruebaDecision: "Si una propuesta resuelve la tensión en vez de sostenerla, está mal.",
+    pruebaDecisionAdenda: "Ni cripto ni cultura: las dos.",
+
+    /* --- salas: nombres descriptivos, sin marcas propias ----------------
+       Apoyados en los dos únicos nombres propios del sistema.             */
+    salas: [
+      { n: "01", es: "El Foro",   en: "Forum",  sede: "MACA",           dia: "Viernes" },
+      { n: "02", es: "La Cena",   en: "Dinner", sede: "Casa Manantial", dia: "Viernes noche" },
+      { n: "03", es: "La Cumbre", en: "Summit", sede: "MACA",           dia: "Sábado" },
+      { n: "04", es: "La Fiesta", en: "Party",  sede: "Casa Manantial", dia: "Sábado noche" },
+      { n: "05", es: "Las Casas", en: "Houses", sede: "El corredor",    dia: "Todo el fin de semana" }
+    ],
+    sedes: ["MACA", "Casa Manantial"],   /* los dos únicos nombres propios */
+    formato: "Dos días, dos capas.",
+
+    /* --- por qué Punta: cuatro entradas --------------------------------- */
+    porQue: [
+      { n: "01", t: "Regulación vigente",
+        d: "La Ley 20.345 da al Uruguay un marco de activos virtuales que está " +
+           "vigente, y el Banco Central supervisa activos digitales. El " +
+           "perímetro está escrito, no prometido." },
+      { n: "02", t: "Capital en temporada",
+        d: "La mayor concentración de family offices y capital privado de la " +
+           "región, y llega por su cuenta cada verano austral. Argentina, " +
+           "Brasil, Chile y Uruguay operan acá." },
+      { n: "03", t: "Estabilidad institucional",
+        d: "Primero en la región en estabilidad política y estado de derecho. " +
+           "Los contratos se denominan en dólares por estándar." },
+      { n: "04", t: "El mecanismo de marca",
+        d: "«Punta del Este» ya carga peso propio en los círculos de capital " +
+           "de la región. El nombre pre-vende la sala." }
+    ],
+
+    /* --- señal de mercado. La fuente se cita: sólo G1 la citaba --------- */
+    senal: {
+      fuente: "Chainalysis 2024",
+      ventana: "Volumen on-chain, 12 meses móviles (jul 2023 – jun 2024)",
+      datos: [
+        { v: "415",  u: "mil M USD", d: "Volumen on-chain de América Latina" },
+        { v: "42,5", u: "%",         d: "Interanual — la región que más acelera" },
+        { v: "91,9", u: "mil M USD", d: "Argentina — el mercado más denso en stablecoins" }
+      ],
+      lectura: "La región no está emergiendo. Ya emergió — on-chain, a escala, " +
+               "por delante de sus instituciones."
+    },
+
+    /* --- CTA: neutral. El modelo de acceso NO está decidido ------------- */
+    cta: { label: "Recibir novedades",
+           nota: "Sin modelo de acceso, sin precio, sin invitación: no está decidido." },
+
+    /* --- créditos y avisos que viajan con las piezas -------------------- */
+    creditos: {
+      cielo:   "Cielo · imagen de stock · sustituir antes de producción",
+      imagen:  "Imágenes · renders generados · no son fotografías de las sedes",
+      autoria: "Both_Ventures"
+    },
+
+    /* --- las diez reglas, verbatim de la hoja §06 ------------------------ */
+    reglas: {
+      si: [
+        "El ácido es campo. Si aparece como acento sobre negro, el sistema se perdió.",
+        "Todo borde de máscara es un ángulo recto. Sin curvas, sin difuminado, sin sombra.",
+        "La fotografía va en color pleno y sin filtro. Es el único tono medio.",
+        "La celda se deriva del ancho del viewport, así el bitmap se lee igual en un teléfono que en un muro.",
+        "El nombre completo, siempre. «La Bienal» se gana en conversación, no se diseña."
+      ],
+      no: [
+        "Ningún gris. Si hace falta un tono medio, entra el cielo.",
+        "Ninguna tercera tinta. La inversión resuelve todas las jerarquías.",
+        "Ninguna máscara dibujada a mano: si no la generó la retícula, no es del sistema.",
+        "Ningún redondeo. El radio del sistema es cero.",
+        "Ninguna cuarta voz display. Tres voces, una por slot del nombre."
+      ]
+      /* La ex No-03 ("ningún peso intermedio en display: Archivo 900 o mono")
+         quedó superada al entrar las tres voces. El cambio se registra en la
+         sección "Abierto y en disputa" de las guidelines, con la regla vieja
+         y la nueva a la vista, para que René ratifique o vete. */
+    },
+
+    /* --- listas de prohibición ------------------------------------------ */
+    prohibido: {
+      palabras: ["cultura", "innovador", "disruptivo", "revolucionario",
+                 "game-changing", "unlock potential"],
+      nombresSuperados: ["Punta Crypto Summit", "Punta Crypto Forum", "Punta Summit",
+                         "Punta Blockchain", "Bienal de Punta del Este de Innovación"],
+      continuidadSancionada: "Punta Cripto Summit, hoy Bienal Blockchain Punta",
+      frasesBarridas: ["Legitimacy arrives before proof", "Temporada alta",
+                       "every season", "The Southern Cone's Biarritz",
+                       "Davos of Latin America", "Leaders Forum", "Institutional Summit"],
+      visual: ["La Mano / Los Dedos y manos en cualquier forma",
+               "gradientes neón y glow de dark-mode", "3D chrome",
+               "monedas, cadenas, cubos, trazas de circuito, globos de malla",
+               "azul Davos", "Punta de folleto turístico: atardeceres, yates, palmeras",
+               "preciosismo de feria de arte"]
+    },
+
+    /* --- los cinco criterios de éxito del SOW [07] ----------------------- */
+    criterios: [
+      "Se entiende en diez segundos — sin explicación de contexto.",
+      "Se aleja de una lectura exclusivamente cripto, sin negar el origen.",
+      "Funciona para sponsors e instituciones en la misma pieza.",
+      "Se siente internacional y anclada en Punta del Este a la vez.",
+      "Escala a futuras ediciones sin rediseñarse."
+    ]
+  };
+
+  root.Bienal = C;
+  if (typeof module !== "undefined" && module.exports) module.exports = C;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+/* ===========================================================================
+   Bienal Blockchain Punta — motor de máscara
+   ---------------------------------------------------------------------------
+   UNA implementación del algoritmo, consumida por el hero, la hoja de sistema,
+   la landing, las guidelines y el render de motion.
+
+   Antes de esto el algoritmo existía dos veces, en dos lenguajes, y los hashes
+   NO coincidían: GLSL usaba hash21 (Hoskins, fract de 3 vectores) y el canvas
+   usaba sin()*43758.5453. Todas las demás constantes eran idénticas, así que el
+   hero y la hoja producían grano distinto con la misma semilla mientras la hoja
+   afirmaba correr "el mismo algoritmo". Se unifica en hash21.
+
+   La regla madre: TODO se decide en el centro de la celda. Por eso el borde
+   sólo puede escalonar en ángulo recto, y esa escalera es todo el lenguaje.
+   =========================================================================== */
+(function (root) {
+  "use strict";
+
+  /* --- ruido: paridad byte-a-byte con mask.frag.glsl --------------------- */
+
+  /* GLSL corre float32 y JS float64. Sin fround el ruido divergía en el sexto
+     decimal, y una celda de borde podía volcar — así que "el mismo algoritmo"
+     no era literalmente cierto. Con fround en cada operación sí lo es, y la
+     paridad se verifica en navegador (motion/parity-test.html), no se afirma. */
+  const f = Math.fround;
+  const fract = (x) => f(x - Math.floor(x));
+
+  function hash21(px, py) {
+    const a = fract(f(px * 0.1031));
+    const b = fract(f(py * 0.1031));
+    let x = a, y = b, z = a;                       // vec3(p.xyx)
+    const d = f(f(f(x * f(y + 33.33)) + f(y * f(z + 33.33))) + f(z * f(x + 33.33)));
+    x = f(x + d); y = f(y + d); z = f(z + d);
+    return fract(f(f(x + y) * z));
+  }
+
+  function vnoise(px, py) {
+    const ix = Math.floor(px), iy = Math.floor(py);
+    let fx = fract(f(px)), fy = fract(f(py));
+    fx = f(f(fx * fx) * f(3 - f(2 * fx)));
+    fy = f(f(fy * fy) * f(3 - f(2 * fy)));
+    const a = hash21(ix, iy),     b = hash21(ix + 1, iy);
+    const c = hash21(ix, iy + 1), d = hash21(ix + 1, iy + 1);
+    const ab = f(a + f(f(b - a) * fx));
+    const cd = f(c + f(f(d - c) * fx));
+    return f(ab + f(f(cd - ab) * fy));
+  }
+
+  function fbm(px, py) {
+    return f(f(f(vnoise(px, py) * 0.62)
+             + f(vnoise(f(f(px * 2.13) + 7.3), f(f(py * 2.13) + 7.3)) * 0.26))
+             + f(vnoise(f(f(px * 4.37) + 3.1), f(f(py * 4.37) + 3.1)) * 0.12));
+  }
+
+  /* distancia firmada a un rectángulo, negativa adentro.
+     frounded igual que el resto: GLSL usa length(), que es float32, y sin esto
+     quedaban ~6 celdas de borde volcando entre los dos motores. */
+  function boxDist(px, py, r) {
+    const qx = f(Math.abs(f(px - f(r.x + f(r.w / 2)))) - f(r.w / 2));
+    const qy = f(Math.abs(f(py - f(r.y + f(r.h / 2)))) - f(r.h / 2));
+    const mx = qx > 0 ? qx : 0, my = qy > 0 ? qy : 0;
+    const len = f(Math.sqrt(f(f(mx * mx) + f(my * my))));
+    const inner = Math.min(Math.max(qx, qy), 0);
+    return f(len + inner);
+  }
+
+  const clamp = (v, lo, hi) => v < lo ? lo : v > hi ? hi : v;
+
+  /* --- dither ordenado (Bayer) -------------------------------------------
+     La única forma que tiene este sistema de desvanecer sin dejar de ser
+     duro. Umbral fijo comparado contra la distancia firmada de la máscara:
+     cae dentro de la regla del centro de celda, así que el desvanecido
+     escalona igual que el borde. Ver el póster Dgtl 20X y Camer Studio.   */
+
+  const BAYER8 = (() => {
+    const m = new Float32Array(64);
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        let v = 0, mask = 4, xc = x, yc = y;
+        for (let bit = 0; bit < 3; bit++, mask >>= 1) {
+          const bx = (xc & mask) ? 1 : 0, by = (yc & mask) ? 1 : 0;
+          v = (v << 2) | ((bx ^ by) << 1) | by;
+        }
+        m[y * 8 + x] = (v + 0.5) / 64;
+      }
+    }
+    return m;
+  })();
+
+  const bayer = (c, r) => BAYER8[(((r % 8) + 8) % 8) * 8 + (((c % 8) + 8) % 8)];
+
+  /* --- el núcleo: una retícula de ocupación ------------------------------
+     Se calcula la ocupación booleana por celda ANTES de dibujar. Eso es lo
+     que permite que relleno, filete, trama de puntos, knockout y dissolve
+     salgan todos de la misma decisión, en vez de ser cinco caminos.        */
+
+  /* --- campo de ruido cacheado -------------------------------------------
+     El ruido de una celda NO depende del puntero ni del tiempo: sólo de la
+     celda, la semilla y el tamaño de celda. Cacheándolo, un repintado
+     interactivo cuesta un clamp y un boxDist por celda en vez de tres vnoise
+     (doce hash21). Eso es lo que permite que la pieza corra a 60 fps en canvas
+     2D y que NO haga falta WebGL en ninguna superficie — con lo cual el hero
+     y la hoja no pueden divergir, porque son el mismo código. */
+
+  const fieldCache = new Map();
+
+  function noiseField(w, h, cell, seed) {
+    const key = w + "|" + h + "|" + cell + "|" + seed;
+    let fd = fieldCache.get(key);
+    if (fd) return fd;
+    const ox = -cell, oy = -cell;
+    const cols = Math.ceil((w - ox) / cell) + 1;
+    const rows = Math.ceil((h - oy) / cell) + 1;
+    const n = new Float32Array(cols * rows);
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        n[r * cols + c] = fbm(f(f(f(cx / cell) * 0.21) + seed),
+                              f(f(f(cy / cell) * 0.21) + seed));
+      }
+    }
+    fd = { n, cols, rows, cell, ox, oy, w, h, seed };
+    if (fieldCache.size > 40) fieldCache.clear();
+    fieldCache.set(key, fd);
+    return fd;
+  }
+
+  function grid(o) {
+    const cell   = o.cell;
+    const fringe = o.fringe !== undefined ? o.fringe : cell * 3.2;
+    const seed   = o.seed || 0;
+    const erode  = o.erode || 0;
+    const dither = o.dither || 0;
+    const rects  = o.rects || [];
+    const mode   = o.mode || "grow";
+
+    const fd = noiseField(o.w, o.h, cell, seed);
+    const ox = fd.ox, oy = fd.oy, cols = fd.cols, rows = fd.rows;
+    const on = new Uint8Array(cols * rows);
+    /* el knockout necesita un segundo campo, con su propia semilla, para que
+       las muescas no repitan el mismo ruido que el borde exterior */
+    const fdHole = (o.mode === "knockout")
+      ? noiseField(o.w, o.h, cell, seed + 19.7) : null;
+
+    /* reach de una celda contra un conjunto de cajas: el ruido se muestrea
+       en la retícula gruesa (una lóbula cada 4-5 celdas) — es lo que hace
+       que el borde lea como una forma con miembros y no como un rectángulo
+       con una capa de pintura rasposa */
+    function occupied(idx, cx, cy, boxes, fr, er, src) {
+      if (!boxes.length) return -Infinity;
+      const n = src.n[idx];
+      const reach = f(fr * clamp(f(f(n * 1.95) - 0.47), -0.20, 1.25));
+      let d = Infinity;
+      for (let i = 0; i < boxes.length; i++) {
+        const dd = boxDist(cx, cy, boxes[i]);
+        if (dd < d) d = dd;
+      }
+      return f(f(reach - er) - d);   // > 0 → adentro; el valor es la profundidad
+    }
+
+    const field = mode === "knockout"
+      ? (o.fieldRect || { x: 0, y: 0, w: o.w, h: o.h })
+      : null;
+    const notchFringe = o.notchFringe !== undefined ? o.notchFringe : cell * 1.6;
+
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        let depth;
+
+        const idx = r * cols + c;
+        if (mode === "knockout") {
+          /* la masa cubre el campo y se le RESTAN las cajas medidas — es el
+             inverso de grow, y es el look del video de referencia: los
+             bloques chicos viven en muescas recortadas dentro de la masa */
+          depth = occupied(idx, cx, cy, [field], fringe, erode, fd);
+          if (depth > 0 && occupied(idx, cx, cy, rects, notchFringe, 0, fdHole) > 0) {
+            depth = -1;
+          }
+        } else {
+          depth = occupied(idx, cx, cy, rects, fringe, erode, fd);
+        }
+
+        let hit = depth > 0;
+
+        /* dissolve: en una banda del borde hacia adentro, la celda sólo
+           sobrevive si supera el umbral ordenado de su posición */
+        if (hit && dither > 0) {
+          const t = depth / (fringe * dither);
+          if (t < 1 && bayer(c, r) > t) hit = false;
+        }
+
+        on[idx] = hit ? 1 : 0;
+      }
+    }
+
+    return { on, cols, rows, cell, ox, oy, w: o.w, h: o.h };
+  }
+
+  const at = (g, c, r) =>
+    (c < 0 || r < 0 || c >= g.cols || r >= g.rows) ? 0 : g.on[r * g.cols + c];
+
+  /* --- render ------------------------------------------------------------ */
+
+  function render(ctx, g, style) {
+    const s = style || {};
+    const cell = g.cell;
+
+    if (s.fill) {
+      ctx.fillStyle = s.fill;
+      if (s.dots) {
+        /* trama de puntos dentro de la masa: segundo valor de relleno sin
+           segundo color. Del póster zkPass. */
+        const k = typeof s.dots === "number" ? s.dots : 0.34;
+        const d = Math.max(1, cell * k);
+        const off = (cell - d) / 2;
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell + off, g.oy + r * cell + off, d, d);
+          }
+        }
+      } else {
+        /* +1 tapa la costura entre celdas contiguas */
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+          }
+        }
+      }
+    }
+
+    /* filete: se traza SÓLO sobre los lados que separan una celda encendida
+       de una apagada, así el contorno sigue la escalera exacta en vez de
+       aproximarla. Es el filete de las fichas del video. */
+    if (s.stroke) {
+      ctx.strokeStyle = s.stroke;
+      ctx.lineWidth = s.strokeWidth || Math.max(1, cell * 0.09);
+      ctx.lineCap = "square";
+      ctx.beginPath();
+      for (let r = 0; r < g.rows; r++) {
+        for (let c = 0; c < g.cols; c++) {
+          if (!g.on[r * g.cols + c]) continue;
+          const x = g.ox + c * cell, y = g.oy + r * cell;
+          if (!at(g, c, r - 1)) { ctx.moveTo(x, y);               ctx.lineTo(x + cell, y); }
+          if (!at(g, c, r + 1)) { ctx.moveTo(x, y + cell);        ctx.lineTo(x + cell, y + cell); }
+          if (!at(g, c - 1, r)) { ctx.moveTo(x, y);               ctx.lineTo(x, y + cell); }
+          if (!at(g, c + 1, r)) { ctx.moveTo(x + cell, y);        ctx.lineTo(x + cell, y + cell); }
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  /* recorta un dibujo cualquiera (una foto) a la máscara. Así entra la
+     fotografía al sistema: por la máscara, cuantizada a la celda — nunca a
+     sangre y brillante. Arch Guide / Camer Studio. */
+  function clipTo(ctx, g) {
+    ctx.beginPath();
+    const cell = g.cell;
+    for (let r = 0; r < g.rows; r++) {
+      for (let c = 0; c < g.cols; c++) {
+        if (!g.on[r * g.cols + c]) continue;
+        ctx.rect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+      }
+    }
+    ctx.clip();
+  }
+
+  /* --- capa DOM: la API declarativa por data-* --------------------------- */
+
+  function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
+
+  function sizeFor(cv) {
+    const d = dpr();
+    const w = Math.max(1, Math.round(cv.clientWidth * d));
+    const h = Math.max(1, Math.round(cv.clientHeight * d));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    return d;
+  }
+
+  function readRects(cv, d, pad) {
+    /* data-from acepta una LISTA de selectores separados por coma, que es lo
+       que habilita knockout con varios bloques de texto. Se mide contra el
+       canvas, en píxeles de dispositivo. */
+    const host = cv.parentElement;
+    const sel = cv.dataset.from || ".inner";
+    const cr = cv.getBoundingClientRect();
+    const out = [];
+    sel.split(",").map((s) => s.trim()).filter(Boolean).forEach((s) => {
+      host.querySelectorAll(s).forEach((el) => {
+        const er = el.getBoundingClientRect();
+        if (!er.width || !er.height) return;
+        out.push({
+          x: (er.left - cr.left) * d - pad,
+          y: (er.top  - cr.top)  * d - pad,
+          w: er.width  * d + pad * 2,
+          h: er.height * d + pad * 2
+        });
+      });
+    });
+    return out;
+  }
+
+  function paintBlob(cv) {
+    const d = dpr();
+    const g2 = cv.getContext("2d");
+    sizeFor(cv);
+    g2.clearRect(0, 0, cv.width, cv.height);
+
+    const T = root.BienalTokens || {};
+    const ACID = T.acid || "#C8F52D";
+    const VOID = T.void || "#12140F";
+    const QUIET = T.quiet || "#1D2016";
+
+    const cell = (+cv.dataset.cell || 20) * d;
+    const fringe = cell * (+cv.dataset.fringeCells || 3.2);
+    const seed = +cv.dataset.seed || 0;
+    const mode = cv.dataset.mode || "grow";
+    const dither = +cv.dataset.dither || 0;
+    const pad = cell * 0.5;
+
+    let rects = readRects(cv, d, pad);
+
+    /* bleed: la masa se va del borde en vez de terminar dentro del canvas.
+       Ahora las cuatro direcciones, no sólo left/bottom. */
+    const bleed = cv.dataset.bleed || "";
+    if (mode !== "knockout" && rects.length) {
+      const r0 = rects[0];
+      if (bleed.includes("left"))   { r0.w += r0.x + fringe; r0.x = -fringe; }
+      if (bleed.includes("top"))    { r0.h += r0.y + fringe; r0.y = -fringe; }
+      if (bleed.includes("right"))  { r0.w = cv.width  + fringe - r0.x; }
+      if (bleed.includes("bottom")) { r0.h = cv.height + fringe - r0.y; }
+    }
+
+    let fieldRect = null;
+    if (mode === "knockout") {
+      const inset = (+cv.dataset.inset || 0) * d;
+      fieldRect = { x: inset, y: inset, w: cv.width - inset * 2, h: cv.height - inset * 2 };
+    }
+
+    const gr = grid({
+      w: cv.width, h: cv.height, cell, fringe, seed, dither, rects, mode, fieldRect,
+      notchFringe: cell * (+cv.dataset.notchCells || 1.6)
+    });
+
+    const key = cv.dataset.blob;
+    const fill = key === "void" ? VOID : key === "quiet" ? QUIET : key === "none" ? null : ACID;
+    const strokeKey = cv.dataset.stroke;
+    const stroke = !strokeKey ? null
+      : strokeKey === "void" ? VOID : strokeKey === "acid" ? ACID : strokeKey;
+
+    render(g2, gr, {
+      fill,
+      stroke,
+      strokeWidth: cv.dataset.strokeWidth ? +cv.dataset.strokeWidth * d : undefined,
+      dots: cv.dataset.fill === "dots" ? (+cv.dataset.dotRatio || 0.34) : false
+    });
+
+    cv.__grid = gr;
+  }
+
+  /* --- remedición unificada ---------------------------------------------
+     Antes: el hero tenía ResizeObserver y la hoja no (una hoja que reflowea
+     sin resize de ventana quedaba con máscaras viejas); la hoja tenía
+     beforeprint y el hero no; ninguna pausaba fuera de pantalla.          */
+
+  let raf = 0, wired = false;
+
+  function paintAll() {
+    document.querySelectorAll("canvas[data-blob]").forEach(paintBlob);
+    if (root.BienalSteps) root.BienalSteps();
+  }
+
+  function schedule() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(paintAll);
+  }
+
+  function wire() {
+    if (wired) return;
+    wired = true;
+    paintAll();
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("beforeprint", paintAll);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) schedule(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(schedule);
+      document.querySelectorAll("canvas[data-blob]").forEach((cv) => {
+        if (cv.parentElement) ro.observe(cv.parentElement);
+      });
+    }
+  }
+
+  root.Mask = {
+    hash21, vnoise, fbm, boxDist, bayer, clamp,
+    grid, render, clipTo, at,
+    paintBlob, paintAll, schedule, wire, sizeFor, dpr
+  };
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", wire);
+    } else {
+      wire();
+    }
+  }
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+(() => {
+  "use strict";
+  const C = window.Bienal, $ = (id) => document.getElementById(id);
+  const T = getComputedStyle(document.documentElement);
+  window.BienalTokens = { acid: T.getPropertyValue("--acid").trim(),
+                          void: T.getPropertyValue("--void").trim(),
+                          quiet: T.getPropertyValue("--quiet").trim() };
+
+  $("mLbl").textContent = C.nombre.completo + " · V0.3.0";
+  $("mSub").textContent = "El sistema operable: no una imagen, un conjunto de reglas reutilizables.";
+  $("fVer").textContent = "Guidelines V0.3.0 «Máscaras» — borrador";
+  $("fPie").textContent = C.lockup.es.pie;
+  $("fAuthor").textContent = C.creditos.autoria;
+
+  $("intro").textContent =
+    "Este documento lo leen dos audiencias desde el día uno: personas que aplican la marca, " +
+    "y agentes que producen piezas. Por eso cada regla de acá es exactamente una de tres cosas — " +
+    "un token que un agente lee, un chequeo binario que un agente corre, o un juicio humano con " +
+    "dueño y compuerta. Una regla que no encaja en ninguna de las tres no está terminada.";
+
+  const A = "token", B = "chequeo", Cc = "juicio";
+  const cls = { [A]: "cls-a", [B]: "cls-b", [Cc]: "cls-c" };
+  const ruleHTML = (r) =>
+    `<div class="rule"><span class="cls ${cls[r.k]}">${r.k}</span>
+       <span class="txt">${r.t}${r.who ? `<span class="who">${r.who}</span>` : ""}</span></div>`;
+
+  $("threeway").innerHTML = [
+    { k: A,  t: "<b>Token</b> — un valor que se lee: custom props en <code>:root</code>, escalas, fórmulas de tamaño." },
+    { k: B,  t: "<b>Chequeo binario</b> — un sí/no que se corre: hex de fondo, peso de cuerpo, tope de tamaño, lista de palabras prohibidas." },
+    { k: Cc, t: "<b>Juicio humano nombrado</b> — gusto o autoridad, con dueño y compuerta explícitos.", who: "Si no dice quién decide, no es esta clase: es una regla sin terminar" }
+  ].map(ruleHTML).join("");
+
+  /* demo declarativo: cada frame lo genera el motor */
+  const demo = (attrs, cap) =>
+    `<div class="demo"><div class="frame">
+       <canvas ${attrs} data-from=".anchor" aria-hidden="true"></canvas>
+       <span class="anchor" aria-hidden="true"></span>
+     </div><div class="cap">${cap}</div></div>`;
+
+  const SEC = [];
+
+  /* ---- 01 ---- */
+  SEC.push({ id: "idea", n: "01", t: "La idea", html: `
+    <p class="body">${C.posicionamiento}</p>
+    <p class="body">La marca sostiene seis tensiones y no resuelve ninguna. Eso no es indecisión:
+      es la tesis. Un evento se produce una vez; una bienal se instala.</p>
+    <blockquote>${C.pruebaDecision}<br><span style="font-family:var(--mono);font-size:.7em;letter-spacing:.1em;text-transform:uppercase">${C.pruebaDecisionAdenda}</span></blockquote>
+    <div class="rules">${[
+      { k: B, t: "Toda pieza pasa la <b>prueba de decisión</b>: si resuelve una tensión en vez de sostenerla, está mal." },
+      { k: B, t: "Los seis ejes se sostienen: " + C.ejes.map(e => e.de + "→" + e.a.split(",")[0]).join(" · ") + "." },
+      { k: Cc, t: "Cuándo una pieza sostiene o resuelve una tensión.", who: "Decide: René (dirección narrativa), en la revisión de territorio" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 02 ---- */
+  SEC.push({ id: "masa", n: "02", t: "La masa", html: `
+    <p class="body">El dispositivo central. No es una forma con borde blando: es un <b>bitmap</b>.
+      Todo se decide en el <b>centro de la celda</b>, así que el borde sólo puede escalonar en
+      ángulo recto. Esa escalera es todo el lenguaje.</p>
+    <p class="mono-body">celda   = centro(floor(posición / celda))<br>
+      alcance = franja × clamp(ruido × 1.95 − 0.47, −0.20, 1.25)<br>
+      máscara = alcance − erosión ≥ distancia_a_la_caja</p>
+    <p class="body">Las máscaras <b>no están dibujadas</b>. El motor recibe el <em>bounding box
+      medido</em> de bloques de texto reales y hace crecer la mancha alrededor. Se cambia el copy o
+      el breakpoint y la máscara se recorta sola: la pieza no está compuesta, está generada.</p>
+    <div class="demos">${[
+      demo('data-blob="acid" data-seed="11.3" data-cell="14" data-fringe-cells="3.2"', "<b>Grow</b> — la masa crece alrededor de la caja medida. Modo por defecto."),
+      demo('data-blob="acid" data-mode="knockout" data-seed="41.2" data-cell="14" data-fringe-cells="2.6" data-notch-cells="1.5" data-inset="8"', "<b>Knockout</b> — la masa cubre el campo y se le restan las cajas. El texto vive en muescas."),
+      demo('data-blob="acid" data-seed="7.7" data-cell="26" data-fringe-cells="3.2"', "<b>Celda grande</b> — misma fórmula, celda 26. La escalera crece, el lenguaje no cambia."),
+      demo('data-blob="acid" data-seed="7.7" data-cell="9" data-fringe-cells="3.2"', "<b>Celda chica</b> — celda 9. La celda se deriva del ancho del viewport, nunca se fija en px absolutos.")
+    ].join("")}</div>
+    <div class="rules">${[
+      { k: A, t: "Celda: <code>max(12, round(anchoViewport / 46))</code> × dpr. La franja es <code>celda × 2.4…3.4</code>, <b>siempre relativa a la celda</b>." },
+      { k: B, t: "Todo borde de máscara es un ángulo recto. Sin curvas, sin difuminado, sin sombra." },
+      { k: B, t: "Ninguna máscara dibujada a mano: si no la generó la retícula, no es del sistema." },
+      { k: B, t: "La caja anfitriona va <code>width: fit-content</code> y <b>sin altura forzada</b>. Si la caja se estira, la máscara tapa todo — ya pasó una vez." },
+      { k: B, t: "El padding del bloque de texto no es decorativo: es lo que garantiza que el fleco nunca muerda una letra. Mínimo <code>celda × 0.5</code>." },
+      { k: B, t: "La erosión sólo muerde el fleco, nunca el núcleo medido." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 03 ---- */
+  SEC.push({ id: "dissolve", n: "03", t: "El dissolve", html: `
+    <p class="body">Lo único que le faltaba al sistema: una forma de <b>desvanecer sin dejar de ser
+      duro</b>. Un gradiente está prohibido — rompería la regla del ángulo recto. La solución es un
+      <b>umbral ordenado de Bayer</b> 8×8 comparado contra la profundidad firmada de la máscara:
+      la celda sobrevive si supera el umbral de su posición. El desvanecido escalona igual que el borde.</p>
+    <div class="demos">${[0, 0.35, 0.7, 1.1].map((d, i) =>
+      demo(`data-blob="acid" data-seed="19.4" data-cell="12" data-fringe-cells="3.0" data-dither="${d}"`,
+           `<b>dither ${d}</b> — ${["sin dissolve","borde apenas abierto","tablero de ajedrez","la masa se deshace"][i]}`)).join("")}</div>
+    <div class="rules">${[
+      { k: A, t: "<code>data-dither</code> de 0 a ~1.2. Es la fracción de la franja donde actúa el umbral." },
+      { k: B, t: "Nunca un gradiente, un blur ni una opacidad parcial para desvanecer una masa. Sólo dither." },
+      { k: B, t: "El dissolve no toca el núcleo: una masa que sostiene tipografía no puede tener dither > 0.6." },
+      { k: Cc, t: "Cuándo una pieza pide dissolve. Sirve para lo que se aleja en el tiempo o en jerarquía.", who: "Decide: dirección de arte, por pieza" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 04 ---- */
+  SEC.push({ id: "reticula", n: "04", t: "Retícula y mobiliario", html: `
+    <p class="body">La misma celda que gobierna la máscara gobierna el papel cuadriculado del fondo
+      y las marcas de registro. El mobiliario no decora: <b>declara que la pieza es una plancha</b>.</p>
+    <div class="rules">${[
+      { k: A, t: "Papel cuadriculado: paso 48 px, hairline de la tinta, opacidad <code>.16</code>." },
+      { k: A, t: "Marcas de registro: cruz de 13 px, en las cuatro esquinas, en el margen, opacidad <code>.8</code>." },
+      { k: B, t: "Las marcas van en las <b>cuatro</b> esquinas o en ninguna. Nunca tres." },
+      { k: B, t: "El radio del sistema es cero. <code>border-radius: 0</code> en todo, sin excepción." },
+      { k: A, t: "Curvas nombradas: <code>--ease-out</code>, <code>--ease-step</code>, <code>--ease-in</code>. Ninguna palabra clave suelta." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 05 ---- */
+  SEC.push({ id: "imagen", n: "05", t: "Imagen en la masa", html: `
+    <p class="body">La fotografía es el <b>único tono medio</b> del sistema. Entra siempre
+      <b>recortada a la máscara</b>, en color pleno y sin filtro. El bitmap lo aporta el borde, no
+      la foto: cuantizar la imagen la vuelve ilegible y además contradice la regla.</p>
+    <p class="body"><b>Inventario: 8 sujetos.</b> Uno de cielo (stock) y siete del proyecto. Los
+      siete son <b>renders generados, no fotografías de las sedes</b> — el interior rotulado MACA no
+      es el MACA, y no existen tres fotos de casas distintas. El rótulo original de una de las rutas
+      estaba mal en tres de ocho.</p>
+    <div class="rules">${[
+      { k: B, t: "Ninguna imagen se rotula con el nombre de una sede real mientras sean renders." },
+      { k: B, t: "Ninguna imagen va a sangre, grande y brillante. Siempre dentro de una máscara." },
+      { k: B, t: "La foto va en color pleno y sin filtro. Sin duotono, sin cuantizar, sin blanco y negro." },
+      { k: B, t: "Toda pieza con imagen generada lleva la línea: «" + C.creditos.imagen + "»." },
+      { k: B, t: "El cielo lleva su línea de crédito hasta que se sustituya: «" + C.creditos.cielo + "»." },
+      { k: Cc, t: "Qué tiene que pasar una foto nueva: ser del corredor, no ser folleto turístico, y aguantar el recorte a la máscara.", who: "Decide: René. Licencia y derechos: Andrés" }
+    ].map(ruleHTML).join("")}</div>
+    <div class="dd">
+      <div class="si"><h4>Sí</h4><ul>
+        <li>Mar abierto, el relevamiento del corredor de Maldonado, la ola de madera del MACA, una carta batimétrica.</li>
+        <li>Una toma propia de Punta, con cielo limpio.</li></ul></div>
+      <div class="no"><h4>No — y esto es absoluto</h4><ul>
+        <li><b>La Mano, Los Dedos, y manos en cualquier forma.</b> Obra atribuida a Mario Irarrázabal, autor vivo y dentro de plazo. Una foto CC0 licencia la fotografía, no la escultura.</li>
+        <li>Punta de folleto turístico: atardeceres, yates, palmeras, lifestyle de playa.</li></ul></div>
+    </div>` });
+
+  /* ---- 06 ---- */
+  SEC.push({ id: "color", n: "06", t: "Color", html: `
+    <p class="body"><b>Dos tintas y una fotografía.</b> El ácido es <em>campo</em>: si aparece como
+      acento suelto sobre negro, el sistema se perdió. La inversión resuelve todas las jerarquías,
+      y por eso no hace falta una tercera tinta.</p>
+    <table class="tk"><thead><tr><th>Token</th><th>Valor</th><th>Rol</th></tr></thead><tbody>
+      <tr><td class="m">--acid</td><td class="m"><span class="sw" style="background:#C8F52D"></span>#C8F52D</td><td>Tinta 01. Campo dominante.</td></tr>
+      <tr><td class="m">--void</td><td class="m"><span class="sw" style="background:#12140F"></span>#12140F</td><td>Tinta 02. Casi negro con sesgo verde. Tipografía, máscaras, reglas.</td></tr>
+      <tr><td class="m">--quiet</td><td class="m"><span class="sw" style="background:#1D2016"></span>#1D2016</td><td><b>Tercer valor, no tercera tinta.</b> Masa negra sobre negro, legible sólo como textura.</td></tr>
+      <tr><td class="m">--paper</td><td class="m"><span class="sw" style="background:#F4F1E8"></span>#F4F1E8</td><td>Modo fondo claro. Print y papelería.</td></tr>
+      <tr><td class="m">--acid-d</td><td class="m"><span class="sw" style="background:#A5CE1E"></span>#A5CE1E</td><td>Ácido oscurecido. Sólo estados <code>:active</code>.</td></tr>
+      <tr><td class="m">--sky-mid</td><td class="m"><span class="sw" style="background:#7FC3EE"></span>#7FC3EE</td><td>El tono medio propio del cielo. Nunca un gris.</td></tr>
+    </tbody></table>
+    <div class="demos">${[
+      demo('data-blob="void" data-seed="3.3" data-cell="13" data-fringe-cells="3.1"', "<b>Void sobre ácido</b> — la combinación base."),
+      demo('data-blob="quiet" data-seed="55.1" data-cell="13" data-fringe-cells="3.1"', "<b>Tercer valor</b> — masa silenciosa. Jerarquía sin una tinta nueva."),
+      demo('data-blob="void" data-fill="dots" data-dot-ratio="0.34" data-seed="88.2" data-cell="11" data-fringe-cells="3.2"', "<b>Trama de puntos</b> — segundo valor de relleno, un solo color.")
+    ].join("")}</div>
+    <div class="rules">${[
+      { k: A, t: "Proporción en superficie ácida: ~70 ácido / ~28 void / ~2 la foto como respiro." },
+      { k: B, t: "Dos fondos: ácido o void. Sin alternativas." },
+      { k: B, t: "Ningún gris. Si hace falta un tono medio, entra el cielo." },
+      { k: B, t: "Ninguna tercera <b>tinta</b>. El tercer <b>valor</b> sí, y es <code>--quiet</code>." },
+      { k: B, t: "El ácido nunca es acento suelto sobre negro." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 07 ---- */
+  SEC.push({ id: "tipo", n: "07", t: "Tipografía", html: `
+    <p class="body">Cuatro familias, cada una con un trabajo nombrado. Display tiene <b>tres voces
+      atadas a los slots del nombre</b>: pixel en los slots fijos, serif itálica en el slot que el
+      canon declara <em>variable</em>, y Archivo 900 para todo lo demás.</p>
+    <div class="spec"><div class="meta">Handjet 800<br>slots fijos<br><code>--pixel</code></div><div class="v-pixel">Bienal Punta 2027</div></div>
+    <div class="spec"><div class="meta">Instrument Serif<br>itálica 400<br>slot variable<br><code>--tema</code></div><div class="v-tema">Blockchain</div></div>
+    <div class="spec"><div class="meta">Archivo 900<br>titulares<br><code>--disp</code></div><div class="v-disp">Es una bienal, no un summit anual</div></div>
+    <div class="spec"><div class="meta">Archivo 600<br>bajada</div><div class="v-lead">${C.bajada.publico.linea}</div></div>
+    <div class="spec"><div class="meta">IBM Plex Mono 600<br>datos y etiquetas<br><code>--mono</code></div><div class="v-mono">Capital · Reglas · Infraestructura</div></div>
+    <div class="rules">${[
+      { k: A, t: "Escala de las tres voces: <code>--t-formato: clamp(30px, 6.6vw, 92px)</code> · <code>--t-tema: clamp(46px, 10.4vw, 158px)</code> · <code>--t-lugar: clamp(38px, 8.2vw, 118px)</code>." },
+      { k: B, t: "<b>Ninguna cuarta voz display.</b> Tres, una por slot." },
+      { k: B, t: "La serif itálica aparece <b>sólo</b> en el slot del tema. Nunca en cuerpo, nunca en datos, nunca más de una vez por pieza." },
+      { k: B, t: "Handjet tiene piso de tamaño: <b>nunca por debajo de 18 px</b>. Más chico lee retro-gaming, que colisiona con «institucional»." },
+      { k: B, t: "Si una línea informa, es mono." },
+      { k: B, t: "Display en Archivo va sólo a 900. Ningún peso intermedio." },
+      { k: A, t: "El eje <code>ELGR</code> de Handjet se puede manejar desde la misma <code>celda</code> de la máscara: una celda gobierna el bitmap y la letra." },
+      { k: Cc, t: "Si el voltaje del ácido más la itálica lee «institucional, no corporativo».", who: "Decide: René. Es la tensión más real que tiene la dirección" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 08 ---- */
+  SEC.push({ id: "lockup", n: "08", t: "Nombre y lockup", html: `
+    <p class="body">Estructura <code>[formato] [tema] [lugar] [edición]</code>. El slot del
+      <b>tema</b> es el que la sintaxis declara variable — la evolución de edición a edición está
+      permitida por construcción, no es un rebranding. Por eso lleva la voz distinta.</p>
+    <div class="lock">
+      <div class="l1">Bienal <em>Blockchain</em> Punta 2027</div>
+      <div class="l2">${C.lockup.es.bajada}</div>
+      <div class="l3">${C.lockup.es.pie}</div>
+      <div class="slots">
+        <span class="slot">formato · fijo · pixel</span>
+        <span class="slot var">tema · variable · serif itálica</span>
+        <span class="slot">lugar · fijo · pixel</span>
+        <span class="slot">edición · fijo · pixel</span>
+      </div>
+    </div>
+    <div class="rules">${[
+      { k: B, t: "El nombre completo, siempre. <b>Sin acrónimo público.</b> «La Bienal» se gana en conversación, no se diseña." },
+      { k: B, t: "Un solo nombre para ES y EN. No hay lockup espejo ni regla de precedencia. Sólo la bajada y la línea de pie se traducen." },
+      { k: B, t: "La línea de pie, verbatim: «" + C.lockup.es.pie + "» / «" + C.lockup.en.pie + "». Los separadores no se cambian." },
+      { k: B, t: "Los <b>dos registros</b> de la bajada existen y son distintos. Público: «" + C.bajada.publico.linea + "». Institucional: «" + C.bajada.institucional.linea + "». No son la misma frase en dos idiomas." },
+      { k: B, t: "El registro institucional <b>no tiene traducción aprobada al inglés</b>. No inventar una." },
+      { k: B, t: "Los tres ejes van juntos y en ese orden: " + C.bajada.institucional.ejes.join(" · ") + "." },
+      { k: Cc, t: "¿Es la línea de pie parte <b>no desprendible</b> del lockup mínimo en toda aplicación? Ahí se resuelve la ambigüedad de «Punta» fuera de la región.", who: "Decide: René. Recomendación: sí. Respuesta PENDIENTE" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 09 ---- */
+  SEC.push({ id: "sucesion", n: "09", t: "Sucesión", html: `
+    <p class="body">La bienalidad <b>no tenía hogar estructural</b>: 2029 y 2031 aparecían en cero
+      de las cinco piezas anteriores. El mecanismo es un <b>ordinal de plancha</b>: la edición vive
+      en un contador, no en la palabra grande. Así la siguiente entra sin rediseñar nada.</p>
+    <div class="demos">${C.ediciones.map((e, i) =>
+      demo(`data-blob="void" data-seed="${101 + i * 31.4}" data-cell="12" data-fringe-cells="2.7" data-dither="${(i * 0.5).toFixed(2)}"`,
+           `<b>Nº ${e.n} · ${e.anio}</b> — ${e.estado}. El dissolve crece con la distancia en el tiempo.`)).join("")}</div>
+    <div class="rules">${[
+      { k: A, t: "Ordinal: <code>Nº 001</code> → <code>Nº 002</code> → <code>Nº 003</code>, en mono, tres dígitos, arriba del año." },
+      { k: B, t: "El año va en el nombre y en la línea de pie. La edición no reemplaza al año." },
+      { k: B, t: "Literal: " + C.ediciones.map(e => e.anio).join(" · ") + ". Ninguna pieza sugiere cadencia anual." },
+      { k: B, t: "Palabras barridas por contradecir la bienalidad: «temporada alta», «every season»." },
+      { k: A, t: "Dissolve por edición: 0 la vigente, +0.5 por cada edición futura." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 10 ---- */
+  SEC.push({ id: "motion", n: "10", t: "Motion", html: `
+    <p class="body">Una sola gramática: <b>fichas numeradas</b>. Cada ficha reposa quieta, y la
+      transición interpola los vértices de la máscara entre silueta saliente y entrante — aparecen
+      diagonales en el medio y al aterrizar vuelve a ser ortogonal. La diagonal existe sólo en
+      tránsito; nunca en reposo.</p>
+    <div class="rules">${[
+      { k: A, t: "Reposo ~1.2 s. Transición ~0.35 s. Loop cerrado sobre sí mismo." },
+      { k: B, t: "En reposo, cero diagonales. La diagonal es exclusiva del tránsito." },
+      { k: B, t: "Dos tintas por ficha, más la inversión. Nunca tres colores en cuadro." },
+      { k: B, t: "<code>prefers-reduced-motion</code>: reloj congelado y sin repintado en reposo. El hover sí repinta, porque ahí lo pide la persona." },
+      { k: B, t: "El gesto del puntero cuantiza la fotografía. Es un <b>gesto</b>, no un estado: en reposo la foto va en color pleno." },
+      { k: B, t: "La palabra grande puede partirse a mitad de palabra. El cuerpo es fijo; el corte es del sistema." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 11 ---- */
+  SEC.push({ id: "voz", n: "11", t: "Voz", html: `
+    <p class="body">Precisa, no promocional. Estructurada, no inflada. Institucional, no
+      corporativa. Declarativas cortas; los fragmentos se aceptan. La cultura no se declara,
+      se ejerce.</p>
+    <div class="dd">
+      <div class="si"><h4>Palabras del sistema</h4><ul>
+        <li>estructural · opcionalidad · plataforma · institucional · ambas · en construcción</li>
+        <li>«Es una bienal, no un summit anual.» El molde: afirmación, coma, negación.</li></ul></div>
+      <div class="no"><h4>Nunca aparecen — chequeo binario</h4><ul>
+        <li>${C.prohibido.palabras.map(w => "<b>" + w + "</b>").join(" · ")}</li>
+        <li>«Legitimacy arrives before proof» — un banco central lo lee como aval previo a la prueba.</li>
+        <li>«Davos de América Latina», «el Biarritz del Cono Sur», y toda construcción «el X de Y».</li>
+        <li>Nombres superados: ${C.prohibido.nombresSuperados.join(" · ")}.</li></ul></div>
+    </div>
+    <div class="rules">${[
+      { k: B, t: "El <b>sustantivo</b> «cultura» no aparece en ninguna pieza. El <b>adjetivo</b> «cultural» sí: el propio canon §5 escribe «prensa cultural» en la misma sección donde prohíbe el sustantivo. Un chequeo por substring marca esa línea verbatim como violación — el chequeo va con límite de palabra." },
+      { k: B, t: "La única línea de continuidad sancionada es: «" + C.prohibido.continuidadSancionada + "». Ninguna otra mención del nombre viejo." },
+      { k: B, t: "Nada que el BCU o el MEF no pudieran co-firmar: sin encuadre de ganancia especulativa, sin imaginería de precio o token, sin registro degen." },
+      { k: Cc, t: "El registro de amenaza de la bajada no se puede perder al barrer copy: «oportunidades <b>y amenazas</b>».", who: "Decide: René, en el sign-off de copy" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 12 ---- */
+  SEC.push({ id: "canal", n: "12", t: "Aplicación por canal", html: `
+    <table class="tk"><thead><tr><th>Canal</th><th>Formato</th><th>Reglas propias</th></tr></thead><tbody>
+      <tr><td>Web</td><td class="m">responsive</td><td>Celda del ancho del viewport. Sin scroll horizontal. La barra es plancha void: legible sobre los dos fondos.</td></tr>
+      <tr><td>Social — declaración</td><td class="m">1080×1080</td><td>Una masa, una frase, el lockup al pie. Celda 12–16.</td></tr>
+      <tr><td>Social — vertical</td><td class="m">1080×1350</td><td>Ficha de motion congelada. Índice arriba, crédito al borde.</td></tr>
+      <tr><td>Credencial</td><td class="m">4:5</td><td>Knockout: el nombre de la persona en la muesca. Sin foto.</td></tr>
+      <tr><td>Programa</td><td class="m">4:5</td><td>Mono para todo lo que informa. Una masa por sesión.</td></tr>
+      <tr><td>Print / papelería</td><td class="m">A3 · A2</td><td><b>Modo fondo claro</b> (<code>--paper</code>). Colores exactos, y la máscara se recalcula en <code>beforeprint</code>.</td></tr>
+      <tr><td>Deck</td><td class="m">16:9</td><td>Una idea por lámina. Precio aparece tarde y nunca al lado de Casa Manantial.</td></tr>
+      <tr><td>Señalética</td><td class="m">variable</td><td>Celda derivada del ancho de la pieza física, no del archivo.</td></tr>
+    </tbody></table>
+    <div class="rules">${[
+      { k: B, t: "Una sola acción por pieza. Sobre ácido va en masa; sobre masa va en ácido." },
+      { k: B, t: "El inventario de Casa Manantial <b>nunca se pricea</b>. Cena y fiesta aparecen sólo como «incluido»." },
+      { k: B, t: "Sin precios públicos de sponsorship ni de tickets, y sin conteo de posiciones por tier: las fuentes internas no coinciden entre sí." },
+      { k: B, t: "Sin nombres de sponsors, speakers ni instituciones como participantes hasta que haya acuerdo escrito." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 13 ---- */
+  SEC.push({ id: "cobranding", n: "13", t: "Co-branding y gobernanza", html: `
+    <p class="body">Nadie había diseñado la línea de presentación, y eso costaba media falla del
+      criterio 003. El molde es la gramática de São Paulo: aval estatal y capital privado
+      conviviendo <b>en tipografía</b>, sin sopa de logos.</p>
+    <div class="lock">
+      <div class="l3" style="margin:0 0 .5rem">Molde — los corchetes son slots, no texto</div>
+      <div class="l2" style="font-family:var(--mono);font-size:.8rem;letter-spacing:.06em">
+        [institución] , [institución] y [sponsor] <b>presentan</b><br>
+        <span style="font-family:var(--pixel);font-size:1.5rem;letter-spacing:.03em">BIENAL <em style="font-family:var(--tema);font-style:italic">Blockchain</em> PUNTA 2027</span>
+      </div>
+    </div>
+    <div class="rules">${[
+      { k: A, t: "La línea de presentación va en mono, sobre el lockup, a un tamaño que no compite: máximo <code>0.35×</code> la altura del slot del tema." },
+      { k: B, t: "El verbo es «presentan». Nunca «powered by», «in partnership with» ni «brought to you by»." },
+      { k: B, t: "Nunca una marca fusionada con MACA. El precedente observable es la sede nombrada en prosa, y <b>MACA no tiene guidelines publicadas: hay que preguntarles</b>." },
+      { k: B, t: "Ningún slot se instancia con un nombre real hasta que exista acuerdo escrito. Hoy: ninguno." },
+      { k: Cc, t: "Quién aprueba las etapas 005 y 006 del SOW.", who: "Decide: Gastón (CEO). ABIERTA — la gobernanza es la capa que evita que la marca se degrade" },
+      { k: Cc, t: "Qué fecha manda para deck, sitio y anuncio.", who: "Decide: Gastón + Daiana. ABIERTA — con la landing comprometida para octubre 2026 dejó de ser administrativa" }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* ---- 14 ---- */
+  SEC.push({ id: "abierto", n: "14", t: "Abierto y en disputa", cls: "open", html: `
+    <p class="body" style="max-width:66ch">Sección obligatoria. Una sección vacía en una marca joven
+      es una bandera roja, no un logro. Nada de esto está resuelto, y ninguna de estas piezas está
+      aprobada.</p>
+    <ol>
+      <li><b>Ácido o ultramar.</b> V0.3.0 «Máscaras» contra V0.2.0 «Grabado». Son dos mundos, no
+        dos variantes: René elige uno. Ninguna está aprobada.</li>
+      <li><b>La voz.</b> El ácido es cripto-nativo y de alto voltaje. Hay que contrastarlo contra
+        «institucional, no corporativo». Es la tensión más real que tiene la dirección.</li>
+      <li><b>La regla No-03, reescrita en esta versión.</b> Las tres voces display entran por
+        indicación de Mariano, y contradicen una regla que la hoja ya declaraba. Queda registrada
+        para que René ratifique o vete sabiendo qué se cambió.
+        <span class="was">Antes: «Ningún peso intermedio en display. Archivo 900 o mono.»<br>
+        Ahora: «Tres voces, una por slot del nombre. Ninguna cuarta voz.»</span></li>
+      <li><b>El cielo.</b> Es stock de Adobe (<code>360_F_261556117_…</code>). Sirve para la
+        propuesta, no para producción: hace falta licencia o una toma propia de Punta. La deuda queda
+        fechada, no resuelta.</li>
+      <li><b>Las imágenes del proyecto son renders generados</b>, no fotografías de las sedes. Se
+        usan por la máscara y con la línea de crédito. Producción exige material real.</li>
+      <li><b>Modelo de acceso.</b> «Solicitar invitación» asumía que la Bienal es por invitación,
+        y eso no está decidido. La landing usa un CTA neutral: lo esquiva, no lo contesta.</li>
+      <li><b>La línea de pie</b> como parte no desprendible del lockup mínimo. Recomendación sí,
+        respuesta pendiente de René. Ahí se resuelve la ambigüedad de «Punta» fuera de la región.</li>
+      <li><b>Paridad de motores.</b> El canvas y el shader coinciden en 597 de 600 celdas. Las tres
+        que difieren son de fleco y vienen de FMA en GPU, que JS no puede replicar. El pack usa
+        canvas en todas las superficies, así que hoy no hay divergencia visible — pero la afirmación
+        «el mismo algoritmo» tiene ese asterisco medido.</li>
+      <li><b>El registro marcario no está presentado.</b> El conjunto distintivo a registrar es
+        «Bienal Blockchain Punta»; lo registrado es «Punta Crypto», que se retiene como marca
+        defensiva sin uso público. Owner: Andrés.</li>
+      <li><b>La carta de Uruguay Innova está firmada bajo el nombre viejo.</b> La única salida
+        sancionada es la línea de continuidad, más hacer que la confirmación pendiente nazca ya con
+        el nombre nuevo.</li>
+      <li><b>Los gates G1, G2 y G3 no tienen resultado registrado.</b> Todo esto es exploración
+        previa a la autorización. El bloqueante vivo es la cotización real del MACA.</li>
+      <li><b>El satélite del año par (2028).</b> Existencia y forma: parkeado. Ninguna pieza dice
+        nada de actividad en año par.</li>
+    </ol>` });
+
+  /* ---- 15 ---- */
+  SEC.push({ id: "descargas", n: "15", t: "Descargas y handoff", html: `
+    <p class="body">Los tokens no viven en prosa: viven en CSS que un agente puede cargar. Ese es
+      el hook de propagación — los publishers leen el theme fresh al publicar.</p>
+    <div class="dl">
+      <div><div class="p">templates/themes/bienal-punta.css</div><div class="d">El theme compañero. Generado de <code>_engine/tokens.css</code>. Cargalo antes de producir cualquier pieza.</div></div>
+      <div><div class="p">_engine/mask.js</div><div class="d">El motor. API declarativa por <code>data-*</code> más una API de bajo nivel (<code>grid</code>, <code>render</code>, <code>clipTo</code>) para render fuera del DOM.</div></div>
+      <div><div class="p">_engine/mask.frag.glsl</div><div class="d">El mismo algoritmo en GLSL, en espacio de píxeles. <b>Ninguna pieza del pack lo consume</b> — se mantiene para el hero legacy y para el test de paridad.</div></div>
+      <div><div class="p">_engine/content.js</div><div class="d">El copy canónico. Ninguna pieza vuelve a escribir el lockup a mano.</div></div>
+      <div><div class="p">_assets/</div><div class="d">8 sujetos, cada uno en mp4 + webp + jpg, rescatados de un CDN efímero. Leé <code>_manifest.md</code> antes de usarlos.</div></div>
+      <div><div class="p">_test/parity.html</div><div class="d">El test de paridad canvas/shader. Umbral: ≤1 % de celdas.</div></div>
+    </div>
+    <div class="rules">${[
+      { k: B, t: "Toda pieza nueva carga el theme compañero, no copia los hex." },
+      { k: B, t: "Ninguna pieza escribe el lockup, la bajada ni la línea de pie a mano." }
+    ].map(ruleHTML).join("")}</div>` });
+
+  /* render */
+  $("jump").innerHTML = SEC.map((s) =>
+    `<li><a href="#${s.id}"><span class="n">${s.n}</span>${s.t}</a></li>`).join("");
+  $("sections").innerHTML = SEC.map((s) =>
+    `<section id="${s.id}" class="${s.cls || ""}">
+       <div class="head"><h2>${s.t}</h2><span class="num">${s.n}</span></div>
+       ${s.html}
+     </section>`).join("");
+
+  Mask.schedule();
+})();
+</script>
+
+</body>
+</html>
