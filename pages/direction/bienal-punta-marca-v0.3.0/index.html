@@ -80,20 +80,16 @@ body{
 }
 @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
 
-/* ---------- mobiliario: papel cuadriculado + marcas de registro ----------
-   De etherfuse (la grilla fina) y zkPass (registro y ticks). Densidad
-   institucional sin agregar una tinta.                                    */
-.grid-paper{
-  position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .16;
-  background-image: linear-gradient(to right,  var(--void) var(--hair), transparent var(--hair)),
-                    linear-gradient(to bottom, var(--void) var(--hair), transparent var(--hair));
-  /* UNA sola retícula en todo el sitio, y su paso es la CELDA. Antes había
-     tres pasos distintos peleándose —el lattice que el hero dibujaba en su
-     canvas, esta capa a 48 px y la de las secciones con foto a 44 px— y sobre
-     el cielo se veían dos grillas superpuestas. La regla Sí-04 dice que la
-     celda se deriva del ancho del viewport: entonces la grilla también. */
-  background-size: var(--cell, 32px) var(--cell, 32px);
-}
+/* ---------- mobiliario: marcas de registro ----------
+   De zkPass (registro y ticks). Densidad institucional sin agregar una tinta.
+
+   NO hay papel cuadriculado de fondo. Hubo: una capa `.grid-paper` fija a
+   pantalla completa, tinta al 16 %, con el paso de la celda. Se sacó porque
+   sobre el cielo del hero —que es fotografía a sangre, no plancha— leía como
+   una grilla de líneas negras clavada encima de la imagen, no como retícula
+   del sistema. La celda sigue gobernando la máscara y sigue dibujándose en
+   `.photo::after`: la retícula ahora aparece SÓLO donde entra fotografía, que
+   es donde significa algo. El paso sigue publicándose como `--cell`.        */
 .regmarks{ position: fixed; inset: calc(var(--pad) * .5); pointer-events: none; z-index: 2; }
 .regmarks i{ position: absolute; width: 13px; height: 13px; opacity: .8; }
 .regmarks i::before, .regmarks i::after{
@@ -305,7 +301,11 @@ h1 .place{
   min-height: 100svh; display: grid; align-content: center;
   padding: clamp(2.5rem, 8vh, 6rem) 0;
 }
-.slab .sheet{ width: 100%; }
+/* min-width:0 — .sheet es grid item de .slab, y un grid item trae
+   min-width:auto: se niega a achicarse por debajo de su contenido. Con una
+   línea `nowrap` adentro eso ensancha la hoja y saca 0,6 px de scroll
+   horizontal. Es el mismo tipo de bug que el margin auto del carrusel. */
+.slab .sheet{ width: 100%; min-width: 0; }
 .slab q{
   display: block; quotes: none; font-weight: 900;
   font-size: clamp(2.2rem, 9.2vw, 8.4rem); line-height: .88;
@@ -322,22 +322,34 @@ h1 .place{
 .slab--acid{ background: var(--acid); color: var(--void); }
 .slab--void{ background: var(--void); color: var(--acid); }
 
-/* ---------- la pila que respira ----------
-   El tracking se abre hasta que cada línea justifica contra la misma medida, y
-   vuelve. Es tipográfico puro: no agrega color ni curvas, así que no pelea con
-   ninguna regla del sistema. Los tres ejes van siempre juntos y en ese orden,
-   que es justamente lo que una pila hace visible. */
-.breathe{ display: grid; gap: .04em; justify-items: center; text-align: center; }
-.breathe span{
-  display: block; font-family: var(--disp); font-weight: 900;
-  font-size: clamp(1.3rem, 5.6vw, 4.2rem); line-height: 1.02;
-  text-transform: uppercase; white-space: nowrap;
-  letter-spacing: var(--tr, -.02em);
-  transition: letter-spacing 1.9s var(--ease-out);
+/* ---------- la pila ----------
+   Versión anterior: Archivo 900 centrado, y el tracking se abría y cerraba solo
+   cada 2,6 s. Dos problemas. Uno de voz: usaba la voz de cuerpo del sitio, no la
+   del home — el pixel es lo que hace reconocible a esta marca y la pila no lo
+   tenía. Uno de doctrina, peor: la promesa del hero es «Movés vos · se deshace»,
+   y ahí se movía un temporizador, no vos.
+
+   Ahora: las tres líneas en la voz PIXEL, cada una escalada por JS hasta ocupar
+   la medida completa — la pila justifica de verdad, en vez de simular la
+   justificación abriendo el tracking. Y la masa que las sostiene se DESHACE con
+   el scroll: el dissolve lo manejás vos con la rueda. El mismo motor, el mismo
+   dither que ya usa el sistema, ninguna tinta nueva.
+
+   La serif itálica NO entra acá: la regla §10 la ata al slot del tema. */
+.pila-wrap{ position: relative; width: 100%; }
+.pila-wrap canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+.pila-type{
+  position: relative; display: block;
+  padding: clamp(1.4rem, 4vw, 3.2rem) clamp(1rem, 3vw, 2.4rem);
 }
-@media (prefers-reduced-motion: reduce){
-  .breathe span{ transition: none; letter-spacing: -.02em !important; }
+.pila-l{
+  display: block; width: fit-content;
+  font-family: var(--pixel); font-weight: 800;
+  font-size: var(--fs, 3rem); line-height: .84;
+  letter-spacing: .012em; text-transform: uppercase; white-space: nowrap;
+  color: var(--void);                 /* tinta sobre la masa ácida */
 }
+.pila-l + .pila-l{ margin-top: .06em; }
 
 /* ---------- barra de pasos, fijada mientras corre el programa ----------
    De la referencia: una barra de pasos numerados anclada al pie mientras la
@@ -615,7 +627,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 .sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 </style>
 
-<div class="grid-paper" aria-hidden="true"></div>
 <div class="regmarks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
 <header class="bar" id="bar">
@@ -726,8 +737,12 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 
 <section class="slab slab--void" id="pila" aria-label="Capital, reglas e infraestructura">
   <div class="sheet">
-    <div class="breathe" id="breathe" aria-hidden="true"></div>
-    <p class="attr" style="text-align:center" id="pilaAttr"></p>
+    <div class="pila-wrap">
+      <canvas id="pilaMask" data-blob="acid" data-seed="63.1" data-cell="17"
+              data-fringe-cells="3.4" data-from=".pila-l" aria-hidden="true"></canvas>
+      <div class="pila-type" id="pilaType" aria-hidden="true"></div>
+    </div>
+    <p class="attr" id="pilaAttr"></p>
     <p class="sr" id="pilaSr"></p>
   </div>
 </section>
@@ -1558,40 +1573,93 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   $("slabAattr").textContent = C.esNoEs[0].d;
 
   const EJES = C.bajada.institucional.ejes;
-  $("breathe").innerHTML = EJES.map((e) => `<span>${e}</span>`).join("");
+  $("pilaType").innerHTML = EJES.map((e) => `<span class="pila-l">${e}</span>`).join("");
   $("pilaAttr").textContent = C.bajada.institucional.linea;
   $("pilaSr").textContent = EJES.join(", ") + ". " + C.bajada.institucional.linea;
 
-  /* El tracking se abre hasta que cada línea justifica contra la misma medida y
-     vuelve. Se mide la línea más ancha y se reparte la diferencia entre los
-     huecos de cada línea: así "CAPITAL" (7) y "INFRAESTRUCTURA" (15) llegan al
-     mismo ancho sin cambiar el cuerpo. */
-  const breatheEls = [...$("breathe").querySelectorAll("span")];
-  function breatheOpen(open) {
-    if (reduced) return;
-    if (!open) { breatheEls.forEach((el) => { el.style.letterSpacing = "-.02em"; }); return; }
-    const widest = Math.max(...breatheEls.map((el) => {
-      el.style.letterSpacing = "-.02em"; return el.scrollWidth;
-    }));
-    breatheEls.forEach((el) => {
-      const gaps = Math.max(1, el.textContent.length - 1);
-      const px = (widest - el.scrollWidth) / gaps;
-      el.style.letterSpacing = (px > 0 ? px.toFixed(2) : "0") + "px";
+  /* --- la pila justifica de verdad ---------------------------------------
+     Cada línea se escala hasta ocupar la medida completa. No es tracking: es
+     cuerpo. "CAPITAL" (7 signos) y "INFRAESTRUCTURA" (15) terminan en el mismo
+     ancho porque tienen cuerpos distintos, que es como se arma una pila
+     tipográfica de verdad — abrir el tracking hasta emparejar deja huecos que
+     leen como error, y en la voz pixel, donde el paso es la celda, peor.
+
+     Se mide con un cuerpo sonda y se escala por proporción: el ancho del texto
+     es lineal en el cuerpo, así que una sola medición por línea alcanza. */
+  const pilaEls = [...$("pilaType").querySelectorAll(".pila-l")];
+  const PROBE = 100;
+  /* 0.994: `scrollWidth` devuelve enteros y redondea para abajo, así que
+     escalar contra él se pasa por una fracción de píxel — y una fracción
+     alcanza para ensanchar la hoja y sacar scroll horizontal. Se mide con
+     getBoundingClientRect(), que es fraccionario, y se deja un pelo de aire. */
+  const FIT_SAFE = 0.994;
+  /* La pila tiene que entrar en UNA pantalla. Justificar las tres líneas al
+     ancho completo sin mirar el alto daba un cuerpo tan grande que la sección
+     se comía tres viewports: "CAPITAL" sola ocupaba media pantalla.
+
+     El alto total es lineal en la medida —el cuerpo escala con el ancho y el
+     alto escala con el cuerpo—, así que no hace falta iterar: se mide el alto
+     que daría el ancho completo y, si se pasa del presupuesto, se achica la
+     MEDIDA en esa misma proporción. Las tres líneas siguen justificadas contra
+     la misma medida, que es lo que hace que esto lea como pila; lo único que
+     cambia es que la medida ya no es el ancho completo. */
+  const VBUDGET = 0.78;              /* del alto de viewport, dejando aire para la línea de pie */
+  function fitPila() {
+    const host = $("pilaType");
+    const cs = getComputedStyle(host);
+    const avail = host.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    if (avail <= 0) return;
+
+    /* paso 1 — cuerpo que cada línea necesita para llenar la medida completa */
+    const need = pilaEls.map((el) => {
+      el.style.fontSize = PROBE + "px";
+      const w = el.getBoundingClientRect().width;
+      return w ? PROBE * avail * FIT_SAFE / w : PROBE;
     });
+
+    /* paso 2 — ¿entra de alto? line-height .84 + el margen entre líneas (.06em) */
+    const LH = 0.84, GAP = 0.06;
+    const totalH = need.reduce((a, fs, i) => a + fs * (LH + (i ? GAP : 0)), 0);
+    const budget = (window.innerHeight || 800) * VBUDGET;
+    const k = totalH > budget ? budget / totalH : 1;
+
+    pilaEls.forEach((el, i) => { el.style.fontSize = (need[i] * k).toFixed(2) + "px"; });
   }
-  if (window.IntersectionObserver) {
-    let breatheTimer = 0;
-    const bio = new IntersectionObserver((es) => {
-      es.forEach((e) => {
-        clearInterval(breatheTimer);
-        if (!e.isIntersecting) { breatheOpen(false); return; }
-        let open = false;
-        breatheOpen(true); open = true;
-        breatheTimer = setInterval(() => { open = !open; breatheOpen(open); }, 2600);
-      });
-    }, { threshold: 0.4 });
-    bio.observe($("pila"));
+
+  /* --- y se deshace con el scroll ----------------------------------------
+     El dissolve no corre solo: lo maneja la rueda. Es la misma promesa del
+     hero —«Movés vos · se deshace»— aplicada a la pila, en vez de un
+     temporizador que se mueve sin vos. Sólido en el centro del viewport,
+     disuelto en los dos extremos del recorrido.
+
+     Techo 0.55: la regla del canon dice que una masa que sostiene tipografía
+     no puede pasar de 0.6 de dither, porque ahí el dissolve empieza a comerse
+     el núcleo y no sólo el fleco. */
+  const pilaCv = $("pilaMask");
+  const DITHER_MAX = 0.55;
+  let pilaRaf = 0, pilaLast = -1;
+  function pilaScroll() {
+    pilaRaf = 0;
+    const sec = $("pila");
+    const r = sec.getBoundingClientRect();
+    const vh = window.innerHeight || 1;
+    if (r.bottom < 0 || r.top > vh) return;              /* fuera de cuadro: no pintar */
+    /* 0 en el centro del recorrido, 1 en los extremos */
+    const centre = (r.top + r.height / 2) / vh;          /* 0.5 = centrado */
+    const off = Math.min(1, Math.abs(centre - 0.5) / 0.62);
+    const d = reduced ? 0 : +(off * off * DITHER_MAX).toFixed(3);
+    if (Math.abs(d - pilaLast) < 0.012) return;          /* no repintar por ruido */
+    pilaLast = d;
+    pilaCv.dataset.dither = d;
+    if (window.Mask) Mask.paintBlob(pilaCv);
   }
+  function pilaTick() { if (!pilaRaf) pilaRaf = requestAnimationFrame(pilaScroll); }
+
+  function pilaLayout() { fitPila(); if (window.Mask) Mask.paintBlob(pilaCv); pilaLast = -1; pilaTick(); }
+  pilaLayout();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(pilaLayout);
+  window.addEventListener("resize", pilaLayout, { passive: true });
+  if (!reduced) window.addEventListener("scroll", pilaTick, { passive: true });
 
   /* ---------- la barra de pasos de las salas ------------------------------ */
   /* La barra no es un indicador pasivo: es el índice del carrusel. Se clickea
@@ -1899,7 +1967,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
       drawSkyBite(g, qCell, ptr.x * sky.width, ptr.y * sky.height, radius);
     }
 
-    /* La retícula NO se dibuja acá: la pone .grid-paper en CSS, con el mismo
+    /* La retícula NO se dibuja acá. La dibujaba .grid-paper en CSS, con el mismo
        paso (--cell). Dibujarla en el canvas además producía dos grillas
        superpuestas sobre el cielo, con dos pasos distintos. */
 
