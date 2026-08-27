@@ -315,6 +315,20 @@ h1 .place{
   font-family: var(--tema); font-style: italic; font-weight: 400;
   letter-spacing: -.015em; font-size: 1.12em;
 }
+/* La losa en las tres voces del lockup — mismo reparto que el hero: los slots
+   fijos en la cara de píxeles, el slot del tema en la serif itálica. La escala
+   es propia y no reusa --t-formato/--t-tema: el hero tiene el viewport entero
+   y acá conviven tres líneas con la línea de pie dentro de una plancha. */
+.slab q .v-pix{
+  display: block; font-family: var(--pixel); font-weight: 800;
+  font-size: clamp(1.7rem, 5.4vw, 4.6rem); letter-spacing: .035em; line-height: .9;
+  text-transform: uppercase;
+}
+.slab q .v-tema{
+  display: block; font-family: var(--tema); font-style: italic; font-weight: 400;
+  font-size: clamp(2.6rem, 8.4vw, 7.4rem); letter-spacing: -.012em; line-height: .88;
+  margin: -.02em 0; text-transform: none;
+}
 .slab .attr{
   margin: clamp(1.2rem, 3vw, 2rem) 0 0; font-family: var(--mono); font-weight: 600;
   font-size: var(--t-micro); letter-spacing: .18em; text-transform: uppercase; opacity: .7;
@@ -660,7 +674,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    entera del espacio residual de la sección, así que agregarle cualquier
    contenido a §05 la colapsaba a cero píxeles en silencio — sin error, sin
    layout roto, sólo cinco tarjetas sin foto. El piso lo hace imposible. */
-.room .plate{ position: relative; flex: 1; min-height: clamp(120px, 14vw, 200px);
+.room .plate{ position: relative; flex: 1; min-height: clamp(110px, 12vw, 168px);
               background: var(--void); overflow: hidden; z-index: 2; }
 .room canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
 .room .chip-day{
@@ -669,6 +683,64 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   font-family: var(--mono); font-weight: 600; font-size: .54rem;
   letter-spacing: .12em; text-transform: uppercase; padding: .34em .5em;
 }
+/* ---------- flip: la mecánica de la ruta VB0.1-D, en la lengua de acá ----
+   Lo que se adopta de esa página es la MECÁNICA y la arquitectura de
+   información: frente con la imagen y el rótulo, dorso con el detalle y los
+   datos, más un control para dar vuelta todas juntas.
+
+   Lo que NO se adopta es su acabado, y no por gusto: aquel deck corre píldoras
+   de `border-radius:999px`, un degradé sobre la foto y `filter:grayscale(.35)`.
+   Las tres cosas chocan de frente con reglas escritas de este sistema —No-05
+   (el radio es cero), Sí-02 (sin difuminado ni sombra) y Sí-03 (fotografía en
+   color pleno, sin filtro)—. La legibilidad sobre la foto acá ya la resuelve
+   la máscara, que es la herramienta propia. */
+.room{ perspective: 1400px; background: none; border: 0; padding: 0;
+       text-align: left; cursor: pointer; color: inherit; font: inherit; }
+.fc-in{ position: relative; width: 100%; height: 100%;
+        transform-style: preserve-3d; transition: transform .75s var(--ease-out); }
+@media (prefers-reduced-motion: reduce){ .fc-in{ transition: none; } }
+.room[aria-pressed="true"] .fc-in{ transform: rotateY(180deg); }
+.fc-face{ position: absolute; inset: 0; backface-visibility: hidden;
+          -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
+.fc-front{ min-height: 0; }
+/* El dorso va en VOID, no en acid. Parece la elección menos obvia —el acid es
+   el campo dominante— pero `body` corre sobre var(--acid), así que una tarjeta
+   acid queda del color exacto de la página: blanca sobre blanco en la variante
+   Blanco, lima sobre lima en Máscaras. En las dos la tarjeta desaparecía y sólo
+   quedaba el filete. En void contrasta con la página en ambas y además empata
+   con la plancha oscura del frente. */
+.fc-back{
+  transform: rotateY(180deg);
+  background: var(--void); color: var(--acid);
+  padding: clamp(.85rem, 1.9vw, 1.15rem);
+  justify-content: space-between; overflow: hidden;
+}
+.fc-back h4{ margin: 0 0 .5em; font-size: var(--t-sub); font-weight: 900;
+             letter-spacing: -.015em; line-height: 1.1; }
+.fc-back h4 em{ font-family: var(--tema); font-style: italic; font-weight: 400;
+                font-size: 1.12em; letter-spacing: -.01em; }
+.fc-back p{ margin: 0; font-size: .78rem; line-height: 1.42; font-weight: 500; }
+.fc-data{ display: grid; gap: .18rem; margin-top: .7rem;
+          border-top: 2px solid var(--acid); padding-top: .5rem; }
+.fc-data div{ display: flex; justify-content: space-between; gap: .6rem;
+              font-family: var(--mono); font-size: .58rem; letter-spacing: .1em;
+              text-transform: uppercase; }
+.fc-data div span:first-child{ opacity: .55; }
+.fc-data div span:last-child{ font-weight: 600; }
+.fc-hint{ display: block; margin-top: .45rem; font-family: var(--mono);
+          font-size: .56rem; letter-spacing: .12em; text-transform: uppercase;
+          opacity: .62; }
+/* el control de «dar vuelta todas»: cuadrado, mono, sin píldora */
+.deck-ctl{ display: flex; justify-content: flex-end; margin-bottom: .5rem; }
+.flip-all{
+  font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: .5em .9em; cursor: pointer;
+  background: transparent; color: var(--void);
+  border: var(--hair) solid var(--void);
+}
+.flip-all[aria-pressed="true"]{ background: var(--void); color: var(--acid); }
+.flip-all:focus-visible{ outline: 2px solid var(--void); outline-offset: 3px; }
 .room .meta{ padding-top: .7rem; }
 .room .n{ font-family: var(--pixel); font-weight: 800; font-size: 1.15rem; line-height: 1;
           margin-right: .45em; }
@@ -812,6 +884,8 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 <section id="programa">
   <div class="sheet">
     <div class="head"><h2 id="progH2"></h2><span class="num">05</span></div>
+    <div class="deck-ctl"><button class="flip-all" id="flipAll" type="button"
+         aria-pressed="false" aria-controls="rooms"></button></div>
     <div class="rooms" id="rooms"></div>
     <p class="mono-body" style="margin:.9rem 0 .7rem;opacity:.72;font-size:.6rem" id="roomsNote"></p>
   </div>
@@ -1000,6 +1074,48 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
       { n: "04", es: "La Fiesta", en: "Party",  sede: "Casa Manantial", dia: "Sábado noche" },
       { n: "05", es: "Las Casas", en: "Houses", sede: "El corredor",    dia: "Todo el fin de semana" }
     ],
+    /* --- el dorso de cada sala -------------------------------------------
+       Adaptado de los reversos de la ruta VB0.1-D (página «Temporada»), que
+       es de donde sale también la mecánica de flip. TRES cosas se cayeron en
+       el traslado, y ninguna es cosmética:
+
+       · «Leaders Forum» y «Institutional Summit» están en
+         `prohibido.frasesBarridas`. Las salas usan sus nombres del canon.
+       · Aforos, accesos y «Tickets open November 2026» NO entran. El canon
+         es explícito: «Sin modelo de acceso, sin precio, sin invitación: no
+         está decidido» (ver `cta.nota`). Publicarlos sería inventar una
+         decisión que nadie tomó.
+       · «Manantiales» tampoco: los únicos nombres propios del sistema son
+         MACA y Casa Manantial.
+
+       Queda entonces lo único que el dorso puede afirmar hoy: qué pasa en la
+       sala, qué día y en qué sede. Las dos últimas ya viven en `salas`.
+       ⚠️ Copy NUEVA — pendiente de firma de René.                          */
+    salaDetalle: {
+      "01": { en: "Central bank fireside, on the record. A closed regulatory " +
+                  "roundtable. A capital session behind doors. No exhibition " +
+                  "floor, no badge scanners.",
+              es: "Fireside con el banco central, on the record. Una mesa " +
+                  "regulatoria a puertas cerradas. Una sesión de capital sin " +
+                  "público. Sin piso de expositores." },
+      "02": { en: "Regulators, allocators and builders at one table. Off the " +
+                  "record — no stage, no press.",
+              es: "Reguladores, asignadores de capital y constructores en una " +
+                  "misma mesa. Off the record: sin escenario y sin prensa." },
+      "03": { en: "Opening keynote and anchor panels, across the three blocks: " +
+                  "stablecoins and payments, RWA and tokenization, AI × on-chain.",
+              es: "Keynote de apertura y paneles ancla, sobre los tres bloques: " +
+                  "stablecoins y pagos, RWA y tokenización, AI × on-chain." },
+      "04": { en: "The summit closes, the house opens. Sunset over the coast — " +
+                  "the night the weekend is remembered by.",
+              es: "Cierra la cumbre, abre la casa. El atardecer sobre la costa: " +
+                  "la noche por la que se recuerda el fin de semana." },
+      "05": { en: "Houses along the corridor. The delegation sleeps, meets and " +
+                  "hosts on site, the whole weekend.",
+              es: "Casas a lo largo del corredor. La delegación duerme, se " +
+                  "reúne y recibe en el mismo lugar, todo el fin de semana." }
+    },
+
     sedes: ["MACA", "Casa Manantial"],   /* los dos únicos nombres propios */
     formato: "Dos días, dos capas.",
 
@@ -1307,6 +1423,13 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
            mismo orden que los ejes: Capital · Reglas · Infraestructura. */
         promesa: "Regulators on the record, capital at the table, and the " +
                  "builders they fund.",
+
+        /* la mecánica de flip, heredada de la ruta VB0.1-D */
+        flipHint:  "Flip for the detail",
+        flipAll:   "Show all detail",
+        flipBack:  "Show the rooms",
+        labelDia:  "Day",
+        labelSede: "Venue",
         secciones: { registros: "Agenda", esnoes: "Who attends",
                      porque: "The place", tesis: "The thesis",
                      programa: "Programme", ediciones: "Editions" },
@@ -1319,10 +1442,13 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
           corredor:  "A <em>destination</em>, not a venue",
           sala:      "Who sits at the <em>table</em>",
           ediciones: "Every two <em>years</em>",
-          /* La itálica va en «biennial» y no en «blockchain» aunque el slot del
-             tema sea blockchain: el argumento de la losa ES el ritmo, y la
-             línea de pie que la acompaña (2027 · 2029 · 2031) remata ahí. */
-          tesis:     "The first and only<br>blockchain <em>biennial</em>.",
+          /* La losa corre las TRES voces del lockup, en el mismo reparto que
+             el hero: pixel en los slots fijos, serif itálica en el slot del
+             tema. Y el slot del tema es literalmente «blockchain», así que
+             acá la regla §10 se cumple al pie en vez de romperse. */
+          tesis:     '<span class="v-pix">The first and only</span>' +
+                     '<span class="v-tema">blockchain</span>' +
+                     '<span class="v-pix">biennial.</span>',
           cierre:    "Every two years.<br>In <span class=\"tema-i\">Punta del Este</span>."
         }
       }
@@ -1845,24 +1971,70 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
                      "04": "la-fiesta", "05": "las-casas" };
   $("progH2").innerHTML = L.ui.titulos.programa;
 
-  $("rooms").innerHTML = C.salas.map((s, i) =>
-    `<div class="room">
-       <div class="plate">
-         <canvas data-blob="none" data-img="${ROOM_IMG[s.n]}" data-seed="${29 + i * 13.7}"
-                 data-cell="9" data-fringe-cells="3.1" data-from=".key"
-                 data-mode="grow" data-bleed="bottom"
-                 ${s.n === "03" ? 'data-zoom="1.9" data-focus="0.72"' : ""}
-                 aria-hidden="true"></canvas>
-         <span class="key" style="position:absolute;left:6%;top:12%;width:82%;height:70%"></span>
-         <span class="chip-day">${L.dias[s.n]}</span>
+  $("rooms").innerHTML = C.salas.map((s, i) => {
+    const sede = s.sede === "El corredor" ? L.corredorSede : s.sede;
+    return `<button class="room" type="button" aria-pressed="false">
+     <div class="fc-in">
+       <div class="fc-face fc-front">
+         <div class="plate">
+           <canvas data-blob="none" data-img="${ROOM_IMG[s.n]}" data-seed="${29 + i * 13.7}"
+                   data-cell="9" data-fringe-cells="3.1" data-from=".key"
+                   data-mode="grow" data-bleed="bottom"
+                   ${s.n === "03" ? 'data-zoom="1.9" data-focus="0.72"' : ""}
+                   aria-hidden="true"></canvas>
+           <span class="key" style="position:absolute;left:6%;top:12%;width:82%;height:70%"></span>
+           <span class="chip-day">${L.dias[s.n]}</span>
+         </div>
+         <div class="meta">
+           <span class="n">${s.n}</span>
+           <span class="es">The <em>${s.en}</em></span>
+           <span class="sede">${sede}</span>
+           <span class="fc-hint">${L.ui.flipHint} &#8635;</span>
+         </div>
        </div>
-       <div class="meta">
-         <span class="n">${s.n}</span>
-         <span class="es">The <em>${s.en}</em></span>
-         <span class="sede">${s.sede === "El corredor" ? L.corredorSede : s.sede}</span>
+       <div class="fc-face fc-back">
+         <div>
+           <h4>The <em>${s.en}</em></h4>
+           <p>${C.salaDetalle[s.n].en}</p>
+         </div>
+         <div class="fc-data">
+           <div><span>${L.ui.labelDia}</span><span>${L.dias[s.n]}</span></div>
+           <div><span>${L.ui.labelSede}</span><span>${sede}</span></div>
+         </div>
        </div>
-     </div>`).join("");
+     </div>
+   </button>`; }).join("");
   $("roomsNote").textContent = L.ui.salasNota + " " + L.creditos.imagen + ".";
+
+  /* ---------- flip ---------------------------------------------------------
+     El estado vive en aria-pressed y no en una clase: el botón YA tiene que
+     anunciar si está dado vuelta para que sirva con teclado y lector, así que
+     usar una clase aparte sería guardar el mismo estado dos veces y dejar que
+     se desincronicen. El CSS engancha del atributo. */
+  const flipAllBtn = $("flipAll");
+  const roomBtns = () => [...$("rooms").querySelectorAll(".room")];
+  const setFlip = (el, on) => el.setAttribute("aria-pressed", on ? "true" : "false");
+
+  function syncFlipAll() {
+    const all = roomBtns();
+    const flipped = all.filter((r) => r.getAttribute("aria-pressed") === "true").length;
+    const on = flipped === all.length && all.length > 0;
+    setFlip(flipAllBtn, on);
+    flipAllBtn.textContent = on ? L.ui.flipBack : L.ui.flipAll;
+  }
+
+  roomBtns().forEach((r) => {
+    r.addEventListener("click", () => {
+      setFlip(r, r.getAttribute("aria-pressed") !== "true");
+      syncFlipAll();
+    });
+  });
+  flipAllBtn.addEventListener("click", () => {
+    const on = flipAllBtn.getAttribute("aria-pressed") !== "true";
+    roomBtns().forEach((r) => setFlip(r, on));
+    syncFlipAll();
+  });
+  syncFlipAll();
 
   /* 06 — el corredor. Sin rotular ninguna imagen como una sede real: son
      renders generados, no fotografías de las sedes. */
