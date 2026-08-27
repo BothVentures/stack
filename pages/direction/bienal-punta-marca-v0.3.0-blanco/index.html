@@ -127,10 +127,21 @@ body{
 }
 .bar[data-shrunk="1"] .row{ padding-top: .5rem; padding-bottom: .5rem; }
 
+/* El monograma del navbar: b B p — las iniciales del nombre repartidas en las
+   MISMAS dos voces que el lockup del hero, la pixelada en los slots fijos y la
+   serif itálica en el del tema. Las minúsculas de los extremos y la mayúscula
+   del medio no son un capricho: hacen que la letra del tema sea la única que
+   sube, así el monograma tiene la misma silueta que el nombre completo.
+   La `b` y la `p` salen del `font-family` de este bloque; sólo la del medio
+   necesita regla propia. */
 .bar .ed{
-  font-family: var(--pixel); font-weight: 800; font-size: 1.05rem;
-  letter-spacing: .06em; line-height: 1; text-decoration: none; color: inherit;
-  flex: none;
+  font-family: var(--pixel); font-weight: 800; font-size: 1.15rem;
+  letter-spacing: .02em; line-height: 1; text-decoration: none; color: inherit;
+  flex: none; display: inline-flex; align-items: baseline;
+}
+.bar .ed .ed-t{
+  font-family: var(--tema); font-style: italic; font-weight: 400;
+  font-size: 1.3em; letter-spacing: -.015em; margin: 0 .02em;
 }
 .bar .ed:focus-visible{ outline: 2px solid var(--acid); outline-offset: 4px; }
 
@@ -958,7 +969,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 
 <header class="bar" id="bar">
   <div class="row">
-    <a class="ed" href="#top" aria-label="Volver arriba">Nº 001</a>
+    <a class="ed" href="#top" id="edHome"><span class="ed-t">B</span></a>
     <nav id="navLinks" aria-label="Secciones"></nav>
     <span class="pie" id="barPie"></span>
     <button class="toggle" id="navToggle" aria-expanded="false" aria-controls="navPanel">Index</button>
@@ -1614,6 +1625,11 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
       /* --- cadenas de superficie que vivían a mano en el template -------- */
       ui: {
         indice: "Index",
+        /* El aria-label del monograma lleva el nombre COMPLETO, no «bBp». La
+           regla del canon —«el nombre completo, siempre; sin acrónimo
+           público»— se cumple donde importa: quien navega con lector de
+           pantalla escucha el nombre entero, no tres letras. */
+        home: "Bienal Blockchain Punta 2027 — back to top",
         registroPublico: "Public register",
         registroInstitucional: "Institutional register",
         /* la nota que explica por qué UNA de las dos queda en español */
@@ -2123,6 +2139,10 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   $("nLugar").textContent = C.nombre.lugar;
   $("nTema").textContent  = C.nombre.tema;
   $("nEd").textContent    = C.nombre.edicion;
+  /* el monograma: la b y la p en pixel (heredan del bloque), la B en serif */
+  $("edHome").setAttribute("aria-label", L.ui.home);
+  $("edHome").insertAdjacentHTML("afterbegin", "b");
+  $("edHome").insertAdjacentHTML("beforeend", "p");
   $("heroEyebrow").textContent = C.lockup.en.pie;
   $("heroPie").textContent = L.ritmo;
   $("hint").textContent = coarse ? L.ui.hintTactil : L.ui.hint;
