@@ -534,109 +534,147 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .body{ margin: 0; font-size: var(--t-body); line-height: 1.52; font-weight: 500; max-width: 62ch; }
 .mono-body{ font-family: var(--mono); font-size: var(--t-mono); line-height: 1.6; max-width: 68ch; margin: 0; }
 
-/* ---------- §04 · el tablero -------------------------------------------
-   Bento: doce columnas, fichas de ancho variable. La referencia son los
-   widgets apilados de iOS, pero SÓLO la estructura — su acabado corre con
-   esquinas redondeadas, medio pantone de colores y degradés, y las tres cosas
-   están prohibidas acá (No-05 radio cero, No-02 ninguna tercera tinta,
-   Sí-02 sin difuminado).
+/* ---------- §04 · el tablero, en la lengua de la referencia --------------
+   ⚠️ ESTA SECCIÓN SE SALE DEL SISTEMA A PROPÓSITO. Copia una referencia de UI
+   de app que rompe tres reglas escritas del canon V0.3.0:
+     No-05  «el radio del sistema es cero»            → acá hay radio grande
+     No-02  «ninguna tercera tinta»                   → acá hay cuatro pasteles
+     Sí-02  «todo borde es ángulo recto, sin curvas»  → acá todo es curva
+   Es decisión explícita del cliente, pedida dos veces. Queda anotado acá y no
+   escondido en un commit para que la excepción sea visible a quien edite esto
+   después. Todo lo que sigue vive bajo `#senal` y NO se filtra al resto del
+   sitio — por eso cada regla va scopeada.
 
-   Lo que sí se toma: la mezcla de tamaños, y que NO todas las fichas sean un
-   número grande. Eso último no es sólo ritmo visual — es lo que permite que
-   el tablero sea honesto. Hay tres datos de mercado con fuente y seis hechos
-   sin cifra; una grilla de nueve numerales obligaría a inventar seis.
+   La lima de la referencia (#D6F84C) está a un pelo del ácido del sistema
+   (#C8F52D): es el único puente que queda entre las dos gramáticas. */
+#senal{
+  --app-bg:  #F1F4EF;
+  --app-ink: #0E1116;
+  --c-lime:  #D6F84C;
+  --c-pink:  #F9D3E4;
+  --c-blue:  #86BCE9;
+  --c-mint:  #BEE7DA;
+  background: var(--app-bg); color: var(--app-ink);
+}
+#senal .head, #senal .head h2, #senal .body{ color: var(--app-ink); }
+#senal .head{ border-color: var(--app-ink); }
+#senal .src{ color: var(--app-ink); opacity: .5; }
 
-   Las guidelines fijan el resto: mono 600 para dato y etiqueta, pixel para el
-   numeral, la serif NUNCA en datos (§ tipografía), y el bloque de datos va
-   adentro de la masa. */
 .tablero{
   display: grid; grid-template-columns: repeat(12, 1fr);
-  gap: clamp(.35rem, .9vw, .6rem);
-  margin-top: clamp(1.4rem, 3.4vw, 2.4rem);
+  gap: 8px; margin-top: clamp(1.2rem, 3vw, 2rem);
 }
-.tile{
-  grid-column: span var(--sp, 4);
-  display: flex; flex-direction: column; justify-content: space-between;
-  gap: clamp(.7rem, 1.8vw, 1.1rem);
-  padding: clamp(.85rem, 2vw, 1.25rem);
-  min-height: clamp(128px, 13vw, 178px);
-  border: var(--hair) solid var(--acid);
+.dcard{
+  position: relative; grid-column: span var(--sp, 4);
+  border-radius: 24px; padding: 18px 20px 20px;
+  min-height: 158px; display: flex; flex-direction: column;
+  background: var(--card, var(--c-mint)); color: var(--app-ink);
 }
-/* la inversión resuelve la jerarquía: el dato de mercado grita en masa ácida,
-   el perímetro afirma en void. Ninguna tinta nueva, ningún tercer color. */
-.tile--loud{ background: var(--acid); color: var(--void); border-color: var(--acid); }
-.tile .u{
-  font-family: var(--mono); font-weight: 600; font-size: var(--t-micro);
-  letter-spacing: .17em; text-transform: uppercase; opacity: .72;
-}
-.tile .v{
-  font-family: var(--pixel); font-weight: 800; line-height: .8;
-  font-size: clamp(2.6rem, 6.2vw, 4.6rem); letter-spacing: .01em;
-  font-variant-numeric: tabular-nums;
-}
-.tile .t{ font-size: var(--t-body); font-weight: 500; line-height: 1.38; }
-/* la ficha sin numeral no deja un hueco donde iba el número: sube el enunciado
-   a voz de cuerpo grande, así el bento no queda cojo. */
-.tile--stmt .t{ font-size: var(--t-sub); font-weight: 600; line-height: 1.24; }
-.tile .src{
-  font-family: var(--mono); font-size: .54rem; letter-spacing: .12em;
-  text-transform: uppercase; opacity: .5;
-  margin-top: .35rem;   /* corta el margen grande que trae `.src` de raíz */
-}
-/* El rótulo de dato inventado. Va INVERTIDO —no atenuado— a propósito: un
-   mock atenuado se lee como nota al pie y se ignora; invertido es lo primero
-   que ve el ojo en la ficha, que es exactamente lo que tiene que pasar. */
-.tile .mock{
-  align-self: flex-start; font-family: var(--mono); font-weight: 600;
-  font-size: .54rem; letter-spacing: .16em; text-transform: uppercase;
-  padding: .25em .5em; background: var(--acid); color: var(--void);
-}
-.tile--loud .mock{ background: var(--void); color: var(--acid); }
-.tile .hd{ display: flex; justify-content: space-between; align-items: flex-start; gap: .6rem; }
+.dcard--lime{ --card: var(--c-lime); }
+.dcard--pink{ --card: var(--c-pink); }
+.dcard--blue{ --card: var(--c-blue); }
+.dcard--mint{ --card: var(--c-mint); }
+.dcard--ink { --card: var(--app-ink); color: var(--app-bg); }
+/* la referencia no tiene una grilla pareja: la primera fila pesa más */
+.dcard--tall{ min-height: 216px; }
 
-/* --- el gráfico de barras -------------------------------------------------
-   Una sola serie, así que no lleva leyenda: el rótulo de la ficha la nombra.
-   Etiqueta directa en cada barra —son cuatro— en vez de tooltip. Las barras
-   se apoyan en la línea de base y el eje es recesivo: un filete, no una caja.
-   Sin degradés ni redondeos: la barra es un rectángulo de la misma familia
-   que la celda de la máscara. */
-/* La pista tiene alto DEFINIDO y el relleno mide un porcentaje de ella. Es
-   load-bearing: con `min-height` en el contenedor y `height:100%` en la barra,
-   el porcentaje del relleno no tiene contra qué resolver, cae a `auto` y la
-   barra crece hasta reventar la sección — que es exactamente lo que hizo en
-   el primer intento (la ficha pasó de 262 px a más de mil). */
-/* OJO con los nombres: `.bar` YA EXISTE en este sistema y es el header fijo
-   (`position: fixed; top:0`). La primera versión de este gráfico llamó `.bar`
-   a cada columna y las cuatro se posicionaron fijas sobre el viewport — de ahí
-   la plancha blanca gigante que rompió la sección. Todo lo del gráfico va con
-   prefijo `tb-`. */
-.tb-chart{ display: flex; align-items: stretch; gap: clamp(.3rem, .8vw, .5rem);
-           height: clamp(104px, 11vw, 150px);
-           border-bottom: 2px solid currentColor; }
-.tb-col{ flex: 1; display: grid; grid-template-rows: 1fr auto;
-         gap: .3rem; justify-items: center; min-width: 0; }
-/* El valor va DENTRO de la pista, apoyado sobre su propia barra. Antes vivía
-   en una fila propia de la grilla y las cuatro cifras se alineaban arriba:
-   sobre una barra alta se leía bien, pero sobre la de 6.2 quedaba flotando
-   a media ficha de distancia de la barra que nombraba. */
-.tb-track{ width: 100%; display: flex; flex-direction: column;
-           justify-content: flex-end; align-items: center; gap: .25rem; }
-.tb-fill{ width: 100%; height: var(--h); background: currentColor;
-          transition: opacity .2s var(--ease-out); }
-.tb-col:hover .tb-fill, .tb-col:focus-visible .tb-fill{ opacity: .62; }
-.tb-v{ font-family: var(--mono); font-weight: 600; font-size: .58rem;
-       letter-spacing: .06em; font-variant-numeric: tabular-nums; }
-.tb-l{ font-family: var(--mono); font-size: .54rem; letter-spacing: .14em;
-       text-transform: uppercase; opacity: .6; }
-.tile--bars{ min-height: clamp(196px, 20vw, 262px); }
+/* etiqueta chica arriba, valor grande abajo — nunca al revés */
+.dcard .hd{ display: flex; justify-content: space-between; align-items: center;
+            gap: 10px; margin-bottom: auto; }
+.dcard .hd .lead-l{ display: flex; align-items: center; gap: 10px; min-width: 0; }
+.dcard .u{
+  font-family: var(--disp); font-weight: 600; font-size: .68rem;
+  letter-spacing: .01em; text-transform: none; opacity: .62;
+}
+.dcard .v{
+  font-family: var(--disp); font-weight: 900; line-height: .86;
+  font-size: clamp(2.8rem, 6.4vw, 4.9rem); letter-spacing: -.035em;
+  margin: 18px 0 10px; font-variant-numeric: tabular-nums;
+}
+.dcard .t{ font-family: var(--disp); font-weight: 600; font-size: .82rem;
+           line-height: 1.28; letter-spacing: -.005em; max-width: 30ch; }
+.dcard .src{ font-family: var(--disp); font-weight: 500; font-size: .64rem;
+             opacity: .5; margin-top: 6px; letter-spacing: 0; text-transform: none; }
+
+/* insignia circular oscura, como los íconos de la referencia */
+.dcard .badge{
+  width: 38px; height: 38px; border-radius: 999px; flex: none;
+  background: var(--app-ink); color: var(--app-bg);
+  display: grid; place-items: center;
+  font-family: var(--disp); font-weight: 900; font-size: .9rem;
+}
+.dcard--ink .badge{ background: var(--app-bg); color: var(--app-ink); }
+/* píldora de acción */
+.dcard .pill{
+  border-radius: 999px; padding: 9px 16px 8px;
+  border: 1.5px solid currentColor; background: transparent; color: inherit;
+  font-family: var(--disp); font-weight: 600; font-size: .68rem;
+  letter-spacing: .01em; white-space: nowrap; cursor: pointer;
+}
+.dcard .pill:hover{ background: var(--app-ink); color: var(--app-bg); border-color: var(--app-ink); }
+/* el rótulo de dato inventado, en píldora llena para que no se confunda con
+   una acción */
+.dcard .mock{
+  border-radius: 999px; padding: 7px 13px 6px; background: var(--app-ink);
+  color: var(--app-bg); font-family: var(--disp); font-weight: 700;
+  font-size: .6rem; letter-spacing: .04em; white-space: nowrap;
+}
+.dcard--ink .mock{ background: var(--app-bg); color: var(--app-ink); }
+
+/* --- LA FIRMA: la muesca de rompecabezas ---------------------------------
+   Dos tarjetas apiladas se traban. La de arriba saca una lengüeta redondeada;
+   la de abajo tiene un corte más grande que la recibe, y entre las dos pasa el
+   fondo de página. El corte se pinta con el color del fondo y la lengüeta se
+   pinta encima: dos pseudo-elementos, sin SVG ni máscara. */
+.dcard--tab::after{
+  content: ""; position: absolute; z-index: 3;
+  left: 50%; transform: translateX(-50%); bottom: -26px;
+  width: 112px; height: 34px; background: var(--card);
+  border-radius: 0 0 18px 18px;
+}
+.dcard--notch::before{
+  content: ""; position: absolute; z-index: 2;
+  left: 50%; transform: translateX(-50%); top: -8px;
+  width: 130px; height: 44px; background: var(--app-bg);
+  border-radius: 0 0 24px 24px;
+}
+.dcard--notch > *{ position: relative; z-index: 4; }
+
+/* --- el gráfico, en la misma lengua --------------------------------------
+   OJO: `.bar` es el header fijo del sitio. Todo va con prefijo `tb-`. */
+.tb-chart{ display: flex; align-items: stretch; gap: 10px;
+           height: clamp(84px, 8.6vw, 112px); margin: 14px 0 10px; }
+.tb-col{ flex: 1; display: grid; grid-template-rows: 1fr auto; gap: 7px;
+         justify-items: center; min-width: 0; }
+/* La etiqueta va ABSOLUTA, fuera del flujo. En flujo consumía alto de la
+   pista, el porcentaje de la barra se resolvía contra la pista COMPLETA y las
+   barras altas desbordaban: el flex las recortaba a todas al mismo residuo, y
+   91.9 y 78.4 terminaban midiendo lo mismo. Fuera del flujo, el porcentaje
+   tiene contra qué resolver y las alturas vuelven a ser proporcionales. */
+.tb-track{ position: relative; width: 100%; height: 100%;
+           display: flex; justify-content: center; align-items: flex-end; }
+/* Ancho medido, y redondeo SÓLO arriba: con `border-radius:999px` en las
+   cuatro esquinas, las barras cortas (URY, 6.2) se volvían un punto y
+   dejaban de leerse como barra. Apoyadas en la base, siguen siendo barra
+   por corta que sea. */
+.tb-fill{ width: min(100%, 52px); height: var(--h); background: var(--app-ink);
+          border-radius: 12px 12px 3px 3px; min-height: 6px;
+          transition: opacity .2s ease; }
+.tb-col:hover .tb-fill, .tb-col:focus-visible .tb-fill{ opacity: .55; }
+.tb-v{ position: absolute; left: 50%; transform: translateX(-50%);
+       bottom: calc(var(--h) + 6px);
+       font-family: var(--disp); font-weight: 700; font-size: .66rem;
+       font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tb-l{ font-family: var(--disp); font-weight: 500; font-size: .62rem; opacity: .55; }
+
 @media (max-width: 900px){
   .tablero{ grid-template-columns: repeat(6, 1fr); }
-  .tile{ grid-column: span 3; }
-  .tile[style*="--sp:5"], .tile[style*="--sp:3"]{ grid-column: span 6; }
+  .dcard{ grid-column: span 3; }
 }
 @media (max-width: 560px){
   .tablero{ grid-template-columns: 1fr; }
-  .tile{ grid-column: span 1; }
+  .dcard{ grid-column: span 1; }
+  .dcard--tab::after, .dcard--notch::before{ display: none; }
 }
 
 /* registros — knockout: la masa cubre y el texto vive en muescas recortadas.
@@ -1294,15 +1332,15 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
        «N.º 1», que grita bastante más fuerte que una frase al pasar. Pide
        índice y año antes de producción.                                    */
     tablero: [
-      { k: "num", loud: true, span: 4, v: "415", src: true,
+      { k: "num", c: "lime", span: 5, v: "415", src: true, tab: true, tall: true,
         u: { es: "mil M USD", en: "billion USD" },
         t: { es: "Volumen on-chain de América Latina",
              en: "Latin America on-chain volume" } },
-      { k: "num", loud: true, span: 4, v: "42.5", src: true,
+      { k: "num", c: "blue", span: 4, v: "42.5", badge: "\u2191", tall: true,
         u: { es: "%", en: "%" },
         t: { es: "Interanual — la región que más acelera",
              en: "Year over year — the fastest-accelerating region" } },
-      { k: "num", loud: true, span: 4, v: "91.9", src: true,
+      { k: "num", c: "pink", span: 3, v: "91.9", tall: true,
         u: { es: "mil M USD", en: "billion USD" },
         t: { es: "Argentina — el mercado más denso en stablecoins",
              en: "Argentina — the most stablecoin-dense market" } },
@@ -1311,30 +1349,30 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
          la forma correcta para «comparar magnitudes entre categorías». Va
          etiquetado en la barra, no con tooltip: con cuatro barras la etiqueta
          directa hace redundante el hover. */
-      { k: "bars", span: 7, mock: true,
+      { k: "bars", c: "mint", span: 5, mock: true, notch: true,
         u: { es: "Volumen on-chain por mercado", en: "On-chain volume by market" },
         t: { es: "mil M USD, doce meses móviles", en: "billion USD, trailing twelve months" },
         series: [ { l: "ARG", v: 91.9 }, { l: "BRA", v: 78.4 },
                   { l: "CHL", v: 21.6 }, { l: "URY", v: 6.2 } ] },
 
-      { k: "num", span: 5, v: "20.345",
+      { k: "num", c: "ink", span: 4, v: "20.345", badge: "\u00a7",
         u: { es: "Ley", en: "Law" },
         t: { es: "Marco de activos virtuales, vigente — no prometido",
              en: "Virtual-asset framework in force — written, not promised" } },
 
-      { k: "num", span: 3, v: "N.º 1", flag: true,
+      { k: "num", c: "pink", span: 3, v: "N.º 1", flag: true,
         u: { es: "En la región", en: "In the region" },
         t: { es: "Estabilidad política y estado de derecho",
              en: "Political stability and rule of law" } },
-      { k: "num", span: 3, v: "4",
+      { k: "num", c: "blue", span: 4, v: "4", badge: "\u25ce",
         u: { es: "Países", en: "Countries" },
         t: { es: "Argentina, Brasil, Chile y Uruguay operan acá",
              en: "Argentina, Brazil, Chile and Uruguay operate here" } },
-      { k: "num", span: 3, v: "68", mock: true,
+      { k: "num", c: "mint", span: 4, v: "68", mock: true,
         u: { es: "% del volumen", en: "% of volume" },
         t: { es: "Participación de stablecoins en la región",
              en: "Stablecoin share of regional volume" } },
-      { k: "num", span: 3, v: "1.2", mock: true,
+      { k: "num", c: "lime", span: 4, v: "1.2", mock: true,
         u: { es: "Millones", en: "Million" },
         t: { es: "Billeteras activas en el Cono Sur",
              en: "Active wallets across the Southern Cone" } }
@@ -2158,29 +2196,39 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   /* 04 — con la fuente citada: sólo la generación más vieja la citaba */
   $("senalLectura").textContent = L.senal.lectura;
   $("signal").innerHTML = C.tablero.map((t) => {
-    const cls = "tile" + (t.loud ? " tile--loud" : "") +
-                (t.k === "bars" ? " tile--bars" : "");
-    /* el rótulo de mock primero: es lo que decide si la cifra se puede creer */
-    const mock = t.mock ? `<span class="mock">Mock data</span>` : "";
-    const src  = t.src ? `<div class="src">${C.senal.fuente}</div>` : "";
+    const cls = ["dcard", "dcard--" + (t.c || "mint")]
+      .concat(t.tab ? ["dcard--tab"] : [])
+      .concat(t.tall ? ["dcard--tall"] : [])
+      .concat(t.notch ? ["dcard--notch"] : []).join(" ");
+    /* el rótulo de mock va en la cabecera, donde la referencia pone la píldora
+       de acción: es lo primero que se lee de la tarjeta, que es el punto */
+    const right = t.mock ? `<span class="mock">Mock</span>`
+                : t.src  ? `<button class="pill" type="button">Source</button>`
+                : "";
     let body;
     if (t.k === "bars") {
       const max = Math.max(...t.series.map((s) => s.v));
       body = `<div class="tb-chart">` + t.series.map((s) =>
         `<div class="tb-col" tabindex="0">
-           <span class="tb-track">
+           <span class="tb-track" style="--h:${(s.v / max * 82).toFixed(1)}%">
              <span class="tb-v">${s.v}</span>
-             <span class="tb-fill" style="--h:${(s.v / max * 100).toFixed(1)}%"></span>
+             <span class="tb-fill"></span>
            </span>
            <span class="tb-l">${s.l}</span>
          </div>`).join("") + `</div>`;
     } else {
       body = `<div class="v">${t.v}</div>`;
     }
+    const src = t.src ? `<div class="src">${C.senal.fuente}</div>` : "";
     return `<div class="${cls}" style="--sp:${t.span}">
-       <div class="hd"><div class="u">${t.u.en}</div>${mock}</div>
+       <div class="hd">
+         <span class="lead-l">
+           ${t.badge ? `<span class="badge">${t.badge}</span>` : ""}
+           <span class="u">${t.u.en}</span>
+         </span>${right}
+       </div>
        ${body}
-       <div><div class="t">${t.t.en}</div>${src}</div>
+       <div class="t">${t.t.en}</div>${src}
      </div>`;
   }).join("");
   $("senalSrc").textContent = L.senal.ventana + " · " + L.ui.fuente + ": " + C.senal.fuente;
