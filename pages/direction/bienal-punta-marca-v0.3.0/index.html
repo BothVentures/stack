@@ -547,13 +547,23 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 
    La lima de la referencia (#D6F84C) está a un pelo del ácido del sistema
    (#C8F52D): es el único puente que queda entre las dos gramáticas. */
+/* La paleta editorial que reemplaza a los pasteles de app. Viene de dos
+   referencias impresas: bloques planos de periwinkle, tan y bermellón sobre
+   crema, con el verde salvia de la segunda. Es más cálida y más seria que la
+   anterior, y trae un puente inesperado al sistema: la tinta vuelve a ser
+   #12140F, el `--void` del canon, en vez de un negro azulado propio. Una
+   variable menos que se aparta. */
 #senal{
-  --app-bg:  #F1F4EF;
-  --app-ink: #0E1116;
-  --c-lime:  #D6F84C;
-  --c-pink:  #F9D3E4;
-  --c-blue:  #86BCE9;
-  --c-mint:  #BEE7DA;
+  --app-bg:  #F2EDE4;   /* crema del panel de texto */
+  --app-ink: #12140F;   /* el void del sistema, recuperado */
+  --c-peri:  #969DDA;   /* periwinkle — el bloque superior del afiche */
+  --c-tan:   #C6AB7E;   /* tan/camel — la columna derecha */
+  /* El bermellón de la referencia es #E23B2C, pero con tinta negra encima
+     da 4.32:1 — por debajo del 4.5 que pide el texto chico. Se aclara lo
+     mínimo para cruzar el umbral: 4.99:1. Es la diferencia entre citar la
+     referencia y que la etiqueta se lea. */
+  --c-red:   #E8503F;   /* bermellón — la banda inferior. UNA sola vez */
+  --c-sage:  #9FB185;   /* verde salvia — la faja de la primera referencia */
   background: var(--app-bg); color: var(--app-ink);
 }
 #senal .head, #senal .head h2, #senal .body{ color: var(--app-ink); }
@@ -568,12 +578,12 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   position: relative; grid-column: span var(--sp, 4);
   border-radius: 24px; padding: 18px 20px 20px;
   min-height: 158px; display: flex; flex-direction: column;
-  background: var(--card, var(--c-mint)); color: var(--app-ink);
+  background: var(--card, var(--c-sage)); color: var(--app-ink);
 }
-.dcard--lime{ --card: var(--c-lime); }
-.dcard--pink{ --card: var(--c-pink); }
-.dcard--blue{ --card: var(--c-blue); }
-.dcard--mint{ --card: var(--c-mint); }
+.dcard--peri{ --card: var(--c-peri); }
+.dcard--tan { --card: var(--c-tan);  }
+.dcard--red { --card: var(--c-red);  }
+.dcard--sage{ --card: var(--c-sage); }
 .dcard--ink { --card: var(--app-ink); color: var(--app-bg); }
 /* la referencia no tiene una grilla pareja: la primera fila pesa más */
 .dcard--tall{ min-height: 216px; }
@@ -582,9 +592,12 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .dcard .hd{ display: flex; justify-content: space-between; align-items: center;
             gap: 10px; margin-bottom: auto; }
 .dcard .hd .lead-l{ display: flex; align-items: center; gap: 10px; min-width: 0; }
+/* La etiqueta corría a .62, que sobre los pasteles anteriores pasaba y sobre
+   esta paleta —más oscura— no: caía a 2.78:1 en la roja. .90 es la opacidad
+   mínima que deja las CUATRO por encima de 4.5:1, medido color por color. */
 .dcard .u{
   font-family: var(--disp); font-weight: 600; font-size: .68rem;
-  letter-spacing: .01em; text-transform: none; opacity: .62;
+  letter-spacing: .01em; text-transform: none; opacity: .90;
 }
 .dcard .v{
   font-family: var(--disp); font-weight: 900; line-height: .86;
@@ -594,7 +607,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .dcard .t{ font-family: var(--disp); font-weight: 600; font-size: .82rem;
            line-height: 1.28; letter-spacing: -.005em; max-width: 30ch; }
 .dcard .src{ font-family: var(--disp); font-weight: 500; font-size: .64rem;
-             opacity: .5; margin-top: 6px; letter-spacing: 0; text-transform: none; }
+             opacity: .75; margin-top: 6px; letter-spacing: 0; text-transform: none; }
 
 /* insignia circular oscura, como los íconos de la referencia */
 .dcard .badge{
@@ -1332,15 +1345,15 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
        «N.º 1», que grita bastante más fuerte que una frase al pasar. Pide
        índice y año antes de producción.                                    */
     tablero: [
-      { k: "num", c: "lime", span: 5, v: "415", src: true, tab: true, tall: true,
+      { k: "num", c: "peri", span: 5, v: "415", src: true, tab: true, tall: true,
         u: { es: "mil M USD", en: "billion USD" },
         t: { es: "Volumen on-chain de América Latina",
              en: "Latin America on-chain volume" } },
-      { k: "num", c: "blue", span: 4, v: "42.5", badge: "\u2191", tall: true,
+      { k: "num", c: "sage", span: 4, v: "42.5", badge: "\u2191", tall: true,
         u: { es: "%", en: "%" },
         t: { es: "Interanual — la región que más acelera",
              en: "Year over year — the fastest-accelerating region" } },
-      { k: "num", c: "pink", span: 3, v: "91.9", tall: true,
+      { k: "num", c: "tan", span: 3, v: "91.9", tall: true,
         u: { es: "mil M USD", en: "billion USD" },
         t: { es: "Argentina — el mercado más denso en stablecoins",
              en: "Argentina — the most stablecoin-dense market" } },
@@ -1349,7 +1362,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
          la forma correcta para «comparar magnitudes entre categorías». Va
          etiquetado en la barra, no con tooltip: con cuatro barras la etiqueta
          directa hace redundante el hover. */
-      { k: "bars", c: "mint", span: 5, mock: true, notch: true,
+      { k: "bars", c: "tan", span: 5, mock: true, notch: true,
         u: { es: "Volumen on-chain por mercado", en: "On-chain volume by market" },
         t: { es: "mil M USD, doce meses móviles", en: "billion USD, trailing twelve months" },
         series: [ { l: "ARG", v: 91.9 }, { l: "BRA", v: 78.4 },
@@ -1360,19 +1373,19 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         t: { es: "Marco de activos virtuales, vigente — no prometido",
              en: "Virtual-asset framework in force — written, not promised" } },
 
-      { k: "num", c: "pink", span: 3, v: "N.º 1", flag: true,
+      { k: "num", c: "red", span: 3, v: "N.º 1", flag: true,
         u: { es: "En la región", en: "In the region" },
         t: { es: "Estabilidad política y estado de derecho",
              en: "Political stability and rule of law" } },
-      { k: "num", c: "blue", span: 4, v: "4", badge: "\u25ce",
+      { k: "num", c: "peri", span: 4, v: "4", badge: "\u25ce",
         u: { es: "Países", en: "Countries" },
         t: { es: "Argentina, Brasil, Chile y Uruguay operan acá",
              en: "Argentina, Brazil, Chile and Uruguay operate here" } },
-      { k: "num", c: "mint", span: 4, v: "68", mock: true,
+      { k: "num", c: "sage", span: 4, v: "68", mock: true,
         u: { es: "% del volumen", en: "% of volume" },
         t: { es: "Participación de stablecoins en la región",
              en: "Stablecoin share of regional volume" } },
-      { k: "num", c: "lime", span: 4, v: "1.2", mock: true,
+      { k: "num", c: "tan", span: 4, v: "1.2", mock: true,
         u: { es: "Millones", en: "Million" },
         t: { es: "Billeteras activas en el Cono Sur",
              en: "Active wallets across the Southern Cone" } }
@@ -2196,7 +2209,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   /* 04 — con la fuente citada: sólo la generación más vieja la citaba */
   $("senalLectura").textContent = L.senal.lectura;
   $("signal").innerHTML = C.tablero.map((t) => {
-    const cls = ["dcard", "dcard--" + (t.c || "mint")]
+    const cls = ["dcard", "dcard--" + (t.c || "sage")]
       .concat(t.tab ? ["dcard--tab"] : [])
       .concat(t.tall ? ["dcard--tall"] : [])
       .concat(t.notch ? ["dcard--notch"] : []).join(" ");
