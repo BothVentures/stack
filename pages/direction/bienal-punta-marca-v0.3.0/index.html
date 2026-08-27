@@ -87,7 +87,12 @@ body{
   position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: .16;
   background-image: linear-gradient(to right,  var(--void) var(--hair), transparent var(--hair)),
                     linear-gradient(to bottom, var(--void) var(--hair), transparent var(--hair));
-  background-size: 48px 48px;
+  /* UNA sola retícula en todo el sitio, y su paso es la CELDA. Antes había
+     tres pasos distintos peleándose —el lattice que el hero dibujaba en su
+     canvas, esta capa a 48 px y la de las secciones con foto a 44 px— y sobre
+     el cielo se veían dos grillas superpuestas. La regla Sí-04 dice que la
+     celda se deriva del ancho del viewport: entonces la grilla también. */
+  background-size: var(--cell, 32px) var(--cell, 32px);
 }
 .regmarks{ position: fixed; inset: calc(var(--pad) * .5); pointer-events: none; z-index: 2; }
 .regmarks i{ position: absolute; width: 13px; height: 13px; opacity: .8; }
@@ -339,14 +344,13 @@ h1 .place{
    sección desfila, con lo recorrido en una tinta y lo que falta en otra.
    Acá los pasos son las cinco salas, así que la barra no es cromo: es el
    programa hecho navegable. */
-#programa{ position: relative; }
 .steps{
-  position: sticky; bottom: 0; z-index: 4; display: flex; overflow: hidden;
+  flex: none; z-index: 4; display: flex; overflow: hidden;
   background: var(--acid); border-top: 2px solid var(--void);
   margin-top: clamp(1.2rem, 3vw, 2rem);
 }
 .steps a{
-  flex: 1 1 0; min-width: 0; text-decoration: none; color: var(--void);
+  cursor: pointer; flex: 1 1 0; min-width: 0; text-decoration: none; color: var(--void);
   padding: .82em .7em; font-family: var(--mono); font-weight: 600;
   font-size: clamp(.5rem, .92vw, .64rem); letter-spacing: .1em; text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -378,7 +382,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   content: ""; position: absolute; inset: 0; z-index: -1; opacity: .18;
   background-image: linear-gradient(to right,  var(--void) var(--hair), transparent var(--hair)),
                     linear-gradient(to bottom, var(--void) var(--hair), transparent var(--hair));
-  background-size: 44px 44px;
+  background-size: var(--cell, 32px) var(--cell, 32px);
 }
 .photo .sheet{ position: relative; z-index: 1; }
 /* El titular no puede apoyarse en la foto: sobre el fondo fotográfico se
@@ -496,37 +500,73 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .src{ font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; opacity: .62; margin-top: clamp(1.2rem,3vw,2rem); }
 
 /* salas — la fotografía entra POR la máscara, cuantizada a la celda */
-/* La referencia sostiene su valle con siete viewports casi idénticos y una
-   barra de pasos anclada. Acá el programa era una fila de cinco miniaturas:
-   más corta que el viewport, así que la barra no tenía por dónde fijarse y las
-   cinco salas entraban en cuadro a la vez —el paso activo no avanzaba nunca—.
-   Como lista vertical el programa se vuelve el valle editorial del sitio, y de
-   paso las dos cosas se arreglan solas. */
-.rooms{ display: grid; gap: clamp(1.6rem, 5vw, 3.4rem); }
-.room{ display: grid; gap: clamp(.9rem, 2.4vw, 1.8rem); align-items: center; }
-@media (min-width: 860px){
-  .room{ grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); min-height: 62vh; }
-  .room:nth-child(even){ direction: rtl; }
-  .room:nth-child(even) > *{ direction: ltr; }
+/* ---------- el programa: un viewport, carrusel horizontal ----------
+   Tres intentos hasta acá y vale registrar por qué. Primero fue una fila de
+   cinco miniaturas: más corta que el viewport, así que la barra anclada no
+   tenía por dónde fijarse y las cinco salas entraban en cuadro a la vez —el
+   paso activo no avanzaba nunca—. Después, lista vertical alta: la barra se
+   fijaba y el paso avanzaba, pero el programa ocupaba tres pantallas.
+   Ahora: **entra en un viewport y desfila en horizontal**, y la barra de pasos
+   deja de ser un indicador pasivo para volverse el ÍNDICE del carrusel — se
+   clickea para ir a una sala y sigue el scroll. Es la lectura de la ruta
+   VB0.1-D: cuatro salas en fila, una pantalla, sin scroll vertical. */
+#programa{ min-height: 100svh; display: flex; flex-direction: column; }
+/* min-width: 0 en los dos, y es load-bearing: un flex item hereda
+   min-width:auto, así que el ancho del CONTENIDO del carrusel (5 × 230 px)
+   se propagaba hacia arriba y el documento entero medía 1180 px en un
+   viewport de 390. El overflow-x del carrusel no alcanza si el contenedor
+   no puede encogerse. */
+/* width:100% no es redundante: `.sheet` trae `margin: 0 auto`, y un margen
+   auto en el eje transversal DESACTIVA el stretch de un flex item — así que la
+   hoja se dimensionaba a su contenido (el carrusel, 1188 px) y quedaba topada
+   en max-width: 1180. En un viewport de 390 eso era el scroll horizontal del
+   documento entero. No era el carrusel: era el margen auto. */
+#programa > .sheet{ display: flex; flex-direction: column; flex: 1;
+                    width: 100%; min-height: 0; min-width: 0; }
+
+.rooms{
+  display: flex; gap: clamp(.6rem, 1.4vw, 1rem); flex: 1; min-height: 0;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
+  padding-bottom: .3rem;
+  min-width: 0;
 }
-.room .plate{ aspect-ratio: 4 / 3; }
-@media (min-width: 860px){ .room .plate{ aspect-ratio: 16 / 11; } }
-.room .meta{ margin-top: 0; }
-.room .n{ font-size: clamp(1.6rem, 4vw, 2.8rem); }
-.room .es{ font-size: clamp(1.4rem, 3.6vw, 2.6rem); display: block; margin-top: .1em; }
+.rooms::-webkit-scrollbar{ display: none; }
+@media (prefers-reduced-motion: reduce){ .rooms{ scroll-behavior: auto; } }
+
+.room{
+  flex: 0 0 clamp(230px, 24vw, 330px); scroll-snap-align: start;
+  display: flex; flex-direction: column; min-height: 0;
+}
+/* La activa se marca con un filete, NO atenuando las otras: bajar la opacidad
+   dejaba pasar el ácido del fondo por debajo de las fotos y las teñía de verde
+   —adiós "color pleno y sin filtro"—. La referencia también usa borde. */
+.room .plate{ outline: 0 solid var(--acid); outline-offset: -2px;
+              transition: outline-width .2s var(--ease-out); }
+.room[data-off="0"] .plate{ outline-width: 3px; }
+.room[data-off="1"] .meta{ opacity: .6; }
+@media (prefers-reduced-motion: reduce){
+  .room .plate{ transition: none; }
+}
+
+.room .plate{ position: relative; flex: 1; min-height: 0; background: var(--void);
+              overflow: hidden; z-index: 2; }
+.room canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+.room .chip-day{
+  position: absolute; left: .55rem; top: .55rem; z-index: 2;
+  background: var(--acid); color: var(--void);
+  font-family: var(--mono); font-weight: 600; font-size: .54rem;
+  letter-spacing: .12em; text-transform: uppercase; padding: .34em .5em;
+}
+.room .meta{ padding-top: .7rem; }
+.room .n{ font-family: var(--pixel); font-weight: 800; font-size: 1.15rem; line-height: 1;
+          margin-right: .45em; }
+.room .es{ font-size: clamp(1rem, 1.9vw, 1.45rem); font-weight: 900; letter-spacing: -.02em; }
 .room .es em{ font-family: var(--tema); font-style: italic; font-weight: 400;
               text-transform: none; letter-spacing: -.01em; }
-.room .sede{ font-size: clamp(.56rem, 1vw, .66rem); margin-top: .7em; }
-.room .dia{ font-size: clamp(.56rem, 1vw, .66rem); margin-top: .3em; }
-.room{ position: relative; }
-.room .plate{ position: relative; aspect-ratio: 4 / 5; background: var(--void); overflow: hidden; }
-.room canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
-.room .meta{ margin-top: .6rem; }
-.room .n{ font-family: var(--pixel); font-weight: 800; font-size: 1.2rem; line-height: 1; margin-right: .4em; }
-.room .es{ font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em; }
-.room .sede{ display: block; font-family: var(--mono); font-size: .56rem; font-weight: 600;
-              letter-spacing: .13em; text-transform: uppercase; opacity: .68; margin-top: .3em; }
-.room .dia{ font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; opacity: .6; }
+.room .sede{ display: block; font-family: var(--mono); font-size: .54rem; font-weight: 600;
+             letter-spacing: .13em; text-transform: uppercase; opacity: .68; margin-top: .45em; }
 
 /* el corredor */
 .corridor{ display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(.8rem, 2vw, 1.4rem); }
@@ -662,7 +702,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   <div class="sheet">
     <div class="head"><h2 id="progH2"></h2><span class="num">05</span></div>
     <div class="rooms" id="rooms"></div>
-    <p class="mono-body" style="margin-top:clamp(1.2rem,3vw,2rem);opacity:.72" id="roomsNote"></p>
+    <p class="mono-body" style="margin:.9rem 0 .7rem;opacity:.72;font-size:.6rem" id="roomsNote"></p>
   </div>
   <nav class="steps" id="salaSteps" aria-label="Las cinco salas"></nav>
 </section>
@@ -1439,17 +1479,17 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
     `<div class="room">
        <div class="plate">
          <canvas data-blob="none" data-img="${ROOM_IMG[s.n]}" data-seed="${29 + i * 13.7}"
-                 data-cell="10" data-fringe-cells="3.1" data-from=".key"
+                 data-cell="9" data-fringe-cells="3.1" data-from=".key"
                  data-mode="grow" data-bleed="bottom"
                  ${s.n === "03" ? 'data-zoom="1.9" data-focus="0.72"' : ""}
                  aria-hidden="true"></canvas>
-         <span class="key" style="position:absolute;left:7%;top:16%;width:80%;height:64%"></span>
+         <span class="key" style="position:absolute;left:6%;top:12%;width:82%;height:70%"></span>
+         <span class="chip-day">${s.dia}</span>
        </div>
        <div class="meta">
          <span class="n">${s.n}</span>
          <span class="es">${s.es.replace(/^(El|La|Las)\s/, "$1 <em>") + "</em>"}</span>
          <span class="sede">${s.sede}</span>
-         <div class="dia">${s.dia}</div>
        </div>
      </div>`).join("");
   $("roomsNote").textContent =
@@ -1554,27 +1594,75 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   }
 
   /* ---------- la barra de pasos de las salas ------------------------------ */
+  /* La barra no es un indicador pasivo: es el índice del carrusel. Se clickea
+     para ir a una sala, y el activo sale del scroll horizontal real. */
+  const rooms = $("rooms");
   $("salaSteps").innerHTML = C.salas.map((x, i) =>
-    `<a href="#programa" data-i="${i}"><b>${x.n}</b> ${x.es}</a>`).join("");
+    `<a role="button" tabindex="0" data-i="${i}"><b>${x.n}</b> ${x.es}</a>`).join("");
   const stepEls = [...$("salaSteps").querySelectorAll("a")];
-  const roomEls = () => [...document.querySelectorAll("#rooms .room")];
+  const roomEls = () => [...rooms.querySelectorAll(".room")];
+
   function setStep(i) {
     stepEls.forEach((a, k) => {
       a.setAttribute("aria-current", String(k === i));
       a.dataset.done = k < i ? "1" : "0";
     });
+    roomEls().forEach((el, k) => { el.dataset.off = k === i ? "0" : "1"; });
   }
+  /* offsetLeft se mide contra el offsetParent de cada nodo, y el de la tarjeta
+     no es el mismo que el del contenedor: mezclarlos daba un destino corrido
+     —el click en la sala 04 aterrizaba en la 03—. Con rects es a prueba de
+     dónde esté el bloque contenedor. */
+  const cardX = (el) =>
+    el.getBoundingClientRect().left - rooms.getBoundingClientRect().left + rooms.scrollLeft;
+
+  function goTo(i) {
+    const els = roomEls(); const el = els[i]; if (!el) return;
+    const maxX = rooms.scrollWidth - rooms.clientWidth;
+    const target = Math.min(cardX(el), maxX);
+    rooms.scrollTo({ left: target, behavior: reduced ? "auto" : "smooth" });
+    /* El click manda. Cuando el destino queda topado —las últimas tarjetas
+       entran juntas y la última nunca se alinea a la izquierda— el criterio de
+       scroll marcaría otra: al pedir 04 devolvía 05. La tarjeta pedida SÍ queda
+       visible, así que se marca la pedida y se calla el sync mientras dura el
+       desplazamiento. */
+    setStep(i);
+    syncLock = performance.now() + (reduced ? 0 : 700);
+  }
+  stepEls.forEach((a) => {
+    const go = () => goTo(+a.dataset.i);
+    a.addEventListener("click", go);
+    a.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
+    });
+  });
   setStep(0);
-  if (window.IntersectionObserver) {
-    const ratios = new Map();
-    const sio = new IntersectionObserver((es) => {
-      es.forEach((e) => ratios.set(+e.target.dataset.k, e.intersectionRatio));
-      let best = 0, bestR = -1;
-      ratios.forEach((r, k) => { if (r > bestR) { bestR = r; best = k; } });
-      if (bestR > 0) setStep(best);
-    }, { threshold: [0, .2, .5, .75, 1], rootMargin: "-25% 0px -25% 0px" });
-    roomEls().forEach((el, k) => { el.dataset.k = k; sio.observe(el); });
+
+  /* el activo se deriva de la posición del scroll: la tarjeta cuyo borde
+     izquierdo está más cerca del borde del contenedor */
+  let sTick = false, syncLock = 0;
+  function syncStep() {
+    if (performance.now() < syncLock) { sTick = false; return; }
+    const els = roomEls(); if (!els.length) return;
+    const x = rooms.scrollLeft;
+    const maxX = rooms.scrollWidth - rooms.clientWidth;
+    let best = 0, bestD = Infinity;
+    els.forEach((el, k) => {
+      const d = Math.abs(cardX(el) - x);
+      if (d < bestD) { bestD = d; best = k; }
+    });
+    /* En los extremos el criterio de "borde izquierdo más cercano" falla: con
+       cinco tarjetas en una pista más angosta que su suma, la última NUNCA
+       puede quedar alineada a la izquierda, así que el scroll topa antes y el
+       activo se quedaba una tarjeta atrás. Los dos extremos se fijan a mano. */
+    if (x <= 2) best = 0;
+    else if (x >= maxX - 2) best = els.length - 1;
+    setStep(best);
+    sTick = false;
   }
+  rooms.addEventListener("scroll", () => {
+    if (!sTick) { sTick = true; requestAnimationFrame(syncStep); }
+  }, { passive: true });
 
   /* ---------- la barra ---------------------------------------------------
      Scroll-aware: se esconde al bajar y vuelve al subir, porque el scroll
@@ -1721,6 +1809,8 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
     const h = Math.max(1, Math.round(sky.clientHeight * dprv));
     if (sky.width !== w || sky.height !== h) { sky.width = w; sky.height = h; }
     cellPx = Math.max(12, Math.round(sky.clientWidth / 46)) * dprv;
+    /* el único número: lo lee el motor y lo lee la grilla de CSS */
+    document.documentElement.style.setProperty("--cell", (cellPx / dprv) + "px");
   }
 
   function rectOf(el) {
@@ -1809,12 +1899,9 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
       drawSkyBite(g, qCell, ptr.x * sky.width, ptr.y * sky.height, radius);
     }
 
-    /* retícula de celda visible, muy tenue: declara la trama */
-    g.save(); g.globalAlpha = .07; g.strokeStyle = K.void; g.lineWidth = 1;
-    g.beginPath();
-    for (let x = 0; x <= sky.width; x += cellPx) { g.moveTo(x, 0); g.lineTo(x, sky.height); }
-    for (let y = 0; y <= sky.height; y += cellPx) { g.moveTo(0, y); g.lineTo(sky.width, y); }
-    g.stroke(); g.restore();
+    /* La retícula NO se dibuja acá: la pone .grid-paper en CSS, con el mismo
+       paso (--cell). Dibujarla en el canvas además producía dos grillas
+       superpuestas sobre el cielo, con dos pasos distintos. */
 
     /* erosión: sólo muerde el fleco. El núcleo medido protege la tipografía. */
     const erode = cellPx * (0.9 * presence * (0.4 + 0.6 * energy) + 0.35 * energy);
