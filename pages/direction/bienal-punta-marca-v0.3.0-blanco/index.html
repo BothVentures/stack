@@ -448,23 +448,28 @@ h1 .place{
    sección desfila, con lo recorrido en una tinta y lo que falta en otra.
    Acá los pasos son las cinco salas, así que la barra no es cromo: es el
    programa hecho navegable. */
+/* La barra de pasos, invertida con la sección: campo negro, y el paso activo
+   en caja acid con tipografía void — que es exactamente el negativo de lo que
+   era. Sobre el campo claro anterior una barra acid era continuidad con la
+   página; sobre el negro sería un bloque blanco a pantalla completa al pie. */
 .steps{
   flex: none; z-index: 4; display: flex; overflow: hidden;
-  background: var(--acid); border-top: 2px solid var(--void);
+  background: var(--void); border-top: 2px solid var(--acid);
   margin-top: clamp(1.2rem, 3vw, 2rem);
 }
 .steps a{
-  cursor: pointer; flex: 1 1 0; min-width: 0; text-decoration: none; color: var(--void);
+  cursor: pointer; flex: 1 1 0; min-width: 0; text-decoration: none; color: var(--acid);
   padding: .82em .7em; font-family: var(--mono); font-weight: 600;
   font-size: clamp(.5rem, .92vw, .64rem); letter-spacing: .1em; text-transform: uppercase;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  border-left: var(--hair) solid rgba(18,20,15,.28);
+  border-left: var(--hair) solid color-mix(in srgb, var(--acid) 28%, transparent);
   opacity: .45; transition: opacity .25s var(--ease-out), background .25s var(--ease-out);
 }
 .steps a:first-child{ border-left: none; }
-.steps a[data-done="1"]{ background: var(--acid-d); opacity: .8; }
-.steps a[aria-current="true"]{ background: var(--void); color: var(--acid); opacity: 1; }
-.steps a:focus-visible{ outline: 2px solid var(--void); outline-offset: -3px; }
+/* el paso ya recorrido: acid apagado, como masa tenue sobre el negro */
+.steps a[data-done="1"]{ background: color-mix(in srgb, var(--acid) 22%, transparent); opacity: .8; }
+.steps a[aria-current="true"]{ background: var(--acid); color: var(--void); opacity: 1; }
+.steps a:focus-visible{ outline: 2px solid var(--acid); outline-offset: -3px; }
 @media (prefers-reduced-motion: reduce){ .steps a{ transition: none; } }
 
 /* ---------- secciones ---------- */
@@ -590,13 +595,11 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    anterior, y trae un puente inesperado al sistema: la tinta vuelve a ser
    #12140F, el `--void` del canon, en vez de un negro azulado propio. Una
    variable menos que se aparta. */
-#senal{
-  /* La crema YA NO es el fondo de la sección —atrás va la fotografía de las
-     piedras, la que hasta recién estaba en §03—, pero sigue viva como el
-     papel de los rótulos invertidos dentro de las fichas (la insignia, el
-     sello «Mock», la tinta de la ficha negra). */
-  --app-bg:  #F2EDE4;
-  --app-ink: #12140F;   /* el void del sistema, recuperado */
+/* La paleta tiene TRES consumidores desde el 2026-08-27, así que se declara
+   una sola vez para los tres: §04 la usa en plancha plena —tinta editorial
+   sobre papel— y §03 y el cierre la usan difuminada, entrando por las
+   esquinas. Sigue scopeada: nada de esto se filtra al resto del sitio. */
+#porque, #cierre, #senal{
   --c-peri:  #969DDA;   /* periwinkle — el bloque superior del afiche */
   --c-tan:   #C6AB7E;   /* tan/camel — la columna derecha */
   /* El bermellón de la referencia es #E23B2C, pero con tinta negra encima
@@ -605,6 +608,27 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
      referencia y que la etiqueta se lea. */
   --c-red:   #E8503F;   /* bermellón — la banda inferior. UNA sola vez */
   --c-sage:  #9FB185;   /* verde salvia — la faja de la primera referencia */
+}
+/* La fotografía del fondo va MUY desenfocada (pedido del 2026-08-27). Es una
+   excepción al canon y se anota, no se esconde: Sí-03 dice «la fotografía va
+   en color pleno y sin filtro». El motivo es de lectura — la piedra tiene tanto
+   detalle de alta frecuencia que competía con los bordes escalonados de las
+   seis planchas, y el borde de máscara es justamente lo que la sección tiene
+   que dejar ver. Desenfocada, la foto vuelve a ser lo que le toca acá: campo.
+   `overflow:hidden` + `inset:-6%` porque el desenfoque samplea más allá del
+   borde: sin el margen extra, el blur deja una viñeta clara en los cuatro
+   cantos de la sección. Los 14px que desbordan los canvas de las fichas caen
+   muy adentro del padding de la sección, así que el recorte no los toca. */
+#senal{ overflow: hidden; }
+#senal::before{ inset: -6%; filter: blur(26px); }
+
+#senal{
+  /* La crema YA NO es el fondo de la sección —atrás va la fotografía de las
+     piedras, la que hasta recién estaba en §03—, pero sigue viva como el
+     papel de los rótulos invertidos dentro de las fichas (la insignia, el
+     sello «Mock», la tinta de la ficha negra). */
+  --app-bg:  #F2EDE4;
+  --app-ink: #12140F;   /* el void del sistema, recuperado */
   color: var(--app-ink);
 }
 /* Los tres overrides de color que vivían acá (`#senal .head`, `#senal .body`,
@@ -818,7 +842,23 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .claim .n{ font-family: var(--pixel); font-weight: 800; font-size: clamp(1.4rem, 3.2vw, 2.2rem);
            line-height: .82; padding: .1em .28em; }
 .claim .txt{ width: fit-content; max-width: 56ch; padding: .3rem .55rem; }
-.claim .t{ display: block; font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em; }
+/* El titular de las tres fichas pasa a la VOZ ITÁLICA del sistema y sube de
+   cuerpo. No es una cuarta voz display —lo que prohíbe No-05 de la lista «no»—:
+   es `--tema`, la misma Instrument Serif itálica que ya lleva el slot variable
+   del nombre y que la página usa en cada titular de sección («The *signal*»,
+   «Why *Punta del Este*»). Lo que cambia es que acá la toma el título ENTERO
+   en vez de una palabra en `<em>`.
+
+   El salto de cuerpo no es capricho: la serif itálica a peso 400 pesa mucho
+   menos en página que la Archivo 900 que había, así que al mismo tamaño el
+   titular se leería más chico, no más grande. Sube de `--t-sub`
+   (clamp 1/1.9vw/1.35rem) a clamp 1.5/3.2vw/2.35rem para que el cambio de voz
+   se lea como jerarquía y no como una pérdida de peso. */
+.claim .t{
+  display: block; letter-spacing: -.01em; line-height: 1.06;
+  font-family: var(--tema); font-style: italic; font-weight: 400;
+  font-size: clamp(1.5rem, 3.2vw, 2.35rem);
+}
 .claim .d{ display: block; font-size: var(--t-body); font-weight: 500; line-height: 1.45; margin-top: .3em; }
 .claim--acid{ background: var(--acid); color: var(--void); }
 .claim--void{ background: var(--void); color: var(--acid); }
@@ -840,6 +880,76 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .reg .dsc{
   display: block; margin-top: .45em; font-size: var(--t-body);
   font-weight: 500; line-height: 1.45; max-width: 46ch;
+}
+
+/* ---------- §03 · el campo: papel blanco con las cuatro tintas entrando por
+   las esquinas ------------------------------------------------------------
+   Reemplaza a la retícula de celda sobre papel (pedido del 2026-08-27). La
+   retícula funcionaba cuando §03 tenía fotografía de fondo —ataba la imagen al
+   sistema— pero desde que la foto se parkeó quedó como una grilla de líneas
+   negras sobre blanco, sin nada que atar: densidad sin trabajo.
+
+   En su lugar entran las MISMAS cuatro tintas de §04, una por esquina, en
+   difuminado progresivo hacia el centro. No es una quinta cosa: es la paleta
+   editorial que la sección de más abajo usa en plancha plena, dicha acá en su
+   registro más callado. La sección estrena color sin estrenar tinta.
+
+   Por qué gradientes y no un `filter: blur()` sobre manchas duras: el filtro
+   sangra por los bordes de la sección y obliga a recortar, y encima cuesta una
+   capa de composición por scroll. Cada esquina va en dos capas —una masa ancha
+   y baja, y un núcleo más chico y más denso pegado al vértice— que es lo que le
+   da la caída no lineal del blur de verdad en vez del anillo parejo que deja un
+   radial suelto.
+
+   El bermellón entra en la esquina de abajo a la derecha y entra MÁS FLOJO que
+   los otros tres: en §04 es la tinta que se usa una sola vez, y si acá pesa lo
+   mismo que el periwinkle deja de leerse como acento en las dos secciones.
+
+   Las fichas de `.why` son opacas (`var(--acid)`), así que se recortan contra
+   el campo y el difuminado pasa por detrás y por las juntas. El texto nunca se
+   apoya sobre el color: se apoya sobre la ficha. */
+#porque, #cierre{ background-color: #FFFFFF; }
+/* la retícula de celda de `.photo` se apaga acá: el campo ya no es foto */
+#porque::after{ content: none; }
+/* El cierre no es `.photo`, así que no trae ni el contexto de posición ni el
+   aislamiento que §03 hereda de esa clase. Se los da acá — sin `isolation` el
+   pseudo con z-index negativo se iría detrás del fondo de la sección. */
+#cierre{ position: relative; isolation: isolate; }
+#porque::before, #cierre::before{
+  content: ""; position: absolute; inset: 0; z-index: -2;
+  background:
+    /* arriba-izquierda · periwinkle */
+    radial-gradient(62% 66% at 0% 0%,
+      color-mix(in srgb, var(--c-peri) 60%, transparent) 0%,
+      color-mix(in srgb, var(--c-peri) 22%, transparent) 38%,
+      transparent 74%),
+    radial-gradient(26% 30% at 2% 0%,
+      color-mix(in srgb, var(--c-peri) 46%, transparent) 0%,
+      transparent 100%),
+    /* arriba-derecha · tan */
+    radial-gradient(58% 62% at 100% 0%,
+      color-mix(in srgb, var(--c-tan) 58%, transparent) 0%,
+      color-mix(in srgb, var(--c-tan) 20%, transparent) 40%,
+      transparent 76%),
+    radial-gradient(24% 26% at 100% 4%,
+      color-mix(in srgb, var(--c-tan) 44%, transparent) 0%,
+      transparent 100%),
+    /* abajo-izquierda · salvia */
+    radial-gradient(60% 58% at 0% 100%,
+      color-mix(in srgb, var(--c-sage) 58%, transparent) 0%,
+      color-mix(in srgb, var(--c-sage) 20%, transparent) 40%,
+      transparent 76%),
+    radial-gradient(26% 24% at 4% 100%,
+      color-mix(in srgb, var(--c-sage) 42%, transparent) 0%,
+      transparent 100%),
+    /* abajo-derecha · bermellón, el acento: la mancha más chica y más floja */
+    radial-gradient(48% 50% at 100% 100%,
+      color-mix(in srgb, var(--c-red) 38%, transparent) 0%,
+      color-mix(in srgb, var(--c-red) 13%, transparent) 40%,
+      transparent 74%),
+    radial-gradient(20% 20% at 100% 100%,
+      color-mix(in srgb, var(--c-red) 30%, transparent) 0%,
+      transparent 100%);
 }
 
 /* por qué — trama de puntos (zkPass)
@@ -873,7 +983,17 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    la ficha van enteros a espacio libre, que es lo que se pidió. */
 .why .anchor{ position: absolute; left: 6%; right: 6%; bottom: 0; height: 18%; }
 .why .n{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600; letter-spacing: .16em; }
-.why .t{ font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em; }
+/* El titular de la ficha va SIEMPRE en dos líneas (pedido del 2026-08-27).
+   Tres de los cuatro ya partían solos; «Capital in season» entraba en una y
+   dejaba su párrafo arrancando un renglón más arriba que los otros tres, que
+   es lo que rompía la fila. Se resuelve con la MEDIDA, no con un <br> metido
+   en el copy: a 13ch los cuatro titulares parten en dos y el texto sigue
+   siendo una sola cadena, sin marcas de maquetación adentro (esa cadena la
+   consume también el directorio del pie).
+   El `min-height` es el cinturón: si en algún ancho un titular vuelve a
+   entrar en una línea, la caja igual mide dos y la fila no se desalinea. */
+.why .t{ font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em;
+         line-height: 1.06; max-width: 13ch; min-height: 2.12em; }
 .why .d{ font-size: .82rem; font-weight: 500; line-height: 1.45; }
 
 /* señal de mercado */
@@ -894,7 +1014,36 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    deja de ser un indicador pasivo para volverse el ÍNDICE del carrusel — se
    clickea para ir a una sala y sigue el scroll. Es la lectura de la ruta
    VB0.1-D: cuatro salas en fila, una pantalla, sin scroll vertical. */
-#programa{ min-height: 100svh; display: flex; flex-direction: column; }
+/* §05 en negro, y la foto de la sala bajo el mouse como fondo de la sección.
+   ---------------------------------------------------------------------------
+   `.on-dark` en el marcado da el campo (void) y la tinta (acid). Acá abajo va
+   lo que el cambio de campo obliga a invertir, pieza por pieza, y la capa de
+   hover.
+
+   La capa va en `::before` con `inset: -6%` y no con `transform: scale()`: un
+   `filter: blur()` muestrea transparente FUERA de la caja del elemento, así
+   que una capa a `inset: 0` se aclara en los cuatro bordes y deja un halo. El
+   -6% saca ese borde fuera de lo visible, y el `overflow: hidden` de la
+   sección lo recorta. */
+#programa{
+  min-height: 100svh; display: flex; flex-direction: column;
+  position: relative; isolation: isolate; overflow: hidden;
+}
+#programa::before{
+  content: ""; position: absolute; inset: -6%; z-index: 0; pointer-events: none;
+  background-image: var(--room-bg, none);
+  background-size: cover; background-position: center;
+  filter: blur(clamp(18px, 2.4vw, 34px));
+  opacity: 0; transition: opacity .45s var(--ease-out);
+}
+#programa[data-hover="1"]::before{ opacity: 1; }
+/* La imagen NO se limpia al salir: si se limpiara, la capa saltaría a vacío en
+   el primer fotograma del fundido y el efecto sería un parpadeo en vez de una
+   salida. Se apaga por opacidad y la fuente queda cargada para la próxima. */
+#programa > .sheet, #programa > .steps{ position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce){
+  #programa::before{ transition: none; }
+}
 /* min-width: 0 en los dos, y es load-bearing: un flex item hereda
    min-width:auto, así que el ancho del CONTENIDO del carrusel (5 × 230 px)
    se propagaba hacia arriba y el documento entero medía 1180 px en un
@@ -968,15 +1117,15 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .fc-face{ position: absolute; inset: 0; backface-visibility: hidden;
           -webkit-backface-visibility: hidden; display: flex; flex-direction: column; }
 .fc-front{ min-height: 0; }
-/* El dorso va en VOID, no en acid. Parece la elección menos obvia —el acid es
-   el campo dominante— pero `body` corre sobre var(--acid), así que una tarjeta
-   acid queda del color exacto de la página: blanca sobre blanco en la variante
-   Blanco, lima sobre lima en Máscaras. En las dos la tarjeta desaparecía y sólo
-   quedaba el filete. En void contrasta con la página en ambas y además empata
-   con la plancha oscura del frente. */
+/* El dorso iba en VOID por una razón escrita acá: `body` corre sobre var(--acid),
+   así que una tarjeta acid quedaba del color exacto de la página y desaparecía.
+   Esa razón SE DIO VUELTA cuando §05 pasó a campo negro: ahora la que queda del
+   color exacto del fondo es la tarjeta void — negro sobre negro, el mismo bug
+   espejado. Así que el dorso se invierte con el resto de la sección.
+   Si §05 alguna vez vuelve al campo claro, esto vuelve a void con él. */
 .fc-back{
   transform: rotateY(180deg);
-  background: var(--void); color: var(--acid);
+  background: var(--acid); color: var(--void);
   padding: clamp(.85rem, 1.9vw, 1.15rem);
   justify-content: space-between; overflow: hidden;
 }
@@ -986,7 +1135,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
                 font-size: 1.12em; letter-spacing: -.01em; }
 .fc-back p{ margin: 0; font-size: .78rem; line-height: 1.42; font-weight: 500; }
 .fc-data{ display: grid; gap: .18rem; margin-top: .7rem;
-          border-top: 2px solid var(--acid); padding-top: .5rem; }
+          border-top: 2px solid var(--void); padding-top: .5rem; }
 .fc-data div{ display: flex; justify-content: space-between; gap: .6rem;
               font-family: var(--mono); font-size: .58rem; letter-spacing: .1em;
               text-transform: uppercase; }
@@ -997,16 +1146,26 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
           opacity: .62; }
 /* el control de «dar vuelta todas»: cuadrado, mono, sin píldora */
 .deck-ctl{ display: flex; justify-content: flex-end; margin-bottom: .5rem; }
+/* invertido junto con la sección: filete y tinta acid sobre el campo negro */
 .flip-all{
   font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
   letter-spacing: .14em; text-transform: uppercase;
   padding: .5em .9em; cursor: pointer;
-  background: transparent; color: var(--void);
-  border: var(--hair) solid var(--void);
+  background: transparent; color: var(--acid);
+  border: var(--hair) solid var(--acid);
 }
-.flip-all[aria-pressed="true"]{ background: var(--void); color: var(--acid); }
-.flip-all:focus-visible{ outline: 2px solid var(--void); outline-offset: 3px; }
-.room .meta{ padding-top: .7rem; }
+.flip-all[aria-pressed="true"]{ background: var(--acid); color: var(--void); }
+.flip-all:focus-visible{ outline: 2px solid var(--acid); outline-offset: 3px; }
+/* LAS CAJAS DE LOS TITULARES. Eran texto suelto en tinta casi negra sobre el
+   campo claro de la página; sobre el campo negro nuevo desaparecían. Pasan a
+   plancha: fondo acid, tipografía void — el negativo exacto de lo que eran.
+   Y la caja no es sólo un arreglo de contraste: cuando el hover mete una
+   fotografía a pantalla completa detrás, el titular necesita apoyarse en una
+   masa, que es la regla de la casa para texto sobre foto. */
+.room .meta{
+  padding: .62rem .7rem .7rem;
+  background: var(--acid); color: var(--void);
+}
 .room .n{ font-family: var(--pixel); font-weight: 800; font-size: 1.15rem; line-height: 1;
           margin-right: .45em; }
 .room .es{ font-size: clamp(1rem, 1.9vw, 1.45rem); font-weight: 900; letter-spacing: -.02em; }
@@ -1035,14 +1194,8 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .tens .ax{ font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; text-align: center; width: 6.5rem; }
 .tens .to{ font-weight: 900; }
 
-/* ediciones — el ordinal de plancha + dissolve creciente */
-.eds{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: clamp(.8rem,2vw,1.4rem); }
-.ed-card{ position: relative; min-height: clamp(190px, 22vw, 250px); overflow: hidden; }
-.ed-card canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
-.ed-card .over{ position: relative; padding: clamp(.95rem,2.2vw,1.5rem); display: grid; gap: .4rem; align-content: end; height: 100%; }
-.ed-card .ord{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600; letter-spacing: .2em; }
-.ed-card .yr{ font-family: var(--pixel); font-weight: 800; font-size: clamp(2.4rem, 6vw, 3.8rem); line-height: .82; letter-spacing: .02em; }
-.ed-card .st{ font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; opacity: .68; }
+/* El CSS de §08 (.eds / .ed-card) salió con la sección: no le quedaba un
+   solo consumidor. Está en la historia de git si la sección vuelve. */
 
 /* cierre */
 .close h2{ font-size: clamp(1.7rem, 5.6vw, 4rem); font-weight: 900; line-height: .92;
@@ -1050,14 +1203,170 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .close .tema-i{ font-family: var(--tema); font-style: italic; font-weight: 400;
                 text-transform: none; font-size: 1.12em; }
 
-footer{ background: var(--void); color: var(--acid); padding: clamp(2.4rem,6vw,4rem) 0 clamp(1.6rem,4vw,2.6rem); }
-footer .lock{ display: grid; gap: .5rem; }
-footer .name{ font-family: var(--pixel); font-weight: 800; font-size: clamp(1.3rem,4vw,2.1rem);
-              letter-spacing: .02em; text-transform: uppercase; }
-footer .baj{ font-size: var(--t-lead); font-weight: 600; }
-footer .rule{ height: 2px; background: var(--acid); margin: clamp(1.6rem,4vw,2.4rem) 0 1rem; opacity: .9; }
-footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: var(--mono);
-              font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+/* ---------- el pie ------------------------------------------------------
+   Rehecho contra la referencia de 2026-08-27
+   (`_refs/2026-08-27-footer-diseno-referencia.jpg`). De la referencia se toma
+   la ESTRUCTURA, en tres zonas:
+     A · un DIRECTORIO denso de columnas — encabezado diminuto en versalitas,
+         filas de enlaces debajo, y un bloque-sello al extremo derecho (en la
+         referencia, una insignia de certificación);
+     B · el LOCKUP a escala grande, que es el pago visual de la pieza y ocupa
+         la franja entera;
+     C · una línea de letra chica CENTRADA al cierre.
+   Lo que NO se toma es la piel: la tarjeta con radio y el degradado verde. El
+   radio lo prohíbe No-05 («el radio del sistema es cero») y el degradado a
+   tres tintas lo prohíbe No-02. La franja del lockup se separa del directorio
+   con `--quiet`, que los tokens declaran como TERCER VALOR —masa sobre masa—
+   y no como tercera tinta: es el único recurso del sistema que hace el
+   trabajo que en la referencia hace el degradado.
+
+   El bloque del ritmo que vivía acá no se pierde: el libro mayor de tres
+   ediciones ocupa ahora la posición del sello, y la frase y su nota bajan a
+   la zona C. */
+footer{ background: var(--void); color: var(--acid); }
+
+/* --- A · el directorio --- */
+.f-dir{
+  display: grid; align-items: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.05fr) minmax(168px, .85fr);
+  gap: clamp(1.6rem, 3.4vw, 2.6rem) clamp(1.1rem, 2.4vw, 2rem);
+  padding-top: clamp(2.4rem, 6vw, 4rem); padding-bottom: clamp(2rem, 5vw, 3.2rem);
+}
+.f-col{ min-width: 0; }
+.f-h{
+  margin: 0 0 .7rem; font-family: var(--mono); font-weight: 600;
+  font-size: var(--t-micro); letter-spacing: .16em; text-transform: uppercase;
+}
+/* el segundo encabezado de una misma columna — el patrón «Social» de la
+   referencia: dos grupos apilados en la misma columna, no una columna nueva */
+.f-col ul + .f-h{ margin-top: clamp(1.1rem, 2.4vw, 1.5rem); }
+.f-col ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: .34rem; }
+.f-col li{ min-width: 0; }
+/* Las filas van en la voz DISPLAY y en caja de frase, no en mono versalitas:
+   la mono en caja alta ya es el encabezado, y usarla también en las filas
+   aplanaba la jerarquía que la referencia sostiene con ese contraste. */
+.f-col a, .f-cred li{
+  font-size: .82rem; font-weight: 600; line-height: 1.4; letter-spacing: -.005em;
+}
+.f-col a{ color: inherit; text-decoration: none; opacity: .74;
+          transition: opacity .2s var(--ease-out); }
+.f-col a:hover, .f-col a:focus-visible{ opacity: 1; text-decoration: underline;
+                                        text-underline-offset: .22em; }
+.f-col a:focus-visible{ outline: 2px solid var(--acid); outline-offset: 3px; }
+/* los créditos no son enlaces: misma retícula, sin afordancia de click */
+.f-cred li{ opacity: .62; font-weight: 500; }
+/* en la variante sin cielo la línea del crédito queda vacía; sin esto dejaba
+   un renglón fantasma de gap en la columna */
+.f-cred li:empty{ display: none; }
+
+/* el sello: el libro mayor de las tres ediciones, apilado.
+   Juntas de 2px que dejan pasar el campo acid, igual que `.claims` y `.why`
+   hacen con el void sobre campo claro. Acá va al revés porque el pie es campo
+   oscuro. La edición viva se marca INVIRTIÉNDOLA (No-02), no con una tinta. */
+.f-eds{
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px;
+  background: var(--acid); border: 2px solid var(--acid);
+}
+.f-ed{ background: var(--void); color: var(--acid);
+       padding: .62rem .72rem .7rem; display: grid; gap: .16rem; }
+.f-ed--now{ background: var(--acid); color: var(--void); }
+.f-ed .ord{ font-family: var(--mono); font-size: .56rem; font-weight: 600;
+            letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
+.f-ed .yr{ font-family: var(--pixel); font-weight: 800; line-height: .9;
+           font-size: clamp(1.5rem, 3.6vw, 2.1rem); letter-spacing: .02em; }
+.f-ed .st{ font-family: var(--mono); font-size: .54rem; font-weight: 600;
+           letter-spacing: .12em; text-transform: uppercase; opacity: .72; }
+
+/* --- B · el lockup --- */
+/* La franja NO lleva campo propio. Tuvo `--quiet` un rato —el tercer VALOR del
+   sistema, para separar el lockup del directorio como en la referencia separa
+   el degradado— y se sacó por pedido: el pie va todo en el MISMO negro. La
+   separación la hacen el aire y la regla de la letra chica, no un cambio de
+   tono. */
+.f-lock .sheet{
+  /* GRID y no flex, y no es capricho: la marca tiene que compartir PISO y TECHO
+     con la construcción tipográfica de al lado. En flex, el `svg` estirado al
+     alto de la fila y con `width:auto` no resuelve ancho —se plegaba a cero y
+     la marca desaparecía—. En grid la fila tiene alto DEFINIDO, así que la
+     caja de la marca puede sacar su ancho de `aspect-ratio` y el trazo cae
+     exactamente entre el techo y el piso del bloque de texto. */
+  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  align-items: center; gap: clamp(.9rem, 2.4vw, 1.8rem);
+  /* El alto del bloque de texto, DECLARADO — no medido. Es la suma exacta de
+     sus tres renglones y sus dos gaps, y de acá sale el alto de la marca:
+     `stretch` no servía porque en grid las columnas se resuelven ANTES que las
+     filas, así que la caja de la marca no puede sacar su ancho de un alto de
+     fila que todavía no existe (y con `height:100%` el SVG caía a su tamaño
+     intrínseco por defecto —300x150— y empujaba la fila a 150px, que es
+     justo lo contrario de compartir techo y piso).
+     Si se toca una de las tres líneas, se toca esta cuenta. */
+  --f-name: clamp(1.05rem, 3.1vw, 2.58rem);
+  --f-h: calc(var(--f-name) * .88 + .34rem
+              + var(--t-lead) * .82 * 1.25 + .34rem
+              + var(--t-micro) * 1.35);
+  padding-top: clamp(1.6rem, 3.6vw, 2.4rem); padding-bottom: clamp(1.4rem, 3.2vw, 2.2rem);
+}
+/* 120 x 59.08 es el viewBox que emite _logo/build_logo.py — si el perfil de la
+   duna cambia de proporción, este número se mueve con él. */
+.f-mark{ display: block; height: var(--f-h); aspect-ratio: 120 / 59.08; }
+.f-mark svg{ display: block; width: 100%; height: 100%; }
+.f-word{ min-width: 0; display: grid; gap: .34rem; align-content: center; }
+/* Las tres voces del nombre EN UNA LÍNEA — en el hero van apiladas porque ahí
+   el nombre es el primer viewport entero; acá el gesto de la referencia es un
+   wordmark horizontal, así que corren al hilo y bajan de renglón sólo cuando
+   no entran. Reparto de siempre: pixel en los slots fijos, serif itálica en el
+   slot variable del tema. */
+/* Escala: el 60% de la que tenía al entrar (pedido del 2026-08-27, «40% más
+   chica»). El wordmark seguía leyendo como titular de sección y no como pie
+   de página. La bajada baja con él; la línea de lugar y fecha NO, porque a
+   .6 de --t-micro deja de ser legible y pasa a ser textura. */
+.f-name{
+  margin: 0; display: flex; flex-wrap: wrap; align-items: baseline;
+  column-gap: .2em; row-gap: 0;
+  font-size: var(--f-name); line-height: .88;
+}
+.f-name .pix{ font-family: var(--pixel); font-weight: 800; font-size: 1em;
+              letter-spacing: .035em; text-transform: uppercase; }
+.f-name .tema{ font-family: var(--tema); font-style: italic; font-weight: 400;
+               font-size: 1.16em; letter-spacing: -.012em; text-transform: none; }
+/* line-height fijo en las dos: son los sumandos de `--f-h`. Con
+   `line-height: normal` el alto dependería de las métricas de la fuente y la
+   marca dejaría de calzar apenas cambie una familia. */
+.f-baj{ margin: 0; font-size: calc(var(--t-lead) * .82); font-weight: 600;
+        line-height: 1.25; max-width: 46ch; }
+.f-pie{ margin: 0; font-family: var(--mono); font-weight: 600; font-size: var(--t-micro);
+        line-height: 1.35; letter-spacing: .15em; text-transform: uppercase; opacity: .68; }
+
+/* --- C · la letra chica --- */
+.f-fine{
+  border-top: 2px solid var(--acid);
+  padding-top: clamp(1rem, 2.6vw, 1.5rem); padding-bottom: clamp(1.4rem, 3.4vw, 2.2rem);
+  text-align: center;
+}
+.f-ritmo{ margin: 0; font-family: var(--mono); font-weight: 600; font-size: .62rem;
+          letter-spacing: .14em; text-transform: uppercase; }
+/* el argumento que vivía bajo §08: por qué el ordinal aguanta la próxima
+   edición sin rediseñar nada. Es lo último que quedaba de esa sección. */
+.f-nota{ margin: .7rem auto 0; max-width: 74ch; font-family: var(--mono);
+         font-size: .58rem; line-height: 1.65; opacity: .5; }
+
+@media (max-width: 1000px){
+  .f-dir{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* el sello deja de ser columna angosta y se acuesta a lo ancho */
+  .f-stamp{ grid-column: 1 / -1; }
+  .f-eds{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px){
+  /* apilados, «mismo piso y techo» no quiere decir nada: la marca vuelve a
+     tener alto propio en vez de copiar el del bloque de texto */
+  .f-lock .sheet{ grid-template-columns: minmax(0, 1fr); }
+  .f-mark{ height: 2.4rem; }
+}
+@media (max-width: 520px){
+  .f-dir{ grid-template-columns: minmax(0, 1fr); }
+  .f-eds{ grid-template-columns: minmax(0, 1fr); }
+}
 
 .sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -1204,7 +1513,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   </div>
 </section>
 
-<section id="programa">
+<section id="programa" class="on-dark">
   <div class="sheet">
     <div class="head"><h2 id="progH2"></h2><span class="num">05</span></div>
     <div class="deck-ctl"><button class="flip-all" id="flipAll" type="button"
@@ -1254,14 +1563,16 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   </div>
 </section>
 
-<section id="ediciones">
-  <div class="sheet">
-    <div class="head"><h2 id="edH2"></h2><span class="num">08</span></div>
-    <div class="eds" id="eds"></div>
-    <p class="mono-body" style="margin-top:clamp(1.2rem,3vw,2rem);opacity:.75" id="edNote"></p>
-  </div>
-</section>
-
+<!-- §08 «Every two years» RETIRADA — su contenido vive ahora en el pie.
+     Tenía exactamente las mismas tres fichas (Nº 001/2027 · 002/2029 · 003/2031)
+     que el bloque del ritmo del footer, así que la página decía dos veces lo
+     mismo con dos maquetas distintas. Se consolida en el pie, que es donde se
+     pidió que viviera.
+     Se fue con ella: el render `.eds` con sus máscaras de dissolve creciente,
+     y el numeral 08 — la página queda numerada 01–07, sin hueco.
+     Para restituirla: `git show` de este archivo antes de este commit; la
+     sección, su CSS (`.eds`, buscar «ediciones — el ordinal de plancha») y su
+     entrada en SECTIONS siguen en la historia. -->
 <section id="cierre" class="close">
   <div class="sheet">
     <h2 id="hCierre"></h2>
@@ -1271,17 +1582,66 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 </main>
 
 <footer>
-  <div class="sheet">
-    <div class="lock">
-      <span class="name" id="fName"></span>
-      <span class="baj" id="fBaj"></span>
-      <span class="pie" id="fPie"></span>
+  <!-- A · EL DIRECTORIO. La página es UNA sola, así que todos los destinos son
+       anclas reales de esta página: no hay una entrada que lleve a algo que no
+       existe todavía. Las tres primeras columnas se arman en JS desde el mismo
+       contenido que alimenta las secciones —salas, agenda, porQué—, así que no
+       pueden desincronizarse de lo que la página muestra más arriba.
+       La cuarta columna son los CRÉDITOS: eran una fila suelta al pie y en la
+       referencia ese material ocupa una columna del directorio («Legal»).
+       El quinto lugar —donde la referencia pone su insignia— lo ocupa el libro
+       mayor de las tres ediciones. -->
+  <div class="sheet f-dir">
+    <nav class="f-col" id="fColPage"></nav>
+    <nav class="f-col" id="fColProg"></nav>
+    <nav class="f-col" id="fColWho"></nav>
+    <div class="f-col f-cred">
+      <p class="f-h" id="fCredH"></p>
+      <ul>
+        <li id="fCredImg"></li>
+        <li id="fCredSky"></li>
+        <li id="fCredAcc"></li>
+        <li id="fAuthor"></li>
+      </ul>
     </div>
-    <div class="rule"></div>
-    <div class="fine">
-      <span id="fEd"></span><span id="fCredSky"></span><span id="fCredImg"></span>
-      <span id="fAuthor"></span>
+    <aside class="f-col f-stamp">
+      <p class="f-h" id="fEdsH"></p>
+      <ol class="f-eds" id="fEds"></ol>
+    </aside>
+  </div>
+
+  <!-- B · EL LOCKUP a escala. En la referencia es la marca entera cruzando la
+       tarjeta, y es lo que convierte al pie en una pieza y no en un apéndice.
+       Acá corre las tres voces del nombre al hilo, con la bajada y la línea de
+       lugar y fecha colgando del wordmark. -->
+  <div class="f-lock">
+    <div class="sheet">
+      <span class="f-mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 59.08" fill="currentColor" role="img">
+  <path d="M 0.00,24.50 C 4.00,19.00 10.00,0.60 25.00,0.60 C 35.00,0.60 40.00,15.50 50.00,18.60 C 60.00,21.60 65.00,3.40 78.00,3.40 C 91.00,3.40 101.00,16.00 110.00,22.00 C 113.00,24.50 114.50,26.50 115.50,28.00 L 0,28.00 Z"/>
+  <path d="M 0.00,56.07 C 4.00,51.34 10.00,35.52 25.00,35.52 C 35.00,35.52 40.00,48.33 50.00,51.00 C 60.00,53.58 65.00,37.92 78.00,37.92 C 91.00,37.92 101.00,48.76 110.00,53.92 C 113.00,56.07 114.50,57.79 115.50,59.08 L 0,59.08 Z"/>
+</svg>
+</span>
+      <div class="f-word">
+        <p class="f-name">
+          <span class="pix" id="fNFmt"></span>
+          <span class="tema" id="fNTema"></span>
+          <span class="pix" id="fNLugar"></span>
+          <span class="pix" id="fNEd"></span>
+        </p>
+        <p class="f-baj" id="fBaj"></p>
+        <p class="f-pie" id="fPie"></p>
+      </div>
     </div>
+  </div>
+
+  <!-- C · LA LETRA CHICA. «Cada dos años» estaba dicho en cinco lugares de la
+       página y en ninguno quedaba la escalera completa de ediciones. La
+       escalera está arriba, en el sello; acá queda la frase que la nombra y la
+       nota que explica por qué el ordinal aguanta la próxima edición sin
+       rediseñar nada — lo último que sobrevive de la §08 retirada. -->
+  <div class="sheet f-fine">
+    <p class="f-ritmo" id="fRitmo"></p>
+    <p class="f-nota" id="fRitmoNota"></p>
   </div>
 </footer>
 
@@ -1502,6 +1862,20 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
        canon (porQue[2]) y ya está en superficie en §03. Acá sube a numeral
        «N.º 1», que grita bastante más fuerte que una frase al pasar. Pide
        índice y año antes de producción.                                    */
+    /* El tablero se recortó de NUEVE fichas a SEIS el 2026-08-27. Nueve leían
+       como panel de métricas de producto, no como la evidencia de una tesis:
+       cuanto más se estiraba la grilla, menos pesaba cada dato.
+       Qué se fue y por qué:
+       · «91.9 · Argentina, el mercado más denso en stablecoins» — es
+         literalmente la barra ARG del gráfico, que se conserva por pedido. Era
+         el mismo número dicho dos veces en la misma pantalla.
+       · «68 % de participación de stablecoins» y «1.2 M de billeteras activas»
+         — las dos eran `mock`. Sacarlas deja UN solo sello «Mock» en la
+         sección (el del gráfico) en vez de tres: una pieza institucional puede
+         mostrar un dato provisorio, no un tablero mayormente provisorio.
+       Las seis que quedan cierran dos filas exactas de 12 columnas —5+4+3 y
+       5+4+3— sin que ninguna ficha cambie de color. Lo único que se movió es
+       el span de «4 países» (4 -> 3) y su lugar en el orden. */
     tablero: [
       { k: "num", c: "peri", span: 5, v: "415", src: true, tab: true, tall: true,
         u: { es: "mil M USD", en: "billion USD" },
@@ -1511,10 +1885,10 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         u: { es: "%", en: "%" },
         t: { es: "Interanual — la región que más acelera",
              en: "Year over year — the fastest-accelerating region" } },
-      { k: "num", c: "tan", span: 3, v: "91.9", tall: true,
-        u: { es: "mil M USD", en: "billion USD" },
-        t: { es: "Argentina — el mercado más denso en stablecoins",
-             en: "Argentina — the most stablecoin-dense market" } },
+      { k: "num", c: "peri", span: 3, v: "4", badge: "\u25ce",
+        u: { es: "Países", en: "Countries" },
+        t: { es: "Argentina, Brasil, Chile y Uruguay operan acá",
+             en: "Argentina, Brazil, Chile and Uruguay operate here" } },
 
       /* El único gráfico del tablero. Una sola serie, magnitud por mercado:
          la forma correcta para «comparar magnitudes entre categorías». Va
@@ -1531,22 +1905,15 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         t: { es: "Marco de activos virtuales, vigente — no prometido",
              en: "Virtual-asset framework in force — written, not promised" } },
 
-      { k: "num", c: "red", span: 3, v: "N.º 1", flag: true,
+      /* Era la ficha bermellón — la única roja del tablero. Pasa a salvia por
+         pedido. Consecuencia a la vista: `--c-red` y `.dcard--red` quedan sin
+         un solo consumidor, y la paleta editorial baja de cuatro tintas a
+         tres. El token se deja definido, no borrado: volver a rojo es cambiar
+         esta línea, borrarlo sería tirar la decisión de color entera. */
+      { k: "num", c: "sage", span: 3, v: "N.º 1", flag: true,
         u: { es: "En la región", en: "In the region" },
         t: { es: "Estabilidad política y estado de derecho",
              en: "Political stability and rule of law" } },
-      { k: "num", c: "peri", span: 4, v: "4", badge: "\u25ce",
-        u: { es: "Países", en: "Countries" },
-        t: { es: "Argentina, Brasil, Chile y Uruguay operan acá",
-             en: "Argentina, Brazil, Chile and Uruguay operate here" } },
-      { k: "num", c: "sage", span: 4, v: "68", mock: true,
-        u: { es: "% del volumen", en: "% of volume" },
-        t: { es: "Participación de stablecoins en la región",
-             en: "Stablecoin share of regional volume" } },
-      { k: "num", c: "tan", span: 4, v: "1.2", mock: true,
-        u: { es: "Millones", en: "Million" },
-        t: { es: "Billeteras activas en el Cono Sur",
-             en: "Active wallets across the Southern Cone" } }
     ],
 
     /* --- CTA: neutral. El modelo de acceso NO está decidido ------------- */
@@ -1837,6 +2204,26 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         secciones: { registros: "Agenda", esnoes: "Who attends",
                      porque: "The place", tesis: "The thesis",
                      programa: "Programme", ediciones: "Editions" },
+
+        /* --- el pie: el directorio -----------------------------------------
+           El pie se rehizo el 2026-08-27 contra una referencia que abre con un
+           DIRECTORIO denso de columnas. La página es UNA sola, así que cada
+           entrada apunta a un ancla que existe: no hay destino inventado.
+           Los nombres largos —salas, bloques de agenda, personas, razones— ya
+           viven en este archivo y se reusan tal cual. Acá abajo van sólo los
+           encabezados de columna y las tres secciones que `secciones` no
+           nombra, porque en la barra de arriba no entraban. */
+        pie: {
+          columnas: { pagina:   "The page",
+                      programa: "The programme",
+                      agenda:   "The agenda",
+                      porque:   "Why Punta del Este",
+                      creditos: "Credits" },
+          secciones: { senal:    "The signal",
+                       corredor: "The destination",
+                       sala:     "The table",
+                       cierre:   "Get updates" }
+        },
         titulos: {
           registros: "The <em>Agenda</em>",
           esnoes:    "Who <em>attends</em>",
@@ -2523,19 +2910,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
      de las cinco piezas anteriores. El ordinal de plancha es el mecanismo: la
      edición es un contador, no la palabra grande, así 002 y 003 entran sin
      rediseño. El dissolve crece con la distancia en el tiempo. */
-  $("edH2").innerHTML = L.ui.titulos.ediciones;
-  $("eds").innerHTML = C.ediciones.map((e, i) =>
-    `<div class="ed-card">
-       <canvas data-blob="void" data-seed="${101 + i * 31.4}"
-               data-cell="12" data-fringe-cells="2.7" data-dither="${(i * 0.5).toFixed(2)}"
-               data-from=".ord, .yr, .st" data-bleed="bottom" aria-hidden="true"></canvas>
-       <div class="over" style="color:var(--acid)">
-         <span class="ord">Nº ${e.n}</span>
-         <span class="yr">${e.anio}</span>
-         <span class="st">${L.estados[e.anio]}</span>
-       </div>
-     </div>`).join("");
-  $("edNote").textContent = L.ui.edicionesNota + " " + L.ritmo;
 
   /* los títulos de sección: dejaron de vivir a mano en el markup */
   const TITULOS = { hRegistros: "registros", hEsnoes: "esnoes", hPorque: "porque",
@@ -2543,11 +2917,72 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
                     hCierre: "cierre" };
   Object.entries(TITULOS).forEach(([id, k]) => { $(id).innerHTML = L.ui.titulos[k]; });
 
-  /* footer */
-  $("fName").textContent = C.nombre.completo;
+  /* footer — A · el directorio ------------------------------------------
+     Las columnas se arman desde el MISMO contenido que alimenta las secciones
+     (salas, agenda, audiencia, porQué). Ninguna etiqueta se escribe dos veces:
+     si una sala cambia de nombre arriba, cambia sola acá abajo. */
+  const P = L.ui.pie, S = L.ui.secciones;
+  const fDir = (id, grupos) => {
+    $(id).setAttribute("aria-label", grupos[0].h);
+    $(id).innerHTML = grupos.map((g) =>
+      `<p class="f-h">${g.h}</p><ul>` +
+      g.filas.map((f) => `<li><a href="#${f.a}">${f.t}</a></li>`).join("") +
+      "</ul>").join("");
+  };
+  /* el índice completo de la página: nueve anclas, incluidas las tres secciones
+     que la barra no nombra (§04, §06, §07) porque ahí arriba no entran */
+  fDir("fColPage", [{ h: P.columnas.pagina, filas: [
+    { a: "registros", t: S.registros }, { a: "esnoes", t: S.esnoes },
+    { a: "porque",    t: S.porque },    { a: "senal",  t: P.secciones.senal },
+    { a: "programa",  t: S.programa },  { a: "tesis",  t: S.tesis },
+    { a: "corredor",  t: P.secciones.corredor },
+    { a: "sala",      t: P.secciones.sala },
+    { a: "cierre",    t: P.secciones.cierre }
+  ] }]);
+  /* dos grupos en una columna — el patrón de la referencia */
+  fDir("fColProg", [
+    { h: P.columnas.programa,
+      filas: C.salas.map((x) => ({ a: "programa", t: x.en })) },
+    { h: P.columnas.agenda,
+      filas: C.agenda.map((b) => ({ a: "registros", t: b.en.t })) }
+  ]);
+  fDir("fColWho", [
+    { h: S.esnoes, filas: C.audiencia.map((a) => ({ a: "esnoes", t: a.en.t })) },
+    { h: P.columnas.porque, filas: L.porQue.map((q) => ({ a: "porque", t: q.t })) }
+  ]);
+  $("fCredH").textContent = P.columnas.creditos;
+
+  /* B · el lockup a escala, en sus cuatro slots */
+  $("fNFmt").textContent   = C.nombre.formato;
+  $("fNTema").textContent  = C.nombre.tema;
+  $("fNLugar").textContent = C.nombre.lugar;
+  $("fNEd").textContent    = C.nombre.edicion;
   $("fBaj").textContent = C.lockup.en.bajada;
   $("fPie").textContent = C.lockup.en.pie;
-  $("fEd").textContent = L.ui.edicionN;
+
+  /* el sello: la escalera de ediciones, de la MISMA fuente que alimentaba §08
+     — no una segunda copia de los años a mano, que es lo que se
+     desincronizaría en cuanto cambie una fecha. */
+  $("fEdsH").textContent = S.ediciones;
+  $("fEds").innerHTML = C.ediciones.map((e, i) =>
+    `<li class="f-ed${i === 0 ? " f-ed--now" : ""}">
+       <span class="ord">Nº ${e.n}</span>
+       <span class="yr">${e.anio}</span>
+       <span class="st">${L.estados[e.anio]}</span>
+     </li>`).join("");
+  /* C · la letra chica */
+  $("fRitmo").textContent = L.ritmo;
+  /* La nota va SIN `L.ritmo` pegado al final, que es como la servía §08: esa
+     frase ya está tres centímetros más arriba, en `rt-lead`. Pegarla acá era
+     decir dos veces lo mismo dentro del mismo bloque. */
+  $("fRitmoNota").textContent = L.ui.edicionesNota;
+  /* la nota de acceso baja a los créditos: es la única declaración de la
+     página sobre qué NO está decidido, y en la referencia ese material vive
+     exactamente ahí, en la columna legal. */
+  $("fCredAcc").textContent = L.cta.nota;
+  /* «Edition Nº 001» sale de la letra chica: el libro mayor de acá arriba ya
+     dice Nº 001, y con la nota eran TRES enunciados del mismo dato en el
+     mismo pie. */
   $("fCredSky").textContent = "";
   $("fCredImg").textContent = L.creditos.imagen;
   $("fAuthor").textContent = L.creditos.autoria;
@@ -2759,8 +3194,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
        índice, y es a mano — si no se mueve junto con el DOM, la barra ofrece
        un recorrido distinto del que la página tiene. */
     { id: "programa",  t: L.ui.secciones.programa,  n: "05" },
-    { id: "tesis",     t: L.ui.secciones.tesis,     n: "—"  },
-    { id: "ediciones", t: L.ui.secciones.ediciones, n: "08" }
+    { id: "tesis",     t: L.ui.secciones.tesis,     n: "—"  }
   ];
   const bar = $("bar"), navLinks = $("navLinks"), navPanel = $("navPanel");
   const prog = $("prog"), toggle = $("navToggle");
@@ -2825,6 +3259,38 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
      embeberlas en el SVG. No lo usa la página. */
   window.__figmaImgs = IMGS;
   const loaded = new Map();
+
+  /* ---------- §05: la sala bajo el puntero pinta el fondo de la sección ---
+     Va acá abajo y no junto al render de las salas por una razón concreta:
+     `IMGS` es un `const` declarado en esta misma línea de arriba, y las salas
+     se arman ~470 líneas antes. Referenciarlo allá cae en la zona muerta
+     temporal y tira ReferenceError — la sección entera quedaría sin armar.
+
+     Se lee `data-img` del canvas de cada sala, que ya trae el slug: así no hay
+     una segunda tabla sala→imagen que se pueda desincronizar de la primera.
+
+     Teclado incluido: `focusin`/`focusout` hacen lo mismo que el puntero, así
+     que quien tabula ve el mismo fondo que quien pasa el mouse. En táctil no
+     se dispara ninguno de los dos y la sección se queda en negro, que es el
+     estado de reposo — no hay nada que arreglar ahí. */
+  function wireRoomHover() {
+    const sec = document.getElementById("programa");
+    if (!sec) return;
+    sec.querySelectorAll(".room").forEach((btn) => {
+      const cv = btn.querySelector("canvas[data-img]");
+      const src = cv && IMGS[cv.dataset.img];
+      if (!src) return;
+      const on = () => {
+        sec.style.setProperty("--room-bg", "url(" + src + ")");
+        sec.dataset.hover = "1";
+      };
+      const off = () => { sec.dataset.hover = "0"; };
+      btn.addEventListener("mouseenter", on);
+      btn.addEventListener("mouseleave", off);
+      btn.addEventListener("focusin", on);
+      btn.addEventListener("focusout", off);
+    });
+  }
 
   function paintImgCanvas(cv) {
     const slug = cv.dataset.img;
@@ -3049,6 +3515,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { paintHero(); Mask.schedule(); });
 
   wireImages();
+  wireRoomHover();
   Mask.schedule();
 })();
 </script>
