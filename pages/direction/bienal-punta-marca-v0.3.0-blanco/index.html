@@ -528,6 +528,111 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .body{ margin: 0; font-size: var(--t-body); line-height: 1.52; font-weight: 500; max-width: 62ch; }
 .mono-body{ font-family: var(--mono); font-size: var(--t-mono); line-height: 1.6; max-width: 68ch; margin: 0; }
 
+/* ---------- §04 · el tablero -------------------------------------------
+   Bento: doce columnas, fichas de ancho variable. La referencia son los
+   widgets apilados de iOS, pero SÓLO la estructura — su acabado corre con
+   esquinas redondeadas, medio pantone de colores y degradés, y las tres cosas
+   están prohibidas acá (No-05 radio cero, No-02 ninguna tercera tinta,
+   Sí-02 sin difuminado).
+
+   Lo que sí se toma: la mezcla de tamaños, y que NO todas las fichas sean un
+   número grande. Eso último no es sólo ritmo visual — es lo que permite que
+   el tablero sea honesto. Hay tres datos de mercado con fuente y seis hechos
+   sin cifra; una grilla de nueve numerales obligaría a inventar seis.
+
+   Las guidelines fijan el resto: mono 600 para dato y etiqueta, pixel para el
+   numeral, la serif NUNCA en datos (§ tipografía), y el bloque de datos va
+   adentro de la masa. */
+.tablero{
+  display: grid; grid-template-columns: repeat(12, 1fr);
+  gap: clamp(.35rem, .9vw, .6rem);
+  margin-top: clamp(1.4rem, 3.4vw, 2.4rem);
+}
+.tile{
+  grid-column: span var(--sp, 4);
+  display: flex; flex-direction: column; justify-content: space-between;
+  gap: clamp(.7rem, 1.8vw, 1.1rem);
+  padding: clamp(.85rem, 2vw, 1.25rem);
+  min-height: clamp(128px, 13vw, 178px);
+  border: var(--hair) solid var(--acid);
+}
+/* la inversión resuelve la jerarquía: el dato de mercado grita en masa ácida,
+   el perímetro afirma en void. Ninguna tinta nueva, ningún tercer color. */
+.tile--loud{ background: var(--acid); color: var(--void); border-color: var(--acid); }
+.tile .u{
+  font-family: var(--mono); font-weight: 600; font-size: var(--t-micro);
+  letter-spacing: .17em; text-transform: uppercase; opacity: .72;
+}
+.tile .v{
+  font-family: var(--pixel); font-weight: 800; line-height: .8;
+  font-size: clamp(2.6rem, 6.2vw, 4.6rem); letter-spacing: .01em;
+  font-variant-numeric: tabular-nums;
+}
+.tile .t{ font-size: var(--t-body); font-weight: 500; line-height: 1.38; }
+/* la ficha sin numeral no deja un hueco donde iba el número: sube el enunciado
+   a voz de cuerpo grande, así el bento no queda cojo. */
+.tile--stmt .t{ font-size: var(--t-sub); font-weight: 600; line-height: 1.24; }
+.tile .src{
+  font-family: var(--mono); font-size: .54rem; letter-spacing: .12em;
+  text-transform: uppercase; opacity: .5;
+  margin-top: .35rem;   /* corta el margen grande que trae `.src` de raíz */
+}
+/* El rótulo de dato inventado. Va INVERTIDO —no atenuado— a propósito: un
+   mock atenuado se lee como nota al pie y se ignora; invertido es lo primero
+   que ve el ojo en la ficha, que es exactamente lo que tiene que pasar. */
+.tile .mock{
+  align-self: flex-start; font-family: var(--mono); font-weight: 600;
+  font-size: .54rem; letter-spacing: .16em; text-transform: uppercase;
+  padding: .25em .5em; background: var(--acid); color: var(--void);
+}
+.tile--loud .mock{ background: var(--void); color: var(--acid); }
+.tile .hd{ display: flex; justify-content: space-between; align-items: flex-start; gap: .6rem; }
+
+/* --- el gráfico de barras -------------------------------------------------
+   Una sola serie, así que no lleva leyenda: el rótulo de la ficha la nombra.
+   Etiqueta directa en cada barra —son cuatro— en vez de tooltip. Las barras
+   se apoyan en la línea de base y el eje es recesivo: un filete, no una caja.
+   Sin degradés ni redondeos: la barra es un rectángulo de la misma familia
+   que la celda de la máscara. */
+/* La pista tiene alto DEFINIDO y el relleno mide un porcentaje de ella. Es
+   load-bearing: con `min-height` en el contenedor y `height:100%` en la barra,
+   el porcentaje del relleno no tiene contra qué resolver, cae a `auto` y la
+   barra crece hasta reventar la sección — que es exactamente lo que hizo en
+   el primer intento (la ficha pasó de 262 px a más de mil). */
+/* OJO con los nombres: `.bar` YA EXISTE en este sistema y es el header fijo
+   (`position: fixed; top:0`). La primera versión de este gráfico llamó `.bar`
+   a cada columna y las cuatro se posicionaron fijas sobre el viewport — de ahí
+   la plancha blanca gigante que rompió la sección. Todo lo del gráfico va con
+   prefijo `tb-`. */
+.tb-chart{ display: flex; align-items: stretch; gap: clamp(.3rem, .8vw, .5rem);
+           height: clamp(104px, 11vw, 150px);
+           border-bottom: 2px solid currentColor; }
+.tb-col{ flex: 1; display: grid; grid-template-rows: 1fr auto;
+         gap: .3rem; justify-items: center; min-width: 0; }
+/* El valor va DENTRO de la pista, apoyado sobre su propia barra. Antes vivía
+   en una fila propia de la grilla y las cuatro cifras se alineaban arriba:
+   sobre una barra alta se leía bien, pero sobre la de 6.2 quedaba flotando
+   a media ficha de distancia de la barra que nombraba. */
+.tb-track{ width: 100%; display: flex; flex-direction: column;
+           justify-content: flex-end; align-items: center; gap: .25rem; }
+.tb-fill{ width: 100%; height: var(--h); background: currentColor;
+          transition: opacity .2s var(--ease-out); }
+.tb-col:hover .tb-fill, .tb-col:focus-visible .tb-fill{ opacity: .62; }
+.tb-v{ font-family: var(--mono); font-weight: 600; font-size: .58rem;
+       letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+.tb-l{ font-family: var(--mono); font-size: .54rem; letter-spacing: .14em;
+       text-transform: uppercase; opacity: .6; }
+.tile--bars{ min-height: clamp(196px, 20vw, 262px); }
+@media (max-width: 900px){
+  .tablero{ grid-template-columns: repeat(6, 1fr); }
+  .tile{ grid-column: span 3; }
+  .tile[style*="--sp:5"], .tile[style*="--sp:3"]{ grid-column: span 6; }
+}
+@media (max-width: 560px){
+  .tablero{ grid-template-columns: 1fr; }
+  .tile{ grid-column: span 1; }
+}
+
 /* registros — knockout: la masa cubre y el texto vive en muescas recortadas.
    Los tres bloques van en FILA, no apilados: apilados dejaban media pantalla
    vacía a la derecha en desktop.
@@ -921,7 +1026,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   <div class="sheet">
     <div class="head"><h2 id="hSenal"></h2><span class="num">04</span></div>
     <p class="body" id="senalLectura" style="margin-bottom:clamp(1.6rem,4vw,2.6rem)"></p>
-    <div class="signal" id="signal"></div>
+    <div class="tablero" id="signal"></div>
     <p class="src" id="senalSrc"></p>
   </div>
 </section>
@@ -1201,6 +1306,75 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
       lectura: "La región no está emergiendo. Ya emergió — on-chain, a escala, " +
                "por delante de sus instituciones."
     },
+
+    /* --- el tablero de §04 ------------------------------------------------
+       Nueve fichas. TRES llevan dato real con fuente nombrada (Chainalysis
+       2024, ya en el canon); DOS son hechos verificables del material fuente;
+       las CUATRO restantes son MOCK — cifras inventadas para poder juzgar el
+       diseño, marcadas `mock: true` y rotuladas en pantalla.
+
+       El rótulo no es decorativo y no se saca «después»: es lo único que
+       impide que un número inventado termine en una pieza que van a leer
+       sponsors e instituciones. Un tablero de nueve cifras plausibles y sin
+       marca es indistinguible de uno real — por eso el mock se declara en el
+       dato y se ve en la ficha.
+
+       Por qué hay mocks: se barrió el material entero (deck skeleton V0.1,
+       concept-and-case, naming-narrativa, houses-concept) y la única cifra
+       dura además de las tres de Chainalysis es la Ley 20.345. El resto de
+       los números del deck son aforos de sala y precios de sponsorship, y el
+       propio deck los marca «DRAFT, pending Daiana capacity + economics pass».
+
+       ⚠️ `ruleOfLaw` no es mock pero tampoco tiene fuente citada: viene del
+       canon (porQue[2]) y ya está en superficie en §03. Acá sube a numeral
+       «N.º 1», que grita bastante más fuerte que una frase al pasar. Pide
+       índice y año antes de producción.                                    */
+    tablero: [
+      { k: "num", loud: true, span: 4, v: "415", src: true,
+        u: { es: "mil M USD", en: "billion USD" },
+        t: { es: "Volumen on-chain de América Latina",
+             en: "Latin America on-chain volume" } },
+      { k: "num", loud: true, span: 4, v: "42.5", src: true,
+        u: { es: "%", en: "%" },
+        t: { es: "Interanual — la región que más acelera",
+             en: "Year over year — the fastest-accelerating region" } },
+      { k: "num", loud: true, span: 4, v: "91.9", src: true,
+        u: { es: "mil M USD", en: "billion USD" },
+        t: { es: "Argentina — el mercado más denso en stablecoins",
+             en: "Argentina — the most stablecoin-dense market" } },
+
+      /* El único gráfico del tablero. Una sola serie, magnitud por mercado:
+         la forma correcta para «comparar magnitudes entre categorías». Va
+         etiquetado en la barra, no con tooltip: con cuatro barras la etiqueta
+         directa hace redundante el hover. */
+      { k: "bars", span: 7, mock: true,
+        u: { es: "Volumen on-chain por mercado", en: "On-chain volume by market" },
+        t: { es: "mil M USD, doce meses móviles", en: "billion USD, trailing twelve months" },
+        series: [ { l: "ARG", v: 91.9 }, { l: "BRA", v: 78.4 },
+                  { l: "CHL", v: 21.6 }, { l: "URY", v: 6.2 } ] },
+
+      { k: "num", span: 5, v: "20.345",
+        u: { es: "Ley", en: "Law" },
+        t: { es: "Marco de activos virtuales, vigente — no prometido",
+             en: "Virtual-asset framework in force — written, not promised" } },
+
+      { k: "num", span: 3, v: "N.º 1", flag: true,
+        u: { es: "En la región", en: "In the region" },
+        t: { es: "Estabilidad política y estado de derecho",
+             en: "Political stability and rule of law" } },
+      { k: "num", span: 3, v: "4",
+        u: { es: "Países", en: "Countries" },
+        t: { es: "Argentina, Brasil, Chile y Uruguay operan acá",
+             en: "Argentina, Brazil, Chile and Uruguay operate here" } },
+      { k: "num", span: 3, v: "68", mock: true,
+        u: { es: "% del volumen", en: "% of volume" },
+        t: { es: "Participación de stablecoins en la región",
+             en: "Stablecoin share of regional volume" } },
+      { k: "num", span: 3, v: "1.2", mock: true,
+        u: { es: "Millones", en: "Million" },
+        t: { es: "Billeteras activas en el Cono Sur",
+             en: "Active wallets across the Southern Cone" } }
+    ],
 
     /* --- CTA: neutral. El modelo de acceso NO está decidido ------------- */
     cta: { label: "Recibir novedades",
@@ -2013,9 +2187,32 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 
   /* 04 — con la fuente citada: sólo la generación más vieja la citaba */
   $("senalLectura").textContent = L.senal.lectura;
-  $("signal").innerHTML = L.senal.datos.map((d) =>
-    `<div class="stat"><div class="v">${d.v}</div><div class="u">${d.u}</div><div class="d">${d.d}</div></div>`
-  ).join("");
+  $("signal").innerHTML = C.tablero.map((t) => {
+    const cls = "tile" + (t.loud ? " tile--loud" : "") +
+                (t.k === "bars" ? " tile--bars" : "");
+    /* el rótulo de mock primero: es lo que decide si la cifra se puede creer */
+    const mock = t.mock ? `<span class="mock">Mock data</span>` : "";
+    const src  = t.src ? `<div class="src">${C.senal.fuente}</div>` : "";
+    let body;
+    if (t.k === "bars") {
+      const max = Math.max(...t.series.map((s) => s.v));
+      body = `<div class="tb-chart">` + t.series.map((s) =>
+        `<div class="tb-col" tabindex="0">
+           <span class="tb-track">
+             <span class="tb-v">${s.v}</span>
+             <span class="tb-fill" style="--h:${(s.v / max * 100).toFixed(1)}%"></span>
+           </span>
+           <span class="tb-l">${s.l}</span>
+         </div>`).join("") + `</div>`;
+    } else {
+      body = `<div class="v">${t.v}</div>`;
+    }
+    return `<div class="${cls}" style="--sp:${t.span}">
+       <div class="hd"><div class="u">${t.u.en}</div>${mock}</div>
+       ${body}
+       <div><div class="t">${t.t.en}</div>${src}</div>
+     </div>`;
+  }).join("");
   $("senalSrc").textContent = L.senal.ventana + " · " + L.ui.fuente + ": " + C.senal.fuente;
 
   /* 05 — las cinco salas. La foto entra POR la máscara. */
