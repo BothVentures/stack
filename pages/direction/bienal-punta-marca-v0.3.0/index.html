@@ -527,47 +527,23 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .claim--acid{ background: var(--acid); color: var(--void); }
 .claim--void{ background: var(--void); color: var(--acid); }
 
-/* ---------- bandas de contenido: la agenda (§05) y las personas (§07) ------
-   Las dos son 3-up y las dos cuelgan de una sección que ya existía, así que
-   NO estrenan lenguaje: reusan la ficha de plancha que el sistema ya tiene.
-   La diferencia entre ellas es de tinta, no de forma — la agenda va sobre
-   plancha clara porque §05 corre sobre el fondo del sitio; las personas van
-   en inversión porque §07 es una sección `on-dark` sobre fotografía. */
-.band-h{
-  margin: 0 0 .6rem; font-family: var(--mono); font-weight: 600;
-  font-size: var(--t-lbl); letter-spacing: .18em; text-transform: uppercase;
-  border-top: 2px solid currentColor; padding-top: .5rem;
-}
-.band-note{ margin: .7rem 0 clamp(1rem, 2.4vw, 1.5rem); opacity: .72; font-size: .6rem; }
-.blocks, .who{
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1px; background: var(--void); border: 2px solid var(--void);
-}
-.blocks > div, .who > div{
-  background: var(--acid); color: var(--void);
-  padding: clamp(.95rem, 2.2vw, 1.4rem);
-  display: grid; gap: .45rem; align-content: start;
-  min-height: clamp(112px, 11vw, 150px);
-}
-/* §07 corre invertida: la sección es on-dark y la plancha clara ahí pelearía
-   con la fotografía que ya sostiene el bloque de arriba. */
-.on-dark .who > div{ background: var(--void); color: var(--acid); border: var(--hair) solid var(--acid); }
-.blocks .n, .who .n{
-  font-family: var(--pixel); font-weight: 800; line-height: .82;
-  font-size: clamp(1.3rem, 3vw, 2rem);
-}
-/* el eje del canon al que responde cada persona — Capital · Reglas ·
-   Infraestructura, en ese orden. No es decoración: es la trazabilidad. */
-.who .eje{
-  font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase; opacity: .62;
-}
-.blocks .t, .who .t{ font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em; line-height: 1.15; }
-.blocks .d, .who .d{ font-size: var(--t-body); font-weight: 500; line-height: 1.45; }
 /* la línea de continuidad en el hero: chica, mono, nunca compite con el nombre */
 .hero .cont{
   margin: .55rem 0 0; font-family: var(--mono); font-size: var(--t-micro);
   font-weight: 600; letter-spacing: .13em; text-transform: uppercase; opacity: .62;
+}
+/* la enumeración de René en el hero: es la promesa dicha en voz activa, así
+   que pesa más que el crédito y menos que la bajada. */
+.hero .prom{
+  margin: .5rem 0 0; font-size: var(--t-body); font-weight: 600; line-height: 1.35;
+  max-width: 40ch;
+}
+/* el cuerpo de cada bloque de la agenda dentro de la ficha del registro.
+   `.w` no servía: está pensada para un dato de contexto —mono, versalitas,
+   letterspacing abierto— y una frase entera ahí se vuelve ilegible. */
+.reg .dsc{
+  display: block; margin-top: .45em; font-size: var(--t-body);
+  font-weight: 500; line-height: 1.45; max-width: 46ch;
 }
 
 /* por qué — trama de puntos (zkPass) */
@@ -604,9 +580,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    deja de ser un indicador pasivo para volverse el ÍNDICE del carrusel — se
    clickea para ir a una sala y sigue el scroll. Es la lectura de la ruta
    VB0.1-D: cuatro salas en fila, una pantalla, sin scroll vertical. */
-#programa{ min-height: 100svh; display: flex; flex-direction: column;
-           padding-top: clamp(1.5rem, 3.2vw, 2.6rem);
-           padding-bottom: clamp(1rem, 2.2vw, 1.8rem); }
+#programa{ min-height: 100svh; display: flex; flex-direction: column; }
 /* min-width: 0 en los dos, y es load-bearing: un flex item hereda
    min-width:auto, así que el ancho del CONTENIDO del carrusel (5 × 230 px)
    se propagaba hacia arriba y el documento entero medía 1180 px en un
@@ -651,7 +625,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    entera del espacio residual de la sección, así que agregarle cualquier
    contenido a §05 la colapsaba a cero píxeles en silencio — sin error, sin
    layout roto, sólo cinco tarjetas sin foto. El piso lo hace imposible. */
-.room .plate{ position: relative; flex: 1; min-height: clamp(110px, 13vw, 170px);
+.room .plate{ position: relative; flex: 1; min-height: clamp(120px, 14vw, 200px);
               background: var(--void); overflow: hidden; z-index: 2; }
 .room canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
 .room .chip-day{
@@ -748,6 +722,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         <p class="eyebrow" id="heroEjes"></p>
         <p class="lead" id="heroBaj"></p>
         <p class="en" id="heroBajEn"></p>
+        <p class="prom" id="heroProm"></p>
         <a class="cta" href="#cierre" id="heroCta"></a>
         <p class="credit" id="heroCredit"></p>
       </div>
@@ -802,8 +777,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 <section id="programa">
   <div class="sheet">
     <div class="head"><h2 id="progH2"></h2><span class="num">05</span></div>
-    <p class="band-h" id="agendaH"></p>
-    <div class="blocks" id="blocks"></div>
     <div class="rooms" id="rooms"></div>
     <p class="mono-body" style="margin:.9rem 0 .7rem;opacity:.72;font-size:.6rem" id="roomsNote"></p>
   </div>
@@ -823,8 +796,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
     <div class="head"><h2 id="hSala"></h2><span class="num">07</span></div>
     <p class="body" id="salaBody" style="margin-bottom:clamp(1.2rem,3vw,1.8rem)"></p>
     <ul class="axes" id="salaEjes"></ul>
-    <p class="band-h" id="audienciaH"></p>
-    <div class="who" id="audience"></div>
     <table class="tens" id="tens"><tbody></tbody></table>
   </div>
 </section>
@@ -1284,15 +1255,26 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
         edicionN: "Edition Nº 001",
         agendaTitulo: "What gets discussed",
         agendaNota:
-          "Three blocks, one core. The rooms are format; the blocks are " +
-          "content.",
+          "Three blocks, one core. The blocks are content; the five rooms " +
+          "further down are format.",
         audienciaTitulo: "Three rooms inside the room",
-        secciones: { registros: "What it is", esnoes: "Doctrine",
+
+        /* La única frase del cuerpo de René que sobrevive entera al canon.
+           Su párrafo de apertura abría con "convert this capital beach
+           paradise into a weekend full of side events", que es exactamente
+           la lectura de folleto turístico + evento suelto que el sistema
+           prohíbe (`prohibido.visual`, `esNoEs` #1 y #2). Pero cierra con
+           esta enumeración, que es el `posicionamiento` del canon dicho en
+           doce palabras y en voz activa — y ordena las tres personas en el
+           mismo orden que los ejes: Capital · Reglas · Infraestructura. */
+        promesa: "Regulators on the record, capital at the table, and the " +
+                 "builders they fund.",
+        secciones: { registros: "Agenda", esnoes: "Who attends",
                      porque: "The place", tesis: "The thesis",
                      programa: "Programme", ediciones: "Editions" },
         titulos: {
-          registros: "Two registers, two <em>audiences</em>",
-          esnoes:    "What it is, and what it <em>is not</em>",
+          registros: "The <em>Agenda</em>",
+          esnoes:    "Who <em>attends</em>",
           porque:    "Why <em>Punta del Este</em>",
           senal:     "The <em>signal</em>",
           programa:  "Two days, two <em>layers</em>",
@@ -1757,6 +1739,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   $("heroEjes").textContent = C.bajada.institucional.ejes.join(" · ");
   $("heroBaj").textContent = C.lockup.en.bajada + ".";
   $("heroBajEn").textContent = C.bajada.publico.linea;
+  $("heroProm").textContent = L.ui.promesa;
   $("heroCta").textContent = L.cta.label;
   $("closeCta").textContent = L.cta.label;
   $("heroCredit").textContent = L.creditos.cielo;
@@ -1766,19 +1749,27 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   /* 01 — los DOS registros, cada uno completo y con su audiencia. Antes el
      institucional quedaba reducido a tres chips y "del nuevo sistema
      financiero" no aparecía en ninguna pieza. */
-  $("regsOver").innerHTML = [
-    [L.ui.registroPublico, C.lockup.en.bajada, "Web, sponsor deck, press, social, signage"],
-    /* El institucional NO se traduce: el canon lo prohíbe y su audiencia son
-       instituciones uruguayas. Queda en español, a la vista, con su etiqueta. */
-    [L.ui.registroInstitucional, C.bajada.institucional.linea, C.bajada.institucional.donde]
-  ].map(([k, v, w]) =>
-    `<div class="reg"><span class="k">${k}</span><span class="v">${v}</span><span class="w">${w}</span></div>`
-  ).join("");
-  $("regsNote").textContent = L.ui.registrosNota + " " + L.regla;
+  /* La agenda. Ocupa el knockout de §01 —la misma masa, las mismas muescas—
+     porque el viewport 2 es el primer contenido después del nombre, y lo
+     primero que alguien necesita saber no es cómo hablamos: es de qué se
+     habla. La ficha del registro mapea sin forzar nada: clave = el bloque,
+     valor = el tema, y una línea de cuerpo debajo. */
+  $("regsOver").innerHTML = C.agenda.map((b) =>
+    `<div class="reg"><span class="k">Block ${b.n}</span>` +
+    `<span class="v">${b.en.t}</span>` +
+    `<span class="dsc">${b.en.d}</span></div>`).join("");
+  $("regsNote").textContent = L.ui.agendaNota;
 
   /* 02 — qué es y qué no es. Sólo las líneas públicas: las dos que son
      doctrina de lenguaje interno quedan fuera de la superficie. */
-  $("claims").innerHTML = L.esNoEs.map((c, i) => {
+  /* Las tres personas, en el knockout de §02. La ficha de esta sección ya
+     era número + título + cuerpo, así que el calce es 1:1 y no hubo que
+     tocar el diseño: sólo entran tres en vez de cinco.
+     El eje del canon al que responde cada una NO se rotula: el ORDEN ya lo
+     dice —Capital · Reglas · Infraestructura, §2 del canon— y una etiqueta
+     en español al lado de un título en inglés se lee como olvido. */
+  $("claims").innerHTML = C.audiencia.map((c0, i) => {
+    const c = c0.en;
     const dark = i % 2 === 1;                 /* fondo de la ficha */
     return `<div class="claim ${dark ? "claim--void" : "claim--acid"}">
        <canvas data-blob="${dark ? "acid" : "void"}" data-mode="knockout"
@@ -1813,12 +1804,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
                      "04": "la-fiesta", "05": "las-casas" };
   $("progH2").innerHTML = L.ui.titulos.programa;
 
-  /* la agenda — TRES bloques temáticos. Las salas dicen dónde y cuándo; esto
-     dice de qué se habla. Hasta hoy la página no lo decía en ningún lado. */
-  $("agendaH").textContent = L.ui.agendaTitulo;
-  $("blocks").innerHTML = C.agenda.map((b) =>
-    `<div><span class="n">${b.n}</span><span class="t">${b.en.t}</span>` +
-    `<span class="d">${b.en.d}</span></div>`).join("");
   $("rooms").innerHTML = C.salas.map((s, i) =>
     `<div class="room">
        <div class="plate">
@@ -1854,14 +1839,6 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   /* 07 */
   $("salaBody").textContent = L.posicionamiento;
   $("salaEjes").innerHTML = C.bajada.institucional.ejes.map((e) => `<li>${e}</li>`).join("");
-
-  /* las tres personas. §07 las enunciaba en una línea y saltaba a la tabla:
-     nunca las describía. Van en el orden del canon —Capital · Reglas ·
-     Infraestructura— y cada una declara a qué eje responde. */
-  $("audienciaH").textContent = L.ui.audienciaTitulo;
-  $("audience").innerHTML = C.audiencia.map((a) =>
-    `<div><span class="n">${a.n}</span><span class="eje">${a.eje}</span>` +
-    `<span class="t">${a.en.t}</span><span class="d">${a.en.d}</span></div>`).join("");
 
   $("tens").querySelector("tbody").innerHTML = L.ejes.map((e) =>
     `<tr><td>${e.de}</td><td class="ax">${e.eje}</td><td class="to">${e.a}</td></tr>`).join("");
