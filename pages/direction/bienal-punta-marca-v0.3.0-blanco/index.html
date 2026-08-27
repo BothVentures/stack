@@ -127,22 +127,17 @@ body{
 }
 .bar[data-shrunk="1"] .row{ padding-top: .5rem; padding-bottom: .5rem; }
 
-/* El monograma del navbar: b B p — las iniciales del nombre repartidas en las
-   MISMAS dos voces que el lockup del hero, la pixelada en los slots fijos y la
-   serif itálica en el del tema. Las minúsculas de los extremos y la mayúscula
-   del medio no son un capricho: hacen que la letra del tema sea la única que
-   sube, así el monograma tiene la misma silueta que el nombre completo.
-   La `b` y la `p` salen del `font-family` de este bloque; sólo la del medio
-   necesita regla propia. */
+/* El logo de las dunas en el navbar. Va como SVG inline y no como <img>: la
+   página es UN archivo autocontenido, y además así hereda `currentColor` —
+   la marca se invierte sola con la barra, sin una segunda copia del archivo
+   en el otro color. El trazo se genera en _logo/build_logo.py. */
 .bar .ed{
-  font-family: var(--pixel); font-weight: 800; font-size: 1.15rem;
-  letter-spacing: .02em; line-height: 1; text-decoration: none; color: inherit;
-  flex: none; display: inline-flex; align-items: baseline;
+  display: inline-flex; align-items: center; flex: none;
+  text-decoration: none; color: inherit;
 }
-.bar .ed .ed-t{
-  font-family: var(--tema); font-style: italic; font-weight: 400;
-  font-size: 1.3em; letter-spacing: -.015em; margin: 0 .02em;
-}
+.bar .ed svg{ display: block; height: 1.55rem; width: auto; }
+.bar[data-shrunk="1"] .ed svg{ height: 1.25rem; }
+.bar .ed:hover svg{ opacity: .78; }
 .bar .ed:focus-visible{ outline: 2px solid var(--acid); outline-offset: 4px; }
 
 .bar nav{ display: flex; gap: .15rem; margin-left: auto; }
@@ -969,7 +964,11 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
 
 <header class="bar" id="bar">
   <div class="row">
-    <a class="ed" href="#top" id="edHome"><span class="ed-t">B</span></a>
+    <a class="ed" href="#top" id="edHome"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 59.08" fill="currentColor" role="img">
+  <path d="M 0.00,24.50 C 4.00,19.00 10.00,0.60 25.00,0.60 C 35.00,0.60 40.00,15.50 50.00,18.60 C 60.00,21.60 65.00,3.40 78.00,3.40 C 91.00,3.40 101.00,16.00 110.00,22.00 C 113.00,24.50 114.50,26.50 115.50,28.00 L 0,28.00 Z"/>
+  <path d="M 0.00,56.07 C 4.00,51.34 10.00,35.52 25.00,35.52 C 35.00,35.52 40.00,48.33 50.00,51.00 C 60.00,53.58 65.00,37.92 78.00,37.92 C 91.00,37.92 101.00,48.76 110.00,53.92 C 113.00,56.07 114.50,57.79 115.50,59.08 L 0,59.08 Z"/>
+</svg>
+</a>
     <nav id="navLinks" aria-label="Secciones"></nav>
     <span class="pie" id="barPie"></span>
     <button class="toggle" id="navToggle" aria-expanded="false" aria-controls="navPanel">Index</button>
@@ -2139,10 +2138,7 @@ footer .fine{ display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: va
   $("nLugar").textContent = C.nombre.lugar;
   $("nTema").textContent  = C.nombre.tema;
   $("nEd").textContent    = C.nombre.edicion;
-  /* el monograma: la b y la p en pixel (heredan del bloque), la B en serif */
   $("edHome").setAttribute("aria-label", L.ui.home);
-  $("edHome").insertAdjacentHTML("afterbegin", "b");
-  $("edHome").insertAdjacentHTML("beforeend", "p");
   $("heroEyebrow").textContent = C.lockup.en.pie;
   $("heroPie").textContent = L.ritmo;
   $("hint").textContent = coarse ? L.ui.hintTactil : L.ui.hint;
