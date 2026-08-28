@@ -313,9 +313,13 @@ h1 .place{
 .cta--dark{ border-color: var(--void); background: var(--void); color: var(--acid); }
 .cta--dark:hover, .cta--dark:focus-visible{ background: transparent; color: var(--void); }
 .cta--dark:focus-visible{ outline-color: var(--void); }
-.credit{
-  margin: 0; font-family: var(--mono); font-weight: 400; font-size: .55rem;
-  letter-spacing: .1em; text-transform: uppercase; opacity: .55;
+/* La coordenada. Hereda la caja del crédito que ocupaba este renglón —misma
+   mono, mismo cuerpo chico— pero NO su opacidad de nota al pie: es un dato,
+   no una salvedad, así que se lee. Y sin `text-transform`, que sobre una
+   coordenada no hace nada salvo arriesgar que la S y la W cambien de forma. */
+.coord{
+  margin: 0; font-family: var(--mono); font-weight: 600; font-size: .62rem;
+  letter-spacing: .18em; opacity: .82;
 }
 .hint{
   font-family: var(--mono); font-size: var(--t-micro); letter-spacing: .15em;
@@ -443,34 +447,8 @@ h1 .place{
 }
 #pila .sheet{ text-align: center; }
 
-/* ---------- barra de pasos, fijada mientras corre el programa ----------
-   De la referencia: una barra de pasos numerados anclada al pie mientras la
-   sección desfila, con lo recorrido en una tinta y lo que falta en otra.
-   Acá los pasos son las cinco salas, así que la barra no es cromo: es el
-   programa hecho navegable. */
-/* La barra de pasos, invertida con la sección: campo negro, y el paso activo
-   en caja acid con tipografía void — que es exactamente el negativo de lo que
-   era. Sobre el campo claro anterior una barra acid era continuidad con la
-   página; sobre el negro sería un bloque blanco a pantalla completa al pie. */
-.steps{
-  flex: none; z-index: 4; display: flex; overflow: hidden;
-  background: var(--void); border-top: 2px solid var(--acid);
-  margin-top: clamp(1.2rem, 3vw, 2rem);
-}
-.steps a{
-  cursor: pointer; flex: 1 1 0; min-width: 0; text-decoration: none; color: var(--acid);
-  padding: .82em .7em; font-family: var(--mono); font-weight: 600;
-  font-size: clamp(.5rem, .92vw, .64rem); letter-spacing: .1em; text-transform: uppercase;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  border-left: var(--hair) solid color-mix(in srgb, var(--acid) 28%, transparent);
-  opacity: .45; transition: opacity .25s var(--ease-out), background .25s var(--ease-out);
-}
-.steps a:first-child{ border-left: none; }
-/* el paso ya recorrido: acid apagado, como masa tenue sobre el negro */
-.steps a[data-done="1"]{ background: color-mix(in srgb, var(--acid) 22%, transparent); opacity: .8; }
-.steps a[aria-current="true"]{ background: var(--acid); color: var(--void); opacity: 1; }
-.steps a:focus-visible{ outline: 2px solid var(--acid); outline-offset: -3px; }
-@media (prefers-reduced-motion: reduce){ .steps a{ transition: none; } }
+/* El CSS de la barra de pasos (.steps) se fue con su marcado el 2026-08-28.
+   No le quedaba un consumidor. En la historia de git, junto con el JS. */
 
 /* ---------- secciones ---------- */
 .sheet{ max-width: var(--sheet); margin: 0 auto; padding: 0 var(--pad); position: relative; z-index: 3; }
@@ -510,11 +488,10 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 /* Regla general de las secciones con foto: TODO bloque que lleve texto se
    apoya en una plancha. Sin esto la tabla de ejes quedaba sobre el retrato y
    las leyendas del corredor sobre el edificio, las dos ilegibles. */
-.photo .tens{
+.photo .people{
   background: var(--void); color: var(--acid);
-  padding: .4rem clamp(.8rem, 2vw, 1.2rem) .6rem;
+  padding: .6rem clamp(.8rem, 2vw, 1.2rem) .9rem;
 }
-.photo .tens td{ border-bottom: none; }
 /* §07: las dos planchas de texto dejan de ser rectángulos CSS y pasan a ser
    masa generada — el mismo motor, el mismo paso de celda y el mismo borde en
    ángulo recto que ya usan el hero, §01, §02 y las ediciones. Un solo canvas
@@ -524,9 +501,9 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   position: absolute; inset: 0; width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
 }
-#sala .head, #sala .body, #sala .axes, #sala .tens{ position: relative; z-index: 1; }
+#sala .head, #sala .body, #sala .axes, #sala .people{ position: relative; z-index: 1; }
 /* la plancha la dibuja ahora la máscara, no el background */
-#sala > .sheet > .body, #sala .tens{ background: transparent; }
+#sala > .sheet > .body, #sala .people{ background: transparent; }
 .photo .corridor .cap{
   background: var(--void); color: var(--acid);
   width: fit-content; padding: .4em .6em; opacity: 1;
@@ -966,9 +943,15 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 .why{ display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr));
       gap: clamp(12px, 1.6vw, 20px); }
 /* +25% de alto sobre el clamp anterior (210/24vw/270), en los tres topes. */
+/* Sin borde desde el 2026-08-28 (pedido): la ficha es una plancha blanca y
+   nada más. Lo que la delimita pasa a ser su propio contenido —la trama de
+   puntos que crece desde el pie de la celda— y el campo teñido que le pasa por
+   detrás. CONSECUENCIA A LA VISTA: en el centro de la sección, donde el
+   difuminado de las esquinas ya se apagó, la plancha blanca queda sobre papel
+   blanco y sólo la trama la separa del fondo. Es lo que se pidió; si hace
+   falta devolver la separación, el camino NO es el borde: es teñir el campo. */
 .why .cell{ position: relative; background: var(--acid); overflow: hidden;
-            min-height: clamp(263px, 30vw, 338px);
-            border: 2px solid var(--void); }
+            min-height: clamp(263px, 30vw, 338px); }
 .photo .why .cell{ background: var(--acid); }
 .why canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
 .why .over{ position: relative; padding: clamp(1.2rem, 2.6vw, 1.85rem); display: grid; gap: .7rem; align-content: start; }
@@ -1040,7 +1023,7 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 /* La imagen NO se limpia al salir: si se limpiara, la capa saltaría a vacío en
    el primer fotograma del fundido y el efecto sería un parpadeo en vez de una
    salida. Se apaga por opacidad y la fuente queda cargada para la próxima. */
-#programa > .sheet, #programa > .steps{ position: relative; z-index: 1; }
+#programa > .sheet{ position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce){
   #programa::before{ transition: none; }
 }
@@ -1057,31 +1040,31 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
 #programa > .sheet{ display: flex; flex-direction: column; flex: 1;
                     width: 100%; min-height: 0; min-width: 0; }
 
+/* Las CINCO en cuadro, sin desplazamiento lateral (pedido del 2026-08-28).
+   Era un carrusel: pista con `overflow-x: auto`, snap, y tarjetas de ancho
+   fijo (230–330px) que sumaban más que el viewport. Ahora es una grilla de
+   cinco columnas iguales que se reparten el ancho de la hoja — a 1440px cada
+   sala mide ~210px.
+   Con esto caen tres cosas que sólo existían por el desplazamiento: la barra
+   de pasos, el estado activo derivado del scroll y el atenuado de las salas
+   no-activas. Las cinco están igual de presentes, así que ninguna se marca.
+   Abajo de 900px cinco columnas darían tarjetas de ~60px: baja a dos, y la
+   sección suelta el `100svh` para que nada quede aplastado. */
 .rooms{
-  display: flex; gap: clamp(.6rem, 1.4vw, 1rem); flex: 1; min-height: 0;
-  overflow-x: auto; overflow-y: hidden;
-  scroll-snap-type: x mandatory; scroll-behavior: smooth;
-  scrollbar-width: none; -ms-overflow-style: none;
-  padding-bottom: .3rem;
-  min-width: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(.5rem, 1.1vw, .85rem); flex: 1; min-height: 0; min-width: 0;
 }
-.rooms::-webkit-scrollbar{ display: none; }
-@media (prefers-reduced-motion: reduce){ .rooms{ scroll-behavior: auto; } }
-
-.room{
-  flex: 0 0 clamp(230px, 24vw, 330px); scroll-snap-align: start;
-  display: flex; flex-direction: column; min-height: 0;
+.room{ display: flex; flex-direction: column; min-height: 0; min-width: 0; }
+@media (max-width: 900px){
+  #programa{ min-height: auto; }
+  .rooms{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .room{ min-height: 300px; }
 }
-/* La activa se marca con un filete, NO atenuando las otras: bajar la opacidad
-   dejaba pasar el ácido del fondo por debajo de las fotos y las teñía de verde
-   —adiós "color pleno y sin filtro"—. La referencia también usa borde. */
-.room .plate{ outline: 0 solid var(--acid); outline-offset: -2px;
-              transition: outline-width .2s var(--ease-out); }
-.room[data-off="0"] .plate{ outline-width: 3px; }
-.room[data-off="1"] .meta{ opacity: .6; }
-@media (prefers-reduced-motion: reduce){
-  .room .plate{ transition: none; }
+@media (max-width: 520px){
+  .rooms{ grid-template-columns: minmax(0, 1fr); }
 }
+/* El filete de la sala activa y el atenuado de las otras se fueron con el
+   carrusel: marcaban CUÁL estaba en cuadro, y ahora están las cinco. */
 
 /* `flex: 1` sigue: en un viewport alto la placa se come todo el sobrante.
    Lo que cambia es el PISO. Con min-height:0 la altura de la placa salía
@@ -1188,11 +1171,25 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   text-transform: uppercase; padding: .5em .8em; background: var(--void); color: var(--acid);
 }
 .on-dark .axes li{ background: var(--acid); color: var(--void); }
-.tens{ width: 100%; border-collapse: collapse; margin-top: clamp(1.4rem,3vw,2.2rem); }
-.tens td{ padding: .62rem .5rem; border-bottom: var(--rule); font-size: .8rem; font-weight: 500; vertical-align: baseline; }
-.on-dark .tens td{ border-bottom: none; }
-.tens .ax{ font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; opacity: .6; text-align: center; width: 6.5rem; }
-.tens .to{ font-weight: 900; }
+/* Las tres personas, en §07. Reemplazan a la tabla de tensiones el
+   2026-08-28. Es la misma terna que abre el posicionamiento —el capital,
+   quienes lo regulan, quienes construyen su infraestructura— en el orden que
+   el canon fija (Capital · Reglas · Infraestructura).
+   Tres columnas y no una tabla: no hay un «de → a» que mostrar, son tres
+   bloques equivalentes. El ordinal lleva barra («/01») porque el 01 pelado ya
+   es el numeral de la sección, arriba a la derecha, y dos numerales iguales a
+   dos alturas leen como error de maquetación. */
+.people{
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.4vw, 2rem); margin-top: clamp(1.4rem, 3vw, 2.2rem);
+}
+.people .p{ display: grid; gap: .45rem; align-content: start; min-width: 0; }
+.people .n{ font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
+            letter-spacing: .16em; opacity: .6; }
+.people .t{ font-size: var(--t-sub); font-weight: 900; letter-spacing: -.015em;
+            line-height: 1.08; }
+.people .d{ font-size: .8rem; font-weight: 500; line-height: 1.45; }
+@media (max-width: 760px){ .people{ grid-template-columns: minmax(0, 1fr); } }
 
 /* El CSS de §08 (.eds / .ed-card) salió con la sección: no le quedaba un
    solo consumidor. Está en la historia de git si la sección vuelve. */
@@ -1420,7 +1417,11 @@ footer{ background: var(--void); color: var(--acid); }
         <p class="en" id="heroBajEn"></p>
         <p class="prom" id="heroProm"></p>
         <a class="cta" href="#cierre" id="heroCta"></a>
-        <p class="credit" id="heroCredit"></p>
+        <!-- Fue el crédito de imagen hasta el 2026-08-28. La declaración no se
+             perdió: sigue en el pie (columna «Credits») y al pie de §05, que
+             es donde la fotografía de las salas se mira de cerca. En el primer
+             viewport sobraba: era letra legal en el lugar del dato. -->
+        <p class="coord" id="heroCoord"></p>
       </div>
     </div>
   </div>
@@ -1436,7 +1437,10 @@ footer{ background: var(--void); color: var(--acid); }
               data-from=".reg" aria-hidden="true"></canvas>
       <div class="over" id="regsOver"></div>
     </div>
-    <p class="mono-body" style="margin-top:clamp(1.2rem,3vw,2rem);opacity:.8" id="regsNote"></p>
+    <!-- La nota de la agenda («Three blocks, one core…») salió el 2026-08-28.
+         Explicaba la diferencia entre bloques (contenido) y salas (formato), y
+         era nota al pie de una sección que ya se explica sola: las tres fichas
+         dicen de qué se habla, y §05 dice cuándo y dónde. -->
   </div>
 </section>
 
@@ -1474,19 +1478,34 @@ footer{ background: var(--void); color: var(--acid); }
     <div class="head"><h2 id="hSenal"></h2><span class="num">04</span></div>
     <p class="body" id="senalLectura" style="margin-bottom:clamp(1.6rem,4vw,2.6rem)"></p>
     <div class="tablero" id="signal"></div>
-    <p class="src" id="senalSrc"></p>
+    <!-- La línea de fuente al pie de §04 salió el 2026-08-28. Decía la ventana
+         («trailing 12 months, Jul 2023 – Jun 2024») y la fuente. La atribución
+         NO desapareció de la sección: sigue dentro de la ficha del 415, que es
+         el dato que la fuente sostiene, y ahí está pegada al número en vez de
+         a 60cm de distancia. Pendiente: actualizar esa cita a la edición
+         vigente del informe. -->
   </div>
 </section>
 
 <section id="programa" class="on-dark">
   <div class="sheet">
     <div class="head"><h2 id="progH2"></h2><span class="num">05</span></div>
+    <p class="body" id="progSedes" style="margin-bottom:clamp(1rem,2.4vw,1.6rem)"></p>
     <div class="deck-ctl"><button class="flip-all" id="flipAll" type="button"
          aria-pressed="false" aria-controls="rooms"></button></div>
     <div class="rooms" id="rooms"></div>
-    <p class="mono-body" style="margin:.9rem 0 .7rem;opacity:.72;font-size:.6rem" id="roomsNote"></p>
+    <!-- Salieron juntos el 2026-08-28:
+         · la nota al pie («Descriptive names, resting on the only two proper
+           nouns…» + el crédito de imagen). Lo que decía ahora lo dice el
+           párrafo de arriba, y mejor: nombra las sedes en vez de explicar una
+           regla de naming. OJO: era el ÚLTIMO lugar de la página donde vivía
+           el aviso de que las imágenes son renders generados — hoy sobrevive
+           sólo en la columna «Credits» del pie.
+         · la <nav class="steps">, el índice del carrusel. Existía para navegar
+           un desplazamiento horizontal que ya no existe: con las cinco salas
+           en cuadro, un índice para ir a una de ellas no lleva a ningún lado.
+           Su marcado, su CSS y su JS están en la historia de git. -->
   </div>
-  <nav class="steps" id="salaSteps" aria-label="Las cinco salas"></nav>
 </section>
 
 <section class="slab slab--acid" id="tesis" aria-label="The decision test">
@@ -1508,15 +1527,21 @@ footer{ background: var(--void); color: var(--acid); }
   <div class="sheet">
     <div class="head"><h2 id="hSala"></h2><span class="num">07</span></div>
     <canvas class="sala-mask" data-blob="void" data-mode="grow" data-seed="83.5"
-            data-cell="13" data-fringe-cells="2.6" data-from=".body, .tens"
+            data-cell="13" data-fringe-cells="2.6" data-from=".body, .people"
             aria-hidden="true"></canvas>
     <p class="body" id="salaBody" style="margin-bottom:clamp(1.2rem,3vw,1.8rem)"></p>
     <ul class="axes" id="salaEjes"></ul>
-    <table class="tens" id="tens"><tbody></tbody></table>
+    <!-- Acá vivía la tabla de tensiones (`.tens`): los seis ejes del canon,
+         de A a B — «Crypto → Capital, rules and infrastructure», «Event →
+         Biennial and platform», etc. Salió el 2026-08-28. Era doctrina de
+         posicionamiento —cómo NO leer el proyecto— en la sección que pregunta
+         quién se sienta a la mesa, así que respondía otra cosa.
+         `L.ejes` sigue en content.js, sin consumidor de superficie. -->
+    <div class="people" id="people"></div>
   </div>
 </section>
 
-<section class="slab slab--void" id="pila" aria-label="Capital, reglas e infraestructura">
+<section class="slab slab--void" id="pila">
   <div class="sheet">
     <div class="pila-wrap">
       <canvas id="pilaMask" data-blob="acid" data-seed="63.1" data-cell="17"
@@ -1670,6 +1695,14 @@ footer{ background: var(--void); color: var(--acid); }
          No inventar una. */
     },
 
+    /* La coordenada de Punta del Este. Entra en el hero el 2026-08-28, en el
+       renglón que ocupaba el crédito de imagen. Dice el mismo lugar que el
+       lockup —«Punta del Este, Uruguay»— en la notación de una carta náutica:
+       es dato duro, no adorno, y es lo único que el primer viewport necesita
+       agregar sobre el nombre.
+       Los primos son PRIMOS TIPOGRÁFICOS (U+2032), no comillas simples. */
+    coordenada: "34\u00b054\u2032S  54\u00b051\u2032W",
+
     posicionamiento:
       "La plataforma institucional donde el capital del Cono Sur, quienes lo " +
       "regulan y quienes construyen su infraestructura se sientan a la misma " +
@@ -1728,7 +1761,14 @@ footer{ background: var(--void); color: var(--acid); }
       { n: "02", es: "La Cena",   en: "Dinner", sede: "Casa Manantial", dia: "Viernes noche" },
       { n: "03", es: "La Cumbre", en: "Summit", sede: "MACA",           dia: "Sábado" },
       { n: "04", es: "La Fiesta", en: "Party",  sede: "Casa Manantial", dia: "Sábado noche" },
-      { n: "05", es: "Las Casas", en: "Houses", sede: "El corredor",    dia: "Todo el fin de semana" }
+      /* «Villas» reemplaza a «Houses» el 2026-08-28, por pedido. Toca la capa
+         verbal, que el canon cerró el 2026-08-26: queda anotado, no escondido.
+         El nombre ES sigue siendo «Las Casas» — cambiar el español es otra
+         decisión y no se pidió. Hoy la superficie es inglesa, así que la
+         divergencia no se ve; si alguna vez se publica en español, hay que
+         resolverla. El slug de la imagen (`las-casas`) es nombre de archivo y
+         no se toca. */
+      { n: "05", es: "Las Casas", en: "Villas", sede: "El corredor",    dia: "Todo el fin de semana" }
     ],
     /* --- el dorso de cada sala -------------------------------------------
        Adaptado de los reversos de la ruta VB0.1-D (página «Temporada»), que
@@ -1762,14 +1802,28 @@ footer{ background: var(--void); color: var(--acid); }
                   "stablecoins and payments, RWA and tokenization, AI × on-chain.",
               es: "Keynote de apertura y paneles ancla, sobre los tres bloques: " +
                   "stablecoins y pagos, RWA y tokenización, AI × on-chain." },
-      "04": { en: "The summit closes, the house opens. Sunset over the coast — " +
-                  "the night the weekend is remembered by.",
-              es: "Cierra la cumbre, abre la casa. El atardecer sobre la costa: " +
-                  "la noche por la que se recuerda el fin de semana." },
-      "05": { en: "Houses along the corridor. The delegation sleeps, meets and " +
-                  "hosts on site, the whole weekend.",
-              es: "Casas a lo largo del corredor. La delegación duerme, se " +
-                  "reúne y recibe en el mismo lugar, todo el fin de semana." }
+      /* «the house» pasa a nombrarse: Casa Manantial (2026-08-28). El canon
+         admite exactamente dos nombres propios y este es uno; decirlo acá es
+         usarlo donde vale, en vez de aludirlo. Queda dicho dos veces en la
+         misma cara —también aparece en el campo «Venue» del dorso—, y está
+         bien: una es prosa y la otra es dato. */
+      "04": { en: "The summit closes, Casa Manantial opens. Sunset over the " +
+                  "coast — the night the weekend is remembered by.",
+              es: "Cierra la cumbre, abre Casa Manantial. El atardecer sobre " +
+                  "la costa: la noche por la que se recuerda el fin de semana." },
+      /* ⚠️ ESTE DORSO ES UN COMPROMISO COMERCIAL, no una descripción de
+         formato como los otros cuatro: promete un beneficio a un tramo de
+         sponsors. Choca de frente con `cta.nota` —«sin modelo de acceso, sin
+         precio, sin invitación: no está decidido»—, que la página sigue
+         diciendo en la columna «Credits» del pie. Las dos no pueden ser
+         ciertas a la vez. Entró por pedido el 2026-08-28; la contradicción
+         queda registrada acá para que se resuelva a propósito.
+         El texto se redactó en inglés correcto: el pedido decía «Top 3
+         sponsors count with a private villa», que es calco de «cuentan con». */
+      "05": { en: "The top three sponsors each get a private villa — for team " +
+                  "work and for private networking events.",
+              es: "Los tres sponsors principales cuentan cada uno con una villa " +
+                  "privada: trabajo de equipo y eventos privados de networking." }
     },
 
     sedes: ["MACA", "Casa Manantial"],   /* los dos únicos nombres propios */
@@ -1835,6 +1889,14 @@ footer{ background: var(--void); color: var(--acid); }
        · «91.9 · Argentina, el mercado más denso en stablecoins» — es
          literalmente la barra ARG del gráfico, que se conserva por pedido. Era
          el mismo número dicho dos veces en la misma pantalla.
+         Volvió unas horas el 2026-08-28 como «$91.9B · Solo Argentina — el
+         mercado más denso en stablecoins del mundo», y salió de nuevo ese
+         mismo día: la fuente no sostiene el superlativo. Bajo la métrica de
+         Chainalysis, Argentina está en 61,8% de share de stablecoins —arriba
+         de Brasil (59,8%) y del promedio global (44,7%), pero DEBAJO de
+         Colombia (66%)—, así que no es la más densa ni del mundo ni de la
+         región. El dato sigue vivo donde es indiscutible: la barra ARG del
+         gráfico, que además es la última de la escalera.
        · «68 % de participación de stablecoins» y «1.2 M de billeteras activas»
          — las dos eran `mock`. Sacarlas deja UN solo sello «Mock» en la
          sección (el del gráfico) en vez de tres: una pieza institucional puede
@@ -1863,19 +1925,25 @@ footer{ background: var(--void); color: var(--acid); }
       { k: "bars", c: "tan", span: 5, mock: true, notch: true,
         u: { es: "Volumen on-chain por mercado", en: "On-chain volume by market" },
         t: { es: "mil M USD, doce meses móviles", en: "billion USD, trailing twelve months" },
-        series: [ { l: "ARG", v: 91.9 }, { l: "BRA", v: 78.4 },
-                  { l: "CHL", v: 21.6 }, { l: "URY", v: 6.2 } ] },
+        /* De MENOR a MAYOR (invertido el 2026-08-28, por pedido). El orden
+           por magnitud descendente es el convencional para comparar categorías
+           y era el que estaba; ascendente cambia lo que la lectura enfatiza:
+           en vez de abrir con el máximo, la serie SUBE hasta Argentina y
+           entrega a la ficha bermellón de al lado, que dice ese mismo número.
+           Las dos piezas se leen como una sola frase. */
+        series: [ { l: "URY", v: 6.2 },  { l: "CHL", v: 21.6 },
+                  { l: "BRA", v: 78.4 }, { l: "ARG", v: 91.9 } ] },
 
       { k: "num", c: "ink", span: 4, v: "20.345", badge: "\u00a7",
         u: { es: "Ley", en: "Law" },
         t: { es: "Marco de activos virtuales, vigente — no prometido",
              en: "Virtual-asset framework in force — written, not promised" } },
 
-      /* Era la ficha bermellón — la única roja del tablero. Pasa a salvia por
-         pedido. Consecuencia a la vista: `--c-red` y `.dcard--red` quedan sin
-         un solo consumidor, y la paleta editorial baja de cuatro tintas a
-         tres. El token se deja definido, no borrado: volver a rojo es cambiar
-         esta línea, borrarlo sería tirar la decisión de color entera. */
+      /* Era la ficha bermellón — la única roja del tablero. Pasó a salvia por
+         pedido, y con eso `--c-red` se quedó sin consumidor. Lo recuperó unas
+         horas con la ficha de Argentina y lo volvió a perder cuando esa ficha
+         salió. El token se deja definido, no borrado: la paleta editorial
+         sigue teniendo cuatro tintas declaradas y tres en uso. */
       { k: "num", c: "sage", span: 3, v: "N.º 1", flag: true,
         u: { es: "En la región", en: "In the region" },
         t: { es: "Estabilidad política y estado de derecho",
@@ -2134,9 +2202,41 @@ footer{ background: var(--void); color: var(--acid); }
           "written for Uruguayan institutions and has no approved English.",
         hint:       "You move it · it dissolves",
         hintTactil: "Tap and drag · it dissolves",
+        /* SIN CONSUMIDOR desde el 2026-08-28: la nota salió del pie de §05 y
+           en su lugar, arriba de las fichas, entró `sedes`, que dice lo mismo
+           —de dónde salen los nombres— pero nombrando las DOS sedes en vez de
+           explicar una regla de naming. Se deja escrita, no borrada. */
         salasNota:
           "Descriptive names, resting on the only two proper nouns in the " +
           "system: MACA and Casa Manantial. No per-room sub-brands.",
+        /* Va debajo del titular de §05. Reemplaza a `salasNota`: en vez de
+           explicar por qué las salas se llaman como se llaman, dice qué son
+           los dos lugares. Los dos únicos nombres propios del sistema —MACA y
+           Casa Manantial— siguen siendo los dos únicos que aparecen.
+           «gravitas» no es una palabra suelta: es la misma que el canon usa en
+           `esNoEs` #4 («el arte aporta gravitas y prensa»), aplicada acá al
+           edificio en vez de al programa. */
+        /* Las tres líneas de la pila (§07). Reemplazan a los tres ejes del
+           canon —Capital · Reglas · Infraestructura— el 2026-08-28, por
+           pedido. Son TRES a propósito: la pila justifica cada línea al ancho
+           de la medida, y la del medio corre en la voz serif itálica, así que
+           el corte no es libre. «when the rules» cae justo en esa línea, que
+           es donde el sistema pone su voz variable.
+           CONSECUENCIA: los tres ejes pierden su aparición más grande. Siguen
+           en la página —en el eyebrow del hero y dentro de la línea
+           institucional que va bajo esta misma pila—, así que la regla del
+           canon («los tres siempre juntos y en ese orden») se sigue
+           cumpliendo, pero ya no es lo que la sección grita. */
+        pila: ["Be in the room", "when the rules", "get written."],
+
+        /* `lugares` y no `sedes`: `C.sedes` ya existe en la raíz —el array
+           ["MACA", "Casa Manantial"]— y dos cosas distintas con el mismo
+           nombre en el mismo archivo se confunden solas. */
+        lugares:
+          "A museum and a house. MACA — Atchugarry gives the platform a " +
+          "gravitas no convention center can fake. Casa Manantial is the " +
+          "official side venue — the dinner, the party, the private " +
+          "conversations the weekend is remembered by.",
         corredorCaps: ["The coast", "Institutional room", "The house"],
         edicionesNota:
           "Literally: 2027 · 2029 · 2031. The edition lives in a stamped " +
@@ -2145,6 +2245,9 @@ footer{ background: var(--void); color: var(--acid); }
         fuente: "Source",
         edicionN: "Edition Nº 001",
         agendaTitulo: "What gets discussed",
+        /* SIN CONSUMIDOR desde el 2026-08-28: la nota salió de §01. Se deja
+           escrita, no borrada — es doctrina redactada (bloques = contenido,
+           salas = formato) y devolverla a la superficie es una línea de JS. */
         agendaNota:
           "Three blocks, one core. The blocks are content; the five rooms " +
           "further down are format.",
@@ -2680,7 +2783,7 @@ footer{ background: var(--void); color: var(--acid); }
   $("heroProm").textContent = L.ui.promesa;
   $("heroCta").textContent = L.cta.label;
   $("closeCta").textContent = L.cta.label;
-  $("heroCredit").textContent = L.creditos.cielo;
+  $("heroCoord").textContent = C.coordenada;
   $("barPie").textContent = C.lockup.en.pie;
   $("srPitch").textContent = C.nombre.completo + ". " + C.lockup.en.bajada + ". " + L.posicionamiento;
 
@@ -2696,7 +2799,6 @@ footer{ background: var(--void); color: var(--acid); }
     `<div class="reg"><span class="k">Block ${b.n}</span>` +
     `<span class="v">${b.en.t}</span>` +
     `<span class="dsc">${b.en.d}</span></div>`).join("");
-  $("regsNote").textContent = L.ui.agendaNota;
 
   /* 02 — qué es y qué no es. Sólo las líneas públicas: las dos que son
      doctrina de lenguaje interno quedan fuera de la superficie. */
@@ -2780,7 +2882,6 @@ footer{ background: var(--void); color: var(--acid); }
        </div>
      </div>`;
   }).join("");
-  $("senalSrc").textContent = L.senal.ventana + " · " + L.ui.fuente + ": " + C.senal.fuente;
 
   /* 05 — las cinco salas. La foto entra POR la máscara. */
   const ROOM_IMG = { "01": "el-foro", "02": "la-cena", "03": "la-cumbre",
@@ -2827,7 +2928,7 @@ footer{ background: var(--void); color: var(--acid); }
        </div>
      </div>
    </button>`; }).join("");
-  $("roomsNote").textContent = L.ui.salasNota + " " + L.creditos.imagen + ".";
+  $("progSedes").textContent = L.ui.lugares;
 
   /* ---------- flip ---------------------------------------------------------
      El estado vive en aria-pressed y no en una clase: el botón YA tiene que
@@ -2876,8 +2977,11 @@ footer{ background: var(--void); color: var(--acid); }
   $("salaBody").textContent = L.posicionamiento;
   $("salaEjes").innerHTML = C.bajada.institucional.ejes.map((e) => `<li>${e}</li>`).join("");
 
-  $("tens").querySelector("tbody").innerHTML = L.ejes.map((e) =>
-    `<tr><td>${e.de}</td><td class="ax">${e.eje}</td><td class="to">${e.a}</td></tr>`).join("");
+  /* La MISMA fuente que alimenta §02: si una persona cambia de nombre o de
+     descripción, cambia en las dos secciones a la vez. */
+  $("people").innerHTML = C.audiencia.map((a) =>
+    `<div class="p"><span class="n">/${a.n}</span>` +
+    `<span class="t">${a.en.t}</span><span class="d">${a.en.d}</span></div>`).join("");
 
   /* 08 — la bienalidad, con hogar estructural. 2029 y 2031 aparecían en cero
      de las cinco piezas anteriores. El ordinal de plancha es el mecanismo: la
@@ -2973,12 +3077,19 @@ footer{ background: var(--void); color: var(--acid); }
   $("slabA").innerHTML = L.ui.titulos.tesis;
   $("slabAattr").textContent = L.esNoEs[0].d;
 
-  const EJES = C.bajada.institucional.ejes;
-  /* la del medio (REGLAS) va en la voz del tema — ver .pila-l--tema */
-  $("pilaType").innerHTML = EJES.map((e, i) =>
-    `<span class="pila-l${i === 1 ? " pila-l--tema" : ""}">${i === 1 ? e : e}</span>`).join("");
+  /* la del medio va en la voz del tema — ver .pila-l--tema */
+  const PILA = L.ui.pila;
+  $("pilaType").innerHTML = PILA.map((e, i) =>
+    `<span class="pila-l${i === 1 ? " pila-l--tema" : ""}">${e}</span>`).join("");
+  /* La línea institucional se queda: es donde los tres ejes del canon siguen
+     apareciendo juntos y en orden ahora que la pila dejó de nombrarlos. */
   $("pilaAttr").textContent = C.bajada.institucional.linea;
-  $("pilaSr").textContent = EJES.join(", ") + ". " + C.bajada.institucional.linea;
+  /* El aria-label de la sección se setea acá y no en el marcado: escrito a
+     mano se quedaba diciendo «Capital, reglas e infraestructura» después de
+     que la pila dejara de decirlo, y un lector de pantalla habría anunciado
+     una sección que ya no existe. */
+  $("pila").setAttribute("aria-label", PILA.join(" "));
+  $("pilaSr").textContent = PILA.join(" ") + " " + C.bajada.institucional.linea;
 
   /* --- la pila justifica de verdad ---------------------------------------
      Cada línea se escala hasta ocupar la medida completa. No es tracking: es
@@ -3083,76 +3194,11 @@ footer{ background: var(--void); color: var(--acid); }
   window.addEventListener("resize", pilaLayout, { passive: true });
   if (!reduced) window.addEventListener("scroll", pilaTick, { passive: true });
 
-  /* ---------- la barra de pasos de las salas ------------------------------ */
-  /* La barra no es un indicador pasivo: es el índice del carrusel. Se clickea
-     para ir a una sala, y el activo sale del scroll horizontal real. */
-  const rooms = $("rooms");
-  $("salaSteps").innerHTML = C.salas.map((x, i) =>
-    `<a role="button" tabindex="0" data-i="${i}"><b>${x.n}</b> The ${x.en}</a>`).join("");
-  const stepEls = [...$("salaSteps").querySelectorAll("a")];
-  const roomEls = () => [...rooms.querySelectorAll(".room")];
-
-  function setStep(i) {
-    stepEls.forEach((a, k) => {
-      a.setAttribute("aria-current", String(k === i));
-      a.dataset.done = k < i ? "1" : "0";
-    });
-    roomEls().forEach((el, k) => { el.dataset.off = k === i ? "0" : "1"; });
-  }
-  /* offsetLeft se mide contra el offsetParent de cada nodo, y el de la tarjeta
-     no es el mismo que el del contenedor: mezclarlos daba un destino corrido
-     —el click en la sala 04 aterrizaba en la 03—. Con rects es a prueba de
-     dónde esté el bloque contenedor. */
-  const cardX = (el) =>
-    el.getBoundingClientRect().left - rooms.getBoundingClientRect().left + rooms.scrollLeft;
-
-  function goTo(i) {
-    const els = roomEls(); const el = els[i]; if (!el) return;
-    const maxX = rooms.scrollWidth - rooms.clientWidth;
-    const target = Math.min(cardX(el), maxX);
-    rooms.scrollTo({ left: target, behavior: reduced ? "auto" : "smooth" });
-    /* El click manda. Cuando el destino queda topado —las últimas tarjetas
-       entran juntas y la última nunca se alinea a la izquierda— el criterio de
-       scroll marcaría otra: al pedir 04 devolvía 05. La tarjeta pedida SÍ queda
-       visible, así que se marca la pedida y se calla el sync mientras dura el
-       desplazamiento. */
-    setStep(i);
-    syncLock = performance.now() + (reduced ? 0 : 700);
-  }
-  stepEls.forEach((a) => {
-    const go = () => goTo(+a.dataset.i);
-    a.addEventListener("click", go);
-    a.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
-    });
-  });
-  setStep(0);
-
-  /* el activo se deriva de la posición del scroll: la tarjeta cuyo borde
-     izquierdo está más cerca del borde del contenedor */
-  let sTick = false, syncLock = 0;
-  function syncStep() {
-    if (performance.now() < syncLock) { sTick = false; return; }
-    const els = roomEls(); if (!els.length) return;
-    const x = rooms.scrollLeft;
-    const maxX = rooms.scrollWidth - rooms.clientWidth;
-    let best = 0, bestD = Infinity;
-    els.forEach((el, k) => {
-      const d = Math.abs(cardX(el) - x);
-      if (d < bestD) { bestD = d; best = k; }
-    });
-    /* En los extremos el criterio de "borde izquierdo más cercano" falla: con
-       cinco tarjetas en una pista más angosta que su suma, la última NUNCA
-       puede quedar alineada a la izquierda, así que el scroll topa antes y el
-       activo se quedaba una tarjeta atrás. Los dos extremos se fijan a mano. */
-    if (x <= 2) best = 0;
-    else if (x >= maxX - 2) best = els.length - 1;
-    setStep(best);
-    sTick = false;
-  }
-  rooms.addEventListener("scroll", () => {
-    if (!sTick) { sTick = true; requestAnimationFrame(syncStep); }
-  }, { passive: true });
+  /* La barra de pasos de las salas —índice del carrusel, `setStep`, `goTo`,
+     `syncStep` y el listener de scroll— salió el 2026-08-28 junto con el
+     desplazamiento horizontal que le daba sentido. Con las cinco salas en
+     cuadro no hay posición que sincronizar ni destino al que ir. Está entera
+     en la historia de git si el carrusel vuelve. */
 
   /* ---------- la barra ---------------------------------------------------
      Scroll-aware: se esconde al bajar y vuelve al subir, porque el scroll
@@ -3272,7 +3318,6 @@ footer{ background: var(--void); color: var(--acid); }
     const d = Mask.dpr();
     Mask.sizeFor(cv);
     const g = cv.getContext("2d");
-    const cell = (+cv.dataset.cell || 12) * d;
     g.clearRect(0, 0, cv.width, cv.height);
 
     /* Color pleno y sin filtro — regla Sí-03. La primera versión cuantizaba la
@@ -3302,8 +3347,13 @@ footer{ background: var(--void); color: var(--acid); }
     Mask.clipTo(g, gr);
     cover();
     g.restore();
-    /* filete: declara que la foto está recortada, no flotando */
-    Mask.render(g, gr, { stroke: window.BienalTokens.acid, strokeWidth: Math.max(1, cell * 0.07) });
+    /* El filete blanco alrededor de la máscara SE FUE el 2026-08-28. Estaba
+       para "declarar que la foto está recortada, no flotando", y esa función
+       la cumple sola la silueta escalonada: el borde en ángulo recto ya dice
+       que hay un recorte. La línea encima sólo agregaba una tercera cosa que
+       leer. La forma queda; el contorno no.
+       Único consumidor vivo: las tres planchas de §06. Las salas de §05 ya no
+       pasan por acá — van por la rama `plain`. */
   }
 
   function wireImages() {
@@ -3448,7 +3498,11 @@ footer{ background: var(--void); color: var(--acid); }
     const gB = Mask.grid({ w: sky.width, h: sky.height, cell: cellPx, fringe: fringe * 0.8,
                            seed: 47.9, rects: [rB], erode });
     Mask.render(g, gA, { fill: K.acid });
-    Mask.render(g, gB, { fill: K.void, stroke: K.acid, strokeWidth: Math.max(1, cellPx * 0.05) });
+    /* Sin `stroke`: la masa B llevaba un contorno ácido —blanco en la variante
+       Blanco— y salió el 2026-08-28 con el resto de los filetes. La masa se
+       distingue del campo por su VALOR, que es como el sistema resuelve todas
+       las jerarquías (No-02), no por una línea alrededor. */
+    Mask.render(g, gB, { fill: K.void });
     /* se guardan para que figma-export.js pueda vectorizarlas: el hero pinta
        sus masas directo sobre el canvas del cielo y no pasa por paintBlob */
     sky.__gridA = gA; sky.__gridB = gB;
