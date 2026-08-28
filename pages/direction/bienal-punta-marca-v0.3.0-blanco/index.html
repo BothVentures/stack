@@ -1228,7 +1228,11 @@ footer{ background: var(--void); color: var(--acid); }
 /* --- A · el directorio --- */
 .f-dir{
   display: grid; align-items: start;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.05fr) minmax(168px, .85fr);
+  /* Cuatro columnas, no cinco: el sello de ediciones se mudó a la franja del
+     lockup (pedido del 2026-08-27). El lugar que en la referencia ocupa la
+     insignia queda vacío a propósito — el directorio respira y el sello gana
+     el sitio donde de verdad pesa, al lado de la marca. */
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.1fr);
   gap: clamp(1.6rem, 3.4vw, 2.6rem) clamp(1.1rem, 2.4vw, 2rem);
   padding-top: clamp(2.4rem, 6vw, 4rem); padding-bottom: clamp(2rem, 5vw, 3.2rem);
 }
@@ -1259,24 +1263,32 @@ footer{ background: var(--void); color: var(--acid); }
    un renglón fantasma de gap en la columna */
 .f-cred li:empty{ display: none; }
 
-/* el sello: el libro mayor de las tres ediciones, apilado.
+/* el sello: el libro mayor de las tres ediciones, LOS TRES AÑOS AL HILO.
+   Estuvo apilado en el directorio y se acostó al mudarse a la franja del
+   lockup: vertical y a esa escala le disputaba el peso a la marca, que es
+   exactamente lo que el pie no tiene que hacer. Acostado y chico, es lo que
+   siempre fue —un sello— y cabe en el alto del bloque de texto.
    Juntas de 2px que dejan pasar el campo acid, igual que `.claims` y `.why`
    hacen con el void sobre campo claro. Acá va al revés porque el pie es campo
    oscuro. La edición viva se marca INVIRTIÉNDOLA (No-02), no con una tinta. */
+.f-stamp{ width: clamp(258px, 30vw, 348px); }
 .f-eds{
   list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px;
   background: var(--acid); border: 2px solid var(--acid);
 }
 .f-ed{ background: var(--void); color: var(--acid);
-       padding: .62rem .72rem .7rem; display: grid; gap: .16rem; }
+       padding: .42rem .5rem .48rem; display: grid; gap: .1rem; align-content: start; }
 .f-ed--now{ background: var(--acid); color: var(--void); }
-.f-ed .ord{ font-family: var(--mono); font-size: .56rem; font-weight: 600;
-            letter-spacing: .14em; text-transform: uppercase; opacity: .72; }
+.f-ed .ord{ font-family: var(--mono); font-size: .5rem; font-weight: 600;
+            letter-spacing: .12em; text-transform: uppercase; opacity: .72; }
 .f-ed .yr{ font-family: var(--pixel); font-weight: 800; line-height: .9;
-           font-size: clamp(1.5rem, 3.6vw, 2.1rem); letter-spacing: .02em; }
-.f-ed .st{ font-family: var(--mono); font-size: .54rem; font-weight: 600;
-           letter-spacing: .12em; text-transform: uppercase; opacity: .72; }
+           font-size: clamp(1.1rem, 2.4vw, 1.42rem); letter-spacing: .02em; }
+/* .48rem con poco tracking es lo que hace entrar «UNDER CONSTRUCTION» en una
+   línea dentro de una ficha de ~110px. Si no entra, las tres crecen juntas
+   (las iguala la fila del grid) y el sello deja de calzar con el lockup. */
+.f-ed .st{ font-family: var(--mono); font-size: .48rem; font-weight: 600;
+           letter-spacing: .06em; text-transform: uppercase; opacity: .72; }
 
 /* --- B · el lockup --- */
 /* La franja NO lleva campo propio. Tuvo `--quiet` un rato —el tercer VALOR del
@@ -1291,7 +1303,7 @@ footer{ background: var(--void); color: var(--acid); }
      la marca desaparecía—. En grid la fila tiene alto DEFINIDO, así que la
      caja de la marca puede sacar su ancho de `aspect-ratio` y el trazo cae
      exactamente entre el techo y el piso del bloque de texto. */
-  display: grid; grid-template-columns: auto minmax(0, 1fr);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center; gap: clamp(.9rem, 2.4vw, 1.8rem);
   /* El alto del bloque de texto, DECLARADO — no medido. Es la suma exacta de
      sus tres renglones y sus dos gaps, y de acá sale el alto de la marca:
@@ -1353,9 +1365,9 @@ footer{ background: var(--void); color: var(--acid); }
 
 @media (max-width: 1000px){
   .f-dir{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  /* el sello deja de ser columna angosta y se acuesta a lo ancho */
-  .f-stamp{ grid-column: 1 / -1; }
-  .f-eds{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  /* el sello ya no cabe al lado del lockup: baja debajo, a lo ancho */
+  .f-lock .sheet{ grid-template-columns: auto minmax(0, 1fr); }
+  .f-stamp{ grid-column: 1 / -1; width: 100%; max-width: 420px; }
 }
 @media (max-width: 640px){
   /* apilados, «mismo piso y techo» no quiere decir nada: la marca vuelve a
@@ -1365,7 +1377,6 @@ footer{ background: var(--void); color: var(--acid); }
 }
 @media (max-width: 520px){
   .f-dir{ grid-template-columns: minmax(0, 1fr); }
-  .f-eds{ grid-template-columns: minmax(0, 1fr); }
 }
 
 .sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -1604,10 +1615,6 @@ footer{ background: var(--void); color: var(--acid); }
         <li id="fAuthor"></li>
       </ul>
     </div>
-    <aside class="f-col f-stamp">
-      <p class="f-h" id="fEdsH"></p>
-      <ol class="f-eds" id="fEds"></ol>
-    </aside>
   </div>
 
   <!-- B · EL LOCKUP a escala. En la referencia es la marca entera cruzando la
@@ -1631,6 +1638,11 @@ footer{ background: var(--void); color: var(--acid); }
         <p class="f-baj" id="fBaj"></p>
         <p class="f-pie" id="fPie"></p>
       </div>
+      <!-- el sello, a la derecha de la marca y a su misma altura -->
+      <aside class="f-stamp">
+        <p class="f-h" id="fEdsH"></p>
+        <ol class="f-eds" id="fEds"></ol>
+      </aside>
     </div>
   </div>
 
