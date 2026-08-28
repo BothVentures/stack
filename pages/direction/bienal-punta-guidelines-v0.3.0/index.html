@@ -1722,7 +1722,8 @@ footer{ background: var(--void); color: var(--acid); margin-top: clamp(2rem,5vw,
       salió de §03 (parkeada por pedido) y entró desenfocada detrás del tablero de §04.</p>
     <div class="rules">${[
       { k: B, t: "Ninguna imagen se rotula con el nombre de una sede real mientras sean renders." },
-      { k: B, t: "Una imagen va <b>o</b> dentro de una máscara <b>o</b> a sangre como fondo de sección. En el segundo caso el texto <b>nunca</b> se apoya en la foto: va sobre una masa o dentro de una muesca." },
+      { k: B, t: "Una imagen va <b>o</b> dentro de una máscara, <b>o</b> a sangre como fondo de sección, <b>o</b> entera en <b>placa rectangular</b>. En el caso a sangre el texto <b>nunca</b> se apoya en la foto: va sobre una masa o dentro de una muesca." },
+      { k: B, t: "<b>La placa rectangular</b> — el modo de las cinco salas del programa desde el 2026-08-27: la foto entera, sin clip de máscara y sin filete escalonado. Es <b>opt-in por atributo</b> (<code>data-plain=\"1\"</code>), nunca por fallback — un canvas enmascarado al que le falla la retícula se volvería plano en silencio." },
       { k: Cc, t: "Un fondo fotográfico de sección <b>puede</b> llevar la retícula de celda encima, al 14–18 %: declara que la foto entró al sistema y no está pegada. Deja de aplicarse cuando la fotografía es el sujeto y no el fondo.", who: "Decide: dirección de arte, por sección" },
       { k: B, t: "La foto va en color pleno y sin filtro. Sin duotono, sin cuantizar, sin blanco y negro." },
       { k: B, t: "<b>La excepción anotada: el desenfoque como campo.</b> El fondo del tablero de §04 va con <code>blur(26px)</code> porque el detalle de alta frecuencia de la piedra competía con los bordes escalonados de las planchas — que son justamente lo que la sección tiene que dejar ver. Desenfocada, la foto vuelve a ser campo. Rompe la regla de arriba y se anota en la pieza, no se esconde. Técnica: capa con <code>inset: -6%</code> + <code>overflow: hidden</code> en la sección — el blur samplea más allá del borde y sin margen extra deja viñeta clara en los cuatro cantos." },
@@ -2023,9 +2024,9 @@ footer{ background: var(--void); color: var(--acid); margin-top: clamp(2rem,5vw,
       { k: B, t: "La palabra grande puede partirse a mitad de palabra. El cuerpo es fijo; el corte es del sistema." }
     ].map(ruleHTML).join("")}</div>
     <h3 class="sub-h">El flip — la mecánica adoptada</h3>
-    <p class="body">Las cinco salas del programa dan vuelta: frente con la imagen por la máscara y
-      el rótulo en plancha, dorso con el detalle y los datos, más un control para dar vuelta todas
-      juntas. La mecánica y la arquitectura de información vienen de la ruta VB0.1-D. <b>Su acabado
+    <p class="body">Las cinco salas del programa dan vuelta: frente con la foto entera en placa
+      rectangular (§05, el modo plano) y el rótulo en plancha, dorso con el detalle y los datos,
+      más un control para dar vuelta todas juntas. La mecánica y la arquitectura de información vienen de la ruta VB0.1-D. <b>Su acabado
       no vino</b>, y no por gusto: aquel deck corre píldoras de radio 999, un degradé sobre la foto
       y <code>grayscale(.35)</code> — tres choques frontales con No-05, Sí-02 y Sí-03. La
       legibilidad sobre la foto acá ya la resuelve la máscara, que es la herramienta propia.</p>
@@ -2106,7 +2107,7 @@ footer{ background: var(--void); color: var(--acid); margin-top: clamp(2rem,5vw,
       <tr><td>Social — declaración</td><td class="m">1080×1080</td><td>Una masa, una frase, el lockup al pie. Celda 12–16.</td></tr>
       <tr><td>Social — vertical</td><td class="m">1080×1350</td><td>Ficha de motion congelada. Índice arriba, crédito al borde.</td></tr>
       <tr><td>Credencial</td><td class="m">4:5</td><td>Knockout: el nombre de la persona en la muesca. Sin foto.</td></tr>
-      <tr><td>Programa — web</td><td class="m">100svh</td><td>Las cinco salas entran en <b>un viewport</b> y desfilan en horizontal, con snap y flip (§10). La barra de pasos es el <b>índice</b>: se clickea y sigue el scroll. La activa se marca con filete. El hover trae la foto de la sala desenfocada como fondo — gesto, no estado.</td></tr>
+      <tr><td>Programa — web</td><td class="m">100svh</td><td>Las cinco salas entran en <b>un viewport</b> y desfilan en horizontal, con snap y flip (§10). La foto va <b>entera en placa rectangular</b> (<code>data-plain</code>), sin máscara. La barra de pasos es el <b>índice</b>: se clickea y sigue el scroll. La activa se marca con filete. El hover trae la foto de la sala desenfocada como fondo — gesto, no estado.</td></tr>
       <tr><td>Programa — impreso</td><td class="m">4:5</td><td>Mono para todo lo que informa. Una masa por sesión.</td></tr>
       <tr><td>Tablero de datos</td><td class="m">web · deck</td><td>Planchas de máscara (§02), paleta editorial scopeada (§06), sello «Mock» a la vista en todo dato sin fuente (§12). Gráfico: barras bloque de esquina viva, etiqueta directa sobre la barra (con cuatro barras el tooltip es redundante), <code>min-height</code> para que la barra corta siga midiendo como barra.</td></tr>
       <tr><td>Print / papelería</td><td class="m">A3 · A2</td><td><b>Modo fondo claro</b> (<code>--paper</code>). Colores exactos, y la máscara se recalcula en <code>beforeprint</code>.</td></tr>
@@ -2259,6 +2260,11 @@ footer{ background: var(--void); color: var(--acid); margin-top: clamp(2rem,5vw,
         pedido, y la paleta editorial quedó de facto en tres tintas. El token se deja definido, no
         borrado: volver a rojo es cambiar una línea; borrarlo sería tirar la decisión de color
         entera.</li>
+      <li><b>La máscara se retiró de las salas del programa.</b> Desde el 2026-08-27 las cinco
+        fotos de §05 van enteras, en placa rectangular, sin filete (pedido del cliente). El recorte
+        a la máscara sigue siendo el tratamiento base y sigue vivo en el corredor y en las demos —
+        pero acaba de perder a su consumidor más visible. Si la placa rectangular se extiende, el
+        tratamiento base deja de ser base: hay que mirarlo en la próxima revisión.</li>
       <li><b>La muesca de rompecabezas está retirada, no descartada.</b> Era la firma de la
         referencia de app —dos tarjetas trabadas por una lengüeta redondeada— y sobre una plancha de
         máscara no se sostiene: delata las dos gramáticas a la vez. Rehacer el enganche en la lengua
