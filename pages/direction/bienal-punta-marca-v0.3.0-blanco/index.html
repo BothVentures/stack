@@ -2839,12 +2839,19 @@ footer{ background: var(--void); color: var(--acid); }
      <div class="fc-in">
        <div class="fc-face fc-front">
          <div class="plate">
-           <canvas data-blob="none" data-img="${ROOM_IMG[s.n]}" data-seed="${29 + i * 13.7}"
-                   data-cell="9" data-fringe-cells="3.1" data-from=".key"
-                   data-mode="grow" data-bleed="bottom"
+           <!-- La foto va ENTERA y la placa es un rectangulo (pedido del
+                2026-08-27). Antes entraba por la mascara: data-blob="none"
+                creciendo desde .key, con filete escalonado y sangrado abajo.
+                Se fue todo eso, y con ello el span.key, que existia solo para
+                darle a la mascara desde donde crecer. Sin data-blob el motor
+                ni siquiera la mira: la pinta paintImgCanvas por la rama
+                data-plain. Sobreviven data-zoom y data-focus de la 03, que
+                son encuadre de la foto y no forma del borde.
+                SIN BACKTICKS ACA: este comentario vive dentro de un template
+                literal de JS y un backtick corta la cadena. -->
+           <canvas data-img="${ROOM_IMG[s.n]}" data-plain="1"
                    ${s.n === "03" ? 'data-zoom="1.9" data-focus="0.72"' : ""}
                    aria-hidden="true"></canvas>
-           <span class="key" style="position:absolute;left:6%;top:12%;width:82%;height:70%"></span>
            <span class="chip-day">${L.dias[s.n]}</span>
          </div>
          <div class="meta">
@@ -3314,21 +3321,32 @@ footer{ background: var(--void); color: var(--acid); }
     const cell = (+cv.dataset.cell || 12) * d;
     g.clearRect(0, 0, cv.width, cv.height);
 
-    const gr = cv.__grid;
-    if (!gr) return;
-    g.save();
-    Mask.clipTo(g, gr);
     /* Color pleno y sin filtro — regla Sí-03. La primera versión cuantizaba la
        foto a la celda y quedaba ilegible: estas imágenes son interiores y
        nocturnos, y a 26 bloques de ancho imprimían negro. Además contradecía
        la regla: el bitmap lo aporta el BORDE de la máscara, no la foto. La
        cuantización queda reservada al gesto del hero, que es un gesto y no un
        estado de reposo. */
-    const zoom = +cv.dataset.zoom || 1;
-    const focus = cv.dataset.focus !== undefined ? +cv.dataset.focus : 0.42;
-    const s2 = Math.max(cv.width / img.width, cv.height / img.height) * zoom;
-    const dw = img.width * s2, dh = img.height * s2;
-    g.drawImage(img, (cv.width - dw) / 2, (cv.height - dh) * focus, dw, dh);
+    const cover = () => {
+      const zoom = +cv.dataset.zoom || 1;
+      const focus = cv.dataset.focus !== undefined ? +cv.dataset.focus : 0.42;
+      const s2 = Math.max(cv.width / img.width, cv.height / img.height) * zoom;
+      const dw = img.width * s2, dh = img.height * s2;
+      g.drawImage(img, (cv.width - dw) / 2, (cv.height - dh) * focus, dw, dh);
+    };
+
+    /* La rama PLANA: la foto entera dentro de una caja rectangular, sin clip
+       de máscara y sin filete escalonado. La usan las cinco salas de §05
+       desde el 2026-08-27. No se decide por ausencia de `__grid` —un canvas
+       enmascarado al que le falla la retícula se volvería plano en silencio—
+       sino por un atributo que hay que escribir a propósito. */
+    if (cv.dataset.plain === "1") { cover(); return; }
+
+    const gr = cv.__grid;
+    if (!gr) return;
+    g.save();
+    Mask.clipTo(g, gr);
+    cover();
     g.restore();
     /* filete: declara que la foto está recortada, no flotando */
     Mask.render(g, gr, { stroke: window.BienalTokens.acid, strokeWidth: Math.max(1, cell * 0.07) });
