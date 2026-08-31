@@ -1,0 +1,1009 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="brand-register" content="oxide-desk">
+<title>La Chamana · Agosto 2026</title>
+<script>try{var _t=localStorage.getItem('hermes-theme');if(_t){document.documentElement.classList.toggle('light',_t==='light');document.documentElement.setAttribute('data-theme',_t)}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111C24'/%3E%3Cpath d='M8 27V16a8 8 0 0 1 16 0v11z' fill='%23EDEDE5'/%3E%3C/svg%3E">
+<!--
+  LA CHAMANA · CIERRE DE AGOSTO 2026 — documento para la venture.
+  TEMA: oxide-desk. Receta: docs/design/theme-oxide-desk.md.
+  Implementación de referencia de donde se copió este <style>: docs/lead-machine-tracker.html.
+  REGLA DE NUMEROS: cada cifra lleva chip de evidencia. obs = medido en disco esta sesion.
+  est = estimado. unk = sin medir, y NUNCA se dibuja como 0.
+  Un solo acento naranja en todo el documento (shot-doc.mjs cuenta .tile.hot/.badge.hot).
+-->
+<style>
+/* ── La Chamana · Blue Earth palette (canonical, AG-005) sobre arquitectura Factory Glass ──
+   Paleta: bone · petrol · coral · red oxide · orange oxide · bari stone · olive · mint · peach.
+   Nunca blanco puro, nunca negro puro. Orange oxide = action numbers / hot accents, nada más. ── */
+:root{
+  --bone:#EDEDE5; --petrol:#1C2934; --coral:#F5D5D1; --red-oxide:#632403; --orange:#994100;
+  --bari-dark:#444D51; --bari-light:#ABB9BC; --olive:#808266; --mint:#D7E2B5; --peach:#F4CBA6;
+
+  --bg:#111C24;
+  --glass:rgba(26,40,48,.55); --glass-2:rgba(26,40,48,.42); --glass-3:rgba(19,29,37,.55);
+  --t-1:rgba(237,237,229,.94); --t-2:rgba(171,185,188,.86); --t-3:rgba(171,185,188,.58); --t-4:rgba(171,185,188,.69);
+  --edge:rgba(171,185,188,.16); --edge-soft:rgba(171,185,188,.09); --hi:rgba(237,237,229,.08);
+  --edge-warm:rgba(153,65,0,.30);
+  --accent:var(--orange); --accent-soft:rgba(171,185,188,.08);
+
+  --green:var(--mint);  --green-bg:rgba(128,130,102,.18); --green-bd:rgba(128,130,102,.32);
+  --amber:var(--peach); --amber-bg:rgba(244,203,166,.12); --amber-bd:rgba(244,203,166,.26);
+  --red:var(--coral);   --red-bg:rgba(99,36,3,.28);       --red-bd:rgba(153,65,0,.38);
+  --hot:var(--peach);   --hot-bg:rgba(153,65,0,.22);      --hot-bd:rgba(153,65,0,.42);
+  --hot-ink:var(--peach);
+
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code','Fira Mono',ui-monospace,Menlo,monospace;
+
+  --r-shell:26px; --r-card:16px; --r-tile:12px;
+  --blur:saturate(1.25) blur(30px); --blur-card:saturate(1.15) blur(18px);
+  --shadow-card:0 10px 34px rgba(9,16,22,.42); --shadow-shell:0 40px 120px rgba(9,16,22,.62);
+  --wash-a:rgba(153,65,0,.12); --wash-b:rgba(68,77,81,.18);
+}
+html.light, :root[data-theme="light"]{ color-scheme:light;
+  --bg:#EDEDE5;
+  --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+  --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.78);
+  --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+  --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+  --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+  --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+  --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+  --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+  --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+  --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#EDEDE5;
+    --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+    --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.78);
+    --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+    --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+    --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+    --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+    --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+    --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+    --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+    --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark}
+body{font-family:var(--font);color:var(--t-1);background:var(--bg);line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding:clamp(14px,3vw,36px);position:relative;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 600px at 15% 0%,var(--wash-a),transparent 55%),
+  radial-gradient(ellipse 900px 600px at 85% 100%,var(--wash-b),transparent 50%)}
+.wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;background:var(--glass);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--edge);
+  border-radius:var(--r-shell);box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:clamp(20px,4vw,52px)}
+h1{font-family:var(--serif);font-size:clamp(30px,5vw,46px);font-weight:300;letter-spacing:-.005em;text-wrap:balance;line-height:1.1}
+h1 b{font-weight:600}
+h2{font-family:var(--serif);font-size:clamp(22px,3vw,28px);font-weight:500;letter-spacing:0;margin-bottom:6px;text-wrap:balance;line-height:1.2}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
+p{color:var(--t-2);font-size:15px;max-width:78ch;margin-bottom:10px}
+p strong,li strong,td strong{color:var(--t-1);font-weight:600}
+small,.src{color:var(--t-4);font-size:11.5px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--t-2);margin-bottom:10px;padding-top:14px;border-top:1px solid var(--edge-soft)}
+section{margin-top:clamp(38px,5.5vw,60px)}
+ul{margin:6px 0 10px 18px;color:var(--t-2);font-size:14px}
+ol{margin:6px 0 10px 20px;color:var(--t-2);font-size:14px}
+li{margin-bottom:7px;max-width:78ch}
+a{color:var(--t-1)}
+code{font-family:var(--mono);font-size:11.5px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-radius:5px;padding:1px 5px}
+.card{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);
+  padding:clamp(14px,2.4vw,22px)}
+.tile{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:12px 14px}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:11px;
+  font-family:var(--mono);font-weight:500;letter-spacing:.02em;background:var(--glass-3);color:var(--t-3);border:1px solid var(--edge)}
+.badge.hot{background:var(--hot-bg);color:var(--hot);border-color:var(--hot-bd)}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.badge.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.badge.crit{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:9.5px;font-weight:600;font-family:var(--mono);
+  letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.chip.chip.obs{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.chip.chip.est{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.chip.chip.unk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.chip.chip.dec{background:var(--accent-soft);color:var(--t-1);border:1px solid var(--edge)}
+.chip.chip.none{background:transparent;color:var(--t-3);border:1px dashed var(--edge)}
+.tblwrap{overflow-x:auto;border:1px solid var(--edge-soft);border-radius:var(--r-tile);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t-4);
+  text-align:left;padding:10px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td b{color:var(--t-1);font-weight:600}
+.ev{color:var(--t-3);font-size:12px}
+.btn{border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);border-radius:999px;
+  padding:6px 14px;font-size:11.5px;font-weight:500;font-family:var(--mono);cursor:pointer;transition:all .18s}
+.btn:hover{color:var(--t-1);border-color:var(--hi)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible,.badge:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:8px}
+header>div:first-child{flex:1 1 420px;min-width:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.theme-toggle{cursor:pointer;padding:5px 12px}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--edge-soft);color:var(--t-4);font-size:11.5px;line-height:1.7}
+footer p{color:var(--t-4);font-size:11.5px;max-width:none;margin-bottom:8px}
+footer b{color:var(--t-3)}
+.rise{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){.rise{animation:none}html{scroll-behavior:auto}}
+.callout{border-left:2px solid var(--amber-bd);padding:10px 14px;background:var(--amber-bg);
+  border-radius:0 var(--r-tile) var(--r-tile) 0;margin:12px 0}
+.callout p{margin-bottom:0;color:var(--t-1);font-size:13.5px}
+.callout.g{border-left-color:var(--green-bd);background:var(--green-bg)}
+.callout.r{border-left-color:var(--red-bd);background:var(--red-bg)}
+.callout.n{border-left-color:var(--edge);background:var(--glass-3)}
+
+/* ── strip de números ── */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0}
+.strip .tile b{display:block;font-family:var(--mono);font-size:27px;font-weight:600;color:var(--t-1);letter-spacing:-.02em;line-height:1.15}
+.strip .tile span{color:var(--t-4);font-size:11.5px;line-height:1.45;display:block;margin-top:5px}
+.strip .tile span.chip{display:inline-block;width:auto;margin-top:7px;line-height:1.5;font-size:9.5px}
+.strip .tile{padding:16px 18px}
+.tile.hot{background:var(--hot-bg);border-color:var(--hot-bd)}
+.tile.hot b{color:var(--hot-ink)}
+.tile.hot span{color:var(--hot)}
+.tile.ok{background:var(--green-bg);border-color:var(--green-bd)}
+.tile.ok b,.tile.ok span{color:var(--green)}
+
+/* ── fases colapsables ── */
+.phase{border:1px solid var(--edge-soft);border-radius:var(--r-card);background:var(--glass-3);margin:10px 0;
+  overflow:hidden;scroll-margin-top:14px}
+.phase[open]{background:var(--glass-2);border-color:var(--edge);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.phase>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.phase>summary::-webkit-details-marker{display:none}
+.phase>summary:hover{background:var(--accent-soft)}
+.ph-idx{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);flex:0 0 auto}
+.ph-name{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--t-1);letter-spacing:0;flex:1 1 260px;min-width:0;line-height:1.2}
+.ph-name span{display:block;font-family:var(--font);font-size:12px;font-weight:400;color:var(--t-3);letter-spacing:0;margin-top:3px}
+.ph-chev{color:var(--t-3);font-size:12px;transition:transform .2s;flex:0 0 auto;margin-left:auto}
+.phase[open] .ph-chev{transform:rotate(180deg)}
+.ph-body{padding:0 18px 18px;border-top:1px solid var(--edge-soft)}
+.ph-body>.objtitle:first-child{margin-top:14px}
+.objtitle{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);margin:18px 0 5px}
+.obj{border-left:2px solid var(--edge)}
+.obj td:first-child{color:var(--t-4);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;font-weight:700}
+.entry{color:var(--t-3);font-size:13px;margin:6px 0 10px;max-width:78ch}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;color:var(--t-3);font-size:12px;align-items:center}
+
+/* ══ patrones propios de este documento ══ */
+
+/* la tesis: una frase grande, una sola vez */
+.thesis{font-family:var(--serif);font-size:clamp(24px,3.6vw,38px);font-weight:300;line-height:1.2;
+  color:var(--t-1);max-width:24ch;margin:6px 0 4px;letter-spacing:-.01em}
+.thesis em{font-style:italic;color:var(--t-1)}
+.sub{color:var(--t-2);font-size:15px;max-width:74ch;margin:10px 0 0}
+.sub b{color:var(--t-1);font-weight:600}
+
+/* cuatro columnas del build */
+.quad{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:12px;margin:14px 0}
+.quad .col{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);padding:15px 17px}
+.quad .col h3{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--t-1);margin-bottom:2px}
+.quad .col .big{font-family:var(--mono);font-size:30px;font-weight:600;color:var(--t-1);letter-spacing:-.02em;line-height:1.1;margin:6px 0 2px}
+.quad .col .cap{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--t-4);margin-bottom:8px}
+.quad .col ul{margin:8px 0 0;padding-left:15px}
+.quad .col li{font-size:12.5px;color:var(--t-2);margin-bottom:5px;line-height:1.5;max-width:none}
+.quad .col li b{color:var(--t-1);font-weight:600}
+
+/* el embudo a escala real */
+.funnel{margin:16px 0 6px}
+.frow{display:grid;grid-template-columns:190px 1fr 84px;align-items:center;gap:12px;padding:6px 0}
+.fname{font-size:13px;color:var(--t-2);line-height:1.35;text-align:right}
+.fname b{display:block;color:var(--t-1);font-weight:600;font-size:13.5px}
+.fname span{font-size:10.5px;color:var(--t-4)}
+.ftrack{background:var(--glass-3);border-radius:6px;height:26px;position:relative;overflow:hidden;border:1px solid var(--edge-soft)}
+.fbar{height:100%;background:var(--bari-dark);border-radius:5px;min-width:3px;
+  display:flex;align-items:center;justify-content:flex-end;padding-right:9px}
+.fbar.b1,.fbar.b2,.fbar.b3,.fbar.b4,.fbar.b5{background:rgba(171,185,188,.42)}
+
+.fbar.b6{background:var(--orange)}
+.fval{font-family:var(--mono);font-size:16px;font-weight:600;color:var(--t-1);text-align:right;letter-spacing:-.01em}
+.fpct{font-family:var(--mono);font-size:10px;color:var(--t-4);display:block;font-weight:500}
+@media(max-width:640px){.frow{grid-template-columns:1fr;gap:3px}.fname{text-align:left}}
+
+/* barras comparativas de campaña */
+.cmp{margin:12px 0}
+.crow{display:grid;grid-template-columns:150px 1fr 62px;align-items:center;gap:10px;padding:4px 0}
+.clabel{font-size:12.5px;color:var(--t-2)}
+.ctrack{background:var(--glass-3);border-radius:5px;height:16px;overflow:hidden;border:1px solid var(--edge-soft)}
+.cbar{height:100%;background:rgba(171,185,188,.40);border-radius:4px;min-width:2px}
+.cbar.a{background:rgba(128,130,102,.62)} .cbar.b{background:rgba(171,185,188,.44)} .cbar.c{background:rgba(244,203,166,.50)}
+.cval{font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--t-1);text-align:right}
+
+/* el riel, como tarjeta */
+.rails{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:12px;margin:14px 0}
+.rail{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);
+  padding:16px 18px 14px;display:flex;flex-direction:column;box-shadow:inset 0 1px 0 var(--hi)}
+.rail .rname{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--t-1);margin-bottom:1px}
+.rail .rwhat{font-size:12px;color:var(--t-3);margin-bottom:10px;line-height:1.45}
+.rail .rbig{font-family:var(--mono);font-size:34px;font-weight:600;letter-spacing:-.025em;color:var(--t-1);line-height:1}
+.rail .runit{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--t-4);margin:5px 0 11px}
+.rail dl{margin:0 0 10px;border-top:1px solid var(--edge-soft)}
+.rail dl>div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--edge-soft);font-size:12.5px}
+.rail dt{color:var(--t-3);min-width:0}
+.rail dd{margin:0;font-family:var(--mono);font-size:12.5px;font-weight:600;color:var(--t-1);white-space:nowrap}
+.rail .next{margin-top:auto;padding-top:9px;font-size:12px;color:var(--t-2);line-height:1.5}
+.rail .next b{color:var(--t-1);font-weight:600;display:block;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--t-4);margin-bottom:3px}
+
+/* diagramas svg */
+.dia{background:var(--glass-3);border:none;border-radius:var(--r-card);
+  padding:16px 18px;margin:14px 0;overflow-x:auto}
+.dia svg{display:block;width:100%;min-width:660px;height:auto}
+.dia .dcap{font-size:12px;color:var(--t-3);margin-top:10px;max-width:78ch}
+.sv-box{fill:var(--glass-2);stroke:var(--edge);stroke-width:1}
+.sv-box.warm{stroke:var(--edge-warm)}
+.sv-t{fill:var(--t-1);font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600}
+.sv-s{fill:var(--t-3);font-family:'Inter',sans-serif;font-size:10.5px}
+.sv-n{fill:var(--t-1);font-family:'SF Mono',ui-monospace,monospace;font-size:14px;font-weight:600}
+.sv-k{fill:var(--t-4);font-family:'SF Mono',ui-monospace,monospace;font-size:9px;font-weight:600;letter-spacing:.16em}
+.sv-l{stroke:rgba(171,185,188,.34);stroke-width:1.5;fill:none}
+.sv-l.dash{stroke-dasharray:4 5;stroke:rgba(171,185,188,.22)}
+.sv-l.hot{stroke:rgba(244,203,166,.55);stroke-width:1.8}
+
+/* capturas */
+.shot{margin:14px 0;border:1px solid var(--edge);border-radius:var(--r-card);overflow:hidden;background:var(--glass-3)}
+.shot img{display:block;width:100%;height:auto}
+.shot .scap{padding:11px 15px;font-size:12px;color:var(--t-3);border-top:1px solid var(--edge-soft);line-height:1.5}
+.shot .scap b{color:var(--t-2);font-weight:600}
+.shot.tall{max-height:520px;overflow-y:auto}
+
+/* dos columnas de texto */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:10px 26px;margin:10px 0}
+.lead{font-size:15.5px;color:var(--t-2);max-width:74ch;line-height:1.6}
+.lead b{color:var(--t-1);font-weight:600}
+a{color:var(--t-2)}
+a:hover{color:var(--t-1)}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
+.nav a{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t-3);text-decoration:none;border:1px solid var(--edge-soft);border-radius:999px;padding:5px 12px}
+.nav a:hover{color:var(--t-1);border-color:var(--edge);background:var(--accent-soft)}
+@media(max-width:700px){
+  .nav{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+       scrollbar-width:none;padding-bottom:4px;margin:10px 0 2px}
+  .nav::-webkit-scrollbar{display:none}
+  .nav a{flex:0 0 auto}
+  header .badges{gap:6px}
+}
+</style>
+</head>
+<body data-updated="2026-08-31">
+<div class="wrap">
+
+<header class="rise">
+  <div>
+    <div class="eyebrow">La Chamana · El Chaman OS · Cierre de mes</div>
+    <h1>Agosto <b>2026</b></h1>
+    <p class="sub">Qué se construyó, qué salió por los rieles y a cuánta gente llegó — el
+    primer mes con la máquina entera encendida.</p>
+    <div class="badges">
+      <span class="badge">v1.0 · 31-ago-2026</span>
+      <span class="badge warn">Equipo extendido</span>
+      <span class="badge">327 envíos · 809 personas en el pozo</span>
+      <span class="badge" id="freshness">—</span>
+    </div>
+  </div>
+  <button class="badge theme-toggle" aria-label="Cambiar tema" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()"><span aria-hidden="true">◐</span> tema</button>
+</header>
+
+<main>
+<nav class="nav" aria-label="Secciones" tabindex="0">
+  <a href="#build">01 · Qué construimos</a>
+  <a href="#funnel">02 · El funnel</a>
+  <a href="#rieles">03 · Los cuatro rieles</a>
+  <a href="#campanas">04 · Las campañas</a>
+  <a href="#alcance">05 · El alcance</a>
+  <a href="#costo">06 · La escala</a>
+  <a href="#flujos">07 · Los flujos</a>
+  <a href="#septiembre">08 · Lo que falta</a>
+</nav>
+
+<section>
+  <p class="thesis">En agosto La Chamana dejó de tener campañas y pasó a tener una
+  <em>máquina</em>.</p>
+  <p class="lead">La diferencia se nota en una sola cosa: en julio cada email salía porque
+  alguien se acordó de mandarlo. En agosto salieron <b>327 envíos en 12 días hábiles</b>, cada
+  uno preparado, verificado, aprobado por una persona y anotado en un libro que no se puede
+  editar hacia atrás. Lo mismo pasó con las páginas, con las respuestas del buzón y con la
+  pauta. Debajo está todo lo que se construyó, todo lo que salió por los rieles y a cuánta
+  gente llegó — y cada número dice de dónde salió.</p>
+
+  <div class="strip">
+    <div class="tile"><b>809</b><span>personas identificadas y calificadas en el pozo <span class="chip obs">medido</span></span></div>
+    <div class="tile hot"><b>327</b><span>envíos reales, 1 solo fallido en todo el mes <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>27</b><span>personas contestaron un email nuestro <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>39</b><span>páginas y documentos creados <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>$263</b><span>invertidos en pauta — el único gasto de medios del mes <span class="chip obs">medido</span></span></div>
+  </div>
+
+  <div class="callout n">
+    <p><b>Cómo leer este documento.</b> Cada cifra lleva una marca:
+    <span class="chip obs">medido</span> salió de un archivo o una base de datos en disco esta
+    misma sesión · <span class="chip est">estimado</span> es un cálculo hecho sobre cifras
+    medidas · <span class="chip unk">sin medir</span> significa que no lo sabemos, y lo decimos
+    en vez de poner un cero. Un número inventado argumenta más fuerte que uno faltante; por eso
+    no hay ninguno.</p>
+  </div>
+
+  <div class="objtitle" style="margin-top:22px">Ocho palabras que usamos y conviene fijar</div>
+  <div class="tblwrap" tabindex="0" role="group" aria-label="Tabla, se desplaza en horizontal">
+    <table>
+      <caption style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Glosario de los ocho términos que usa este documento</caption>
+      <thead><tr><th>Palabra</th><th>Qué es</th></tr></thead>
+      <tbody>
+        <tr><td><b>riel</b></td><td>Un camino completo y automatizado, de punta a punta. «El riel de outreach» va desde elegir a quién escribirle hasta dejar el envío anotado. Hay cuatro.</td></tr>
+        <tr><td><b>el pozo</b></td><td>La lista de personas y organizaciones ya investigadas, con nombre, contacto y contexto, esperando su turno. Hoy tiene 809.</td></tr>
+        <tr><td><b>ola</b></td><td>Una tanda de emails que sale junta, espaciada en el tiempo. En agosto salieron 27.</td></tr>
+        <tr><td><b>barrido</b></td><td>Una pasada por el buzón leyendo y clasificando lo que llegó. Se hicieron 100.</td></tr>
+        <tr><td><b>puerta de aprobación</b></td><td>El punto donde una persona tiene que decir que sí antes de que algo salga. Nada sale sin eso.</td></tr>
+        <tr><td><b>el cockpit</b></td><td>La pantalla desde donde se opera todo. Es interna, del equipo que ejecuta.</td></tr>
+        <tr><td><b>funnel</b></td><td>El recorrido completo, desde que alguien se entera de la casa hasta que reserva. Son nueve pasos.</td></tr>
+        <tr><td><b>E1 · E2 · E3</b></td><td>Primer contacto, primer seguimiento, segundo seguimiento. Una secuencia de tres.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="build" aria-labelledby="h-build">
+  <div class="eyebrow">01 · La máquina</div>
+  <h2 id="h-build">Qué construimos</h2>
+  <p class="lead">Cuatro cosas se construyeron en paralelo durante el mes: <b>el toolkit</b> (el
+  software donde se opera todo), <b>los skills</b> (los procedimientos que la máquina sabe
+  ejecutar), <b>los agents</b> (los especialistas que razonan) y <b>la infraestructura</b> (lo
+  que hace que todo eso corra solo). Agosto fue el <b>55 % de la historia entera del
+  proyecto</b>: 233 de los 424 commits del toolkit se escribieron este mes.</p>
+
+  <div class="quad">
+    <div class="col">
+      <div class="cap">El toolkit</div>
+      <div class="big">22</div>
+      <h3>pantallas</h3>
+      <ul>
+        <li><b>5 nacieron en agosto</b> — Overview, el mapa del funnel, el desk de respuestas, el brief del operador y el planner</li>
+        <li><b>190 rutas</b> de API y 93 componentes</li>
+        <li><b>3.654 pruebas</b> automáticas y <b>45 chequeos</b> de salud que corren solos</li>
+        <li>4 rieles de campaña · 40 acciones despachables</li>
+      </ul>
+    </div>
+    <div class="col">
+      <div class="cap">Los skills</div>
+      <div class="big">67</div>
+      <h3>procedimientos</h3>
+      <ul>
+        <li><b>22 se escribieron en agosto</b>, y los 14 del toolkit son todos de este mes</li>
+        <li>El ritmo diario: <b>el pulso</b> al abrir, <b>el cierre</b> a la noche, <b>la ronda</b> los martes</li>
+        <li>La calidad: <b>la mesa de diseño</b>, la revisión de marca, el estándar fotográfico</li>
+        <li>La publicación: a Shopify, a Vercel y a Pages, probando siempre la URL viva</li>
+      </ul>
+    </div>
+    <div class="col">
+      <div class="cap">Los agents</div>
+      <div class="big">16</div>
+      <h3>especialistas</h3>
+      <ul>
+        <li><b>3 nacieron en agosto</b> — el CMO, el brief del operador y la evidencia de CRM</li>
+        <li><b>El director de arte</b> es el que más produjo: es la puerta de todo lo que se ve afuera</li>
+        <li><b>El escritor de outreach</b> firmó los 317 emails de outreach (los otros 10 de los 327 son respuestas)</li>
+        <li>Dos oficinas de pauta esperando su llave: Google y Meta</li>
+      </ul>
+    </div>
+    <div class="col">
+      <div class="cap">La infraestructura</div>
+      <div class="big">12</div>
+      <h3>procesos automáticos</h3>
+      <ul>
+        <li>El cockpit vive en un servidor propio, detrás de acceso controlado</li>
+        <li><b>7 trabajos programados</b>: backup 03:30, resumen a Slack 20:50, pauta los viernes, la ronda los martes</li>
+        <li>Base de datos de <b>38 tablas</b> con 51.566 eventos registrados</li>
+        <li>3 superficies de publicación conectadas</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dia" tabindex="0" role="group" aria-label="La máquina en tres capas — diagrama, se desplaza en horizontal">
+    <svg viewBox="0 0 900 300" role="img" aria-label="Diagrama de la arquitectura en tres capas: arriba el cockpit con 22 pantallas donde opera una persona; en el medio los cuatro rieles — Outreach, Respuestas, Paid Media y Content; abajo las seis plataformas externas a las que cada riel escribe: Gmail, Airtable, Google Ads, Meta, Shopify e Instagram.">
+      <rect class="sv-box" x="40" y="12" width="820" height="50" rx="10"/>
+      <text class="sv-k" x="56" y="32">EL COCKPIT · UNA PERSONA OPERA</text>
+      <text class="sv-t" x="56" y="50">22 pantallas · 190 rutas · toda acción pasa por una puerta de aprobación</text>
+
+      <path class="sv-l" d="M135 62 V110"/><path class="sv-l" d="M345 62 V110"/>
+      <path class="sv-l" d="M555 62 V110"/><path class="sv-l" d="M765 62 V110"/>
+
+      <rect class="sv-box" x="40" y="110" width="190" height="66" rx="9"/>
+      <text class="sv-k" x="54" y="128">RIEL · OUTREACH</text>
+      <text class="sv-n" x="54" y="150">327</text><text class="sv-s" x="96" y="150">envíos</text>
+      <text class="sv-s" x="54" y="166">27 olas · 45 manifiestos</text>
+
+      <rect class="sv-box" x="250" y="110" width="190" height="66" rx="9"/>
+      <text class="sv-k" x="264" y="128">RIEL · RESPUESTAS</text>
+      <text class="sv-n" x="264" y="150">100</text><text class="sv-s" x="306" y="150">barridos</text>
+      <text class="sv-s" x="264" y="166">77 respuestas capturadas</text>
+
+      <rect class="sv-box" x="460" y="110" width="190" height="66" rx="9"/>
+      <text class="sv-k" x="474" y="128">RIEL · PAID MEDIA</text>
+      <text class="sv-n" x="474" y="150">$263</text><text class="sv-s" x="526" y="150">invertidos</text>
+      <text class="sv-s" x="474" y="166">Google vivo · Meta armado</text>
+
+      <rect class="sv-box" x="670" y="110" width="190" height="66" rx="9"/>
+      <text class="sv-k" x="684" y="128">RIEL · CONTENT</text>
+      <text class="sv-n" x="684" y="150">39</text><text class="sv-s" x="712" y="150">páginas creadas</text>
+      <text class="sv-s" x="684" y="166">3 publicadas en vivo</text>
+
+      <path class="sv-l" d="M110 176 V200 H107 V225"/>
+      <path class="sv-l" d="M180 176 V200 H244 V225"/>
+      <path class="sv-l" d="M310 176 V200 H107 V225"/>
+      <path class="sv-l" d="M380 176 V200 H244 V225"/>
+      <path class="sv-l hot" d="M520 176 V200 H381 V225"/>
+      <path class="sv-l dash" d="M590 176 V200 H518 V225"/>
+      <path class="sv-l" d="M730 176 V200 H655 V225"/>
+      <path class="sv-l dash" d="M800 176 V200 H792 V225"/>
+
+      <rect class="sv-box" x="45" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="58" y="245">Gmail</text><text class="sv-s" x="58" y="261">el buzón de Iru</text>
+      <rect class="sv-box" x="182" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="195" y="245">Airtable</text><text class="sv-s" x="195" y="261">el CRM</text>
+      <rect class="sv-box" x="319" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="332" y="245">Google Ads</text><text class="sv-s" x="332" y="261">1 campaña viva</text>
+      <rect class="sv-box warm" x="456" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="469" y="245">Meta</text><text class="sv-s" x="469" y="261">armado, sin arrancar</text>
+      <rect class="sv-box" x="593" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="606" y="245">Shopify</text><text class="sv-s" x="606" y="261">lachamana.com</text>
+      <rect class="sv-box" x="730" y="225" width="125" height="46" rx="8"/>
+      <text class="sv-t" x="743" y="245">Instagram</text><text class="sv-s" x="743" y="261">riel de DM listo</text>
+
+      <text class="sv-k" x="40" y="292">LÍNEA LLENA = CORRE HOY · LÍNEA PUNTEADA = CONSTRUIDO, ESPERANDO UNA LLAVE</text>
+    </svg>
+    <p class="dcap">La máquina en tres capas. Una persona opera arriba; los cuatro rieles hacen
+    el trabajo; abajo están las plataformas donde el trabajo aterriza. Las dos punteadas
+    —Meta e Instagram— son rieles terminados que esperan un permiso, no código.</p>
+  </div>
+
+  <div class="strip">
+    <div class="tile"><b>+316.500</b><span>líneas escritas sobre 1.531 archivos <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>1.222</b><span>archivos nuevos entre los dos repos <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>28 / 31</b><span>días con código escrito <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>232</b><span>documentos, 7 decisiones formales registradas en agosto <span class="chip obs">medido</span></span></div>
+  </div>
+</section>
+
+<section id="funnel" aria-labelledby="h-funnel">
+  <div class="eyebrow">02 · El mapa</div>
+  <h2 id="h-funnel">El funnel, de punta a punta</h2>
+  <p class="lead">Todo el negocio cabe en nueve bandas: cómo un desconocido se entera de la
+  casa, y cada paso hasta que reserva. El mapa completo son <b>54 cajas y 71 flechas</b>, y
+  vive en el cockpit — cada link de ahí se sondea de verdad, así que la página dice lo que el
+  servidor contestó, no lo que nosotros creemos. Abajo, la versión corta con los números de
+  agosto pegados a cada banda.</p>
+
+  <div class="dia" tabindex="0" role="group" aria-label="El funnel en nueve bandas — diagrama, se desplaza en horizontal">
+    <svg viewBox="0 0 900 425" role="img" aria-label="El funnel en nueve bandas, una debajo de la otra: cómo llegamos a la gente, los canales, las campañas, dónde aterrizan, la captura, el seguimiento, lo que los convence, la llamada, y lo que compran. Los números de agosto van pegados a cada banda: 809 personas en el pozo, 327 envíos, 77 respuestas, 42 conversaciones vivas y 7 noches reservadas. Las proporciones reales están en la sección 05.">
+      <rect class="sv-box" x="40" y="8" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="24">B1</text><text class="sv-t" x="86" y="29">Cómo llegamos a la gente</text>
+      <text class="sv-s" x="640" y="29">4 vías declaradas</text>
+      <path class="sv-l" d="M450 42 V54"/>
+
+      <rect class="sv-box" x="40" y="54" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="70">B2</text><text class="sv-t" x="86" y="75">Los canales</text>
+      <text class="sv-s" x="640" y="75">6 canales · 1 con gasto</text>
+      <path class="sv-l" d="M450 88 V100"/>
+
+      <rect class="sv-box" x="40" y="100" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="116">B3</text><text class="sv-t" x="86" y="121">Las campañas</text>
+      <text class="sv-s" x="640" y="121">5 vivas · 3 enviando</text>
+      <path class="sv-l" d="M450 134 V146"/>
+
+      <rect class="sv-box" x="40" y="146" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="162">B4</text><text class="sv-t" x="86" y="167">Dónde aterrizan</text>
+      <text class="sv-s" x="640" y="167">12 propiedades web</text>
+      <path class="sv-l" d="M450 180 V192"/>
+
+      <rect class="sv-box" x="40" y="192" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="208">B5</text><text class="sv-t" x="86" y="213">La captura</text>
+      <text class="sv-n" x="640" y="214">809</text><text class="sv-s" x="700" y="213">en el pozo</text>
+      <path class="sv-l" d="M450 226 V238"/>
+
+      <rect class="sv-box" x="40" y="238" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="254">B6</text><text class="sv-t" x="86" y="259">El seguimiento</text>
+      <text class="sv-n" x="640" y="260">327</text><text class="sv-s" x="700" y="259">envíos</text>
+      <path class="sv-l" d="M450 272 V284"/>
+
+      <rect class="sv-box" x="40" y="284" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="300">B7</text><text class="sv-t" x="86" y="305">Lo que los convence</text>
+      <text class="sv-n" x="640" y="306">77</text><text class="sv-s" x="700" y="305">respuestas</text>
+      <path class="sv-l" d="M450 318 V330"/>
+
+      <rect class="sv-box" x="40" y="330" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="346">B8</text><text class="sv-t" x="86" y="351">La llamada</text>
+      <text class="sv-n" x="640" y="352">42</text><text class="sv-s" x="700" y="351">conversaciones</text>
+      <path class="sv-l" d="M450 364 V376"/>
+
+      <rect class="sv-box" x="40" y="376" width="820" height="34" rx="7"/>
+      <text class="sv-k" x="56" y="392">B9</text><text class="sv-t" x="86" y="397">Lo que compran</text>
+      <text class="sv-n" x="640" y="398">7</text><text class="sv-s" x="700" y="397">noches</text>
+    </svg>
+    <p class="dcap">Las nueve bandas con lo que efectivamente pasó por cada una. Esto es el
+    MAPA: dice qué pasos existen y qué hay en cada uno. Las bandas están todas del mismo ancho
+    a propósito — las cuatro de arriba son categorías, no cantidades, y un dibujo que se
+    angosta sin que el ancho signifique algo miente. <b>Las proporciones verdaderas están en la
+    sección 05.</b></p>
+  </div>
+
+  <p class="lead">El mapa vivo —donde cada caja se puede abrir y cada link se verifica solo—
+  está en el cockpit — es interna y hace falta la sesión
+  del equipo. Esto es lo que se ve:</p>
+
+  <div class="shot tall" tabindex="0" role="group" aria-label="Captura de pantalla, se desplaza en vertical">
+    <img src="gtm-funnel-dark.png" width="1280" height="4332" loading="lazy" decoding="async" alt="Captura de la página del funnel en el cockpit: nueve bandas de arriba abajo, 54 cajas conectadas por 71 flechas de colores según el canal, con miniaturas de cada página de aterrizaje y una tabla al pie que lista cada asset con lo que el servidor contestó al sondearlo.">
+    <div class="scap"><b>El funnel completo, tal como está hoy.</b> 54 cajas, 71 flechas.
+    Cada caja se puede clickear para ver su historia y los checkpoints que tiene delante. La
+    tabla del pie sondea cada link uno por uno: dice <i>alcanzable</i> y con qué fecha, o dice
+    que no. Es la diferencia entre un diagrama y un instrumento.</div>
+  </div>
+</section>
+
+<section id="rieles" aria-labelledby="h-rieles">
+  <div class="eyebrow">03 · El trabajo</div>
+  <h2 id="h-rieles">Los cuatro rieles</h2>
+  <p class="lead">Un riel es un camino completo: desde que se decide a quién hablarle hasta que
+  el envío queda anotado en un libro que no se puede editar hacia atrás. Los cuatro corrieron
+  este mes. Van con el mismo esqueleto para que se puedan comparar.</p>
+
+  <div class="rails">
+
+    <div class="rail">
+      <div class="rname">Outreach</div>
+      <div class="rwhat">Encontrar, calificar y escribirle a la gente que puede llenar la casa.</div>
+      <div class="rbig">327</div>
+      <div class="runit">envíos reales en agosto <span class="chip obs">medido</span></div>
+      <dl>
+        <div><dt>Personas únicas alcanzadas en agosto</dt><dd>260</dd></div>
+        <div><dt>Organizaciones distintas</dt><dd>255</dd></div>
+        <div><dt>Olas despachadas</dt><dd>27</dd></div>
+        <div><dt>Manifiestos preparados</dt><dd>45</dd></div>
+        <div><dt>Primer contacto / seguimiento</dt><dd>148 / 169</dd></div>
+        <div><dt>Envíos fallidos</dt><dd>1</dd></div>
+        <div><dt>Días con envío</dt><dd>12</dd></div>
+      </dl>
+      <p class="next"><b>Septiembre</b>62 seguimientos vencidos que salen la primera semana, y
+      los 20 terceros contactos de agencias que convergen el viernes 4.</p>
+    </div>
+
+    <div class="rail">
+      <div class="rname">Email Replies</div>
+      <div class="rwhat">Leer el buzón, entender qué contestó cada uno y no dejar caer un hilo.</div>
+      <div class="rbig">77</div>
+      <div class="runit">respuestas capturadas <span class="chip obs">medido</span></div>
+      <dl>
+        <div><dt>Barridos del buzón</dt><dd>100</dd></div>
+        <div><dt>Personas que contestaron</dt><dd>27</dd></div>
+        <div><dt>Clasificadas como interesadas</dt><dd>13</dd></div>
+        <div><dt>Conversaciones vivas</dt><dd>42</dd></div>
+        <div><dt>Cerradas / esperando a ellos</dt><dd>19 / 17</dd></div>
+        <div><dt>Rebotes detectados</dt><dd>17</dd></div>
+        <div><dt>Direcciones dadas de baja</dt><dd>8</dd></div>
+      </dl>
+      <p class="next"><b>Septiembre</b>Que las respuestas salgan por el riel. Hoy la máquina
+      captura y clasifica; el humano responde a mano, y ese toque no queda registrado.</p>
+    </div>
+
+    <div class="rail">
+      <div class="rname">Paid Media</div>
+      <div class="rwhat">Comprar atención en Google y en Meta, y medir si vale la pena.</div>
+      <div class="rbig">$263</div>
+      <div class="runit">invertidos, todo en Google <span class="chip obs">medido</span></div>
+      <dl>
+        <div><dt>Impresiones</dt><dd>1.901</dd></div>
+        <div><dt>Clics</dt><dd>70</dd></div>
+        <div><dt>CTR</dt><dd>3,68 %</dd></div>
+        <div><dt>Costo por clic</dt><dd>$3,76</dd></div>
+        <div><dt>Keywords en juego</dt><dd>21 → 38</dd></div>
+        <div><dt>Negativos aplicados</dt><dd>254</dd></div>
+        <div><dt>Inversión en Meta</dt><dd>$0</dd></div>
+      </dl>
+      <p class="next"><b>Septiembre</b>Meta arranca: una campaña, tres públicos, USD 30 por
+      día. Falta un solo permiso de la plataforma.</p>
+    </div>
+
+    <div class="rail">
+      <div class="rname">Content</div>
+      <div class="rwhat">Escribir y publicar las páginas y los artículos donde la gente aterriza.</div>
+      <div class="rbig">39</div>
+      <div class="runit">páginas creadas en el mes <span class="chip obs">medido</span></div>
+      <dl>
+        <div><dt>Publicadas en vivo por el riel</dt><dd>3</dd></div>
+        <div><dt>Documentos nuevos</dt><dd>30</dd></div>
+        <div><dt>Páginas de campaña</dt><dd>9</dd></div>
+        <div><dt>Investigaciones de SEO</dt><dd>6</dd></div>
+        <div><dt>Análisis de keywords</dt><dd>5</dd></div>
+        <div><dt>Imágenes nuevas</dt><dd>103</dd></div>
+        <div><dt>Piezas del sistema de marca</dt><dd>14</dd></div>
+      </dl>
+      <p class="next"><b>Septiembre</b>El pack de contenido del mes ya está escrito y
+      publicado; falta rodarlo y que alimente la pauta.</p>
+    </div>
+
+  </div>
+
+  <div class="callout g">
+    <p><b>Lo que hace que estos cuatro números sean confiables.</b> Ninguno salió de que
+    alguien se acuerde. Cada envío tiene una fila en un libro que sólo agrega y nunca edita, con
+    hora, destinatario y resultado. <b>191 direcciones se verificaron antes</b> de escribirles
+    —no después— y <b>98 puertas de aprobación</b> quedaron registradas en el mes:
+    <b>72 se despacharon y 25 se rechazaron</b>. Una de cada cuatro se frenó a propósito: la
+    puerta no es decorativa.</p>
+  </div>
+
+  <h3 style="margin-top:24px">Paid Media, en detalle: qué compró esa plata</h3>
+  <p class="lead">Google Ads gastó <b>USD 263 y trajo 70 clics</b>, y ninguno terminó en una
+  reserva. Contado en frío eso parece un mes perdido; contado bien es lo contrario. Lo que esos
+  263 dólares compraron fue <b>la medición del tamaño real del mercado</b>: la gente que busca
+  en Google alquilar una casa entera en Tulum para un retiro son
+  <b>unas 650 búsquedas por mes</b>, y de todo lo que se gastó, <b>0 % fue a ese público</b> —
+  el resto eran búsquedas de gente que quiere <i>ir</i> a un retiro, no alquilar la casa.</p>
+  <p class="lead">El veredicto quedó escrito: <b>Google es una red de captura chica, no un
+  canal de volumen.</b> Es una conclusión con número atrás, tomada antes de poner presupuesto
+  serio. Los 254 negativos aplicados son el cierre de esa canilla.</p>
+
+  <div class="tblwrap" tabindex="0" role="group" aria-label="Tabla, se desplaza en horizontal">
+    <table>
+      <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Estado de los dos canales de pauta al cierre de agosto</caption>
+      <thead><tr><th>Canal</th><th>Invertido</th><th>Qué pasó</th><th>Estado al 31-ago</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Google Ads</b></td>
+          <td>$263,02</td>
+          <td>1.901 impresiones · 70 clics · 3 campañas en la cuenta, 1 activa</td>
+          <td><span class="badge ok">corriendo</span> <span class="ev">con presupuesto acotado a propósito</span></td>
+        </tr>
+        <tr>
+          <td><b>Meta</b></td>
+          <td>$0,00</td>
+          <td>Página creada · términos de lead-ads firmados · formulario nacido · campaña construida 2 veces por API, en pausa</td>
+          <td><span class="badge warn">armado</span> <span class="ev">falta verificar el negocio</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lead">Meta es el trabajo más grande del mes que todavía no muestra un número.
+  Tres meses de niebla se redujeron a <b>un solo requisito</b>: la plataforma no acepta un
+  medio de pago en una cuenta de un negocio sin verificar. Se midió seis veces, en tres
+  cuentas distintas. Todo lo demás ya está: la Página, los permisos, el formulario y la
+  campaña entera construida. <b>Falta un ad y una tarjeta.</b></p>
+</section>
+
+<section id="campanas" aria-labelledby="h-campanas">
+  <div class="eyebrow">04 · Por campaña</div>
+  <h2 id="h-campanas">Dónde se puso el esfuerzo</h2>
+  <p class="thesis" style="font-size:clamp(20px,2.4vw,28px);max-width:30ch">Tres campañas hicieron
+  todo el trabajo del mes. Una cuarta no escribió una sola línea, a propósito.</p>
+  <div class="strip">
+    <div class="tile"><b>3 de 5</b><span>campañas con envíos en agosto <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>132</b><span>envíos de la más activa: familias que alquilan la casa entera <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>168</b><span>personas de celebraciones esperando una revisión editorial <span class="chip obs">medido</span></span></div>
+  </div>
+  <p class="lead">Cada campaña busca un tipo distinto de huésped, y la casa se llena distinto
+  según cuál funcione. Las familias y las agencias son las que más se movieron; los retiros son
+  los que compran con más anticipación.</p>
+
+  <div class="tblwrap" tabindex="0" role="group" aria-label="Tabla, se desplaza en horizontal">
+    <table>
+      <caption style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Las cinco campañas: a quién buscan, pozo, contactados, envíos y costo</caption>
+      <thead><tr><th>Campaña</th><th>A quién busca</th><th>Pozo</th><th>Contactados</th><th>Envíos</th><th>Olas</th></tr></thead>
+      <tbody>
+        <tr><td><b>agencies-outreach</b></td><td>Agencias de viaje y DMCs que arman viajes de lujo</td><td>254</td><td>142</td><td><b>113</b></td><td>10</td></tr>
+        <tr><td><b>family-takeovers</b></td><td>Familias que alquilan la casa entera para reunirse</td><td>190</td><td>96</td><td><b>132</b></td><td>11</td></tr>
+        <tr><td><b>retreats-a</b></td><td>Facilitadores que dan retiros y necesitan sede</td><td>197</td><td>102</td><td><b>79</b></td><td>6</td></tr>
+        <tr><td><b>celebration-takeovers</b></td><td>Celebraciones grandes — bodas, cumpleaños redondos</td><td>168</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td><b>bookings villa alta</b></td><td>Reservas directas de temporada alta</td><td colspan="4"><span class="ev">campaña de contenido y pauta, sin riel de email</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="two">
+    <div>
+      <div class="objtitle">Envíos por campaña</div>
+      <div class="cmp">
+        <div class="crow"><div class="clabel">family-takeovers</div><div class="ctrack"><div class="cbar a" style="width:100%"></div></div><div class="cval">132</div></div>
+        <div class="crow"><div class="clabel">agencies-outreach</div><div class="ctrack"><div class="cbar a" style="width:85.6%"></div></div><div class="cval">113</div></div>
+        <div class="crow"><div class="clabel">retreats-a</div><div class="ctrack"><div class="cbar a" style="width:59.8%"></div></div><div class="cval">79</div></div>
+        <div class="crow"><div class="clabel">celebration-takeovers</div><div class="ctrack"><div class="cbar a" style="width:0%"></div></div><div class="cval">0</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="objtitle">Personas en el pozo</div>
+      <div class="cmp">
+        <div class="crow"><div class="clabel">agencies-outreach</div><div class="ctrack"><div class="cbar b" style="width:100%"></div></div><div class="cval">254</div></div>
+        <div class="crow"><div class="clabel">retreats-a</div><div class="ctrack"><div class="cbar b" style="width:77.6%"></div></div><div class="cval">197</div></div>
+        <div class="crow"><div class="clabel">family-takeovers</div><div class="ctrack"><div class="cbar b" style="width:74.8%"></div></div><div class="cval">190</div></div>
+        <div class="crow"><div class="clabel">celebration-takeovers</div><div class="ctrack"><div class="cbar b" style="width:66.1%"></div></div><div class="cval">168</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><b>La campaña de celebraciones tiene 168 personas y no le escribió a ninguna, a
+    propósito.</b> 75 de esas filas están retenidas esperando una revisión editorial: son
+    celebraciones —bodas, aniversarios, cumpleaños— y la casa no le escribe a una familia sobre
+    su propia fiesta sin que una persona lea antes qué se le va a decir. Es una decisión, no un
+    atasco: el riel está armado y la cola está lista para el día que esa revisión pase.</p>
+  </div>
+</section>
+
+<section id="alcance" aria-labelledby="h-alcance">
+  <div class="eyebrow">05 · El embudo real</div>
+  <h2 id="h-alcance">A cuánta gente llegamos</h2>
+  <p class="lead">Las barras de abajo están a <b>escala verdadera</b>: el ancho es proporcional
+  al número, no al diseño. Así se ve dónde se angosta el negocio de verdad.</p>
+  <div class="callout n">
+    <p><b>Una precisión de fechas, porque si no dos números parecen pelearse.</b> Los tres
+    primeros escalones —identificados, calificados, contactados— son el <b>estado acumulado a
+    hoy</b>: incluyen el trabajo de julio y de agosto. Los dos últimos son de agosto. De los
+    340 contactados en total, <b>260 recibieron su email en agosto</b>. Es la misma gente
+    contada en dos relojes, no dos cifras en conflicto.</p>
+  </div>
+
+  <div class="funnel">
+    <div class="frow">
+      <div class="fname"><b>Identificados</b><span>investigados y guardados en el pozo · acumulado</span></div>
+      <div class="ftrack"><div class="fbar b1" style="width:100%"></div></div>
+      <div class="fval">809<span class="fpct">100 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Calificados</b><span>pasaron el filtro y se promovieron · acumulado</span></div>
+      <div class="ftrack"><div class="fbar b2" style="width:47.2%"></div></div>
+      <div class="fval">382<span class="fpct">47 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Contactados</b><span>acumulado · 260 de ellos en agosto</span></div>
+      <div class="ftrack"><div class="fbar b3" style="width:42.0%"></div></div>
+      <div class="fval">340<span class="fpct">42 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Tocados 2+ veces</b><span>recibieron un seguimiento, no sólo el primero</span></div>
+      <div class="ftrack"><div class="fbar b4" style="width:16.8%"></div></div>
+      <div class="fval">136<span class="fpct">17 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Respondieron</b><span>personas distintas · en agosto</span></div>
+      <div class="ftrack"><div class="fbar b5" style="width:3.3%"></div></div>
+      <div class="fval">27<span class="fpct">3,3 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Interesados</b><span>la respuesta dice que quieren avanzar</span></div>
+      <div class="ftrack"><div class="fbar b5" style="width:1.6%"></div></div>
+      <div class="fval">13<span class="fpct">1,6 %</span></div>
+    </div>
+    <div class="frow">
+      <div class="fname"><b>Noches reservadas</b><span>ocupación real de agosto</span></div>
+      <div class="ftrack"><div class="fbar b6" style="width:0.9%"></div></div>
+      <div class="fval">7<span class="fpct">noches</span></div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <div class="tile"><b>10,4 %</b><span>de los alcanzados contestó — 27 de 260 <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>438</b><span>prospectos nuevos investigados sólo en agosto <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>426</b><span>del pozo todavía sin trabajar — no se les escribió nunca <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>171</b><span>contactos de Instagram esperando el riel de DM <span class="chip obs">medido</span></span></div>
+  </div>
+
+  <div class="callout n">
+    <p><b>Una nota sobre el 3,3 %.</b> El CRM dice que respondieron 5 personas; el buzón dice
+    que respondieron 27. La diferencia no es un error de cuentas: <b>26 de las 36 respuestas
+    del mes salieron a mano desde el buzón de Iru</b> y sólo 10 pasaron por el riel, y un toque
+    que no pasa por el riel no queda anotado. El número bueno es el del buzón —27— y cerrar esa
+    brecha es uno de los hitos de septiembre. Lo decimos porque un número que no cierra con
+    otro es exactamente lo que hay que explicar, no esconder.</p>
+  </div>
+</section>
+
+<section id="costo" aria-labelledby="h-costo">
+  <div class="eyebrow">06 · La escala</div>
+  <h2 id="h-costo">Lo que se gastó, y cuánto trabajo hubo detrás</h2>
+  <p class="thesis" style="font-size:clamp(20px,2.4vw,28px);max-width:32ch">El gasto de medios
+  de agosto fueron <em>263 dólares</em>. Todo lo demás fue trabajo.</p>
+
+  <div class="strip">
+    <div class="tile"><b>$263,02</b><span>gasto de medios del mes, todo en Google Ads <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>$0</b><span>en Meta — el canal todavía no arrancó <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>$3,76</b><span>costo por clic en Google <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>650</b><span>búsquedas al mes: el tamaño real del mercado en Google <span class="chip est">medido y proyectado</span></span></div>
+  </div>
+
+  <p class="lead">Ese es el dinero. Lo que sigue es la otra unidad, la del esfuerzo: cuánto
+  trabajo hizo falta para producir los 327 envíos, las 100 pasadas por el buzón, las 39 páginas
+  y los 438 prospectos nuevos.</p>
+
+  <div class="strip">
+    <div class="tile"><b>529</b><span>sesiones de trabajo a lo largo del mes <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>31 / 31</b><span>días con actividad — no hubo uno solo en blanco <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>14.672 M</b><span>millones de tokens procesados <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>76,4 M</b><span>tokens escritos: emails, páginas, análisis, código <span class="chip obs">medido</span></span></div>
+  </div>
+
+  <p class="lead">Un token es la unidad en que se mide el texto que un modelo lee y escribe.
+  Los <b>14.672 millones</b> impresionan y por sí solos no informan, así que va el desglose:
+  <b>el 95 % son relecturas</b> — cada vez que la máquina retoma un trabajo vuelve a leer todo
+  el contexto para no perder el hilo, igual que alguien que relee el expediente antes de
+  seguir. <b>Lo que efectivamente escribió fueron 76,4 millones</b> de tokens. El día más
+  cargado fue el <b>14 de agosto, con 1.069 millones</b>.</p>
+
+  <div class="callout n">
+    <p><b>De dónde sale esta cifra, y de dónde no.</b> Los tokens no están en la base de datos
+    del producto; se contaron sumando el registro de uso de cada mensaje en las 529 sesiones de
+    los dos repositorios, filtrando por fecha de agosto. <b>El costo de producir ese trabajo lo
+    absorbe Both Ventures y no es gasto de La Chamana</b>, así que no aparece acá: el único
+    dinero que salió del negocio en agosto son los <b>USD 263,02</b> de Google Ads.</p>
+  </div>
+</section>
+
+<section id="flujos" aria-labelledby="h-flujos">
+  <div class="eyebrow">07 · El ritmo</div>
+  <h2 id="h-flujos">Los flujos que corren todos los días</h2>
+  <p class="thesis" style="font-size:clamp(20px,2.4vw,28px);max-width:32ch">Los fines de semana
+  no salió un solo email, y nadie apagó nada.</p>
+  <div class="strip">
+    <div class="tile"><b>7</b><span>procesos con horario propio <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>2</b><span>corren solos, sin que nadie los invoque <span class="chip obs">medido</span></span></div>
+    <div class="tile"><b>0</b><span>envíos sábados y domingos, todos los fines de semana <span class="chip obs">medido</span></span></div>
+  </div>
+  <p class="lead">Esa es la prueba de que hay una máquina y no una lista de tareas: la ventana
+  de envío es de lunes a viernes y se respeta sola. En agosto se escribieron <b>siete procesos
+  con horario</b>, y el color del borde de cada paso dice quién lo hace: <b>humano</b> (una
+  persona decide y aprieta), <b>máquina</b> (código determinista, hace siempre lo mismo) o
+  <b>agente</b> (una sesión que lee y razona).</p>
+
+  <div class="tblwrap" tabindex="0" role="group" aria-label="Tabla, se desplaza en horizontal">
+    <table>
+      <caption style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Los siete flujos operativos: cuándo corren, para qué sirven y cómo arrancan</caption>
+      <thead><tr><th>Flujo</th><th>Cuándo</th><th>Para qué sirve</th><th>Arranque</th></tr></thead>
+      <tbody>
+        <tr><td><b>El pulso</b></td><td>Diario, al abrir</td><td>La única lectura que cruza las dos mitades — marketing e ingeniería — y deja como máximo cinco decisiones</td><td>manual</td></tr>
+        <tr><td><b>El digest</b></td><td>Diario 20:50</td><td>Cuenta los libros del día y publica a Slack: cero opinión, sólo lo que se movió</td><td><span class="badge ok">automático</span></td></tr>
+        <tr><td><b>El cierre nocturno</b></td><td>Noches con actividad</td><td>Cierra el día leyendo artefactos, no recuerdos, y escribe el informe fechado</td><td>manual</td></tr>
+        <tr><td><b>La ronda</b></td><td>Martes</td><td>Camina el funnel entero con datos de siete días y propone como máximo tres cambios falsables</td><td>recordatorio 09:00</td></tr>
+        <tr><td><b>El pulso de pauta</b></td><td>Semanal</td><td>Clasifica cada búsqueda por intención y calcula si la plata va al público correcto</td><td>snapshot viernes</td></tr>
+        <tr><td><b>La revisión</b></td><td>Quincenal</td><td>Mira el producto en frío, con navegador obligatorio: captura o no pasó</td><td>manual</td></tr>
+        <tr><td><b>El doctor</b></td><td>Cada sesión</td><td>45 chequeos que vigilan lo que nadie invoca — se pone ámbar solo cuando algo falta a su cita</td><td><span class="badge ok">automático</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="shot tall" tabindex="0" role="group" aria-label="Captura de pantalla, se desplaza en vertical">
+    <img src="process-flows-dark.png" width="1280" height="2475" loading="lazy" decoding="async" alt="Captura de la página de flujos operativos: siete procesos dibujados paso a paso en filas horizontales, cada paso una tarjeta con el color de su borde indicando si lo ejecuta un humano, la máquina o un agente, y trazos punteados que muestran cómo un flujo alimenta a otro.">
+    <div class="scap"><b>Los siete flujos, paso a paso.</b> Cada tarjeta es un paso y su borde
+    dice quién lo hace. Los trazos punteados son los lugares donde un flujo alimenta a otro —
+    por ejemplo, el cierre nocturno alimenta a la revisión quincenal.</div>
+  </div>
+
+  <div class="callout g">
+    <p><b>Por qué esto importa más que cualquier número de arriba.</b> Los envíos, las páginas y
+    los prospectos son el resultado de este mes. Los flujos son lo que hace que el mes que viene
+    no dependa de que alguien se acuerde. La prueba está en los fines de semana: <b>0 envíos
+    sábado y domingo</b>, todos los fines de semana, sin que nadie apague nada — la ventana de
+    envío es de lunes a viernes y la máquina la respeta sola.</p>
+  </div>
+</section>
+
+<section id="septiembre" aria-labelledby="h-septiembre">
+  <div class="eyebrow">08 · Lo que falta</div>
+  <h2 id="h-septiembre">Cuatro cosas terminadas, esperando a una persona</h2>
+  <p class="lead">El mes cierra con la máquina construida y cuatro canillas que todavía no se
+  abrieron. Esto es lo más importante de esta página y conviene decirlo sin rodeos:
+  <b>ninguna de las cuatro está trabada por trabajo pendiente.</b> Las cuatro están
+  construidas y frenadas esperando un permiso, una revisión o una decisión. Van con nombre y
+  fecha, porque una tarea sin dueño no es un estado, es una tarea perdida.</p>
+
+  <div class="quad">
+    <div class="col">
+      <div class="cap">Vence el 2 de septiembre</div>
+      <h3>Meta arranca</h3>
+      <p style="font-size:13px;color:var(--t-2);margin:8px 0 0;line-height:1.55">Verificar el
+      negocio y cargar el medio de pago. Detrás ya está todo: una campaña, tres públicos,
+      USD 30 por día, cada clic termina en WhatsApp.<br>
+      <b>Depende de:</b> Boris, con el teléfono de Gastón en vivo.</p>
+    </div>
+    <div class="col">
+      <div class="cap">Primera semana</div>
+      <h3>Los seguimientos vencidos</h3>
+      <p style="font-size:13px;color:var(--t-2);margin:8px 0 0;line-height:1.55">62 segundos
+      contactos vencidos —34 de retiros, 28 de familias— más 20 terceros contactos de agencias
+      que vencen el viernes 4. Es el trabajo con más chance de respuesta: ya nos leyeron una vez.<br>
+      <b>Depende de:</b> nadie. Sale por el riel.</p>
+    </div>
+    <div class="col">
+      <div class="cap">Decisión pendiente</div>
+      <h3>Las 14 de celebraciones</h3>
+      <p style="font-size:13px;color:var(--t-2);margin:8px 0 0;line-height:1.55">De 168
+      prospectos investigados, <b>14 pasaron el filtro y ninguno recibió un email</b>. El riel
+      busca a quien <i>coloca</i> grupos —family offices, asesores de viaje privados,
+      concierges de villas—, nunca a la familia. Esos 14 los promovió una corrida automática
+      que se certificó a sí misma; el riel bordea el vertical de eventos, que está cerrado, y
+      por eso pide una firma humana fila por fila.<br>
+      <b>Depende de:</b> quién ratifica esas 14 antes de que salgan.</p>
+    </div>
+    <div class="col">
+      <div class="cap">Decisión pendiente</div>
+      <h3>Los DM de Instagram</h3>
+      <p style="font-size:13px;color:var(--t-2);margin:8px 0 0;line-height:1.55">171 contactos
+      que sólo tienen Instagram, con el riel construido y la cola armada. Techo del canal:
+      15 por día.<br>
+      <b>Depende de:</b> decidir con qué cuenta y con qué firma se mandan — hoy no está decidido.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><b>Y la pregunta incómoda, contestada.</b> Si a Meta sólo le faltaba una tarjeta, ¿por
+    qué no se pidió en junio? Porque durante tres meses el bloqueo <b>estaba mal
+    diagnosticado</b>: la plataforma devolvía un error de país, y ese error era falso. Recién
+    se aisló midiendo el mismo intento seis veces en tres cuentas distintas. El costo de ese
+    diagnóstico está medido —entre 12 y 22 horas— y la lección aplicada es la que evita el
+    segundo trimestre perdido: <b>un bloqueo se mide, no se interpreta.</b></p>
+  </div>
+
+  <div class="callout g">
+    <p><b>La oportunidad viva más grande que dejó el mes.</b>
+    <b>Un grupo de 16 personas, la casa entera, tres noches, en octubre.</b> Salió del riel de outreach y está en conversación. Una sola reserva de ese tamaño es la mayor que produjo el riel en su vida.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Cierre</div>
+  <h2>En una línea</h2>
+  <p class="thesis">Agosto construyó la máquina. Septiembre la pone a <em>producir</em>.</p>
+  <p class="lead">Lo que existe hoy y no existía el 1 de agosto: un pozo de <b>809 personas
+  calificadas</b> con nombre y contexto, <b>cuatro rieles</b> que llegan a ellas sin que nadie se
+  acuerde, <b>doce propiedades web</b> donde aterrizan, <b>siete procesos con horario</b> que
+  vigilan que todo eso pase, y un registro donde cada envío, cada aprobación y cada dólar tiene
+  su fila. La casa se llena con una sola cosa —que la gente correcta se entere— y por primera
+  vez hay una máquina apuntada a eso todos los días.</p>
+</section>
+
+</main>
+
+<footer>
+  <p><b>Fuentes en disco</b> — envíos: los libros de cada ola en
+  <code>vault/campaigns/*/bodies/*.sent.jsonl</code>, 31 archivos · pozo y funnel:
+  <code>data/synergy.db</code>, pull de Airtable del 31-ago 14:55Z · pauta:
+  <code>metrics_daily</code>, sincronizado por API el 31-ago 17:03Z · buzón:
+  <code>reply_message</code>, <code>conversation</code>, <code>reply_sweep_run</code> ·
+  corridas y costo: <code>runs</code>, 274 filas de agosto · tokens: registro de uso de las 529
+  sesiones en <code>~/.claude/projects/</code> · build:
+  <code>git log --since=2026-08-01 --until=2026-09-01</code> en los dos repositorios · norte:
+  <code>.synergy/venture.yaml</code> y <code>venture_state</code>, Cloudbeds 31-ago 16:45Z.</p>
+  <p><b>Fuentes externas</b> — Google Ads, cuenta 8214258609, pull del 28-ago (614 términos de
+  búsqueda clasificados) · Meta, cuentas <code>1159966733037930</code> y
+  <code>29058826027116241</code>, estado al 30-ago · Cloudbeds, ocupación al 31-ago.
+  <b>Lo que este documento no puede afirmar:</b> la mitad comercial más allá del 23 de agosto
+  —no hay cierre de esa mitad desde esa fecha— y los cierres del 24, 25 y 26 de agosto, que
+  están declarados perdidos y no se reconstruyen.</p>
+  <p>Documento generado por El Chaman OS · tema <code>oxide-desk</code> · as_of
+  2026-08-31. Propone. No aprieta nada, no envía nada, no gasta nada. La primera presión es de Boris.</p>
+</footer>
+
+</div>
+<script>
+(function(){var iso=document.body.getAttribute('data-updated');if(!iso)return;
+var days=Math.floor((Date.now()-new Date(iso+'T12:00:00'))/864e5);var el=document.getElementById('freshness');
+if(!el)return;
+if(days<=0){el.textContent='actualizado hoy';el.className='badge ok'}
+else if(days<7){el.textContent='actualizado hace '+days+' día'+(days>1?'s':'');el.className='badge ok'}
+else{el.textContent='VIEJO · '+days+' días sin actualizar';el.className='badge warn'}})();
+</script>
+</body>
+</html>
