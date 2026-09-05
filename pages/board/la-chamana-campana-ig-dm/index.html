@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Campaña IG DM — Status 5 sep</title>
+<meta name="brand-register" content="oxide-desk">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22%231C2934%22%2F%3E%3Cpath%20d%3D%22M6%2027V16a10%2010%200%200%201%2020%200v11z%22%20fill%3D%22%23EDEDE5%22%2F%3E%3C%2Fsvg%3E">
+<meta name="theme-color" content="#111C24" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#EDEDE5" media="(prefers-color-scheme: light)">
+<script>try{var _t=localStorage.getItem('hermes-theme');if(_t){document.documentElement.classList.toggle('light',_t==='light');document.documentElement.setAttribute('data-theme',_t)}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!--
+  FUENTE CANÓNICA: synergy-toolkit/docs/meta-dm-campana-team-2026-09-04.html
+  Registro de ingeniería y evidencia: reports/meta-dm-campana-2026-09-04.md (misma fecha).
+  TEMA: oxide-desk — receta en docs/design/theme-oxide-desk.md; el <style> está copiado entero
+  de la implementación de referencia (docs/lead-machine-tracker.html), sin forks.
+  Audiencia: el equipo (Bianca, Iru, Gastón) — cero contexto técnico. Español.
+  Este documento PROPONE y da visibilidad. No aprieta nada. La activación es un press de Boris.
+-->
+<style>
+/* ── La Chamana · Blue Earth palette (canonical, AG-005) sobre arquitectura Factory Glass ──
+   Paleta: bone · petrol · coral · red oxide · orange oxide · bari stone · olive · mint · peach.
+   Nunca blanco puro, nunca negro puro. Orange oxide = action numbers / hot accents, nada más. ── */
+:root{
+  --bone:#EDEDE5; --petrol:#1C2934; --coral:#F5D5D1; --red-oxide:#632403; --orange:#994100;
+  --bari-dark:#444D51; --bari-light:#ABB9BC; --olive:#808266; --mint:#D7E2B5; --peach:#F4CBA6;
+
+  --bg:#111C24;
+  --glass:rgba(26,40,48,.55); --glass-2:rgba(26,40,48,.42); --glass-3:rgba(19,29,37,.55);
+  --t-1:rgba(237,237,229,.94); --t-2:rgba(171,185,188,.86); --t-3:rgba(171,185,188,.58); --t-4:rgba(171,185,188,.40);
+  --edge:rgba(171,185,188,.16); --edge-soft:rgba(171,185,188,.09); --hi:rgba(237,237,229,.08);
+  --edge-warm:rgba(153,65,0,.30);
+  --accent:var(--orange); --accent-soft:rgba(171,185,188,.08);
+
+  --green:var(--mint);  --green-bg:rgba(128,130,102,.18); --green-bd:rgba(128,130,102,.32);
+  --amber:var(--peach); --amber-bg:rgba(244,203,166,.12); --amber-bd:rgba(244,203,166,.26);
+  --red:var(--coral);   --red-bg:rgba(99,36,3,.28);       --red-bd:rgba(153,65,0,.38);
+  --hot:var(--peach);   --hot-bg:rgba(153,65,0,.22);      --hot-bd:rgba(153,65,0,.42);
+  --hot-ink:var(--peach);
+
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'SF Mono','Fira Code','Fira Mono',ui-monospace,Menlo,monospace;
+
+  --r-shell:26px; --r-card:16px; --r-tile:12px;
+  --blur:saturate(1.25) blur(30px); --blur-card:saturate(1.15) blur(18px);
+  --shadow-card:0 10px 34px rgba(9,16,22,.42); --shadow-shell:0 40px 120px rgba(9,16,22,.62);
+  --wash-a:rgba(153,65,0,.12); --wash-b:rgba(68,77,81,.18);
+}
+html.light, :root[data-theme="light"]{
+  --bg:#EDEDE5;
+  --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+  --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.48);
+  --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+  --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+  --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+  --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+  --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+  --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+  --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+  --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#EDEDE5;
+    --glass:rgba(253,252,248,.66); --glass-2:rgba(253,252,248,.54); --glass-3:rgba(247,246,240,.78);
+    --t-1:rgba(28,41,52,.94); --t-2:rgba(28,41,52,.72); --t-3:rgba(68,77,81,.66); --t-4:rgba(68,77,81,.48);
+    --edge:rgba(28,41,52,.14); --edge-soft:rgba(28,41,52,.08); --hi:rgba(255,255,255,.70);
+    --edge-warm:rgba(153,65,0,.32); --accent-soft:rgba(28,41,52,.06);
+    --green:#5f6149; --green-bg:rgba(128,130,102,.16); --green-bd:rgba(128,130,102,.34);
+    --amber:#8a5410; --amber-bg:rgba(153,65,0,.10); --amber-bd:rgba(153,65,0,.26);
+    --red:#7a2c0a;   --red-bg:rgba(99,36,3,.10);      --red-bd:rgba(99,36,3,.28);
+    --hot:#994100;   --hot-bg:rgba(153,65,0,.14);     --hot-bd:rgba(153,65,0,.34); --hot-ink:#7a3400;
+    --shadow-card:0 10px 28px rgba(68,77,81,.13); --shadow-shell:0 36px 110px rgba(68,77,81,.18);
+    --wash-a:rgba(153,65,0,.09); --wash-b:rgba(68,77,81,.10);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{font-family:var(--font);color:var(--t-1);background:var(--bg);line-height:1.55;
+  -webkit-font-smoothing:antialiased;padding:clamp(14px,3vw,36px);position:relative;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 900px 600px at 15% 0%,var(--wash-a),transparent 55%),
+  radial-gradient(ellipse 900px 600px at 85% 100%,var(--wash-b),transparent 50%)}
+.wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;background:var(--glass);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--edge);
+  border-radius:var(--r-shell);box-shadow:var(--shadow-shell),inset 0 1px 0 var(--hi);
+  padding:clamp(20px,4vw,52px)}
+h1{font-family:var(--serif);font-size:clamp(30px,5vw,46px);font-weight:300;letter-spacing:-.005em;text-wrap:balance;line-height:1.1}
+h1 b{font-weight:600}
+h2{font-family:var(--serif);font-size:clamp(22px,3vw,28px);font-weight:500;letter-spacing:0;margin-bottom:6px;text-wrap:balance;line-height:1.2}
+h3{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:4px}
+p{color:var(--t-2);font-size:15px;max-width:78ch;margin-bottom:10px}
+p strong,li strong,td strong{color:var(--t-1);font-weight:600}
+small,.src{color:var(--t-4);font-size:11.5px}
+.eyebrow{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--t-4);margin-bottom:8px}
+section{margin-top:clamp(26px,4vw,40px)}
+ul{margin:6px 0 10px 18px;color:var(--t-2);font-size:14px}
+ol{margin:6px 0 10px 20px;color:var(--t-2);font-size:14px}
+li{margin-bottom:7px;max-width:78ch}
+a{color:var(--t-1)}
+code{font-family:var(--mono);font-size:11.5px;background:var(--glass-3);border:1px solid var(--edge-soft);
+  border-radius:5px;padding:1px 5px}
+.card{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);
+  padding:clamp(14px,2.4vw,22px)}
+.tile{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:12px 14px}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-size:11px;
+  font-family:var(--mono);font-weight:500;letter-spacing:.02em;background:var(--glass-3);color:var(--t-3);border:1px solid var(--edge)}
+.badge.hot{background:var(--hot-bg);color:var(--hot);border-color:var(--hot-bd)}
+.badge.ok{background:var(--green-bg);color:var(--green);border-color:var(--green-bd)}
+.badge.warn{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-bd)}
+.badge.crit{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+.chip{display:inline-block;border-radius:999px;padding:1px 8px;font-size:9.5px;font-weight:600;font-family:var(--mono);
+  letter-spacing:.08em;text-transform:uppercase;vertical-align:middle}
+.chip.obs{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.chip.est{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.chip.unk{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.chip.dec{background:var(--accent-soft);color:var(--t-1);border:1px solid var(--edge)}
+.chip.none{background:transparent;color:var(--t-3);border:1px dashed var(--edge)}
+.tblwrap{overflow-x:auto;border:1px solid var(--edge-soft);border-radius:var(--r-tile);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--t-4);
+  text-align:left;padding:10px 12px;border-bottom:1px solid var(--edge)}
+td{padding:9px 12px;border-bottom:1px solid var(--edge-soft);color:var(--t-2);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td b{color:var(--t-1);font-weight:600}
+.ev{color:var(--t-3);font-size:12px}
+.btn{border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);border-radius:999px;
+  padding:6px 14px;font-size:11.5px;font-weight:500;font-family:var(--mono);cursor:pointer;transition:all .18s}
+.btn:hover{color:var(--t-1);border-color:var(--hi)}
+.btn:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:8px}
+header>div:first-child{flex:1 1 420px;min-width:0}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.theme-toggle{cursor:pointer}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--edge-soft);color:var(--t-4);font-size:11.5px;line-height:1.7}
+footer p{color:var(--t-4);font-size:11.5px;max-width:none;margin-bottom:8px}
+footer b{color:var(--t-3)}
+.rise{animation:rise .5s cubic-bezier(.22,.61,.36,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){.rise{animation:none}html{scroll-behavior:auto}}
+.callout{border-left:2px solid var(--amber-bd);padding:10px 14px;background:var(--amber-bg);
+  border-radius:0 var(--r-tile) var(--r-tile) 0;margin:12px 0}
+.callout p{margin-bottom:0;color:var(--t-1);font-size:13.5px}
+.callout.g{border-left-color:var(--green-bd);background:var(--green-bg)}
+.callout.r{border-left-color:var(--red-bd);background:var(--red-bg)}
+.callout.n{border-left-color:var(--edge);background:var(--glass-3)}
+
+/* ── strip de números ── */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:16px 0}
+.strip .tile b{display:block;font-family:var(--mono);font-size:27px;font-weight:600;color:var(--t-1);letter-spacing:-.02em;line-height:1.15}
+.strip .tile span{color:var(--t-4);font-size:11.5px;line-height:1.45;display:block;margin-top:5px}
+.strip .tile{padding:16px 18px}
+.tile.hot{background:var(--hot-bg);border-color:var(--hot-bd)}
+.tile.hot b{color:var(--hot-ink)}
+.tile.hot span{color:var(--hot)}
+.tile.ok{background:var(--green-bg);border-color:var(--green-bd)}
+.tile.ok b,.tile.ok span{color:var(--green)}
+
+/* ── mapa temporal ── */
+.tlbox{overflow-x:auto;background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);padding:16px 18px 12px;margin:12px 0}
+.tlchart{position:relative;min-width:900px}
+.tlrow{display:grid;grid-template-columns:250px repeat(20,1fr);align-items:center;min-height:34px;border-bottom:1px solid var(--edge-soft)}
+.tlrow.head{min-height:24px;border-bottom:1px solid var(--edge)}
+.tllabel{font-size:12px;color:var(--t-2);padding:5px 12px 5px 0;line-height:1.35}
+.tllabel b{color:var(--t-1);font-weight:600}
+.tlsub{display:block;font-size:10.5px;color:var(--t-4)}
+.tlmonth{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--t-4);border-left:1px solid var(--edge-soft);padding-left:6px}
+.tlbar{height:22px;border-radius:7px;font-family:var(--mono);font-size:10px;line-height:21px;padding:0 9px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;font-weight:600;z-index:1}
+.tlbar.done{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green)}
+.tlbar.wait{background:var(--amber-bg);border:1px dashed var(--amber-bd);color:var(--amber)}
+.tlbar.plan{background:var(--glass-2);border:1px dashed var(--edge);color:var(--t-3)}
+.tlms{width:11px;height:11px;transform:rotate(45deg);border-radius:2.5px;background:var(--t-3);z-index:1;justify-self:start}
+.tlms.crit{background:var(--red)} .tlms.warn{background:var(--amber)} .tlms.ok{background:var(--green)}
+.tlgrid{position:absolute;top:26px;bottom:0;width:1px;background:var(--edge-soft);pointer-events:none}
+.tlhoy{position:absolute;top:22px;bottom:0;width:1px;background:var(--hot-bd);pointer-events:none}
+.tlhoylab{position:absolute;top:26px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.16em;color:var(--hot);transform:translateX(5px)}
+.tlgroup{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);padding:12px 0 3px}
+
+/* ── motores ── */
+.motors{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;margin:14px 0 8px}
+.motor{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);
+  padding:15px 17px 13px;display:flex;flex-direction:column;box-shadow:inset 0 1px 0 var(--hi)}
+.motor.strong{background:var(--glass-2);border-color:var(--edge)}
+.motor.cross{border-style:dashed}
+.motor.blocked{border-color:var(--edge-warm)}
+.mid{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4)}
+.mname{font-family:var(--serif);font-weight:600;font-size:20px;margin:4px 0 10px;line-height:1.2;color:var(--t-1);letter-spacing:0}
+.mrow{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:9px}
+.mnat{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--t-2)}
+.mnat.soft{color:var(--t-4);font-weight:700}
+.mpay{color:var(--t-4);font-size:11px;margin-left:auto;text-align:right}
+.mfact{color:var(--t-2);font-size:12.5px;line-height:1.55;border-top:1px solid var(--edge-soft);padding-top:9px;margin-top:auto}
+
+/* ── nav de fases ── */
+.phasenav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+.pnav{flex:1 1 180px;text-align:left;border:1px solid var(--edge);background:var(--glass-3);color:var(--t-2);
+  border-radius:var(--r-tile);padding:10px 13px;font-family:var(--font);cursor:pointer;transition:all .18s;
+  box-shadow:inset 0 1px 0 var(--hi)}
+.pnav:hover{border-color:var(--hi);color:var(--t-1);transform:translateY(-1px)}
+.pnav[aria-expanded="true"]{background:var(--glass-2);border-color:var(--hi);color:var(--t-1)}
+.pnav .pn-idx{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4)}
+.pnav .pn-name{display:block;font-family:var(--serif);font-size:17px;font-weight:600;margin:3px 0 7px;line-height:1.2}
+.navbar-actions{display:flex;gap:8px;align-items:center;margin:10px 0 4px;flex-wrap:wrap}
+
+/* ── fases colapsables ── */
+.phase{border:1px solid var(--edge-soft);border-radius:var(--r-card);background:var(--glass-3);margin:10px 0;
+  overflow:hidden;scroll-margin-top:14px}
+.phase[open]{background:var(--glass-2);border-color:var(--edge);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi)}
+.phase>summary{list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.phase>summary::-webkit-details-marker{display:none}
+.phase>summary:hover{background:var(--accent-soft)}
+.ph-idx{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);flex:0 0 auto}
+.ph-name{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--t-1);letter-spacing:0;flex:1 1 260px;min-width:0;line-height:1.2}
+.ph-name span{display:block;font-family:var(--font);font-size:12px;font-weight:400;color:var(--t-3);letter-spacing:0;margin-top:3px}
+.ph-chev{color:var(--t-3);font-size:12px;transition:transform .2s;flex:0 0 auto;margin-left:auto}
+.phase[open] .ph-chev{transform:rotate(180deg)}
+.ph-body{padding:0 18px 18px;border-top:1px solid var(--edge-soft)}
+.ph-body>.objtitle:first-child{margin-top:14px}
+.objtitle{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--t-4);margin:18px 0 5px}
+.obj{border-left:2px solid var(--edge)}
+.obj td:first-child{color:var(--t-4);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;font-weight:700}
+.entry{color:var(--t-3);font-size:13px;margin:6px 0 10px;max-width:78ch}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;color:var(--t-3);font-size:12px;align-items:center}
+
+/* ── ajustes de ESTA página (mesa de diseño 04-sep) — usos que la referencia no tenía, no un fork del theme ── */
+:root{color-scheme:dark}
+html.light, :root[data-theme="light"]{color-scheme:light}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){color-scheme:light}}
+/* un chip anidado en una tile heredaba display:block y el color del label → píldora ancha ilegible (AG-005 #1) */
+.strip .tile .chip{display:inline-block;margin:0 2px 0 0;font-size:9.5px;line-height:1.6}
+.strip .tile .chip.dec{color:var(--t-1)}
+.strip .tile .chip.est{color:var(--amber)}
+.strip .tile .chip.obs{color:var(--green)}
+/* el único control interactivo sin estados (guidelines #1) */
+.theme-toggle:hover{color:var(--t-1);border-color:var(--hi)}
+.theme-toggle:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+/* notas con contenido sustantivo: --t-2, no --t-3/4 (guidelines #2) */
+.evnote{color:var(--t-2);font-size:12.5px;max-width:78ch;margin-bottom:10px}
+footer p{color:var(--t-3)}
+.legendline{color:var(--t-4);font-size:11px;margin:-6px 0 0}
+</style>
+<style>
+/* ── gráficos: monocromo + UN solo portador de óxido (el número que tiene que doler) ── */
+:root{ --mark:var(--bari-light); --mark-soft:rgba(171,185,188,.28); }
+html.light, :root[data-theme="light"]{ --mark:var(--bari-dark); --mark-soft:rgba(68,77,81,.22); }
+
+/* AG-005 #5: en oscuro --hot-ink era peach (#F4CBA6) y el acento leía como texto normal.
+   Óxido levantado, medido: 6,46:1 sobre glass-3 y 5,63:1 sobre tile.hot. */
+:root{ --hot-ink:#E08B3E; }
+html.light, :root[data-theme="light"]{ --hot-ink:#7a3400; }
+
+.chart{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-card);padding:18px 20px 14px;margin:14px 0}
+.chart h3{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t-2);margin:0 0 14px}
+.barrow{display:grid;grid-template-columns:minmax(0,168px) 1fr minmax(72px,auto);gap:12px;align-items:center;margin:9px 0}
+.barlab{font-size:12.5px;color:var(--t-2);line-height:1.35}
+.bartrack{background:var(--accent-soft);border-radius:5px;height:24px;display:flex;align-items:stretch;overflow:hidden}
+.barfill{background:var(--mark);border-radius:2px 4px 4px 2px;min-width:3px}
+.barval{font-family:var(--mono);font-size:13.5px;font-weight:600;color:var(--t-1);text-align:right;letter-spacing:-.01em}
+.barnote{color:var(--t-2);font-size:11.5px;margin:10px 0 0;line-height:1.55}
+
+/* ── caja de arriba: la respuesta antes que el informe (lector en frío #24) ── */
+.topbox{background:var(--glass-2);backdrop-filter:var(--blur-card);-webkit-backdrop-filter:var(--blur-card);
+  border:1px solid var(--edge);border-radius:var(--r-card);box-shadow:var(--shadow-card),inset 0 1px 0 var(--hi);
+  padding:clamp(16px,2.6vw,24px);margin:18px 0 26px}
+.topttl{font-family:var(--mono)!important;font-size:10.5px!important;font-weight:600!important;letter-spacing:.18em!important;
+  text-transform:uppercase;color:var(--t-3)!important;margin:0 0 12px!important;border:0!important;padding:0!important}
+.topbox p{font-size:14.5px;line-height:1.62;margin-bottom:11px;max-width:74ch}
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:16px}
+.wcard{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:13px 15px}
+.wn{display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t-3);margin-bottom:6px}
+.wd{display:block;font-size:15px;font-weight:600;color:var(--t-1);line-height:1.35;margin-bottom:5px}
+.wx{display:block;font-size:12px;color:var(--t-2);line-height:1.5}
+
+/* ── pasos: la distinción la carga la etiqueta, no el color (AG-005 #2) ── */
+.rail{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.step{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:13px 15px}
+.step .n{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.14em;color:var(--t-3);display:block;margin-bottom:6px}
+.step .w{font-size:13.5px;color:var(--t-1);font-weight:500;line-height:1.4;display:block;margin-bottom:7px}
+.step .where{font-family:var(--mono);font-size:10.5px;color:var(--t-3);line-height:1.5;display:block}
+.step.out .where{color:var(--t-1);font-weight:600}
+
+/* ── tablas: alcanzables por teclado, con aviso de que siguen a la derecha ── */
+.tblwrap{position:relative}
+.tblwrap:focus-visible{outline:2px solid var(--t-2);outline-offset:2px}
+th{color:var(--t-2)!important;font-size:11px!important}
+td>.chip,th>.chip{vertical-align:baseline}
+tbody th[scope="row"]{font-weight:400;text-align:left;font-size:13px;border-bottom:1px solid var(--edge-soft);
+  padding:10px 12px;letter-spacing:normal;text-transform:none;font-family:var(--font);color:var(--t-1)}
+
+/* ── contraste: --t-4 sólo para chrome redundante (lente de guidelines #2) ── */
+.strip .tile span{color:var(--t-2)}
+.eyebrow{color:var(--t-3)}
+.theme-toggle{min-height:28px;padding:7px 13px}
+
+@media (max-width:620px){
+  .barrow{grid-template-columns:1fr auto;gap:4px 10px}
+  .barlab{grid-column:1;grid-row:1}
+  .barval{grid-column:2;grid-row:1;align-self:end}
+  .bartrack{grid-column:1 / -1;grid-row:2;height:20px}
+  /* 53% de cada tabla quedaba fuera de pantalla, y lo que se caía era «La contra» */
+  table{min-width:0!important}
+  thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  tbody tr{display:block;border-bottom:1px solid var(--edge);padding:12px 0}
+  tbody th[scope="row"],tbody td{display:block;border:0;padding:3px 12px}
+  tbody th[scope="row"]{font-weight:700;font-size:14px;padding-bottom:7px}
+  tbody td::before{content:attr(data-l);display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--t-3);margin-bottom:2px}
+}
+</style>
+<body data-updated="2026-09-05">
+<main class="wrap rise">
+
+<header>
+  <div>
+    <div class="eyebrow">La Chamana · El Chaman OS · Status de campaña</div>
+    <h1>Campaña <b>IG DM</b> — día 1</h1>
+    <div class="badges">
+      <span class="badge">5 sep 2026, 09:44 hora de Argentina</span>
+      <span class="badge ok">La campaña anda · 0 errores</span>
+      <span class="badge">Sólo para el equipo — no lo compartas afuera</span>
+    </div>
+  </div>
+  <button class="badge theme-toggle" aria-label="Cambiar entre tema claro y oscuro" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()"><span aria-hidden="true">◐</span> tema</button>
+</header>
+
+<div class="topbox">
+  <h2 class="topttl">Si sólo leés esto</h2>
+  <p><strong>Qué pasó:</strong> el 4 de septiembre encendimos el primer anuncio pago de La Chamana
+  en Instagram. Muestra un video de la casa a gente de Estados Unidos; el que se interesa toca un
+  botón y se abre una conversación por mensaje privado. <strong>Funciona: entrega, sin un solo error.</strong></p>
+  <p><strong>El problema:</strong> le pusimos ~USD 70 para toda la semana, y para que el resultado
+  signifique algo harían falta <strong>unas diez veces más</strong>. Con esta plata el anuncio lo
+  van a ver ~1.840 personas, y de ahí salen entre 3 y 9 mensajes. <strong>Con tan pocos casos, un
+  buen resultado y uno malo se ven exactamente igual.</strong></p>
+  <div class="who">
+    <div class="wcard"><span class="wn">Gastón</span><span class="wd">Nada que hacer.</span>
+      <span class="wx">Sólo para que no te sorprenda el gasto de ~USD 70 de esta semana.</span></div>
+    <div class="wcard"><span class="wn">Bianca</span><span class="wd">Seguir igual.</span>
+      <span class="wx">Es muy probable que esta semana no entre ningún mensaje. No es un error tuyo.</span></div>
+    <div class="wcard"><span class="wn">Boris</span><span class="wd">Decide el lunes 8.</span>
+      <span class="wx">Poner plata en serio, o cortarlo.</span></div>
+  </div>
+</div>
+
+<h2>Qué queríamos saber, y por qué no lo vamos a saber</h2>
+
+<p>El test de 7 días se encendió para contestar <strong>una sola pregunta</strong>:</p>
+<div class="callout n">
+  <p><strong>«¿Este canal trae consultas reales del tipo de cliente que alquila la casa entera?»</strong></p>
+</div>
+
+<p>Para contestarla necesitamos contar <strong>consultas calificadas</strong>. Ése es el término que
+usa todo este documento, y significa: <strong>un mensaje que trae al menos uno de estos tres datos</strong>
+— <strong>fechas</strong> (aunque sean aproximadas), <strong>tamaño o tipo de grupo</strong>, o una
+<strong>pregunta sobre alquilar la casa entera</strong>. Preguntar el precio, solo, todavía no cuenta.</p>
+
+<p>Con el presupuesto actual vamos a terminar la semana con <strong>cero o una</strong> consulta
+calificada. Y con un solo caso no se puede distinguir un canal excelente que tuvo mala semana de
+uno que no sirve. <strong>No es falta de paciencia: es aritmética, y ya era cierta el día que se
+prendió el anuncio.</strong></p>
+
+<h2>Dónde estamos — lo medido</h2>
+<p class="evnote">Lectura directa del sistema de Meta, 5 de septiembre 09:44. La entrega real arrancó
+el 4 a las <strong>19:53</strong>, no a las 14:10 cuando se apretó el botón: Meta la retuvo 6 h 33 min.
+Así que estos números son de <strong>~14 horas</strong>, no de un día entero.</p>
+
+<div class="strip">
+  <div class="tile"><b>29</b><span>veces que se mostró el anuncio, en 14 h <span class="chip obs">medido</span></span></div>
+  <div class="tile"><b>USD 1,10</b><span>gastado hasta ahora, de los USD 70 de la semana <span class="chip obs">medido</span></span></div>
+  <div class="tile hot"><b>~10×</b><span>lo que le falta al test para dar un resultado confiable <span class="chip est">estimado</span></span></div>
+</div>
+
+<div class="callout">
+  <p><strong>Ojo con un reflejo natural:</strong> haber gastado sólo el 1,6 % del presupuesto
+  <em>no</em> es una buena noticia acá. Gastar poco significa que el anuncio se está mostrando poco,
+  y mostrarse poco es exactamente el problema. <strong>En este caso, gastar de menos es el síntoma.</strong></p>
+</div>
+
+<p><strong>Un dato que descarta la explicación fácil.</strong> El público al que le apuntamos es amplio
+— 12 ciudades grandes de Estados Unidos, de 32 a 60 años. Son decenas de millones de personas.
+<strong>El público no es la restricción. Lo que limita es el dinero.</strong></p>
+
+<h2>El gráfico que explica todo</h2>
+<p class="evnote">Todo se mide en <strong>impresiones</strong>: una impresión es una vez que el anuncio
+aparece en la pantalla de alguien. Las tres barras usan la misma escala. <strong>La barra llena de
+abajo es la que NO tenemos</strong> — es el tamaño que haría falta.</p>
+
+<div class="chart">
+  <h3>Impresiones — lo que hay, lo que compra la semana, lo que haría falta</h3>
+  <div class="barrow">
+    <div class="barlab">Lo que llevamos<br><span class="ev">14 h de entrega</span></div>
+    <div class="bartrack"><div class="barfill" style="width:0.16%"></div></div>
+    <div class="barval">29</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Todo el test de 7 días<br><span class="ev">los USD 70 completos</span></div>
+    <div class="bartrack"><div class="barfill" style="width:10.2%"></div></div>
+    <div class="barval">~1.840</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Lo que haría falta<br><span class="ev">para un resultado confiable</span></div>
+    <div class="bartrack"><div class="barfill" style="width:100%"></div></div>
+    <div class="barval">~18.000</div>
+  </div>
+  <p class="barnote">Los USD 70 alcanzan para ~1.840 impresiones <span class="chip obs">medido</span>.
+  Las ~18.000 salen de las ~50 conversaciones que Meta necesita por semana para dejar de tantear a
+  ciegas <span class="chip est">estimado</span>. <strong>La diferencia es de unas diez veces.</strong></p>
+</div>
+
+<h2>Por qué 1.840 impresiones no alcanzan</h2>
+<p class="evnote">De cada escalón sobrevive una fracción. Escala lineal — las tres últimas barras son
+casi invisibles a propósito.</p>
+
+<div class="chart">
+  <h3>Lo que se espera de toda la semana, escalón por escalón</h3>
+  <div class="barrow">
+    <div class="barlab">Ven el anuncio</div>
+    <div class="bartrack"><div class="barfill" style="width:100%"></div></div>
+    <div class="barval">~1.840</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Tocan el botón</div>
+    <div class="bartrack"><div class="barfill" style="width:0.8%"></div></div>
+    <div class="barval">~15</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Escriben un mensaje</div>
+    <div class="bartrack"><div class="barfill" style="width:0.33%"></div></div>
+    <div class="barval">3 a 9</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Consulta <em>calificada</em><br><span class="ev">la única que nos importa</span></div>
+    <div class="bartrack"><div class="barfill" style="width:0.05%"></div></div>
+    <div class="barval">0 o 1</div>
+  </div>
+  <p class="barnote">Ésa es exactamente la escala del problema: <strong>terminamos la semana con cero
+  o una consulta calificada</strong>, y de ahí no sale ninguna conclusión.
+  <span class="chip est">estimado</span></p>
+</div>
+
+<div class="callout">
+  <p><strong>Y hay un segundo hallazgo, encontrado hoy.</strong> Los tres anuncios usan <strong>el mismo
+  video</strong> (la casa, 65 segundos) y sólo cambian en el texto que los acompaña. El plan de respaldo
+  era: «si no alcanza para medir consultas, al menos aprendemos qué texto funciona mejor». Pero para
+  comparar textos hay que contar <strong>clicks</strong>, y a este presupuesto los clicks son
+  demasiado pocos. <strong>Tampoco alcanza para eso.</strong></p>
+</div>
+
+<h2>Las alternativas, con su precio y su contra</h2>
+
+<div class="tblwrap" tabindex="0" role="region" aria-label="Alternativas de presupuesto">
+<table>
+<thead><tr><th scope="col">Opción</th><th scope="col">Costo / semana</th><th scope="col">Qué compra</th><th scope="col">La contra</th></tr></thead>
+<tbody>
+<tr><th scope="row"><strong>A · Poner plata en serio</strong><br><span class="ev">~USD 100 por día</span></th>
+    <td data-l="Costo / semana"><strong>~USD 700</strong> <span class="chip est">est</span></td>
+    <td data-l="Qué compra">Una medición real: sabríamos si el canal sirve</td>
+    <td data-l="La contra">Compra la respuesta cara antes que la barata. Y multiplicar por 10 el gasto en una cuenta que
+    estrenó medio de pago hace días es, en sí mismo, riesgo de que la traben.</td></tr>
+<tr><th scope="row"><strong>B · Paso intermedio</strong><br><span class="ev">~USD 50 por día</span></th>
+    <td data-l="Costo / semana"><strong>~USD 350</strong> <span class="chip est">est</span></td>
+    <td data-l="Qué compra">Una señal orientativa: 15 a 20 conversaciones en vez de 3</td>
+    <td data-l="La contra">Sigue sin ser concluyente. Y obliga a dejar uno o dos textos en vez de tres: con poca plata
+    conviene concentrar antes que comparar.</td></tr>
+<tr><th scope="row"><strong>C · Apuntar a Tulum</strong><br><span class="ev">ya está armado y en pausa</span></th>
+    <td data-l="Costo / semana">el mismo <span class="chip est">est</span></td>
+    <td data-l="Qué compra">4 o 5 veces más impresiones por la misma plata</td>
+    <td data-l="La contra"><strong>Desaconsejado.</strong> Vuelve a meter el error que se corrigió antes de lanzar: quien
+    ya está en Tulum no reserva un retiro con 6 a 18 meses de anticipación. Serían impresiones baratas
+    de la persona equivocada.</td></tr>
+<tr><th scope="row"><strong>D · Subir a USD 30–40 por día</strong></th>
+    <td data-l="Costo / semana">~USD 250 <span class="chip est">est</span></td>
+    <td data-l="Qué compra">desconocido <span class="chip unk">no se sabe</span></td>
+    <td data-l="La contra"><strong>La trampa.</strong> Gasta lo suficiente para doler y no lo suficiente para aprender.
+    El peor de los dos mundos.</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>La recomendación</h2>
+<div class="callout g">
+  <p><strong>Ninguna de las cuatro, todavía: dejar correr la semana sin tocar nada.</strong> Pero
+  cambiando lo que esperamos de ella. <strong>Esto ya no es una prueba de mercado — es una prueba de
+  que la maquinaria funciona</strong>, y esa parte ya la está contestando bien.</p>
+</div>
+<p>Los USD 70 ya compraron su valor real: demostrar que la cadena entera funciona de punta a punta
+después de tres meses trabados con Meta. Lo que queda por mirar esta semana es <strong>si algo se
+rompe</strong>, no si el canal vende.</p>
+
+<div class="callout r">
+  <p><strong>El único dato de plata que conviene tener presente.</strong> El IVA (21 %) y los ingresos
+  brutos (~2 %) se cobran <em>por encima</em> del presupuesto, no adentro. O sea que la tarjeta no se
+  debita ~USD 70 sino <strong>~USD 86 — un ~23 % que no estaba presupuestado</strong>.
+  <span class="chip est">estimado</span></p>
+</div>
+
+<p><strong>La decisión de fondo —poner plata en serio o cortarlo— se toma el lunes 8 de septiembre.</strong>
+Y se toma mirando <strong>cuánto nos cuesta llegar a mil personas</strong> y <strong>qué proporción de
+los que ven el anuncio lo tocan</strong> — no contando mensajes, que van a ser demasiado pocos para
+significar algo.</p>
+
+<h2>Cómo funciona, y dónde ocurre cada paso</h2>
+<p class="evnote">Importa porque <strong>dos de los cuatro pasos ocurren fuera de cualquier herramienta
+nuestra</strong>: no hay pantalla que los vigile, dependen de una persona.</p>
+
+<div class="rail">
+  <div class="step">
+    <span class="n">PASO 1</span>
+    <span class="w">Meta le muestra el video a alguien en Estados Unidos, de 32 a 60 años</span>
+    <span class="where">automático · dentro de Meta</span>
+  </div>
+  <div class="step out">
+    <span class="n">PASO 2</span>
+    <span class="w">La persona toca «Enviar mensaje» y escribe</span>
+    <span class="where">◆ fuera de nuestras herramientas · en Instagram</span>
+  </div>
+  <div class="step out">
+    <span class="n">PASO 3</span>
+    <span class="w">Bianca contesta en 15 minutos o menos, de 9 a 21 h de Tulum</span>
+    <span class="where">◆ fuera de nuestras herramientas · desde su teléfono</span>
+  </div>
+  <div class="step">
+    <span class="n">PASO 4</span>
+    <span class="w">Si la consulta califica, se la pasa a Boris con fechas y grupo</span>
+    <span class="where">captura directa a Boris</span>
+  </div>
+</div>
+
+<h2>Qué le toca a cada uno</h2>
+<div class="tblwrap" tabindex="0" role="region" aria-label="Tareas por persona">
+<table>
+<thead><tr><th scope="col">Quién</th><th scope="col">Qué</th><th scope="col">Cuándo</th></tr></thead>
+<tbody>
+<tr><th scope="row">Boris</th><td data-l="Qué">Decidir entre poner plata en serio, el paso intermedio, o cortarlo</td><td data-l="Cuándo">lun 8 sep</td></tr>
+<tr><th scope="row">Bianca</th><td data-l="Qué">Seguir contestando en 15 minutos o menos. <strong>Aviso: esta semana es muy probable que no entre ningún mensaje. No es un error suyo</strong> — es el presupuesto, no la atención.</td><td data-l="Cuándo">ya</td></tr>
+<tr><th scope="row">Gastón</th><td data-l="Qué">Nada que ejecutar. Este documento existe para que el gasto de ~USD 86 de la semana no sorprenda, y para dejar dicho que lo que se espera de ella es aprendizaje, no reservas.</td><td data-l="Cuándo">—</td></tr>
+<tr><th scope="row">Claude<br><span class="ev">el sistema, no una persona</span></th><td data-l="Qué">Conectar la lectura de Meta al tablero interno: hoy esa pantalla está ciega y estos números hubo que traerlos a mano</td><td data-l="Cuándo">esta semana</td></tr>
+</tbody>
+</table>
+</div>
+
+<h2>Las tres palabras que usa este documento</h2>
+<div class="rail">
+  <div class="step"><span class="n">IMPRESIÓN</span>
+    <span class="w">Una vez que el anuncio aparece en la pantalla de alguien.</span>
+    <span class="where">no es una persona: la misma persona puede verlo dos veces</span></div>
+  <div class="step"><span class="n">CONSULTA CALIFICADA</span>
+    <span class="w">Un mensaje que trae fechas, tamaño de grupo, o pregunta por la casa entera.</span>
+    <span class="where">es lo único que este test quería contar</span></div>
+  <div class="step"><span class="n">MEDIDO / ESTIMADO</span>
+    <span class="w">«Medido» salió del sistema de Meta. «Estimado» es un cálculo nuestro.</span>
+    <span class="where">si no se sabe, dice «no se sabe» — nunca cero</span></div>
+</div>
+
+<footer>
+  <p><b>De dónde salen estos números:</b> lectura directa del sistema de Meta (entidades, errores de
+  entrega y registro de actividad) el 5 de septiembre de 2026 a las 09:44 hora de Argentina. Las
+  cifras en dólares usan el tipo de cambio oficial del día del lanzamiento.</p>
+  <p><b>El registro técnico completo</b>, con la aritmética paso a paso, queda guardado del lado del
+  equipo de producto.</p>
+  <p>Este documento propone. No aprieta nada, no envía nada y no gasta nada:
+  <b>toda decisión de gasto la toma Boris</b>.</p>
+</footer>
+
+</main>
+</body>
+</html>
