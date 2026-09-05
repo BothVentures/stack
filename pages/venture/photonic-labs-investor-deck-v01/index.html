@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Photonic Labs — Investor Deck v0.1</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2716%27 fill=%27%237B5CFF%27/%3E%3Ctext x=%2716%27 y=%2721%27 font-family=%27Helvetica,Arial%27 font-weight=%27700%27 font-size=%2716%27 text-anchor=%27middle%27 fill=%27%23f5f1e8%27%3EP%3C/text%3E%3C/svg%3E">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   PHOTONIC LABS · INVESTOR DECK v0.1 · "minimal"
+   Type: Helvetica-class grotesk (system) · mono for meta.
+   Grounds: warm off-white + near-black. One accent, one token.
+   Rectilinear. Circles only as badges. No #fff, no gradients.
+   Chassis: fixed 1280×720 stage, keyboard nav, print = 1 page/slide.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --paper:   oklch(97% 0.012 85);
+  --paper-2: oklch(93% 0.014 82);
+  --ink:     oklch(14% 0.010 260);
+  --ink-2:   oklch(20% 0.010 260);
+  --mute-l:  oklch(55% 0.012 80);
+  --mute-d:  oklch(70% 0.012 80);
+  --hair-l:  oklch(84% 0.012 80);
+  --hair-d:  oklch(30% 0.010 260);
+  --accent:   oklch(46% 0.245 295);
+  --accent-d: oklch(72% 0.220 295);
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ease: cubic-bezier(.5,0,0,.75);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:oklch(10% 0.008 260);font-family:var(--sans);overflow:hidden;-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{width:1280px;height:720px;position:relative;transform-origin:center center;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.slide{position:absolute;inset:0;width:1280px;height:720px;opacity:0;visibility:hidden;transition:opacity 330ms var(--ease);overflow:hidden;padding:104px 56px 76px}
+.slide.active{opacity:1;visibility:visible}
+.light{background:var(--paper);color:var(--ink);--fg:var(--ink);--bg:var(--paper);--mute:var(--mute-l);--hair:var(--hair-l);--fill:var(--paper-2);--acc:var(--accent)}
+.dark {background:var(--ink);color:var(--paper);--fg:var(--paper);--bg:var(--ink);--mute:var(--mute-d);--hair:var(--hair-d);--fill:var(--ink-2);--acc:var(--accent-d)}
+
+/* furniture */
+.kicker{position:absolute;top:40px;left:56px;font:500 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;border:1px solid var(--fg);padding:8px 13px 7px;border-radius:999px;color:var(--fg)}
+.badge{position:absolute;top:34px;right:56px;width:32px;height:32px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;font:400 15px/1 var(--sans)}
+.badge.p{right:98px;background:var(--acc);color:var(--paper);font:700 13px/1 var(--sans)}
+.foot{position:absolute;left:56px;right:56px;bottom:0;height:52px;border-top:1px solid var(--hair);display:grid;grid-template-columns:max-content 1fr max-content;gap:24px;align-items:center;white-space:nowrap;font:400 9.5px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.foot .r{text-align:right}
+.foot .c{text-align:center;overflow:hidden;text-overflow:ellipsis}
+.foot b{color:var(--fg);font-weight:400}
+
+/* type */
+.h1{font-weight:700;letter-spacing:-.03em;line-height:.95;text-wrap:balance}
+.h1 .m{color:var(--mute)}
+.lede{font-size:19px;line-height:1.42;max-width:60ch}
+.body{font-size:15px;line-height:1.42}
+.small{font-size:13px;line-height:1.4}
+.label{font:400 10px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.mono{font-family:var(--mono)}
+.mute{color:var(--mute)}
+.acc{color:var(--acc)}
+.v{font-weight:700;letter-spacing:-.035em;line-height:.92}
+
+/* hairline bento */
+.bento{display:grid;gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.bento>*{background:var(--bg);padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;min-height:0}
+.bento>.fill{background:var(--fill)}
+
+/* numbered hairline rows */
+.rows>.row{display:grid;align-items:baseline;border-top:1px solid var(--hair);padding:11px 0}
+.rows>.row:last-child{border-bottom:1px solid var(--hair)}
+.rows .n{width:22px;height:22px;border-radius:50%;background:var(--fg);color:var(--bg);font:700 9.5px/22px var(--mono);text-align:center;display:inline-block;vertical-align:middle;position:relative;top:-1px}
+.rows .n.o{background:transparent;color:var(--fg);border:1px solid var(--fg);line-height:20px}
+
+/* giant numeral */
+.giant{position:absolute;font-weight:700;letter-spacing:-.06em;line-height:.8;color:var(--fg);opacity:.08;pointer-events:none;user-select:none}
+
+/* chart bars */
+.bar{display:flex;height:22px;gap:1px;background:var(--hair);border:1px solid var(--hair)}
+.bar>i{display:block;height:100%}
+
+/* nav */
+#nav{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;opacity:.32;transition:opacity 250ms;z-index:10;color:var(--paper);font:400 11px var(--mono)}
+#nav:hover{opacity:1}
+#nav button{background:none;border:1px solid var(--hair-d);color:var(--paper);width:28px;height:28px;cursor:pointer;font:400 13px var(--sans)}
+#dots{display:flex;gap:7px}
+#dots i{display:block;width:6px;height:6px;background:var(--hair-d);cursor:pointer}
+#dots i.on{background:var(--accent-d)}
+#count{font-variant-numeric:tabular-nums;letter-spacing:.1em;min-width:56px}
+
+@page{size:1280px 720px;margin:0}
+@media print{
+  body{background:#fff;overflow:visible}
+  #viewport{position:static;display:block}
+  #stage{width:1280px;height:auto;transform:none!important;box-shadow:none}
+  .slide{position:relative;opacity:1;visibility:visible;page-break-after:always;break-after:page;width:1280px;height:720px}
+  #nav{display:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div id="viewport"><div id="stage">
+
+<!-- ═══════════ 01 · COVER ═══════════ -->
+<section class="slide dark" id="s01">
+  <div class="kicker">Photonic Labs — Investor deck v0.1</div>
+  <div class="badge p">P</div><div class="badge">↘</div>
+  <div style="display:grid;grid-template-columns:1fr;gap:0;height:100%">
+    <div>
+      <h1 class="h1" style="font-size:78px;max-width:1100px">Uruguay's GMP‑ready bioproduction node <span class="m">for the LATAM pipeline.</span></h1>
+      <p class="lede" style="margin-top:26px;color:var(--mute);max-width:66ch">A multi-platform scale-up facility that takes validated research from the bench (TRL 4–5) to a transferable pilot lot (TRL 7–8). Zona Franca, Uruguay. Sequenced ahead of the regional capital cycle.</p>
+    </div>
+    <div class="bento" style="grid-template-columns:repeat(4,1fr);align-self:end;height:168px">
+      <div><span class="v" style="font-size:52px">≈1,300</span><span class="label">LATAM biotech firms<br>reconciled census · 2026</span></div>
+      <div><span class="v" style="font-size:52px">57%</span><span class="label">of Uruguayan biotech<br>without its own lab</span></div>
+      <div><span class="v" style="font-size:52px">US$50K</span><span class="label">per 100 g · current<br>India CRO ceiling</span></div>
+      <div class="fill"><span class="v acc" style="font-size:42px;white-space:nowrap">US$2.0–2.5M</span><span class="label">seed round<br>pre-Gate A estimate</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Pre-build · Capital open · Sep 2026</span><span class="c"><b>Confidential — internal draft</b> · figures = model v3 · estimate-grade</span><span class="r">01 / 12</span></div>
+</section>
+
+<!-- ═══════════ 02 · UNMET NEED ═══════════ -->
+<section class="slide dark" id="s02">
+  <div class="kicker">02 — Unmet need</div><div class="badge">↘</div>
+  <div class="giant" style="font-size:340px;right:40px;top:40px">5–8</div>
+  <h1 class="h1" style="font-size:56px;max-width:820px">Science is not the bottleneck. <span class="m">Scale-up is.</span></h1>
+  <p class="lede" style="margin-top:22px;max-width:62ch;color:var(--mute)">LATAM biotech reaches TRL 4 in public labs and stalls. Pilot production, GMP lots and a transferable dossier — TRL 5 to 8 — have no open provider in the region.</p>
+  <div class="bento" style="grid-template-columns:1fr 1.25fr 1fr;margin-top:28px;height:220px">
+    <div><div><span class="label">TRL 1–4</span><div class="v" style="font-size:34px;margin-top:8px">Covered</div></div><p class="small mute">UdelaR, Institut Pasteur, INIA. University benches at near-zero marginal cost. Research gets done.</p></div>
+    <div class="fill"><div><span class="label acc">TRL 5–8</span><div class="v" style="font-size:34px;margin-top:8px">Empty</div></div><p class="small" style="color:var(--paper)">No open GMP‑ready pilot capacity between 10 and 300 L. No proportional downstream. No dossier a CDMO will accept.</p></div>
+    <div><div><span class="label">TRL 9</span><div class="v" style="font-size:34px;margin-top:8px">Inaccessible</div></div><p class="small mute">Industrial CDMOs with volume floors far above a startup's first lots.</p></div>
+  </div>
+  <p class="body mute" style="margin-top:22px;max-width:80ch">Today founders ship molecules to India or Europe. US$50,000 per 100 g, verified with a Uruguayan first‑in‑class oncology startup. The alternative is the subsidized bench — which does not produce a pilot lot.</p>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">02 / 12</span></div>
+</section>
+
+<!-- ═══════════ 03 · WHY NOW ═══════════ -->
+<section class="slide light" id="s03">
+  <div class="kicker">03 — Why now</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:56px">Four conditions aligned <span class="m">in 2025–26.</span></h1>
+  <div class="rows" style="margin-top:40px">
+    <div class="row" style="grid-template-columns:44px 260px 1fr;gap:20px;padding:18px 0"><span><span class="n">01</span></span><span class="v" style="font-size:22px">Fiscal regime</span><p class="body">Decreto 329/025 in force since February 2026: IRAE, wealth-tax and VAT exemptions on fixed assets; R&amp;D counts ×1.5. Layered on Ley 16.462 (biotech = national interest) and the Zona Franca statute.</p></div>
+    <div class="row" style="grid-template-columns:44px 260px 1fr;gap:20px;padding:18px 0"><span><span class="n">02</span></span><span class="v" style="font-size:22px">Non-dilutive inside ZF</span><p class="body">ANII instruments have been available to Zona Franca companies since 2025. The tax wrapper and the innovation agency no longer exclude each other — the same pairing that capitalized CPI in the UK.</p></div>
+    <div class="row" style="grid-template-columns:44px 260px 1fr;gap:20px;padding:18px 0"><span><span class="n">03</span></span><span class="v" style="font-size:22px">Capital next door</span><p class="body">Argentina, Chile and Uruguay hold 89% of the region's biotech deals (LAVCA 2025). Uruguay's 62 biotech firms filed 60 patent applications in 2022–24, 85% from startups. The pipeline exists; the plant does not.</p></div>
+    <div class="row" style="grid-template-columns:44px 260px 1fr;gap:20px;padding:18px 0"><span><span class="n">04</span></span><span class="v" style="font-size:22px">Single-use maturity</span><p class="body">10–300 L single‑use bioreactors and proportional downstream make a multi-client GMP‑ready plant buildable without stainless-steel CIP/SIP infrastructure: no cross-contamination between clients, turnaround in hours.</p></div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">03 / 12</span></div>
+</section>
+
+<!-- ═══════════ 04 · THE ASSET ═══════════ -->
+<section class="slide light" id="s04">
+  <div class="kicker">04 — The asset</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:50px;max-width:900px">One facility, six expression systems, <span class="m">GMP‑ready by design.</span></h1>
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;margin-top:28px">
+    <div class="bento" style="grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);height:346px">
+      <div><span class="v" style="font-size:46px">6</span><span class="small mute">expression systems — E. coli · Pichia / S. cerevisiae · CHO / HEK293 · Sf9 / Hi5 · Aspergillus / Trichoderma · microalgae. ~60–70% of the regional pipeline without retooling.</span></div>
+      <div><span class="v" style="font-size:46px">10–50 L</span><span class="small mute">Tramo 1: single‑use upstream. Tramo 2 extends to 200–300 L. Single-use as primary format: no CIP/SIP, no cross-contamination between residents.</span></div>
+      <div><span class="v" style="font-size:46px">1 : 1</span><span class="small mute">Downstream sized to upstream — ÄKTA Process + ÄKTA Pilot + TFF. The explicit answer to regional plants running 300 L bioreactors into 30 L purification.</span></div>
+      <div><span class="v" style="font-size:46px">21</span><span class="small mute">functional zones in 5 bands. Unidirectional material flow, ISO 8 production corridor, ISO 7–8 cleanrooms, BSL-2.</span></div>
+      <div><span class="v" style="font-size:46px">~800 m²</span><span class="small mute">target footprint, Parque de las Ciencias (Canelones, Zona Franca). Brownfield fit-out vs greenfield decided at Phase A costing.</span></div>
+      <div class="fill"><span class="v" style="font-size:30px;line-height:1">GMP‑ready,<br>not certified</span><span class="small mute">Compliant flows, materials, surfaces, QMS and batch records from origin. Certification is an evolution, not a rebuild. Output: a dossier a CDMO accepts.</span></div>
+    </div>
+    <div style="border-top:1px solid var(--ink);padding-top:14px">
+      <span class="label">Computational layer — booster, not pillar</span>
+      <div class="rows" style="margin-top:12px">
+        <div class="row" style="grid-template-columns:34px 1fr;gap:8px;padding:9px 0"><span class="mono small">T0</span><span class="small"><b>Analytics</b> — HPLC, qPCR, ELISA, NanoDrop. Monetized from day one.</span></div>
+        <div class="row" style="grid-template-columns:34px 1fr;gap:8px;padding:9px 0"><span class="mono small">C1</span><span class="small"><b>Digital twin</b> — model bioreactor + downstream before touching the wet-lab.</span></div>
+        <div class="row" style="grid-template-columns:34px 1fr;gap:8px;padding:9px 0"><span class="mono small">C2</span><span class="small"><b>In-silico design</b> — candidate ranking for residents.</span></div>
+        <div class="row" style="grid-template-columns:34px 1fr;gap:8px;padding:9px 0"><span class="mono small">C3</span><span class="small"><b>IP custody</b> — cryptographic protection of master and working cell banks.</span></div>
+      </div>
+      <p class="label" style="margin-top:12px">LIMS / ELN: Benchling · ~85% margin modeled · POC with first anchor Mar 2027</p>
+    </div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">04 / 12</span></div>
+</section>
+
+<!-- ═══════════ 05 · DEMAND EVIDENCE ═══════════ -->
+<section class="slide light" id="s05">
+  <div class="kicker">05 — Demand evidence</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:46px;max-width:1000px">Nine startups profiled in person. One price ceiling. <span class="m">No commitments yet.</span></h1>
+  <div style="display:grid;grid-template-columns:260px 1fr;gap:24px;margin-top:24px">
+    <div class="bento" style="grid-template-columns:1fr;height:370px">
+      <div><span class="v" style="font-size:44px">62</span><span class="label">firms · Uruguay biotech census<br>Stubrin · Jan 2026</span></div>
+      <div><span class="v" style="font-size:44px">74</span><span class="label">startups · regional survey<br>responses</span></div>
+      <div class="fill"><span class="v" style="font-size:44px">9 <span class="mute" style="font-weight:400;font-size:22px">of 13</span></span><span class="label">priority startups met<br>in person, needs specified</span></div>
+    </div>
+    <div>
+      <div class="rows small">
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Eywa Biotech</b><span class="mute">GMP psilocybin / DMT via recombinant E. coli · US$2.5M raised · 13 staff</span><span class="mono" style="font-size:11px">needs 300 L GMP → Tramo 2</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Xeptiva</b><span class="mute">veterinary vaccines, Institut Pasteur spin-out · first GMP lot done</span><span class="mono" style="font-size:11px">ZF compatibility confirmed</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>KinzBio</b><span class="mute">first LATAM bacteriophage therapy in humans · 22 patients</span><span class="mono" style="font-size:11px">2–3 yr horizon</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Ardan Pharma</b><span class="mute">first‑in‑class oncology (TMEM176A/B), preclinical</span><span class="mono" style="font-size:11px">source of US$50K / 100 g</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Guska</b><span class="mute">oncolytic synthetic RNA viruses + AI, glioblastoma</span><span class="mono" style="font-size:11px">regulatory advisory demand</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Nanogrow</b><span class="mute">camelid nanobodies · US$300K revenue · US$5M seed open</span><span class="mono" style="font-size:11px">scale-up candidate</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Pasteur / LAB+</b><span class="mute">LoCBio · B4RNA · Scaffold Biotech</span><span class="mono" style="font-size:11px">medium term</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>ATGen</b><span class="mute">largest UY biotech · 170 staff · 300 L bioreactor · incubates ~10</span><span class="mono" style="font-size:11px">partner, not competitor</span></div>
+        <div class="row" style="grid-template-columns:150px 1fr 200px;gap:14px;padding:8px 0"><b>Benten Biotech</b><span class="mute">first vet-vaccine CRO in LATAM · 7 countries</span><span class="mono" style="font-size:11px">source: 80% UY build overrun</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px">
+        <span class="label">Signed LOIs today: <b style="color:var(--ink)">0</b> · Target ≥ 2 by Nov 2026 (Phase A) · Pending: Eolo Pharma, RadBio, Antarka</span>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft · named pipeline: internal use only</span><span class="r">05 / 12</span></div>
+</section>
+
+<!-- ═══════════ 06 · BUSINESS MODEL ═══════════ -->
+<section class="slide light" id="s06">
+  <div class="kicker">06 — Business model</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:50px;max-width:980px">Residents pay for capacity certainty, <span class="m">not bench time.</span></h1>
+  <div style="display:grid;grid-template-columns:1fr 250px;gap:24px;margin-top:26px">
+    <div>
+      <div class="rows small">
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:7px 0;border-top:1px solid var(--ink)"><span class="label">Tier</span><span class="label">Offer</span><span class="label">Price · anchor</span><span class="label">Margin</span><span class="label">From</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">T0</span><b>Standalone analytics</b><span class="mute">Per-service menu. HPLC, qPCR, ELISA. Cash line from day one.</span><span class="mono">high</span><span class="mono">Day 1</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">T1</span><b>Infrastructure subscription</b><span class="mute"><b style="color:var(--ink)">US$8K / startup / month</b> — benchmarked vs serviced BSL-2 suites (London, Harlem Biospace, BioLabs). A US$20K bundle tier only with public co-funding.</span><span class="mono">~75%</span><span class="mono">Y1</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">T2</span><b>Equipment-as-a-service</b><span class="mute"><b style="color:var(--ink)">US$7K per run at 10–50 L</b> — benchmarked, possibly conservative (USask, RPI). 200–300 L tier priced at Gate A.</span><span class="mono">~88%</span><span class="mono">Y1</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">T3</span><b>GMP services + tech transfer</b><span class="mute">Phase-0 readiness and gap assessment now; full transfer projects priced against real cost-to-serve at Gate A.</span><span class="mono">~68%</span><span class="mono">Y2+</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">T4</span><b>Capital-for-LOI</b><span class="mute">Invest in a resident's round against a future scaling LOI. Mechanism under evaluation with 1–2 anchors.</span><span class="mono">—</span><span class="mono">Y2+</span></div>
+        <div class="row" style="grid-template-columns:34px 190px 1fr 70px 56px;gap:12px;padding:9px 0"><span class="mono">C</span><b>Computational services</b><span class="mute">Digital twin · in-silico ranking · IP custody. Opex-light. Margin modeled, POC Mar 2027.</span><span class="mono">~85%</span><span class="mono">Y1+</span></div>
+      </div>
+      <p class="label" style="margin-top:12px">Value → price → cost: a resident replaces US$50K per 100 g abroad with a US$7K run at home and keeps the process dossier.</p>
+    </div>
+    <div class="bento" style="grid-template-columns:1fr;height:370px">
+      <div><span class="v" style="font-size:44px">5–8</span><span class="label">residents, mixed tiers,<br>to break even</span></div>
+      <div class="fill"><span class="v acc" style="font-size:44px">US$420K</span><span class="label">ARR at break‑even<br>≈ 3% of the reachable pool</span></div>
+      <div><span class="v" style="font-size:44px">~16%</span><span class="label">of revenue from the<br>computational layer at maturity</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">Figures = financial model v3 (Jul 2026, ZF) · estimate-grade · third-party validation Nov 2026</span><span class="r">06 / 12</span></div>
+</section>
+
+<!-- ═══════════ 07 · MARKET ═══════════ -->
+<section class="slide light" id="s07">
+  <div class="kicker">07 — Market</div><div class="badge">↘</div>
+  <div class="giant" style="font-size:420px;right:20px;top:60px">3%</div>
+  <h1 class="h1" style="font-size:52px;max-width:860px">US$13.9M a year reachable. <span class="m">Break-even is three percent of it.</span></h1>
+  <div style="display:grid;grid-template-columns:560px 1fr;gap:40px;margin-top:30px">
+    <div>
+      <span class="label">Bottom-up · planning figure</span>
+      <div class="rows small" style="margin-top:10px">
+        <div class="row" style="grid-template-columns:1fr 130px;padding:9px 0"><span>~72 candidate companies × US$135K external wallet</span><span class="mono" style="text-align:right">US$9.7M</span></div>
+        <div class="row" style="grid-template-columns:1fr 130px;padding:9px 0"><span>~60 established firms × US$41K</span><span class="mono" style="text-align:right">US$2.5M</span></div>
+        <div class="row" style="grid-template-columns:1fr 130px;padding:9px 0"><span>Opportunistic Brazil / Mexico</span><span class="mono" style="text-align:right">US$1.7M</span></div>
+        <div class="row" style="grid-template-columns:1fr 130px;padding:9px 0;border-top:1px solid var(--ink)"><b>Reachable pool per year</b><b class="mono" style="text-align:right">US$13.9M</b></div>
+      </div>
+      <p class="small mute" style="margin-top:12px">Top-down cross-check from the LATAM CMO/CRO market, regionalized and narrowed to early-stage bioprocess: US$14–19M/yr. Two independent methods converge. The US$3B "bioprocessing LATAM" headline measures equipment sold <i>to</i> bioprocessors — our cost side — and is not used.</p>
+    </div>
+    <div>
+      <span class="label">Universe · reconciled country by country</span>
+      <div class="bento" style="grid-template-columns:repeat(2,1fr);margin-top:10px;height:184px">
+        <div><span class="v" style="font-size:30px">632</span><span class="label">Brazil · 173 startups</span></div>
+        <div><span class="v" style="font-size:30px">340</span><span class="label">Argentina · 146 startups</span></div>
+        <div><span class="v" style="font-size:30px">~275</span><span class="label">Chile · registry population</span></div>
+        <div class="fill"><span class="v" style="font-size:30px">62</span><span class="label">Uruguay · 38 startups</span></div>
+      </div>
+      <p class="small" style="margin-top:12px"><b>≈1,300 firms · 350–550 true startups.</b> <span class="mute">5–8 residents = 7–11% of the ~72 candidates. Demanding for a first mover, not implausible.</span></p>
+    </div>
+  </div>
+  <p class="body" style="margin-top:18px;max-width:90ch;border-left:2px solid var(--ink);padding-left:14px">Regional reach is the viability condition, not upside: all Uruguayan biotech startups together bill US$3.4M a year.</p>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">Source: regional market study, Aug 2026 · per-datapoint confidence labeled · estimate-grade</span><span class="r">07 / 12</span></div>
+</section>
+
+<!-- ═══════════ 08 · COMPETITION ═══════════ -->
+<section class="slide light" id="s08">
+  <div class="kicker">08 — Competition</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:50px;max-width:980px">The competitor is the subsidized bench, <span class="m">not another CDMO.</span></h1>
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:28px;margin-top:26px">
+    <div class="rows small">
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n">01</span></span><b>University labs</b><span class="mute">UdelaR, Pasteur, public institutes. Near-zero marginal cost; 26% of Argentine biotechs use them.</span><span class="mono" style="font-size:11px">no GMP · no capacity certainty · no dossier</span></div>
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n">02</span></span><b>CENIBiot, Costa Rica</b><span class="mute">7–140 L fermenters, sells to industry. The only open pilot capacity in the region today.</span><span class="mono" style="font-size:11px">not GMP · subsidized · single country</span></div>
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n">03</span></span><b>Captive Argentine plants</b><span class="mute">146 production plants, 61% GMP-certified.</span><span class="mono" style="font-size:11px">owned capacity · closed to third parties</span></div>
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n">04</span></span><b>India / Europe CROs</b><span class="mute">US$50K per 100 g. Distance, queues, IP leaves the country.</span><span class="mono" style="font-size:11px">the incumbent</span></div>
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n o">05</span></span><b>ATGen, Uruguay</b><span class="mute">300 L bioreactor into 30 L downstream; incubates ~10 startups in self-service mode.</span><span class="mono" style="font-size:11px">partner, not rival</span></div>
+      <div class="row" style="grid-template-columns:34px 200px 1fr 250px;gap:12px;padding:9px 0"><span><span class="n o">06</span></span><b>LabCentral, Boston</b><span class="mute">Rates cut &gt;25% for 2026; six free months for 18 companies.</span><span class="mono" style="font-size:11px">bench scale · same founder, different need</span></div>
+    </div>
+    <div style="border-top:1px solid var(--ink);padding-top:14px">
+      <span class="label">Where Photonic wins</span>
+      <div class="rows" style="margin-top:10px">
+        <div class="row" style="grid-template-columns:1fr;padding:10px 0"><span class="body"><b>Speed</b> <span class="mute">— single‑use turnaround in hours, not days.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:10px 0"><span class="body"><b>GMP compatibility</b> <span class="mute">— a lot that transfers.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:10px 0"><span class="body"><b>Capacity certainty</b> <span class="mute">— booked, not begged.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:10px 0"><span class="body"><b>Published tariff</b> <span class="mute">— the first in LATAM. Every peer hides its prices.</span></span></div>
+      </div>
+      <p class="label" style="margin-top:14px">We do not compete on price against a free bench.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">08 / 12</span></div>
+</section>
+
+<!-- ═══════════ 09 · REFERENCE CLASS ═══════════ -->
+<section class="slide dark" id="s09">
+  <div class="kicker">09 — Reference class</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:50px">Ten facilities already prove <span class="m">the category.</span></h1>
+  <div class="bento small" style="grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,1fr);margin-top:26px;height:368px">
+    <div><span class="label">01 · Australia</span><div><b>National Biologics Facility</b><p class="mute" style="margin-top:6px">4 expression systems. ISO 9001 + PC2 clinical-grade, deliberately short of full GMP.</p></div></div>
+    <div><span class="label">02 · Canada</span><div><b>NRC Bioprocess R&amp;D</b><p class="mute" style="margin-top:6px">Broadest platform. Hands a QA'd, documented process to a CMO.</p></div></div>
+    <div class="fill"><span class="label acc">03 · United Kingdom</span><div><b>CPI Biologics Centre</b><p class="mute" style="margin-top:6px">5,000 m², two GMP-simulation suites, £38M Innovate UK grant. Innovate UK ↔ ANII.</p></div></div>
+    <div><span class="label">04 · United States</span><div><b>Gates Biomanufacturing</b><p class="mute" style="margin-top:6px">PD equipment mirrors the cGMP suite 1:1 / 1:10 from origin.</p></div></div>
+    <div><span class="label">05 · Germany</span><div><b>Fraunhofer ITEM</b><p class="mute" style="margin-top:6px">10–400 L GMP, cell line to IMP. Truest single-facility twin.</p></div></div>
+    <div><span class="label">06 · Singapore</span><div><b>A*STAR BTI</b><p class="mute" style="margin-top:6px">Staged GMP: non-GMP foundry today, cleanrooms next. Photonic's posture.</p></div></div>
+    <div><span class="label">07 · United Kingdom</span><div><b>CGT Catapult Stevenage</b><p class="mute" style="margin-top:6px">12 co-resident tenants. Client owns IP, QMS and batch release.</p></div></div>
+    <div><span class="label">08 · Belgium</span><div><b>Bio Base Europe Pilot Plant</b><p class="mute" style="margin-top:6px">No industrial shareholders. 270+ clients. Neutrality is the model.</p></div></div>
+    <div><span class="label">09 · United States</span><div><b>NIIMBL</b><p class="mute" style="margin-top:6px">NIST-funded membership consortium; shared platform facilities.</p></div></div>
+    <div><span class="label">10 · United States</span><div><b>BioMADE</b><p class="mute" style="margin-top:6px">Valley-of-death mandate at 25,000 L — the scale to avoid.</p></div></div>
+  </div>
+  <p class="small mute" style="margin-top:16px;max-width:110ch">What Photonic takes: NBF's GMP posture · NRC's handoff mandate · CPI's agency-plus-tax-wrapper capitalization · Gates' mirrored PD suite · Catapult's client-owns-everything contract · BBEPP's neutrality. Adversarially verified, Jul 2026.</p>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">09 / 12</span></div>
+</section>
+
+<!-- ═══════════ 10 · DE-RISKING ═══════════ -->
+<section class="slide light" id="s10">
+  <div class="kicker">10 — De-risking</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:44px;max-width:1000px">What is proven, what is assumed, <span class="m">and the gate that closes each.</span></h1>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:20px">
+    <div>
+      <div class="label" style="border-top:1px solid var(--ink);padding-top:8px">Proven</div>
+      <div class="rows small" style="margin-top:6px">
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Demand</b> <span class="mute">— 62-firm census · 74-startup survey · 9 startups profiled in person.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Regulatory</b> <span class="mute">— 5 legal instruments verified against primary sources; ANII inside ZF confirmed with the agency.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Structure</b> <span class="mute">— all-in Zona Franca, permanent 0% IRAE. Closed Jul 2026.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Design</b> <span class="mute">— 21 zones / 5 bands; equipment spec with 3–5 vendor alternatives per need.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Reference class</b> <span class="mute">— 10 global twins, adversarially verified.</span></span></div>
+      </div>
+    </div>
+    <div>
+      <div class="label" style="border-top:1px solid var(--ink);padding-top:8px">Assumed <span style="color:var(--acc)">· closes at Phase A</span></div>
+      <div class="rows small" style="margin-top:6px">
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>CAPEX US$1.48M</b> <span class="mute">— estimate-grade; no construction quote yet.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Contingency 30%</b> <span class="mute">— against an 80% documented Uruguay overrun rate. Must be funded, not stated.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Footprint ~800 m²</b> <span class="mute">— pending engineering; brownfield vs greenfield open.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Pricing</b> <span class="mute">— 3 of 6 tiers lack an external anchor. LOIs signed: 0.</span></span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><b>Computational margin ~85%</b> <span class="mute">— modeled, not measured. POC Mar 2027.</span></span></div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:22px;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--hair);border:1px solid var(--hair)">
+    <div style="background:var(--bg);padding:12px 14px"><span class="mono small" style="display:block;border:1px solid var(--ink);border-radius:999px;padding:3px 9px;width:max-content;font-size:10px;letter-spacing:.1em">A · DE-RISK</span><p class="label" style="margin-top:8px;color:var(--ink)">Aug – Nov 2026</p><p class="small mute" style="margin-top:4px">Construction quote · third-party model validation · ≥2 LOIs · Site Director hire · ZF entity</p></div>
+    <div style="background:var(--bg);padding:12px 14px"><span class="mono small" style="display:block;border:1px solid var(--ink);border-radius:999px;padding:3px 9px;width:max-content;font-size:10px;letter-spacing:.1em">DESIGN FREEZE</span><p class="label" style="margin-top:8px;color:var(--ink)">Dec 2026 – Mar 2027</p><p class="small mute" style="margin-top:4px">HVAC frozen (30–50% of cost) · URS/DQ · permits · grants closed · in-silico POC</p></div>
+    <div style="background:var(--fill);padding:12px 14px"><span class="mono small" style="display:block;border:1px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:999px;padding:3px 9px;width:max-content;font-size:10px;letter-spacing:.1em">FINANCIAL CLOSE</span><p class="label" style="margin-top:8px;color:var(--ink)">Apr – Jul 2027</p><p class="small mute" style="margin-top:4px">Tender and award · long-lead equipment POs · cornerstone committed · CAPEX tranche 1 released</p></div>
+    <div style="background:var(--bg);padding:12px 14px"><span class="mono small" style="display:block;border:1px solid var(--ink);border-radius:999px;padding:3px 9px;width:max-content;font-size:10px;letter-spacing:.1em">BUILD · IQ/OQ/PQ</span><p class="label" style="margin-top:8px;color:var(--ink)">12 – 18 months</p><p class="small mute" style="margin-top:4px">Fit-out · commissioning · qualification with signed protocols. Qualification, not equipment, is the constraint.</p></div>
+    <div style="background:var(--bg);padding:12px 14px"><span class="mono small" style="display:block;border:1px solid var(--ink);border-radius:999px;padding:3px 9px;width:max-content;font-size:10px;letter-spacing:.1em">GO-LIVE</span><p class="label" style="margin-top:8px;color:var(--ink)">H2 2028</p><p class="small mute" style="margin-top:4px">Live QMS · signed ARR at break‑even · ≥12 months runway · contingency intact</p></div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">Capital released by gate, never in one tranche · Go / Kill / Hold at each</span><span class="r">10 / 12</span></div>
+</section>
+
+<!-- ═══════════ 11 · TEAM ═══════════ -->
+<section class="slide light" id="s11">
+  <div class="kicker">11 — Team</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:50px;max-width:980px">Operators, a Chief Science, <span class="m">and one hire the round funds.</span></h1>
+  <div class="label" style="margin-top:26px;border-top:1px solid var(--ink);padding-top:8px">Leadership · Both_Ventures</div>
+  <div class="bento small" style="grid-template-columns:repeat(5,1fr);margin-top:8px;height:140px">
+    <div><b>René Labarthe</b><span class="mute">Venture owner · capital lead · narrative and positioning</span></div>
+    <div><b>Gastón Frydlewski</b><span class="mute">CEO · capital allocation · release authority at every gate</span></div>
+    <div><b>Daiana Goldenberg</b><span class="mute">Finance · model validation · stage budget</span></div>
+    <div><b>Andrés Burecovics</b><span class="mute">Legal · Zona Franca entity · Ley 19.566 tax opinion</span></div>
+    <div><b>Mariano Boris</b><span class="mute">Operations · documentation · cadence</span></div>
+  </div>
+  <div class="label" style="margin-top:20px;border-top:1px solid var(--ink);padding-top:8px">Science &amp; engineering</div>
+  <div class="bento small" style="grid-template-columns:repeat(3,1fr);margin-top:8px;height:132px">
+    <div><b>Alejandro San Juan, MD</b><span class="mute">Chief Science · neurosurgeon, biotechnology-business trained · co-author of the ZF legal framework</span></div>
+    <div><b>Eleonora Scoseria</b><span class="mute">Regulatory + civil engineering lead · owns facility costing and design · validated the single‑use architecture</span></div>
+    <div class="fill"><b><span class="acc">Open ·</span> Site Director / CTO</b><span class="mute">Candidate identified — ex-Sartorius bioprocess engineer, relocating to Uruguay. Hire is a Phase A milestone funded by this round.</span></div>
+  </div>
+  <p class="small mute" style="margin-top:16px;max-width:110ch"><b style="color:var(--ink)">Advisory.</b> GMP operations and large-scale pharma-lab experience from the presidency of a major Argentine biologics laboratory (former director, Cámara Argentina de Biotecnología) · two lab technicians already contracted · QA Director sourced from mAbxience / Pasteur alumni, hired when construction is authorized.</p>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">©2026 Both_Ventures · Confidential — internal draft</span><span class="r">11 / 12</span></div>
+</section>
+
+<!-- ═══════════ 12 · THE ASK ═══════════ -->
+<section class="slide dark" id="s12">
+  <div class="kicker">12 — The ask</div><div class="badge p">P</div><div class="badge">↘</div>
+  <h1 class="h1" style="font-size:46px;max-width:1000px">US$2.0–2.5M to reach go‑live <span class="m">with contingency funded.</span></h1>
+  <div style="display:grid;grid-template-columns:1fr 330px;gap:28px;margin-top:18px">
+    <div>
+      <span class="label">Use of proceeds · by gate</span>
+      <div class="bar" style="margin-top:10px">
+        <i style="width:18.5%;background:oklch(88% 0.01 80)" title="Equipment"></i>
+        <i style="width:29.4%;background:oklch(72% 0.01 80)" title="Civil + HVAC"></i>
+        <i style="width:7.3%;background:oklch(58% 0.01 80)" title="Validation"></i>
+        <i style="width:2.7%;background:oklch(48% 0.01 80)" title="Import"></i>
+        <i style="width:14.3%;background:var(--acc)" title="Contingency"></i>
+        <i style="width:27.8%;background:oklch(36% 0.01 260)" title="Operating runway"></i>
+      </div>
+      <div class="rows small" style="margin-top:10px">
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span>Equipment — bioreactors, downstream, analytics <span class="mute">· released at financial close</span></span><span class="mono" style="text-align:right">US$379K</span><span class="mono mute" style="text-align:right">18%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span>Civil works + HVAC <span class="mute">· frozen at design gate, awarded at close</span></span><span class="mono" style="text-align:right">US$602K</span><span class="mono mute" style="text-align:right">29%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span>Validation — IQ/OQ/PQ + QMS</span><span class="mono" style="text-align:right">US$150K</span><span class="mono mute" style="text-align:right">7%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span>Import + logistics</span><span class="mono" style="text-align:right">US$55K</span><span class="mono mute" style="text-align:right">3%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span class="acc">Contingency 30% — funded, ring-fenced</span><span class="mono acc" style="text-align:right">US$294K</span><span class="mono mute" style="text-align:right">14%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0"><span>Operating runway to break‑even <span class="mute">· team, QA, working capital</span></span><span class="mono" style="text-align:right">≈US$570K</span><span class="mono mute" style="text-align:right">28%</span></div>
+        <div class="row" style="grid-template-columns:1fr 110px 90px;padding:7px 0;border-top:1px solid var(--paper)"><b>Total capital need · model v3</b><b class="mono" style="text-align:right">≈US$2.05M</b><span class="mono mute" style="text-align:right">to US$2.5M</span></div>
+      </div>
+      <p class="small mute" style="margin-top:10px">Upper bound covers construction-quote variance. Non-dilutive in parallel, not in the number: ANII ≤US$100K (fees, IP, software — not equipment) · MIEM ~US$50K · ANDE ~US$40K · CORFO Chile ~US$236K.</p>
+    </div>
+    <div>
+      <div class="bento" style="grid-template-columns:1fr 1fr;height:156px">
+        <div><span class="v" style="font-size:34px">Y3</span><span class="label">EBITDA-positive<br>+US$554K</span></div>
+        <div><span class="v" style="font-size:34px">US$3.8M</span><span class="label">Year-6 revenue</span></div>
+        <div><span class="v" style="font-size:34px">~Y5</span><span class="label">free-cash-flow<br>payback</span></div>
+        <div class="fill"><span class="v" style="font-size:34px">0%</span><span class="label">IRAE, permanent<br>Zona Franca</span></div>
+      </div>
+      <div class="rows small" style="margin-top:12px">
+        <div class="row" style="grid-template-columns:1fr;padding:6px 0"><span><span class="n" style="background:var(--paper);color:var(--ink)">1</span>&nbsp; The only open GMP‑ready pilot capacity in LATAM at 10–300 L.</span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:7px 0"><span><span class="n" style="background:var(--paper);color:var(--ink)">2</span>&nbsp; Demand mapped company by company, not by multiplying a TAM.</span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:7px 0"><span><span class="n" style="background:var(--paper);color:var(--ink)">3</span>&nbsp; Structure closed: permanent 0% IRAE, ANII eligible inside it.</span></div>
+        <div class="row" style="grid-template-columns:1fr;padding:7px 0"><span><span class="n" style="background:var(--paper);color:var(--ink)">4</span>&nbsp; Capital released by gate. Go / Kill at each. Never one tranche.</span></div>
+      </div>
+      <p class="small" style="margin-top:12px"><span class="label">Contact</span><br><b>René Labarthe</b> · <a href="mailto:rene@both.ventures" style="color:var(--paper);text-decoration:none;border-bottom:1px solid var(--hair)">rene@both.ventures</a></p>
+    </div>
+  </div>
+  <div class="foot"><span>Photonic Labs · Investor deck v0.1 · pre-Gate A</span><span class="c">Figures = financial model v3 (Jul 2026, ZF) · estimate-grade · third-party validation Nov 2026</span><span class="r">12 / 12</span></div>
+</section>
+
+</div></div>
+
+<div id="nav">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <div id="dots"></div>
+  <button id="next" aria-label="Next slide">→</button>
+  <div id="count"></div>
+</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage  = document.getElementById('stage');
+  var dots   = document.getElementById('dots');
+  var count  = document.getElementById('count');
+  var i = 0;
+  slides.forEach(function(_, n){
+    var d = document.createElement('i');
+    d.addEventListener('click', function(){ go(n); });
+    dots.appendChild(d);
+  });
+  var dotEls = Array.prototype.slice.call(dots.children);
+  function go(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('active', k === i); });
+    dotEls.forEach(function(d, k){ d.classList.toggle('on', k === i); });
+    count.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(slides.length).padStart(2, '0');
+    if (history.replaceState) history.replaceState(null, '', '#' + (i + 1));
+  }
+  function fit(){
+    var s = Math.min(window.innerWidth / 1280, (window.innerHeight - 56) / 720) * 0.96;
+    stage.style.transform = 'translateY(-22px) scale(' + s + ')';
+  }
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); go(i - 1); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End')  go(slides.length - 1);
+  });
+  document.getElementById('next').addEventListener('click', function(){ go(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ go(i - 1); });
+  document.getElementById('viewport').addEventListener('click', function(e){
+    if (e.target.closest('#nav') || e.target.closest('a')) return;
+    go(i + 1);
+  });
+  window.addEventListener('resize', fit);
+  fit();
+  var h = parseInt((location.hash || '').replace('#',''), 10);
+  go(isNaN(h) ? 0 : h - 1);
+})();
+</script>
+</body>
+</html>
