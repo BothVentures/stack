@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Campaña IG DM — Status 5 sep</title>
+<title>Campaña IG DM — Status 8 sep</title>
 <meta name="brand-register" content="oxide-desk">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22%231C2934%22%2F%3E%3Cpath%20d%3D%22M6%2027V16a10%2010%200%200%201%2020%200v11z%22%20fill%3D%22%23EDEDE5%22%2F%3E%3C%2Fsvg%3E">
 <meta name="theme-color" content="#111C24" media="(prefers-color-scheme: dark)">
@@ -13,8 +13,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <!--
-  FUENTE CANÓNICA: synergy-toolkit/docs/meta-dm-campana-team-2026-09-04.html
-  Registro de ingeniería y evidencia: reports/meta-dm-campana-2026-09-04.md (misma fecha).
+  FUENTE CANÓNICA: synergy-toolkit/docs/meta-status-team-2026-09-05.html (sucede a ese doc).
+  Registro de ingeniería y evidencia: reports/meta-status-2026-09-08.md (misma fecha) — si este
+  HTML y ese markdown discrepan, GANA EL MARKDOWN.
+  OJO al copiar este archivo: tiene DOS bloques de estilo, y este comentario menciona el nombre
+  de la etiqueta en prosa. Cortar el head en la PRIMERA etiqueta de cierre pierde el segundo
+  bloque -- chart, rail, media queries -- y la pagina igual mide 0 overflow: paso el 8-sep.
+  Cortar SIEMPRE en la ULTIMA etiqueta de cierre.
   TEMA: oxide-desk — receta en docs/design/theme-oxide-desk.md; el <style> está copiado entero
   de la implementación de referencia (docs/lead-machine-tracker.html), sin forks.
   Audiencia: el equipo (Bianca, Iru, Gastón) — cero contexto técnico. Español.
@@ -316,223 +321,437 @@ tbody th[scope="row"]{font-weight:400;text-align:left;font-size:13px;border-bott
     letter-spacing:.14em;text-transform:uppercase;color:var(--t-3);margin-bottom:2px}
 }
 </style>
-<body data-updated="2026-09-05">
+<style>
+/* ── Añadido 8-sep, encima del tema (sin tocar una regla existente) ──
+   Todo esto sale de la mesa de diseño del 8-sep: reports/verification/design-desk-meta-status-2026-09-08.md ── */
+
+/* [AG-005 #1] La barra de lo DESCONOCIDO. Doctrina V4 #2: un dato que falta no se dibuja
+   como cero. Va al 100% del escalon de arriba -- el escalon ENTERO esta sin medir -- y con
+   trama de 14px para que se lea como trama y no como un tick sucio. La version anterior
+   tenia min-width:10px contra el min-width:3px del resto, asi que el "no se sabe" salia
+   TRES VECES mas ancho que el 3 medido de arriba: el hueco pesaba mas que el dato. */
+.bartrack.unktrack{background:repeating-linear-gradient(135deg,var(--red-bd) 0 7px,transparent 7px 14px);
+  border:1px dashed var(--red-bd);box-sizing:border-box;display:flex;align-items:center}
+.unkband{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--red);padding:0 10px;white-space:nowrap}
+.barval.unkv{color:var(--red);font-style:italic}
+/* piso comun: ninguna barra medida desaparece, y ninguna miente por el piso */
+.barfill{min-width:6px}
+
+/* [AG-005 #5] La tarjeta de quien tiene el bloqueo. El tema reserva el borde calido para
+   bloqueos y nada mas -- no un segundo relleno naranja, que ya lo gasta el unico tile.hot. */
+.wcard.blocked{border-color:var(--edge-warm)}
+/* el nombre vuelve a tinta mono: el oxido queda para lo desconocido, no para la persona */
+
+/* Nombre de campo del CRM citado en prosa. */
+.mono{font-family:var(--mono);font-size:.92em;background:var(--accent-soft);
+  border:1px solid var(--edge-soft);border-radius:4px;padding:1px 5px;color:var(--t-1);white-space:nowrap}
+
+/* [guidelines #2] .barfill.win media 2,09:1 sobre el track en oscuro -- la unica marca
+   deliberadamente caliente era la MENOS visible de las cuatro. --hot-ink mide 5,17:1. */
+/* Se elimino .barfill.win. AG-005 pidio sacarle el oxido (el oxido queda para lo
+   desconocido); bari medio fallo al revos: 1,72:1 en CLARO. La respuesta correcta no era
+   otro color sino ninguno: todas las barras MEDIDAS se ven igual, y lo unico distinto en el
+   grafico es la banda de lo NO medido. Un color menos que defender en dos temas. */
+
+/* [guidelines #3] .badge llevaba --t-3 (3,66:1) y una de las badges es la fecha del dato.
+   La linea de confidencialidad sale de la fila de badges: no era chrome, y en pill se leia
+   como boton (el lector frio no podia distinguirla del unico boton de la pagina). */
+.badge{color:var(--t-2)}
+.conf{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--t-2);margin:10px 0 0}
+
+/* [guidelines #7] las columnas de plata se comparan hacia abajo: cifras de ancho fijo. */
+table{font-variant-numeric:tabular-nums}
+
+/* [guidelines #8] el toggle es el UNICO control de la pagina: sin retardo de doble tap,
+   y con estado. Los chips NO son interactivos y se declaran como tal (el lector frio dijo
+   que los habria tocado esperando un detalle). */
+.badge.theme-toggle{touch-action:manipulation;cursor:pointer}
+.chip{cursor:default;user-select:none}
+.chip.unk{border-style:dashed;border-width:1.5px;font-style:italic}
+
+/* [guidelines #5] el rail de las tres preguntas es una SECUENCIA: <ol>, no divs.
+   Se le quita la numeracion visual porque la etiqueta mono ya la carga. */
+ol.rail{list-style:none;padding:0}
+ol.rail>li{margin:0}
+
+/* El glosario, que a la tercera edicion ya no se lee: plegado, no borrado. */
+details.gloss{margin:14px 0}
+details.gloss>summary{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--t-3);cursor:pointer;padding:8px 0}
+details.gloss>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.glossdl{margin:8px 0 0}
+.glossdl dt{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--t-3);margin-top:12px}
+.glossdl dd{margin:4px 0 0;color:var(--t-2);font-size:13.5px;max-width:78ch}
+
+/* El boton de tema media 21px de alto: por debajo del minimo tactil. */
+@media (pointer: coarse){
+  .badge.theme-toggle{min-height:44px;display:inline-flex;align-items:center;gap:6px}
+}
+
+/* [AG-005 #4] SOLO EN CLARO: las superficies anidadas eran tres sabanas casi blancas sobre
+   fondo bone con un borde al 8% -- las tarjetas de persona y los tiles quedaban SIN borde
+   visible y el texto flotaba. En oscuro funciona porque glass-3 es MAS oscuro que el shell;
+   en claro la relacion se invierte. La anidada pasa a ser un INSET (tinta hacia abajo), como
+   ya hace --accent-soft. DEUDA DECLARADA: el fix pertenece al tema (context/brand-themes/
+   oxide-desk.md, linea pending: desde el 19-ago) y de ese CSS hay TRES copias por diseno
+   (lead-machine-tracker.html, este archivo, OXIDE_CSS en gtm-dag-page.ts). Aca esta parcheado
+   SOLO este archivo, a proposito: la llamada de tocar las tres es de Boris. */
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --glass-3:rgba(28,41,52,.05); --edge-soft:rgba(28,41,52,.14);
+    /* PREEXISTENTE, medido el 8-sep en ESTE archivo y en el del 5-sep que ya esta publicado:
+       las barras median 1,72:1 sobre su track en claro. Causa: el tema declara el --mark claro
+       en `html.light, :root[data-theme="light"]` -- o sea SOLO si alguien aprieta el toggle.
+       Con el sistema en claro y sin toggle, --mark se quedaba en el valor OSCURO (bari-light
+       #ABB9BC) sobre fondo casi blanco. Es la ley de "nunca dejes que un color viva solo
+       dentro de un bloque [data-theme]", al revos. Aca se le da su brazo de media query. */
+    --mark:var(--bari-dark); --mark-soft:rgba(68,77,81,.22);
+  }
+}
+:root[data-theme="light"]{
+  --glass-3:rgba(28,41,52,.05); --edge-soft:rgba(28,41,52,.14);
+}
+</style>
+<body data-updated="2026-09-08">
 <main class="wrap rise">
 
 <header>
   <div>
-    <div class="eyebrow">La Chamana · El Chaman OS · Status de campaña</div>
-    <h1>Campaña <b>IG DM</b> — día 1</h1>
+    <div class="eyebrow">La Chamana · Status de la campaña de Instagram</div>
+    <h1>Campaña <b>IG DM</b> — día 4</h1>
     <div class="badges">
-      <span class="badge">5 sep 2026, 09:44 hora de Argentina</span>
-      <span class="badge ok">La campaña anda · 0 errores</span>
-      <span class="badge">Sólo para el equipo — no lo compartas afuera</span>
+      <span class="badge">martes 8 sep 2026, 09:20 hora de Argentina</span>
+      <span class="badge ok">Anda bien · 0 errores · no hizo falta tocarla</span>
     </div>
+    <p class="conf">Documento interno del equipo. No lo compartas afuera.</p>
   </div>
-  <button class="badge theme-toggle" aria-label="Cambiar entre tema claro y oscuro" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()"><span aria-hidden="true">◐</span> tema</button>
+  <button class="badge theme-toggle" type="button" aria-pressed="false" aria-label="Cambiar entre tema claro y oscuro" onclick="(function(b){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);b.setAttribute('aria-pressed',next==='light'?'true':'false');try{localStorage.setItem('hermes-theme',next)}catch(e){}})(this)"><span aria-hidden="true">◐</span> tema</button>
 </header>
 
 <div class="topbox">
   <h2 class="topttl">Si sólo leés esto</h2>
-  <p><strong>Qué pasó:</strong> el 4 de septiembre encendimos el primer anuncio pago de La Chamana
-  en Instagram. Muestra un video de la casa a gente de Estados Unidos; el que se interesa toca un
-  botón y se abre una conversación por mensaje privado. <strong>Funciona: entrega, sin un solo error.</strong></p>
-  <p><strong>El problema:</strong> le pusimos ~USD 70 para toda la semana, y para que el resultado
-  signifique algo harían falta <strong>unas diez veces más</strong>. Con esta plata el anuncio lo
-  van a ver ~1.840 personas, y de ahí salen entre 3 y 9 mensajes. <strong>Con tan pocos casos, un
-  buen resultado y uno malo se ven exactamente igual.</strong></p>
+
   <div class="who">
-    <div class="wcard"><span class="wn">Gastón</span><span class="wd">Nada que hacer.</span>
-      <span class="wx">Sólo para que no te sorprenda el gasto de ~USD 70 de esta semana.</span></div>
-    <div class="wcard"><span class="wn">Bianca</span><span class="wd">Seguir igual.</span>
-      <span class="wx">Es muy probable que esta semana no entre ningún mensaje. No es un error tuyo.</span></div>
-    <div class="wcard"><span class="wn">Boris</span><span class="wd">Decide el lunes 8.</span>
-      <span class="wx">Poner plata en serio, o cortarlo.</span></div>
+    <div class="wcard blocked"><span class="wn">Bianca · para hoy</span>
+      <span class="wd">Mandale a Boris por WhatsApp una captura de cada uno de estos 4 chats — cuatro capturas.</span>
+      <span class="wx"><strong>Entraron en estos cuatro momentos, en hora de Tulum:</strong>
+      <strong>sábado 5, entre 15 y 16</strong> · <strong>domingo 6, entre 18 y 19</strong> ·
+      <strong>domingo 6, entre 20 y 21</strong> · <strong>hoy martes, entre 7 y 8 de la mañana</strong>
+      — ése último es antes de tu horario, así que puede estar sin contestar.
+      Con cada captura, una línea: <strong>¿qué preguntó? ¿pidió fechas? ¿habló de un grupo?
+      ¿preguntó por la casa entera?</strong> Esas cuatro respuestas son el dato que decide el viernes,
+      y sos la única que lo tiene. <strong>No hiciste nada mal:</strong> te avisamos que no iban a
+      entrar mensajes, así que nadie te pidió anotarlos.</span></div>
+    <div class="wcard"><span class="wn">Iru</span>
+      <span class="wd">Mirá esos 4 chats cuando lleguen.</span>
+      <span class="wx">Y decí cuáles son consulta de verdad. Es el paso que convierte cuatro capturas
+      en el número con el que se decide el viernes: sin eso, seguimos sin saber.</span></div>
+    <div class="wcard"><span class="wn">Boris</span>
+      <span class="wd">Decidís el viernes 11, no hoy.</span>
+      <span class="wx">Hoy se decidiría a ciegas. Esperar 3 días no cuesta plata: el presupuesto de la
+      semana ya está comprometido y se gasta igual.</span></div>
+    <div class="wcard"><span class="wn">Gastón</span>
+      <span class="wd">Nada que hacer.</span>
+      <span class="wx">Van gastados USD&nbsp;36 de los USD&nbsp;69 de la semana, en ritmo. Con impuestos
+      encima, la tarjeta va a debitar ~USD&nbsp;85 en total, no ~USD&nbsp;69.</span></div>
   </div>
+
+  <p style="margin-top:16px"><strong>Qué pasó.</strong> El anuncio se muestra, la tarjeta cobra sin
+  problemas y <strong>cuatro personas escribieron</strong> — la semana pasada habíamos predicho entre
+  3 y 9 para toda la semana, y vamos a mitad de camino. Cada conversación costó
+  <strong>USD&nbsp;9</strong>, que para este público es barato.</p>
+
+  <p><strong>Lo que falta.</strong> De esas cuatro conversaciones no quedó ningún registro escrito, así
+  que no sabemos si alguna era un cliente de verdad — y ése es justo el dato que decide si conviene
+  poner más plata o apagar. <strong>El aviso equivocado fue nuestro:</strong> le dijimos a Bianca que
+  esta semana casi seguro no entraba ningún mensaje. Entraron cuatro.</p>
 </div>
 
-<h2>Qué queríamos saber, y por qué no lo vamos a saber</h2>
+<h2>Qué es esta campaña, en tres líneas</h2>
+<p>Es una <strong>prueba de 7 días</strong> que arrancó el viernes 4 a la noche y termina el viernes 11.
+Muestra un video de la casa a gente de Estados Unidos, de 32 a 60 años, en 12 ciudades grandes. Quien
+se interesa toca un botón y le abre una conversación por mensaje privado de Instagram, que atiende
+Bianca desde su teléfono.</p>
+<p>La prueba se encendió para contestar <strong>una sola pregunta</strong>: <em>¿este canal trae
+consultas del tipo de cliente que alquila la casa entera?</em> Para contestarla hay que contar
+<strong>cuántas de las conversaciones eran un cliente posible</strong> — alguien que pregunta por
+fechas, por el tamaño de un grupo, o por alquilar la casa completa. Preguntar sólo el precio no cuenta.</p>
 
-<p>El test de 7 días se encendió para contestar <strong>una sola pregunta</strong>:</p>
-<div class="callout n">
-  <p><strong>«¿Este canal trae consultas reales del tipo de cliente que alquila la casa entera?»</strong></p>
-</div>
+<h2>Las cuatro conversaciones, y en qué día entró cada una</h2>
+<p class="evnote">Esta tabla está acá arriba por un motivo práctico: son las cuatro ventanas exactas
+para encontrar los chats en el teléfono, sin revisar cuatro días enteros de mensajes. Las horas están
+en <strong>hora de Tulum</strong>; el resto del documento usa hora de Argentina, que va 2 horas
+adelante.</p>
 
-<p>Para contestarla necesitamos contar <strong>consultas calificadas</strong>. Ése es el término que
-usa todo este documento, y significa: <strong>un mensaje que trae al menos uno de estos tres datos</strong>
-— <strong>fechas</strong> (aunque sean aproximadas), <strong>tamaño o tipo de grupo</strong>, o una
-<strong>pregunta sobre alquilar la casa entera</strong>. Preguntar el precio, solo, todavía no cuenta.</p>
-
-<p>Con el presupuesto actual vamos a terminar la semana con <strong>cero o una</strong> consulta
-calificada. Y con un solo caso no se puede distinguir un canal excelente que tuvo mala semana de
-uno que no sirve. <strong>No es falta de paciencia: es aritmética, y ya era cierta el día que se
-prendió el anuncio.</strong></p>
-
-<h2>Dónde estamos — lo medido</h2>
-<p class="evnote">Lectura directa del sistema de Meta, 5 de septiembre 09:44. La entrega real arrancó
-el 4 a las <strong>19:53</strong>, no a las 14:10 cuando se apretó el botón: Meta la retuvo 6 h 33 min.
-Así que estos números son de <strong>~14 horas</strong>, no de un día entero.</p>
-
-<div class="strip">
-  <div class="tile"><b>29</b><span>veces que se mostró el anuncio, en 14 h <span class="chip obs">medido</span></span></div>
-  <div class="tile"><b>USD 1,10</b><span>gastado hasta ahora, de los USD 70 de la semana <span class="chip obs">medido</span></span></div>
-  <div class="tile hot"><b>~10×</b><span>lo que le falta al test para dar un resultado confiable <span class="chip est">estimado</span></span></div>
-</div>
-
-<div class="callout">
-  <p><strong>Ojo con un reflejo natural:</strong> haber gastado sólo el 1,6 % del presupuesto
-  <em>no</em> es una buena noticia acá. Gastar poco significa que el anuncio se está mostrando poco,
-  y mostrarse poco es exactamente el problema. <strong>En este caso, gastar de menos es el síntoma.</strong></p>
-</div>
-
-<p><strong>Un dato que descarta la explicación fácil.</strong> El público al que le apuntamos es amplio
-— 12 ciudades grandes de Estados Unidos, de 32 a 60 años. Son decenas de millones de personas.
-<strong>El público no es la restricción. Lo que limita es el dinero.</strong></p>
-
-<h2>El gráfico que explica todo</h2>
-<p class="evnote">Todo se mide en <strong>impresiones</strong>: una impresión es una vez que el anuncio
-aparece en la pantalla de alguien. Las tres barras usan la misma escala. <strong>La barra llena de
-abajo es la que NO tenemos</strong> — es el tamaño que haría falta.</p>
-
-<div class="chart">
-  <h3>Impresiones — lo que hay, lo que compra la semana, lo que haría falta</h3>
-  <div class="barrow">
-    <div class="barlab">Lo que llevamos<br><span class="ev">14 h de entrega</span></div>
-    <div class="bartrack"><div class="barfill" style="width:0.16%"></div></div>
-    <div class="barval">29</div>
-  </div>
-  <div class="barrow">
-    <div class="barlab">Todo el test de 7 días<br><span class="ev">los USD 70 completos</span></div>
-    <div class="bartrack"><div class="barfill" style="width:10.2%"></div></div>
-    <div class="barval">~1.840</div>
-  </div>
-  <div class="barrow">
-    <div class="barlab">Lo que haría falta<br><span class="ev">para un resultado confiable</span></div>
-    <div class="bartrack"><div class="barfill" style="width:100%"></div></div>
-    <div class="barval">~18.000</div>
-  </div>
-  <p class="barnote">Los USD 70 alcanzan para ~1.840 impresiones <span class="chip obs">medido</span>.
-  Las ~18.000 salen de las ~50 conversaciones que Meta necesita por semana para dejar de tantear a
-  ciegas <span class="chip est">estimado</span>. <strong>La diferencia es de unas diez veces.</strong></p>
-</div>
-
-<h2>Por qué 1.840 impresiones no alcanzan</h2>
-<p class="evnote">De cada escalón sobrevive una fracción. Escala lineal — las tres últimas barras son
-casi invisibles a propósito.</p>
-
-<div class="chart">
-  <h3>Lo que se espera de toda la semana, escalón por escalón</h3>
-  <div class="barrow">
-    <div class="barlab">Ven el anuncio</div>
-    <div class="bartrack"><div class="barfill" style="width:100%"></div></div>
-    <div class="barval">~1.840</div>
-  </div>
-  <div class="barrow">
-    <div class="barlab">Tocan el botón</div>
-    <div class="bartrack"><div class="barfill" style="width:0.8%"></div></div>
-    <div class="barval">~15</div>
-  </div>
-  <div class="barrow">
-    <div class="barlab">Escriben un mensaje</div>
-    <div class="bartrack"><div class="barfill" style="width:0.33%"></div></div>
-    <div class="barval">3 a 9</div>
-  </div>
-  <div class="barrow">
-    <div class="barlab">Consulta <em>calificada</em><br><span class="ev">la única que nos importa</span></div>
-    <div class="bartrack"><div class="barfill" style="width:0.05%"></div></div>
-    <div class="barval">0 o 1</div>
-  </div>
-  <p class="barnote">Ésa es exactamente la escala del problema: <strong>terminamos la semana con cero
-  o una consulta calificada</strong>, y de ahí no sale ninguna conclusión.
-  <span class="chip est">estimado</span></p>
-</div>
-
-<div class="callout">
-  <p><strong>Y hay un segundo hallazgo, encontrado hoy.</strong> Los tres anuncios usan <strong>el mismo
-  video</strong> (la casa, 65 segundos) y sólo cambian en el texto que los acompaña. El plan de respaldo
-  era: «si no alcanza para medir consultas, al menos aprendemos qué texto funciona mejor». Pero para
-  comparar textos hay que contar <strong>clicks</strong>, y a este presupuesto los clicks son
-  demasiado pocos. <strong>Tampoco alcanza para eso.</strong></p>
-</div>
-
-<h2>Las alternativas, con su precio y su contra</h2>
-
-<div class="tblwrap" tabindex="0" role="region" aria-label="Alternativas de presupuesto">
+<div class="tblwrap" tabindex="0" role="region" aria-label="Conversaciones por día y por hora">
 <table>
-<thead><tr><th scope="col">Opción</th><th scope="col">Costo / semana</th><th scope="col">Qué compra</th><th scope="col">La contra</th></tr></thead>
+<thead><tr><th scope="col">Día</th><th scope="col">Conversaciones</th><th scope="col">A qué hora <span class="ev">hora de Tulum</span></th><th scope="col">Veces que se mostró el anuncio</th></tr></thead>
 <tbody>
-<tr><th scope="row"><strong>A · Poner plata en serio</strong><br><span class="ev">~USD 100 por día</span></th>
-    <td data-l="Costo / semana"><strong>~USD 700</strong> <span class="chip est">est</span></td>
-    <td data-l="Qué compra">Una medición real: sabríamos si el canal sirve</td>
-    <td data-l="La contra">Compra la respuesta cara antes que la barata. Y multiplicar por 10 el gasto en una cuenta que
-    estrenó medio de pago hace días es, en sí mismo, riesgo de que la traben.</td></tr>
-<tr><th scope="row"><strong>B · Paso intermedio</strong><br><span class="ev">~USD 50 por día</span></th>
-    <td data-l="Costo / semana"><strong>~USD 350</strong> <span class="chip est">est</span></td>
-    <td data-l="Qué compra">Una señal orientativa: 15 a 20 conversaciones en vez de 3</td>
-    <td data-l="La contra">Sigue sin ser concluyente. Y obliga a dejar uno o dos textos en vez de tres: con poca plata
-    conviene concentrar antes que comparar.</td></tr>
-<tr><th scope="row"><strong>C · Apuntar a Tulum</strong><br><span class="ev">ya está armado y en pausa</span></th>
-    <td data-l="Costo / semana">el mismo <span class="chip est">est</span></td>
-    <td data-l="Qué compra">4 o 5 veces más impresiones por la misma plata</td>
-    <td data-l="La contra"><strong>Desaconsejado.</strong> Vuelve a meter el error que se corrigió antes de lanzar: quien
-    ya está en Tulum no reserva un retiro con 6 a 18 meses de anticipación. Serían impresiones baratas
-    de la persona equivocada.</td></tr>
-<tr><th scope="row"><strong>D · Subir a USD 30–40 por día</strong></th>
-    <td data-l="Costo / semana">~USD 250 <span class="chip est">est</span></td>
-    <td data-l="Qué compra">desconocido <span class="chip unk">no se sabe</span></td>
-    <td data-l="La contra"><strong>La trampa.</strong> Gasta lo suficiente para doler y no lo suficiente para aprender.
-    El peor de los dos mundos.</td></tr>
+<tr><th scope="row">viernes 4 · desde las 18 h</th><td data-l="Conversaciones">0 <span class="chip obs">medido</span></td><td data-l="A qué hora">—</td><td data-l="Veces que se mostró">19</td></tr>
+<tr><th scope="row">sábado 5</th><td data-l="Conversaciones"><strong>1</strong></td><td data-l="A qué hora"><strong>15 a 16</strong></td><td data-l="Veces que se mostró">320</td></tr>
+<tr><th scope="row">domingo 6</th><td data-l="Conversaciones"><strong>2</strong></td><td data-l="A qué hora"><strong>18 a 19</strong> y <strong>20 a 21</strong></td><td data-l="Veces que se mostró">199</td></tr>
+<tr><th scope="row">lunes 7</th><td data-l="Conversaciones">0 <span class="chip obs">medido</span></td><td data-l="A qué hora">—</td><td data-l="Veces que se mostró">165</td></tr>
+<tr><th scope="row">martes 8 · hasta las 08:05</th><td data-l="Conversaciones"><strong>1</strong></td><td data-l="A qué hora"><strong>7 a 8</strong> <span class="ev">antes del horario de atención</span></td><td data-l="Veces que se mostró">38</td></tr>
 </tbody>
 </table>
 </div>
 
-<h2>La recomendación</h2>
-<div class="callout g">
-  <p><strong>Ninguna de las cuatro, todavía: dejar correr la semana sin tocar nada.</strong> Pero
-  cambiando lo que esperamos de ella. <strong>Esto ya no es una prueba de mercado — es una prueba de
-  que la maquinaria funciona</strong>, y esa parte ya la está contestando bien.</p>
+<div class="callout">
+  <p><strong>Tres de las cuatro entraron un fin de semana</strong>, y la cuarta hoy entre las 7 y las
+  8 de la mañana — <strong>antes de que abra el horario de atención</strong>, así que es la que más
+  probablemente esté todavía sin contestar. El horario es de 9 a 21 de Tulum, y este anuncio trajo
+  gente justamente fuera de esa ventana: sábado, domingo y temprano a la mañana.</p>
 </div>
-<p>Los USD 70 ya compraron su valor real: demostrar que la cadena entera funciona de punta a punta
-después de tres meses trabados con Meta. Lo que queda por mirar esta semana es <strong>si algo se
-rompe</strong>, no si el canal vende.</p>
+
+<h2>Dónde estamos — lo medido</h2>
+<p class="evnote">Lectura directa del sistema de Meta, martes 8 de septiembre 09:20. Cubre 3 días y
+medio de los 7. Los montos en dólares usan 1&nbsp;USD&nbsp;=&nbsp;ARS&nbsp;1.511, el cambio de hoy.
+Junto a cada número hay una etiqueta: <span class="chip obs">medido</span> salió del sistema de Meta,
+<span class="chip est">estimado</span> es un cálculo nuestro, y
+<span class="chip unk">no se sabe</span> quiere decir que el dato no existe — no que sea cero.</p>
+
+<div class="strip">
+  <div class="tile ok"><b>4</b><span>personas escribieron después de ver el anuncio <span class="chip obs">medido</span></span></div>
+  <div class="tile"><b>USD 9</b><span>costó cada conversación. Con sólo 4 casos, el precio verdadero está entre USD 4 y USD 33 <span class="chip est">estimado</span></span></div>
+  <div class="tile hot"><b>no se sabe</b><span>cuántas de esas 4 eran un cliente posible <span class="chip unk">no se sabe</span></span></div>
+</div>
+
+<p><strong>Los números de referencia, para leer los tres de arriba.</strong> El anuncio se mostró
+<strong>741 veces</strong> a <strong>593 personas</strong>; de ésas, <strong>13</strong> tocaron
+«enviar mensaje» (el 1,75&nbsp;%, que es alto para viajes) y <strong>4</strong> escribieron de verdad
+— casi 1 de cada 3 de los que tocaron. Se gastaron <strong>USD&nbsp;36 de los USD&nbsp;69</strong> de
+la semana: el 52&nbsp;% de la plata en el 51&nbsp;% del tiempo, o sea exactamente en ritmo.
+<span class="chip obs">medido</span></p>
 
 <div class="callout r">
-  <p><strong>El único dato de plata que conviene tener presente.</strong> El IVA (21 %) y los ingresos
-  brutos (~2 %) se cobran <em>por encima</em> del presupuesto, no adentro. O sea que la tarjeta no se
-  debita ~USD 70 sino <strong>~USD 86 — un ~23 % que no estaba presupuestado</strong>.
-  <span class="chip est">estimado</span></p>
+  <p><strong>Cuidado con un número que engaña, y que estuvo a punto de entrar en este documento.</strong>
+  Meta reporta <strong>37 clicks</strong>, que sobre 741 vistas da un 4,99&nbsp;% — parece buenísimo.
+  Pero de esos 37, sólo <strong>13</strong> son clicks en «enviar mensaje»: los otros 24 son toques en
+  el perfil y gente que expandió el video. <strong>El número honesto de este canal es 1,75&nbsp;%, no
+  4,99&nbsp;%</strong>, y es el que usamos acá.</p>
 </div>
 
-<p><strong>La decisión de fondo —poner plata en serio o cortarlo— se toma el lunes 8 de septiembre.</strong>
-Y se toma mirando <strong>cuánto nos cuesta llegar a mil personas</strong> y <strong>qué proporción de
-los que ven el anuncio lo tocan</strong> — no contando mensajes, que van a ser demasiado pocos para
-significar algo.</p>
+<div class="chart">
+  <h3>De ver el anuncio a ser un cliente posible</h3>
+  <p class="barnote" style="margin:0 0 12px">Cada barra mide <strong>la proporción que sobrevive del
+  escalón de arriba</strong>, no del total. Por eso la barra de «escribieron» se ve más ancha que la de
+  «tocaron»: son 4 de 13, contra 13 de 741.</p>
+  <div class="barrow">
+    <div class="barlab">Vieron el anuncio</div>
+    <div class="bartrack" aria-hidden="true"><div class="barfill" style="width:100%"></div></div>
+    <div class="barval">741</div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Tocaron «enviar mensaje»<br><span class="ev">1,75 % de los que lo vieron</span></div>
+    <div class="bartrack" aria-hidden="true"><div class="barfill" style="width:1.75%"></div></div>
+    <div class="barval">13 <span class="ev">de 741</span></div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Escribieron de verdad<br><span class="ev">31 % de los que tocaron</span></div>
+    <div class="bartrack" aria-hidden="true"><div class="barfill" style="width:31%"></div></div>
+    <div class="barval">4 <span class="ev">de 13</span></div>
+  </div>
+  <div class="barrow">
+    <div class="barlab">Eran un cliente posible<br><span class="ev">fechas, grupo, o la casa entera</span></div>
+    <div class="bartrack unktrack"><span class="unkband">sin medir · nadie los miró todavía</span></div>
+    <div class="barval unkv">no se sabe</div>
+  </div>
+  <p class="barnote">El último escalón <strong>no tiene barra a propósito</strong>: una barra sería un
+  número, y de ese escalón no tenemos ninguno. Cero querría decir «los miramos y ninguno servía»; acá
+  todavía nadie los miró. <span class="chip unk">no se sabe</span></p>
+</div>
 
-<h2>Cómo funciona, y dónde ocurre cada paso</h2>
-<p class="evnote">Importa porque <strong>dos de los cuatro pasos ocurren fuera de cualquier herramienta
-nuestra</strong>: no hay pantalla que los vigile, dependen de una persona.</p>
+<h2>Por qué no alcanza con contar conversaciones</h2>
 
-<div class="rail">
-  <div class="step">
-    <span class="n">PASO 1</span>
-    <span class="w">Meta le muestra el video a alguien en Estados Unidos, de 32 a 60 años</span>
-    <span class="where">automático · dentro de Meta</span>
-  </div>
-  <div class="step out">
-    <span class="n">PASO 2</span>
-    <span class="w">La persona toca «Enviar mensaje» y escribe</span>
-    <span class="where">◆ fuera de nuestras herramientas · en Instagram</span>
-  </div>
-  <div class="step out">
-    <span class="n">PASO 3</span>
-    <span class="w">Bianca contesta en 15 minutos o menos, de 9 a 21 h de Tulum</span>
-    <span class="where">◆ fuera de nuestras herramientas · desde su teléfono</span>
-  </div>
-  <div class="step">
-    <span class="n">PASO 4</span>
-    <span class="w">Si la consulta califica, se la pasa a Boris con fechas y grupo</span>
-    <span class="where">captura directa a Boris</span>
-  </div>
+<p>Saber que una conversación cuesta USD&nbsp;9 no sirve de nada solo. Si de cada 10 conversaciones 3
+son clientes reales, USD&nbsp;9 es una ganga. Si son 0 de 10, USD&nbsp;9 es infinito.
+<strong>El mismo número es barato o carísimo según un dato que hoy no tenemos.</strong> Y hay un riesgo
+peor: si empezáramos a perseguir «conversaciones baratas», Meta nos traería con gusto muchísimas
+conversaciones de gente que nunca va a reservar.</p>
+
+<p><strong>Tampoco el 4 es un número limpio.</strong> Meta cuenta una conversación sólo si la persona
+había estado callada los 7 días anteriores, así que <em>se queda corto</em>; y al mismo tiempo cuenta
+un simple «hola», así que <em>exagera el interés</em>. Se equivoca para los dos lados, y sólo alguien
+que leyó los chats puede corregirlo.</p>
+
+<div class="callout r">
+  <p><strong>Y no hay registro de ninguna de las cuatro.</strong> Revisamos las 66 filas del registro
+  de clientes una por una: ninguna vino de Instagram ni de la pauta. Las 6 que se cargaron desde el 4
+  de septiembre entraron todas por mail y son de agencias. <strong>Esas cuatro conversaciones no
+  dejaron rastro en ningún sistema</strong> — y no podían dejarlo, porque llegan al teléfono de Bianca
+  y ese teléfono no es parte de nuestro sistema. Ningún programa puede ver ese chat. La única manera de
+  saber qué pasó es preguntar.</p>
+</div>
+
+<div class="callout">
+  <p><strong>Una corrección importante sobre cómo se anota, para que nadie pierda el tiempo.</strong>
+  La idea original era que estas consultas se cargaran en el registro de clientes marcando el origen
+  como «Meta Ads». <strong>Medimos el 5 de septiembre que ese camino no llega:</strong> el sistema lee
+  ese casillero pero no lo guarda, así que se habría llenado a mano un campo que ningún cálculo iba a
+  leer nunca — con todos creyendo que el registro se estaba llenando. <strong>El camino que sí llega
+  es el que ya existe:</strong> Bianca le manda la captura a Boris por WhatsApp, y del lado técnico se
+  registra con una herramienta hecha para eso. <strong>Bianca no tiene que cargar nada en ningún
+  sistema nuevo.</strong></p>
+</div>
+
+<h2>Lo que dijimos la semana pasada, y lo que pasó</h2>
+<p class="evnote">Este documento reemplaza al del 5 de septiembre en la misma dirección web, y empieza
+calificando sus propias predicciones. Si un informe no se hace cargo de lo que dijo la vez anterior,
+es un informe nuevo con fecha nueva, no aprendizaje.</p>
+
+<div class="tblwrap" tabindex="0" role="region" aria-label="Predicciones del 5 de septiembre y lo que pasó">
+<table>
+<thead><tr><th scope="col">Lo que dijimos el 5 de sep</th><th scope="col">Lo que se midió hoy</th><th scope="col">Veredicto</th></tr></thead>
+<tbody>
+<tr><th scope="row">«Entre 3 y 9 mensajes en toda la semana»</th>
+    <td data-l="Lo que se midió hoy"><strong>4</strong> con la mitad de la plata gastada — proyecta ~8 para la semana</td>
+    <td data-l="Veredicto"><strong>Acertada</strong> <span class="chip obs">medido</span></td></tr>
+<tr><th scope="row">«Va a costar ~USD 38 llegar a mil personas»</th>
+    <td data-l="Lo que se midió hoy">Cuesta <strong>USD 49</strong></td>
+    <td data-l="Veredicto"><strong>Errada por 29 %</strong> — se estimó sobre 29 casos, hoy hay 741 <span class="chip obs">medido</span></td></tr>
+<tr><th scope="row">«El anuncio se va a ver ~1.840 veces»</th>
+    <td data-l="Lo que se midió hoy">Va a ~<strong>1.415</strong></td>
+    <td data-l="Veredicto"><strong>Optimista por 23 %</strong>, y el error se explica <em>entero</em> por el punto anterior: el modelo estaba bien, el precio estimado estaba bajo <span class="chip obs">medido</span></td></tr>
+<tr><th scope="row">«Sólo ~1 va a ser un cliente real»</th>
+    <td data-l="Lo que se midió hoy">no se sabe — no quedó registro de ninguna</td>
+    <td data-l="Veredicto"><strong>No se puede calificar. Y ése es el hallazgo</strong>, no un empate <span class="chip unk">no se sabe</span></td></tr>
+<tr><th scope="row">«¿Va a funcionar la tarjeta?»</th>
+    <td data-l="Lo que se midió hoy"><strong>9 cobros, todos bien.</strong> Meta le fue subiendo el límite: de ARS 2.856 a ARS 8.045</td>
+    <td data-l="Veredicto"><strong>Acertada</strong>, y es buena noticia: la cuenta se está ganando confianza <span class="chip obs">medido</span></td></tr>
+<tr><th scope="row">«Gastar poco es el síntoma del problema»</th>
+    <td data-l="Lo que se midió hoy">Se corrigió solo: en las primeras 14 horas iban USD 1,10 y después aceleró al ritmo previsto</td>
+    <td data-l="Veredicto"><strong>Conclusión apresurada</strong> sobre 14 horas de datos. La entrega estaba arrancando, no trabada <span class="chip obs">medido</span></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout g">
+  <p><strong>Lo que recomendamos se cumplió al pie de la letra:</strong> «dejar correr la semana sin
+  tocar nada». <strong>Cero cambios humanos en la cuenta desde que se prendió.</strong> Importa más de
+  lo que parece: cada vez que alguien toca un anuncio, Meta vuelve a tantear a ciegas durante días —
+  o sea que no tocarlo fue trabajo, no pereza. <em>(Nota al margen: el documento anterior decía
+  «la decisión se toma el lunes 8». El 8 es martes; el lunes era el 7.)</em></p>
+</div>
+
+<h2>El veredicto comercial</h2>
+<p class="evnote">Esta sección no la escribe el equipo de producto: la escribe el asiento de marketing,
+que lee los mismos números por separado y da su lectura. Va tal cual, incluida la parte que corrige a
+este documento.</p>
+
+<p><strong>«El riel pasó; la tesis no se midió.»</strong> Son tres preguntas distintas y esta prueba
+contesta sólo la primera:</p>
+
+<ol class="rail">
+  <li class="step"><span class="n">¿ENTREGA, COBRA Y TRAE GENTE?</span>
+    <span class="w">PASA</span>
+    <span class="where">0 errores · 9 cobros · 4 conversaciones reales</span></li>
+  <li class="step"><span class="n">¿LA OFERTA Y EL PÚBLICO FUNCIONAN?</span>
+    <span class="w">INDISTINGUIBLE</span>
+    <span class="where">con 4 casos, el costo verdadero por conversación está entre USD 4 y USD 33</span></li>
+  <li class="step"><span class="n">¿LA CREATIVIDAD FUNCIONA?</span>
+    <span class="w">UN «NO», Y ESTE SÍ ESTÁ BIEN MEDIDO</span>
+    <span class="where">679 personas empezaron el video · 7 % llegó al primer cuarto · 1,3 % lo terminó</span></li>
+</ol>
+
+<h3>El hallazgo del video</h3>
+<p>La semana pasada dijimos que no se podían comparar los tres textos porque comparten el mismo video.
+Era cierto — <strong>y el video era justamente lo que había que mirar.</strong> De 679 personas que lo
+empezaron, sólo 49 llegaron al primer cuarto y 9 lo terminaron. Los 37 clicks explican apenas el 5&nbsp;%
+de esos abandonos: <strong>el otro 93&nbsp;% es gente que se fue, no gente que hizo click.</strong></p>
+
+<p>Es la única lectura de creatividad con suficientes casos para ser confiable: 679 contra 4. El texto
+ya se probó en tres versiones; <strong>el video es la constante que nunca se puso a prueba, y es el que
+está perdiendo a la gente.</strong> Lo que propone marketing para el próximo ciclo es un corte de 15 a
+20 segundos con el gancho en los primeros 3 — no otro texto. Y viene con su condición de fracaso
+escrita: <em>si el corte nuevo no lleva ese 7&nbsp;% arriba del 15&nbsp;%, el problema no es el gancho
+sino la oferta, y el siguiente movimiento deja de ser creatividad.</em></p>
+
+<h3>La sorpresa de hoy, y por qué justifica no tocar nada</h3>
+<p>La semana pasada Meta había dejado de mostrar uno de los tres textos —«one group»— con 42 vistas y
+ningún click. La lectura fácil era «ese texto no funciona, sacalo». Marketing avisó que no: con tan
+pocas vistas, cero clicks pasa <strong>la mitad de las veces por puro azar</strong>, así que Meta lo
+había apagado por ruido y no por evidencia.</p>
+
+<div class="callout g">
+  <p><strong>Hoy ese mismo texto trajo una conversación</strong> — la más barata de las cuatro, a
+  USD&nbsp;2. Si alguien lo hubiera borrado el lunes, habríamos matado el anuncio más eficiente del
+  set creyendo que era el peor. <strong>El texto que de verdad va último es otro:</strong> «occasion»,
+  con 337 vistas, 2 clicks en «enviar mensaje» y ninguna conversación.</p>
+</div>
+
+<h2>La decisión del viernes: dos opciones, no cuatro</h2>
+
+<p>El documento anterior fijó esta fecha y fijó los dos números con los que había que decidir: cuánto
+cuesta llegar a mil personas, y qué proporción de la gente toca el anuncio. <strong>Los dos existen
+hoy</strong> — USD&nbsp;49 y 1,75&nbsp;%. El problema es que ese criterio estaba mal elegido:
+<strong>ninguno de los dos le pone precio a una noche de la casa.</strong> El único número que separa
+«poner plata en serio» de «apagar» es qué proporción de esas conversaciones termina en una reserva, y
+su primer eslabón tiene cero filas.</p>
+
+<p><strong>Cuánto margen hay.</strong> Marketing hizo la cuenta con el precio real de la casa: si el
+canal trajera <strong>una sola reserva por mes</strong> con USD&nbsp;100 por día de pauta, conseguir
+esa reserva costaría cerca del <strong>10&nbsp;% de lo que la reserva vale</strong> —
+<strong>menos de lo que se lleva una agencia online</strong>, que cobra entre 15 y 20&nbsp;%. Para eso
+hace falta que <strong>1 de cada 230 conversaciones</strong> termine en reserva.</p>
+
+<div class="callout g">
+  <p><strong>De ahí sale la frase que ordena todo esto:</strong> «no es un problema de eficiencia, es
+  un problema de existencia». Si esa proporción es <em>mayor que cero</em>, el margen es tan ancho que
+  la campaña se paga sola. Si es <em>cero</em>, ningún presupuesto la salva. <strong>Hoy ese número no
+  se sabe — y no por falta de datos, sino porque nadie anotó las cuatro conversaciones que ya
+  llegaron.</strong></p>
+</div>
+
+<p class="evnote">Para que Meta deje de tantear a ciegas necesita unas <strong>50 conversaciones por
+semana</strong>. Esa cuenta pone un piso, y es lo que dejó dos opciones en pie de las cuatro de la
+semana pasada.</p>
+
+<div class="tblwrap" tabindex="0" role="region" aria-label="Las dos opciones que quedan">
+<table>
+<thead><tr><th scope="col">Opción</th><th scope="col">Costo / semana</th><th scope="col">Conversaciones / semana</th><th scope="col">¿Deja de tantear?</th><th scope="col">La contra</th></tr></thead>
+<tbody>
+<tr><th scope="row"><strong>Poner plata en serio</strong><br><span class="ev">~USD 100 por día</span></th>
+    <td data-l="Costo / semana"><strong>~USD 700</strong> <span class="chip est">estimado</span></td>
+    <td data-l="Conversaciones / semana">~77 <span class="chip est">estimado</span></td>
+    <td data-l="¿Deja de tantear?"><strong>Sí</strong></td>
+    <td data-l="La contra">Multiplicar por 10 el gasto en una cuenta de 4 días. <strong>Se ablanda:</strong>
+    los 9 cobros con el límite subiendo son prueba de que la tarjeta aguanta. Y no se administra a
+    ciegas: antes hay que arreglar la lectura automática.</td></tr>
+<tr><th scope="row"><strong>Apagarla</strong></th>
+    <td data-l="Costo / semana">USD 0</td>
+    <td data-l="Conversaciones / semana">0</td>
+    <td data-l="¿Deja de tantear?">—</td>
+    <td data-l="La contra">Se pierde un canal que entregó 4 conversaciones a USD 9 en su primera semana,
+    sin haber sabido nunca si alguna servía. <strong>Es la opción correcta sólo si las cuatro eran
+    gente que no compra.</strong></td></tr>
+</tbody>
+</table>
+</div>
+
+<p><strong>Las otras dos siguen descartadas, por las razones escritas la semana pasada.</strong>
+Los pasos intermedios —USD 30 a 50 por día— gastan lo suficiente para doler y no lo suficiente para
+llegar a esas 50 conversaciones: compran tanteo permanente, el peor de los dos mundos. Y mover el
+anuncio a Tulum sigue desaconsejado: quien ya está en Tulum no reserva un retiro con 6 a 18 meses de
+anticipación, así que serían vistas baratas de la persona equivocada. <em>La única cosa que la
+devolvería a la mesa: si al leer los cuatro chats alguno viniera de la zona con fechas lejanas.</em></p>
+
+<h2>La recomendación</h2>
+<div class="callout g">
+  <p><strong>Dejar correr los 3 días que faltan y usarlos para conseguir el dato que falta — no para
+  decidir el presupuesto.</strong> La campaña ya entregó todo lo que estos USD&nbsp;69 podían comprar:
+  la máquina funciona, la entrega es sana, hay un texto que va último y otro que sorprendió, y hay un
+  precio por conversación. Lo único que falta para elegir con evidencia es saber cómo eran esas cuatro
+  conversaciones. <strong>Eso no se compra: se pregunta.</strong></p>
+</div>
+
+<div class="callout r">
+  <p><strong>Y hay un reloj que no se ve en ningún número de arriba.</strong> Los cuatro chats se
+  enfrían: pasada esta semana dejan de ser recuperables como consultas. Y por el tiempo que suele
+  pasar entre una consulta y una reserva, <strong>cada semana que se pierde en septiembre sale de las
+  noches de noviembre y diciembre</strong>, no de las de septiembre.</p>
 </div>
 
 <h2>Qué le toca a cada uno</h2>
@@ -540,33 +759,42 @@ nuestra</strong>: no hay pantalla que los vigile, dependen de una persona.</p>
 <table>
 <thead><tr><th scope="col">Quién</th><th scope="col">Qué</th><th scope="col">Cuándo</th></tr></thead>
 <tbody>
-<tr><th scope="row">Boris</th><td data-l="Qué">Decidir entre poner plata en serio, el paso intermedio, o cortarlo</td><td data-l="Cuándo">lun 8 sep</td></tr>
-<tr><th scope="row">Bianca</th><td data-l="Qué">Seguir contestando en 15 minutos o menos. <strong>Aviso: esta semana es muy probable que no entre ningún mensaje. No es un error suyo</strong> — es el presupuesto, no la atención.</td><td data-l="Cuándo">ya</td></tr>
-<tr><th scope="row">Gastón</th><td data-l="Qué">Nada que ejecutar. Este documento existe para que el gasto de ~USD 86 de la semana no sorprenda, y para dejar dicho que lo que se espera de ella es aprendizaje, no reservas.</td><td data-l="Cuándo">—</td></tr>
-<tr><th scope="row">Claude<br><span class="ev">el sistema, no una persona</span></th><td data-l="Qué">Conectar la lectura de Meta al tablero interno: hoy esa pantalla está ciega y estos números hubo que traerlos a mano</td><td data-l="Cuándo">esta semana</td></tr>
+<tr><th scope="row">Bianca</th><td data-l="Qué">Lo de tu tarjeta de arriba: <strong>una captura por chat</strong> de las cuatro ventanas (sáb 5 · 15–16, dom 6 · 18–19 y 20–21, mar 8 · 7–8, hora de Tulum) y una línea por cada una con las cuatro preguntas. <strong>No hay que cargar nada en ningún sistema:</strong> la captura por WhatsApp es el camino que ya funciona.</td><td data-l="Cuándo"><strong>hoy</strong></td></tr>
+<tr><th scope="row">Iru</th><td data-l="Qué">Mirar esos 4 chats cuando lleguen y decir cuáles son consulta de verdad. Es el paso que convierte «4 conversaciones» en un número que sirve para decidir.</td><td data-l="Cuándo">cuando lleguen</td></tr>
+<tr><th scope="row">Boris</th><td data-l="Qué">Decidir entre <strong>poner plata en serio (~USD 100/día) o apagarla</strong>, con las respuestas de Bianca y de Iru en la mano.</td><td data-l="Cuándo">vie 11 sep</td></tr>
+<tr><th scope="row">Gastón</th><td data-l="Qué">Nada que ejecutar. Van USD 36 de USD 69, en ritmo. <strong>Un detalle de plata:</strong> el IVA (21 %) y los ingresos brutos (~2 %) se cobran por encima del presupuesto, así que el débito real de la semana va a ser <strong>~USD 85, no ~USD 69</strong>. Los 9 cobros salieron bien; que el desglose de impuestos sea el correcto todavía <strong>no lo verificamos</strong> contra el resumen de la tarjeta.</td><td data-l="Cuándo">—</td></tr>
+<tr><th scope="row">Equipo técnico</th><td data-l="Qué"><strong>Sigue pendiente, tercera semana:</strong> conectar la lectura de Meta al tablero interno. Llegó una credencial el 7 de septiembre pero está rechazada, así que <strong>todos los números de este documento se trajeron a mano y mañana no se pueden reproducir</strong> — de hecho cambiaron mientras se escribía: la cuarta conversación entró en medio. Es la misma credencial que permitiría comparar estos números contra el promedio del rubro, algo que hoy tampoco se puede.</td><td data-l="Cuándo"><strong>antes de subir el presupuesto</strong></td></tr>
 </tbody>
 </table>
 </div>
 
-<h2>Las tres palabras que usa este documento</h2>
-<div class="rail">
-  <div class="step"><span class="n">IMPRESIÓN</span>
-    <span class="w">Una vez que el anuncio aparece en la pantalla de alguien.</span>
-    <span class="where">no es una persona: la misma persona puede verlo dos veces</span></div>
-  <div class="step"><span class="n">CONSULTA CALIFICADA</span>
-    <span class="w">Un mensaje que trae fechas, tamaño de grupo, o pregunta por la casa entera.</span>
-    <span class="where">es lo único que este test quería contar</span></div>
-  <div class="step"><span class="n">MEDIDO / ESTIMADO</span>
-    <span class="w">«Medido» salió del sistema de Meta. «Estimado» es un cálculo nuestro.</span>
-    <span class="where">si no se sabe, dice «no se sabe» — nunca cero</span></div>
-</div>
+<details class="gloss">
+<summary>▸ Abrir el glosario — las palabras que usa este documento</summary>
+<dl class="glossdl">
+  <dt>Impresión / «veces que se mostró»</dt>
+  <dd>Una vez que el anuncio aparece en la pantalla de alguien. No es una persona: la misma persona puede verlo dos veces.</dd>
+  <dt>Conversación</dt>
+  <dd>Alguien tocó el botón y efectivamente escribió un mensaje. De esto hubo 4, y lo cuenta Meta, no nosotros.</dd>
+  <dt>Cliente posible</dt>
+  <dd>Un mensaje que trae fechas, tamaño de grupo, o pregunta por la casa entera. Preguntar sólo el precio todavía no cuenta. Es lo único que esta prueba quería contar.</dd>
+  <dt>Tantear</dt>
+  <dd>Los primeros días Meta prueba a ciegas a quién mostrarle el anuncio, y cobra más caro. Necesita unas 50 conversaciones por semana para dejar de hacerlo, y cada cambio que le hacemos lo reinicia.</dd>
+  <dt>medido / estimado / no se sabe</dt>
+  <dd>«Medido» salió del sistema de Meta. «Estimado» es un cálculo nuestro. «No se sabe» quiere decir que el dato no existe — nunca cero, porque no son lo mismo.</dd>
+</dl>
+</details>
 
 <footer>
-  <p><b>De dónde salen estos números:</b> lectura directa del sistema de Meta (entidades, errores de
-  entrega y registro de actividad) el 5 de septiembre de 2026 a las 09:44 hora de Argentina. Las
-  cifras en dólares usan el tipo de cambio oficial del día del lanzamiento.</p>
-  <p><b>El registro técnico completo</b>, con la aritmética paso a paso, queda guardado del lado del
-  equipo de producto.</p>
+  <p><b>De dónde salen estos números:</b> lectura directa del sistema de Meta (por campaña, por anuncio
+  y por día, más errores de entrega y registro de actividad) el martes 8 de septiembre de 2026 a las
+  09:20 hora de Argentina, y lectura completa de las 66 filas del registro de clientes el mismo día.
+  Las cifras en dólares usan 1&nbsp;USD&nbsp;=&nbsp;ARS&nbsp;1.511, cambio del 8 de septiembre. Los
+  promedios del rubro citados como referencia son <b>estimados</b>: la credencial que permitiría
+  medirlos está rechazada.</p>
+  <p><b>Este documento reemplaza</b> al status del 5 de septiembre en esta misma dirección, y empieza
+  calificando lo que ese documento predijo. <b>El registro técnico completo</b>, con la aritmética paso
+  a paso y la fuente de cada número, queda guardado del lado del equipo de producto; si alguna vez
+  discrepa con esta página, gana el registro técnico.</p>
   <p>Este documento propone. No aprieta nada, no envía nada y no gasta nada:
   <b>toda decisión de gasto la toma Boris</b>.</p>
 </footer>
