@@ -3,40 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GTM Q3/Q4 2026</title>
+<meta name="brand-register" content="oxide-desk">
+<title>La Chamana a marzo 2027</title>
 <script>try{var _t=localStorage.getItem('hermes-theme');if(_t){document.documentElement.classList.toggle('light',_t==='light');document.documentElement.setAttribute('data-theme',_t)}}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <!--
-  FUENTE CANÓNICA: synergy-toolkit/docs/lead-machine-tracker.html
+  GENERADO por synergy-toolkit/scripts/tracker-page.mjs — NO EDITAR A MANO.
+  Fuente de verdad: lc-chaman/docs/plan-v0.4-la-chamana-2026-09.md (front-matter YAML).
   Publicado en BothVentures/stack → pages/board/la-chamana-lead-machine-tracker/index.html
   (slug y nombre de archivo NO cambian aunque cambie el título: un URL que alguien ya tiene no se rompe.)
-
-  PROTOCOLO DE ACTUALIZACIÓN (misma sesión que cambia el estado):
-    1. Editar ESTE archivo: pills de estado, evidencia y as_of. Nunca pintar verde sin evidencia.
-    2. Subir la versión en el badge del header y data-updated en <body> — la página se pone ámbar sola a los 7 días.
-    3. Republicar SOBRE EL MISMO PATH: base64 → JSON payload (--input, nunca $(base64) inline) → gh api PUT con el sha vigente.
-    4. Verificar: bajar el contenido por API y comparar SHA-256; curl -sSI la URL live.
-
-  POLÍTICA DE VERSIONES (Boris, 2026-08-16): ONLINE VIVE UNA SOLA VERSIÓN — la última.
-  Nunca publicar copias fechadas en paralelo. El archivo histórico es git (fuente en synergy-toolkit,
-  publicaciones como commits en BothVentures/stack).
-
-  TEMA: **oxide-desk** — el theme de las documentaciones de GTM de La Chamana (Boris, 16-ago).
-  Receta completa: docs/design/theme-oxide-desk.md. Este archivo es su implementación de referencia:
-  para un documento nuevo, se copia este <style> entero. Composición: arquitectura Factory Glass + PALETA Y TIPOGRAFÍA BLUE EARTH,
-  el theme de marca de La Chamana — ../lc-chaman/context/brand-themes/blue-earth.md, admin lc-art-director (AG-001).
-  Ningún color inventado: bone · petrol · orange oxide · red oxide · bari stone · olive · mint · peach · coral.
-  Reglas del theme que este archivo obedece: nunca blanco puro (bone #EDEDE5) · nunca negro puro (#111C24) ·
-  máx 2 colores de paleta por composición · sin gradientes en componentes (solo en el fondo del body) ·
-  bordes fríos por defecto, borde cálido SOLO para bloqueos · orange oxide reservado a "action numbers / hot accents".
-  El modo claro es una DERIVACIÓN (bone de fondo, petrol de tinta): Blue Earth es dark-only y su extensión
-  a light no está revisada por AG-001 — si este documento se vuelve canónico, esa revisión es el paso pendiente.
+  PROTOCOLO: cambiar el plan → node scripts/tracker-page.mjs → republicar sobre el mismo path → verificar SHA-256.
+  El doctor (plan-tracker-derived) compara data-source-hash con el hash del front-matter: una edición a mano se pone roja.
+  TEMA: oxide-desk (docs/design/theme-oxide-desk.md); estilos en docs/design/oxide-desk-tracker.css.
   Lo desconocido NUNCA se renderiza como 0 ni como verde: es "desconocido", con su fuente.
 -->
 <style>
-/* ── La Chamana · Blue Earth palette (canonical, AG-001) sobre arquitectura Factory Glass ──
+/* ── La Chamana · Blue Earth palette (canonical, AG-005) sobre arquitectura Factory Glass ──
    Paleta: bone · petrol · coral · red oxide · orange oxide · bari stone · olive · mint · peach.
    Nunca blanco puro, nunca negro puro. Orange oxide = action numbers / hot accents, nada más. ── */
 :root{
@@ -243,674 +227,419 @@ html{scroll-behavior:smooth}
 .obj td:first-child{color:var(--t-4);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;font-weight:700}
 .entry{color:var(--t-3);font-size:13px;margin:6px 0 10px;max-width:78ch}
 .legend{display:flex;gap:16px;flex-wrap:wrap;margin:12px 0;color:var(--t-3);font-size:12px;align-items:center}
+
+/* ── V0.4 additions (2026-09-12, design desk NEEDS REVISION → fixes) ─────────────────────
+   contrast: th and tile captions up to --t-3; .ev up to 12.5px --t-2 inside tables ·
+   color-scheme so scrollbars/focus rings follow the theme · table semantics helpers ·
+   the «este mes» box · tactics as cards under 760px · branches collapsible ───────────── */
+:root{color-scheme:dark}
+html.light, :root[data-theme="light"]{color-scheme:light}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){color-scheme:light} }
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+th{color:var(--t-3);font-size:10.5px}
+tbody th[scope="row"]{text-align:left;color:var(--t-2);font-family:var(--font);letter-spacing:0;text-transform:none;font-size:12.5px;font-weight:500}
+td.now, th.now{background:var(--accent-soft);box-shadow:inset 0 -2px 0 var(--edge-warm)}
+td .ev, table .ev{font-size:12.5px;color:var(--t-2)}
+.strip .tile span{color:var(--t-3)}
+.strip .tile.hot b{color:var(--hot-ink)}
+.tile{background:var(--glass-2)}
+.legend{margin:10px 0 18px}
+.def{font-size:12.5px;color:var(--t-2);line-height:1.55;margin:6px 0 8px}
+.def b{color:var(--t-1)}
+.now-box{border:1px solid var(--edge-warm)}
+.now-box .eyebrow{margin:0 0 8px}
+.now-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:6px 0 10px}
+.now-grid>div>b{display:block;font-family:var(--serif);font-size:30px;line-height:1.05;color:var(--t-1)}
+.now-grid span b{font-family:inherit;font-size:inherit;color:var(--t-2);font-weight:600}
+.now-grid>div>b.now-num{color:var(--hot-ink)}
+.now-grid span{display:block;font-size:12px;color:var(--t-3);margin-top:4px}
+details.branch{border-top:1px solid var(--edge-soft);padding:10px 0 6px}
+details.branch summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px}
+details.branch summary::-webkit-details-marker{display:none}
+details.branch summary::before{content:'▸';color:var(--t-3);font-size:12px;transition:transform .15s}
+details.branch[open] summary::before{transform:rotate(90deg)}
+details.branch summary:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:6px}
+h3.objtitle{margin:0;font-size:12px;display:inline}
+.theme-toggle:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.tcards{display:none}
+.tcard{background:var(--glass-3);border:1px solid var(--edge-soft);border-radius:var(--r-tile);padding:12px 14px;margin:10px 0}
+.tcard h3{font-family:var(--serif);font-size:19px;font-weight:500;margin:0 0 8px;color:var(--t-1)}
+.tcard .kv{display:grid;grid-template-columns:64px 1fr;gap:8px;font-size:13px;color:var(--t-2);padding:3px 0}
+.tcard .kv span:first-child{color:var(--t-3);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+.tcard .kv b{color:var(--t-1);font-weight:600}
+.prov th[scope="row"]{white-space:nowrap}
+.prov code{word-break:break-all;font-size:11.5px;color:var(--t-2)}
+footer p.body{font-size:13.5px;color:var(--t-2);line-height:1.55}
+.tblwrap{-webkit-overflow-scrolling:touch}
+.tblwrap.obj table{min-width:520px}
+@media (max-width:760px){
+  .tdesk{display:none} .tcards{display:block}
+  .tblwrap{position:relative}
+  .tblwrap.obj::after{content:'desliza →';position:absolute;right:8px;top:6px;font:10px var(--mono);letter-spacing:.06em;color:var(--t-3)}
+  .now-grid b{font-size:26px}
+}
+/* second desk pass: orange only on the protagonist tile + month number; sep marker in theme grey */
+td.now, th.now{background:var(--accent-soft);box-shadow:inset 0 -2px 0 var(--edge)}
+html.light .def, :root[data-theme="light"] .def{color:var(--t-1);font-size:13px}
+.duetbl{margin:4px 0 2px} .duetbl td, .duetbl th{padding:6px 10px} .duetbl th{font-size:10px}
+.due a{color:var(--t-2);text-decoration:underline;text-underline-offset:3px}
+/* third desk pass: branch titles are primary text now; p.ev up with .def; chevron respects reduced motion */
+h3.objtitle{color:var(--t-2);font-size:12.5px}
+details.branch summary:hover{background:var(--accent-soft);border-radius:8px}
+p.ev{font-size:12.5px;color:var(--t-2)}
+@media (prefers-reduced-motion: reduce){ details.branch summary::before{transition:none} }
+/* th / tile captions / kv labels sit at ~3.6:1 on purpose: dim mono labels, above the house 2.0 floor, under AA — accepted 2026-09-12 */
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;line-height:1.7}
+/* fourth desk pass: one colour decision carried to the end — source/estimate chips are grey outlines on this page;
+   the only warm accents left are the protagonist tile, the month number and the «pendiente de ratificación» badge */
+.chip.unk, .chip.est, .chip.none{background:transparent;border:1px solid var(--edge);color:var(--t-3)}
+.tblwrap{overflow-x:auto;max-width:100%}
+.legend{margin:12px 0 0}
+@media (max-width:760px){ .tblwrap.obj table{min-width:560px} .tblwrap.obj th:first-child, .tblwrap.obj td:first-child{position:sticky;left:0;background:var(--glass-3)} }
+/* fifth desk pass: the scroll hint lives in padding above the grid, never over the header; one warm NUMBER (the month), the
+   protagonist tile keeps its warm ground with a neutral figure; the diagnosis callout is neutral in both themes */
+@media (max-width:760px){
+  .tblwrap.obj{padding-top:18px}
+  .tblwrap.obj::after{top:3px;right:10px;color:var(--t-4)}
+}
+.strip .tile.hot b{color:var(--t-1)}
+.callout.n{background:var(--glass-3);border:1px solid var(--edge-soft);border-left:3px solid var(--edge)}
+html.light .callout.n, :root[data-theme="light"] .callout.n{background:var(--glass-3);border-color:var(--edge-soft);border-left-color:var(--edge)}
+
 </style>
 </head>
-<body data-updated="2026-08-19">
+<body data-updated="2026-09-12" data-source-hash="f5253d8e00b2616de4dc9952d526354b7432d96a2fd087731d2ed756f8d089f6" data-generated="2026-09-12">
 <div class="wrap rise">
 
 <header>
   <div>
-    <div class="eyebrow">La Chamana · El Chaman OS · Tracker de ejecución</div>
-    <h1>GTM <b>Q3/Q4 2026</b></h1>
+    <div class="eyebrow">La Chamana · El Chaman OS · Plan de récord</div>
+    <h1>La Chamana <b>a marzo 2027</b></h1>
     <div class="badges">
-      <span class="badge">v2.0 · 19 ago 2026</span>
-      <span class="badge crit">INTERNO — no circular fuera del equipo</span>
-      <span class="badge hot">La máquina de leads · 140–400 quality leads</span>
+      <span class="badge">V0.4 · 12 sep 2026</span>
+      <span class="badge">sep · mes en curso</span>
+      <span class="badge">INTERNO — no circular fuera del equipo</span>
+      <span class="badge warn">PENDIENTE de ratificación de Boris</span>
       <span class="badge warn" id="freshness">actualizado hoy</span>
     </div>
   </div>
-  <button class="badge theme-toggle" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){}})()">◐ theme</button>
+  <button class="badge theme-toggle" onclick="(function(){var el=document.documentElement;var isLight=el.classList.contains('light')||el.getAttribute('data-theme')==='light'||(!el.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: light)').matches);var next=isLight?'dark':'light';el.classList.toggle('light',next==='light');el.setAttribute('data-theme',next);try{localStorage.setItem('hermes-theme',next)}catch(e){};this.setAttribute('aria-pressed',String(next==='light'))})()" aria-label="Cambiar tema" aria-pressed="false">tema</button>
 </header>
 
-<p>Estrategia: <em>«La máquina de leads — Q3–Q4 2026» V0.3 · 15 ago 2026</em> (lc-chaman, commit <code>2b4b841</code>).
-Plan de ejecución: <code>docs/jor-lead-machine-2026-08-15.md</code> (Joint Operating Room, 15-ago).
-Esta página es el estado vivo de ese plan: la actualiza la sesión que cambia un estado — nunca de memoria — y
-<strong>cada celda lleva su evidencia y su as_of</strong>. Lo desconocido se declara desconocido: nunca se pinta
-verde ni se renderiza como 0.</p>
+<p>Esta página <strong>se genera</strong> del plan de récord <code>lc-chaman/docs/plan-v0.4-la-chamana-2026-09.md</code>
+(mesa conjunta del 12 sep 2026: la lectura comercial de AG-011, la de producto de TK-000, y la sentada de veto
+de Boris — 14 de 14 decisiones). Cada meta lleva <b>dos líneas, piso y techo</b>. Lo desconocido se declara
+desconocido: nunca se pinta verde ni se renderiza como 0.</p>
 
-<div class="callout"><p><strong>Hoy (18-ago) · lo que cambió desde ayer, en orden de urgencia:</strong></p>
-<ol>
-  <li><b>Hay una wave esperando tu press ahora mismo</b> — follow-up E2 de agencias, 5 filas, en
-  <code>pending_approval</code> desde las <b>14:53Z</b> de hoy (gate <code>aa319064</code>). Nadie más la puede aprobar.</li>
-  <li><b>El corta-circuitos de rebotes se disparó por primera vez, en vivo.</b> La wave de retreats del 17
-  rebotó <b>2 de 9 (22,2%)</b> contra un techo de 3%, y el rail <b>retreats-a se refusa solo</b> en el dispatch hasta que
-  la lista se limpie. Detalle y evidencia en §00. Esto es W18 haciendo exactamente lo que se aprobó el 17 — y es la
-  primera vez que una guarda de esta máquina para algo real.</li>
-  <li><b>La máquina corrió de punta a punta por primera vez (17-ago):</b> 4 waves, 3 rails,
-  <b>29 emails fríos + 2 respuestas</b>, 140 prospectos nuevos al reservorio — y <b>29 contra un objetivo de 30</b>,
-  bajo objetivo por uno. Lo que costó ese día está medido: <b>$129,00</b> (registro completo:
-  <code>docs/costo-maquina-2026-08-17.md</code>) y mueve las cifras de §05.</li>
-  <li><b>#7 ya no está «en build»:</b> W18 está vivo desde el 17-ago (<code>0d70d39</code>). Lo único que le falta es el
-  verificador de direcciones — el adaptador existe y no tiene proveedor conectado.</li>
-</ol>
-<p>Sigue abierta <strong>#8</strong> (definición de quality lead: sin ella, lo que esta semana produzca solo cuenta como
-respuestas). Cinco de los siete motores siguen sin haber corrido jamás.</p></div>
-
-<div class="strip">
-  <div class="tile"><b>7 / 75</b><span>noches (norte) · venture.yaml · as_of 10-ago — 8 días viejo: el sync de Cloudbeds no volvió a escribir</span></div>
-  <div class="tile hot"><b>48 / ~18.000</b><span>humanos contactados / alcanzables en la ventana · 3 ledgers · 48 direcciones únicas, 0 duplicados</span></div>
-  <div class="tile ok"><b>4 / 10</b><span>decisiones de Boris resueltas · #1 y #5 el 16-ago · #2 el 16-ago · #7 el 17-ago</span></div>
-  <div class="tile hot"><b>1 press</b><span>wave E2 de agencias (5 filas) esperando aprobación · gate <code>aa319064</code> · as_of 18-ago 15:00Z</span></div>
+<div class="callout g now-box"><p class="eyebrow">Este mes · sep 2026</p>
+<div class="now-grid">
+  <div><b class="now-num">0–3</b><span>noches este mes · piso–techo · <b>piso 0</b>: el mes ya se dio por perdido para la rampa; lo que entre es techo</span></div>
+  <div><b>Iru · Boris · Daiana</b><span>a quién le toca mover este mes (10 tácticas con fecha en sep)</span></div>
+  <div><b>23 sep 2026</b><span>se revisa: Revisión del portfolio: cada campaña viva se defiende o se rediseña; las que queden llevan target (mandato #10)</span></div>
+</div>
+<div class="due"><div class="tblwrap"><table class="duetbl"><caption class="sr-only">Lo que vence antes de la revisión</caption><thead><tr><th scope="col">antes de la revisión</th><th scope="col">quién</th><th scope="col">vence</th></tr></thead><tbody><tr><td><span class="mid">T14</span> Renovación de The Muse decidida</td><td>Iru propone</td><td><b>19-sep</b></td></tr></tbody></table></div><p class="ev"><a href="#tacticas">y 9 más este mes →</a></p></div>
 </div>
 
-<!-- WEEK-STRIP:BEGIN (generado por scripts/week-strip.mjs — no editar a mano) -->
-<section id="semana">
-  <div class="eyebrow">§00 · seguimiento operacional</div>
-  <h2>La semana en curso — plan contra ledger · 17–21 ago 2026</h2>
-  <p><b>El plan declarado</b> (Boris, 2026-08-16 (registrado por TK-000 la misma noche)): mínimo 30 · máximo 40 mails/día, con <b>lara@chamana.live</b>,
-  repartidos en varias campañas por día — lunes, martes, miércoles y viernes. tope ≤40/día all-channel (supersede ≤20 del 04-jul) · ≤20 por wave · freno: bounce >3% en el ledger de una wave → el próximo día de envío vuelve a ≤20.</p>
-  <p class="ev">La regla de Boris pide 30–40 <i>cada</i> día de envío (semana 120–160). Los máximos por día de la tabla
-  (30·30·35·40 = techo 135) son la <b>rampa 30→40 dentro de la semana</b> — la lectura de deliverability de TK-000
-  dentro de esa regla, no un recorte de la regla: si los primeros días vienen limpios, el techo del día es el de la regla (40).</p>
-  <p class="ev">La columna <b>enviado</b> sale únicamente de los ledgers append-only
-  (<code>vault/campaigns/*/bodies/*.sent.jsonl</code>, líneas <code>kind:"send"</code> reales, nunca dry-run) —
-  nadie la mantiene a mano. La columna <b>bounces</b> sale de las filas de <code>suppression</code> que citan
-  el manifiesto de esa wave — la MISMA fuente que juzga el corta-circuitos W18 (<code>exec/bounce-pause.ts</code>),
-  para que el tracker y el rail no puedan discrepar — y sigue <i>desconocida</i> mientras no haya corrido un sweep
-  POSTERIOR al día. Regenerar: <code>node scripts/week-strip.mjs</code> + republicar. as_of <b>2026-08-19 23:41Z</b>
-  — los días corren en UTC, el mismo reloj del cap diario y de los ledgers (un sábado a la noche ART ya es domingo/lunes UTC).</p>
-  <div class="tblwrap"><table>
-    <tr><th>día</th><th>objetivo</th><th>enviado (ledger)</th><th>por campaña</th><th>bounces</th><th>estado</th></tr>
-    <tr><td><b>lun 17</b></td><td>30</td><td><b>29</b></td><td class="ev">agencies-outreach 10 · family-takeovers 10 · retreats-a 9</td><td><span class="chip dec">2 duros · 6,9%</span></td><td><span class="chip dec">bajo objetivo</span></td></tr>
-    <tr><td><b>mar 18</b></td><td>30</td><td><b>21</b></td><td class="ev">agencies-outreach 10 · family-takeovers 11</td><td><span class="chip unk">bounces: desconocido hasta el sweep</span></td><td><span class="chip dec">bajo objetivo</span></td></tr>
-    <tr><td><b>mié 19</b></td><td>30–35</td><td><b>39</b></td><td class="ev">agencies-outreach 19 · family-takeovers 20</td><td><span class="chip unk">bounces: desconocido hasta el sweep</span></td><td><span class="chip obs">cumplido</span></td></tr>
-    <tr><td><b>vie 21</b></td><td>30–40</td><td><span class="chip none">pendiente</span></td><td class="ev">—</td><td><span class="chip unk">desconocido</span></td><td><span class="chip none">pendiente</span></td></tr>
-    <tr><td><b>semana</b></td><td>120–135</td><td><b>89</b></td><td class="ev">objetivo semanal mínimo 120</td><td></td><td></td></tr>
-  </table></div>
-  
-  <div class="callout"><p><b>Rebotes por wave</b> — el denominador que juzga el
-  corta-circuitos (W18, <code>exec/bounce-pause.ts</code>): una tasa por DÍA esconde el rail que reventó.</p>
-  <ul>
-    <li><b>retreats-a</b> · lun 17 · 2 de 9 =
-      <b>22,2%</b> <span class="chip dec">sobre el techo de 3% · rail PAUSADO</span>
-      <span class="ev">hailey@haloholistics.com · stephanie@soulsanity.co — filas de <code>suppression</code> que citan
-      <code>manifest-first-2026-08-17.tsv</code></span></li>
-  </ul><p class="ev"><b>Consecuencia, ya en efecto:</b> el dispatch de
-  <b>retreats-a</b> REFUSA — no «avisa». W18 juzga la última wave completa
-  del rail en cada press, así que no vuelve a enviar hasta que se limpie la lista y una wave nueva quede bajo el 3%.
-  Nadie tiene que acordarse. (La regla interina de Boris del 16-ago — volver a ≤20 el próximo día de envío — era la
-  mitigación de mano ANTES de que esto existiera; el corta-circuitos es más duro que ella.)</p></div>
-  <p><b>Supply medido</b> <span class="chip obs">observado</span> · as_of 2026-08-16 (noche, Airtable read-only) — ANTERIOR al día 17: esa jornada consumió 29 de estos fríos y sumó 140 filas nuevas al reservorio, así que las tres cifras están desactualizadas en ambas direcciones. Re-medir pide una lectura viva de Airtable; el mirror local (pipeline_row) solo espeja deals, no el reservorio:</p>
-  <ul>
-    <li>E1 listos con email: <b>31</b> (family-takeovers 26 · retreats-a 3 · agencies 2)</li>
-    <li>E2 vencidos por fecha: <b>~172</b> (agencies 96 · retreats-a 71) — pre-sweep: el barrido de inbox descuenta replies/bounces antes de cualquier wave</li>
-    <li>Reserva (Prospects nuevos): <b>125</b> (agencies 75 · retreats 43 · families 7) — entran solo con el press de promoción en /outreach</li>
-  </ul>
-  <div class="callout"><b>Lectura del supply:</b> los fríos E1 listos (31) no llenan la semana (mín 120);
-  la semana se llena con follow-ups E2 (sweep de inbox primero, obligatorio) y promoviendo la reserva en /outreach.
-  Cada wave sigue siendo un press de Boris — nada de esta tabla envía nada.</div>
-</section>
-<!-- WEEK-STRIP:END -->
 
-<section id="mapa">
+<div class="strip">
+  <div class="tile hot"><b>7 / 36–96</b><span>noches vendidas / piso–techo ago–mar · Cloudbeds</span></div>
+  <div class="tile"><b>21 / mes</b><span>máximo del norte (70%, lo que junio ya hizo) · piso económico USD 20.000/mes ≈ 6 noches</span></div>
+  <div class="tile"><b>13 / 14</b><span>decisiones de Boris cerradas el 12 sep 2026 · abiertas: #6</span></div>
+</div>
+
+
+
+<div class="callout n"><p><strong>Si sólo leés esto</strong></p>
+<ul>
+  <li><b>Dirección:</b> las noches a marzo salen de la <b>distribución ya firmada y de la demanda directa</b>; la máquina fría
+  <b>se sostiene sin subir volumen</b> (alimenta el libro 2027 y a los partners); la pauta <b>compra evidencia, no noches</b>;
+  y el sistema deja de estar ciego en noches, calificadas y respuestas.</li>
+  <li><b>El número:</b> <b>7 noches observadas</b> (Cloudbeds) contra <b>piso 36 · techo 96</b> ago–mar.
+  El 75 de ago–dic queda como techo, no como rampa: <i>septiembre ya murió para la rampa; se dice hoy para que nadie lo descubra en noviembre.</i></li>
+  <li><b>Hasta ahora fue experimentación; ahora tiene que ser profesional</b> (Boris, #10): cada campaña viva se defiende o se rediseña antes del 23-sep.</li>
+</ul></div>
+
+<section id="objetivos">
   <div class="eyebrow">§01</div>
-  <h2>El mapa temporal — de acá a diciembre</h2>
-  <p>Veinte semanas, del 15-ago al cierre de diciembre. Barra verde = hecho · ámbar punteada = lista, espera una
-  decisión · gris punteada = plan no arrancado. Los rombos son fechas duras: se cumplen o cortan algo.</p>
-  <div class="tlbox"><div class="tlchart">
-    <div class="tlgrid" style="left:calc(250px + (2/20)*(100% - 250px))"></div>
-    <div class="tlgrid" style="left:calc(250px + (6/20)*(100% - 250px))"></div>
-    <div class="tlgrid" style="left:calc(250px + (11/20)*(100% - 250px))"></div>
-    <div class="tlgrid" style="left:calc(250px + (15/20)*(100% - 250px))"></div>
-    <div class="tlhoy" style="left:calc(250px + (0.2/20)*(100% - 250px))"><span class="tlhoylab">HOY</span></div>
-    <div class="tlrow head">
-      <div class="tllabel"></div>
-      <div class="tlmonth" style="grid-column:2/4;border-left:none">AGO</div>
-      <div class="tlmonth" style="grid-column:4/8">SEP</div>
-      <div class="tlmonth" style="grid-column:8/13">OCT</div>
-      <div class="tlmonth" style="grid-column:13/17">NOV</div>
-      <div class="tlmonth" style="grid-column:17/22">DIC</div>
-    </div>
-    <div class="tlgroup">Fases</div>
-    <div class="tlrow">
-      <div class="tllabel"><b>Fase 0</b> · contratos<span class="tlsub">6 docs + tracker · doctor 0 rojos al cerrarla (15-ago)</span></div>
-      <div class="tlbar done" style="grid-column:2/4">✓ 15-ago</div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>Fase 1</b> · validación ($0)<span class="tlsub">matriz 200 · W18·W6·W9·W13 · IG DM · warm · C6</span></div>
-      <div class="tlbar wait" style="grid-column:3/6">espera #8 (W18 vivo desde 17-ago, #7 ✓)</div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>Fase 2</b> · volumen Tier 2<span class="tlsub">entra solo con celdas MMF ganadoras + guardas vivas</span></div>
-      <div class="tlbar plan" style="grid-column:3/17">compra (#1) → warm-up 14–21d → rampa 20→50→100→200/día → ~4.400/mes</div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>Fase 3</b> · captura de intención<span class="tlsub">entrante — cada canal nace con su kill escrito</span></div>
-      <div class="tlbar plan" style="grid-column:3/22">C6 ya (gratis) · C3 tras Business Verification · C5 tras rate card · buyout en oct</div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>Fase 4</b> · nurture + Q1'27<span class="tlsub">requiere W4 (nights_sold) para leerse bien</span></div>
-      <div class="tlbar plan" style="grid-column:13/22">past guests · urgencia dic · libro Q1'27</div>
-    </div>
-    <div class="tlgroup">Fechas duras</div>
-    <div class="tlrow">
-      <div class="tllabel"><b>esta semana</b><span class="tlsub">decisiones #4 dueño · #5 rate card · #7 build · #8 QL</span></div>
-      <div class="tlms warn" style="grid-column:2"></div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>28-ago</b> · Meta Business Verification<span class="tlsub">teléfono US de Gastón — desbloquea C3 entero</span></div>
-      <div class="tlms crit" style="grid-column:3"></div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>~08-sep</b> · Tier 2 vivo<span class="tlsub">solo si #1 se decide esta semana (warm-up 14–21d)</span></div>
-      <div class="tlms" style="grid-column:5"></div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>30-sep</b> · kill de Google Search<span class="tlsub">se ejecuta solo, salvo que W15 atribuya antes</span></div>
-      <div class="tlms crit" style="grid-column:8"></div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>15-oct</b> · el corte §09<span class="tlsub">≥3.000 contactados · ≥100 QL con canal · ≥2 cierres</span></div>
-      <div class="tlms crit" style="grid-column:10"></div>
-    </div>
-    <div class="tlrow">
-      <div class="tllabel"><b>dic</b> · temporada alta<span class="tlsub">la máquina entrega acá — o el plan no cerró</span></div>
-      <div class="tlms ok" style="grid-column:17"></div>
-    </div>
-  </div></div>
-  <p class="entry">La lectura honesta: <strong>solo la primera barra es verde.</strong> Todo lo demás corre contra el
-  corte del 15-oct, y las dos semanas de Fase 1 son el único tramo que no depende de plata nueva — por eso el plan las
-  usa para comprar los datos que hoy no existen. Cada barra gris arranca cuando su decisión se firma, no antes.</p>
-</section>
-
-<section id="marco">
-  <div class="eyebrow">§02</div>
-  <h2>El marco — qué tipo de estrategia es esta</h2>
-  <p><strong>La tesis:</strong> la demanda de calidad para una casa de 16 pax en Tulum es <strong>escasa y finita</strong>
-  — el universo real de planners, DMCs y agencias relevantes son quizás <strong>2.000–5.000 humanos</strong>, no infinito.
-  Por eso el cuello de botella no es el alcance: a <strong>~$27k por cierre</strong>, el costo de adquisición nunca va a
-  ser el problema (la cuenta completa vive en §05). <strong>El recurso escaso es la lista y la marca</strong> — y quemarlas con el mensaje equivocado no
-  se deshace. De esa tesis sale el orden del plan, y no al revés:</p>
-  <ol>
-    <li><strong>Testear el mensaje en el setup barato antes de comprar volumen.</strong> La matriz de Fase 1
-    (200 contactos, $0 de infra) decide qué copy ve el volumen. Ningún mensaje escala sin ganar su celda.</li>
-    <li><strong>Capturar en paralelo la demanda que ya existe.</strong> Marketplaces, search, inbound: el que busca
-    venue hoy está en mercado por definición. No depende del test de mensaje y por eso no lo espera.</li>
-    <li><strong>Convertir inventario muerto en capital comercial.</strong> Sep–oct va a estar mayormente vacío igual
-    (mercado a ~30%): fam trips y el buyout last-minute convierten noches que hoy valen cero en socios con cartera,
-    contenido con audiencia y ventas de reloj corto.</li>
-    <li><strong>Escalar recién con el mensaje ganador.</strong> Tier 2 multiplica lo que ganó su test — nunca lo que
-    suena bien. El warm-up de los buzones corre en paralelo a la matriz para que ninguno espere al otro.</li>
-  </ol>
-
-  <div class="objtitle">Los siete motores — y las dos jugadas que los cruzan</div>
-  <div class="motors">
-    <div class="motor strong">
-      <span class="mid">C1 · motor</span>
-      <div class="mname">Email frío</div>
-      <div class="mrow"><span class="mnat">creación de demanda</span><span class="mpay">paga en revenue</span></div>
-      <div class="mrow"><span class="badge">ahora: la matriz</span><span class="badge">volumen: Fase 2</span></div>
-      <div class="mfact">48 humanos en 3 meses = <strong>3,5% del cap propio</strong> — y <b>29 de esos 48 salieron
-      en un solo día</b>, el 17-ago. El mensaje que gana su celda en la matriz es el único que ve el volumen de Tier 2.</div>
-    </div>
-    <div class="motor strong">
-      <span class="mid">C2 · motor</span>
-      <div class="mname">IG DM manual</div>
-      <div class="mrow"><span class="mnat">creación de demanda</span><span class="mpay">revenue + autoridad</span></div>
-      <div class="mrow"><span class="badge">ahora</span></div>
-      <div class="mfact">Techo 15/día, tipeado por humano por diseño (la cuenta es app-only). <strong>0 enviados en
-      la historia</strong> — el reply rate es el primer dato que esta fase compra.</div>
-    </div>
-    <div class="motor blocked">
-      <span class="mid">C3 · motor</span>
-      <div class="mname">Meta click-to-Direct + ManyChat</div>
-      <div class="mrow"><span class="mnat soft">captura (paid)</span><span class="mpay">paga en revenue</span></div>
-      <div class="mrow"><span class="badge warn">bloqueado: Business Verification</span></div>
-      <div class="mfact">Est. 36–72 consultas con $500–1.000/mes. Solo inbound: el flujo califica a quien ya clickeó —
-      el DM frío automatizado está prohibido y no se negocia.</div>
-    </div>
-    <div class="motor">
-      <span class="mid">C4 · motor</span>
-      <div class="mname">Google Search</div>
-      <div class="mrow"><span class="mnat soft">captura (paid)</span><span class="mpay">paga en revenue</span></div>
-      <div class="mrow"><span class="badge warn">corriendo · kill 30-sep</span></div>
-      <div class="mfact">49 clicks, <strong>0 atribuibles</strong>. Sobrevive su propio kill solo si la atribución
-      click→consulta (W15) llega antes del 30-sep.</div>
-    </div>
-    <div class="motor blocked">
-      <span class="mid">C5 · motor</span>
-      <div class="mname">Marketplaces de villa</div>
-      <div class="mrow"><span class="mnat soft">captura</span><span class="mpay">paga en revenue</span></div>
-      <div class="mrow"><span class="badge warn">bloqueado: rate card</span></div>
-      <div class="mfact">5 listados objetivo (Airbnb · Vrbo · MayaLuxe · Haute · Villa Experience). Yield
-      <span class="chip unk">desconocido</span> — kill escrito: &lt;5 consultas/30d por listado.</div>
-    </div>
-    <div class="motor">
-      <span class="mid">C6 · motor</span>
-      <div class="mname">Marketplaces de retreats</div>
-      <div class="mrow"><span class="mnat soft">captura</span><span class="mpay">paga en revenue</span></div>
-      <div class="mrow"><span class="badge">ya — gratis</span></div>
-      <div class="mfact">BookRetreats + Retreat Guru: 14–15% de comisión solo si reservan. El retreat leader que busca
-      venue hoy está en mercado por definición — invierte el problema del lead time de 6–18 meses.</div>
-    </div>
-    <div class="motor strong blocked">
-      <span class="mid">C7 · motor</span>
-      <div class="mname">Warm + directa + Loco Luxury</div>
-      <div class="mrow"><span class="mnat">relación / distribución</span><span class="mpay">revenue + autoridad</span></div>
-      <div class="mrow"><span class="badge warn">sin dueño desde abril</span></div>
-      <div class="mfact"><strong>$305k en 4 deals</strong> — lo único probado de toda la máquina. 16 filas Warm sin
-      tocar; 0 de 16 avanzó jamás de etapa. Arranca en cuanto la decisión #4 le ponga nombre.</div>
-    </div>
-    <div class="motor cross">
-      <span class="mid">jugada transversal</span>
-      <div class="mname">Fam trips</div>
-      <div class="mrow"><span class="mnat soft">viaja por C1 · C2 · C7</span><span class="mpay">autoridad + pipeline 2027</span></div>
-      <div class="mrow"><span class="badge">ahora: lista de Iru</span></div>
-      <div class="mfact">Las noches muertas de sep–oct son capital: dormir gratis a los 10 planners/DMCs de más cartera
-      y 3–4 creators HNW cuesta limpieza y un desayuno, y «vení a conocer la casa» es mejor primer CTA que «reservá
-      por $13.5k».</div>
-    </div>
-    <div class="motor cross">
-      <span class="mid">jugada transversal</span>
-      <div class="mname">Buyout last-minute</div>
-      <div class="mrow"><span class="mnat soft">viaja por C7 y WhatsApp</span><span class="mpay">revenue de reloj corto</span></div>
-      <div class="mrow"><span class="badge">Fase 3</span></div>
-      <div class="mfact">La mediana de lead time observada es <strong>11 días</strong> <span class="chip obs">obs</span>:
-      una oferta con precio publicado («quedan estas 3 ventanas de octubre · respuesta en 24h») a concierges, villa
-      managers y jet desks — el público que ya tiene al comprador enfrente.</div>
-    </div>
-  </div>
-  <p class="entry"><strong>Captura</strong> = cosechar demanda que ya busca: paga rápido, techo bajo.
-  <strong>Creación</strong> = generar demanda que no nos conocía: paga lento, techo alto.
-  <strong>Relación</strong> = distribución y socios: paga en los dos relojes. El plan corre las tres en paralelo, y
-  ningún motor escala sin su guarda construida ni prende sin su kill escrito.</p>
-</section>
-
-<section id="aritmetica">
-  <div class="eyebrow">§03</div>
-  <h2>La aritmética del objetivo — la expectativa, declarada</h2>
-  <p>Toda proyección lleva su etiqueta. La tasa lead→cierre es un <strong>supuesto declarado</strong> (10–15%) hasta
-  que haya datos: 0 de 16 warm avanzó jamás de etapa.</p>
+  <h2>Objetivos — nivel 1 · noches ocupadas por mes</h2>
+  <p class="ev">Unidad: noches (la única que Cloudbeds escribe sola y la única acotada por capacidad). USD sólo como lectura,
+  <span class="chip est">est</span> a rack bruto, hasta que Iru diga bruto/neto. <b>Piso</b> = el pipeline datable cerrando la mitad;
+  <b>techo</b> = todo lo datable cierra + los partners traen pedidos Q4/Q1 + temporada alta al nivel de junio.</p>
   <div class="tblwrap obj"><table>
-    <tr><th>Escenario</th><th>Cadena</th><th>Etiqueta</th></tr>
-    <tr><td>Piso</td><td><b>45 noches</b> → 6,3 cierres (estadía media 6 noches) → necesita <b>40–60 quality leads</b> a lead→cierre 10–15%</td><td class="ev"><span class="chip obs">obs</span> estadía · <span class="chip unk">unk</span> lead→cierre</td></tr>
-    <tr><td>Stretch</td><td><b>75 noches</b> → 11,3 cierres → necesita <b>75–115 quality leads</b></td><td class="ev">misma etiqueta</td></tr>
-    <tr><td>Capacidad del plan</td><td>~18.000 humanos alcanzados en la ventana → <b>140–400 QL</b> — 2,3–10× lo que pide el piso</td><td class="ev"><span class="chip est">est</span> V0.3 §04, por canal</td></tr>
-    <tr><td>Corte del 15-oct</td><td>el panel W13 debe leer <b>≥3.000 contactados · ≥100 QL con canal atribuido · ≥2 cierres</b> — ahí se decide verde o rojo</td><td class="ev">criterio de éxito · V0.3 §09</td></tr>
-  </table></div>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col">ago</th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th><th scope="col">Σ</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">piso</th><td><span class="chip obs">obs</span> 7</td><td class="now">0</td><td>3</td><td>3</td><td>6</td><td>8</td><td>3</td><td>6</td><td><b>36</b></td></tr>
+    <tr><th scope="row">techo</th><td></td><td class="now">3</td><td>8</td><td>12</td><td>18</td><td>18</td><td>15</td><td>15</td><td><b>96</b></td></tr>
+    </tbody></table></div>
+  <p class="legend ev"><b>Cómo leer:</b> <span class="chip obs">obs</span> medido · <span class="chip est">est</span> supuesto declarado · <span class="chip unk">desconocido</span> no hay dónde leerlo, nunca se pinta 0 · <b>piso</b> lo básico · <b>techo</b> lo alcanzable · <b>vence / la mata</b> fecha y medición que retiran una táctica</p>
 </section>
 
-<section id="fases">
-  <div class="eyebrow">§04</div>
-  <h2>Las cinco fases</h2>
-  <p>Elegí una fase para abrirla. Vienen cerradas a propósito: el detalle completo de las cinco junto es más de lo que
-  nadie puede leer de una sentada, y el titular de cada una ya dice lo esencial.</p>
-
-  <nav class="phasenav">
-    <button class="pnav" data-target="fase-0" aria-expanded="false">
-      <span class="pn-idx">Fase 0</span><span class="pn-name">Estrategia → contratos</span>
-      <span class="badge ok">hecha</span>
-    </button>
-    <button class="pnav" data-target="fase-1" aria-expanded="false">
-      <span class="pn-idx">Fase 1</span><span class="pn-name">Validación · 2 semanas · $0</span>
-      <span class="badge warn">espera #8 (W18 vivo desde 17-ago, #7 ✓)</span>
-    </button>
-    <button class="pnav" data-target="fase-2" aria-expanded="false">
-      <span class="pn-idx">Fase 2</span><span class="pn-name">Volumen guardado · Tier 2</span>
-      <span class="badge">no arrancada</span>
-    </button>
-    <button class="pnav" data-target="fase-3" aria-expanded="false">
-      <span class="pn-idx">Fase 3</span><span class="pn-name">Captura de intención</span>
-      <span class="badge">no arrancada</span>
-    </button>
-    <button class="pnav" data-target="fase-4" aria-expanded="false">
-      <span class="pn-idx">Fase 4</span><span class="pn-name">Nurture y compounding</span>
-      <span class="badge">no arrancada</span>
-    </button>
-  </nav>
-  <div class="navbar-actions">
-    <button class="btn" id="expand-all">Expandir todo</button>
-    <button class="btn" id="collapse-all">Colapsar todo</button>
-    <span class="legend" style="margin:0"><span class="badge ok">verde</span> hecho, con evidencia
-      <span class="badge warn">ámbar</span> en curso o bloqueado <span class="badge crit">rojo</span> vencido / en riesgo
-      <span class="chip unk">desconocido</span> dato que no existe — jamás un 0</span>
-  </div>
-
-  <details class="phase" id="fase-0">
-    <summary>
-      <span class="ph-idx">Fase 0</span>
-      <span class="ph-name">Estrategia → contratos<span>0 contactos por diseño · produce las definiciones sin las cuales contar es inventar</span></span>
-      <span class="badge ok">hecha 15-ago</span>
-      <span class="ph-chev">▾</span>
-    </summary>
-    <div class="ph-body">
-      <div class="objtitle">Objetivo de la fase</div>
-      <p class="entry"><strong>0 contactos, por diseño.</strong> Esta fase no toca a nadie: produce las definiciones
-      (qué es un quality lead, qué canal es cuál, quién decide qué) sin las cuales contar es inventar. Su número es
-      binario: los contratos existen o no.</p>
-      <div class="tblwrap"><table>
-        <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · as_of</th></tr>
-        <tr><td>Extracción JOR (interpretación, dos lecturas, roadmap, verificación)</td><td>TK-000 + El Chamán</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/jor-lead-machine-2026-08-15.md · 15-ago</td></tr>
-        <tr><td>Definición operativa de quality lead</td><td>El Chamán (autoridad) / TK-000 (espejo)</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/quality-lead-definition.md · su aprobación es la decisión #8</td></tr>
-        <tr><td>Taxonomía de canales C1–C7 vs vocabulario real</td><td>TK-000 (medición)</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/channel-taxonomy.md · medido: 4 de 7 canales hoy irrepresentables</td></tr>
-        <tr><td>Cola de decisiones de Boris (10 + 3)</td><td>TK-000</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/boris-decision-queue-2026-08-15.md</td></tr>
-        <tr><td>Spec del primer paquete de build (W18·W6·W13·W9)</td><td>TK-000</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/build-package-w18-w6-w13-w9.md · spec, sin construir</td></tr>
-        <tr><td>Formato file-only del brief de operador</td><td>TK-000</td><td><span class="badge ok">hecho</span></td><td class="ev">docs/operator-brief-dryrun-format.md</td></tr>
-        <tr><td>Commit de los contratos</td><td>Boris (/upc)</td><td><span class="badge warn">pendiente</span></td><td class="ev">sin commitear al publicar esta versión · 16-ago</td></tr>
-      </table></div>
-    </div>
+<section id="parciales">
+  <div class="eyebrow">§02</div>
+  <h2>Objetivos — nivel 2 · las cinco ramas de marketing</h2>
+  <p>Cada rama en su propia unidad; ninguna se presta a otra ni se suma a noches.</p>
+  
+  <details class="branch" open>
+  <summary><h3 class="objtitle">Distribución cerrada · piso 9 · techo 11 este mes <span class="chip obs">fuente viva</span></h3></summary>
+  <p class="def"><b>Unidad:</b> acuerdos firmados (acumulado) · activos = ≥1 consulta datada en 90 d · <b>Dueño:</b> Iru · <b>Se lee de:</b> conversion kind=agreement (9 hoy) + weekly de Iru §B2B</p>
+  <div class="tblwrap obj"><table>
+    <caption class="sr-only">Distribución cerrada — piso y techo por mes</caption>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">piso</th><td class="now">9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+    <tr><th scope="row">techo</th><td class="now">11</td><td>13</td><td>15</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+    <tr><th scope="row">activos · piso</th><td>1</td><td>2</td><td>3</td><td>3</td><td>4</td><td>4</td><td>5</td></tr>
+    <tr><th scope="row">activos · techo</th><td>2</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+    </tbody>
+  </table></div>
   </details>
 
-  <details class="phase" id="fase-1">
-    <summary>
-      <span class="ph-idx">Fase 1</span>
-      <span class="ph-name">Sprint de validación · 2 semanas · $0 de infra<span>~370–420 contactos · convierte los desconocidos en números, sin plata nueva</span></span>
-      <span class="badge warn">espera #8 (W18 vivo desde 17-ago, #7 ✓)</span>
-      <span class="ph-chev">▾</span>
-    </summary>
-    <div class="ph-body">
-      <div class="objtitle">Objetivos de la fase</div>
-      <div class="tblwrap obj"><table>
-        <tr><td>Contactos</td><td><b>~370–420 humanos en 2 semanas</b>: 200 de la matriz (entra en el cap actual) + hasta 15/día de IG DM manual + 16 warm re-touch + entrante de C6</td><td class="ev"><span class="chip est">est</span> — contra 19 en los 3 meses previos <span class="chip obs">obs</span></td></tr>
-        <tr><td>Canales</td><td><b>C1</b> (matriz: planners · DMCs receptivos MX · agencias familias HNW · brokers de offsites × fam-trip vs net-rate) · <b>C2</b> IG DM · <b>C7</b> warm · <b>C6</b> inbound</td><td class="ev">las campañas concretas viven en el cockpit — esta página no baja de canal</td></tr>
-        <tr><td>Conversión</td><td><b>Ninguna prometida: esta fase MIDE.</b> Referencias para leer los resultados: 3,43% reply benchmark industria · 10,1% techo propio histórico</td><td class="ev"><span class="chip est">est</span> benchmarks · <span class="chip unk">unk</span> lead→cierre</td></tr>
-        <tr><td>Gana si</td><td>reply-rate por celda conocido con ≥1 celda ganadora · bounce &lt;3% a 40/día · las primeras QL entran con canal atribuido</td><td class="ev">es la puerta de entrada de Fase 2</td></tr>
-      </table></div>
-      <div class="objtitle">Los ítems</div>
-      <div class="tblwrap"><table>
-        <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
-        <tr><td>Matriz message-market fit (4 segmentos × 2 ángulos × 25 = 200)</td><td>El Chamán diseña · Boris pressea cada wave</td><td><span class="badge">no arrancado</span></td><td class="ev">bloqueada en #8 (la denominación es la definición QL) · cada wave es un gate press</td></tr>
-        <tr><td>W18 — cap con rampa + verificación de email en prepare + auto-pausa bounce &gt;3%</td><td>TK-000</td><td><span class="badge ok">vivo 17-ago</span></td><td class="ev">mergeado y pusheado <code>0d70d39</code> · <b>probado en vivo el 18-ago</b>: la auto-pausa se disparó sola sobre retreats-a (2/9 = 22,2%, §00) — la primera guarda de esta máquina que frena algo real · el cap vive en UNA constante con room por rail · <b>lo que falta:</b> el verificador de direcciones — <code>repo/verification.ts</code> existe con el adaptador escrito y <span class="chip unk">ningún proveedor conectado</span>, así que la selección solo-verificados sigue siendo a mano</td></tr>
-        <tr><td>Rampa del cap 20→30→40/día</td><td>Boris (es su regla del 04-jul) · El Chamán edita el skill</td><td><span class="badge ok">viva desde 16-ago</span></td><td class="ev">decisión #2: Boris la adelantó a W18 · registrada en skill + rails + cockpit · mitigación interina: selección solo-verificados + freno bounce &gt;3% → ≤20 · §00 es el plan diario</td></tr>
-        <tr><td>W6 — cuadrante ciego del guarda de duplicados (cross-campaña + DM)</td><td>TK-000</td><td><span class="badge">no arrancado</span></td><td class="ev">el guarda intra-campaña YA existe (batch.ts:418) · medir FP antes de escribir</td></tr>
-        <tr><td>W9 — vocabulario de canales (mint + drift + colisión Referral)</td><td>El Chamán + Boris (mint gateado) · TK-000 sincroniza</td><td><span class="badge">no arrancado</span></td><td class="ev">valores propuestos en channel-taxonomy.md · Airtable solo mintea por typecast en escritura gateada</td></tr>
-        <tr><td>W13 — panel de volumen (día 1 debe leer 19 / 18.000)</td><td>TK-000 (último: lee a los otros tres)</td><td><span class="badge">no arrancado</span></td><td class="ev">bloqueado en #7 + vocabulario W9 · una definición compartida con el reporte §2</td></tr>
-        <tr><td>Warm + Loco Luxury re-touch (16 filas · $305k/4 deals)</td><td>Iru — si #4 la nombra</td><td><span class="badge warn">bloqueado</span></td><td class="ev">decisión #4: canal sin dueño desde abril · 0 de 16 avanzó jamás de etapa</td></tr>
-        <tr><td>IG DM manual (15/día · humano tipea · la máquina solo prepara)</td><td>Iru/Bianca (teléfono) · El Chamán prepara</td><td><span class="badge warn">colas sin trabajar</span></td><td class="ev">3 filas esperando desde el 11-ago (doctor) · 0 DMs enviados en la historia</td></tr>
-        <tr><td>C6 — listados en directorios de VENUES: RetreatHub · Retreats and Venues · RetreatVenues</td><td>El Chamán redacta · Boris pressea el publish</td><td><span class="badge">no arrancado</span></td><td class="ev">decisión #10 re-apuntada 16-ago: BookRetreats/Retreat Guru listan retiros, no venues (jor-stress-research §C6) · recomendado arrancar YA — no espera ni al rate card ni al email</td></tr>
-        <tr><td>Gates viejos decididos (aunque sea rechazar)</td><td>Boris</td><td><span class="badge crit">4 abiertos</span></td><td class="ev">19d (changes_requested) · 12d (approved sin despachar) · 4d · 37h · /approvals</td></tr>
-        <tr><td>Briefs de operador, file-only (≥5 leídos antes de hablar de scheduler)</td><td>TK-000 produce · Boris lee</td><td><span class="badge">no arrancado</span></td><td class="ev">formato listo · decisión #9</td></tr>
-      </table></div>
-    </div>
+  <details class="branch">
+  <summary><h3 class="objtitle">Quality leads · piso 3 · techo 5 este mes <span class="chip unk">fuente: desconocido</span></h3></summary>
+  <p class="def"><b>Unidad:</b> leads/semana (definición 15-ago; ≥1 de 3 con fechas en ventana) — decisión #1 · <b>Dueño:</b> Iru firma · Bianca prepara · <b>Se lee de:</b> conversion kind=lead — 0 filas hoy: desconocido hasta que exista la pantalla; interino weekly de Iru</p>
+  <div class="tblwrap obj"><table>
+    <caption class="sr-only">Quality leads — piso y techo por mes</caption>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">piso</th><td class="now">3</td><td>3</td><td>3</td><td>2</td><td>3</td><td>3</td><td>3</td></tr>
+    <tr><th scope="row">techo</th><td class="now">5</td><td>5</td><td>5</td><td>4</td><td>5</td><td>5</td><td>5</td></tr>
+    
+    </tbody>
+  </table></div>
   </details>
 
-  <details class="phase" id="fase-2">
-    <summary>
-      <span class="ph-idx">Fase 2</span>
-      <span class="ph-name">Rampa de volumen guardada · Tier 2<span>~4.400 contactos/mes · entra solo con celdas ganadoras y guardas vivas</span></span>
-      <span class="badge">no arrancada</span>
-      <span class="ph-chev">▾</span>
-    </summary>
-    <div class="ph-body">
-      <p class="entry">Entrada (<strong>todas</strong>): celdas MMF ganadoras · W18/W6/W13/W9 vivos · warm-up 14–21d
-      completo · calidad de listas Apollo muestreada.</p>
-      <div class="objtitle">Objetivos de la fase</div>
-      <div class="tblwrap obj"><table>
-        <tr><td>Contactos</td><td><b>~4.400/mes desde ~08-sep</b> · el plan completo alcanza <b>~16.000 únicos</b> en la ventana (vs ~1.380 con el setup actual)</td><td class="ev"><span class="chip est">est</span> — Tier 2 vivo y warm-up completo</td></tr>
-        <tr><td>Canales</td><td><b>C1 a volumen</b> con el mensaje ganador de la matriz, vía Smartlead/Instantly; los segmentos son las celdas que ganaron</td><td class="ev">nada escala sin haber ganado su test — regla dura de V0.3 §08</td></tr>
-        <tr><td>Conversión</td><td>Replies: <b>2% pesimista · 3,43% benchmark · 10,1% techo</b> → <b>80–250 QL de C1</b> en la ventana</td><td class="ev"><span class="chip est">est</span> — el número real lo fija la matriz de Fase 1</td></tr>
-        <tr><td>Gana si</td><td>200/día sostenido con bounce &lt;3% y spam &lt;0,1% <em>medido</em> · el ritmo de QL/mes cubre el piso</td><td class="ev">si el ritmo no da a mitad de fase, se revisa mensaje antes que volumen</td></tr>
-      </table></div>
-      <div class="objtitle">Los ítems</div>
-      <div class="tblwrap"><table>
-        <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
-        <tr><td>Compra del stack Tier 2 (~$400–650/mes + ~$300/año dominios)</td><td>Boris (plata)</td><td><span class="badge">no arrancado</span></td><td class="ev">decisión #1 · recomendado: comprar ya, activar tras MMF (el warm-up tarda lo que la matriz)</td></tr>
-        <tr><td>Dominios secundarios + 10–14 buzones en warm-up (nunca chamana.live)</td><td>El Chamán configura</td><td><span class="badge">no arrancado</span></td><td class="ev">rampa 20→50→100→200/día en 4 semanas — saltear el warm-up quema los dominios para siempre</td></tr>
-        <tr><td>W16 — Smartlead/Instantly: manifiesto gateado → campaña · replies → webhook</td><td>TK-000</td><td><span class="badge">no arrancado</span></td><td class="ev">la leg instantly-phase2 está declarada desde julio y nunca activada · sin gate no sale nada</td></tr>
-        <tr><td>W12 — supply Apollo: reservoir ≥2 semanas visible por rail</td><td>El Chamán</td><td><span class="badge">no arrancado</span></td><td class="ev">6 de 8 rails con tanque vacío hoy · Clay SOLO si Apollo queda corto (medido, no asumido)</td></tr>
-        <tr><td>Guardia de spam-rate (&gt;0,1% pausa)</td><td>TK-000</td><td><span class="badge crit">sin fuente de datos</span></td><td class="ev">HOY NO EXISTE el dato — llega con el ESP/Postmaster en esta fase; hasta entonces se reporta <span class="chip unk">desconocido</span>, no se inventa un guarda</td></tr>
-      </table></div>
-    </div>
+  <details class="branch">
+  <summary><h3 class="objtitle">Trustmarks · piso 3 · techo 4 este mes <span class="chip unk">fuente: desconocido</span></h3></summary>
+  <p class="def"><b>Unidad:</b> superficies de terceros publicadas y abribles (listings, páginas de partner, prensa) — acumulado · <b>Dueño:</b> Bianca arma · Iru firma · René mira · Boris presiona · <b>Se lee de:</b> desconocido: no hay dónde leerlo — tabla en agencies-outreach/results-log.md hasta que exista el registro B2B · <i>la rama de listings (2 directorios) espera la decisión #6 — Boris: «no sé» → brief con fecha</i></p>
+  <div class="tblwrap obj"><table>
+    <caption class="sr-only">Trustmarks — piso y techo por mes</caption>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">piso</th><td class="now">3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td></tr>
+    <tr><th scope="row">techo</th><td class="now">4</td><td>6</td><td>8</td><td>10</td><td>12</td><td>13</td><td>14</td></tr>
+    
+    </tbody>
+  </table></div>
   </details>
 
-  <details class="phase" id="fase-3">
-    <summary>
-      <span class="ph-idx">Fase 3</span>
-      <span class="ph-name">Captura de intención<span>entrante, no saliente · cada canal nace con su kill escrito</span></span>
-      <span class="badge">no arrancada</span>
-      <span class="ph-chev">▾</span>
-    </summary>
-    <div class="ph-body">
-      <p class="entry">Entrada: Meta Business Verification (#6) · rate card (#5) · W15 click→consulta vivo antes de
-      escalar paid.</p>
-      <div class="objtitle">Objetivos de la fase</div>
-      <div class="tblwrap obj"><table>
-        <tr><td>Contactos</td><td><b>Entrantes, no salientes:</b> C3 <b>36–72 consultas</b> con $500–1.000/mes · C5 <b>5 listados</b> · C6 <b>2 listados</b> · C4 ~300 clicks hasta su corte</td><td class="ev"><span class="chip est">est</span> C3/C4 · <span class="chip unk">unk</span> C5/C6 — primer dato de esos canales</td></tr>
-        <tr><td>Canales</td><td><b>C3</b> (click-to-Direct → flujo de calificación → CRM) · <b>C5/C6</b> (marketplaces → consulta directa) · <b>C4</b> Search · el buyout entra por C7</td><td class="ev">C3 califica en el flujo: consulta ≠ QL hasta pasar la definición</td></tr>
-        <tr><td>Conversión</td><td>consulta→QL de intención suele superar al frío, pero acá es <b>desconocido hasta el primer dato</b> — nada se proyecta sobre C5/C6</td><td class="ev"><span class="chip unk">unk</span> · kills escritos: &lt;5 consultas/30d</td></tr>
-        <tr><td>Gana si</td><td>cada canal de intención tiene su primer número real (consultas/30d con canal atribuido) <b>o su kill ejecutado</b></td><td class="ev">un canal muerto a tiempo también es un resultado</td></tr>
-      </table></div>
-      <div class="objtitle">Los ítems</div>
-      <div class="tblwrap"><table>
-        <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
-        <tr><td>Meta Business Verification (teléfono US de Gastón)</td><td>Boris → Gastón</td><td><span class="badge warn">bloqueante</span></td><td class="ev">decisión #6 · bloquea C3 entero (est. 36–72 leads) · 5 campañas muertas en «Error en el pago» · antes del 28-ago</td></tr>
-        <tr><td>ManyChat — flujos inbound de calificación → CRM (ig_inbound)</td><td>El Chamán</td><td><span class="badge">no arrancado</span></td><td class="ev">SOLO inbound: el DM frío automatizado está prohibido por Meta y la cuenta ya fue baneada en junio</td></tr>
-        <tr><td>C5 — listados Airbnb · Vrbo · MayaLuxe · Haute · Villa Experience</td><td>El Chamán redacta · Boris pressea</td><td><span class="badge warn">bloqueado</span></td><td class="ev">rate card (#5, 127 días abierto) · kill: &lt;5 consultas/30d por listado</td></tr>
-        <tr><td>Oferta buyout last-minute (3 ventanas de octubre · precio publicado · WhatsApp)</td><td>El Chamán diseña · Boris aprueba precio</td><td><span class="badge">no arrancado</span></td><td class="ev">mediana de lead time observada: 11 días · el gate screen dio 0.90 a ese público</td></tr>
-        <tr><td>W15 — instrumentar click→consulta (Search sobrevive solo si atribuye)</td><td>TK-000</td><td><span class="badge warn">contra reloj</span></td><td class="ev">49 clicks · 0 atribuibles · kill del canal: 30-sep — se ejecuta solo</td></tr>
-      </table></div>
-    </div>
+  <details class="branch">
+  <summary><h3 class="objtitle">Seguimiento de CRM · piso 3 · techo 6 este mes <span class="chip obs">fuente viva</span></h3></summary>
+  <p class="def"><b>Unidad:</b> filas nuevas en Pipeline/semana · (la edad de la cola de respuestas se muestra; sin SLA — decisión #2) · <b>Dueño:</b> Iru decide y contesta · Bianca prepara · <b>Se lee de:</b> pipeline_row (W34 15 · W35 15 · W36 1) · conversation — lara@ hoy, iru@ cuando entre al barrido</p>
+  <div class="tblwrap obj"><table>
+    <caption class="sr-only">Seguimiento de CRM — piso y techo por mes</caption>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">piso</th><td class="now">3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td><td>3</td></tr>
+    <tr><th scope="row">techo</th><td class="now">6</td><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td></tr>
+    
+    </tbody>
+  </table></div>
   </details>
 
-  <details class="phase" id="fase-4">
-    <summary>
-      <span class="ph-idx">Fase 4</span>
-      <span class="ph-name">Nurture y compounding<span>0 salientes nuevos · que nada de lo ya conseguido se evapore</span></span>
-      <span class="badge">no arrancada</span>
-      <span class="ph-chev">▾</span>
-    </summary>
-    <div class="ph-body">
-      <div class="objtitle">Objetivos de la fase</div>
-      <div class="tblwrap obj"><table>
-        <tr><td>Contactos</td><td><b>0 salientes nuevos como objetivo</b> — reactivación de lo que ya existe: past guests, replies warm que no cerraron, referidos</td><td class="ev">la lista propia; Klaviyo/Brevo prohibido para frío (ToS)</td></tr>
-        <tr><td>Unidad de éxito</td><td><b>Noches vendidas para Q1'27</b> (nights_sold) + diciembre lleno con la urgencia de temporada</td><td class="ev">hoy el libro adelantado sep–dic está <b>VACÍO</b> <span class="chip obs">obs</span> (Cloudbeds)</td></tr>
-        <tr><td>Gana si</td><td>el libro Q1'27 es &gt; 0 con fuente, y ningún lead que no cerró se evaporó sin entrar a un flujo</td><td class="ev">requiere W4 (nights_sold) para no leer cada venta Q1'27 como fracaso</td></tr>
-      </table></div>
-      <div class="objtitle">Los ítems</div>
-      <div class="tblwrap"><table>
-        <tr><th>Ítem</th><th>Dueño</th><th>Estado</th><th>Evidencia · bloqueo</th></tr>
-        <tr><td>Klaviyo/Brevo — flujos de lista propia (fechas libres · post-estadía → referido)</td><td>El Chamán</td><td><span class="badge">no arrancado</span></td><td class="ev">PROHIBIDO para frío (ToS) · hoy un lead que no cierra se evapora</td></tr>
-        <tr><td>Past guests + warm replies + urgencia de diciembre</td><td>Iru / El Chamán</td><td><span class="badge">no arrancado</span></td><td class="ev">—</td></tr>
-        <tr><td>Libro Q1'27 (W4: nights_sold junto a nights_slept)</td><td>TK-000</td><td><span class="badge">no arrancado</span></td><td class="ev">sin W4, cada venta Q1'27 renderiza como fracaso · forward book HOY VACÍO sep–dic</td></tr>
-      </table></div>
-    </div>
+  <details class="branch">
+  <summary><h3 class="objtitle">Brand care &amp; development · peor aceptable 3 · meta 0 este mes <span class="chip obs">fuente viva</span> <span class="chip est">menos es mejor</span></h3></summary>
+  <p class="def"><b>Unidad:</b> HARD fails en primera pasada por ola (menos es mejor) · ítems de canon abiertos &gt;30 d · <b>Dueño:</b> Boris (copy) · René (estética) · AG-005 revisa · <b>Se lee de:</b> verdicts en results-log.md de cada campaña · docs/brand</p>
+  <div class="tblwrap obj"><table>
+    <caption class="sr-only">Brand care &amp; development — peor aceptable y meta por mes</caption>
+    <thead><tr><th scope="col"><span class="sr-only">fila</span></th><th scope="col" class="now">sep</th><th scope="col">oct</th><th scope="col">nov</th><th scope="col">dic</th><th scope="col">ene</th><th scope="col">feb</th><th scope="col">mar</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">peor aceptable</th><td class="now">3</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+    <tr><th scope="row">meta</th><td class="now">0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    
+    </tbody>
+  </table></div>
   </details>
 </section>
 
-<section id="economia">
-  <div class="eyebrow">§05</div>
-  <h2>La economía — qué cuesta la máquina y qué devuelve</h2>
-  <p>Esta sección existe para que el presupuesto de las próximas fases se apruebe <strong>una vez, con números,
-  y no gasto por gasto</strong>. Tres capas: lo ya gastado (observado, de los ledgers), lo que cada fase pide
-  (con su decisión), y el sobre mensual total que Boris firma. Como todo en esta página: cada cifra lleva su
-  etiqueta y su fuente, y lo que nadie registró se declara <span class="chip unk">desconocido</span> — nunca $0.</p>
-
-  <div class="strip">
-    <div class="tile"><b>$358,61</b><span>gasto LLM total de la plataforma (157 runs con costo) · runs.cost_usd · as_of 18-ago 15:00Z</span></div>
-    <div class="tile"><b>$208,65</b><span>paid media total · 1.829 impresiones · 56 clicks · 0 conversiones atribuidas · metrics_daily · as_of 18-ago</span></div>
-    <div class="tile hot"><b>$129,00</b><span>lo que costó UN día de máquina completa (17-ago · 22 runs · 31 emails) <span class="chip obs">obs</span> — el número que rompe la proyección de abajo</span></div>
-    <div class="tile ok"><b>~22–37×</b><span>piso de revenue ($202k = 45 noches a rack) sobre el costo total sep–dic estimado ($5,4–9,3k) · as_of 18-ago</span></div>
-  </div>
-
-  <div class="callout g"><p><strong>El marco (el mismo de §02, ahora con la cuenta):</strong> a ~$27k por cierre
-  promedio y $13,5k de reserva mínima, el peor caso de toda la máquina sep–dic (~$9,3k, recalculado el 18-ago con el ritmo LLM real) se paga con
-  <strong>una tercera parte de UN cierre</strong> — y el piso pide 6,3. El costo nunca es el riesgo de este plan;
-  el riesgo es quemar lista y marca. La única resta real que no aparece en ninguna factura: <strong>las comisiones
-  de canal bajan los netos 10–25%</strong> — para eso existe el piso del tarifario ($3.150/noche).</p></div>
-
-  <div class="objtitle">A · Tokens / LLM — lo ya gastado, observado</div>
-  <p class="entry">Fuente: <code>runs.cost_usd</code> en <code>data/synergy.db</code>, verificado contra la última
-  línea <code>[result:]</code> de cada run (coinciden al centavo, 14-ago). Toda cifra anterior citada en otros docs
-  ($96 · $172 · $160 · $187 · $194 · $211) es una foto vieja del mismo contador: <strong>la vigente es esta</strong>.</p>
-  <div class="tblwrap"><table>
-    <tr><th>Función</th><th>Runs</th><th>Gasto</th><th>Lectura</th></tr>
-    <tr><td><b>Investigación de prospectos</b></td><td>12</td><td><b>$166,15</b> <span class="chip obs">obs</span></td><td class="ev">46% de todo · prospect-research promedia <b>$13,85/run</b> (máx $26,13) — el rail más caro por lejos, y creció <b>$86,80 en tres días</b>; su cadencia sigue siendo la palanca de costo #1</td></tr>
-    <tr><td>Contenido (artículos · social · landing · SEO · video)</td><td>52</td><td>$63,30 <span class="chip obs">obs</span></td><td class="ev">$1,22/run promedio</td></tr>
-    <tr><td>Outreach email (prepare · send · stamp · bodies · DM)</td><td>52</td><td>$100,62 <span class="chip obs">obs</span></td><td class="ev">$1,94/run — sigue siendo la línea barata por unidad, y es la que el volumen multiplica. Escribir la copy sola: <b>$0,72 por email</b> (costo-maquina-2026-08-17)</td></tr>
-    <tr><td>Paid (ads-build · gads)</td><td>6</td><td>$12,76 <span class="chip obs">obs</span></td><td class="ev">—</td></tr>
-    <tr><td>Operación (status · triage · sweeps · campos)</td><td>35</td><td>$15,79 <span class="chip obs">obs</span></td><td class="ev">$0,45/run — el overhead de la máquina sigue siendo marginal</td></tr>
-    <tr><td><b>Total</b> · jul $65,12 · ago (1–18) $293,49</td><td><b>157</b></td><td><b>$358,61</b> <span class="chip obs">obs</span></td><td class="ev">ago (1–18) proyecta ≈ <b>$505/mes</b> — <b>por encima</b> del techo de $350 que declara el sobre de abajo. $147,14 de ese total son los últimos DOS días (17 y 18) · as_of 18-ago</td></tr>
+<section id="tacticas">
+  <div class="eyebrow">§03</div>
+  <h2>Tácticas — 17, cada una con quién la mueve y qué la mata</h2>
+  <div class="tblwrap tdesk"><table>
+    <caption class="sr-only">Tácticas: motor, dueño, falsador, fecha de retiro y apoyo</caption>
+    <thead><tr><th scope="col">#</th><th scope="col">motor</th><th scope="col">táctica</th><th scope="col">quién</th><th scope="col">la mata</th><th scope="col">vence</th><th scope="col">apoyo (skill / agente)</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">T1</th><td>Distribución</td><td>Pedido Q4/Q1 datado a los 12 partners firmados/HOT</td><td>Iru · Bianca prepara</td><td class="ev">&lt;2 consultas datadas oct–mar al 15-oct</td><td>15-oct</td><td class="ev">agency-replies · AG-001</td></tr>
+    <tr><th scope="row">T2</th><td>Distribución</td><td>Cerrar Sotavento y Tito (octubre)</td><td>Iru</td><td class="ev">sin respuesta formal tras 2 toques</td><td>25-sep</td><td class="ev">lead · AG-002</td></tr>
+    <tr><th scope="row">T3</th><td>Distribución</td><td>2 listings en directorios de venues <span class="chip none">espera decisión #6</span></td><td>Bianca · Iru · Boris publica</td><td class="ev">&lt;5 consultas/30 d por listing a los 60 d</td><td>30-nov</td><td class="ev">doc · brand-review</td></tr>
+    <tr><th scope="row">T5</th><td>Distribución</td><td>Directo y retornante: carta a las 7 estadías + red</td><td>Bianca · Boris/Iru firman</td><td class="ev">0 respuestas de 7</td><td>31-oct</td><td class="ev">doc · AG-001</td></tr>
+    <tr><th scope="row">T6</th><td>Distribución</td><td>Nombrar y decidir la cláusula que Icon e ILWYV rechazan</td><td>Daiana · Iru trae el texto</td><td class="ev">n/a — bloqueo</td><td>26-sep</td><td class="ev"></td></tr>
+    <tr><th scope="row">T7</th><td>Creación curada</td><td>Máquina fría sostenida 100–150/sem, 3 rieles, tope 40, sin subir</td><td>Boris presiona · Bianca prepara</td><td class="ev">interesadas &lt;4/sem × 3 sem, o rebote &gt;3% en un ledger</td><td>31-ene</td><td class="ev">batch-email · outreach-bodies · AG-001</td></tr>
+    <tr><th scope="row">T8</th><td>Creación curada</td><td>prospect-research sólo con pozo &lt;1 semana</td><td>Boris</td><td class="ev">una corrida con pozo ≥1 semana</td><td>permanente</td><td class="ev">prospect-research · AG-006</td></tr>
+    <tr><th scope="row">T9</th><td>Creación curada</td><td>iru@ entra al barrido; Iru decide y contesta (sin SLA)</td><td>Iru presta credencial · TK-000 construye</td><td class="ev">filas nuevas Pipeline &lt;3/sem × 3 sem → «interested» es ruido</td><td>30-sep</td><td class="ev">agency-replies · AG-010 · AG-002</td></tr>
+    <tr><th scope="row">T10</th><td>Creación curada</td><td>Deuda de canon: outreach-templates V1.1 + pasada de corpus</td><td>Boris · René</td><td class="ev">una décima ola con HARD por la misma regla</td><td>30-sep</td><td class="ev">brand-review · copy-reviewer · AG-005</td></tr>
+    <tr><th scope="row">T11</th><td>Creación curada</td><td>IG DM manual, tope 15/día, nunca automatizado</td><td>Bianca</td><td class="ev">0 respuestas a los 150 DMs (73/0 hoy)</td><td>15-oct</td><td class="ev">dm-queue · dm</td></tr>
+    <tr><th scope="row">T12</th><td>Captura con volumen</td><td>Meta sigue ~USD 70/sem hasta el 30-sep (decisión #3); Google Core $3/día</td><td>Boris · Bianca clasifica</td><td class="ev">30-sep: calificadas registradas / gasto; Google: falsador del 25-sep</td><td>30-sep</td><td class="ev">paid-pulse · gads-pulse</td></tr>
+    <tr><th scope="row">T13</th><td>Marca</td><td>1 pieza publicada/mes desde el riel de artículos, sin reclamar leads</td><td>Bianca · René</td><td class="ev">0 consultas orgánicas al 31-dic → sigue como brand care</td><td>31-dic</td><td class="ev">campaign-article · campaign-social · AG-003</td></tr>
+    <tr><th scope="row">T14</th><td>Distribución</td><td>Renovación de The Muse decidida</td><td>Iru propone · Boris decide</td><td class="ev">n/a</td><td>19-sep</td><td class="ev"></td></tr>
+    <tr><th scope="row">T15</th><td>Sistema</td><td>Destapar las 3 lecturas ciegas: Cloudbeds sync + serie mensual · iru@ · pantalla de 10 s para conversion kind=lead</td><td>TK-000 · Iru credencial · Bianca/Iru escriben</td><td class="ev">al 30-sep alguna de las 3 sigue a mano</td><td>30-sep</td><td class="ev">crm · desk · venture.yaml</td></tr>
+    <tr><th scope="row">T16</th><td>Sistema</td><td>Revisión del portfolio: cada campaña viva se defiende o se rediseña; las que queden llevan target (mandato #10)</td><td>Boris decide · AG-011 propone · TK-000 mide</td><td class="ev">n/a — es una revisión con fecha</td><td>23-sep</td><td class="ev">ronda · joint-operating-room</td></tr>
+    <tr><th scope="row">T17</th><td>Sistema</td><td>Primer ciclo del lazo: calificar las 2 propuestas del 10-sep</td><td>TK-000 en la ronda</td><td class="ev">no calificadas al 30-sep</td><td>30-sep</td><td class="ev">ronda · paid-pulse</td></tr>
+    <tr><th scope="row">T18</th><td>Sistema</td><td>Evals: 3 suites plugin-eval + golden pulso + set TPR/TNR lectora fría</td><td>TK-000</td><td class="ev">un skill nuevo antes que su eval</td><td>30-sep</td><td class="ev">claude plugin eval</td></tr></tbody>
   </table></div>
-  <p class="entry">La unidad honesta y fea, y cómo se movió: <strong>$7,47 por email provable por ledger</strong>
-  (48 emails únicos contra $358,61, as_of 18-ago) — era <b>$18,79</b> el 14-ago con 10 emails. Sigue siendo caro
-  porque casi todo el gasto acumulado fue construir e investigar, no enviar; el número que importa para proyectar es
-  el <b>marginal de un día ya andando</b>: <b>$1,28 por email entregado de punta a punta</b> el 17-ago
-  <span class="chip obs">obs</span>. Los dos son reales y miden cosas distintas — el primero incluye la construcción
-  de la máquina, el segundo es lo que cuesta usarla.</p>
-  <div class="callout"><p><strong>Lo que el 17-ago le enseñó al presupuesto:</strong> un día de máquina completa
-  cuesta <b>$129</b>, del cual <b>$25,88 se quemaron sin producir nada</b> (corridas que no dejaron artefacto —
-  el número que duele, medido en <code>costo-maquina-2026-08-17</code>). Cuatro días así en una semana son ~$500,
-  que es el sobre MENSUAL entero de LLM que declara la tabla C. <b>La proyección de $150–350/mes se escribió antes
-  de que la máquina corriera un solo día completo y ya no la sostiene ningún dato.</b> Rehacerla necesita 3–5 días
-  de operación real, no una estimación nueva hoy: la palanca sigue siendo la cadencia de prospect-research
-  ($13,85/run), no el envío ($1,94/run).</p></div>
-  <div class="callout"><p><strong>El hecho estructural que sí necesita decisión:</strong> los runs facturan hoy contra
-  la <strong>cuota interactiva de Claude</strong> — no hay línea de gasto separada, y esto ya mató la máquina 5 días
-  (25-jul → reset). Separar el runtime a un <code>ANTHROPIC_API_KEY</code> propio convierte «la máquina se apagó» en
-  una factura visible y predecible. La proyección de Fase 1–2 que vivía acá ($150–350/mes) queda <b>retirada</b>
-  por el párrafo de arriba: agosto va en $293,49 al día 18 y el ritmo real proyecta ≈$505/mes; se rehace con 3–5 días de operación medidos. Lo que no cambia: el volumen multiplica los runs baratos ($1,94/run), no los caros.</p></div>
-
-  <div class="objtitle">B · SaaS e infra — lo que cada fase pide</div>
-  <div class="tblwrap"><table>
-    <tr><th>Cuándo</th><th>Qué</th><th>Costo</th><th>Estado · evidencia</th></tr>
-    <tr><td>Hoy · Fase 1</td><td>Infra nueva</td><td><b>$0</b> <span class="chip dec">dec</span></td><td class="ev">regla de la fase: convierte desconocidos en números sin plata nueva</td></tr>
-    <tr><td>Hoy · heredado</td><td>Stack aprobado en mayo (Airtable · Instantly · ManyChat · Clay)</td><td>$382/mes <span class="chip unk">¿se paga hoy?</span></td><td class="ev">aprobado 02-may (pulse.md) — si sigue activo, el Tier 2 recompra Instantly/Clay: <b>Boris confirma antes de #1 para no pagar doble</b></td></tr>
-    <tr><td>Fase 2 · sep+</td><td><b>Stack Tier 2</b> = decisión #1: Apollo $99 · Instantly/Smartlead $37–97 · buzones+dominios · verificación ~$0,003/check (~$15/mes a 5k) · Clay $149+ SOLO si Apollo queda corto (medido)</td><td><b>$400–650/mes</b> + ~$300/año dominios <span class="chip dec">dec #1</span></td><td class="ev">V0.3 §05 · «se paga con una décima de un cierre»</td></tr>
-    <tr><td>Fase 3 · sep–oct</td><td>ManyChat (inbound C3)</td><td>$15–45/mes <span class="chip est">est</span></td><td class="ev">tras Business Verification (#6)</td></tr>
-    <tr><td>Fase 3 · sep–oct</td><td>Marketplaces con fee fijo: RetreatVenues Premium €349/año · RetreatHub €199/año (BookRetreats/Guru: solo comisión 14–15%)</td><td>~$50/mes amortizado <span class="chip est">est</span></td><td class="ev">agency-approach-2026-08-16.md · el fee fijo se prueba 1 año y se mide en consultas/30d</td></tr>
-    <tr><td>Fase 3 · sep+</td><td><b>Meta ads C3</b> (click-to-Direct)</td><td><b>$500–1.000/mes</b> <span class="chip dec">dec</span></td><td class="ev">dentro del envelope ya fijado por Boris ($500–1.500/mes) · primeros $500–1k CREAN el benchmark de costo/conversación — hoy <span class="chip unk">unk</span></td></tr>
-    <tr><td>Fase 4 · oct+</td><td>Klaviyo (nurture, jamás frío)</td><td>$0–45/mes <span class="chip est">est</span></td><td class="ev">escape a ~$200/mes → Brevo/Omnisend</td></tr>
-    <tr><td>Ya se paga · sin registro</td><td>Google Workspace · VPS · Cloudflare · GitHub · dominios actuales · suscripción Claude</td><td><span class="chip unk">desconocido</span></td><td class="ev">ningún doc de los dos repos registra estos montos — <b>pendiente: una línea cada uno, con factura</b>; jamás se anotan como $0</td></tr>
-  </table></div>
-  <p class="entry">Números muertos, para que nadie los reviva: el plan paid v1.0 ($95–220/día) está
-  <strong>superado</strong> por el envelope actual; el stack de mayo queda absorbido o cancelado cuando #1 se firme.</p>
-
-  <div class="objtitle">C · El sobre mensual — lo que Boris aprueba</div>
-  <div class="tblwrap"><table>
-    <tr><th>Familia</th><th>ago</th><th>sep</th><th>oct</th><th>nov–dic</th><th>Etiqueta</th></tr>
-    <tr><td>LLM runs (plataforma)</td><td><b>$293</b> (1–18)</td><td colspan="3">$150–350/mes <span class="chip dec">ya superado por el ritmo real</span></td><td class="ev"><span class="chip obs">obs</span> ago · el resto <b>ya no es estimación defendible</b>: a ritmo de agosto la línea cierra ≈$505/mes. Se rehace con 3–5 días de operación medidos, no antes</td></tr>
-    <tr><td>Stack Tier 2</td><td>$0</td><td colspan="3">$400–650/mes (+$300 única vez, dominios)</td><td class="ev"><span class="chip dec">dec #1</span></td></tr>
-    <tr><td>Inbound + marketplaces fee fijo</td><td>$0</td><td colspan="3">$15–90/mes</td><td class="ev"><span class="chip est">est</span></td></tr>
-    <tr><td>Meta ads (C3)</td><td>$0</td><td colspan="3">$500–1.000/mes (techo envelope: $1.500)</td><td class="ev"><span class="chip dec">dec</span> · arranca con #6 resuelta</td></tr>
-    <tr><td>Infra ya pagada (Workspace · VPS · Claude…)</td><td colspan="4"><span class="chip unk">desconocido</span> — se suma cuando tenga factura</td><td class="ev">nunca $0</td></tr>
-    <tr><td><b>Total nuevo</b></td><td><b>~$293</b></td><td colspan="3"><b>$1.265–2.245/mes → ~$5,4–9,3k sep–dic</b> (incl. los $300 de dominios, una vez) — subió desde
-    $1.065–2.090 el 18-ago, y lo único que se movió fue la banda de LLM ($350–505 en vez de $150–350), medida</td><td class="ev">vs piso de revenue <b>$202k</b> (45 noches a rack $4.500) · vs UN cierre promedio $27k</td></tr>
-  </table></div>
-  <div class="callout n"><p><strong>Lo que esta sección le pide a Boris, en una línea:</strong> aprobar el sobre
-  sep–dic de <b>~$1,3–2,2k/mes</b> — que en la práctica son dos firmas que ya están en la cola (<b>#1</b> stack
-  Tier 2 · el presupuesto Meta ya vive dentro de su propio envelope) — más <b>confirmar el stack de mayo</b> (¿se
-  paga?) y <b>decidir la cuenta API</b> del runtime. Nada de esto gasta solo: cada alta y cada campaña sigue siendo
-  un press.</p></div>
-
-  <div class="objtitle">D · Las guardas — por qué esto no puede gastar de más</div>
-  <ul>
-    <li><strong>Techo duro en código:</strong> ninguna mutación de presupuesto de ads puede superar <b>$500/día</b>
-    (<code>AD_BUDGET_CEILING_CENTS</code>, shared/src/paid.ts) — ya rechazó un intento de $600 en vivo. Horario
-    hábil para subas, <code>spend_ads_api</code> jamás automático: cada suba es una firma.</li>
-    <li><strong>El LLM no tiene guarda equivalente:</strong> <code>--n</code> no es un presupuesto y <code>--dry-run</code>
-    no es más barato. La palanca real es la cadencia de prospect-research ($12,90/run) — se decide por brief, no corre
-    sola (R-001 muerto; no hay scheduler durable).</li>
-    <li><strong>Paid observado hasta hoy:</strong> $208,65 total · 1.829 impresiones · 56 clicks ·
-    <b>0 conversiones atribuidas en el CRM</b> <span class="chip obs">obs</span> (la columna de conversiones de la
-    plataforma viene <span class="chip unk">sin dato</span>, que no es lo mismo que cero) — por eso C4 tiene kill el
-    30-sep y C3 nace con su benchmark en <span class="chip unk">desconocido</span> hasta medirlo. as_of 18-ago.</li>
-  </ul>
+  <div class="tcards">
+    <article class="tcard">
+      <h3><span class="mid">T1</span> Pedido Q4/Q1 datado a los 12 partners firmados/HOT</h3>
+      <div class="kv"><span>quién</span><b>Iru · Bianca prepara</b></div>
+      <div class="kv"><span>vence</span><b>15-oct</b></div>
+      <div class="kv"><span>la mata</span><span>&lt;2 consultas datadas oct–mar al 15-oct</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T2</span> Cerrar Sotavento y Tito (octubre)</h3>
+      <div class="kv"><span>quién</span><b>Iru</b></div>
+      <div class="kv"><span>vence</span><b>25-sep</b></div>
+      <div class="kv"><span>la mata</span><span>sin respuesta formal tras 2 toques</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T3</span> 2 listings en directorios de venues <span class="chip none">espera decisión #6</span></h3>
+      <div class="kv"><span>quién</span><b>Bianca · Iru · Boris publica</b></div>
+      <div class="kv"><span>vence</span><b>30-nov</b></div>
+      <div class="kv"><span>la mata</span><span>&lt;5 consultas/30 d por listing a los 60 d</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T5</span> Directo y retornante: carta a las 7 estadías + red</h3>
+      <div class="kv"><span>quién</span><b>Bianca · Boris/Iru firman</b></div>
+      <div class="kv"><span>vence</span><b>31-oct</b></div>
+      <div class="kv"><span>la mata</span><span>0 respuestas de 7</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T6</span> Nombrar y decidir la cláusula que Icon e ILWYV rechazan</h3>
+      <div class="kv"><span>quién</span><b>Daiana · Iru trae el texto</b></div>
+      <div class="kv"><span>vence</span><b>26-sep</b></div>
+      <div class="kv"><span>la mata</span><span>n/a — bloqueo</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T7</span> Máquina fría sostenida 100–150/sem, 3 rieles, tope 40, sin subir</h3>
+      <div class="kv"><span>quién</span><b>Boris presiona · Bianca prepara</b></div>
+      <div class="kv"><span>vence</span><b>31-ene</b></div>
+      <div class="kv"><span>la mata</span><span>interesadas &lt;4/sem × 3 sem, o rebote &gt;3% en un ledger</span></div>
+      <div class="kv"><span>línea</span><span>Creación curada</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T8</span> prospect-research sólo con pozo &lt;1 semana</h3>
+      <div class="kv"><span>quién</span><b>Boris</b></div>
+      <div class="kv"><span>vence</span><b>permanente</b></div>
+      <div class="kv"><span>la mata</span><span>una corrida con pozo ≥1 semana</span></div>
+      <div class="kv"><span>línea</span><span>Creación curada</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T9</span> iru@ entra al barrido; Iru decide y contesta (sin SLA)</h3>
+      <div class="kv"><span>quién</span><b>Iru presta credencial · TK-000 construye</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>filas nuevas Pipeline &lt;3/sem × 3 sem → «interested» es ruido</span></div>
+      <div class="kv"><span>línea</span><span>Creación curada</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T10</span> Deuda de canon: outreach-templates V1.1 + pasada de corpus</h3>
+      <div class="kv"><span>quién</span><b>Boris · René</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>una décima ola con HARD por la misma regla</span></div>
+      <div class="kv"><span>línea</span><span>Creación curada</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T11</span> IG DM manual, tope 15/día, nunca automatizado</h3>
+      <div class="kv"><span>quién</span><b>Bianca</b></div>
+      <div class="kv"><span>vence</span><b>15-oct</b></div>
+      <div class="kv"><span>la mata</span><span>0 respuestas a los 150 DMs (73/0 hoy)</span></div>
+      <div class="kv"><span>línea</span><span>Creación curada</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T12</span> Meta sigue ~USD 70/sem hasta el 30-sep (decisión #3); Google Core $3/día</h3>
+      <div class="kv"><span>quién</span><b>Boris · Bianca clasifica</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>30-sep: calificadas registradas / gasto; Google: falsador del 25-sep</span></div>
+      <div class="kv"><span>línea</span><span>Captura con volumen</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T13</span> 1 pieza publicada/mes desde el riel de artículos, sin reclamar leads</h3>
+      <div class="kv"><span>quién</span><b>Bianca · René</b></div>
+      <div class="kv"><span>vence</span><b>31-dic</b></div>
+      <div class="kv"><span>la mata</span><span>0 consultas orgánicas al 31-dic → sigue como brand care</span></div>
+      <div class="kv"><span>línea</span><span>Marca</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T14</span> Renovación de The Muse decidida</h3>
+      <div class="kv"><span>quién</span><b>Iru propone · Boris decide</b></div>
+      <div class="kv"><span>vence</span><b>19-sep</b></div>
+      <div class="kv"><span>la mata</span><span>n/a</span></div>
+      <div class="kv"><span>línea</span><span>Distribución</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T15</span> Destapar las 3 lecturas ciegas: Cloudbeds sync + serie mensual · iru@ · pantalla de 10 s para conversion kind=lead</h3>
+      <div class="kv"><span>quién</span><b>TK-000 · Iru credencial · Bianca/Iru escriben</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>al 30-sep alguna de las 3 sigue a mano</span></div>
+      <div class="kv"><span>línea</span><span>Sistema</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T16</span> Revisión del portfolio: cada campaña viva se defiende o se rediseña; las que queden llevan target (mandato #10)</h3>
+      <div class="kv"><span>quién</span><b>Boris decide · AG-011 propone · TK-000 mide</b></div>
+      <div class="kv"><span>vence</span><b>23-sep</b></div>
+      <div class="kv"><span>la mata</span><span>n/a — es una revisión con fecha</span></div>
+      <div class="kv"><span>línea</span><span>Sistema</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T17</span> Primer ciclo del lazo: calificar las 2 propuestas del 10-sep</h3>
+      <div class="kv"><span>quién</span><b>TK-000 en la ronda</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>no calificadas al 30-sep</span></div>
+      <div class="kv"><span>línea</span><span>Sistema</span></div>
+    </article>
+    <article class="tcard">
+      <h3><span class="mid">T18</span> Evals: 3 suites plugin-eval + golden pulso + set TPR/TNR lectora fría</h3>
+      <div class="kv"><span>quién</span><b>TK-000</b></div>
+      <div class="kv"><span>vence</span><b>30-sep</b></div>
+      <div class="kv"><span>la mata</span><span>un skill nuevo antes que su eval</span></div>
+      <div class="kv"><span>línea</span><span>Sistema</span></div>
+    </article></div>
 </section>
 
 <section id="decisiones">
-  <div class="eyebrow">§06</div>
-  <h2>Cola de decisiones de Boris <span class="badge warn">4 / 10 resueltas</span></h2>
-  <p>Detalle completo (recomendación · consecuencia de no actuar · evidencia · superficie de aprobación):
-  <code>docs/boris-decision-queue-2026-08-15.md</code>. Los veredictos se registran en <code>/decisions</code>.</p>
+  <div class="eyebrow">§04</div>
+  <h2>Decisiones de Boris — 12 sep 2026</h2>
   <div class="tblwrap"><table>
-    <tr><th>#</th><th>Decisión</th><th>Recomendado</th><th>Estado</th><th>Vence</th></tr>
-    <tr><td>1</td><td>Stack Tier 2 (~$400–650/mes)</td><td>—</td><td><span class="badge ok">decidida 16-ago: SIN COMPRA</span></td><td class="ev">solo verificación de direcciones (~$0.003/check) · se revisa únicamente si el TAM contado supera ~10k (estrategia-tres-motores)</td></tr>
-    <tr><td>2</td><td>Cap 20→30/40 con rampa</td><td>sí, condicionado a W18</td><td><span class="badge ok">decidida 16-ago</span></td><td class="ev">Boris: 30–40/día L·M·X·V con Lara · registrada en skill + rails + cockpit · freno bounce >3% → ≤20</td></tr>
-    <tr><td>3</td><td>Fam trips (noches muertas sep–oct)</td><td>lista ya (Iru) · cada invitación es un press</td><td><span class="badge warn">pendiente</span></td><td class="ev">lista: esta semana</td></tr>
-    <tr><td>4</td><td>Dueño de Loco Luxury</td><td>Iru, esta semana</td><td><span class="badge warn">pendiente</span></td><td class="ev">esta semana</td></tr>
-    <tr><td>5</td><td>Net rate card</td><td>—</td><td><span class="badge ok">resuelta 16-ago como hipótesis</span></td><td class="ev">rate-card-hypothesis-2026-08-16 · Iru negocia con ella en mano · inclusiones: Iru/Pato confirman antes de la primera llamada a agencia</td></tr>
-    <tr><td>6</td><td>Meta Business Verification</td><td>agendar los 30 min con Gastón</td><td><span class="badge warn">pendiente</span></td><td class="ev">antes del 28-ago</td></tr>
-    <tr><td>7</td><td>Primer paquete de build (W18·W6·W13·W9)</td><td>aprobar como está spec'd</td><td><span class="badge ok">aprobada 17-ago · W18 vivo</span></td><td class="ev">Boris, en chat ("dalo por verificado") · <b>W18 mergeado el 17-ago (<code>0d70d39</code>) y probado en vivo el 18</b> — su auto-pausa frenó retreats-a sola (§00) · W6·W13·W9 siguen sin construir · pendiente de W18: conectar el verificador de direcciones (~$0,003/check), que hoy no tiene proveedor</td></tr>
-    <tr><td>8</td><td>Definición de quality lead</td><td>aprobar</td><td><span class="badge warn">pendiente</span></td><td class="ev">esta semana</td></tr>
-    <tr><td>9</td><td>Brief de operador file-only primero</td><td>sí — scheduler recién tras ≥5 leídos</td><td><span class="badge warn">pendiente</span></td><td class="ev">no bloquea</td></tr>
-    <tr><td>10</td><td>Marketplaces: ¿ya o tras 2 semanas de data?</td><td>C6 ya · C5 al resolverse #5 · no esperan al email</td><td><span class="badge warn">pendiente</span></td><td class="ev">C6: esta semana</td></tr>
-    <tr><td>11–13</td><td>Housekeeping: índice del brain · punteros GTM-360 viejos · publicar V0.3 en stack</td><td>11–12 hechos · 13 press de Boris</td><td><span class="badge ok">11–12 hechos</span> <span class="badge warn">13 pendiente</span></td><td class="ev">17-ago TK-000: README del brain nombra lead-machine + marca superseded los dos GTM 360; punteros corregidos en workforce-model, JOR seat y gtm-council (sin commitear). #13 sigue siendo press de Boris</td></tr>
+    <thead><tr><th scope="col">#</th><th scope="col">veredicto</th><th scope="col">qué queda</th></tr></thead>
+    <tbody><tr><th scope="row">#1</th><td><span class="badge ok">acepto</span></td><td>quality lead = definición 15-ago, piso 3 · techo 5/sem, ≥1 de 3 en ventana</td></tr><tr><th scope="row">#2</th><td><span class="badge ">veto parcial</span></td><td>Iru decide y contesta, sin SLA; iru@ al barrido</td></tr><tr><th scope="row">#3</th><td><span class="badge ">veto</span></td><td>Meta sigue ~USD 70/sem hasta el 30-sep; se decide con 6 semanas</td></tr><tr><th scope="row">#4</th><td><span class="badge ok">cerrada</span></td><td>Loco Luxury vende por sus canales; no gestionamos campaña; Iru contacto; lo que traen se registra como acuerdo</td></tr><tr><th scope="row">#5</th><td><span class="badge ok">acepto</span></td><td>Meta Business Verification esta semana, Boris</td></tr><tr><th scope="row">#6</th><td><span class="badge ">no sé → defer</span></td><td>brief de una página con fecha</td></tr><tr><th scope="row">#7</th><td><span class="badge ok">acepto</span></td><td>sin fam trips hasta Q1-27</td></tr><tr><th scope="row">#8</th><td><span class="badge ok">acepto</span></td><td>brief file-only</td></tr><tr><th scope="row">#9</th><td><span class="badge ok">acepto</span></td><td>no se publica V0.3</td></tr><tr><th scope="row">#10</th><td><span class="badge ">mandato</span></td><td>target a las 5, pero revisar el portfolio: «ahora tiene que ser profesional»</td></tr><tr><th scope="row">#11</th><td><span class="badge ok">acepto</span></td><td>aceptar el hueco en el headline; revisar 15-oct</td></tr><tr><th scope="row">#12</th><td><span class="badge ok">cerrada por los hechos</span></td><td>los dos commits están en origin/main</td></tr><tr><th scope="row">#13</th><td><span class="badge ok">acepto</span></td><td>máximo 21 noches/mes</td></tr><tr><th scope="row">#14</th><td><span class="badge ok">acepto</span></td><td>noches; ventana a 31-mar-2027; el 75 pasa a techo de ago–dic</td></tr></tbody>
   </table></div>
 </section>
 
-<section id="desconocidos">
-  <div class="eyebrow">§07</div>
-  <h2>Los cinco desconocidos</h2>
-  <p>Las primeras cuatro semanas existen para convertir estos cinco en números. Ninguno se renderiza como 0 en
-  ninguna pantalla, y ninguno se estima sin decir que es una estimación.</p>
-  <div class="tblwrap"><table>
-    <tr><th>Dato</th><th>Estado</th><th>Qué lo convierte en número</th></tr>
-    <tr><td>Tasa reply → cierre</td><td><span class="chip unk">desconocido</span> <span class="ev">— 0 de 16 warm avanzó jamás; 10–15% es supuesto declarado</span></td><td class="ev">trabajar los 16 Warm (decisión #4) + primeras QL de la matriz</td></tr>
-    <tr><td>Yield de marketplaces (villa y retreat)</td><td><span class="chip unk">desconocido</span> <span class="ev">— jamás hubo un listado</span></td><td class="ev">listar (decisiones #5 y #10) y contar consultas/30d</td></tr>
-    <tr><td>Reply rate de IG DM</td><td><span class="chip unk">desconocido</span> <span class="ev">— 0 DMs enviados en la historia</span></td><td class="ev">trabajar las colas ya armadas (15/día, humano)</td></tr>
-    <tr><td>Meta spend → consultas</td><td><span class="chip unk">desconocido</span> <span class="ev">— cero filas en metrics_daily</span></td><td class="ev">Business Verification (#6) + W15</td></tr>
-    <tr><td>Audiencia de @chamana.live</td><td><span class="chip unk">desconocido</span></td><td class="ev">primeros flujos inbound (Fase 3)</td></tr>
+<section id="fuente">
+  <div class="eyebrow">§05</div>
+  <h2>De dónde sale esto y qué lo reemplaza</h2>
+  <div class="tblwrap"><table class="prov">
+    <thead><tr><th scope="col">qué</th><th scope="col">dónde</th></tr></thead>
+    <tbody>
+    <tr><th scope="row">Plan de récord</th><td><code>lc-chaman/docs/plan-v0.4-la-chamana-2026-09.md</code></td></tr>
+    <tr><th scope="row">Acta de la mesa</th><td><code>synergy-toolkit/docs/jor-v0.4-2026-09-12.md</code></td></tr>
+    <tr><th scope="row">Insumos medidos</th><td><code>synergy-toolkit/reports/v0.4-inputs-2026-09-12.md</code></td></tr>
+    <tr><th scope="row">Reemplaza</th><td><code>north-star-economic-floor-2026-08-10.md</code><br><code>stage-goal-targets-decision-2026-08-10.md</code><br><code>lead-machine-q3q4-2026-08-15.html</code><br><code>../synergy-toolkit/docs/lead-machine-tracker.html (v2.0, 19-ago — ahora se GENERA de este archivo)</code><br><code>../synergy-toolkit/content/roadmap-diciembre/</code><br><code>../synergy-toolkit/docs/propuesta-3-5-leads-por-semana-2026-09-09.md (absorbida)</code></td></tr>
+    <tr><th scope="row">Marco que sobrevive</th><td><code>../synergy-toolkit/docs/estrategia-tres-motores-2026-08-16.md (sobrevive como marco; se cita, no se re-argumenta)</code></td></tr>
+    </tbody>
   </table></div>
 </section>
 
 <footer>
-  <p><b>Reglas que esta página obedece:</b> el gate no se saltea — ninguna herramienta envía lo que un humano no armó y
-  presseó · DM frío automatizado: nunca · ningún email sale sin verificar — hasta que W18 exista, eso significa selección
-  solo-verificados a mano + freno bounce &gt;3% → ≤20 (la mitigación interina escrita con la que Boris adelantó el cap a 40 el 16-ago) · ningún mensaje escala sin ganar su celda de test · cada canal nace con su kill escrito ·
-  chat/Claude/Slack proponen, jamás envían, gastan, publican ni mutan CRM · unknown nunca se renderiza como 0.</p>
-  <p><b>Cómo se actualiza:</b> la fuente canónica es <code>synergy-toolkit/docs/lead-machine-tracker.html</code>; la
-  sesión que cambia un estado edita ese archivo (estado + evidencia + as_of), sube la versión y
-  <code>data-updated</code>, y republica sobre el mismo path en <code>BothVentures/stack</code> verificando el SHA-256
-  del byte publicado. Esta página es una copia: si contradice a los repos, ganan los repos.</p>
-  <p><b>Versiones:</b> online vive <b>una sola versión — esta</b>. Las viejas no quedan publicadas: un deprecado
-  accesible confunde más de lo que archiva. El archivo histórico es git — el fuente versiona en
-  <code>synergy-toolkit</code> y cada publicación queda como commit en <code>BothVentures/stack</code>, así que
-  cualquier versión anterior se recupera con <code>git log</code> / <code>git show</code>, nunca con un URL. El link
-  de esta página no cambia nunca.</p>
-  <p><b>Fuentes:</b> <code>../lc-chaman/docs/lead-machine-q3q4-2026-08-15.html</code> V0.3 (15-ago) ·
-  <code>docs/jor-lead-machine-2026-08-15.md</code> + los cinco contratos que produjo (15-ago) ·
-  <code>.synergy/venture.yaml</code> (as_of 10-ago) · tabla <code>gate_item</code> y <code>npm run doctor</code>
-  (18-ago) · §00: los ledgers <code>*.sent.jsonl</code> + la tabla <code>suppression</code>, generados por
-  <code>scripts/week-strip.mjs</code> (as_of 18-ago 15:02Z) · §05: <code>runs.cost_usd</code> en
-  <code>data/synergy.db</code> y la reconciliación paid de <code>metrics_daily</code> (as_of 18-ago), más el
-  registro <code>docs/costo-maquina-2026-08-17.md</code>. Tema: <b>oxide-desk</b> — el theme de las documentaciones de GTM de La Chamana (<code>docs/design/theme-oxide-desk.md</code>), compuesto de la paleta y tipografía <b>Blue Earth</b> (marca La Chamana, admin lc-art-director AG-001) sobre arquitectura <b>Factory Glass</b>. Ninguno de los dos se forkea. El modo claro es una derivación pendiente de revisión del art director.</p>
-  <p>Propone. No aprieta nada, no envía nada, no gasta nada. La primera press es de Boris.</p>
+  <p class="body"><b>Reglas que esta página obedece:</b> propone, no aprieta; ninguna herramienta envía lo que un humano no armó y presseó ·
+  DM frío automatizado: nunca · unknown nunca se renderiza como 0 · toda meta lleva piso y techo.</p>
+  <p class="body"><b>Cómo se actualiza:</b> se edita el plan de récord, se corre el generador y se republica sobre el mismo path. Generado 2026-09-12 desde <code>docs/plan-v0.4-la-chamana-2026-09.md</code>.</p>
 </footer>
 
 </div>
 <script>
 (function(){
-  // Frescura: la página se declara vieja sola.
   var iso = document.body.getAttribute('data-updated');
   var days = Math.floor((Date.now() - new Date(iso + 'T12:00:00Z').getTime()) / 86400000);
   if (days < 0) days = 0;
   var el = document.getElementById('freshness');
   if (days === 0) { el.textContent = 'actualizado hoy'; el.className = 'badge ok'; }
   else if (days <= 7) { el.textContent = 'actualizado hace ' + days + (days === 1 ? ' día' : ' días'); el.className = 'badge ok'; }
-  else { el.textContent = 'sin actualizar hace ' + days + ' días — verificar contra los repos'; el.className = 'badge crit'; }
-
-  // Nav de fases: abre una y cierra las otras; los toggles individuales siguen libres.
-  var navs = Array.prototype.slice.call(document.querySelectorAll('.pnav'));
-  var phases = Array.prototype.slice.call(document.querySelectorAll('.phase'));
-  function sync(){
-    navs.forEach(function(n){
-      var t = document.getElementById(n.getAttribute('data-target'));
-      n.setAttribute('aria-expanded', t && t.open ? 'true' : 'false');
-    });
-  }
-  navs.forEach(function(n){
-    n.addEventListener('click', function(){
-      var target = document.getElementById(n.getAttribute('data-target'));
-      if (!target) return;
-      var wasOpen = target.open;
-      phases.forEach(function(p){ p.open = false; });
-      target.open = !wasOpen;
-      if (target.open) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      sync();
-    });
-  });
-  phases.forEach(function(p){ p.addEventListener('toggle', sync); });
-  document.getElementById('expand-all').addEventListener('click', function(){
-    phases.forEach(function(p){ p.open = true; }); sync();
-  });
-  document.getElementById('collapse-all').addEventListener('click', function(){
-    phases.forEach(function(p){ p.open = false; }); sync();
-  });
-  // Un deep-link (#fase-2) abre su fase.
-  if (location.hash) {
-    var h = document.querySelector(location.hash);
-    if (h && h.classList.contains('phase')) { h.open = true; sync(); }
-  }
+  else { el.textContent = 'sin actualizar hace ' + days + ' días — verificar contra el plan'; el.className = 'badge crit'; }
+  if (matchMedia('(min-width:760px)').matches) document.querySelectorAll('details.branch').forEach(function(d){ d.open = true; });
 })();
 </script>
 </body>
