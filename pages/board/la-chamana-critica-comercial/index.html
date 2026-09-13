@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>La crítica comercial de V0.4</title>
+<meta name="brand-register" content="oxide-desk">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDEDE5;--ink:#1C2934;--t1:rgba(28,41,52,.94);--t2:rgba(28,41,52,.72);--t3:rgba(68,77,81,.66);--edge:rgba(28,41,52,.14);--edge-soft:rgba(28,41,52,.08);--glass:rgba(253,252,248,.72);--glass2:rgba(247,246,240,.9);--hot:#994100;--hot-bg:rgba(153,65,0,.10);--hot-bd:rgba(153,65,0,.32);--olive:#5f6149;--olive-bg:rgba(128,130,102,.14);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--mono:'JetBrains Mono','SF Mono',Menlo,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#111C24;--ink:#EDEDE5;--t1:rgba(237,237,229,.94);--t2:rgba(171,185,188,.88);--t3:rgba(171,185,188,.6);--edge:rgba(171,185,188,.18);--edge-soft:rgba(171,185,188,.09);--glass:rgba(26,40,48,.55);--glass2:rgba(19,29,37,.7);--hot:#F4CBA6;--hot-bg:rgba(153,65,0,.22);--hot-bd:rgba(153,65,0,.42);--olive:#D7E2B5;--olive-bg:rgba(128,130,102,.18)}}
+:root[data-theme="dark"]{--bg:#111C24;--ink:#EDEDE5;--t1:rgba(237,237,229,.94);--t2:rgba(171,185,188,.88);--t3:rgba(171,185,188,.6);--edge:rgba(171,185,188,.18);--edge-soft:rgba(171,185,188,.09);--glass:rgba(26,40,48,.55);--glass2:rgba(19,29,37,.7);--hot:#F4CBA6;--hot-bg:rgba(153,65,0,.22);--hot-bd:rgba(153,65,0,.42);--olive:#D7E2B5;--olive-bg:rgba(128,130,102,.18)}
+html{background:var(--bg)} body{background:var(--bg);color:var(--t1);font-family:var(--sans);font-size:15px;line-height:1.6;padding-block:28px 60px;padding-inline:clamp(16px,4vw,40px)}
+.wrap{max-width:900px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--t3)}
+h1{font-family:var(--serif);font-weight:300;font-size:clamp(38px,6vw,64px);line-height:1;margin:8px 0 12px;text-wrap:balance} h1 b{font-weight:600}
+.lede{font-size:16px;color:var(--t2);max-width:72ch;margin:0 0 18px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px} .badge{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;padding:4px 9px;border:1px solid var(--edge);border-radius:999px;color:var(--t2)} .badge.hot{border-color:var(--hot-bd);background:var(--hot-bg);color:var(--hot)}
+nav.toc{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--edge-soft);padding:8px 0;margin:0 0 22px;display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase} nav.toc a{color:var(--t3);text-decoration:none;border-bottom:1px solid var(--edge-soft)} nav.toc a:hover,nav.toc a:focus-visible{color:var(--t1);border-color:var(--edge)}
+.key{background:var(--glass2);border:1px solid var(--hot-bd);border-radius:14px;padding:18px 22px;margin:0 0 28px} .key .eyebrow{color:var(--hot);margin-bottom:8px} .key ol{margin:0;padding-left:20px} .key li{margin:6px 0;color:var(--t1)} .key li b{color:var(--t1)}
+.frase{font-family:var(--serif);font-size:22px;line-height:1.3;color:var(--t1);margin:16px 0 0;max-width:62ch}
+section.doc{margin:0 0 34px}
+.md h2{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.15;margin:34px 0 10px;padding-top:18px;border-top:1px solid var(--edge);text-wrap:balance}
+.md h3{font-family:var(--serif);font-weight:600;font-size:21px;line-height:1.25;margin:26px 0 8px;text-wrap:balance}
+.md h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin:20px 0 6px}
+.md p,.md li{max-width:75ch;color:var(--t1)} .md li{margin:4px 0} .md strong{font-weight:600} .md em{color:var(--t2)}
+.md code{font-family:var(--mono);font-size:12px;background:var(--glass);border:1px solid var(--edge-soft);border-radius:4px;padding:1px 5px;color:var(--t2)}
+.md blockquote{border-left:2px solid var(--hot-bd);margin:12px 0;padding:4px 14px;color:var(--t2);font-style:italic}
+.md hr{border:0;border-top:1px solid var(--edge-soft);margin:26px 0}
+.md table{border-collapse:collapse;width:100%;font-size:13px;margin:12px 0} .md thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--edge)} .md td{padding:8px 10px;border-bottom:1px solid var(--edge-soft);vertical-align:top;color:var(--t1)} .md td:first-child{color:var(--t1);font-weight:500}
+.tblwrap{overflow-x:auto;max-width:100%} .md table{min-width:560px}
+details.lens{border:1px solid var(--edge-soft);border-radius:14px;background:var(--glass);margin:18px 0;padding:0 20px} details.lens>summary{cursor:pointer;list-style:none;padding:16px 0;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap} details.lens>summary::-webkit-details-marker{display:none} details.lens>summary .name{font-family:var(--serif);font-size:24px;font-weight:500} details.lens>summary .note{color:var(--t3);font-size:13px} details.lens>summary::after{content:'▾';margin-left:auto;color:var(--t3)} details.lens[open]>summary::after{content:'▴'} details.lens>summary:focus-visible{outline:2px solid var(--hot-bd);outline-offset:3px;border-radius:8px}
+details.lens .md h2:first-of-type{border-top:0;padding-top:0;margin-top:6px}
+.unk{font-family:var(--mono);font-size:10.5px;border:1px solid var(--edge);border-radius:999px;padding:1px 7px;color:var(--t3)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--edge-soft);color:var(--t3);font-size:12.5px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<div class="eyebrow">La Chamana · registro fechado · corrida nocturna 12 → 13 sep 2026</div>
+<h1>La crítica comercial <b>de V0.4</b></h1>
+<p class="lede">Pensar mejor el negocio antes de organizar canales. Tres lecturas sobre las fuentes — no sobre la página que se generó — y una síntesis con tres apuestas comerciales a marzo 2027. Conversación y análisis: no modifica el plan ni publica nada.</p>
+<div class="badges"><span class="badge hot">INTERNO — caja, runway y nombres de prospectos</span><span class="badge">TK-000 · AG-011 · estratega externo</span><span class="badge">toda cifra: observado · estimado · desconocido</span></div>
+<nav class="toc" aria-label="Secciones"><a href="#resumen">Si sólo leés esto</a><a href="#A">A · Mi lectura</a><a href="#D">D · Síntesis y apuestas</a><a href="#B">B · AG-011</a><a href="#C">C · Estratega externo</a></nav>
+
+<div class="key" id="resumen"><div class="eyebrow">Si sólo leés esto</div>
+<ol>
+<li><b>Tu crítica era correcta.</b> El plan es una asignación de canales con calendario; sus cuatro «huecos» (oferta, precio, competencia, segunda ola) <em>son</em> la estrategia. Las tres lecturas coinciden.</li>
+<li><b>La casa vende a corto plazo.</b> Sus 7 reservas reales: mediana <b>11 días</b>, p25 1 día (Cloudbeds). El plan asumió 2–7 meses desde 4 consultas de partners. Son dos relojes; el plan sólo tiene tácticas para el lento — y ninguna de corto plazo.</li>
+<li><b>La casa ya está en el mercado abierto, a cinco precios.</b> Airbnb Luxe (9 meses, <b>1 reseña</b>, con el paquete de 4 suites de abril vivo), VRBO desde 4.286, Casita 3.999–5.998 con chef y mayordomo, Maya Luxe 6.850–10.960 con chef aparte, un agregador a 2.800. La paridad está rota en la calle; nadie gobierna las fichas.</li>
+<li><b>La oferta no existe como artefacto.</b> Qué incluye el rack lleva cinco meses en <span class="unk">desconocido</span>; los 9 acuerdos son permisos, no canillas; los 11 Lost «dejaron de responder» y nadie les preguntó por qué.</li>
+<li><b>Tres apuestas distintas</b> (§D.3): <b>A</b> la casa a diez días (toca la caja de octubre) · <b>B</b> el grupo que ya está vendido, por persona y con seña (caja de noviembre) · <b>C</b> la ocasión que más paga por noche (requiere reabrir eventos). Todas necesitan antes UNA decisión: qué incluye el rack, neto por canal, depósitos — Daiana e Iru, esta semana.</li>
+<li><b>Quality leads honestos:</b> 2,5–4,5 por semana si se abren las fuentes que no están en el plan; hoy ~1–1,5. El cuello no es generar: es no tener nada escrito que entregar cuando el lead contesta.</li>
+</ol>
+<p class="frase">Organizar el plan por compradores con relojes distintos, darles una oferta escrita que hoy no existe, gobernar las cinco fichas que ya venden la casa sin nosotros, y medir octubre en caja, no en noches a marzo.</p>
+</div>
+
+<section class="doc" id="A"><div class="md" data-src="A"></div></section>
+<section class="doc" id="D"><div class="md" data-src="D"></div></section>
+<details class="lens" id="B"><summary><span class="name">B · AG-011 lc-cmo</span><span class="note">runner, cerebro · verbatim · co-escribió el plan y acá lo critica sin defenderlo</span></summary><div class="md" data-src="B"></div></details>
+<details class="lens" id="C"><summary><span class="name">C · Estratega de hospitalidad independiente</span><span class="note">subagente sin contexto de la casa · verbatim · no sabía que la casa ya está en OTAs</span></summary><div class="md" data-src="C"></div></details>
+
+<footer>Fuente: <code>synergy-toolkit/reports/v0.4-critica-comercial-2026-09-13.md</code> · nada de esto entró al plan; entra por tu press. Costo de la noche: AG-011 USD 1,93 + un subagente + verificación web de las fichas públicas.</footer>
+</div>
+<script type="text/markdown" id="md-A">## A · Mi lectura, releyendo las fuentes
+
+### A.0 · Lo que encontré en las fuentes que el plan no recogió — cuatro hechos que cambian el cuadro
+
+1. **La casa vende a corto plazo, no a largo.** Cloudbeds, las 9 reservas de su vida (`lead-time-observado-2026-08-14.md`, AG-011):
+   7 no canceladas con lead time **1 · 1 · 4 · 11 · 21 · 25 · 57 días — mediana 11 días** `observado`. Junio (67%, el «mes ideal»)
+   fue 20 noches, **12 de ellas un bloque reservado con un día de anticipación por WhatsApp — por alguien del propio equipo**. La única
+   reserva a largo plazo de la historia (330 días, semana festiva de diciembre) **se canceló**. Ese brief pedía re-basar el reloj del
+   plan y concluía: *«el riesgo no es llegar tarde; es que no tenemos mecanismo para capturar demanda de corto plazo»*. **El plan V0.4
+   dice lo contrario** («lead time 2–7 meses; nov–mar se vende sep–ene») y su reloj sale de **cuatro consultas** de agosto que vinieron
+   por partners y líderes — el otro tipo de comprador. Las dos cosas son ciertas a la vez: quien PLANEA un grupo compra a meses;
+   quien RESERVÓ esta casa compró a días. El plan sólo tiene tácticas para el primero.
+2. **El gate screen del 14-ago ya nombró a los únicos compradores alcanzables en ventana, y ninguno está en el plan.** Rodajes y
+   sesiones editoriales (p25 1 semana), last-minute (mediana 1 semana), overflow de hoteles/villas de Tulum con un grupo de 12–16 que
+   no pueden alojar (mediana 2 semanas), plataformas de locaciones (Peerspace/Giggster: primera consulta en <1 semana), desks de
+   aviación privada (75% de charters a <2 semanas), marketplaces de offsites (TeamOut/Offsite.com). Todo `estimado` de fuentes
+   externas; **cero medido en la casa** — pero es exactamente el perfil que la casa SÍ vendió.
+3. **La oferta lleva cinco meses sin cerrarse, y hoy conviven cuatro gramáticas de precio.** Abril (`la-chamana.md` 21-abr, decisión
+   de equipo): «paquetes 4/8 habitaciones + USD 650 por habitación adicional + 3 noches mín + markup 2× + tax incluido; villa base
+   “pelada” + upsell de chef/concierge/wellness post-cierre». Julio (dossier de retiros): **sólo casa entera, USD 4.500/noche**, sin
+   decir qué incluye. Agosto (rate card hipótesis): netos por canal −15/−25/−30%, hoja por persona (USD 281 pp/noche a 16) — hipótesis.
+   Hoy (weekly 31-ago): Iru ofrece a Rinzler **USD 1.000/habitación/fin de semana** (por habitación, no por casa) y un Last Minute al
+   12%. El open item «CRITICAL / pricing gate — cada semana de ambigüedad = canales bloqueados» está escrito desde **abril** y sigue
+   abierto. El rate card dice: *«la primera pregunta de una agencia después del precio es qué incluye»* — `desconocido`.
+4. **Airbnb, VRBO y Booking figuraban como canales VIVOS el 27-abr** (`context/lc-gtm-flow.md` §Stage 4, ✓✓✓), y el marco de marca
+   dice «nunca acceso abierto». Si siguen vivos, qué produjeron y si las reservas «Default Travel Agent» de Cloudbeds vienen de ahí:
+   **`desconocido`** — nadie lo miró. Es la pregunta más barata y más importante de toda esta noche: **¿cómo nos encontraron las 7
+   personas que sí reservaron?**
+
+
+### A.0.5 · Lo que el mercado ve hoy de La Chamana (verificado en vivo esta noche, 13-sep 00:xx UTC-3)
+
+La casa **está publicada en al menos ocho superficies públicas**, con **cinco precios distintos para la misma noche** y dos modelos de
+producto contradictorios. Nadie en el plan lo sabía; el marco de marca dice «nunca acceso abierto».
+
+| superficie | precio publicado | producto / inclusiones | dato de tracción |
+|---|---|---|---|
+| **Airbnb** (rooms/1511107487168150678) | sin precio sin fechas | **«Airbnb Luxe»** · «This rate includes exclusive private access… for up to 8 guests and the opening of 4 suites; additional suites at additional fees» → **el paquete 4/8 habitaciones de abril está VIVO acá** · experiencias/chef/spa se eligen antes de llegar (no dice si incluidos) | «9 months hosting» · **1 reseña, 5,0** |
+| **VRBO** (11943489) | **«desde USD 4.286 con impuestos y tasas»** (muestra 10-oct-2026) | 8 hab / 16 pax · sin inclusiones de servicio listadas | sin reseñas visibles |
+| **Casita Homes / CasitaMX** (partner Won 28-ago) | **USD 3.999 low (may–sep) · 4.599 shoulder (oct–nov, abr) · 5.399 high (ene–mar) · 5.998 peak (Navidad, Pascua, Thanksgiving)** · mín 3 noches | 16 pax · «wellness rituals, spa, beach club, **private chef**, housekeeping, childcare, **in-villa butler**» incluidos | — |
+| **Maya Luxe** (agencia, en conversación) | **USD 6.850 low · 8.220 mid · 9.590 high · 10.960 festivo** · mín 3–7 noches | concierge, villa manager 8 h, desayuno, housekeeping, transporte a playa, seguridad 12 h, traslado aeropuerto, 1 experiencia holística · **chef a costo extra** | — |
+| **Bedroom Villas** (agregador, ficha poco fiable: la ubica «oceanfront») | **USD 2.800/noche «8-bedroom configuration, taxes & fees not included»** (snippet de búsqueda; la página no muestra precio) · página: mín **1 noche** | 8 hab / 16 pax · chef, butler, spa «included in the nightly rate» | — |
+| **Booking.com · Agoda · Travelocity/Expedia** | no legibles esta noche (bloqueo) | listadas como «Luxury Private Villa» | — |
+| **Exceptional Villas** (partner Won 4-sep) | 403 esta noche; snippet: «premium services in your nightly rate: … private chef … in villa butler» | — | — |
+| **El plan / dossier / rate card** | **USD 4.500 rack «pelado»**, 3 noches, chef/ceremonia/concierge DESPUÉS de reservar | casa entera o nada | — |
+
+**Lo que esto dice del negocio, antes que del plan:**
+- **No hay una oferta; hay cinco.** 2.800 / 3.999–5.998 / 4.286 / 4.500 / 6.850–10.960 por la misma noche, con inclusiones que van de «pelado» a «chef y mayordomo incluidos». Un partner que hace due diligence de 10 minutos encuentra esto. La regla de paridad del rate card («un solo rack en todas partes») está rota en el mercado, no en el papel.
+- **La decisión de abril (4/8 habitaciones, extras por suite) sí se ejecutó — en Airbnb**, y en el mismo momento el dossier y el plan dicen «casa entera o nada». Los dos modelos conviven sin que nadie lo haya decidido.
+- **La casa lleva 9 meses en Airbnb Luxe con UNA reseña.** En la superficie donde el comprador de corto plazo (mediana 11 días) busca, la casa es invisible por falta de prueba social, no por falta de listing. Esto es probablemente la explicación más simple de por qué el Last Minute de agosto vendió 0: bajar el precio en una ficha sin reseñas no mueve una decisión de USD 13.500.
+- **Maya Luxe la vende al doble** con menos incluido (chef extra). O Maya Luxe sabe algo del comprador que nosotros no (que a USD 9.590 con concierge se vende), o la ficha no vende nada. **Es la pregunta comercial más valiosa de la noche y se responde con un mail a Maya Luxe.**
+- **«Nunca acceso abierto» ya no es una decisión vigente en los hechos**: la casa está en Airbnb, VRBO, Booking, Agoda, Expedia. La decisión real pendiente es la contraria: **cómo se gestionan** esas fichas (precio único, reseñas, calendario, mínimo) — porque hoy se gestionan solas.
+
+### A.1 · Qué es qué en el plan V0.4 (autocrítica)
+
+| capa | qué hay en el plan | veredicto |
+|---|---|---|
+| **Estrategia** (quién compra, para qué, qué le vendemos, por qué nosotros, cómo se hace viable) | Una frase de dirección («noches de distribución firmada + demanda directa; frío sostenido; pauta compra evidencia; destapar lecturas») y tres «motores» | **Es una asignación de canales con una tesis de secuencia, no una estrategia comercial.** No dice qué compra el comprador (casa entera vs habitaciones vs asiento), a qué precio, con qué incluido, ni por qué elegiría esta casa y no Villa La Semilla con chef incluido y ocho agencias. Los «tres motores» son tres mecanismos de acceso — Boris tiene razón. |
+| **Táctica comercial** | Pedido Q4/Q1 a los 12 partners · cerrar Sotavento/Tito · carta a 7 estadías pasadas · cláusula de contrato · The Muse · 2 listings | Sólido y concreto — **pero T1, la táctica central, pide un grupo sin decir qué se le ofrece al partner** (comisión, neto, material, condiciones). Es una táctica sin oferta. |
+| **Operación / medición / mantenimiento** | iru@ al barrido · Cloudbeds sync · pantalla de leads · evals · tracker generado · guardas · ronda · lazo · kill/park de 69 skills | **~60% del plan por volumen.** Necesario para que el sistema no mienta; **no mueve una sola noche**. El plan los presenta con el mismo peso que las tácticas. |
+
+**Conclusiones presentadas con más seguridad de la que permite la evidencia:**
+
+- **«Lead time 2–7 meses; lo generado después de enero cae después de marzo».** n=4 consultas, contradicho por n=7 reservas
+  (mediana 11 días). Generalización indebida — y con consecuencia: descartó septiembre y diciembre de antemano.
+- **«La pauta compra evidencia, no noches».** Es una **hipótesis razonable convertida en axioma**. Lo demostrado es más chico: 20
+  conversaciones/semana que nadie clasifica, 0 calificadas registradas, 0 reservas atribuidas en la vida. No sabemos si la pauta no
+  trae noches o si nadie mira lo que trae. Y si el comprador real de la casa es de corto plazo, la pauta es precisamente el
+  mecanismo que puede alcanzarlo en dos semanas — la conclusión podría estar al revés.
+- **Piso 36 · techo 96.** Son **escenarios**, no objetivos ni pronósticos: piso = «el pipeline datable cerrando la mitad» (cierre
+  observado 0 de 4; la mitad es un supuesto), techo = «todo cierra + los partners traen Q4/Q1 + temporada alta al nivel de junio»
+  (junio fue un amigo con un día de aviso). **Ninguna casilla tiene un mecanismo comercial escrito que la produzca**; septiembre 0 es
+  una rendición, no un pronóstico — con mediana de 11 días, septiembre se vende en septiembre.
+- **Los kill-dates.** 10 de 17 vencen entre el 19 y el 30-sep (las otras siete: T1 y T11 15-oct · T5 31-oct · T3 30-nov · T13 31-dic · T7 31-ene · T8 permanente). T1 se mata si al 15-oct hay <2 consultas datadas de 12 partners —
+  con 3 semanas de ciclo desde el pedido, y el pedido aún no hecho. T11 (DM) se mata a los 150 con 0/73: muestra decente. T7 se mata
+  con «<4 interesadas/sem × 3 sem»: razonable. Pero la mayoría mide **actividad**, no venta, y ninguna considera la calidad de la
+  ejecución (una carta mal escrita a 7 ex-huéspedes con 0 respuestas mata la táctica, no la carta).
+- **«Demanda directa que ya convierte».** En los datos es red del equipo + WhatsApp + un agente. Es una fuente real y barata; **no es un
+  mercado** y no escala pidiéndole «una vuelta» a 7 personas.
+
+### A.2 · La crítica de Boris: ¿organizamos canales antes de resolver quién / para qué / qué / por qué / cómo?
+
+**Es correcta, y las fuentes lo confirman en vez de contradecirla.** Las respuestas NO existen cerradas en ningún lado:
+
+- **Quién y para qué**: el marco de abril nombra cuatro segmentos narrativos (creadores, HNWI, lujo consciente, corporate). El gate screen
+  los descompone en 20 públicos con reloj. La casa vendió a un quinto tipo: gente cercana, a días. **Nadie cruzó las tres cosas.**
+- **Qué le ofrecemos**: cuatro gramáticas de precio vivas (A.0.3); inclusiones `desconocido`; casa entera vs habitaciones sin decidir
+  desde abril (la decisión de abril decía 4/8 habitaciones; julio la borró sin registro).
+- **Por qué nosotros**: el posicionamiento existe como voz (santuario arquitectónico, «no hotel», ritual) — es narrativa, no argumento
+  comercial. Contra Villa La Semilla (14–16 pax, USD 1.595–4.860 con chef, 8 agencias) o Amansala (por persona, comps al líder, depósito
+  2.500) no hay una línea que diga por qué pagar 4.500 «pelado». El dossier de retiros sí tiene el mejor argumento de la casa: *«la casa
+  la sostienen tus primeros cinco asientos; el resto es tuyo»* — margen del líder explícito. Es el único «por qué nosotros» con
+  aritmética, y sólo sirve para un comprador (el líder de retiro), que compra a 6–12 meses.
+- **Cómo hacemos viable la venta**: los 11 Lost del CRM «dejaron de responder» (Logan, Loco Luxury ×2, Luxury Haciendas ×2, Victor
+  Carballo 35k, Sofia Caleri 35k, Gaia 13k…). **No sabemos si fue precio, fechas, confianza, material o velocidad de respuesta.** No hay
+  una sola razón de pérdida registrada. Eso es el hueco más caro del negocio: 181k `observado` en Lost sin diagnóstico.
+
+Lo que sí quedó mal representado: el dossier de retiros y el rate card contienen más «oferta» de la que el plan muestra; y la
+decisión de abril sobre paquetes por habitación existe y el plan la ignora (probablemente porque julio la ignoró primero).
+
+### A.3 · ¿Por qué 9 partners firmados dan 0 noches? (hipótesis, con lo que hay)
+
+| hipótesis | evidencia a favor | en contra | qué la falsaría en 2 semanas |
+|---|---|---|---|
+| **Tiempo** — firmados hace 2–15 días; el partner necesita un pedido que coincida | 9 Won entre 28-ago y 10-sep `observado` | Sotavento produjo consulta datada a los 11 días de un mail frío | preguntar a los 9 cuántos pedidos de grupo 12–16 reciben por mes (`desconocido` hoy) |
+| **Oferta** — no saben qué venden: inclusiones, neto, condiciones | inclusiones `desconocido` desde abril; 4 gramáticas de precio; «material enviado» sin saber cuál | — | mandar UNA hoja de una página (rack, neto, qué incluye, 3 noches, depósito) y contar quién responde con una fecha |
+| **Incentivo** — 10% sobre 13.500 = 1.350 por mucho trabajo | Evoke 10%; Elevate 10%; el mercado de villas paga 10–15%, DMC 20–40% neto | Villa La Semilla vende a 10–15% con 8 agencias | ofrecer a 3 partners un neto −25% en oct–nov (tarifa DMC de la hipótesis B) y ver si aparece un grupo |
+| **Condiciones / cláusula** — dos contrapartes independientes (Icon, ILWYV) rechazan la misma cláusula no escrita | weekly 31-ago §8b | — | escribir la cláusula, preguntar a Icon qué la hizo tachar |
+| **Material** — sin fotos profesionales, sin fact sheet, sin calendario visible | kit del agency-approach: inventario de fotos `desconocido` | RM Oceanfront ya publicó la casa con lo que hay | pedir a 3 partners qué les falta para proponerla |
+| **Seguimiento** — nadie les pidió nada después de firmar | T1 existe porque el pedido no se hizo; The Muse venció sin decisión | — | el pedido Q4/Q1 en sí es el test |
+| **Demanda** — sus clientes no piden Tulum ahora (sep–oct trough, seguridad, sargazo) | ocupación hotelera 2025 49%; Loco Luxury perdió un grupo «cambiaron de destino» | Sotavento/Maya Luxe trajo 16 pax para octubre | los 9 partners contestan «cuántos pedidos de Tulum tuviste este mes» |
+
+Mi orden: **oferta → tiempo → incentivo → seguimiento**. La cláusula y el material son fricciones reales pero no explican el cero.
+
+### A.4 · Las preguntas puntuales de Boris
+
+- **¿Generalizamos ciclos desde pocas consultas?** Sí. n=4 consultas → «2–7 meses» en el plan, contra n=7 reservas con mediana 11
+  días. Además la mezcla: partners/líderes compran a meses; huéspedes finales que ya decidieron viajar compran a días. Son dos relojes
+  y el plan tiene uno.
+- **¿«La pauta compra evidencia, no noches»?** Hipótesis convertida en axioma (A.1). Lo honesto: `desconocido` porque nadie
+  clasifica. Y potencialmente al revés.
+- **¿Distintos compradores cierran en plazos distintos?** Sí, y las fuentes lo dicen desde agosto: rodajes y last-minute en 1 semana;
+  overflow en 2; offsite corporativo en 13–17 semanas; retiro de bienestar en 26–52. El plan colapsa todo en «2–7 meses».
+- **¿Pisos y techos: objetivos, escenarios o pronósticos?** Escenarios sin mecanismo (A.1). Para que sean objetivos hace falta decir
+  QUÉ venta produce cada casilla; para que sean pronósticos hace falta una tasa de cierre observada (0 de 4 hoy).
+- **¿Confundimos mejoras del sistema con avances del negocio?** Sí: ~60% del plan por volumen de texto y 4 de las 17 tácticas (T15–T18) son sistema. Necesarias,
+  pero un plan comercial debería tenerlas en un anexo, no en el cuerpo — como ya pasó con la página.
+- **¿Los kills consideran muestra, ciclo y ejecución?** Parcialmente (A.1). Riesgo concreto: matar T1 el 15-oct por un pedido que se
+  hizo el 19-sep sin oferta.
+- **¿Dejamos septiembre y diciembre fuera demasiado pronto?** **Septiembre: sí, por segmento.** Con mediana 11 días, el comprador de
+  corto plazo (overflow, last-minute, rodaje, jet desk, red) puede llenar noches de septiembre en septiembre; el plan lo rindió antes
+  de intentar — «piso 0» es una rendición sin mecanismo. Para líderes de retiro y offsites, septiembre sí está perdido (`estimado`
+  externo, coherente). **Diciembre: a medias.** La semana festiva probablemente sí (60% del inventario caribeño festivo se reserva
+  6–8 meses antes, `estimado`; la única reserva festiva a largo plazo de la casa se canceló), pero 1–15 dic y los huecos entre grupos
+  se venden en noviembre–diciembre si hay un mecanismo de corto plazo. Loco Luxury 16–21 dic está en pipeline. Sin optimismo forzado:
+  **no hay evidencia propia de que diciembre esté perdido; hay evidencia externa de que la semana festiva lo está.**
+
+### A.5 · Decisiones tuyas que respeto — y las que creo que hay que reconsiderar (no las cambio)
+
+Respetadas: sin compra de listas · tope 40 · sin automatizar DMs · sin fam trips hasta Q1-27 · Meta sigue hasta el 30-sep · Loco
+Luxury vende por sus canales · quality lead = def. 15-ago · noches como unidad · ventana a marzo.
+
+**A reconsiderar, con la evidencia que lo reabre:**
+1. **«Nunca acceso abierto» (marco de marca, abril) vs una casa cuyos compradores reales llegan a 11 días y OTAs que figuraban vivas.**
+   Antes de decidir: averiguar si Airbnb/VRBO/Booking siguen vivos y qué produjeron. Si la respuesta es «nada», la regla no cuesta;
+   si es «las reservas reales», la regla está matando el único canal que vende.
+2. **Casa entera o nada, 3 noches, USD 4.500 «pelado».** La decisión de abril (4/8 habitaciones, USD 650 por habitación extra,
+   upsell post-cierre) fue del equipo y desapareció sin registro; Iru ya vende por habitación a Rinzler. Hay que decidir UNA gramática
+   y escribir qué incluye — es la decisión #5 (rate card) que quedó «hipótesis» el 16-ago y sigue abierta el 13-sep.
+3. **«La pauta compra evidencia, no noches» como premisa del escenario A/B.** Si el comprador es de corto plazo, la pregunta correcta
+   para el 30-sep no es «¿hay calificadas?» sino «¿alguien clasificó las 120 conversaciones y qué pedían?».
+4. **Last Minute con descuento (Iru) — no reabrir sin diagnóstico**: agosto dio 0 con la casa disponible. El problema no fue el precio;
+   fue que nadie de corto plazo la vio. Descontar sin superficie de captura es regalar margen a nadie.
+
+---
+
+
+</script>
+<script type="text/markdown" id="md-D">## D · Síntesis — lo que yo firmo después de las tres lecturas
+
+### D.1 · Dónde coinciden las tres lecturas (y por eso lo doy por sólido)
+
+1. **El plan es una asignación de canales con calendario, no una estrategia comercial.** Los cuatro «huecos» que declara (oferta al partner, precio, competencia, segunda ola) SON la estrategia. Tenías razón.
+2. **Hay dos relojes y el plan eligió el que excusaba el cero de septiembre.** Quien PLANEA un grupo compra a meses; quien RESERVÓ esta casa compró a días (mediana 11, n=7). El plan no tiene una sola táctica de corto plazo, cuatro semanas después de que un brief propio lo pidiera.
+3. **La oferta no existe como artefacto entregable.** Qué incluye el rack lleva cinco meses en `desconocido`; por casa vs por persona nunca se decidió; no hay hoja para el partner ni para el líder. Los 9 acuerdos son permisos, no canillas. Los 11 Lost «se apagaron» porque un número solo no sobrevive a ser reenviado — hipótesis, pero la mejor sostenida, y la más barata de comprobar: **preguntarles**.
+4. **La pauta «compra evidencia» que nadie lee.** Es una decisión disfrazada de hallazgo; respetada hasta el 30-sep, pero su condición (clasificar) no se cumple.
+5. **Pisos y techos son recortes del pipeline de Iru, no objetivos**: dic 6 se apoya en una venta que decidimos no gestionar; feb 3 no tiene mecanismo; septiembre 0 es una rendición.
+6. **La función objetivo de octubre–noviembre es caja, no noches a marzo**, si el runway de Iru (2,09 meses al 31-ago, no verificado) es real. El plan a siete meses no lo integró.
+
+### D.2 · Lo que yo agrego y ninguna lente tenía: la casa YA está en el mercado abierto, cinco veces, a cinco precios
+
+Esto (A.0.5) cambia dos discusiones de las lentes:
+- La «decisión a reconsiderar» sobre acceso abierto **no es si listar; es que ya estamos listados y nadie gobierna las fichas**. Airbnb Luxe con 4 suites como base (el modelo de abril, vivo), VRBO a 4.286, Casita a 3.999–5.998 con chef y mayordomo incluidos, Maya Luxe a 6.850–10.960 con chef aparte, un agregador a 2.800. La paridad del rate card está rota en la calle. Un partner serio lo ve en diez minutos y entiende que la casa no tiene dueño comercial.
+- **9 meses en Airbnb Luxe, 1 reseña.** En la superficie donde busca el comprador de 11 días, la casa es invisible por falta de prueba social. Esa es la explicación más simple del Last Minute de agosto en cero, y del silencio de los Lost: no hay nada afuera que confirme que esto existe y funciona.
+
+### D.3 · Las apuestas, consolidadas (tres genuinamente distintas — las dos lentes llegaron a las mismas por caminos distintos)
+
+| | **A · La casa a diez días** | **B · El grupo que ya está vendido (por persona, con seña)** | **C · La ocasión que más paga por noche** |
+|---|---|---|---|
+| **Comprador · ocasión** | Un grupo que YA viene a Tulum en ≤21 días y necesita casa entera: overflow de villa/hotel, amigos/cumpleaños 8–12, rodaje ≤16, jet desk, agente con pedido urgente | Líder de retiro / planner / concierge con cohorte vendida para 15-dic → 31-mar (One Yoga House, Evoke, Isaac, Pei: los 4 ítems más grandes del pipeline) | Anfitrión de un hito con fecha fija (40/50, aniversario, boda íntima ≤16 durmiendo) vía planners de Tulum; y producción editorial |
+| **Oferta** | Casa entera, 3 noches (2 para rodaje), **precio con inclusiones escritas, calendario visible, respuesta en <2 h**. Se vende certeza, no descuento | **Hoja por persona**: USD 281–562 pp/noche a 16–8, comps 1/10, depósito 30/40/30, margen del líder explícito, site visit como cierre, **solución escrita para 17–20 pax** (villa vecina / suites aliadas) | Casa + **paquete de celebración con precio cerrado** (temazcal, cacao, cena en el Templo, staff de evento); 15% al planner sobre alojamiento |
+| **Por qué nosotros** | A 10 días, una casa de 8 suites privada y disponible es escasa; las beach villas están en 8 agencias y se llenan primero; los hoteles no hacen buyout a 16 con 10 días | Imiloa/Amansala piden mínimos de 20–28; el líder de 12–16 es chico para ellos y grande para un Airbnb; temazcal propio; **pp por debajo de Imiloa (499)** — con inclusiones por escribir | Un lugar donde **pasa algo** (ritual adentro) y 8 suites iguales; el planner necesita venues que no sean el hotel de siempre |
+| **Evidencia a favor** | mediana 11 d, p25 1 (`obs`); gate screen CLOCK 0,90–0,95 (`est`); Nabilu llegó por agente a 11 d (`obs`) | 2 mails fríos → 88,7k consultas (`obs`); pipeline hot/warm es este comprador; el dossier ya dice «tu margen queda tuyo» | Victor 35,5k · Sofia 34,8k · Tori boda 39,8k — tickets 2–3× el rack (`obs`); guía Tulum 2026: 25–32k por 2 noches (`est`) |
+| **En contra / supuestos** | Last Minute ago → 0 (`obs`, pero sin mecanismo); sep–oct piso del mercado; **supone** que el ecosistema local deriva | 0 de 4 cerrados (`obs`); ciclo 6–18 meses; enero con dos grupos pisándose; **supone** que el bloqueo es la oferta y no el cierre | Victor y Sofia se perdieron por silencio; `celebration-takeovers` pausada; Brand_Safety bloquea; **supone** que René acepta «celebración curada» |
+| **Acceso** | 25–30 managers/concierges/planners de Tulum a mano (Iru), fee de referido 10%; hoja «próximas 6 semanas» los lunes; **gobernar las fichas que ya existen** (una tarifa, reseñas, calendario) | Los 4 leads vivos esta semana; los 12 partners con la misma hoja; el frío existente con la hoja adjunta desde el primer mail | 20 planners de Tulum/Riviera + 10 agencias de lujo MX, por teléfono/WhatsApp; una ficha de 1 página |
+| **Cierre** | `obs` 1–11 días | consulta en días (`obs`); reserva `desconocido` | cumpleaños 3–8 semanas (`est`); bodas 6–12 meses (`est`) |
+| **Economía** | 13,5k por bloque; **caja en ≤2 semanas — la única apuesta que toca octubre**; margen `desconocido` (no hay costo por noche en disco) | 13,5–64k por grupo; **30% de seña ahora = 4–20k en oct–nov sin regalar tarifa**; un grupo bloquea la casa | 25–35k por evento de 3 noches (`est`); margen del paquete `desconocido`; seña 30% → caja en 30–45 d |
+| **Prueba ≤14 días** | 25 conversaciones + hoja de disponibilidad + fichas gobernadas. **Éxito ≥2 pedidos datados con llegada ≤30 d; cero = el ecosistema no nos ve como overflow** | Hoja por persona + overflow a los 4 hot y 6 warm con fecha límite de seña. **Éxito ≥1 seña o ≥2 holds formales; cero con 10 leads calientes = el problema es precio o casa (el §9 del plan tenía razón)** | Ficha + 20 planners por teléfono. **Éxito ≥3 con fecha concreta para cotizar; cero = el nicho no existe a nuestro precio sin playa** |
+| **Qué dejamos** | Descuentos last-minute; pedirle noches de octubre a la máquina fría | Prospección nueva (T8) dos semanas; cotizar por casa a quien piensa por persona | Tratar «celebración» como riesgo de marca sin definirla |
+
+**Lo que las tres necesitan antes que nada — y es UNA decisión, no trabajo:** qué incluye el rack, en una página, con neto por canal y escalera de depósitos (Daiana + Iru). Sin eso A, B y C son papel, igual que las 17 tácticas.
+
+**Prioridad si hay que elegir:** A y B a la vez (relojes distintos, no compiten por la casa: A vende sep–nov, B vende ene–mar y trae seña ahora). C es casi gratis pero requiere reabrir la vertical de eventos — decisión tuya, no la tomo.
+
+### D.4 · Quality leads — la cuenta honesta a 8 semanas
+
+Las dos lentes coinciden en el orden y en el total: **2,5–4,5 leads calificados por semana si se abren las fuentes nuevas; ~1–1,5 hoy, todos de la máquina fría.** El piso de 3 sólo se alcanza con lo que NO está en el plan: (1) los 12–15 partners **con una hoja** (58% de las consultas de una semana salieron de 2 de ellos), (2) reabrir los 11 Lost y las 27 filas B2B con una pregunta — la única fuente que además produce diagnóstico, (3) el ecosistema de Tulum a mano (overflow, planners, concierges), (4) el frío existente sin subir volumen pero con la hoja adjunta, (5) superficies gratuitas de descubrimiento (locaciones, venues, offsites — la decisión #6 «no sé» ya costó más en diferimiento que el test), (6) las 7 estadías + red, (7) pauta último hasta que alguien clasifique. **El cuello no es generar: es que ninguna fuente tiene una oferta escrita que entregar cuando el lead contesta.**
+
+### D.5 · Decisiones tuyas — respetadas, y las que creo que hay que reabrir (no las cambio)
+
+| decisión | qué la reabre | mi recomendación (vos decidís) |
+|---|---|---|
+| «Nunca acceso abierto» (marco de marca) | La casa YA está en Airbnb/VRBO/Booking/Agoda a 5 precios (A.0.5) | No es «si»; es **gobernar**: una tarifa, inclusiones iguales, calendario, reseñas. Y separar: plataformas de locación/venues SÍ (curadas); OTAs de viajero — decidir con datos de qué produjeron |
+| Casa entera o nada, 3 noches, 4.500 «pelado» | Abril decidió 4/8 hab y está vivo en Airbnb; Iru vende por habitación a Rinzler; Bedroom Villas dice 1 noche | Una gramática por temporada, escrita: casa entera en alta; «casa abierta» sep–nov con reglas (2 noches producción, por habitación sólo vía partner) |
+| Rate card = hipótesis (#5, 16-ago) | Todo lo de arriba | **Es LA decisión de esta semana.** Inclusiones + neto por canal + depósitos, una página, Daiana e Iru |
+| «Pauta compra evidencia, no noches» → Meta hasta 30-sep | Nadie clasifica; el comprador real es de corto plazo — la pauta es justo el mecanismo que llega en 2 semanas | Respetar el 30-sep; **cambiar la pregunta**: no «¿hay calificadas?» sino «¿qué pedían las 120 conversaciones?» — Bianca las clasifica esta semana o la decisión del 30 es ciega |
+| Sin fam trips hasta Q1-27 | Sep–oct están vacíos; el site visit a un líder con 16 cotizados es el cierre, no un fam trip (Imiloa lo valúa en 10k) | Mantener la regla para influencers/agencias sin lead; **permitir la visita de cierre** a quien seña o firma hold |
+| #6 listings «no sé» | El test cuesta 2 h y USD 0; el defer ya costó más | Sí a locaciones/venues (Peerspace, Retreats&Venues); brief de una página no hace falta — la decisión cabe en una línea |
+| Vertical de eventos cerrada (Brand_Safety) | Boda 39,8k viva en pipeline; 25–32k por 2 noches en Tulum | Definir qué celebración SÍ (íntima, ≤16 durmiendo, sin producción pesada) antes de seguir cargando leads que la regla prohíbe |
+| Loco Luxury vende por sus canales (#4) | Dic piso 6 se apoya en ellos | Respetada. Sólo: una llamada preguntando qué material les falta no es gestionar su campaña |
+| Last Minute 12% (propuesta de Iru) | Agosto dio 0 sin diagnóstico; sin reseñas ni calendario, el precio no mueve una decisión de 13,5k | **No repetir**; reemplazar por certeza (A) |
+
+### D.6 · Qué cambiaría yo de la dirección, en una frase
+
+**Organizar el plan por compradores con relojes distintos — el que tiene fecha en tres semanas y el grupo que llena la temporada alta — darle a cada uno una oferta escrita que hoy no existe, gobernar las cinco fichas públicas que ya venden la casa sin nosotros, y medir octubre en caja, no en noches a marzo.**
+
+### D.7 · Lo que NO hice, a propósito
+No modifiqué el plan, la página ni `venture.yaml`; no publiqué; no despaché nada al equipo; no abrí una sola tarea de sistema. Este archivo es un registro fechado para que lo leas y decidas. Si algo de acá entra al plan, entra por tu press — y la primera decisión que lo desbloquea todo es de Daiana e Iru, no del sistema.
+
+*Costo de la noche: AG-011 USD 1,93 · un subagente estratega · WebSearch/WebFetch para verificar las fichas públicas. Fuentes leídas: las citadas en §A; ninguna afirmación se apoya en la página que yo generé.*
+</script>
+<script type="text/markdown" id="md-B">## B · AG-011 lc-cmo (runner, cerebro; USD 1,93) — verbatim
+
+*Co-escribió la mitad comercial de V0.4 el 12-sep y acá la critica sin defenderla. Tampoco vio A.0.5 (las fichas públicas): su lectura del «acceso abierto» es previa a ese dato.*
+
+He leído el paquete y las fuentes (gate screen, lead-time observado, weekly de Iru, rate-card, research villa-market, agency-approach, y el plan V0.4 completo).
+
+---
+
+## 1 · Autocrítica del plan V0.4
+
+**Qué es qué, contando el propio documento.**
+
+- **Estrategia de verdad:** una sola frase — «las noches salen de la distribución firmada y de la demanda directa; el frío alimenta 2027». Eso es una **asignación de recursos entre canales**, no una estrategia comercial: no dice quién compra, en qué ocasión, qué le vendemos ni por qué nos elige. El propio plan lo admite: 4 de sus 6 `gaps` (oferta al partner, precio/oferta, competencia, segunda ola) **son la estrategia**, y están delegados a fechas futuras.
+- **Táctica comercial:** T1, T2, T5, T6, T14 (pedidos y cierres de distribución), T7/T8/T11 (frío), T12 (pauta). Nueve de diecisiete.
+- **Operación/medición:** T15, T16, T17, T18 + los cinco objetivos L2 + los kill-dates + el tracker generado. Ocho de diecisiete, y de los cinco objetivos L2 **tres tienen fuente `desconocido`** (quality leads, trustmarks, y parcialmente distribución activa). Un plan cuyos objetivos de marketing no se pueden leer no se puede calificar; eso no es un defecto de ejecución, es la mitad del documento.
+
+**Conclusiones con más seguridad de la que permite la evidencia:**
+
+1. **El reloj «2–7 meses» es la peor.** Sale de 4 consultas de agosto y contradice la única medición `observado` que este negocio tiene (n=7, mediana 11 días, p25 1, dos reservas a 1 día — `lead-time-observado-2026-08-14.md`). Peor que la contradicción: es un **error de categoría**. Hay dos relojes por comprador — el grupo de 16–20 pax intermediado compra a meses; el comprador que llenó esta casa hasta hoy compró a días. El plan eligió el reloj que vuelve excusable el 0 de septiembre. Y su consecuencia está escrita: **el plan no tiene una sola táctica de corto plazo**, exactamente el riesgo que el brief del 14-ago nombró («no tenemos mecanismo para capturar demanda de corto plazo»). Cuatro semanas después, sigue sin existir.
+2. **«La pauta compra evidencia, no noches»: decisión disfrazada de hallazgo.** Las 0 calificadas de Meta **no están medidas en cero — no están medidas** (nadie clasifica; el propio plan lo dice). Google a USD 3/día, 46 clicks/30 d, no es un test de nada: está por debajo de cualquier señal detectable. Como propósito («comprar evidencia») es legítimo; el problema es que el diseño actual **compra la evidencia equivocada** — conversaciones que nadie lee — y garantiza que el 30-sep se decida con la misma ceguera del 11.
+3. **Pisos y techos: ni objetivos ni pronósticos — un recorte del pipeline que Iru ya tiene.** El piso es una afirmación de probabilidad sobre 5 deals con nombre; el techo es una cadena aritmética con dos multiplicadores nunca medidos (tasa de referido `desconocido`, cierre 0 de 4 hoy). Casilla por casilla, ¿qué mecanismo comercial la sostiene? — **oct 3:** Sotavento o Tito, mecanismo real (Iru cerrando). **dic 6:** Loco Luxury, cuyo mecanismo la decisión #4 declara **que no operamos** — un mes piso apoyado en una venta que decidimos no gestionar. **ene 8:** uno de dos grupos que **se pisan en fechas**, uno de ellos (Isaac) sin una sola referencia en ningún registro. **mar 6:** One Yoga House, que es mar **o** abr. **feb 3: ningún mecanismo con nombre.** **nov 12 / dic 18 del techo:** ningún mecanismo salvo «los partners traen Q4/Q1», que es el mismo grifo sin medir. No son objetivos porque **el trabajo de nadie cambia si no se cumplen**.
+4. **«Septiembre y diciembre perdidos».** Septiembre se declaró muerto el 12-sep con 18 días por delante, en una casa con mediana observada de 11 días y p25 de 1. Es una profecía autocumplida escrita como dato. Diciembre es peor: el plan dice a la vez «ninguna noche de diciembre por correo frío» (correcto) y le asigna **piso 6 · techo 18** — el segundo mes más grande del piso — sin mecanismo propio.
+5. **Condiciones de kill: muestra insuficiente en la que más importa.** T1 mata la distribución si 12 partners, con **un** pedido, no traen 2 consultas datadas en 4 semanas. n=12 con un toque no es una muestra; fallarlo dice «el pedido no funcionó», no «la distribución no rinde». En cambio T11 (150 DMs / 0 respuestas) y T7 (interesadas/semana) sí son stop-loss razonables, porque miden respuesta, no ingreso. T12 mata con seis semanas de un dato que nadie está registrando.
+
+**Lo que falta y pesa más que todo lo anterior:** no hay CAC, no hay margen de contribución, no hay costo por noche ocupada, y el runway figura como `desconocido` con dueño y fecha. Un plan de marketing a marzo escrito bajo un horizonte de caja de ~2 meses (Iru, 31-ago, no verificado contra banco) **no es el mismo plan**: si el runway es real, la función objetivo de octubre–noviembre es caja, no noches a marzo.
+
+---
+
+## 2 · La crítica de Boris: ¿canales antes que quién/para qué/qué/por qué?
+
+**Es correcta, y con un matiz que la hace más dura:** casi todas las respuestas *existen en las fuentes* y no fueron llevadas al plan; una sola falta de verdad — y es la que bloquea a todas las demás.
+
+- **Quién.** Existe una taxonomía de 20 públicos (gate screen, 14-ago) y existe el conjunto observado de quién compró (red del equipo, WhatsApp, un agente de viajes). El plan nombra compradores sólo como «partners con cartera / líderes de retiro / alguien que ya busca»: **etiquetas de canal, no compradores**.
+- **Para qué (ocasión).** Ausente por completo. Lo observado son estadías de 3–7 noches de grupos chicos y cortos; el pipeline son grupos de 16–20 pax de enero y una boda. **Son productos distintos** y el plan los suma en una sola columna de noches.
+- **Qué (la oferta).** Acá está el agujero real: **qué incluye el rack de USD 4.500 — staff, chef, limpieza, horas de servicio — es `desconocido` desde abril** («CRITICAL / pricing gate», `context/la-chamana.md`, cinco meses abierto). Es la primera pregunta de toda agencia (rate-card §1) y **bloquea el ítem 1 del kit de submission** de las siete puertas. Además: por casa vs por persona nunca se decidió — el cálculo por persona (USD 281–562 a 8–16 pax) vive en un archivo de hipótesis y **nunca se convirtió en una hoja vendible**. Condiciones: sin escalera de depósitos decidida, sin cancelación, sin política de paridad publicada, y con RETUR-Q/SATQ/RFC en `desconocido` — que es prerrequisito de las agencias locales.
+- **Por qué nos elegiría, contra alternativas reales.** **Villa La Semilla** (el comp más cercano: 14–16 pax, Soliman Bay) va de USD 1.595 a 4.860 la noche **con chef incluido** y se distribuye por 8 agencias: a USD 4.500 con inclusiones sin escribir, estamos en el techo de su rango contra alguien que incluye la comida. **Amansala / Imiloa** venden **por persona, con el margen del líder explícito** (Imiloa: «lo que cobres por encima es tuyo», USD 499 pp all-in, fam trip de USD 10k al firmar; Amansala: USD 220–485 pp con la mayoría de las comidas, 1 habitación libre cada 10 pagas): a un líder de retiro nuestra cotización por noche **le hace hacer toda la cuenta solo**. **Buyouts de hotel** (Delek 21 habitaciones, Nomade, Casa Malca) nos ganan en capacidad y servicios para eventos. Lo nuestro — privacidad total, arquitectura, 11 espacios, temazcal, un solo grupo — es real y **no está ni tarifado ni evidenciado**: cero reseñas citables, cero prensa, cero caso de uso escrito. La respuesta a «por qué nosotros» no falta en la realidad; **falta en cualquier artefacto que se pueda enviar.**
+- **Los 11 Lost «dejaron de responder».** El patrón más informativo: en al menos dos (Luxury Haciendas ×2) **el que dejó de responder fue el cliente final del intermediario** — o sea, nunca estuvimos en la conversación. Eso es evidencia directa de que **nuestro material no sobrevive a ser reenviado**: no existe documento post-cotización (qué incluye, por persona, disponibilidad, condiciones), así que el intermediario reenvía un número solo. Hipótesis que hoy no podemos distinguir: precio contra alternativas con inclusiones opacas · fechas (septiembre/octubre: el viaje se cae, no nosotros) · confianza (sin trustmarks — el objetivo «trustmarks» del plan **no tiene de dónde leerse**) · velocidad de respuesta (sin SLA por decisión #2; con un comprador de mediana 11 días, contestar a los 3 es letal). **Nadie le preguntó nunca a un Lost por qué.** Es la prueba más barata que existe y no está en el plan.
+
+---
+
+## 3 · ¿Por qué los partners firmados no producen reservas?
+
+9 acuerdos en 12 días, 1 consulta datada referida, 0 noches. Siete hipótesis, separadas:
+
+| # | Hipótesis | A favor | En contra | Qué la falsaría en ≤14 días |
+|---|---|---|---|---|
+| 1 | **Tiempo** — los acuerdos son de días/semanas; el listing tarda 2–4 semanas (Villa Experience `observado`), y la latencia hasta la primera reserva **no la publica nadie** | RM Oceanfront recién se publicó; el resto no | **Evoke: acuerdo → consulta de USD 64.000 en 7 días.** El tiempo no explica el conjunto | Auditar los 9: ¿estamos **vivos y abribles** en su sitio/board? (~90 min). Un acuerdo sin listing no es tiempo, es cumplimiento no hecho |
+| 2 | **Demanda** — su cartera no tiene compradores de casa entera 16 pax en Tulum oct–dic | Tulum: airlift −34%, ocupación STR 20,5%, piso sep–oct histórico | Sotavento y Evoke produjeron uno cada uno en días | Una pregunta a 5 partners: «¿cuántos pedidos de 12–16 pax casa entera recibiste en 30 días y cuántos colocaste?». Respuesta en una semana |
+| 3 | **Oferta** — no pueden vender lo que no pueden describir: inclusiones `desconocido`, sin fact sheet, sin grilla neta, sin plano | El kit de las 7 puertas está **explícitamente bloqueado** en ese gap | Ninguna | Cerrar inclusiones (1 conversación Daiana/Iru) + mandar la hoja de 1 página a 5 partners y contar pedidos en 14 días |
+| 4 | **Incentivo** — 10% (Evoke) es el piso de la banda 10–15%; un DMC necesita neto 20–40% bajo rack | Si estamos en el piso, somos los últimos de su cola | Evoke actuó rápido **al** 10% | Ofrecer un override acotado (p. ej. +5 pts para llegadas oct–dic contratadas antes del 31-oct) a 5 partners y contar consultas datadas. **Decisión de Daiana — lo propongo, no lo hago** |
+| 5 | **Material comercial** — distinto de la oferta: qué reenvían a su cliente | El patrón Lost (el cliente final se apaga) apunta acá | Ninguna | Pedirle a 5 partners que nos reenvíen **lo que mandarían hoy**. Si no pueden, el bloqueo es material |
+| 6 | **La cláusula** — dos contrapartes sin relación (Icon, ILWYV) tropiezan con lo mismo | Dos fallas independientes, mismo modo | No sabemos cuál es porque **nadie la escribió** | Escribirla esta semana (T6). Después: ¿cierran los 2 contratos en 14 días? |
+| 7 | **Seguimiento** — 9 acuerdos y **ningún registro B2B en ningún lado**; la regresión de Icon fue invisible hasta un diff a mano | Weekly §8f; una canilla que nadie toca no gotea | Ninguna | T1, pero medido bien: **respuestas en 14 días con un toque de recontacto a los 7**, no «consultas datadas en 4 semanas» |
+
+**Mi lectura del peso de la evidencia:** 3 + 5 (oferta/material) y 7 (seguimiento) son las mejor sostenidas; 1 es real pero parcialmente falsada por Evoke; **2 es la peor noticia posible y la más barata de preguntar** — y nadie la preguntó.
+
+---
+
+## 4 · Apuestas comerciales a marzo 2027
+
+### Apuesta A · «La semana que ya existe» — cosecha de corto plazo
+
+- **Comprador y ocasión:** quien ya tiene una fecha dentro de 21 días — el manager de hotel/villa de Tulum con overflow de 12–16 pax, el grupo de familia/amigos que decide tarde, la producción/rodaje con crew ≤16. La ocasión **ya existe**; no la creamos.
+- **Oferta:** casa entera, mínimo 3 noches, **disponibilidad visible**, respuesta comprometida en horas, y **un precio con inclusiones escritas**. Fricciones a resolver: inclusiones (la misma de siempre), quién contesta fuera de horario, y si hay tarifa de ventana corta (**decide Daiana — no la fijo**).
+- **Por qué nos elegirían:** a 16 pax con fecha puesta, un buyout de hotel es más lento y las villas comparables sólo se contestan vía agencia. **Velocidad + calendario visible son el diferencial, y son gratis.**
+- **Evidencia a favor:** `observado` propio — mediana 11 días, p25 1, dos de siete reservas a 1 día de lead; el gate screen propio rankea overflow local (CLOCK 0,90) y last-minute (0,95) como los dos únicos públicos con mediana alta. Externo `estimado`: 41,7% de las reservas de top performers STR caen dentro de 7 días del check-in.
+- **Supuestos:** que los managers de Tulum derivan (no probado con nosotros); que hay margen a tarifa de ventana corta (`desconocido`).
+- **Evidencia en contra:** el Last Minute de agosto dio **0**. Pero fue un descuento sin mecanismo — sin lista de referidores, sin calendario visible, sin compromiso de respuesta — y **nunca se diagnosticó**. Y sep–oct es el piso del mercado (STR Tulum 20,5%).
+- **Acceso:** ~30 managers/concierges de Tulum a mano + el sitio + WhatsApp. Sin pauta, sin listas compradas.
+- **Cierre:** `observado` 1–11 días.
+- **Economía:** ingreso por bloque de 3 noches 13.500 a rack (`estimado`; neto con descuento `desconocido`) · margen `desconocido` (**no existe costo por noche ocupada en disco**) · **caja: la más rápida disponible**, que es lo que importa contra 2,09 meses de runway · capacidad: no compite con los grupos de enero (otras fechas) · esfuerzo: ~6 h de arranque + una guardia de respuesta.
+- **Prueba en 14 días:** 25 managers/concierges de Tulum contactados a mano con **una** pregunta y una comisión de referido en pie, + publicar disponibilidad + comprometer tiempo de respuesta. Medir: pedidos datados a 30 días.
+- **Qué dejamos de hacer:** dos semanas del riel frío de menor rendimiento y la cola de DMs de IG.
+
+### Apuesta B · «El grupo de enero–marzo que ya está vendido» — hoja por persona
+
+- **Comprador y ocasión:** líder de retiro / planner / concierge con **cohorte ya vendida**, para temporada alta dic 15–mar 31. Son literalmente los cuatro ítems más grandes del pipeline vivo.
+- **Oferta:** la hoja por persona que no existe — USD 281–562 pp/noche a 8–16, mínimo 3 noches, **margen del líder explícito**, escalera de comps (1 libre cada 10), depósitos 30/40/30, y la visita de sitio como cierre. Es la gramática **observada** que gana a este comprador.
+- **Por qué nos elegirían:** privacidad total y casa entera a un pp que está por debajo del benchmark (Imiloa 499 pp). **Cuidado honesto:** los benchmarks incluyen comidas y el nuestro `desconocido` — por eso esta apuesta **no puede lanzarse antes de cerrar inclusiones**.
+- **Evidencia a favor:** 4 de los ítems más grandes del pipeline son este comprador; el patrón «un líder aterrizado ≈ una anualidad» (86–90% de renovación, Imiloa, `company claim`); nuestro propio dossier ya dice «tu margen queda tuyo».
+- **Supuestos:** que el bloqueo es la oferta y no el cierre.
+- **Evidencia en contra:** **0 de 4 datables cerrados**; ciclo de líder 6–18 meses (así que la mayoría de lo que se abre hoy es 2027–28); y la colisión de enero (dos grupos de 20 pax pisándose, uno sin registro alguno) sugiere que el cuello puede ser **cerrar**, no conseguir.
+- **Acceso:** Iru 1:1 sobre los 4 en mano + los 12 partners + el riel frío ya corriendo.
+- **Cierre:** primera consulta en días (`observado`, Sotavento/Evoke); cierre `desconocido`.
+- **Economía:** ~64k por grupo de 8 noches (`estimado`, pipeline) · margen `desconocido` · capacidad: **un grupo bloquea la casa** — la colisión de enero es riesgo de ingreso real, hay que elegir y tomar seña · esfuerzo: alto y de Iru.
+- **Prueba en 14 días:** armar la hoja de una página (requiere **una decisión**, no trabajo), mandarla a los 4 grupos vivos + 10 partners, y **pedir seña para retener fecha de enero**. Mide las tres cosas a la vez: si la piden, si contraofertan, si señan — y así distingue oferta de cierre.
+- **Qué dejamos de hacer:** prospección nueva (T8) durante dos semanas; el pozo alcanza.
+
+### Apuesta C · «La ocasión que más paga por noche» — celebración/boda y producción *(la más débil; requiere reabrir una decisión)*
+
+- **Comprador y ocasión:** boda de destino / celebración de hito sin producción pesada, y rodaje editorial-comercial con crew ≤16.
+- **Por qué existe en la mesa:** buyouts de Tulum para bodas rinden **USD 25–30k por 2–3 noches** (`observado`, guías 2026) contra nuestro deal promedio de ~27k por estadías más largas; el segmento romance **creció durante la caída**; tenemos una boda viva de 39.792 en el propio pipeline; y el rodaje es la **única fila del funnel de reserva con p25 de 1 semana**.
+- **En contra / supuestos:** la vertical de eventos está declarada cerrada en el gate screen aunque CLAUDE.md registra el modelo events-only aprobado — **estamos cargando el lead y negando la vertical**; capacidad operativa para un evento (staff, ruido, vecinos, permisos) es `desconocido`; el rodaje no tiene mediana medida en ningún lado.
+- **Prueba en 14 días:** publicar la casa en **una** plataforma de locaciones (gratis, ~2 h) y contar consultas a 14 días — cierra de paso la celda vacía #19 del gate screen; y contestar por escrito si la casa puede o no alojar un evento.
+- **Qué dejamos de hacer:** nada, es de costo casi cero — pero **no la prioricen por encima de A y B**.
+
+---
+
+## 5 · Quality leads: de dónde salen más, en 8 semanas
+
+Definición vigente (path A: fechas + 8–16 pax + ≥13.500 · path B: partner con cartera). Piso 3/sem = ~24 en 8 semanas.
+
+1. **Los 12–15 partners firmados/HOT, pedidos bien.** Evidencia: 2 mails fríos → 2 partners → **USD 88.660 = 58% de las consultas nuevas** de una semana; Evoke pasó de acuerdo a consulta datada de 20 pax en 7 días. Costo humano: ~6 h de Iru + preparación de Bianca. **El mayor rendimiento por hora que hay en disco.**
+2. **La máquina fría B2B, sin subir volumen.** `observado` ~1 consulta datada cada ~95 humanos y ~8 interesadas/sem; a 100–150/sem eso es ~1–1,5 datadas/semana (`estimado` lineal, n chico). Costo: ya pagado; sólo tiempo de press.
+3. **Reabrir los 11 Lost + las 27 filas B2B con una pregunta específica.** Ya levantaron la mano una vez; el patrón es silencio, no rechazo. Costo: ~4 h. Además es la única fuente que produce **diagnóstico** además de leads.
+4. **La lista de cosecha corta (Apuesta A): 25–30 managers/concierges de Tulum.** Evidencia: CLOCK 0,90 del gate screen + mediana propia de 11 días. Costo: ~6 h de arranque + guardia.
+5. **Superficies gratuitas que producen consultas rápido** — locaciones (rodaje, «primera consulta en una semana», `estimado`), marketplaces de offsites, y la capa real de descubrimiento de venues (Retreats and Venues, RetreatHub). Costo: ~6 h + estética de René. **Es el experimento más barato de todo el screen y lleva un mes diferido por la decisión #6.**
+6. **Las 7 estadías pasadas + la red del equipo.** 2 de 7 reservas de la vida vinieron de la red y **nadie pidió nunca una vuelta**. Costo: ~2 h.
+7. **Pauta, último.** Con 0 calificadas registradas no puede rankearse por encima de nada. Se rankea el día que Bianca clasifique.
+
+Lectura honesta: 1+2+3 solos cubren plausiblemente el **piso** de 3/semana (`estimado`). El **techo de 5** requiere que 4 o 5 estén en la calle antes de fin de septiembre.
+
+---
+
+## 6 · Decisiones a reconsiderar
+
+- **«Nunca acceso abierto / nada de marketplaces» (brand framework)** — vs una casa cuyos compradores reales llegan a 11 días y cuyo comp más cercano (Villa La Semilla) se llena por **8 agencias**, sin audiencia propia: *ninguna villa privada del set se llena con su propio IG*. A reabrir no es «publicar precio en todos lados», sino **qué superficie cuenta como acceso abierto**: una plataforma de locaciones para rodaje no es un listing de hotel.
+- **Decisión #6 (listings) en «no sé» → defer.** El gate screen los rankea como el experimento más barato que existe (USD 0, ~2 h) y lleva un mes diferido. **El costo del defer ya superó al costo del test.**
+- **Meta hasta el 30-sep sin nadie clasificando.** La decisión es de Boris y la respeto; lo que reabro es su **condición**: si la clasificación no arranca esta semana, el 30-sep se decide igual de ciego y esas seis semanas no enseñaron nada.
+- **Sin fam trips hasta Q1-27** — vs que sep–oct es inventario muerto (`observado`: 0% proyectado) y que la práctica mejor evidenciada para noches muertas es la **visita de sitio de trade/líder**, que además es el artefacto de cierre que el ciclo pide (Imiloa la monetiza al firmar). No la cambio; señalo que su costo en caja es casi cero si la casa está vacía (costo de staff `desconocido`).
+- **Vertical de eventos cerrada** — vs el rendimiento por noche más alto observado en Tulum (25–30k por 2–3 noches) y una boda de 39.792 viva en nuestro propio pipeline. **Hoy cargamos el lead y negamos la vertical**; una de las dos cosas está mal.
+- **«Loco Luxury vende por sus canales, no gestionamos» (#4)** — vs el piso de **6 noches de diciembre** apoyado en Loco Luxury. O diciembre pierde su mecanismo, o esa relación merece un pedido gestionado.
+- **Bruto/neto del piso económico + runway.** No es decisión de marketing, pero **gobierna todas las de arriba**: a marzo con 2,09 meses de pista, la función objetivo de oct–nov es caja, no noches.
+
+---
+
+## 7 · Qué cambiaría de la dirección, en una frase
+
+**Dejar de organizar el plan por canales y organizarlo por dos compradores con relojes distintos —el que tiene fecha dentro de tres semanas y el grupo que llena la temporada alta— y darle a cada uno una oferta escrita que hoy no existe.**
+
+`CMO CALL:` Cerrar **qué incluye el rack** esta semana y convertirlo en dos artefactos (hoja por casa para agencias · hoja por persona con margen del líder) — es el prerrequisito de las Apuestas A y B, del kit de las 7 puertas y de las hipótesis 3 y 5 del §3. `Evidence:` `observado` — gate crítico abierto desde abril; rate-card §1; kit de submission bloqueado en el ítem 1. `Cost:` una conversación + ~4 h de armado. `Decision owner:` Daiana (precio/inclusiones) · Iru (condiciones). `Consequence if delayed:` los 12 partners siguen sin poder cotizarnos y T1 se falsa el 15-oct por una causa equivocada.
+
+`CMO CALL:` Abrir un **mecanismo de corto plazo** (disponibilidad visible + compromiso de respuesta + 25 referidores de Tulum a mano) antes del 30-sep. `Evidence:` `observado` — mediana propia 11 días, p25 1; gate screen CLOCK 0,90/0,95; el plan no tiene ninguna táctica de este reloj. `Cost:` ~6 h + 0 USD. `Decision owner:` Boris (canal) · Iru (guardia) · Daiana (si hay tarifa de ventana corta). `Consequence if delayed:` octubre y noviembre se juegan sólo con 5 deals intermediados y sin ninguna vía de caja rápida contra un runway de ~2 meses.
+
+`CMO CALL:` **Preguntarle a los 11 Lost y a 5 partners por qué**, en 14 días. `Evidence:` `desconocido` — el patrón «dejaron de responder» nunca fue diagnosticado; en 2 casos el que se apagó fue el cliente final del intermediario. `Cost:` ~4 h, USD 0. `Decision owner:` Iru. `Consequence if delayed:` seguimos eligiendo entre siete hipótesis del §3 sin evidencia, y la que gobierne se va a descubrir en noviembre.
+
+
+</script>
+<script type="text/markdown" id="md-C">## C · El estratega de hospitalidad independiente (subagente sin contexto de la casa) — verbatim
+
+*Leyó el paquete, el plan, los briefs de lead time y gate screen, el research de comparables y la rate card; buscó en la web fees de Peerspace/Giggster y guía de bodas Tulum. NO sabía que la casa ya está publicada en Airbnb/VRBO/Booking (hallazgo A.0.5, posterior a su lectura): su decisión a reconsiderar #1 («Airbnb NO») se lee con eso en mente.*
+
+# Crítica comercial de V0.4 — lectura de un vendedor de casas, no de un planificador
+
+Leí el pack, el plan completo, el brief de lead time (14-ago), el gate screen, el research de comps y la rate card. Todo etiquetado `observado` / `estimado` / `desconocido`. Web sólo para comprobar términos de terceros (URL + fecha).
+
+## 1 · La verdad incómoda en tres frases
+
+1. **Esta casa la compra gente que ya está decidida y cerca**: 7 reservas reales, mediana de lead 11 días, p25 = 1 día; 2 de 7 son red del equipo, 1 vino por un agente de viajes genérico, ninguna por marketing propio (`observado`, Cloudbeds). No hay un solo comprador "planificado" que haya llegado a dormir: el único a 330 días canceló.
+2. **Lo que el plan llama pipeline es una lista de gente que dejó de contestar**: 11 Lost, todos por silencio del comprador final, y 5 meses sin saber qué incluye el precio (`observado`). Un comprador que se calla tras el número no eligió otra casa: no entendió qué compraba.
+3. **La casa vende junio y muere septiembre porque nadie la ofrece a quien puede llegar en dos semanas**: 0 noches datables sep, 0 oct proyectado, runway ~2 meses según Iru (`no verificado`). Con esa caja, un plan cuya primera noche "nueva" cae en octubre y cuyo grueso cae en enero no es un plan comercial: es una esperanza con fechas.
+
+## 2 · Crítica del planteo
+
+**Qué es qué.** Estrategia de verdad en el documento: una línea (`direction.one_line`) y la frase «no es marketing: es producto, precio o casa» en §9, que es la más honesta y está enterrada al final. Tácticas: T1–T14 (a quién escribir, qué publicar). Operaciones: T15–T18, §5, §6, kills técnicos, evals, generador del tracker — la mitad del texto. **Lo que falta es lo que Boris pide: comprador · ocasión · oferta · por qué nosotros · cómo se cierra.** El plan lo declara él mismo como `gaps` (oferta al partner, precio, competencia) con fecha 19–30 sep. Un plan cuyos "huecos" son la estrategia es un cronograma, no una estrategia.
+
+**Afirmaciones que exceden la evidencia:**
+- **«Lead time 2–7 meses»** (`clock`) sale de 3 consultas de agosto que todavía no cerraron. La única medición propia (n=7 reservas dormidas) da mediana 11 días. El plan cita la consulta y descarta la reserva: usa el dato de la gente que pregunta para modelar a la gente que paga. Consecuencia directa: **no tiene ni una táctica de corto plazo**, cuando el gate screen del 14-ago dijo que lo único alcanzable en ventana era justamente eso.
+- **«Pauta compra evidencia, no noches»**: con USD 70/sem y nadie clasificando, tampoco compra evidencia. 20 conversaciones/sem y 0 calificadas registradas no es un dato, es la ausencia de uno. Decisión de Boris hasta el 30-sep; respetada, pero que nadie la llame aprendizaje.
+- **Piso/techo como objetivo**: el piso 36 es "el pipeline en mano cerrando la mitad", con tasa de cierre observada 0 de 4. Eso es un pronóstico con una hipótesis de cierre inventada, no un objetivo. Un objetivo diría qué hace Iru distinto para que cierre 2 y no 0.
+- **Sep y dic dados por muertos**: sep piso 0 con 18 días por delante y una mediana de 11 días de lead es rendirse por doctrina, no por dato. Dic piso 6: la única táctica de diciembre es Loco Luxury, que "vende por sus canales".
+- **Kill dates con n≈0**: T1 se mata si <2 consultas datadas al 15-oct sobre 12 partners que nunca recibieron oferta escrita. Si el 15-oct da 0, el plan concluye "la distribución no rinde" cuando lo que no rindió fue mandar un pedido sin paquete. El falsador mide la táctica antes de que exista la oferta que la táctica necesita.
+- **«Demanda directa que ya convierte»**: 2 wins de red + WhatsApp. Es la agenda del equipo, y ya se gastó (nadie pidió volver).
+
+## 3 · Por qué 9 partners firmados dan 0 noches — hipótesis rankeadas
+
+| # | Hipótesis | Evidencia | Falsador en 14 días |
+|---|---|---|---|
+| 1 | **Oferta ilegible**: el partner no sabe qué vende (inclusiones, neto, condiciones, qué pasa con 17–20 pax) | gate de precio abierto desde abril; rate-card 16-ago: "la primera pregunta es qué incluye"; 11 Lost por silencio; dos leads de 20 pax en una casa de 16 (`observado`) | Mandar a los 12 partners UNA hoja: rack, neto, inclusiones, depósito, política 17–20 pax. Contar cuántos responden con fechas en 10 días. Si ≥3 preguntan fechas → era esto |
+| 2 | **Sin material vendible**: fotos, planta de suites, menú de ceremonias, video, calendario | Villa La Semilla está en 8 agencias con ficha completa y chef incluido (research 16-ago); RM Oceanfront es la única que publicó | Pedir a los 9 el link donde nos publican. Cuántos nos tienen visibles: si <4, no somos inventario, somos un PDF en un cajón |
+| 3 | **Incentivo débil**: 10% sobre una venta de 13.5k = 1.350 USD por 3 semanas de trabajo; un hotel les paga igual sin fricción | Evoke al 10%; Elevate pide 2.000 fijos; Amansala/Imiloa regalan margen explícito y fam trip (`observado`, sus webs) | Ofrecer a 3 partners 15% + noche gratis para su cliente en estadías ≥4 noches hasta 30-nov. Ver si alguno mueve un lead parado |
+| 4 | **Tiempo**: 12 días es nada | Cierto, pero la mediana de la propia casa es 11 días: si un partner tuviera demanda caliente, ya habría llamado | Pedir a cada uno su próxima consulta abierta para Tulum (no la nuestra). Si tienen y no nos la ofrecieron → no es tiempo |
+| 5 | **Cláusula fantasma**: contratos trabados por algo que nadie escribió | Icon regresión, ILWYV firmó su versión, The Muse venció (`observado`) | T6 ya lo dice; el falsador es: la cláusula escrita en una frase antes del 19-sep, o se elimina |
+| 6 | **Demanda del partner no es nuestra**: venden playa; somos La Veleta, interior | Todos los comps del research son beach zone o Sian Ka'an; nadie del comp-set es interior | Preguntar a 3 partners: "¿cuál fue tu última consulta de villa de 16 en Tulum y por qué no nos la pasaste?" |
+| 7 | **Follow-up**: nadie les volvió a hablar | Weekly de Iru es la única sede; sin registro B2B (`observado`) | Registro de último contacto por partner; si >7 días en ≥5, era esto |
+
+Las 1–3 son la misma enfermedad: **no existe un producto empaquetado para revender**. Un acuerdo firmado con una oferta indefinida es un permiso, no una canilla.
+
+## 4 · Tres apuestas comerciales distintas (sep-26 → mar-27)
+
+### Apuesta A — «La casa para la semana que viene»: capturar la demanda de corto plazo que ya está en Tulum
+
+- **Comprador + ocasión**: un grupo que YA viene (o ya está) a Tulum en ≤21 días y necesita una casa entera: producción/rodaje con crew ≤16; grupo de amigos/cumpleaños de 8–12; overflow de una villa u hotel que se quedó sin fechas; un desk de jet privado armando el fin de semana de un cliente; un travel agent con un pedido urgente (Nabilu llegó así, `observado`).
+- **Oferta**: casa entera, 3 noches (2 para rodaje diurno), rack publicado con inclusiones escritas, respuesta en <2 horas con disponibilidad real, sin descuento por urgencia. Se vende **disponibilidad y certeza**, no precio.
+- **Por qué nosotros**: en Tulum una casa de 8 suites, 1.600 m², privada y disponible a 10 días es escasa; La Semilla y las beach villas están en 8 agencias y se llenan primero; los hoteles no hacen buyout a 16 con 10 días. Contra: no somos playa; a corto plazo el comprador quiere la playa primero — llegamos segundos, y por eso el canal correcto es el overflow de quienes llegan primeros.
+- **Evidencia a favor**: mediana 11 d, p25 1 d (`observado`); gate screen: rodajes p25 1 sem, last-minute mediana 1 sem, jets 75% a <2 sem (`estimado`, fuentes externas); Peerspace: primera consulta típicamente en la primera semana (`company claim`). **En contra**: Last Minute de agosto con descuento → 0 (`observado`); sept es el peor mes de la Riviera; airlift −34% (`estimado`). **Supuesto**: que el ecosistema de Tulum (concierges, villa managers, planners) reciba pedidos que no puede servir.
+- **Acceso**: 30 conversaciones presenciales de Iru con villa managers, concierges de hoteles boutique, wedding/event planners y 3 productoras de CDMX; fee de referido 10%; hoja "próximas 6 semanas disponibles" actualizada cada lunes. Listing en Peerspace (fee al host 20%, [support.peerspace.com](https://support.peerspace.com/en/articles/10119442-what-is-the-peerspace-service-fee), 12-sep) y Giggster (19%, [help.giggster.com](https://help.giggster.com/en/articles/2832062-how-much-commission-does-giggster-take), 12-sep) — ambos gratis de listar; **cobertura real en Tulum: `desconocido`**, hay que mirar cuántos listings tienen.
+- **Cierre**: observado 1–11 días. **Economía**: 1 estadía = 13.5k bruto; con referido 10% ≈ 12.1k; caja en ≤2 semanas — la única apuesta que toca la caja de octubre. Esfuerzo: Iru 3 días de calle + 1 h/día de respuesta; Bianca la hoja semanal.
+- **Test ≤14 días**: 30 conversaciones + hoja de disponibilidad + 2 listings. Métrica: consultas datadas con llegada ≤30 días. **Éxito: ≥2. Cero: el ecosistema no nos ve como overflow y se cierra la apuesta.**
+- **Dejar de hacer**: descuentos last-minute (ya falló; el comprador urgente no compra por precio), y pedirle a la máquina fría noches de octubre.
+
+### Apuesta B — «La casa de la celebración», vendida por quien ya tiene la fecha (path B)
+
+- **Comprador + ocasión**: el anfitrión de un hito con fecha fija — cumpleaños 40/50, aniversario, despedida de alto ticket, boda íntima ≤16 durmiendo — comprado a través de planners de bodas/eventos de Tulum y de agencias de viaje de lujo de MX/US. La ocasión trae la fecha; el planner trae el libro.
+- **Oferta**: la casa entera 3 noches a rack + un **paquete de celebración con precio cerrado** (temazcal, ceremonia de cacao, cena en el Mirror Temple, staff de evento) que sólo esta casa puede vender porque el ritual está adentro. Per-house, no per-person. Comisión 15% al planner sobre alojamiento; el planner factura su producción aparte.
+- **Por qué nosotros**: La Semilla vende playa + chef; nosotros vendemos **un lugar donde pasa algo** (temazcal, templo) y privacidad total con 8 suites iguales — ideal para "16 adultos importantes, nadie duerme peor". El planner necesita venues que no sean el mismo hotel de siempre. Contra: sin playa perdemos la boda de 60 invitados; el nicho es la celebración íntima.
+- **Evidencia a favor**: Victor 35.5k, Sofia 34.8k, Tori boda abr-27 39.8k — tickets 2–3× el rack de 3 noches, el mayor ticket por noche de todo el CRM (`observado`); guía Tulum 2026: venue de 16–24 pax, 2 noches, USD 25–32k ([destinationweddingdirectory.co](https://www.destinationweddingdirectory.co/north-america-wedding-guides/wedding-guide-mexico-tulum), 12-sep, `estimado`); research 16-ago: bodas/eventos crecieron durante la caída del mercado. **En contra**: Victor y Sofia se perdieron por silencio; `celebration-takeovers` está pausada; Brand_Safety bloquea la promoción de celebraciones en el CRM (`observado`). **Supuesto**: que René acepte "celebración curada" dentro de "reuniones curadas".
+- **Acceso**: 20 planners de Tulum/Riviera con lista de bodas 2026-27 (tienen libro propio = quality lead path B por definición); 10 agencias de lujo MX (CDMX/MTY) para cumpleaños; una ficha de 1 página con el paquete. Nada frío masivo: llamadas de Iru.
+- **Cierre**: cumpleaños/despedidas 3–8 semanas (`estimado`); bodas 6–12 meses (`estimado`) → noches de nov–mar para lo primero, Q2-27 para bodas. **Economía**: 25–35k por evento de 3 noches (`estimado` sobre los tickets observados), margen del paquete `desconocido` hasta cerrar inclusiones; depósito 30% al firmar → caja en 30–45 días. Esfuerzo: Iru 2 días/sem durante 4 semanas; Daiana el precio del paquete en 1 semana.
+- **Test ≤14 días**: ficha + 20 planners contactados por teléfono/WhatsApp (no email frío). **Éxito: ≥3 planners con una fecha concreta para cotizar. Cero: el nicho no existe a nuestro precio sin playa.**
+- **Dejar de hacer**: tratar `celebration` como riesgo de marca sin haber definido qué celebración; perder a un comprador de 35k por no llamarlo.
+
+### Apuesta C — «El venue del líder», vendido por persona con margen explícito y depósito hoy (path B, caja adelantada)
+
+- **Comprador + ocasión**: líder de retiro/coach/estudio de yoga con audiencia propia de 12–20 personas que vende su retiro de ene–abr 2027 en las próximas 8 semanas. Es el comprador que YA llena el pipeline: One Yoga House 16 pax NYC, Evoke 20, Isaac Encore 20, Pei grupos (`observado`).
+- **Oferta**: hoja por persona a la gramática que el mercado ya entiende: USD 281 pp/noche a 16 (aritmética del rack), 3 noches mín., comp 1 de cada 10, depósito 30% que bloquea fechas, 40% a 60 días, saldo a 14; wellness a la carta después. **Y la respuesta escrita al problema de los 20 pax** (dos leads warm de 64k cada uno no caben en 16 camas): acuerdo de overflow con una villa vecina o 2 suites extra en casa aliada, cotizado en la misma hoja. Vender por persona no cambia el neto por casa: cambia que el líder pueda hacer la cuenta en 30 segundos.
+- **Por qué nosotros**: Imiloa/Amansala son centros con 25–150 pax y grupos mínimos de 20–28: el líder de 12–16 es demasiado chico para ellos y demasiado grande para un Airbnb; nosotros somos exactamente ese tamaño con temazcal propio. Contra: Amansala es playa y −15% en baja; el líder de 16 tiene decenas de villas en Bali/Costa Rica a mitad de precio.
+- **Evidencia a favor**: 2 mails fríos → 88.7k de consultas (`observado`); pipeline hot/warm dominado por líderes; dossier propio ya dice "tu margen queda tuyo". **En contra**: 0 de 4 cerrados; ciclo 6–12 meses (`estimado`); casi todo cae Q1-27. **Supuesto**: que el líder compre con depósito 5 meses antes si la hoja es clara.
+- **Acceso**: la máquina fría existente (tope 40/día, sin listas — respetado) pero con la hoja por persona adjunta desde el primer mail; los 12 partners con la misma hoja; los 2 leads de 20 pax llamados esta semana con la solución de overflow.
+- **Cierre**: observado en consultas 2–7 meses; a reserva `desconocido`. **Economía**: 13.5–27k por grupo; **caja: 30% de depósito ahora** = 4–8k por cierre en oct–nov, que es lo que el runway necesita sin regalar tarifa. Esfuerzo: Daiana 1 semana para la hoja; Iru 1 llamada/lead; sin humano nuevo.
+- **Test ≤14 días**: hoja por persona + overflow a los 4 hot y 6 warm existentes con fecha límite de depósito. **Éxito: ≥1 depósito o ≥2 hold formales con fecha. Cero en 14 días con 10 leads calientes: el problema es precio o casa, no captación — y §9 del plan tenía razón.**
+- **Dejar de hacer**: cotizar por casa a un líder que piensa por persona; dejar dos grupos de 20 pisándose en enero sin ofrecer solución.
+
+**Las tres son distintas en comprador (grupo urgente / anfitrión con fecha / líder con audiencia), en unidad de precio (casa / casa+paquete / persona) y en reloj (días / semanas / meses). Sólo A toca la caja de octubre; sólo C toca la caja de noviembre vía depósitos; B es el ticket más alto.** Ninguna necesita más volumen frío, listas, ni automatizar nada.
+
+## 5 · Quality leads: la cuenta honesta (próximas 8 semanas, leads/semana)
+
+| # | Fuente | Estimado/sem | Base | Costo humano |
+|---|---|---|---|---|
+| 1 | **Pipeline existente re-trabajado con hoja C** (10 hot/warm) | no genera nuevos; convierte 0→1–2 cierres | 0 de 4 cerrados sin hoja (`observado`) | Daiana 1 sem; Iru 1 llamada/lead |
+| 2 | **12 partners con hoja + incentivo** (§3 hip. 1–3) | 0,5–1 | 1 datada en 12 días sin oferta (`observado`) | Iru 1 día + seguimiento 7 días |
+| 3 | **Máquina fría a líderes/planners** (100–150/sem, tope 40) | 1–1,5 | ~1 datada / 95 humanos (`observado`, n chico) | Boris presiona, Bianca prepara ~4 h/sem |
+| 4 | **Ecosistema Tulum (overflow, planners, concierges)** | 0,5–1, todos path A corto | `desconocido`; nunca intentado | Iru 3 días de calle + WhatsApp diario |
+| 5 | **Planners de celebraciones** | 0,5 path B | 3 tickets 35–40k en CRM (`observado`), 0 cerrados | Iru 2 días/sem × 4 |
+| 6 | Listings de locaciones (Peerspace/Giggster) | 0–0,5 | cobertura Tulum `desconocido` | Bianca 1 día; Boris publica |
+| 7 | Carta a 7 estadías + red | 0–0,25 | nadie pidió vuelta (`observado`) | 2 h |
+| 8 | Meta/Google hasta 30-sep | 0 | 0 en la vida (`observado`) | Bianca clasificando |
+
+**Total honesto: 2,5–4,5/sem si se hacen 2–5 a la vez; hoy la observación es ~1–1,5/sem y toda de la fuente 3.** El piso de 3/sem del plan sólo se alcanza abriendo el ecosistema local (4) y los planners (5), que no están en el plan. El cuello no es leads: es que **ninguna fuente tiene una oferta escrita que entregar** cuando el lead contesta.
+
+## 6 · Decisiones a reconsiderar
+
+1. **«Nunca acceso abierto / no marketplaces» (René, abril)** — es una regla de estética, no de negocio, y hoy le cuesta el único público que compra en la ventana. Reconsiderar como: listings de locación (Peerspace/Giggster) y directorios de venues SÍ, con la ficha curada; OTAs de viajero (Airbnb) NO. La Semilla vive así y factura.
+2. **Descuento last-minute (Iru propone repetirlo al 12%)** — falló con datos (`observado` 0). No repetir; reemplazar por disponibilidad publicada + inclusiones claras + respuesta en 2 h. El urgente compra certeza.
+3. **Sólo casa entera, 3 noches mínimo** — ya está roto: la tarifa Rinzler es por habitación y fin de semana (`observado`). O se acepta que en sep–nov existe una "temporada de casa abierta" con reglas escritas (2 noches para producciones, per-room sólo vía partner con tarifa especial), o se elimina Rinzler. Convivir sin decidir es lo peor: dos precios y ninguna regla.
+4. **Gate de precio abierto desde abril** — no es "a reconsiderar", es **la decisión**: sin inclusiones, neto y depósito escritos en una página antes del 19-sep, las tres apuestas y las 17 tácticas son papel. Daiana + Iru, una semana, sin excepción.
+5. **Sin fam trips antes de Q1-27** — respetada, pero **un site visit a un líder con 16 pax ya cotizados no es un fam trip, es el cierre** (Imiloa lo valúa en 10k como perk; Amansala igual). Reformular la regla: nada de influencers ni agencias sin lead; sí una noche a One Yoga House / Evoke si depositan o firman hold.
+6. **Capacidad 16 como límite duro** — dos leads de 64k cada uno son de 20 pax. Un acuerdo de overflow con una villa vecina convierte "no cabemos" en "cabemos con 4 suites a 200 m". `desconocido` si existe la vecina; averiguarlo cuesta un día.
+7. **Loco Luxury "vende por sus canales"** — cerrada por Boris; sólo señalo: es la única fuente con 305k declarados (`no verificado`) y 2 Lost por dejar de responder. Pedirles qué material les falta es una llamada, no gestionar su campaña.
+
+## 7 · Una frase
+
+**Dejar de pedirle noches a los mecanismos de acceso y empezar a vender tres productos escritos — la casa disponible a diez días para quien ya está en Tulum, la casa de la celebración para quien ya tiene la fecha, y el venue por persona con depósito para el líder que ya tiene la gente — porque la evidencia dice que quien compra esta casa ya decidió antes de encontrarnos, y hoy no tenemos nada escrito que darle cuando aparece.**
+
+---
+Fuentes web consultadas (12-sep-2026): [Peerspace service fee](https://support.peerspace.com/en/articles/10119442-what-is-the-peerspace-service-fee) · [Giggster commission](https://help.giggster.com/en/articles/2832062-how-much-commission-does-giggster-take) · [Retreats and Venues – venue partner](https://retreatsandvenues.com/become-a-venue-partner) · [Offsite marketplace](https://offsite.substack.com/p/airbnb-for-team-retreats-announcing) · [Tulum Wedding Guide 2026](https://www.destinationweddingdirectory.co/north-america-wedding-guides/wedding-guide-mexico-tulum) · [Villa La Semilla – Private Villas Mexico](https://www.privatevillasmexico.com/vacation-rentals/villa-la-semilla/). Archivos leídos: pack-critica.md, plan-v0.4-la-chamana-2026-09.md, lead-time-observado-2026-08-14.md, publico-gate-screen-2026-08-14.md, research-villa-market-2026-08-16.md, rate-card-hypothesis-2026-08-16.md. No se modificó ningún archivo.
+
+
+---
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script>
+(function(){
+  marked.setOptions({gfm:true,breaks:false});
+  document.querySelectorAll('.md[data-src]').forEach(function(el){
+    var src=document.getElementById('md-'+el.dataset.src).textContent;
+    el.innerHTML=marked.parse(src);
+    el.querySelectorAll('table').forEach(function(t){var w=document.createElement('div');w.className='tblwrap';t.parentNode.insertBefore(w,t);w.appendChild(t);});
+  });
+  function openHash(){var h=location.hash.slice(1);var d=h&&document.getElementById(h);if(d&&d.tagName==='DETAILS')d.open=true;}
+  openHash();addEventListener('hashchange',openHash);
+})();
+</script>
+
+</body>
+</html>
