@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>S_Q32026 — Estrategia de portfolio · Both_Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#ebe1cd; --off:#e2d7bf; --rule:#d6cbb1; --rule2:#c2b696;
+  --ink:#111110; --ink2:#555550; --ink3:#999990;
+  --acc:#939324; --acc-lt:#e6e4c8; --acc-dk:#5f6014;
+  --amber:#b06a00; --amb-lt:#f3e6cf; --coral:#c0392b; --cor-lt:#f2ddd6; --blue:#1a4fa0; --blu-lt:#dfe3e8; --slate:#3a4a58; --green:#3f8a4a; --grn-lt:#dfe8dc;
+  --rl:#c2185b; --gf:#9a7400; --mb:#2f5fa8; --dg:#3f8a4a; --ab:#c4561a;
+  --sans:"IBM Plex Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --max-w:1160px; --radius:3px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);font-weight:400;background:var(--paper);color:var(--ink2);line-height:1.55;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;padding-inline:16px}
+a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--rule2)}
+a:hover{border-color:var(--blue)}
+.wrap{max-width:var(--max-w);margin:0 auto}
+h1,h2,h3,h4{color:var(--ink);font-weight:500;line-height:1.2;margin:0}
+h1{font-size:clamp(28px,4.2vw,44px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3vw,30px);margin-top:8px}
+h3{font-size:17px;margin:26px 0 8px}
+h4{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);margin:22px 0 8px;font-weight:500}
+p{margin:0 0 12px;max-width:74ch}
+.mono{font-family:var(--mono);overflow-wrap:anywhere}
+li,td,p,.d,.card .row div{overflow-wrap:anywhere}
+html,body{overflow-x:hidden;max-width:100%}
+.k{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.small{font-size:13px;color:var(--ink3)}
+hr{border:0;border-top:1px solid var(--rule);margin:36px 0}
+/* header */
+.masthead{padding:30px 0 20px;border-bottom:1px solid var(--rule2);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-end}
+.masthead .brand{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--ink)}
+.masthead .brand b{color:var(--acc-dk);font-weight:500}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:11px;padding:3px 8px;border:1px solid var(--rule2);border-radius:var(--radius);color:var(--ink2);background:var(--off)}
+.tag.acc{border-color:var(--acc);color:var(--acc-dk);background:var(--acc-lt)}
+.tag.warn{border-color:var(--amber);color:var(--amber);background:var(--amb-lt)}
+.cover{padding:44px 0 28px}
+.readtime{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink3);margin-top:14px;padding-top:10px;border-top:1px solid var(--rule)}
+.readtime span{color:var(--rule2)}
+.cover .lede{font-size:clamp(18px,2.2vw,22px);color:var(--ink);max-width:62ch;margin-top:18px;font-weight:400}
+.cover .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px 28px;margin-top:26px;padding-top:18px;border-top:1px solid var(--rule)}
+.cover .meta .k{display:block;margin-bottom:3px}
+.cover .meta div{font-size:14px;color:var(--ink)}
+.quote{border-left:3px solid var(--acc);padding:10px 16px;margin:22px 0;color:var(--ink);font-style:italic;max-width:74ch;background:var(--off)}
+.quote .who{display:block;font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink3);margin-top:6px;letter-spacing:.06em}
+/* nav */
+.lvls{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--rule2);padding:10px 0;display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.lvls a{border:1px solid var(--rule2);border-radius:var(--radius);padding:5px 10px;font-family:var(--mono);font-size:11px;color:var(--ink2);background:var(--off);letter-spacing:.04em}
+.lvls a b{color:var(--acc-dk);font-weight:500;margin-right:6px}
+.lvls a:hover{border-color:var(--acc);color:var(--ink)}
+/* sections */
+section{padding:44px 0 10px}
+.sec-h{display:flex;gap:16px;align-items:baseline;flex-wrap:wrap;border-bottom:1px solid var(--rule2);padding-bottom:10px;margin-bottom:20px}
+.sec-h .n{font-family:var(--mono);font-size:40px;color:var(--rule2);line-height:1;font-weight:400}
+.sec-h .sub{font-family:var(--mono);font-size:12px;color:var(--ink3);letter-spacing:.04em}
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0 22px}
+.kpi{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:12px 14px}
+.kpi .k{display:block;margin-bottom:4px}
+.kpi .v{font-size:24px;color:var(--ink);font-weight:500;letter-spacing:-.01em;line-height:1.1}
+.kpi .v small{font-size:13px;color:var(--ink3);font-weight:400;margin-left:4px}
+.kpi .d{font-size:12px;color:var(--ink2);margin-top:6px;line-height:1.4}
+.kpi.warn{border-color:var(--amber)}.kpi.warn .v{color:var(--amber)}
+.kpi.acc{border-color:var(--acc)}.kpi.acc .v{color:var(--acc-dk)}
+.kpi.red{border-color:var(--coral)}.kpi.red .v{color:var(--coral)}
+/* venture cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;border-top:3px solid var(--rule2)}
+.card.role-cash{border-top-color:var(--acc)}
+.card.role-asset{border-top-color:var(--slate)}
+.card.role-eq{border-top-color:var(--blue)}
+.card.role-opt{border-top-color:var(--amber)}
+.card.role-plat{border-top-color:var(--ink3)}
+.card .hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card .hd h3{margin:0;font-size:16px}
+.card .role{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border:1px solid var(--rule2);padding:2px 6px;border-radius:var(--radius);white-space:nowrap}
+.card .row{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:13px;line-height:1.4}
+.card .row .k{padding-top:2px}
+.card .row div:last-child{color:var(--ink)}
+.card .pend{color:var(--amber);font-style:italic}
+.card .foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:8px;border-top:1px dashed var(--rule)}
+.health{font-family:var(--mono);font-size:11px;letter-spacing:.06em}
+.h-g{color:var(--green)}.h-y{color:var(--amber)}.h-r{color:var(--coral)}.h-p{color:var(--ink3)}
+.chip{display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10.5px;font-weight:500;width:26px;height:20px;border-radius:var(--radius);color:#fff;letter-spacing:.02em}
+.p-gf{background:var(--gf)}.p-rl{background:var(--rl)}.p-dg{background:var(--dg)}.p-ab{background:var(--ab)}.p-mb{background:var(--mb)}
+.chips{display:inline-flex;gap:4px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:12px 0 4px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;vertical-align:-2px;margin-right:5px}
+/* tables */
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;margin:12px 0 8px}
+.tbl th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:500;padding:8px 10px;border-bottom:1px solid var(--rule2);vertical-align:bottom}
+.tbl td{padding:10px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--ink2)}
+.tbl td:first-child{color:var(--ink);font-weight:500}
+.tbl tr:last-child td{border-bottom:0}
+.tbl .m{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.tblwrap{overflow-x:auto;margin:0 -16px;padding:0 16px}
+.tbl .drift-then{color:var(--ink2)}
+.tbl .drift-now{color:var(--ink)}
+.tbl .read{font-size:13px;color:var(--ink2);border-left:2px solid var(--amber);padding-left:8px}
+/* altitudes */
+.alt{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:16px 0}
+.alt .a{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px}
+.alt .a .k{display:block;margin-bottom:6px}
+.alt .a h3{margin:0 0 8px;font-size:18px}
+.alt .a p{font-size:13.5px;margin-bottom:8px}
+.alt .a.obj{border-left:3px solid var(--acc)}
+.alt .a.str{border-left:3px solid var(--blue)}
+.alt .a.tac{border-left:3px solid var(--ink3)}
+/* rules */
+.rules{counter-reset:r}
+.rule{display:grid;grid-template-columns:54px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--rule)}
+.rule:last-child{border-bottom:0}
+.rule .rn{font-family:var(--mono);font-size:22px;color:var(--acc-dk);line-height:1}
+.rule h3{margin:0 0 6px;font-size:16px}
+.rule p{font-size:14px}
+.rule .why{font-size:13px;color:var(--ink3);border-left:2px solid var(--rule2);padding-left:10px;margin-top:6px}
+/* gates */
+.gates{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.gate{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:12px 14px;font-size:13.5px}
+.gate .k{display:block;margin-bottom:4px}
+.gate b{color:var(--ink);font-weight:500}
+.gate .if{color:var(--ink2)}
+.gate .then{color:var(--coral);margin-top:4px}
+.gate .date{font-family:var(--mono);font-size:12px;color:var(--amber)}
+/* diagrams */
+.fig{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:16px;margin:16px 0}
+.fig .cap{font-family:var(--mono);font-size:11px;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.fig svg{width:100%;height:auto;display:block}
+.fig text{font-family:var(--sans);fill:var(--ink)}
+.fig .mono-t{font-family:var(--mono)}
+/* pacochi matrix */
+.pmat{display:grid;grid-template-columns:150px repeat(3,1fr);gap:4px;font-size:12.5px;min-width:560px}
+.pmat .h{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);padding:6px 8px}
+.pmat .c{background:var(--paper);border:1px solid var(--rule);padding:7px 8px;border-radius:2px;color:var(--ink2)}
+.pmat .c.y{background:var(--acc-lt);color:var(--acc-dk);border-color:var(--acc)}
+.pmat .c.n{color:var(--ink3);text-align:center}
+.pmat .r{font-weight:500;color:var(--ink);padding:7px 8px}
+/* gantt */
+.gantt{display:grid;grid-template-columns:150px repeat(11,1fr);gap:2px;min-width:920px;font-size:12px}
+.gantt .gh{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);padding:4px 6px;border-bottom:1px solid var(--rule2)}
+.gantt .gh.q{color:var(--ink2);border-bottom:0;padding-bottom:0}
+.gantt .gl{padding:8px 6px;color:var(--ink);font-weight:500;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.gantt .gl small{font-weight:400;color:var(--ink3);font-family:var(--mono);font-size:10.5px}
+.gantt .gc{border-bottom:1px solid var(--rule);min-height:44px;position:relative;padding:4px}
+.gantt .gc.win{background:var(--acc-lt)}
+.gantt .gc.past{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(0,0,0,.035) 6px 8px)}
+.gantt .ms{display:block;background:var(--paper);border:1px solid var(--rule2);border-left:3px solid var(--slate);border-radius:2px;padding:3px 6px;font-size:11px;line-height:1.3;color:var(--ink);margin-bottom:3px}
+.gantt .ms.key{border-left-color:var(--coral);background:var(--cor-lt)}
+.gantt .ms.done{border-left-color:var(--green);color:var(--ink2)}
+.gantt .ms.soft{border-left-color:var(--amber);border-style:dashed}
+.gantt .ms.room{border-left-color:var(--acc)}
+.gantt .ms small{display:block;font-family:var(--mono);font-size:10px;color:var(--ink3)}
+.gantt .bar{position:absolute;left:4px;right:4px;top:50%;height:8px;transform:translateY(-50%);background:var(--acc);opacity:.5;border-radius:2px}
+.gantt .bar.blue{background:var(--blue)}
+.gantt .bar.red{background:var(--coral)}
+/* scenarios */
+.scen{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.scen .s{background:var(--off);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px;font-size:13.5px}
+.scen .s h3{margin:0 0 6px;font-size:16px}
+.scen .s ul{margin:6px 0 0;padding-left:18px}
+.scen .s li{margin-bottom:4px}
+/* callouts */
+.call{background:var(--amb-lt);border:1px solid var(--amber);border-radius:var(--radius);padding:12px 16px;margin:16px 0;font-size:14px;color:var(--ink)}
+.call.acc{background:var(--acc-lt);border-color:var(--acc)}
+.call .k{display:block;margin-bottom:4px;color:var(--amber)}
+.call.acc .k{color:var(--acc-dk)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+ul.tight{margin:6px 0 12px;padding-left:18px}
+ul.tight li{margin-bottom:5px;font-size:14px}
+.refs li{margin-bottom:8px;font-size:13.5px}
+footer{border-top:1px solid var(--rule2);margin-top:48px;padding:20px 0 40px;font-family:var(--mono);font-size:11px;color:var(--ink3);letter-spacing:.04em;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (max-width:640px){
+  .card .row{grid-template-columns:66px 1fr}
+  .rule{grid-template-columns:40px 1fr}
+  section{padding:32px 0 8px}
+}
+@media print{
+  body{padding:0;background:#fff}
+  .lvls{display:none}
+  section{break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <div class="brand"><b>BOTH VENTURES</b> — S_Q32026 · ESTRATEGIA DE PORTFOLIO · Q-03.26</div>
+  <div class="tags">
+    <span class="tag acc">V0.1.0</span>
+    <span class="tag">INTERNO</span>
+    <span class="tag warn">borrador para validación de los cinco</span>
+    <span class="tag">15 · 09 · 2026</span>
+  </div>
+</header>
+
+<div class="cover">
+  <div class="k">S_Q32026</div>
+  <h1>Estrategia de portfolio,<br>escrita para que deje de discutirse como táctica</h1>
+  <div class="readtime">Lectura · ~26 min <span>· Tablero solo · 2 min</span></div>
+  <p class="lede">BOTH ya tiene estrategia. La ejecutó entera el martes 15/09 sin nombrarla: dos tracks, un menú de productos, una ventana de venta. Lo que no tiene es la estrategia <em>escrita como referencia operativa</em> — y por eso, seis días después del Outing, el sync se corrió del mandato del 09/09 sin que nadie lo notara. Este documento la fija, le asigna a cada venture un rol de portfolio, y deriva de ahí la táctica hasta mayo de 2027.</p>
+
+  <div class="meta">
+    <div><span class="k">Lectura</span>Tablero · 2 min<br>Pliegos 01–04 · 16 min<br>Tiempo + horizonte + anexo · 8 min<br><span class="small">completo · ~26 min</span></div>
+    <div><span class="k">Escrito para</span>Los cinco. Lector primario: Gastón (ve el patrón). René, Daiana, Andrés: sus tramos.</div>
+    <div><span class="k">Sucede a</span>Outing V1 · Cierre 360 · 09/09 (mandato)<br>Sync 15/09 + sesión ops 15/09 (evidencia)</div>
+    <div><span class="k">Fuentes</span>transcripts 15/09 · outing wrap · LP report Q2 · area-operations 14/09 · venture cards · pending 15/09</div>
+    <div><span class="k">Estado</span>Roles y gates son <b>propuesta</b>. Los Asks son de Gastón — cada casilla que sólo él puede llenar está marcada.</div>
+  </div>
+
+  <blockquote class="quote">«Siempre que vos estés comparando cash generation con los negocios que tenemos con equity, siempre van a perder — y lo otro lo necesitás para que el equity se mantenga. Esa es la dicotomía intrínseca que tenemos.»<span class="who">DAIANA · SYNC 15/09 · RESPUESTA: «SÍ, OBVIO, YA SÉ. LA SIGO.» — NO SE RETOMÓ</span></blockquote>
+</div>
+
+<nav class="lvls" aria-label="Niveles de lectura">
+  <a href="#l0"><b>L0</b>Tablero</a>
+  <a href="#l1"><b>01</b>Deriva 09/09 → 15/09</a>
+  <a href="#l2"><b>02</b>Tres altitudes</a>
+  <a href="#l3"><b>03</b>Roles de portfolio</a>
+  <a href="#l4"><b>04</b>Reglas y gates</a>
+  <a href="#l5"><b>05</b>Tiempo · Gantt</a>
+  <a href="#l6"><b>06</b>Horizonte 3–5 años</a>
+  <a href="#ax"><b>A</b>Referencias y pendientes</a>
+</nav>
+
+<!-- ============================================================ L0 -->
+<section id="l0">
+  <div class="sec-h"><span class="n">L0</span><h2>Tablero</h2><span class="sub">plataforma · cinco cifras que se refrescan cada martes · después, una tarjeta por venture</span></div>
+
+  <div class="kpis">
+    <div class="kpi"><span class="k">Cash BOTH · plataforma</span><div class="v">751.744<small>USD</small></div><div class="d">cierre ago-26 · incluye deploy LP USD 1M · <span class="mono">area-operations 14/09</span></div></div>
+    <div class="kpi warn"><span class="k">Libres para nuevos proyectos</span><div class="v">~76K<small>USD</small></div><div class="d">el resto sostiene la operación · burn ~56K/mes (salarios 55K)</div></div>
+    <div class="kpi red"><span class="k">Runway a burn constante</span><div class="v">jul-27</div><div class="d">sin nuevos ingresos ni deploys · <b>norte: caso visible en may-27</b>, no en curso en julio</div></div>
+    <div class="kpi"><span class="k">LP · Selfina</span><div class="v">2,75M<small>100% dibujado</small></div><div class="d">1,5M drawn + 1,0M jul-26 + 250K Chamana condicional · <b>próximo tramo: no programado</b> · ritmo histórico ~1M/año, nunca formalizado</div></div>
+    <div class="kpi acc"><span class="k">Ventana de venta</span><div class="v">21-nov → mar</div><div class="d">paquetes impecables 21-nov / 1-dic / 15-dic · capital regional físicamente en Punta dic → mar</div></div>
+    <div class="kpi warn"><span class="k">Deriva 09/09 → 15/09</span><div class="v">4<small>desvíos</small></div><div class="d">Quantum desparkeado · José Ignacio ocupó el room · target Bienal ×3 · Ask CM ignora la respuesta del wrap → <a href="#l1">01</a></div></div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--acc)"></i>Motor de caja</span>
+    <span><i style="background:var(--slate)"></i>Activo / balance</span>
+    <span><i style="background:var(--blue)"></i>Compounder de equity</span>
+    <span><i style="background:var(--amber)"></i>Opción</span>
+    <span><i style="background:var(--ink3)"></i>Plataforma</span>
+    <span style="margin-left:auto" class="small">Health = card del champion (fecha en cada tarjeta). <em style="color:var(--amber)">Cursiva ámbar</em> = casilla que sólo Gastón llena.</span>
+  </div>
+
+  <div class="cards">
+
+    <div class="card role-plat" style="border-top-color:var(--acc)">
+      <div class="hd"><h3>Casa Manantial</h3><span class="role">Plataforma + caja</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Cash-flow positiva sin subsidio · break-even ~70 socios</div></div>
+      <div class="row"><span class="k">Distancia</span><div>48/70 socios pagos · ARPU 476 · <b>agosto: 1er mes de caja + ex-CAPEX (+4.5K)</b> · cash 55.6K · rent gap ~10K/mes sin owner</div></div>
+      <div class="row"><span class="k">Ask</span><div><span class="pend">Indefinido (Gastón: «use of proceeds, ni idea»)</span> — el wrap ya tenía respuesta: <b>partner anual 120–180K = venta, no ronda</b></div></div>
+      <div class="row"><span class="k">Gate</span><div>Ask GF–RL 16/09 · room 06/10 (estrategia + verano, diferido 2 sem)</div></div>
+      <div class="foot"><span class="health h-y">● YELLOW · 14/09</span><span class="chips"><span class="chip p-dg">DG</span></span></div>
+    </div>
+
+    <div class="card role-cash">
+      <div class="hd"><h3>Bienal Punta</h3><span class="role">Motor de caja · corto</span></div>
+      <div class="row"><span class="k">Endgame</span><div>1ª edición ejecutada · neto ≥ 120K · marca 100% BOTH</div></div>
+      <div class="row"><span class="k">Distancia</span><div>0 sponsors firmados · MACA venue-only, <b>100% producción sobre BOTH</b> · gov (MEF + BCU) sin confirmar</div></div>
+      <div class="row"><span class="k">Ask</span><div>Trigger <b>350K a fin nov</b> (Gastón) — Daiana: «inalcanzable»; contrapropuesta 2–3 anchors &gt;100K + speakers. <span class="pend">Sin resolver.</span></div></div>
+      <div class="row"><span class="k">Gate</span><div>room 22/09 · MACA 30/09 · gov 06/10 · <b>go/no-go 30-nov</b></div></div>
+      <div class="foot"><span class="health h-y">● YELLOW · inferido 15/09</span><span class="chips"><span class="chip p-rl">RL</span><span class="chip p-dg">DG</span></span></div>
+    </div>
+
+    <div class="card role-cash">
+      <div class="hd"><h3>La Chamana</h3><span class="role">Caja + activo</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Cash-flow + con pipeline forward-loaded · venta Christie's 2–2,5× obra (4M)</div></div>
+      <div class="row"><span class="k">Distancia</span><div>jul + ago cash + (last-minute) · 9 acuerdos de distribución vía outreach · burn 19.3K · deuda Pato 100K · <b>sin visibilidad mid-term</b></div></div>
+      <div class="row"><span class="k">Ask</span><div>«Chamana 2» (nueva casa) en el menú — <span class="pend">sin caso ni cifra</span>. Chamana 1: cero caja BOTH.</div></div>
+      <div class="row"><span class="k">Gate</span><div>room 13/10 · temporada alta · track Christie's a decidir · Mariano: «cerrá lo de ayer, no construyas hooks nuevos»</div></div>
+      <div class="foot"><span class="health h-r">● RED sostenido · 03/08</span><span class="chips"><span class="chip p-mb">MB</span><span class="chip p-gf">GF</span></span></div>
+    </div>
+
+    <div class="card role-asset">
+      <div class="hd"><h3>José Ignacio · 11 lotes</h3><span class="role">Activo · wildcard</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Trade (~14M → ~22M) → semilla del vehículo de land banking · BOTH = GP, 20% del upside</div></div>
+      <div class="row"><span class="k">Distancia</span><div>Apareció el 14/09 · 0 comprometido · Guido: «me queda grande» · Demi/La Rana + Bombuch en conversación</div></div>
+      <div class="row"><span class="k">Ask</span><div><b>14M</b> · SPV UY + LLC US · <b>sin apalancar</b> (Gastón vs. Andrés: ganó no-leverage) · vender 5–6 lotes en verano, holdear 5–6</div></div>
+      <div class="row"><span class="k">Gate</span><div><b>seña 5–7 días</b> · cierre ~día 80 (≈ 04-dic) · <span class="pend">¿pasa la regla del wildcard? → 04</span></div></div>
+      <div class="foot"><span class="health h-p">● SIN CARD</span><span class="chips"><span class="chip p-gf">GF</span><span class="chip p-ab">AB</span></span></div>
+    </div>
+
+    <div class="card role-eq" style="border-top-color:var(--slate)">
+      <div class="hd"><h3>Reshore</h3><span class="role">Renta + compounder</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Banco para manufacturers que venden a US · escala con capital de terceros (Zenith 25M → ~100M/año)</div></div>
+      <div class="row"><span class="k">Distancia</span><div>1,4M a costo (la posición más grande) · <b>500K liabilities sin origen documentado</b> · Bancomext: garantía rápida, funding lento · 0 deployments cerrados</div></div>
+      <div class="row"><span class="k">Ask</span><div>Dos productos: <b>SPV deuda ~10% garantizado</b> (renta) + <b>equity</b> (ronda 400K a cap 12–15M) · <span class="pend">modelo bloqueado por liabilities</span></div></div>
+      <div class="row"><span class="k">Gate</span><div>René aclara con GF <b>19/09</b> · sin eso no hay Pacochi de Reshore</div></div>
+      <div class="foot"><span class="health h-r">● AT-RISK · 15/09</span><span class="chips"><span class="chip p-gf">GF</span></span></div>
+    </div>
+
+    <div class="card role-eq">
+      <div class="hd"><h3>Photonic Labs</h3><span class="role">Compounder</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Lab GMP-tier regional · ronda ~4M con lead estratégico Q1-27 · anchor = un cliente (LOI)</div></div>
+      <div class="row"><span class="k">Distancia</span><div>Gate A · <b>greenfield vs brownfield sin cerrar</b> (2M vs 6M) · pricing de servicios sin definir · BsAs 18/09 (Escamilla)</div></div>
+      <div class="row"><span class="k">Ask</span><div>~4M asumido · <span class="pend">bloqueado: Ask → modelo → Pacochi, en ese orden (René)</span></div></div>
+      <div class="row"><span class="k">Gate</span><div>Ask GF–RL 16/09 · room 29/09 (modelo) · <b>ronda abre feb/mar, no verano</b> — verano = relaciones</div></div>
+      <div class="foot"><span class="health h-y">● BLOQUEADO · 15/09</span><span class="chips"><span class="chip p-rl">RL</span><span class="chip p-gf">GF</span><span class="chip p-dg">DG</span></span></div>
+    </div>
+
+    <div class="card role-opt">
+      <div class="hd"><h3>Quantum · TQA / IonQ</h3><span class="role">Opción · sin precio</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Uruguay hub quantum regional · BOTH con ownership en el activo local + equity en la red</div></div>
+      <div class="row"><span class="k">Distancia</span><div>0 capital BOTH · Facu ofrece <b>20% del Holdco por 15M</b> (60M pre) · <b>5M para bloquear antes del 11-oct</b> · sin anchor · Facu D.R.: «it's too early» · Bind: 20% sólo con anchor</div></div>
+      <div class="row"><span class="k">Ask</span><div>15M — <b>BOTH no es el capital, es el estructurador</b> (co-GP). Gastón → SoftBank, Ari directo.</div></div>
+      <div class="row"><span class="k">Gate</span><div><b>11-oct</b> · wrap 09/09: «parked, fuera de la agenda semanal» — <span class="pend">desparkeado sin reescribir la decisión 14 → 04</span></div></div>
+      <div class="foot"><span class="health h-p">● PENDIENTE GF · 14/09</span><span class="chips"><span class="chip p-gf">GF</span></span></div>
+    </div>
+
+    <div class="card role-opt">
+      <div class="hd"><h3>LAK3</h3><span class="role">Opción · parked</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Entidad ADGM + security token anclado · debut UN Water Dubái dic-26 (draft, sin ratificar)</div></div>
+      <div class="row"><span class="k">Distancia</span><div>Paused desde 22-jun · 88K a costo (token) · sin anchor nombrado</div></div>
+      <div class="row"><span class="k">Ask</span><div>Ninguno</div></div>
+      <div class="row"><span class="k">Gate</span><div>Wrap 14: <b>resolver o dejar escrito</b> antes del LP report Q3 — un FCA warning es ítem de diligence en los otros cinco</div></div>
+      <div class="foot"><span class="health h-p">● PAUSED · 22/06</span><span class="chips"><span class="chip p-rl">RL</span></span></div>
+    </div>
+
+    <div class="card role-opt">
+      <div class="hd"><h3>Panambi</h3><span class="role">Opción · parked</span></div>
+      <div class="row"><span class="k">Endgame</span><div>GP del fondo de salud mental LatAm</div></div>
+      <div class="row"><span class="k">Distancia</span><div>GP 25K deployado · LP 25K committed, deploy pendiente (Selfina)</div></div>
+      <div class="row"><span class="k">Ask</span><div>Ninguno</div></div>
+      <div class="row"><span class="k">Gate</span><div>Revalidar Puntatec en papel · cerrar el 25K pendiente</div></div>
+      <div class="foot"><span class="health h-g">● GREEN · 06/07</span><span class="chips"><span class="chip p-ab">AB</span></span></div>
+    </div>
+
+    <div class="card role-plat">
+      <div class="hd"><h3>B_V® | OS · Synergy</h3><span class="role">Plataforma</span></div>
+      <div class="row"><span class="k">Endgame</span><div>El OS es el apalancamiento, nunca el producto</div></div>
+      <div class="row"><span class="k">Distancia</span><div>GTM Chamana: 570 mails curados → 9 acuerdos · auto-miner corriendo · Asana: 334 vencidas (wrap 05)</div></div>
+      <div class="row"><span class="k">Métrica</span><div>Costo por venture servido · <b>no</b> output</div></div>
+      <div class="row"><span class="k">Gate</span><div>Both Worlds P2 (GF + MB) · «bajar» Asana · rotación PATs nov</div></div>
+      <div class="foot"><span class="health h-g">● OPERANDO</span><span class="chips"><span class="chip p-mb">MB</span></span></div>
+    </div>
+
+    <div class="card role-plat">
+      <div class="hd"><h3>Content Factory</h3><span class="role">Plataforma</span></div>
+      <div class="row"><span class="k">Endgame</span><div>Distribución compartida del portfolio: un motor, dos vectores (draft, sin ratificar)</div></div>
+      <div class="row"><span class="k">Distancia</span><div>Sin piloto elegido · Andrés absorbido por dossiers de Pacochi + legal JI/Bienal</div></div>
+      <div class="row"><span class="k">Métrica</span><div>Ventures activando campañas sin construir capacidad propia</div></div>
+      <div class="row"><span class="k">Gate</span><div>Primer venture piloto — <span class="pend">o parkear explícitamente hasta marzo</span></div></div>
+      <div class="foot"><span class="health h-y">● YELLOW · 06/07</span><span class="chips"><span class="chip p-ab">AB</span></span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================ 01 -->
+<section id="l1">
+  <div class="sec-h"><span class="n">01</span><h2>Deriva: lo que decía el 09/09 y lo que pasó el 15/09</h2><span class="sub">seis días · el mismo equipo · el mandato no estaba en la mesa</span></div>
+
+  <p>El wrap del Outing es un documento de estrategia. Tiene mandato (<em>equity value creado por dólar de caja BOTH</em>), norte (<em>caso visible en mayo-27</em>), una lectura del capital (<em>76K libres: la asignación de tiempo es la estrategia de portfolio</em>), seis evidencias, anchors por venture y siete decisiones. Está en estado «borrador para validación» — y por eso el martes nadie lo tenía abierto. Lo que sigue no es un reproche: es la medición de qué pasa cuando la estrategia vive en un borrador y no en la referencia operativa.</p>
+
+  <div class="tblwrap">
+  <table class="tbl">
+    <thead><tr><th style="width:120px">Tema</th><th>09/09 · Outing wrap</th><th>15/09 · Sync + sesión ops</th><th style="width:30%">Lectura</th></tr></thead>
+    <tbody>
+      <tr><td>Quantum</td>
+        <td class="drift-then">«Parked, como decisión. Opción capada, fecha de revisit con nombre, <b>fuera de la agenda semanal</b>.» (decisión 14, abierta)</td>
+        <td class="drift-now">«Yo tengo Quantum y es gigante, es una ansiedad gigante.» ~20 min de la reunión. Decisión minada: <b>pursue</b>, 15M por 20% del Holdco, 5M antes del 11-oct, Gastón → SoftBank. «Para mí hay que hacerlo.»</td>
+        <td><div class="read">Se desparkeó sin decirlo. Puede ser la decisión correcta — la reestructura de IonQ es material. Pero entonces la decisión 14 se <b>reescribe</b> con precio de la opción y qué se deja de hacer; no se ignora.</div></td></tr>
+      <tr><td>Tiempo como capital</td>
+        <td class="drift-then">«Un company builder con USD 76K investibles no es un allocator de capital: es un operador. <b>La asignación de tiempo es la estrategia de portfolio.</b>»</td>
+        <td class="drift-now">José Ignacio — 14M en 80 días, apareció el día anterior — ocupó ~40% del room. Estructura LLC/SPV/GP discutida a fondo. El room programado era «Both Pacochi».</td>
+        <td><div class="read">Consistente con el rol de GP (cero caja BOTH). Inconsistente con el recurso que el wrap declaró escaso. El room del Pacochi se comió a sí mismo.</div></td></tr>
+      <tr><td>Casa Manantial</td>
+        <td class="drift-then">Anchor = <b>partner anual</b> 120–180K (naming + programación + contenido), UBS primero. «Es una venta, no una ronda.» Rent gap ~60K sin owner (decisión 4, abierta).</td>
+        <td class="drift-now">Gastón: «invertir en Casa Manantial, <b>question mark, use of proceeds, ni idea</b>». Ops: «lo que falta no es el Ask, es una decisión estratégica de qué queremos hacer con CM». Estrategia de verano diferida 2 semanas.</td>
+        <td><div class="read">El wrap tenía la respuesta al Ask. Nadie la trajo. Es el caso más limpio de estrategia existente que no llega a la mesa.</div></td></tr>
+      <tr><td>Bienal</td>
+        <td class="drift-then">Opcionar MACA (10–15K, nombre + fecha), <b>no seña del 50%</b>. Neto ≥ 120K. Tier anchor vendido contra acceso regulatorio. «Upside de BOTH, no soporte vital de CM.»</td>
+        <td class="drift-now">Trigger <b>350K a fin de noviembre</b> (Gastón) — Daiana: «inalcanzable». MACA venue-only: BOTH asume 100% de producción (catering, sonido, seguridad, limpieza). «Es básicamente plata y no importa de qué forma, porque tenemos revenue de la Bienal.»</td>
+        <td><div class="read">El target subió ~3× y la exposición operativa subió — en sentido contrario al wrap. Y la Bienal volvió a ser soporte vital («por eso hicimos todo esto»).</div></td></tr>
+      <tr><td>El martes</td>
+        <td class="drift-then">30' lo chico + 60' <b>un room</b>. Se abre, sale con objetivo + plazo, vuelve. Todo room documentado.</td>
+        <td class="drift-now">Los 30' fueron 45' (JI + Quantum). El room «Both Pacochi» se hizo. Cerró con un sprint Gastón–Andy y una dupla Gastón–René para los Asks — pero <b>sin objetivo + plazo escritos</b>.</td>
+        <td><div class="read">Rito adoptado a medias. Este documento es, de hecho, la documentación del room que faltó.</div></td></tr>
+      <tr><td>Reshore</td>
+        <td class="drift-then">«BOTH no pone un dólar.» Hitos tentativos hasta que Gastón confirme. Posición más grande (1,4M a costo).</td>
+        <td class="drift-now">Sesión ops: <b>500K en liabilities acumuladas sin origen documentado</b>. René escala a Gastón, deadline 19/09.</td>
+        <td><div class="read">Nuevo, no deriva. Pero bloquea el Pacochi de la posición más grande del libro — y es lo primero que lee un diligence.</div></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call"><span class="k">Lo que se está diagnosticando</span>No falta estrategia ni falta rigor. Falta que la estrategia sea el <b>objeto que se abre al empezar el martes</b> — con las cifras del tablero refrescadas, los roles asignados y los gates a la vista. Cuando eso no existe, cada wildcard compite con el room en igualdad de condiciones y siempre gana: es más urgente y más entretenido.</div>
+</section>
+
+<!-- ============================================================ 02 -->
+<section id="l2">
+  <div class="sec-h"><span class="n">02</span><h2>Tres altitudes, y la dicotomía como diseño</h2><span class="sub">objetivo · estrategia · táctica — separados y nombrados</span></div>
+
+  <div class="alt">
+    <div class="a obj"><span class="k">Objetivo · del wrap, ratificado</span><h3>Caso visible en mayo-27</h3>
+      <p>Performance case que un tercero suscribiría, frente al LP antes de que el runway (jul-27) decida por nosotros. Compromiso actual 100% dibujado; ritmo histórico ~1M/año, ligado a performance, nunca formalizado — <b>no se planifica contra él como si estuviera comprometido</b>.</p>
+      <p><b>Métrica:</b> equity value creado por dólar de caja BOTH gastado. Es el número que nadie computa hoy.</p>
+      <p class="small">Daiana lo dijo en el sync como «ganarnos el deploy». Es lo mismo. Se pasó de largo.</p></div>
+    <div class="a str"><span class="k">Estrategia · implícita el 15/09, hoy explícita</span><h3>Cinco proposiciones</h3>
+      <p><b>S1 · Dos tracks.</b> Operar (Daiana + Mariano: CM, Bienal, Photonic, Chamana-máquina) · Formar capital (Gastón + René + Andrés: vender, estructurar, cerrar).</p>
+      <p><b>S2 · Un menú, no un pitch.</b> Cada venture es un producto con su perfil de riesgo/retorno, vendido al inversor que lo quiere. BOTH vende acceso + estructuración; no pide capital para BOTH.</p>
+      <p><b>S3 · Concentrar en la ventana.</b> Paquetes terminados antes (21-nov / 1-dic / 15-dic); venta dic → mar en Punta. Evita seis meses de roadshow.</p>
+      <p><b>S4 · No apalancar el portfolio.</b> Gastón sobre JI: «preferimos que entre más capital y no leveragear, porque estamos metiendo riesgo a algo que no tiene riesgo». Aplica a todo el libro.</p>
+      <p><b>S5 · La credencial es el capital ya desplegado.</b> Chamana y CM tienen que <em>funcionar</em>. Es el segundo workstream — el que el LP mira — y hoy sólo se recursó el primero.</p></div>
+    <div class="a tac"><span class="k">Táctica · lo que se discutió</span><h3>Lo que ya está en marcha</h3>
+      <p>Pacochis: 7 componentes × 3 niveles de confidencialidad. Cadena <b>Ask → Modelo → Pacochi → Pitch</b> (René: «si el Pacochi va antes del Ask, es re-trabajo»). Dupla GF–RL 16/09 cierra Asks. Sprint GF–AB esta semana (esqueleto «voz Goldman»). Calendario de rooms hasta el 20/10. MACA 30/09. Reshore 19/09. Quantum 11-oct. JI seña 5–7 días.</p>
+      <p class="small">Es correcto y es suficiente. Lo que le falta no es más táctica: es la capa de arriba, escrita.</p></div>
+  </div>
+
+  <h3>La dicotomía, resuelta como diseño y no como debate</h3>
+  <div class="two">
+    <div>
+      <p>Daiana tiene razón y Gastón también, y por eso la conversación no avanzó: los dos hablaban de listas distintas. En un ranking único de <em>impacto potencial de cara al deploy</em>, un motor de caja pierde siempre contra un compounder — un mes de caja positiva en CM (+4.5K) no mueve el libro como una ronda de Photonic a 4M. Pero sin el motor de caja el runway se acorta y la ronda de Photonic se negocia desde la desesperación.</p>
+      <p>Esto no es un problema de BOTH: es la mecánica normal de cualquier portfolio (Henderson lo dibujó en 1970 — las cash cows financian a las stars). <b>El error no es tener las dos cosas. El error es rankearlas en la misma lista.</b> Es exactamente lo que pasó cuando Reshore y Photonic saltaron como «mayor impacto / menor esfuerzo» y Casa Manantial quedó como signo de pregunta.</p>
+    </div>
+    <div>
+      <div class="call acc"><span class="k">Diseño</span><b>Dos listas, dos métricas, nunca comparadas entre sí.</b><br><br>
+      <b>Motores de caja</b> (CM, Bienal, Chamana) se miden en <em>meses de runway agregados</em> y caja neta — y su Ask es una venta (partner, sponsor, booking), no una ronda.<br><br>
+      <b>Plays de equity</b> (Photonic, Reshore-equity, Quantum si vuelve) se miden en <em>equity value por dólar BOTH</em> — y su Ask es capital de terceros con BOTH como estructurador.<br><br>
+      El tablero del martes muestra las dos columnas lado a lado. Ninguna «gana».</div>
+    </div>
+  </div>
+
+  <figure class="fig">
+    <div class="cap">Fig. 1 · Dos tracks, un tablero. Lo que el 15/09 se decidió como organigrama es en realidad la separación de las dos listas.</div>
+    <svg viewBox="0 0 900 322" role="img" aria-label="Dos tracks: operar y formar capital, unidos por el tablero">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#999990"/></marker></defs>
+      <!-- Track A -->
+      <rect x="20" y="30" width="360" height="240" rx="3" fill="#e6e4c8" stroke="#939324"/>
+      <text x="36" y="56" font-size="11" class="mono-t" fill="#5f6014" letter-spacing="1">TRACK A · OPERAR</text>
+      <text x="36" y="80" font-size="15" font-weight="500">Daiana · Mariano</text>
+      <text x="36" y="104" font-size="12.5" fill="#555550">Métrica: meses de runway agregados · caja neta</text>
+      <text x="36" y="122" font-size="12.5" fill="#555550">Ask = una venta (partner · sponsor · booking)</text>
+      <g font-size="12.5" fill="#111110">
+        <text x="36" y="156">▸ Casa Manantial — partner anual · 48→70 socios</text>
+        <text x="36" y="178">▸ Bienal — 2–3 anchors &gt;100K · MACA · gov</text>
+        <text x="36" y="200">▸ La Chamana — máquina GTM corre sin BOTH</text>
+        <text x="36" y="222">▸ Photonic — modelo (Daiana) una vez cerrado el Ask</text>
+      </g>
+      <text x="36" y="254" font-size="11" fill="#b06a00" font-style="italic">Cuello de botella: Daiana hace todos los modelos del track B</text>
+      <!-- Track B -->
+      <rect x="520" y="30" width="360" height="240" rx="3" fill="#dfe3e8" stroke="#1a4fa0"/>
+      <text x="536" y="56" font-size="11" class="mono-t" fill="#1a4fa0" letter-spacing="1">TRACK B · FORMAR CAPITAL</text>
+      <text x="536" y="80" font-size="15" font-weight="500">Gastón · René · Andrés</text>
+      <text x="536" y="104" font-size="12.5" fill="#555550">Métrica: equity value por dólar BOTH · cierres</text>
+      <text x="536" y="122" font-size="12.5" fill="#555550">Ask = capital de terceros · BOTH estructura</text>
+      <g font-size="12.5" fill="#111110">
+        <text x="536" y="156">▸ Reshore — SPV deuda 10% + equity</text>
+        <text x="536" y="178">▸ Photonic — ronda ~4M · LOI anchor · feb/mar</text>
+        <text x="536" y="200">▸ José Ignacio — 14M · GP 20% · sin leverage</text>
+        <text x="536" y="222">▸ Quantum — 15M · co-GP · 11-oct</text>
+      </g>
+      <text x="536" y="254" font-size="11" fill="#b06a00" font-style="italic">Riesgo: wildcards sin regla compiten con el room</text>
+      <!-- center -->
+      <rect x="400" y="110" width="100" height="80" rx="3" fill="#ebe1cd" stroke="#c2b696"/>
+      <text x="450" y="140" font-size="11" text-anchor="middle" class="mono-t" fill="#999990" letter-spacing="1">TABLERO</text>
+      <text x="450" y="158" font-size="12" text-anchor="middle">un solo</text>
+      <text x="450" y="174" font-size="12" text-anchor="middle">objeto · martes</text>
+      <line x1="380" y1="150" x2="398" y2="150" stroke="#999990" marker-end="url(#ar)"/>
+      <line x1="520" y1="150" x2="502" y2="150" stroke="#999990" marker-end="url(#ar)"/>
+      <!-- credential arrow -->
+      <path d="M200 270 Q450 330 700 270" fill="none" stroke="#939324" stroke-dasharray="4 4"/>
+      <text x="450" y="314" font-size="11" text-anchor="middle" fill="#5f6014" class="mono-t">S5 · LA PERFORMANCE DE A ES LA CREDENCIAL DE B</text>
+    </svg>
+  </figure>
+</section>
+
+<!-- ============================================================ 03 -->
+<section id="l3">
+  <div class="sec-h"><span class="n">03</span><h2>Rol de portfolio por venture</h2><span class="sub">el eje que falta · la taxonomía actual describe a BOTH, no al venture</span></div>
+
+  <p>La taxonomía vigente (<span class="mono">Meaning</span> Explore/Build/Scale · <span class="mono">Action</span> Hands-on/Supportive/Observational · <span class="mono">Outcome</span> Learning/Momentum/Value) describe <em>la involucración de BOTH</em>. El reporte LP agrega <span class="mono">Category</span> y <span class="mono">Stage</span>. Ninguna dice <b>qué trabajo financiero hace el venture dentro del portfolio</b> — y eso es lo que Daiana y Gastón discutían sin vocabulario. Cinco roles. No es una tercera taxonomía: es lo que <span class="mono">Outcome</span> quería ser y no era medible.</p>
+
+  <div class="tblwrap">
+  <table class="tbl">
+    <thead><tr><th>Rol</th><th>Trabajo financiero</th><th>Cómo se mide</th><th>Cuál es su Ask</th><th>Modo de falla típico</th></tr></thead>
+    <tbody>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;background:var(--acc);border-radius:2px;margin-right:6px"></i>Motor de caja</td><td>Extender el runway de la plataforma</td><td>Meses de runway agregados · caja neta mensual</td><td>Una venta (partner anual, sponsor, booking, servicio)</td><td>Se desatiende porque «pierde» en el ranking de impacto</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;background:var(--slate);border-radius:2px;margin-right:6px"></i>Activo / balance</td><td>Colateral, mark-to-market, upside de trade</td><td>NAV · múltiplo sobre costo · GP carry</td><td>Capital de terceros para el activo; BOTH = GP/estructurador</td><td>Iliquidez · apalancar de más · consumir el tiempo del equipo</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;background:var(--blue);border-radius:2px;margin-right:6px"></i>Compounder de equity</td><td>Múltiplo a largo plazo sobre una posición fundadora</td><td>Equity value por dólar BOTH · ownership retenido · velocidad de ronda</td><td>Ronda con precio y lead; LOI de anchor-customer antes</td><td>Levantar demasiado temprano · sin anchor · re-trabajo Ask/modelo</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;background:var(--amber);border-radius:2px;margin-right:6px"></i>Opción</td><td>Payoff asimétrico si una tecnología o un mercado hace click</td><td><b>Costo de mantener la opción viva</b> (tiempo + caja) vs. tamaño del payoff</td><td>Ninguno propio — BOTH estructura para otros, o parkea con fecha</td><td>Drenar tiempo del CEO en un «quizás» · desparkear en silencio</td></tr>
+      <tr><td><i style="display:inline-block;width:10px;height:10px;background:var(--ink3);border-radius:2px;margin-right:6px"></i>Plataforma</td><td>Habilitar a los demás a menor costo</td><td>Costo por venture servido · leverage</td><td>Ninguno</td><td>Sobre-ingeniería · medirse por output</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Asignación propuesta</h3>
+  <p>Coincide con la intuición que Boris trajo («Manantial estratégico, Chamana break-even, Photonic growth, Reshore las dos, Quantum casi full growth») con <b>una reclasificación</b>: Quantum no es growth — es una opción cuyo precio nadie fijó. Y con una adición: José Ignacio entra como activo <em>wildcard</em>, categoría que hoy no existe y necesita regla (→ 04).</p>
+
+  <div class="tblwrap">
+  <table class="tbl">
+    <thead><tr><th>Venture</th><th>Rol</th><th>Anchor (wrap 09/09)</th><th>Por qué ese rol</th><th>Lo que sólo Gastón llena</th></tr></thead>
+    <tbody>
+      <tr><td>Casa Manantial</td><td>Plataforma + motor de caja</td><td>Partner anual</td><td>Es la sede, el calendario y la audiencia. Co-organizador de la Bienal. Su valor es habilitar; su caja debe cubrir su estructura. Break-even a 70 es medible.</td><td class="pend" style="color:var(--amber);font-style:italic">¿Se vende el partner anual (wrap) o se busca equity? Si equity: use of proceeds.</td></tr>
+      <tr><td>Bienal Punta</td><td>Motor de caja · fecha corta</td><td>Acceso regulatorio</td><td>Lo único del portfolio que BOTH posee entero. Crea caja de la nada si cierra sponsors. Riesgo: volver a ser soporte vital de CM.</td><td class="pend" style="color:var(--amber);font-style:italic">Trigger: ¿350K, o 2–3 anchors &gt;100K? Sin esto Daiana no puede correr el go/no-go.</td></tr>
+      <tr><td>La Chamana</td><td>Motor de caja + activo</td><td>Distribución</td><td>Operación a break-even (jul, ago) con un activo de 4M y piso Christie's de 9,5M. La máquina GTM ya produce evidencia (9 acuerdos). Capital de Guido ya adentro → credencial.</td><td class="pend" style="color:var(--amber);font-style:italic">«Chamana 2»: ¿es un producto del menú este verano o una idea? Si producto: caso y cifra.</td></tr>
+      <tr><td>José Ignacio</td><td>Activo · <b>wildcard</b></td><td>Comprador de tierra · co-GP</td><td>Trade con tesis clara (14 → 22M) y BOTH como GP sin caja propia. Semilla plausible de land banking. Pero no estaba en ningún plan hace 48 h.</td><td class="pend" style="color:var(--amber);font-style:italic">¿Entra a la mesa del martes o a una mesa aparte? ¿Quién pone la seña y cuándo se sale?</td></tr>
+      <tr><td>Reshore</td><td>Renta (SPV) + compounder (equity)</td><td>Comprador</td><td>Dos productos distintos para dos apetitos distintos — es la mejor ilustración del menú. Posición más grande del libro. Bloqueado por documentación, no por tesis.</td><td class="pend" style="color:var(--amber);font-style:italic">Origen de los 500K de liabilities (19/09). Sin eso, no hay Pacochi.</td></tr>
+      <tr><td>Photonic Labs</td><td>Compounder</td><td>Cliente (LOI)</td><td>Mayor equity value por dólar del libro (wrap: 15K de costo → posición fundadora sobre 2–6M). Ronda en feb/mar; verano = relaciones. Cadena Ask → modelo estricta.</td><td class="pend" style="color:var(--amber);font-style:italic">Greenfield vs brownfield (2M vs 6M) + pricing de servicios. Es el Ask del 16/09.</td></tr>
+      <tr><td>Quantum</td><td>Opción · <b>sin precio</b></td><td>Anchor institucional (SoftBank)</td><td>Cero caja BOTH; 15M que BOTH no tiene ni debe poner. El «it's too early» de Facu D.R. es la lectura correcta <em>de una opción</em>, no un rechazo. La pregunta no es «¿invertimos?» sino <b>«¿cuánto tiempo de Gastón vale mantener esto vivo hasta el 11-oct, y qué se deja de hacer?»</b></td><td class="pend" style="color:var(--amber);font-style:italic">Precio máximo de la opción (horas/semana + caja = 0) y fecha en que vuelve a parked si no hay anchor.</td></tr>
+      <tr><td>LAK3 · Panambi</td><td>Opción · parked</td><td>—</td><td>Parked por decisión del wrap. Costo de mantener: casi cero si está <em>escrito</em>; alto si un diligence lo encuentra sin cerrar.</td><td class="pend" style="color:var(--amber);font-style:italic">LAK3: resolver o dejar escrito antes del LP report Q3.</td></tr>
+      <tr><td>B_V® | OS · Content Factory</td><td>Plataforma</td><td>—</td><td>Se miden por costo por venture servido. La máquina de Chamana es hoy la única evidencia de leverage con número (570 mails → 9 acuerdos).</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <figure class="fig">
+    <div class="cap">Fig. 2 · La cadena que René nombró como riesgo temporal, con cada venture ubicado donde está hoy. Nada a la derecha de su bloqueo es construible sin re-trabajo.</div>
+    <svg viewBox="0 0 900 250" role="img" aria-label="Cadena Ask, Modelo, Pacochi, Pitch con ventures ubicados">
+      <g font-size="12">
+        <rect x="20" y="20" width="190" height="52" rx="3" fill="#ebe1cd" stroke="#c2b696"/><text x="115" y="41" text-anchor="middle" font-weight="500">ASK</text><text x="115" y="58" text-anchor="middle" fill="#555550" font-size="11">cuánto y para qué · Gastón</text>
+        <rect x="243" y="20" width="190" height="52" rx="3" fill="#ebe1cd" stroke="#c2b696"/><text x="338" y="41" text-anchor="middle" font-weight="500">MODELO</text><text x="338" y="58" text-anchor="middle" fill="#555550" font-size="11">supuestos · proyecciones · Daiana</text>
+        <rect x="466" y="20" width="190" height="52" rx="3" fill="#ebe1cd" stroke="#c2b696"/><text x="561" y="41" text-anchor="middle" font-weight="500">PACOCHI</text><text x="561" y="58" text-anchor="middle" fill="#555550" font-size="11">narrativa René · dossier Andrés</text>
+        <rect x="689" y="20" width="190" height="52" rx="3" fill="#ebe1cd" stroke="#c2b696"/><text x="784" y="41" text-anchor="middle" font-weight="500">PITCH · CIERRE</text><text x="784" y="58" text-anchor="middle" fill="#555550" font-size="11">call-ready · ventana dic → mar</text>
+        <line x1="210" y1="46" x2="241" y2="46" stroke="#999990" marker-end="url(#ar)"/>
+        <line x1="433" y1="46" x2="464" y2="46" stroke="#999990" marker-end="url(#ar)"/>
+        <line x1="656" y1="46" x2="687" y2="46" stroke="#999990" marker-end="url(#ar)"/>
+      </g>
+      <!-- lanes -->
+      <g font-size="11.5" fill="#111110">
+        <line x1="20" y1="90" x2="880" y2="90" stroke="#d6cbb1"/>
+        <!-- Photonic: blocked at ASK -->
+        <circle cx="115" cy="110" r="6" fill="#c0392b"/><text x="130" y="114">Photonic — bloqueado en Ask (greenfield/brownfield · pricing)</text>
+        <!-- Reshore: blocked at MODEL -->
+        <circle cx="338" cy="136" r="6" fill="#c0392b"/><text x="353" y="140">Reshore — bloqueado en modelo (500K liabilities)</text>
+        <!-- CM: no Ask -->
+        <circle cx="60" cy="162" r="6" fill="#b06a00"/><text x="75" y="166">Casa Manantial — sin Ask; Pacochi con dos narrativas en conflicto</text>
+        <!-- Bienal: at PACOCHI -->
+        <circle cx="561" cy="188" r="6" fill="#939324"/><text x="576" y="192">Bienal — Pacochi en curso (room 22/09) · trigger sin resolver</text>
+        <!-- JI: at PITCH already -->
+        <circle cx="784" cy="214" r="6" fill="#3a4a58"/><text x="770" y="218" text-anchor="end" fill="#111110" font-size="11.5">José Ignacio — ya en pitch (Guido, Demi, Ari) · <tspan fill="#b06a00">sin Ask ni modelo</tspan></text>
+        <!-- Quantum -->
+        <circle cx="784" cy="110" r="6" fill="#b06a00"/><text x="770" y="114" text-anchor="end" fill="#111110" font-size="11.5">Quantum — en pitch (SoftBank) · <tspan fill="#b06a00">sin modelo propio</tspan></text>
+      </g>
+    </svg>
+  </figure>
+
+  <h3>Anatomía del Pacochi</h3>
+  <p>Lo que Gastón dictó al cierre del room, ordenado. Siete componentes; tres niveles de acceso. La regla del one-pager (Andrés): <em>«no puede tener generación de urgencia, no puede tener hints de que es una venta»</em>. Dueños por disciplina, no por venture: narrativa René · modelo Daiana · Ask Gastón · dossier Andrés (decisión ops 15/09).</p>
+  <div class="tblwrap">
+  <div class="pmat">
+    <div class="h"></div><div class="h">Pública</div><div class="h">Externa (con password)</div><div class="h">Confidencial</div>
+    <div class="r">Índice · menú clickeable</div><div class="c y">thumbnails de cada venture · intro BOTH · profiles</div><div class="c n">—</div><div class="c n">—</div>
+    <div class="r">One-pager</div><div class="c y">teaser · sin urgencia · sin señal de venta</div><div class="c n">—</div><div class="c n">—</div>
+    <div class="r">Deck</div><div class="c n">—</div><div class="c y">narrativa · modelo · supuestos</div><div class="c n">—</div>
+    <div class="r">El Caso</div><div class="c n">—</div><div class="c y">modelo de negocio · impuestos · proyecciones</div><div class="c n">—</div>
+    <div class="r">El Ask</div><div class="c n">—</div><div class="c y">2 páginas máx · monto · instrumento · milestones</div><div class="c n">—</div>
+    <div class="r">Evidencia</div><div class="c n">—</div><div class="c y">lo que ya se movió · tracción</div><div class="c n">—</div>
+    <div class="r">Objeciones</div><div class="c n">—</div><div class="c n">—</div><div class="c y">interno · mapeadas antes de la primera call</div>
+    <div class="r">Dossier</div><div class="c n">—</div><div class="c n">—</div><div class="c y">legal · estructura · due diligence</div>
+  </div>
+  </div>
+</section>
+
+<!-- ============================================================ 04 -->
+<section id="l4">
+  <div class="sec-h"><span class="n">04</span><h2>Reglas y gates</h2><span class="sub">lo controversial · propuesto, no decidido · Flagship: lo que le falta a BOTH son los criterios de kill</span></div>
+
+  <div class="rules">
+    <div class="rule"><div class="rn">R1</div><div><h3>Dos listas, nunca una</h3><p>Motores de caja se rankean por meses de runway agregados; plays de equity por equity value por dólar BOTH. El tablero muestra las dos columnas. Ningún ranking único de «impacto» vuelve a la mesa.</p><p class="why">Resuelve la dicotomía de Daiana como diseño. Evita que CM quede como «signo de pregunta» por comparación injusta.</p></div></div>
+
+    <div class="rule"><div class="rn">R2</div><div><h3>Regla del wildcard</h3><p>Una oportunidad que no estaba en el plan gana asiento en el martes sólo si cumple las tres: <b>(a)</b> BOTH participa como GP/estructurador con cero caja propia; <b>(b)</b> no desplaza el room programado — va a los 30' con un dueño, o a una mesa aparte; <b>(c)</b> tiene fecha en la que está adentro o afuera. José Ignacio cumple (a) y (c) (seña 5–7 días; cierre día 80). <b>Falló (b).</b></p><p class="why">Propuesta concreta: wildcards van a una mesa GF + AB entre martes; vuelven al martes con una decisión, no con una discusión de estructura. El wrap ya decía que la asignación de tiempo <em>es</em> la estrategia.</p></div></div>
+
+    <div class="rule"><div class="rn">R3</div><div><h3>Un parked no se desparkea en silencio</h3><p>Si Quantum vuelve — y hay razones: IonQ reestructuró, hay fecha dura — la decisión 14 del wrap se <b>reescribe</b> con tres cosas: precio máximo de la opción (horas de Gastón/semana; caja BOTH = 0), fecha en que vuelve a parked sin anchor (11-oct), y qué se deja de hacer para atenderlo. Lo mismo para cualquier parked.</p><p class="why">BOTH no es el capital de Quantum ni puede serlo. Es el estructurador de un anchor institucional. Esa es una función legítima del track B — pero tiene precio, y hoy no está escrito.</p></div></div>
+
+    <div class="rule"><div class="rn">R4</div><div><h3>El Ask es de Gastón; el modelo es de Daiana; en ese orden — y Daiana es el cuello de botella del track B</h3><p>Ratifica la decisión ops del 15/09 (dupla GF–RL) y la cadena de René. Corolario que nadie dijo: <b>el split puso a Daiana en el track A, pero todos los modelos del track B pasan por ella.</b> Reservar horas explícitas de Daiana para modelos (propuesta: dos medios días fijos/semana hasta el 21-nov) o los Pacochis no salen en fecha.</p><p class="why">La cadena Ask → Modelo → Pacochi tiene a Daiana en el segundo eslabón de las cuatro ventures del menú. Es el camino crítico, y el organigrama la asignó al otro lado.</p></div></div>
+
+    <div class="rule"><div class="rn">R5</div><div><h3>Criterios de continuar / cortar por venture</h3><p>Flagship Pioneering avanza un ProtoCo a NewCo sólo si convierte el «¿qué pasaría si…?» en «resulta que…», y lo termina en cualquier etapa si no cumple criterio. BOTH tiene etapas (Explore → Build → Scale) pero <b>no tiene criterios de corte escritos</b>. Abajo, una propuesta por venture — para pelear, no para firmar.</p></div></div>
+
+    <div class="rule"><div class="rn">R6</div><div><h3>Tres cifras se refrescan cada martes</h3><p>Cash BOTH · libres para nuevos proyectos · días al 21-nov. Van arriba del tablero semanal. Sin ellas, el equipo prioriza a ciegas — hoy el sync las discutió sin tenerlas.</p></div></div>
+  </div>
+
+  <h3>Gates propuestos · si / entonces / fecha</h3>
+  <div class="gates">
+    <div class="gate"><span class="k">Photonic Labs</span><b>Si</b> <span class="if">no hay LOI de anchor-customer (pharma regional · CDMO · animal-health) al</span> <span class="date">15-dic</span> <div class="then">→ la ronda no abre en feb; se redefine A / A+ / B antes de gastar en Pacochi de ronda.</div></div>
+    <div class="gate"><span class="k">Bienal Punta</span><b>Si</b> <span class="if">hay &lt;2 anchors &gt;100K firmados al</span> <span class="date">30-nov</span> <div class="then">→ vuelve al formato del wrap: MACA opcionado (10–15K), edición reducida, upside de BOTH y no soporte vital de CM.</div></div>
+    <div class="gate"><span class="k">Casa Manantial</span><b>Si</b> <span class="if">no hay partner anual firmado al</span> <span class="date">31-mar</span> <div class="then">→ el rent gap (~10K/mes) recibe owner con nombre o el modelo cambia. No se sigue difiriendo «la estrategia».</div></div>
+    <div class="gate"><span class="k">La Chamana</span><b>Si</b> <span class="if">la temporada alta no la vende un funnel que corre sin BOTH al</span> <span class="date">28-feb</span> <div class="then">→ se activa el track Christie's como decisión, no como opcionalidad.</div></div>
+    <div class="gate"><span class="k">Quantum</span><b>Si</b> <span class="if">no hay anchor con compromiso escrito al</span> <span class="date">11-oct</span> <div class="then">→ vuelve a parked con fecha de revisit no anterior a may-27. Fuera de la agenda semanal.</div></div>
+    <div class="gate"><span class="k">José Ignacio</span><b>Si</b> <span class="if">no hay seña confirmada en</span> <span class="date">7 días</span> <span class="if">o &lt;50% del capital comprometido al día</span> <span class="date">30</span> <div class="then">→ out, sin más tiempo de equipo. Si pasa: sale del martes a mesa GF + AB.</div></div>
+    <div class="gate"><span class="k">Reshore</span><b>Si</b> <span class="if">los 500K de liabilities no tienen origen documentado al</span> <span class="date">19-sep</span> <div class="then">→ Reshore sale del menú de la ventana hasta que lo tenga. La posición más grande no se vende con un agujero.</div></div>
+    <div class="gate"><span class="k">LAK3 · Panambi</span><b>Si</b> <span class="if">no están resueltos o escritos antes del</span> <span class="date">LP report Q3</span> <div class="then">→ se escriben como parked con fecha. Un diligence los va a leer igual.</div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 05 -->
+<section id="l5">
+  <div class="sec-h"><span class="n">05</span><h2>Tiempo</h2><span class="sub">sep-26 → jul-27 · hacia atrás desde la ventana · rooms ya acordados · gates de 04</span></div>
+
+  <div class="legend">
+    <span><i style="background:var(--acc);opacity:.5"></i>Ventana de venta (capital en Punta)</span>
+    <span><i style="background:var(--coral)"></i>Hito crítico / gate</span>
+    <span><i style="background:var(--acc)"></i>Room del martes</span>
+    <span><i style="background:var(--amber);border:1px dashed var(--amber);background:transparent"></i>Tentativo</span>
+    <span><i style="background:var(--green)"></i>Cumplido</span>
+  </div>
+
+  <div class="tblwrap">
+  <div class="gantt">
+    <div class="gh"></div>
+    <div class="gh q">Q3 · 2026</div><div class="gh q"></div><div class="gh q">Q4 · 2026</div><div class="gh q"></div><div class="gh q"></div><div class="gh q">Q1 · 2027</div><div class="gh q"></div><div class="gh q"></div><div class="gh q">Q2 · 2027</div><div class="gh q"></div><div class="gh q"></div>
+    <div class="gh"></div>
+    <div class="gh">Sep</div><div class="gh">Oct</div><div class="gh">Nov</div><div class="gh">Dic</div><div class="gh">Ene</div><div class="gh">Feb</div><div class="gh">Mar</div><div class="gh">Abr</div><div class="gh">May</div><div class="gh">Jun</div><div class="gh">Jul</div>
+
+    <div class="gl">BOTH · holdco <small>GF · ventana + norte</small></div>
+    <div class="gc"><span class="ms done">Outing V1 · 09/09<small>mandato</small></span><span class="ms room">Room Both Pacochi · 15/09</span></div>
+    <div class="gc"><span class="ms room">Room Both Pacochi vuelve · 20/10</span><span class="ms soft">LP report Q3</span></div>
+    <div class="gc"><span class="ms key">Paquetes impecables<small>21-nov</small></span></div>
+    <div class="gc win"><span class="ms key">1-dic · 15-dic<small>versiones finales</small></span></div>
+    <div class="gc win"><span class="ms">Capital físicamente en Punta</span></div>
+    <div class="gc win"></div>
+    <div class="gc win"><span class="ms soft">360 · 2026A2</span></div>
+    <div class="gc"></div>
+    <div class="gc"><span class="ms key">Performance case visible<small>lo que se presenta al LP</small></span></div>
+    <div class="gc"></div>
+    <div class="gc"><span class="ms key">Runway a burn constante<small>decisión de deployment</small></span></div>
+
+    <div class="gl">Casa Manantial <small>DG</small></div>
+    <div class="gc"><span class="ms key">Ask GF–RL · 16/09</span></div>
+    <div class="gc"><span class="ms room">Room estrategia + verano · 06/10</span><span class="ms">4 episodios podcast</span></div>
+    <div class="gc"><span class="ms soft">Partner anual · UBS primero</span></div>
+    <div class="gc win"><span class="ms">Temporada · sede Bienal</span></div>
+    <div class="gc win"></div><div class="gc win"></div>
+    <div class="gc win"><span class="ms key">Gate: partner anual firmado<small>31-mar</small></span></div>
+    <div class="gc"></div><div class="gc"><span class="ms soft">70 socios · break-even</span></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">Bienal Punta <small>RL · DG</small></div>
+    <div class="gc"><span class="ms room">Room Bienal · 22/09</span><span class="ms key">MACA contrato · 30/09</span></div>
+    <div class="gc"><span class="ms key">Gov: MEF + BCU · 06/10</span><span class="ms">Comité ejecutivo circulado</span></div>
+    <div class="gc"><span class="ms key">Go / no-go<small>30-nov · 2–3 anchors</small></span></div>
+    <div class="gc win"><span class="ms">Venta de sponsorship</span></div>
+    <div class="gc win"></div><div class="gc win"></div>
+    <div class="gc win"><span class="ms key">1ª edición<small>neto ≥ 120K</small></span></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">La Chamana <small>MB ops · GF capital</small></div>
+    <div class="gc"><span class="ms">Cerrar lo del 14/09 · Bianca sigue</span></div>
+    <div class="gc"><span class="ms room">Room Chamana · 13/10</span><span class="ms">Sotavento 23–26</span></div>
+    <div class="gc"></div>
+    <div class="gc win"><span class="ms">Temporada alta<small>funnel sin BOTH</small></span></div>
+    <div class="gc win"></div>
+    <div class="gc win"><span class="ms key">Gate: funnel autónomo<small>28-feb</small></span></div>
+    <div class="gc win"><span class="ms soft">Track Christie's · decidir</span></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">José Ignacio <small>GF · AB · wildcard</small></div>
+    <div class="gc"><span class="ms key">Seña · 5–7 días<small>in / out</small></span></div>
+    <div class="gc"><span class="ms key">≥50% capital · día 30</span></div>
+    <div class="gc"><span class="ms soft">SPV + LLC</span></div>
+    <div class="gc win"><span class="ms key">Cierre · ~día 80<small>≈ 04-dic · 14M</small></span></div>
+    <div class="gc win"><span class="ms soft">Vender 5–6 lotes</span></div>
+    <div class="gc win"></div><div class="gc win"></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">Reshore <small>GF</small></div>
+    <div class="gc"><span class="ms key">Liabilities 500K · 19/09</span></div>
+    <div class="gc"><span class="ms soft">2–3 deals fuera del facility</span><span class="ms soft">Bancomext · CDMX</span></div>
+    <div class="gc"><span class="ms soft">Engagement letter JPM</span></div>
+    <div class="gc win"><span class="ms">SPV deuda + equity en menú</span></div>
+    <div class="gc win"></div>
+    <div class="gc win"><span class="ms soft">1ª transacción facility</span></div>
+    <div class="gc win"></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">Photonic Labs <small>RL</small></div>
+    <div class="gc"><span class="ms key">Ask GF–RL · 16/09</span><span class="ms">BsAs · Escamilla · 18/09</span><span class="ms room">Room Lab · 29/09</span></div>
+    <div class="gc"><span class="ms">Modelo (Daiana) · outreach LOI</span></div>
+    <div class="gc"><span class="ms soft">Gate A pack</span></div>
+    <div class="gc win"><span class="ms key">Gate: LOI anchor<small>15-dic</small></span></div>
+    <div class="gc win"><span class="ms">Relaciones · no ronda</span></div>
+    <div class="gc win"><span class="ms key">Ronda abre<small>~4M · lead estratégico</small></span></div>
+    <div class="gc win"></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">Quantum <small>GF · opción</small></div>
+    <div class="gc"><span class="ms">SoftBank · Ari · Bind</span></div>
+    <div class="gc"><span class="ms key">Bloqueo IonQ · 11-oct<small>anchor o parked</small></span></div>
+    <div class="gc"></div><div class="gc win"></div><div class="gc win"></div><div class="gc win"></div><div class="gc win"></div>
+    <div class="gc"></div><div class="gc"><span class="ms soft">Revisit si parked</span></div><div class="gc"></div><div class="gc"></div>
+
+    <div class="gl">B_V® | OS <small>MB</small></div>
+    <div class="gc"><span class="ms">Both Worlds P2 · GF + MB</span></div>
+    <div class="gc"><span class="ms">«Bajar» Asana</span></div>
+    <div class="gc"><span class="ms">PATs · 09 · 15 · 23</span></div>
+    <div class="gc win"><span class="ms">Tablero S_Q32026 en el martes</span></div>
+    <div class="gc win"></div><div class="gc win"></div><div class="gc win"></div>
+    <div class="gc"></div><div class="gc"></div><div class="gc"></div><div class="gc"></div>
+  </div>
+  </div>
+
+  <p class="small" style="margin-top:12px">Rooms: agenda propuesta por Daiana en el wrap, confirmada en el sync. Hitos de Reshore tentativos hasta que Gastón los confirme. LAK3 y Panambi sin fila: parked por decisión. Las fechas de gates son las de 04 — propuestas.</p>
+
+  <div class="call"><span class="k">Lectura del Gantt</span>Todo lo que necesita un sí de afuera tiene que estar frente a esa persona <b>antes de marzo</b>. Entre hoy y el 21-nov hay diez semanas y cuatro Asks por cerrar (CM, Bienal-trigger, Photonic, Reshore), todos en la dupla GF–RL del 16/09 o en su semana. Si esa reunión no cierra los cuatro, la ventana se corre a la próxima temporada — y el runway no.</div>
+</section>
+
+<!-- ============================================================ 06 -->
+<section id="l6">
+  <div class="sec-h"><span class="n">06</span><h2>Horizonte 3–5 años</h2><span class="sub">qué optionality compra cada decisión de hoy · tres escenarios a mayo-27</span></div>
+
+  <p>El plan a 3–5 años no es una proyección: es la lista de puertas que quedan abiertas o cerradas según lo que pase antes de mayo. Cada decisión de esta ventana compra o quema opcionalidad. Tres escenarios, sin probabilidades — para que el equipo elija cuál está construyendo.</p>
+
+  <div class="scen">
+    <div class="s" style="border-top:3px solid var(--acc)"><h3>A · Caso completo</h3><p class="small">Los dos tracks entregan.</p>
+      <ul><li>Photonic con ronda a precio y lead → BOTH tiene un compounder marcado.</li><li>Reshore con facility operando → la posición más grande se marca contra un prestamista, no contra un cap.</li><li>CM en break-even con partner anual; Chamana con funnel autónomo → el capital ya desplegado <em>funciona</em>.</li><li>Bienal 1ª edición con neto ≥120K → activo nuevo, 100% BOTH.</li></ul>
+      <p><b>Compra:</b> el LP renueva a un ritmo formalizado. BOTH pasa de operador a allocator con derecho a serlo. Land banking (JI) se convierte en un tercer vehículo con GP propio. Horizonte 3–5: holdco con tres motores (hospitalidad + eventos · real-asset finance · lab) y dos vehículos GP.</p></div>
+    <div class="s" style="border-top:3px solid var(--amber)"><h3>B · Caso operativo</h3><p class="small">El track A entrega; el track B llega tarde.</p>
+      <ul><li>CM y Chamana en caja positiva; Bienal ejecutada.</li><li>Photonic sin LOI → ronda se corre a Q3-27; Reshore sin deployments cerrados.</li><li>Quantum vuelto a parked; JI no cerró o cerró sin BOTH.</li></ul>
+      <p><b>Compra:</b> runway se extiende con caja propia (no con deploy). El LP ve disciplina, no crecimiento. El caso a mayo es «sobrevivimos y operamos bien» — suficiente para no morir, insuficiente para un tramo grande. Horizonte 3–5: BOTH como operador de hospitalidad + eventos con opciones biotech/fintech aún abiertas pero sin precio.</p></div>
+    <div class="s" style="border-top:3px solid var(--coral)"><h3>C · Caso disperso</h3><p class="small">Las wildcards ganan el tiempo; ninguna lista cierra.</p>
+      <ul><li>JI y Quantum consumen Q4 del CEO; ninguno cierra con BOTH adentro.</li><li>CM sigue sin Ask; Bienal se ejecuta a pérdida o se cancela tarde.</li><li>Photonic y Reshore sin Pacochi terminado en la ventana.</li></ul>
+      <p><b>Quema:</b> la ventana de verano, el runway hasta julio, y la credibilidad del proceso ante el LP. Horizonte 3–5: no hay horizonte; hay una decisión de deployment en julio tomada desde la necesidad. <b>Es el escenario que el 15/09, leído sin este documento, estaba construyendo.</b></p></div>
+  </div>
+
+  <h3>Qué compra cada decisión abierta</h3>
+  <div class="tblwrap">
+  <table class="tbl">
+    <thead><tr><th>Decisión (quién)</th><th>Si sí</th><th>Si no</th><th>Opcionalidad a 3–5 años</th></tr></thead>
+    <tbody>
+      <tr><td>CM: vender partner anual, no equity (GF)</td><td>Rent gap cerrado sin diluir; sede habilitada para todo lo demás</td><td>Sigue el subsidio; CM compite en la lista de equity y pierde</td><td>Alta — un activo con caja y múltiplo real es vendible o refinanciable cuando convenga</td></tr>
+      <tr><td>Bienal: trigger anchors vs 350K (GF)</td><td>Go/no-go operable el 30-nov; exposición acotada</td><td>«Espada y pared» a mitad de ejecución</td><td>Media — el activo es recurrente sólo si la 1ª edición no quema a CM</td></tr>
+      <tr><td>Photonic: greenfield o brownfield (GF)</td><td>Ronda de 2M que un estratégico escribe solo, o de 6M institucional — pero <em>una</em></td><td>Pacochi con dos cifras; ronda en feb no abre</td><td>Máxima — es el mayor equity value por dólar del libro</td></tr>
+      <tr><td>Quantum: precio de la opción (GF)</td><td>Tiempo acotado hasta 11-oct; BOTH co-GP si hay anchor</td><td>Q4 del CEO absorbido por un deal sin capital BOTH</td><td>Asimétrica — si hace click es otro orden de magnitud; si no, costó tiempo</td></tr>
+      <tr><td>JI: mesa aparte o martes (GF · AB)</td><td>Trade limpio con GP 20%; semilla de land banking</td><td>Room del Pacochi perdido; capital de terceros no aparece en 80 días</td><td>Alta si cierra — un tercer vehículo GP con activo real desde el día uno</td></tr>
+      <tr><td>Reshore: origen de 500K (GF)</td><td>Pacochi de la posición más grande listo para la ventana</td><td>La posición más grande del libro fuera del menú</td><td>Máxima — es donde se marca el libro</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<!-- ============================================================ AX -->
+<section id="ax">
+  <div class="sec-h"><span class="n">A</span><h2>Referencias, fuentes y lo que este documento no hace</h2><span class="sub">apéndice</span></div>
+
+  <div class="two">
+    <div>
+      <h4>Referencias externas · por qué cada una</h4>
+      <ul class="refs">
+        <li><b>Flagship Pioneering · Exploration → ProtoCo → NewCo → GrowthCo.</b> Origina 8–10 ProtoCos/año; avanza sólo si «¿qué pasaría si…?» se convierte en «resulta que…»; termina en cualquier etapa si no cumple criterio. Es el mapeo más cercano a Explore/Build/Scale — y muestra lo que a BOTH le falta: <b>criterios de corte escritos</b> (R5). <a href="https://www.flagshippioneering.com/process">flagshippioneering.com/process</a> · <a href="https://www.flagshippioneering.com/stories/can-innovations-be-made-systematically-a-conversation-with-noubar-afeyan">Afeyan</a></li>
+        <li><b>Paul Graham · Default alive or default dead.</b> Aplicado a BOTH como holding, no a los ventures: con burn ~56K/mes y runway jul-27, BOTH es <em>default dead</em> sin nuevos ingresos o deploy. Es la razón por la que los motores de caja no pueden perder el ranking (R1). <a href="https://www.ycombinator.com/library/95-default-alive-or-default-dead">ycombinator.com/library/95</a></li>
+        <li><b>BCG growth-share (Henderson, 1970).</b> Cash cows financian stars; el portfolio se financia a sí mismo. Le da nombre a la dicotomía de Daiana. Su crítica moderna (dos dimensiones son pocas) es exactamente por qué acá se agrega la métrica de equity value/USD y no sólo «crecimiento». <a href="https://strategyu.co/bcg-growth-share-matrix/">strategyu.co</a></li>
+        <li><b>Venture studio economics.</b> Cinco categorías de capital (SG&amp;A · builds · capitalización inicial · inversión primaria · follow-on); common vs preferred; el estudio como GP. Marco para el vehículo de land banking (JI) y para leer qué es BOTH cuando tiene 76K libres. <a href="https://newsletter.venturestudioforum.org/p/the-investor-role-in-venture-studios">venturestudioforum.org</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Fuentes internas · cada cifra es trazable</h4>
+      <ul class="refs">
+        <li><span class="mono">vault/transcripts/2026-09-15-both-ventures-sync.md</span> — sync 11:30–13:00. Quotes de Gastón, Daiana, René, Andrés.</li>
+        <li><span class="mono">vault/transcripts/2026-09-15-both-ops-bienal-punta.md</span> + pending — sesión René + Daiana. Ask/modelo, 500K Reshore, trigger 350K.</li>
+        <li><span class="mono">vault/agent_outputs/deliverables/strategy/2026-09-09-both-outing-v1-wrap.html</span> — mandato, norte, 76K, anchors, 7 decisiones, 15 propuestas del memo.</li>
+        <li><span class="mono">vault/areas/area-operations.md</span> (Daiana, 14/09) — cash 751.744 · burn 56K · runway jul-27 · 76K libres · capital a costo 2.763.046.</li>
+        <li><span class="mono">docs/pages/lp/both-ventures-lp-report-q2/</span> — endgames canónicos · posición Selfina 2,75M · cap table.</li>
+        <li><span class="mono">vault/ventures/*.md</span> — cards del champion (fecha en cada tarjeta del tablero).</li>
+      </ul>
+      <p class="small">Cifras del LP report Q2 y del wrap difieren en base (LP: a costo incluyendo aportes pendientes de Gastón, 2,57M; wrap: 828K en posiciones + 620K plataforma). No se reconcilian acá — es la propuesta 12 del memo de René, abierta, para la visita de Fabián en octubre.</p>
+    </div>
+  </div>
+
+  <h4>Lo que este documento no hace</h4>
+  <ul class="tight">
+    <li><b>No decide ningún Ask.</b> Eso es la dupla Gastón–René del 16/09. Este documento arma el tablero sobre el que esa conversación se juega y marca cada casilla en cursiva ámbar.</li>
+    <li><b>No reemplaza al wrap del Outing.</b> Lo sucede: toma su mandato como dado y mide la ejecución contra él.</li>
+    <li><b>No asigna roles como verdad.</b> Los cinco roles y su asignación son propuesta para el room del 20/10 («Both Pacochi vuelve»). Los gates de 04 son para pelear.</li>
+    <li><b>No está publicado.</b> Vive en <span class="mono">deliverables/strategy/</span>; se publica cuando se pida.</li>
+  </ul>
+
+  <h4>A validar por los cinco · V0.1 → V0.2</h4>
+  <ul class="tight">
+    <li><span class="chip p-gf">GF</span>&nbsp; Reclasificación de Quantum como opción con precio · regla del wildcard para JI · los cuatro Asks del 16/09 · trigger Bienal.</li>
+    <li><span class="chip p-dg">DG</span>&nbsp; Métrica de motores de caja (meses de runway agregados) · reserva de horas para modelos (R4) · refresh de las tres cifras.</li>
+    <li><span class="chip p-rl">RL</span>&nbsp; Que la cadena Ask → Modelo → Pacochi sea la espina del room 20/10 · anatomía del Pacochi vs. su versión.</li>
+    <li><span class="chip p-ab">AB</span>&nbsp; Estructura JI (SPV + LLC) como plantilla de vehículo GP · Content Factory: piloto o parked escrito.</li>
+    <li><span class="chip p-mb">MB</span>&nbsp; Tablero L0 como vista del martes (clonable al dashboard semanal) · gates como campos en las venture cards.</li>
+  </ul>
+</section>
+
+<footer>
+  <span>BOTH_VENTURES · S_Q32026 · ESTRATEGIA DE PORTFOLIO · V0.1.0 · Q-03.26</span>
+  <span>15 · 09 · 2026 · SYNERGY PARA MARIANO · INTERNO · BORRADOR</span>
+</footer>
+
+</div>
+</body>
+</html>
