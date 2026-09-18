@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22%23111C24%22%2F%3E%3Cpath%20d%3D%22M8%2027V16a8%208%200%200%201%2016%200v11z%22%20fill%3D%22%23EDEDE5%22%2F%3E%3C%2Fsvg%3E">
+<title>El tono de los DMs — La Chamana</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#EDEDE7; --surface:#F8F8F4; --surface-2:#E4E4DC;
+    --ink:#1B1E1A; --ink-2:#585D54; --ink-3:#868B80;
+    --rule:#D4D4CA; --rule-2:#C2C2B6;
+    --accent:#2E4636; --accent-soft:#DFE7DF;
+    --retired:#8A6240; --retired-soft:#EFE3D8;
+    --yes:#35603F; --yes-soft:#DCE8DD;
+    --no:#94473A; --no-soft:#F0DEDA;
+    --bubble:#2E4636; --bubble-ink:#F4F4EE;
+    --shadow:0 1px 2px rgba(27,30,26,.06), 0 6px 18px rgba(27,30,26,.05);
+    --sans:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#15170F; --surface:#1D2019; --surface-2:#282C24;
+      --ink:#E9E9E0; --ink-2:#A8AC9F; --ink-3:#7B8074;
+      --rule:#31352C; --rule-2:#3E4338;
+      --accent:#9CC0A5; --accent-soft:#242C24;
+      --retired:#C89A6E; --retired-soft:#2B241C;
+      --yes:#8FBE9A; --yes-soft:#1F2A21;
+      --no:#D99182; --no-soft:#2E211D;
+      --bubble:#9CC0A5; --bubble-ink:#14170F;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#15170F; --surface:#1D2019; --surface-2:#282C24;
+    --ink:#E9E9E0; --ink-2:#A8AC9F; --ink-3:#7B8074;
+    --rule:#31352C; --rule-2:#3E4338;
+    --accent:#9CC0A5; --accent-soft:#242C24;
+    --retired:#C89A6E; --retired-soft:#2B241C;
+    --yes:#8FBE9A; --yes-soft:#1F2A21;
+    --no:#D99182; --no-soft:#2E211D;
+    --bubble:#9CC0A5; --bubble-ink:#14170F;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.25);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.55;
+    margin:0; padding:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:660px; margin:0 auto; padding:0 20px; padding-block:0 72px}
+
+  /* ── masthead ─────────────────────────────────────────────── */
+  header.top{padding-block:44px 8px}
+  .eyebrow{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-3); margin:0 0 18px
+  }
+  h1{
+    font-family:var(--serif); font-weight:400; font-size:clamp(38px,9vw,58px);
+    line-height:1.02; letter-spacing:-.01em; margin:0; text-wrap:balance
+  }
+  h1 em{font-style:italic; color:var(--accent)}
+  .standfirst{
+    font-size:17px; color:var(--ink-2); margin:18px 0 0; max-width:34em
+  }
+  .standfirst strong{color:var(--ink); font-weight:500}
+
+  /* ── section furniture ────────────────────────────────────── */
+  section{padding-block:34px}
+  .sec-head{
+    display:flex; align-items:baseline; gap:12px;
+    border-bottom:1px solid var(--rule); padding-bottom:9px; margin-bottom:22px
+  }
+  .sec-head h2{
+    font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-2); margin:0
+  }
+  .sec-head .count{
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    margin-left:auto; font-variant-numeric:tabular-nums
+  }
+
+  /* ── the change ───────────────────────────────────────────── */
+  .change{display:grid; gap:14px}
+  .specimen{
+    border-radius:3px; padding:16px 18px; font-size:15.5px; line-height:1.6
+  }
+  .specimen .tag{
+    display:block; font-family:var(--mono); font-size:10px; letter-spacing:.12em;
+    text-transform:uppercase; margin-bottom:9px
+  }
+  .specimen.was{
+    background:var(--retired-soft); color:var(--ink);
+    border-left:2px solid var(--retired)
+  }
+  .specimen.was .tag{color:var(--retired)}
+  .specimen.was mark{
+    background:transparent; color:inherit;
+    text-decoration:underline; text-decoration-color:var(--retired);
+    text-decoration-thickness:2px; text-underline-offset:3px
+  }
+  .specimen.now{
+    background:var(--accent-soft); color:var(--ink);
+    border-left:2px solid var(--accent)
+  }
+  .specimen.now .tag{color:var(--accent)}
+  .gloss{
+    font-size:14px; color:var(--ink-2); margin:0; padding-left:2px
+  }
+  .gloss b{color:var(--ink); font-weight:500}
+
+  /* ── account cards ────────────────────────────────────────── */
+  .cards{display:grid; gap:18px}
+  .card{
+    background:var(--surface); border:1px solid var(--rule);
+    border-radius:4px; box-shadow:var(--shadow); overflow:hidden
+  }
+  .card.judged{border-color:var(--rule-2)}
+  .card-top{
+    display:flex; align-items:flex-start; gap:10px;
+    padding:15px 17px 0
+  }
+  .who{min-width:0; flex:1}
+  .who .name{
+    font-weight:600; font-size:15px; line-height:1.3;
+    overflow-wrap:anywhere; margin:0
+  }
+  .who .handle{
+    font-family:var(--mono); font-size:12px; color:var(--ink-3);
+    overflow-wrap:anywhere
+  }
+  .seg{
+    font-family:var(--mono); font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-2);
+    background:var(--surface-2); border-radius:2px;
+    padding:4px 7px; white-space:nowrap; flex-shrink:0
+  }
+
+  /* the angle switch — which first sentence */
+  .angles{
+    display:flex; flex-wrap:wrap; gap:6px; padding:13px 17px 0
+  }
+  .angle{
+    font-family:var(--mono); font-size:11px; letter-spacing:.02em;
+    background:transparent; color:var(--ink-2);
+    border:1px solid var(--rule-2); border-radius:2px;
+    padding:5px 9px; cursor:pointer; font-weight:400;
+    transition:background .12s ease, color .12s ease, border-color .12s ease
+  }
+  .angle:hover{border-color:var(--accent); color:var(--ink)}
+  .angle[aria-pressed="true"]{
+    background:var(--accent); border-color:var(--accent); color:var(--bubble-ink)
+  }
+  .angle:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+  /* the message, as it arrives */
+  .bubble-wrap{padding:13px 17px 0}
+  .bubble{
+    background:var(--bubble); color:var(--bubble-ink);
+    border-radius:18px 18px 18px 4px;
+    padding:13px 16px; font-size:15px; line-height:1.55;
+    overflow-wrap:break-word
+  }
+  .bubble .sent-one{font-weight:500}
+  .meta{
+    display:flex; gap:10px; align-items:center;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+    padding:7px 17px 0; font-variant-numeric:tabular-nums
+  }
+
+  /* verdict */
+  .verdict{
+    display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+    padding:13px 17px 15px; margin-top:4px;
+    border-top:1px solid var(--rule)
+  }
+  .vbtn{
+    font-family:var(--sans); font-size:13px; font-weight:500;
+    background:transparent; color:var(--ink-2);
+    border:1px solid var(--rule-2); border-radius:2px;
+    padding:7px 13px; cursor:pointer;
+    transition:background .12s ease, color .12s ease, border-color .12s ease
+  }
+  .vbtn:hover{border-color:var(--ink-3); color:var(--ink)}
+  .vbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .vbtn.yes[aria-pressed="true"]{
+    background:var(--yes-soft); border-color:var(--yes); color:var(--yes)
+  }
+  .vbtn.no[aria-pressed="true"]{
+    background:var(--no-soft); border-color:var(--no); color:var(--no)
+  }
+  .note{
+    flex:1 1 100%; font-family:var(--sans); font-size:14px;
+    background:var(--ground); color:var(--ink);
+    border:1px solid var(--rule-2); border-radius:2px;
+    padding:8px 10px; resize:vertical; min-height:38px;
+    line-height:1.45
+  }
+  .note::placeholder{color:var(--ink-3)}
+  .note:focus-visible{outline:2px solid var(--accent); outline-offset:1px; border-color:var(--accent)}
+
+  /* ── rules ────────────────────────────────────────────────── */
+  details.rules{
+    background:var(--surface); border:1px solid var(--rule);
+    border-radius:4px; padding:0
+  }
+  details.rules summary{
+    cursor:pointer; padding:14px 17px; font-weight:500; font-size:14.5px;
+    list-style:none; display:flex; align-items:center; gap:9px
+  }
+  details.rules summary::-webkit-details-marker{display:none}
+  details.rules summary::after{
+    content:"+"; margin-left:auto; font-family:var(--mono);
+    color:var(--ink-3); font-size:16px
+  }
+  details.rules[open] summary::after{content:"–"}
+  details.rules summary:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+  .rules-body{padding:0 17px 17px; font-size:14.5px; color:var(--ink-2)}
+  .rules-body ul{margin:0 0 16px; padding-left:18px}
+  .rules-body li{margin-bottom:6px}
+  .rules-body li b{color:var(--ink); font-weight:500}
+  .rules-body h3{
+    font-family:var(--mono); font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--ink-3);
+    margin:18px 0 8px; font-weight:500
+  }
+  .rules-body p{margin:0 0 12px}
+  .rules-body .q{
+    font-family:var(--serif); font-size:19px; line-height:1.4;
+    color:var(--ink); font-style:italic; margin:4px 0 0
+  }
+
+  footer{
+    border-top:1px solid var(--rule); margin-top:34px; padding-top:18px;
+    font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.7
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important}
+  }
+  /* ── handing the answers back ─────────────────────────────── */
+  .handback{
+    background:var(--surface); border:1px solid var(--rule);
+    border-left:2px solid var(--accent); border-radius:4px;
+    padding:18px 19px 19px
+  }
+  .handback h2{
+    font-family:var(--mono); font-size:11px; font-weight:500; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink-2); margin:0 0 9px
+  }
+  .handback p{margin:0 0 14px; font-size:14.5px; color:var(--ink-2)}
+  .copy{
+    font-family:var(--sans); font-size:14px; font-weight:500;
+    background:var(--accent); color:var(--bubble-ink);
+    border:1px solid var(--accent); border-radius:2px;
+    padding:10px 16px; cursor:pointer
+  }
+  .copy:hover{opacity:.9}
+  .copy:focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+  .copy-state{
+    font-family:var(--mono); font-size:11px; color:var(--accent);
+    margin-left:10px
+  }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <p class="eyebrow">La Chamana · DMs de Instagram</p>
+    <h1>¿Esto suena a <em>nosotros</em>?</h1>
+    <p class="standfirst">Ocho cuentas reales de la lista que está viva. Cada
+      primera frase la escribió la máquina esta mañana, siguiendo tus
+      lineamientos. <strong>Nada de esto se mandó.</strong> Leé cada uno como si
+      te hubiera llegado a vos, y decinos si sale o no.</p>
+      <p class="standfirst" style="font-size:15px">Los mensajes están en inglés
+      porque así se mandan. Tus respuestas quedan guardadas en este teléfono —
+      cuando termines, el botón del final te las copia para mandárselas a
+      Boris.</p>
+  </header>
+
+  <section>
+    <div class="sec-head"><h2>Qué cambió</h2></div>
+    <div class="change">
+      <div class="specimen was">
+        <span class="tag">Antes — mandado el 16 de septiembre</span>
+        <mark>You run teacher trainings as well as retreats, which is two very
+        different lengths of stay to find a building for.</mark> La Chamana is a
+        private house in La Veleta, Tulum — eight suites behind one gate, taken
+        whole, with a temazcal and a mirror temple built for circle work. If a
+        future retreat lands in Mexico, worth knowing it is here.
+      </div>
+      <p class="gloss">Lo subrayado es el problema que nombra tu documento: el
+        mensaje <b>le cuenta a la persona lo que averiguamos sobre ella</b>. Y
+        arrastra una redacción que vos habías sacado — <b>“behind one gate”</b>.</p>
+      <div class="specimen now">
+        <span class="tag">Ahora</span>
+        Most of the places worth knowing tend to arrive long before there is a
+        trip that needs them. La Chamana is a private house in La Veleta, Tulum
+        — eight suites, taken entirely as one home, with a temazcal and a mirror
+        temple for circle work. If a future retreat lands in Mexico, worth
+        knowing it is here.
+      </div>
+      <p class="gloss">Misma investigación, misma persona, mismo segmento. Ahora
+        la investigación <b>elige el ángulo y se queda afuera de la frase</b>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Ocho para juzgar</h2>
+      <span class="count" id="progress">0 de 8 juzgados</span>
+    </div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section>
+    <div class="handback">
+      <h2>Cuando termines</h2>
+      <p>Esta página no le manda nada a nadie — tus respuestas viven en este
+        teléfono. Tocá el botón y se copian; pegalas en el chat con Boris.</p>
+      <button class="copy" type="button" id="copy">Copiar mis respuestas</button>
+      <span class="copy-state" id="copy-state" role="status"></span>
+    </div>
+  </section>
+
+  <section>
+    <details class="rules">
+      <summary>Las reglas con las que se escribieron</summary>
+      <div class="rules-body">
+        <p>Salen de <i>Instagram DM Tone &amp; Outreach Guidelines</i>, tu
+          documento. La máquina lo lee entero cada vez que escribe un mensaje —
+          si lo editás, el siguiente ya obedece.</p>
+        <h3>La única prueba</h3>
+        <p class="q">“An introduction, not a pitch. La Chamana should enter the
+          conversation as an invitation, never as a correction.”</p>
+        <h3>La primera frase nunca</h3>
+        <ul>
+          <li>Le cuenta <b>lo que averiguamos sobre ella</b> — nada de “I noticed”,
+            ni contarle sus destinos, ni leerle sus propias reseñas.</li>
+          <li><b>Le diagnostica un hueco</b> que nunca mencionó, ni le sugiere que
+            está haciendo algo mal.</li>
+          <li>Fabrica <b>confianza</b>, ni empuja a contestar, agendar o reservar.</li>
+        </ul>
+        <h3>La segunda y la tercera frase</h3>
+        <p>Son la casa describiéndose. Son <b>iguales para todos los de un mismo
+          segmento</b> y no se reescriben por persona — uno o dos elementos,
+          nunca la lista entera. Si una redacción de acá está mal, está mal para
+          todos: decilo y se cambia en un solo lugar.</p>
+        <h3>Qué estás decidiendo</h3>
+        <ul>
+          <li><b>Sale</b> — esto le puede llegar a alguien hoy mismo.</li>
+          <li><b>Este no</b> — y la nota es lo que vale. Una línea sobre <i>por
+            qué</i> es lo que afina los próximos cien.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    Escrito el 18 de septiembre de 2026 por el escritor en vivo, sobre cuentas
+    reales del pozo · autoridad de tono: <code>ig-dm-tone.md</code> · nada de
+    esta página se mandó · documento interno del equipo
+  </footer>
+</div>
+
+<script>
+  const ACCOUNTS = [{"handle": "triplemoongoddessretreat", "name": "Triple Moon Goddess Retreat", "segment": "retreat_leaders", "segLabel": "retreat leader", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here.", "angles": [{"label": "Whole house to themselves", "opener": "Some gatherings only settle once the whole house belongs to the group, with no one else moving through it.", "full": "Some gatherings only settle once the whole house belongs to the group, with no one else moving through it. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "Ceremony held indoors", "opener": "When ceremony is part of the days, the architecture ends up mattering as much as the landscape around it.", "full": "When ceremony is part of the days, the architecture ends up mattering as much as the landscape around it. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "Choosing a future location", "opener": "Where a gathering will happen is usually decided long before the dates are.", "full": "Where a gathering will happen is usually decided long before the dates are. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}]}, {"handle": "ashleyturner1", "name": "Ashley Turner (Yoga Psychology)", "segment": "retreat_leaders", "segLabel": "retreat leader", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here.", "angles": [{"label": "Whole house, closed", "opener": "Some gatherings only really open when the whole house belongs to the group for the week, with no one else moving through it.", "full": "Some gatherings only really open when the whole house belongs to the group for the week, with no one else moving through it. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "When plans turn south", "opener": "For the season when plans start turning toward Mexico, there is somewhere quiet worth having on the radar before it is needed.", "full": "For the season when plans start turning toward Mexico, there is somewhere quiet worth having on the radar before it is needed. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "A stay with nothing to run", "opener": "And for the trips with nothing to lead and no one to look after, a private house of one's own is a good thing to know exists.", "full": "And for the trips with nothing to lead and no one to look after, a private house of one's own is a good thing to know exists. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}]}, {"handle": "thetravelteaminc", "name": "The Travel Team", "segment": "planners", "segLabel": "travel planner", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation.", "angles": [{"label": "Milestone family gatherings", "opener": "Certain birthdays and anniversaries end up being marked somewhere warm, with everyone present for a few days.", "full": "Certain birthdays and anniversaries end up being marked somewhere warm, with everyone present for a few days. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}, {"label": "Several generations, one roof", "opener": "Some journeys call for a house that can hold several generations comfortably under a single roof.", "full": "Some journeys call for a house that can hold several generations comfortably under a single roof. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}, {"label": "A whole house, privately", "opener": "Now and then a group would rather take an entire house than share a building with anyone else.", "full": "Now and then a group would rather take an entire house than share a building with anyone else. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}]}, {"handle": "yourpage", "name": "3:13 Films", "segment": "creators", "segLabel": "creator", "house": "La Chamana is a private house in La Veleta, Tulum — eleven curated spaces, taken entirely as one home. Wanted you to know it exists, in case it ever fits what you are making.", "angles": [{"label": "location taken entirely", "opener": "Every so often a project calls for a place that can be closed to everything else for a few days.", "full": "Every so often a project calls for a place that can be closed to everything else for a few days. La Chamana is a private house in La Veleta, Tulum — eleven curated spaces, taken entirely as one home. Wanted you to know it exists, in case it ever fits what you are making."}, {"label": "everyone under one roof", "opener": "There are stretches of work where having everyone under one roof matters more than anything else on the list.", "full": "There are stretches of work where having everyone under one roof matters more than anything else on the list. La Chamana is a private house in La Veleta, Tulum — eleven curated spaces, taken entirely as one home. Wanted you to know it exists, in case it ever fits what you are making."}, {"label": "quiet week between projects", "opener": "And sometimes what a week calls for is simply somewhere private enough that the work and the rest of it can happen in the same place.", "full": "And sometimes what a week calls for is simply somewhere private enough that the work and the rest of it can happen in the same place. La Chamana is a private house in La Veleta, Tulum — eleven curated spaces, taken entirely as one home. Wanted you to know it exists, in case it ever fits what you are making."}]}, {"handle": "tulumcountryclub", "name": "Tulum Country Club", "segment": "hospitality", "segLabel": "villa / hospitality", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful.", "angles": [{"label": "Whole family travelling", "opener": "Every so often a whole family travels at the same time and would rather be under one roof than spread across separate rooms.", "full": "Every so often a whole family travels at the same time and would rather be under one roof than spread across separate rooms. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}, {"label": "Milestone gatherings", "opener": "Some occasions — a milestone birthday, an anniversary, a reunion — ask for a house rather than a venue.", "full": "Some occasions — a milestone birthday, an anniversary, a reunion — ask for a house rather than a venue. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}, {"label": "Longer, slower stays", "opener": "When a stay stretches past a few nights, having a whole house to settle into changes the shape of it entirely.", "full": "When a stay stretches past a few nights, having a whole house to settle into changes the shape of it entirely. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}]}, {"handle": "authentictreks", "name": "Authentic Treks", "segment": "planners", "segLabel": "travel planner", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation.", "angles": [{"label": "Slow days after travel", "opener": "Some itineraries end better with a few slow days in one place, everyone under the same roof.", "full": "Some itineraries end better with a few slow days in one place, everyone under the same roof. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}, {"label": "One house, one group", "opener": "Now and then a group is easier to hold in a single house than across a set of separate rooms.", "full": "Now and then a group is easier to hold in a single house than across a set of separate rooms. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}, {"label": "Private milestone gathering", "opener": "Certain gatherings — a milestone birthday, a family coming together — call for somewhere entirely private for the week.", "full": "Certain gatherings — a milestone birthday, a family coming together — call for somewhere entirely private for the week. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home by a single group of up to sixteen. Perhaps one to keep in mind, whenever Tulum comes into the conversation."}]}, {"handle": "eliteretreat__", "name": "Elite Retreat / Lee McQueen", "segment": "retreat_leaders", "segLabel": "retreat leader", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here.", "angles": [{"label": "Whole-place privacy", "opener": "A group having a place entirely to itself tends to change a week more than anything written on the schedule does.", "full": "A group having a place entirely to itself tends to change a week more than anything written on the schedule does. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "Sixteen at one table", "opener": "Sixteen people is a particular size to host — everyone still at one table — and the places actually shaped for that are worth keeping a short list of.", "full": "Sixteen people is a particular size to host — everyone still at one table — and the places actually shaped for that are worth keeping a short list of. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}, {"label": "Somewhere new, early", "opener": "Somewhere new is usually worth finding a season or two before the dates are set.", "full": "Somewhere new is usually worth finding a season or two before the dates are set. La Chamana is a private house in La Veleta, Tulum — eight suites, taken entirely as one home, with a temazcal and a mirror temple for circle work. If a future retreat lands in Mexico, worth knowing it is here."}]}, {"handle": "cvmtci", "name": "Caicos Villa Management", "segment": "hospitality", "segLabel": "villa / hospitality", "house": "La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful.", "angles": [{"label": "Another coastline entirely", "opener": "If Mexico's Caribbean coast ever enters the conversation, there is a house there worth having on the radar.", "full": "If Mexico's Caribbean coast ever enters the conversation, there is a house there worth having on the radar. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}, {"label": "One family, one house", "opener": "Some trips are really one family taking a whole house for a week — everyone under a single roof, and no one else in it.", "full": "Some trips are really one family taking a whole house for a week — everyone under a single roof, and no one else in it. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}, {"label": "Privately composed stay", "opener": "Every so often a group wants a place entirely to themselves, with the cooking, the days and the quiet arranged privately around them.", "full": "Every so often a group wants a place entirely to themselves, with the cooking, the days and the quiet arranged privately around them. La Chamana is a private house in La Veleta, Tulum — eight suites taken entirely as one home, with chef, ceremony and wellness composed privately around each stay. Happy to share more whenever useful."}]}];
+
+  const cardsEl = document.getElementById("cards");
+  const progressEl = document.getElementById("progress");
+  const state = Object.create(null);   // handle -> {angle, verdict, note}
+  let db = null;
+
+  const esc = (s) => s.replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  function render() {
+    cardsEl.innerHTML = "";
+    for (const a of ACCOUNTS) {
+      const s = state[a.handle] ??= { angle: 0, verdict: null, note: "" };
+      const chosen = a.angles[s.angle];
+
+      const card = document.createElement("article");
+      card.className = "card" + (s.verdict ? " judged" : "");
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="who">
+            <p class="name">${esc(a.name)}</p>
+            <span class="handle">@${esc(a.handle)}</span>
+          </div>
+          <span class="seg">${esc(a.segLabel)}</span>
+        </div>
+        <div class="angles" role="group" aria-label="Opciones de primera frase para @${esc(a.handle)}">
+          ${a.angles.map((g, i) => `
+            <button class="angle" type="button" data-h="${esc(a.handle)}" data-i="${i}"
+              aria-pressed="${i === s.angle}">${esc(g.label)}</button>`).join("")}
+        </div>
+        <div class="bubble-wrap">
+          <div class="bubble"><span class="sent-one">${esc(chosen.opener)}</span>
+            ${esc(a.house)}</div>
+        </div>
+        <div class="meta">
+          <span>${chosen.full.length} caracteres</span>
+          <span>opción ${s.angle + 1} de ${a.angles.length}</span>
+        </div>
+        <div class="verdict">
+          <button class="vbtn yes" type="button" data-v="yes" data-h="${esc(a.handle)}"
+            aria-pressed="${s.verdict === "yes"}">Sale</button>
+          <button class="vbtn no" type="button" data-v="no" data-h="${esc(a.handle)}"
+            aria-pressed="${s.verdict === "no"}">Este no</button>
+            <textarea class="note" data-h="${esc(a.handle)}" rows="1"
+            aria-label="Por qué, para @${esc(a.handle)}"
+            placeholder="¿Por qué? Con una línea alcanza.">${esc(s.note)}</textarea>
+        </div>`;
+      cardsEl.appendChild(card);
+    }
+    const n = ACCOUNTS.filter((a) => state[a.handle]?.verdict).length;
+    progressEl.textContent = `${n} de ${ACCOUNTS.length} juzgados`;
+  }
+
+  cardsEl.addEventListener("click", (e) => {
+    const angle = e.target.closest(".angle");
+    if (angle) {
+      state[angle.dataset.h].angle = Number(angle.dataset.i);
+      render();
+      save();
+      return;
+    }
+    const v = e.target.closest(".vbtn");
+    if (v) {
+      const s = state[v.dataset.h];
+      s.verdict = s.verdict === v.dataset.v ? null : v.dataset.v;
+      render();
+      save();
+    }
+  });
+
+  let noteTimer = null;
+  cardsEl.addEventListener("input", (e) => {
+    const t = e.target.closest(".note");
+    if (!t) return;
+    state[t.dataset.h].note = t.value;
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(save, 400);
+  });
+
+  /*
+   * This page is served from a static host, so there is nowhere to write but
+   * this browser. Every read and write is wrapped: a private window or blocked
+   * site data throws here, and the page must still work — it just forgets.
+   */
+  const KEY = "lc-dm-tono-2026-09-18";
+
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* forgets */ }
+  }
+
+  function restore() {
+    let raw = null;
+    try { raw = localStorage.getItem(KEY); } catch { return; }
+    if (!raw) return;
+    try {
+      const saved = JSON.parse(raw);
+      for (const a of ACCOUNTS) {
+        const r = saved[a.handle];
+        if (!r) continue;
+        const s2 = (state[a.handle] ??= { angle: 0, verdict: null, note: "" });
+        if (typeof r.angle === "number" && a.angles[r.angle]) s2.angle = r.angle;
+        s2.verdict = r.verdict ?? null;
+        s2.note = typeof r.note === "string" ? r.note : "";
+      }
+    } catch { /* unreadable saved state leaves the page at its defaults */ }
+  }
+
+  /* What she pastes to Boris — the answers, not a link he would have to open. */
+  function transcript() {
+    const lines = ["Tono de los DMs — respuestas de Bianca", ""];
+    let judged = 0;
+    for (const a of ACCOUNTS) {
+      const s2 = state[a.handle];
+      if (!s2 || !s2.verdict) continue;
+      judged++;
+      lines.push(`@${a.handle} — ${s2.verdict === "yes" ? "SALE" : "ESTE NO"}`);
+      lines.push(`  opción elegida: ${a.angles[s2.angle].label}`);
+      lines.push(`  "${a.angles[s2.angle].opener}"`);
+      if (s2.note.trim() !== "") lines.push(`  nota: ${s2.note.trim()}`);
+      lines.push("");
+    }
+    const pending = ACCOUNTS.filter((a) => !state[a.handle]?.verdict).map((a) => "@" + a.handle);
+    if (pending.length > 0) lines.push(`Sin juzgar (${pending.length}): ${pending.join(", ")}`);
+    return judged === 0
+      ? "Tono de los DMs — todavía no juzgué ninguno."
+      : lines.join("\n").trim();
+  }
+
+  const copyBtn = document.getElementById("copy");
+  const copyState = document.getElementById("copy-state");
+
+  copyBtn.addEventListener("click", async () => {
+    const text = transcript();
+    let done = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      done = true;
+    } catch {
+      // Older iOS Safari, and any non-secure context: select it so she can copy by hand.
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.cssText = "position:fixed;top:50%;left:5%;width:90%;height:40%;z-index:99;font-size:13px";
+      document.body.appendChild(ta);
+      ta.select();
+      try { done = document.execCommand("copy"); } catch { done = false; }
+      if (done) ta.remove();
+      else copyState.textContent = "copiá el texto de arriba a mano";
+    }
+    if (done) copyState.textContent = "copiado — pegalo en el chat";
+  });
+
+  restore();
+  render();
+</script>
