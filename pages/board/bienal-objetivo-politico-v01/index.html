@@ -7,133 +7,243 @@
 <meta name="description" content="Estrategia y táctica del objetivo político de la Bienal Blockchain Punta 2027: del foro privado del 16 de octubre a un anuncio conjunto entre sector público y privado en marzo.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
+/* =========================================================================
+   Bienal Blockchain Punta — documento, V0.3.0 «Máscaras» variante BLANCO
+   PASE EDITORIAL 2: jerarquía, grilla con breakout, cards, gestos display.
+   ⚠️ Desvío declarado de NO-04 (radio cero): las cards llevan esquina
+      redondeada por pedido. Las máscaras siguen en ángulo recto — no pueden
+      no estarlo, las genera la retícula.
+   ========================================================================= */
 :root{
-  --paper:#F4F1E8; --void:#12140F; --campo:#7B7C6C; --blanco:#FFFFFF;
-  --rule:rgba(18,20,15,.22); --rule-s:rgba(18,20,15,.10); --warn:#8C4A1F;
-  --disp:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --tema:"Instrument Serif",Georgia,serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sheet:1180px; --prose:68ch; --pad:clamp(1.1rem,4vw,2.4rem);
+  --acid:  #FFFFFF;  --void: #12140F;  --campo: #7B7C6C;
+  --quiet: #1D2016;  --sky:  #7FC3EE;
+  --wash:  rgba(123,124,108,.09);
+  --wash2: rgba(123,124,108,.16);
+  --line:  rgba(18,20,15,.16);
+
+  --disp:  "Archivo","Helvetica Neue",Arial,sans-serif;
+  --pixel: "Handjet","Archivo",monospace;
+  --tema:  "Instrument Serif",Georgia,serif;
+  --mono:  "IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --r:     10px;      /* ← el desvío. Radio de card. */
+  --r-sm:  6px;
+  --main:  820px;     /* medida de lectura */
+  --wide:  1180px;    /* breakout: tablas, cards, claims */
+  --pad:   clamp(1rem,4vw,2.4rem);
 }
-*,*::before,*::after{ box-sizing:border-box; border-radius:0; }
+*,*::before,*::after{ box-sizing:border-box; }
 html{ -webkit-text-size-adjust:100%; }
-body{ margin:0; background:var(--paper); color:var(--void); font-family:var(--disp);
-  font-weight:400; font-size:16px; line-height:1.5; -webkit-font-smoothing:antialiased; }
-.sheet{ max-width:var(--sheet); margin:0 auto; padding-inline:var(--pad); }
-p{ max-width:var(--prose); margin:0 0 .95rem; }
+body{
+  margin:0; background:var(--acid); color:var(--void);
+  font-family:var(--disp); font-weight:400;
+  font-size:17.5px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── grilla editorial: main centrada, wide y full como breakout ───────── */
+.sheet{
+  display:grid;
+  grid-template-columns:
+    [full-start] minmax(var(--pad),1fr)
+    [wide-start] minmax(0,calc((var(--wide) - var(--main))/2))
+    [main-start] minmax(0,var(--main)) [main-end]
+    minmax(0,calc((var(--wide) - var(--main))/2)) [wide-end]
+    minmax(var(--pad),1fr) [full-end];
+}
+.sheet > *{ grid-column:main; }
+.sheet > .wide{ grid-column:wide; }
+.sheet > .full{ grid-column:full; }
+/* Por debajo del ancho de breakout, los tracks laterales se comen la columna
+   de lectura (no son flexibles y toman su max antes que main). Se colapsa a
+   una sola columna con padding: main, wide y full pasan a medir lo mismo. */
+@media (max-width:1100px){
+  .sheet{
+    grid-template-columns:
+      [full-start] var(--pad)
+      [wide-start main-start] minmax(0,1fr) [main-end wide-end]
+      var(--pad) [full-end];
+  }
+}
+
+p{ margin:0 0 1.05rem; }
 strong{ font-weight:600; }
-em.t{ font-family:var(--tema); font-style:italic; font-size:1.06em; }
-code{ font-family:var(--mono); font-size:.88em; background:rgba(123,124,108,.16); padding:.08em .3em; }
+code{ font-family:var(--mono); font-size:.88em; background:var(--wash); padding:.1em .34em; border-radius:var(--r-sm); }
 
-header{ border-bottom:2px solid var(--void); padding-block:clamp(1.6rem,5vw,3.2rem) clamp(1.1rem,3vw,1.8rem); }
-.eyebrow{ font-family:var(--mono); font-size:.66rem; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--campo); margin:0 0 1.1rem; max-width:none; }
-h1{ font-family:var(--disp); font-weight:900; letter-spacing:-.02em; font-size:clamp(1.9rem,6.2vw,3.6rem);
-  line-height:1.02; margin:0 0 .5rem; text-transform:uppercase; }
-h1 em{ font-family:var(--tema); font-style:italic; font-weight:400; text-transform:none; letter-spacing:-.01em; }
-.dek{ font-size:clamp(1rem,1.9vw,1.2rem); max-width:62ch; margin:0 0 1.4rem; color:#2B2E24; }
-.meta{ font-family:var(--mono); font-size:.68rem; letter-spacing:.06em; color:var(--campo);
-  display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; max-width:none; }
+/* ── bandas de máscara ────────────────────────────────────────────────── */
+.band{ position:relative; background:var(--void); height:clamp(44px,6.8vw,88px); }
+.band canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+.band .src{ position:absolute; left:0; right:0; bottom:0; height:6px; visibility:hidden; }
+.band--up{ background:var(--acid); }
 
-.alert{ margin-block:clamp(1.4rem,4vw,2.2rem); border:1px solid var(--void); border-left:6px solid var(--warn);
-  padding:clamp(.9rem,2.6vw,1.3rem); background:var(--blanco); }
-.alert h2{ font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
-  margin:0 0 .55rem; color:var(--warn); font-weight:500; }
-.alert p{ margin:0 0 .5rem; font-size:.95rem; max-width:78ch; }
+/* ── masthead ─────────────────────────────────────────────────────────── */
+.mast{ background:var(--void); color:var(--acid); padding-block:clamp(2.2rem,6vw,4rem) clamp(1.4rem,3vw,2.2rem); }
+.eyebrow{ font-family:var(--mono); font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--campo); margin:0 0 1.4rem; font-weight:500; }
+.lockup{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.3em; margin:0 0 1.7rem; line-height:.92; }
+.lockup .fijo{ font-family:var(--pixel); font-weight:700; font-size:clamp(22px,3.3vw,38px);
+  letter-spacing:.03em; text-transform:uppercase; }
+.lockup .var{ font-family:var(--tema); font-style:italic; font-weight:400; font-size:clamp(29px,4.4vw,51px); letter-spacing:-.01em; }
+/* INVERSIÓN (pase 3): el título toma la voz itálica —la misma del slot
+   variable del nombre— y la bajada pasa al sans. El título deja de gritar y
+   empieza a hablar; la bajada gana legibilidad de párrafo. */
+h1{ font-family:var(--tema); font-style:italic; font-weight:400; letter-spacing:-.012em;
+  font-size:clamp(2.9rem,9vw,5.8rem); line-height:.96; margin:0 0 1.15rem; text-transform:none; }
+.dek{ font-family:var(--disp); font-style:normal; font-weight:400;
+  font-size:clamp(1.02rem,1.75vw,1.26rem); line-height:1.52; max-width:52ch;
+  margin:0 0 1.9rem; opacity:.88; }
+.meta{ font-family:var(--mono); font-size:.69rem; letter-spacing:.08em; color:var(--campo);
+  display:flex; flex-wrap:wrap; gap:.45rem 1.4rem; font-weight:500; }
+.meta b{ font-family:var(--pixel); font-weight:700; font-size:1.25em; letter-spacing:.04em; color:var(--acid); }
+
+/* ── alerta ───────────────────────────────────────────────────────────── */
+.alert{ margin-block:clamp(2rem,4.4vw,2.8rem); border:1px solid var(--void); border-radius:var(--r);
+  padding:clamp(1.2rem,2.8vw,1.7rem); background:var(--wash); }
+.alert h2{ font-family:var(--mono); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase;
+  margin:0 0 .75rem; font-weight:600; color:var(--campo); }
+.alert p{ margin:0 0 .6rem; font-size:.97rem; }
 .alert p:last-child{ margin-bottom:0; }
 
-h2.sec{ font-family:var(--disp); font-weight:900; text-transform:uppercase; letter-spacing:-.01em;
-  font-size:clamp(1.1rem,2.6vw,1.5rem); margin:clamp(2.4rem,6vw,3.6rem) 0 .9rem;
-  padding-bottom:.45rem; border-bottom:2px solid var(--void); max-width:none;
-  display:flex; align-items:baseline; gap:.7rem; }
-h2.sec .num{ font-family:var(--mono); font-size:.68rem; letter-spacing:.1em; color:var(--campo); font-weight:500; }
-h3.sub{ font-family:var(--disp); font-weight:900; font-size:1rem; letter-spacing:.01em;
-  margin:1.9rem 0 .5rem; text-transform:uppercase; max-width:none; }
+/* ── cabecera de sección: número Handjet + kicker itálico + título ────── */
+.sec{ display:grid; grid-template-columns:auto 1fr; gap:0 1.1rem; align-items:start;
+  margin:clamp(3.4rem,8vw,5.4rem) 0 1.4rem; padding-bottom:.9rem; border-bottom:2px solid var(--void); }
+.sec .n{ font-family:var(--pixel); font-weight:700; line-height:.8;
+  font-size:clamp(2.6rem,6.4vw,4.4rem); color:var(--campo); letter-spacing:.02em; }
+.sec .kick{ font-family:var(--tema); font-style:italic; font-size:clamp(1rem,1.7vw,1.22rem);
+  color:var(--campo); margin:0 0 .12rem; line-height:1.1; }
+/* Opción C: el sans baja de 900 versalita a 600 caja baja. Con el título del
+   documento ahora en itálica fina, un h2 en 900 versalita pesaba más que él e
+   invertía la jerarquía. Reparto de voces: itálica = sujeto · sans =
+   estructura · Handjet = índice · mono = metadato. */
+.sec h2{ font-family:var(--disp); font-weight:600; text-transform:none; letter-spacing:-.02em;
+  font-size:clamp(1.35rem,3.1vw,2.1rem); line-height:1.06; margin:0; }
+h3.sub{ font-family:var(--disp); font-weight:600; font-size:clamp(1.05rem,1.9vw,1.22rem);
+  letter-spacing:-.015em; margin:2.6rem 0 .7rem; text-transform:none;
+  display:flex; align-items:baseline; gap:.6rem; }
+h3.sub::before{ content:""; width:1.5rem; height:3px; background:var(--campo); flex:none; }
 
-.claim{ background:var(--void); color:var(--paper); padding:clamp(1.3rem,4vw,2.2rem); margin-block:clamp(1.4rem,4vw,2rem); }
-.claim p{ font-family:var(--tema); font-style:italic; font-size:clamp(1.22rem,2.9vw,1.8rem);
-  line-height:1.22; margin:0; max-width:36ch; color:var(--paper); }
-.claim .tail{ font-family:var(--mono); font-style:normal; font-size:.64rem; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--campo); margin-top:1.1rem; max-width:none; }
+/* lead: el párrafo que abre una sección pesa distinto */
+p.lead{ font-size:clamp(1.08rem,1.85vw,1.3rem); line-height:1.44; font-weight:400; margin-bottom:1.3rem; }
+p.lead em{ font-family:var(--tema); font-style:italic; }
+em.g{ font-family:var(--tema); font-style:italic; font-size:1.1em; }   /* gesto */
 
-.scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--rule); margin-block:1.3rem; }
-table{ border-collapse:collapse; width:100%; min-width:620px; font-size:.86rem; background:var(--blanco); }
-thead th{ font-family:var(--mono); font-size:.6rem; letter-spacing:.13em; text-transform:uppercase;
-  font-weight:500; text-align:left; color:var(--paper); background:var(--void); padding:.7rem .85rem; white-space:nowrap; }
-tbody td{ padding:.68rem .85rem; border-top:1px solid var(--rule-s); vertical-align:top; }
-tbody tr:nth-child(even) td{ background:rgba(123,124,108,.06); }
+/* ── claim ────────────────────────────────────────────────────────────── */
+.claim{ background:var(--void); color:var(--acid);
+  padding:clamp(1.8rem,4.6vw,3rem) clamp(1.8rem,4.6vw,3rem) clamp(2rem,4.8vw,3.2rem);
+  margin:clamp(2rem,4vw,2.6rem) 0 0; border-radius:var(--r) var(--r) 0 0; }
+.claim p{ font-family:var(--disp); font-weight:900; text-transform:uppercase;
+  font-size:clamp(1.35rem,3.5vw,2.45rem); line-height:1.04; letter-spacing:-.03em; margin:0; max-width:19ch; }
+.claim .tail{ font-family:var(--pixel); font-weight:700; text-transform:uppercase; font-size:1.05rem;
+  letter-spacing:.06em; color:var(--campo); margin-top:1.4rem; max-width:none; }
+.claim-out{ margin-bottom:clamp(2rem,4vw,2.6rem); }
+.claim-out .band{ height:clamp(30px,4.4vw,56px); }
+
+/* ── tablas ───────────────────────────────────────────────────────────── */
+.scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line);
+  border-radius:var(--r); margin-block:1.6rem; }
+table{ border-collapse:collapse; width:100%; min-width:640px; font-size:.9rem; background:var(--acid); }
+thead th{ font-family:var(--mono); font-size:.61rem; letter-spacing:.15em; text-transform:uppercase;
+  font-weight:600; text-align:left; color:var(--acid); background:var(--void); padding:.8rem .95rem; white-space:nowrap; }
+tbody td{ padding:.78rem .95rem; border-top:1px solid var(--line); vertical-align:top; line-height:1.45; }
+tbody tr:nth-child(even) td{ background:var(--wash); }
 td.b{ font-weight:600; }
-td.n{ font-family:var(--mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
-.tag{ font-family:var(--mono); font-size:.58rem; letter-spacing:.09em; text-transform:uppercase;
-  border:1px solid var(--campo); color:var(--campo); padding:.15rem .4rem; white-space:nowrap; display:inline-block; }
-.tag.hi{ border-color:var(--warn); color:var(--warn); }
+.tag{ font-family:var(--mono); font-size:.59rem; letter-spacing:.11em; text-transform:uppercase; font-weight:600;
+  border:1px solid var(--campo); color:var(--campo); padding:.18rem .46rem; border-radius:var(--r-sm);
+  white-space:nowrap; display:inline-block; }
+.tag.hi{ background:var(--void); border-color:var(--void); color:var(--acid); }
 
-/* dos objetivos */
-.duo{ display:grid; gap:0; grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
-  border:1px solid var(--rule); border-width:1px 0 0 1px; margin-block:1.4rem; }
-.duo > div{ background:var(--blanco); border:1px solid var(--rule); border-width:0 1px 1px 0; padding:clamp(1rem,2.6vw,1.35rem); }
-.duo h4{ font-family:var(--disp); font-weight:900; text-transform:uppercase; font-size:.9rem; margin:0 0 .2rem; }
-.duo .k{ font-family:var(--mono); font-size:.58rem; letter-spacing:.11em; text-transform:uppercase; color:var(--campo); margin:0 0 .8rem; }
-.duo p{ font-size:.88rem; margin:0 0 .6rem; max-width:none; }
+/* ── duo ──────────────────────────────────────────────────────────────── */
+.duo{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); margin-block:1.7rem; }
+.duo > div{ padding:clamp(1.3rem,2.9vw,1.7rem); border-radius:var(--r); }
+.duo .off{ background:var(--wash); border:1px solid var(--line); }
+.duo .on{ background:var(--void); color:var(--acid); }
+.duo h4{ font-family:var(--disp); font-weight:900; text-transform:uppercase; font-size:1.12rem; margin:0 0 .1rem; letter-spacing:-.015em; }
+.duo .k{ font-family:var(--tema); font-style:italic; font-size:.98rem; color:var(--campo); margin:0 0 1.05rem; }
+.duo p{ font-size:.93rem; margin:0 0 .7rem; line-height:1.5; }
 .duo p:last-child{ margin:0; }
-.duo .foco{ border-top:1px solid var(--rule-s); margin-top:.85rem; padding-top:.7rem;
-  font-family:var(--mono); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; }
-.duo .foco.on{ color:var(--warn); } .duo .foco.off{ color:var(--campo); }
+.duo .foco{ border-top:1px solid currentColor; margin-top:1rem; padding-top:.8rem;
+  font-family:var(--mono); font-size:.61rem; letter-spacing:.13em; text-transform:uppercase; font-weight:600; opacity:.7; }
 
-/* secuencia */
-.seq{ border:1px solid var(--rule); background:var(--blanco); margin-block:1.4rem; }
-.seq > div{ display:grid; grid-template-columns:auto 1fr; gap:.9rem; padding:.85rem 1rem;
-  border-top:1px solid var(--rule-s); align-items:start; }
+/* ── cards genéricas ──────────────────────────────────────────────────── */
+.cards{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); margin-block:1.7rem; }
+.card{ border:1px solid var(--line); border-radius:var(--r); padding:clamp(1.15rem,2.6vw,1.5rem); background:var(--acid); }
+.card .ix{ font-family:var(--pixel); font-weight:700; font-size:1.9rem; line-height:.85; color:var(--campo); display:block; margin-bottom:.7rem; }
+.card h5{ font-family:var(--disp); font-weight:900; font-size:1rem; margin:0 0 .45rem; letter-spacing:-.01em; line-height:1.18; }
+.card p{ font-size:.9rem; margin:0; line-height:1.5; }
+.card--fill{ background:var(--wash); }
+
+/* ── secuencia ────────────────────────────────────────────────────────── */
+.seq{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden; margin-block:1.7rem; }
+.seq > div{ display:grid; grid-template-columns:auto 1fr; gap:1.1rem; padding:1.05rem 1.15rem;
+  border-top:1px solid var(--line); align-items:start; }
 .seq > div:first-child{ border-top:0; }
-.seq .st{ font-family:var(--mono); font-size:.62rem; letter-spacing:.08em; color:var(--paper);
-  background:var(--void); padding:.2rem .45rem; white-space:nowrap; }
-.seq .st.now{ background:var(--warn); }
-.seq b{ display:block; font-size:.92rem; margin-bottom:.15rem; }
-.seq span{ font-size:.85rem; color:#2B2E24; }
+.seq .st{ font-family:var(--pixel); font-weight:700; font-size:1rem; letter-spacing:.05em;
+  color:var(--acid); background:var(--campo); padding:.3rem .55rem; border-radius:var(--r-sm);
+  white-space:nowrap; text-transform:uppercase; min-width:6.6rem; text-align:center; }
+.seq .st.now{ background:var(--void); }
+.seq b{ display:block; font-size:1.02rem; margin-bottom:.22rem; letter-spacing:-.005em; }
+.seq span.d{ font-size:.9rem; line-height:1.5; }
 
-.note{ border-left:3px solid var(--campo); padding:.15rem 0 .15rem 1rem; margin-block:1.3rem; max-width:var(--prose); }
-.note p{ font-size:.87rem; color:#2B2E24; margin:0 0 .5rem; }
+/* ── nota ─────────────────────────────────────────────────────────────── */
+.note{ background:var(--wash); border-radius:var(--r); padding:1.15rem 1.3rem; margin-block:1.7rem;
+  border-left:4px solid var(--campo); }
+.note p{ font-size:.93rem; margin:0 0 .55rem; line-height:1.52; }
 .note p:last-child{ margin:0; }
-.note b.lbl{ font-family:var(--mono); font-size:.6rem; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--campo); display:block; margin-bottom:.35rem; font-weight:500; }
-.note.warn{ border-left-color:var(--warn); }
-.note.warn b.lbl{ color:var(--warn); }
+.note b.lbl{ font-family:var(--tema); font-style:italic; font-size:1.06rem; letter-spacing:0;
+  text-transform:none; display:block; margin-bottom:.5rem; font-weight:400; color:var(--campo); }
+.note.warn{ border-left-color:var(--void); background:var(--wash2); }
+.note.warn b.lbl{ color:var(--void); }
 
-ul.ls{ list-style:none; margin:0 0 1rem; padding:0; max-width:var(--prose); }
-ul.ls li{ font-size:.92rem; padding:.34rem 0 .34rem 1.15rem; border-bottom:1px solid var(--rule-s); position:relative; }
+ul.ls{ list-style:none; margin:0 0 1.2rem; padding:0; }
+ul.ls li{ font-size:.97rem; padding:.5rem 0 .5rem 1.4rem; border-bottom:1px solid var(--line); position:relative; line-height:1.55; }
 ul.ls li:last-child{ border-bottom:0; }
-ul.ls li::before{ content:"—"; position:absolute; left:0; color:var(--campo); }
+ul.ls li::before{ content:""; position:absolute; left:0; top:1.05em; width:.75rem; height:2px; background:var(--campo); }
 
-/* carta */
-.carta{ border:1px solid var(--void); background:var(--blanco); padding:clamp(1rem,2.6vw,1.4rem); margin-block:1.2rem; }
-.carta h4{ font-family:var(--disp); font-weight:900; text-transform:uppercase; font-size:.95rem; margin:0 0 .15rem; }
-.carta .k{ font-family:var(--mono); font-size:.58rem; letter-spacing:.11em; text-transform:uppercase; color:var(--campo); margin:0 0 .9rem; }
-.carta dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:.45rem .9rem; font-size:.87rem; }
-.carta dt{ font-family:var(--mono); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:var(--campo); padding-top:.2em; }
-.carta dd{ margin:0; }
+/* ── cartas ───────────────────────────────────────────────────────────── */
+.carta{ border:1px solid var(--void); border-radius:var(--r); padding:clamp(1.3rem,2.9vw,1.7rem); margin-block:1.5rem; }
+.carta h4{ font-family:var(--disp); font-weight:900; text-transform:uppercase; font-size:1.12rem; margin:0 0 .12rem; letter-spacing:-.015em; }
+.carta h4 em{ font-family:var(--tema); font-style:italic; text-transform:none; font-weight:400; }
+.carta .k{ font-family:var(--tema); font-style:italic; font-size:.98rem; color:var(--campo); margin:0 0 1.15rem; }
+.carta dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:.6rem 1.15rem; font-size:.92rem; }
+.carta dt{ font-family:var(--mono); font-size:.61rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--campo); padding-top:.3em; font-weight:600; white-space:nowrap; }
+.carta dd{ margin:0; line-height:1.5; }
+@media (max-width:560px){ .carta dl{ grid-template-columns:1fr; gap:.1rem; } .carta dd{ margin-bottom:.75rem; } }
 
-footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
-  padding-block:1.2rem clamp(2rem,6vw,3.4rem); font-family:var(--mono); font-size:.64rem;
-  letter-spacing:.08em; color:var(--campo); display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; justify-content:space-between; }
-@media print{ body{ background:#fff; } .claim,.carta{ break-inside:avoid; } }
+footer{ background:var(--void); color:var(--campo); padding-block:1.6rem clamp(2.2rem,6vw,3.6rem);
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.1em; }
+footer .row{ grid-column:main; display:flex; flex-wrap:wrap; gap:.45rem 1.6rem; justify-content:space-between; }
+
+@media print{
+  body{ background:#fff; font-size:11pt; }
+  .mast,.claim,.duo .on,footer,thead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .claim,.carta,.duo,.card,.seq{ break-inside:avoid; }
+}
 </style>
 </head>
 <body>
-<div class="sheet">
 
-<header>
-  <p class="eyebrow">Bienal Blockchain Punta 2027 · Documento interno · Estrategia</p>
-  <h1>El objetivo<br><em>político</em> V0.1</h1>
-  <p class="dek">Cómo llegamos de una industria que no se pone de acuerdo entre sí a un anuncio conjunto con el sector público en marzo de 2027. Estrategia y táctica, con el 16 de octubre como primer movimiento.</p>
-  <p class="meta">
-    <span>Estado · DRAFT</span>
-    <span>Corte · 2026-09-22</span>
-    <span>Para · equipo BOTH</span>
-    <span>Lectura · 14 min</span>
-  </p>
-</header>
+<!-- ══ masthead invertido ═══════════════════════════════════════════════ -->
+<div class="mast">
+  <div class="sheet">
+    <p class="wide eyebrow">Documento interno · Estrategia</p>
+    <div class="wide lockup">
+      <span class="fijo">Bienal</span><span class="var">Blockchain</span><span class="fijo">Punta 2027</span>
+    </div>
+    <h1 class="wide">El objetivo político</h1>
+    <p class="wide dek">Cómo llegamos de una industria que no se pone de acuerdo entre sí a un anuncio conjunto con el sector público en marzo de 2027. Estrategia y táctica, con el 16 de octubre como primer movimiento.</p>
+    <p class="wide meta">
+      <span><b>V0.1</b> · DRAFT</span><span>Corte · 2026-09-22</span><span>Para · equipo BOTH</span><span>Lectura · 14 min</span>
+    </p>
+  </div>
+</div>
+<!-- la banda: la masa blanca sube escalonada desde el pie del masthead -->
+<div class="band"><canvas data-blob="acid" data-mode="grow" data-from=".src"
+     data-seed="17.4" data-cell="14" data-fringe-cells="2.8" data-bleed="bottom,left,right"></canvas><div class="src"></div></div>
+
+<div class="sheet">
 
 <div class="alert">
   <h2>Alcance de este documento</h2>
@@ -141,58 +251,83 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
   <p><b>Buena parte de esto ya está decidido y minado.</b> Lo que agrega este documento no son decisiones nuevas: es la cadena causal que las conecta, y el diagnóstico del sector que las explica. Si una decisión de acá contradice al vault, gana el vault.</p>
 </div>
 
-<!-- ══ 01 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">01</span> Los dos objetivos</h2>
-
-<div class="duo">
+<header class="sec">
+  <span class="n">01</span>
   <div>
+    <p class="kick">El marco</p>
+    <h2>Los dos objetivos</h2>
+  </div>
+</header>
+
+<div class="duo wide">
+  <div class="off">
     <h4>Económico</h4>
     <p class="k">Trabajado tácticamente por separado</p>
     <p>Que la Bienal cierre con superávit y sea, como proyecto en sí, rentable y financieramente sana. Y que ese excedente financie la operación de Casa Manantial.</p>
     <p>El vehículo ya está cerrado: Both Ventures LLC más Casa Manantial SAS, con FII a Casa Manantial SAS (~10% de gastos operativos más impuestos) y profit a Both Ventures LLC.</p>
-    <p class="foco off">Fuera del alcance de este documento</p>
+    <p class="foco">Fuera del alcance de este documento</p>
   </div>
-  <div>
+  <div class="on">
     <h4>Político</h4>
     <p class="k">Probablemente el más estratégico</p>
     <p>Lograr durante la Bienal un anuncio que sintetice la voluntad del sector público con la del sector privado en una agenda común.</p>
     <p>No un panel sobre regulación. Un anuncio conjunto — o, como piso, puntos de encuentro y colaboración documentados entre los dos sectores.</p>
-    <p class="foco on">← Este documento</p>
+    <p class="foco">← Este documento</p>
   </div>
 </div>
 
-<p>Los dos objetivos no compiten: se sostienen. El político es el que hace que el económico sea alcanzable, y conviene entender por qué antes de seguir.</p>
+<p class="lead">Los dos objetivos no compiten: se sostienen. El político es el que hace que el económico sea alcanzable, y conviene entender por qué antes de seguir.</p>
 
 <p>Los sponsors de esta Bienal no compran alcance masivo. Ponen entre 50 y 70 mil dólares porque confían en la credibilidad del evento — no es un juego de volumen. Lo que hace creíble al evento es exactamente el objetivo político: que estén el gobierno, los reguladores y los actores privados en la misma sala. <strong>Sin la mesa política no hay producto comercial que vender.</strong></p>
 
-<!-- ══ 02 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">02</span> Por qué éste es el objetivo más estratégico</h2>
+<header class="sec">
+  <span class="n">02</span>
+  <div>
+    <p class="kick">La apuesta</p>
+    <h2>Por qué éste es el objetivo más estratégico</h2>
+  </div>
+</header>
 
-<p>Hay una conversación que en esta industria no ocurre. Crecimiento habla de regulación por su lado. La Cámara Blockchain discute con el Banco Central por el suyo. Los exchanges opinan en entrevistas sueltas. <strong>No hay nada que agrupe todo eso.</strong></p>
+<p class="lead">Hay una conversación que en esta industria no ocurre. Crecimiento habla de regulación por su lado. La Cámara Blockchain discute con el Banco Central por el suyo. Los exchanges opinan en entrevistas sueltas. <strong>No hay nada que agrupe todo eso.</strong></p>
 
-<div class="claim">
-  <p>Nadie está ofreciendo el lugar donde las partes se sientan, discuten y acuerdan. Eso no se compra: se convoca.</p>
-  <p class="tail">El derecho a convocar es el activo</p>
+<div class="claim-out wide">
+  <div class="claim">
+    <p>Nadie ofrece el lugar donde las partes se sientan, discuten y acuerdan. Eso no se compra: se convoca.</p>
+    <p class="tail">El derecho a convocar es el activo</p>
+  </div>
+  <div class="band"><canvas data-blob="acid" data-mode="grow" data-from=".src"
+       data-seed="5.1" data-cell="14" data-fringe-cells="2.6" data-bleed="bottom,left,right"></canvas><div class="src"></div></div>
 </div>
 
-<p>Esto tiene tres consecuencias que vale la pena separar:</p>
+<p class="lead">Esto tiene tres consecuencias que vale la pena separar.</p>
 
-<ul class="ls">
-  <li><strong>Convierte la Bienal en un hito, no en un evento.</strong> Si anclamos para marzo el anuncio de un avance concreto — un sandbox abierto, las primeras licencias otorgadas, un reglamento final, una fecha de resolución — la Bienal pasa a ser un punto del roadmap regulatorio del país. Eso es impacto mediático y posicionamiento como facilitador del cambio, no como organizador de charlas.</li>
-  <li><strong>Es lo único que no tiene comparable.</strong> El benchmark de Blockchain.RIO lo deja claro: Rio cotiza visibilidad, y su producto exclusivo más caro es una noche de 400 personas a 40 mil dólares. No hay nada en su menú que sea un asiento en una mesa de setenta personas con un banco central. Por eso ese inventario se asigna y no se imprime.</li>
-  <li><strong>Compone entre ediciones.</strong> Conseguir que un regulador se siente la primera vez es el trabajo difícil. La segunda vez es una llamada. El derecho a convocar es el activo más lento de construir y el que sobrevive al tema del año.</li>
-</ul>
+<div class="cards wide">
+  <div class="card"><span class="ix">01</span>
+    <h5>Convierte la Bienal en un hito, no en un evento</h5>
+    <p>Si anclamos para marzo el anuncio de un avance concreto — un sandbox abierto, las primeras licencias otorgadas, un reglamento final, una fecha de resolución — la Bienal pasa a ser un punto del roadmap regulatorio del país. Eso es posicionamiento como facilitador del cambio, no como organizador de charlas.</p></div>
+  <div class="card card--fill"><span class="ix">02</span>
+    <h5>Es lo único que no tiene comparable</h5>
+    <p>El benchmark de Blockchain.RIO lo deja claro: Rio cotiza visibilidad, y su producto exclusivo más caro es una noche de 400 personas a 40 mil dólares. No hay nada en su menú que sea un asiento en una mesa de setenta personas con un banco central. Por eso ese inventario se asigna y no se imprime.</p></div>
+  <div class="card"><span class="ix">03</span>
+    <h5>Compone entre ediciones</h5>
+    <p>Conseguir que un regulador se siente la primera vez es el trabajo difícil. La segunda vez es una llamada. El derecho a convocar es el activo más lento de construir y el que sobrevive al tema del año.</p></div>
+</div>
 
-<!-- ══ 03 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">03</span> El diagnóstico: cómo está el sector privado</h2>
+<header class="sec">
+  <span class="n">03</span>
+  <div>
+    <p class="kick">El terreno</p>
+    <h2>El diagnóstico: cómo está el sector privado</h2>
+  </div>
+</header>
 
-<p>Acá está el obstáculo real, y también la oportunidad. <strong>El sector privado no le está diciendo lo mismo al gobierno.</strong></p>
+<p class="lead">Acá está el obstáculo real, y también la oportunidad. <strong>El sector privado no le está diciendo lo mismo al gobierno.</strong></p>
 
 <p>Salió la primera versión de la regulación. Un referente de un exchange dio una entrevista diciendo que estaba bien y que se avanzaba. Otro, de otro exchange, dijo que era un desastre. Las dos declaraciones circularon públicamente.</p>
 
 <p>Debajo de eso hay una fractura institucional más vieja. La Cámara FinTech existía primero; la actividad blockchain podría haber entrado como una vertical digital adentro de ella, y en cambio un grupo se separó y armó la Cámara Blockchain. Hoy los dos mensajes no coinciden. La lectura desde la Cámara FinTech sobre la Cámara Blockchain es que son demasiado criptopunks — que al gobierno hay que llevarlo de la mano y darle todo cocinado, no hacerlo pensar.</p>
 
-<div class="scroll">
+<div class="scroll wide">
 <table>
   <thead><tr><th>Actor</th><th>Qué representa</th><th>Postura / tensión</th></tr></thead>
   <tbody>
@@ -205,35 +340,45 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 </table>
 </div>
 
-<p>La consecuencia de esa fragmentación es directa y ya se está pagando: <em class="t">si el sector se pelea entre sí, el gobierno mira y dice «pónganse de acuerdo ustedes primero, y después me dicen qué necesitan».</em></p>
+<p>La consecuencia de esa fragmentación es directa y ya se está pagando: si el sector se pelea entre sí, el gobierno mira y dice <strong><em class="g">«pónganse de acuerdo ustedes primero, y después me dicen qué necesitan»</em></strong>.</p>
 
 <div class="note">
   <b class="lbl">Por qué esto es la oportunidad y no sólo el problema</b>
   <p>Un sector alineado no necesita un anfitrión. Un sector fragmentado que <b>sabe</b> que su fragmentación le está costando influencia, sí. El pedido de una charla a puerta cerrada y sin prensa no salió de nosotros: salió del propio sector. Nosotros tenemos el lugar, la neutralidad y la relación con el gobierno. Esas tres cosas juntas no las tiene ninguno de ellos.</p>
 </div>
 
-<!-- ══ 04 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">04</span> La tesis táctica: separar antes de juntar</h2>
+<header class="sec">
+  <span class="n">04</span>
+  <div>
+    <p class="kick">El método</p>
+    <h2>La tesis táctica: separar antes de juntar</h2>
+  </div>
+</header>
 
-<p>La tentación es sentar a todos juntos cuanto antes. Es el error.</p>
+<p class="lead">La tentación es sentar a todos juntos cuanto antes. Es el error.</p>
 
 <p>Llevar al gobierno a una mesa donde los privados no están alineados produce exactamente la respuesta de arriba, y quema el capital de convocatoria en el primer intento. La secuencia correcta es la inversa: <strong>primero el sector privado solo, hasta que pueda decir una sola cosa. Después el encuentro entre los dos bloques.</strong></p>
 
-<p>Lo que se está construyendo con eso, dicho sin eufemismo: no es un sindicato ni una cámara, pero se le parece. Es un núcleo de actividad privada que, si logra acordar medianamente, se vuelve un interlocutor con peso frente al gobierno. Nosotros no somos ese núcleo — somos el lugar donde se forma.</p>
+<p>Lo que se está construyendo con eso, dicho sin eufemismo: <em class="g">no es un sindicato ni una cámara, pero se le parece</em>. Es un núcleo de actividad privada que, si logra acordar medianamente, se vuelve un interlocutor con peso frente al gobierno. Nosotros no somos ese núcleo — <em class="g">somos el lugar donde se forma</em>.</p>
 
 <div class="note warn">
   <b class="lbl">La condición que lo hace posible</b>
   <p>Casa Manantial opera como <b>anfitrión neutral</b>, no como defensor de una postura. El ecosistema tiene tensiones fuertes — Ethereum contra Bitcoin, Crecimiento contra Ethereum Argentina contra Ethereum LatAm. Si nos alineamos con un bando, perdemos la credibilidad de anfitrión y con ella todo el objetivo político. El rol del foro es facilitar el acuerdo, no predicar. Que algún miembro del comité tenga posiciones propias es inevitable y distinto: lo que no puede tener posición somos nosotros.</p>
 </div>
 
-<!-- ══ 05 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">05</span> La secuencia completa</h2>
+<header class="sec">
+  <span class="n">05</span>
+  <div>
+    <p class="kick">El plan</p>
+    <h2>La secuencia completa</h2>
+  </div>
+</header>
 
-<div class="seq">
-  <div><span class="st now">16 OCT</span><div><b>Foro privado en Casa Manantial — sin gobierno</b><span>Off the record, sin prensa. 10 a 15 personas del núcleo privado. Objetivo: que salgan 3 a 5 puntos de presión conjunta.</span></div></div>
-  <div><span class="st">OCT–NOV</span><div><b>Las dos cartas</b><span>Carta al comité y carta al soporte institucional público. Es lo que hay que destrabar primero — todo lo demás depende de esto.</span></div></div>
-  <div><span class="st">NOV–FEB</span><div><b>Diálogo con el sector público</b><span>Con los puntos privados ya cocinados. BCU y Ministerio en Uruguay; CNV en Argentina y el regulador brasileño en paralelo.</span></div></div>
-  <div><span class="st">MAR 2027</span><div><b>El anuncio en la Bienal</b><span>Anuncio conjunto gobierno + Banco Central + cámaras. Piso aceptable: puntos de acuerdo documentados y una hoja de ruta compartida.</span></div></div>
+<div class="seq wide">
+  <div><span class="st now">16 OCT</span><div><b>Foro privado en Casa Manantial — sin gobierno</b><span class="d">Off the record, sin prensa. 10 a 15 personas del núcleo privado. Objetivo: que salgan 3 a 5 puntos de presión conjunta.</span></div></div>
+  <div><span class="st">OCT–NOV</span><div><b>Las dos cartas</b><span class="d">Carta al comité y carta al soporte institucional público. Es lo que hay que destrabar primero — todo lo demás depende de esto.</span></div></div>
+  <div><span class="st">NOV–FEB</span><div><b>Diálogo con el sector público</b><span class="d">Con los puntos privados ya cocinados. BCU y Ministerio en Uruguay; CNV en Argentina y el regulador brasileño en paralelo.</span></div></div>
+  <div><span class="st">MAR 2027</span><div><b>El anuncio en la Bienal</b><span class="d">Anuncio conjunto gobierno + Banco Central + cámaras. Piso aceptable: puntos de acuerdo documentados y una hoja de ruta compartida.</span></div></div>
 </div>
 
 <h3 class="sub">Movimiento 1 — El 16 de octubre</h3>
@@ -244,7 +389,7 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 
 <p>Nombres que ya están sobre la mesa para invitar — la grafía viene de un transcript automático y hay que verificarla antes de escribir a nadie:</p>
 
-<div class="scroll">
+<div class="scroll wide">
 <table>
   <thead><tr><th>Quién</th><th>Por qué</th><th>Vía</th></tr></thead>
   <tbody>
@@ -271,7 +416,7 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 <p>Es lo primero a destrabar y es deliberadamente a la vieja escuela: registro de cancillería, no email de marketing. Son dos piezas distintas, con dos destinatarios y dos pedidos distintos.</p>
 
 <div class="carta">
-  <h4>Carta A — a los futuros miembros del comité</h4>
+  <h4>Carta A <em>— a los futuros miembros del comité</em></h4>
   <p class="k">Destinatario: los referentes privados que van a dar credibilidad al evento</p>
   <dl>
     <dt>Qué dice</dt><dd>Que se está armando un foro con participación de los reguladores, y que se los invita a ser las voces del sector en esa mesa. El argumento es de contracara: si de un lado están los reguladores, del otro tienen que estar quienes conocen el tema y necesitan las reglas.</dd>
@@ -282,7 +427,7 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 </div>
 
 <div class="carta">
-  <h4>Carta B — al soporte institucional del sector público</h4>
+  <h4>Carta B <em>— al soporte institucional del sector público</em></h4>
   <p class="k">Destinatario: Presidencia, Ministerio de Economía, Banco Central</p>
   <dl>
     <dt>Qué dice</dt><dd>Que la Bienal es la plataforma donde la agenda regulatoria que ya está en marcha puede tener su hito público, y que se los invita a ser parte de esa mesa.</dd>
@@ -316,26 +461,36 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 
 <p>Dos advertencias. La primera: el anuncio no es nuestro, es del gobierno y de las cámaras — nosotros aportamos la plataforma y la convocatoria, y esa distinción hay que sostenerla también en la comunicación. La segunda: los tiempos pueden no dar, y el anuncio puede terminar gestionándose antes o después del evento. Conviene diseñar para que el valor exista igual — el piso aceptable son puntos de acuerdo documentados y una hoja de ruta compartida, presentados en la Bienal.</p>
 
-<!-- ══ 06 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">06</span> Por qué el orden importa</h2>
+<header class="sec">
+  <span class="n">06</span>
+  <div>
+    <p class="kick">La cadena</p>
+    <h2>Por qué el orden importa</h2>
+  </div>
+</header>
 
-<p>La secuencia no es preferencia, es una cadena causal. Cada eslabón habilita al siguiente y ninguno se puede saltear.</p>
+<p class="lead">La secuencia no es preferencia, es una cadena causal. Cada eslabón habilita al siguiente y ninguno se puede saltear.</p>
 
-<div class="seq">
-  <div><span class="st">01</span><div><b>Aval de gobierno</b><span>Confirmación con logo de Presidencia, Ministerio y Banco Central. Ya hay carta de apoyo; falta la confirmación formal.</span></div></div>
-  <div><span class="st">02</span><div><b>Comité confirmado</b><span>La carta A sólo funciona con el aval del paso 1. Diez caras reconocibles valen más que cualquier logo de comunidad.</span></div></div>
-  <div><span class="st">03</span><div><b>Outreach de sponsors</b><span>Recién acá. No se invierte en outreach sin los dos pilares anteriores confirmados.</span></div></div>
-  <div><span class="st">04</span><div><b>Cascada comercial</b><span>Con el anchor cerrado se vende Diamond; con Diamond se vende Titanium. Sólo corre hacia abajo.</span></div></div>
+<div class="seq wide">
+  <div><span class="st">01</span><div><b>Aval de gobierno</b><span class="d">Confirmación con logo de Presidencia, Ministerio y Banco Central. Ya hay carta de apoyo; falta la confirmación formal.</span></div></div>
+  <div><span class="st">02</span><div><b>Comité confirmado</b><span class="d">La carta A sólo funciona con el aval del paso 1. Diez caras reconocibles valen más que cualquier logo de comunidad.</span></div></div>
+  <div><span class="st">03</span><div><b>Outreach de sponsors</b><span class="d">Recién acá. No se invierte en outreach sin los dos pilares anteriores confirmados.</span></div></div>
+  <div><span class="st">04</span><div><b>Cascada comercial</b><span class="d">Con el anchor cerrado se vende Diamond; con Diamond se vende Titanium. Sólo corre hacia abajo.</span></div></div>
 </div>
 
 <p>Arrancar al revés no es simplemente ineficiente: quema los nombres que después vas a necesitar. Un sponsor al que le pedís cincuenta mil dólares sin comité ni logos confirmados dice que no, y ese no es difícil de revertir seis meses después con el mismo interlocutor.</p>
 
-<p>Es la misma lógica que el benchmark de Rio deja ver en su propio material: los primeros diez slides de su deck no se apoyan en un solo número de asistencia, se apoyan en curaduría institucional — el evento aparece construido <em>con</em> los reguladores y las asociaciones. La prueba de escala llega después. Un evento de año uno puede correr exactamente ese arco, siempre que respete el orden.</p>
+<p>Es la misma lógica que el benchmark de Rio deja ver en su propio material: los primeros diez slides de su deck no se apoyan en un solo número de asistencia, se apoyan en curaduría institucional — el evento aparece construido <strong>con</strong> los reguladores y las asociaciones. La prueba de escala llega después. Un evento de año uno puede correr exactamente ese arco, siempre que respete el orden.</p>
 
-<!-- ══ 07 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">07</span> Qué tiene que ser verdad</h2>
+<header class="sec">
+  <span class="n">07</span>
+  <div>
+    <p class="kick">Los supuestos</p>
+    <h2>Qué tiene que ser verdad</h2>
+  </div>
+</header>
 
-<div class="scroll">
+<div class="scroll wide">
 <table>
   <thead><tr><th>Supuesto</th><th>Estado hoy</th><th>Si falla</th></tr></thead>
   <tbody>
@@ -348,28 +503,477 @@ footer{ border-top:2px solid var(--void); margin-top:clamp(2.4rem,6vw,3.6rem);
 </table>
 </div>
 
-<!-- ══ 08 ═══════════════════════════════════════════════ -->
-<h2 class="sec"><span class="num">08</span> Qué hay que decidir ahora</h2>
+<header class="sec">
+  <span class="n">08</span>
+  <div>
+    <p class="kick">La mesa</p>
+    <h2>Qué hay que decidir ahora</h2>
+  </div>
+</header>
 
-<ul class="ls">
-  <li><strong>Quién redacta las dos cartas y para cuándo.</strong> Es el cuello de botella de toda la cadena. Hoy no tiene owner asignado ni fecha.</li>
-  <li><strong>La lista final del 16 de octubre.</strong> Hay que cerrarla con tiempo de invitar, y verificar la grafía de cada nombre antes de escribir.</li>
-  <li><strong>Quién se lleva el output del 16.</strong> Alguien tiene que salir de esa sala con los 3-5 puntos redactados. Si no está asignado, no va a pasar.</li>
-  <li><strong>Si vamos al evento de la Cámara FinTech del 7 de octubre</strong>, y quién.</li>
-  <li><strong>Qué pedimos exactamente en la confirmación de gobierno</strong> — uso de logo, participación en agenda, o co-firma del anuncio. No es lo mismo y conviene pedir lo máximo desde el principio.</li>
-</ul>
+<p class="lead">Cinco cosas, y ninguna necesita más información para resolverse.</p>
+
+<div class="cards wide">
+  <div class="card card--fill"><span class="ix">01</span>
+    <h5>Quién redacta las dos cartas, y para cuándo</h5>
+    <p>Es el cuello de botella de toda la cadena. Hoy no tiene owner asignado ni fecha.</p></div>
+  <div class="card"><span class="ix">02</span>
+    <h5>La lista final del 16 de octubre</h5>
+    <p>Hay que cerrarla con tiempo de invitar, y verificar la grafía de cada nombre antes de escribir.</p></div>
+  <div class="card"><span class="ix">03</span>
+    <h5>Quién se lleva el output del 16</h5>
+    <p>Alguien tiene que salir de esa sala con los 3 a 5 puntos redactados. Si no está asignado, no va a pasar.</p></div>
+  <div class="card"><span class="ix">04</span>
+    <h5>Si vamos al evento de la Cámara FinTech del 7 de octubre</h5>
+    <p>Y quién va. Es la última lectura del clima antes de nuestra propia mesa.</p></div>
+  <div class="card card--fill"><span class="ix">05</span>
+    <h5>Qué pedimos exactamente en la confirmación de gobierno</h5>
+    <p>Uso de logo, participación en agenda, o co-firma del anuncio. No es lo mismo, y conviene pedir lo máximo desde el principio.</p></div>
+</div>
 
 <div class="note">
   <b class="lbl">Ambigüedad a resolver antes de publicar</b>
   <p>En el material minado aparecen indistintamente <b>CNV</b>, <b>CNB</b>, <b>CVM</b> y <b>CBM</b> para referirse a los reguladores de valores de Argentina y Brasil. Parte es error de transcripción automática. Antes de que cualquiera de estas siglas salga en una carta o un deck, hay que fijar cuál es cuál. Una sigla mal puesta en una carta de cancillería cuesta la carta entera.</p>
 </div>
 
+</div>
+
+<div class="band band--up"><canvas data-blob="void" data-mode="grow" data-from=".src"
+     data-seed="28.9" data-cell="14" data-fringe-cells="2.8" data-bleed="bottom,left,right"></canvas><div class="src"></div></div>
 <footer>
-  <span>Bienal Blockchain Punta 2027 · Objetivo político V0.1</span>
-  <span>Corte 2026-09-22 · draft</span>
-  <span>Documento interno · no distribuir</span>
+  <div class="sheet"><div class="row">
+    <span>Bienal Blockchain Punta 2027 · Objetivo político V0.1</span>
+    <span>Corte 2026-09-22 · draft</span>
+    <span>Documento interno · no distribuir</span>
+  </div></div>
 </footer>
 
-</div>
+<script>window.BienalTokens={acid:"#FFFFFF",void:"#12140F",quiet:"#1D2016",campo:"#7B7C6C"};</script>
+<script>/* ===========================================================================
+   Bienal Blockchain Punta — motor de máscara
+   ---------------------------------------------------------------------------
+   UNA implementación del algoritmo, consumida por el hero, la hoja de sistema,
+   la landing, las guidelines y el render de motion.
+
+   Antes de esto el algoritmo existía dos veces, en dos lenguajes, y los hashes
+   NO coincidían: GLSL usaba hash21 (Hoskins, fract de 3 vectores) y el canvas
+   usaba sin()*43758.5453. Todas las demás constantes eran idénticas, así que el
+   hero y la hoja producían grano distinto con la misma semilla mientras la hoja
+   afirmaba correr "el mismo algoritmo". Se unifica en hash21.
+
+   La regla madre: TODO se decide en el centro de la celda. Por eso el borde
+   sólo puede escalonar en ángulo recto, y esa escalera es todo el lenguaje.
+   =========================================================================== */
+(function (root) {
+  "use strict";
+
+  /* --- ruido: paridad byte-a-byte con mask.frag.glsl --------------------- */
+
+  /* GLSL corre float32 y JS float64. Sin fround el ruido divergía en el sexto
+     decimal, y una celda de borde podía volcar — así que "el mismo algoritmo"
+     no era literalmente cierto. Con fround en cada operación sí lo es, y la
+     paridad se verifica en navegador (motion/parity-test.html), no se afirma. */
+  const f = Math.fround;
+  const fract = (x) => f(x - Math.floor(x));
+
+  function hash21(px, py) {
+    const a = fract(f(px * 0.1031));
+    const b = fract(f(py * 0.1031));
+    let x = a, y = b, z = a;                       // vec3(p.xyx)
+    const d = f(f(f(x * f(y + 33.33)) + f(y * f(z + 33.33))) + f(z * f(x + 33.33)));
+    x = f(x + d); y = f(y + d); z = f(z + d);
+    return fract(f(f(x + y) * z));
+  }
+
+  function vnoise(px, py) {
+    const ix = Math.floor(px), iy = Math.floor(py);
+    let fx = fract(f(px)), fy = fract(f(py));
+    fx = f(f(fx * fx) * f(3 - f(2 * fx)));
+    fy = f(f(fy * fy) * f(3 - f(2 * fy)));
+    const a = hash21(ix, iy),     b = hash21(ix + 1, iy);
+    const c = hash21(ix, iy + 1), d = hash21(ix + 1, iy + 1);
+    const ab = f(a + f(f(b - a) * fx));
+    const cd = f(c + f(f(d - c) * fx));
+    return f(ab + f(f(cd - ab) * fy));
+  }
+
+  function fbm(px, py) {
+    return f(f(f(vnoise(px, py) * 0.62)
+             + f(vnoise(f(f(px * 2.13) + 7.3), f(f(py * 2.13) + 7.3)) * 0.26))
+             + f(vnoise(f(f(px * 4.37) + 3.1), f(f(py * 4.37) + 3.1)) * 0.12));
+  }
+
+  /* distancia firmada a un rectángulo, negativa adentro.
+     frounded igual que el resto: GLSL usa length(), que es float32, y sin esto
+     quedaban ~6 celdas de borde volcando entre los dos motores. */
+  function boxDist(px, py, r) {
+    const qx = f(Math.abs(f(px - f(r.x + f(r.w / 2)))) - f(r.w / 2));
+    const qy = f(Math.abs(f(py - f(r.y + f(r.h / 2)))) - f(r.h / 2));
+    const mx = qx > 0 ? qx : 0, my = qy > 0 ? qy : 0;
+    const len = f(Math.sqrt(f(f(mx * mx) + f(my * my))));
+    const inner = Math.min(Math.max(qx, qy), 0);
+    return f(len + inner);
+  }
+
+  const clamp = (v, lo, hi) => v < lo ? lo : v > hi ? hi : v;
+
+  /* --- dither ordenado (Bayer) -------------------------------------------
+     La única forma que tiene este sistema de desvanecer sin dejar de ser
+     duro. Umbral fijo comparado contra la distancia firmada de la máscara:
+     cae dentro de la regla del centro de celda, así que el desvanecido
+     escalona igual que el borde. Ver el póster Dgtl 20X y Camer Studio.   */
+
+  const BAYER8 = (() => {
+    const m = new Float32Array(64);
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        let v = 0, mask = 4, xc = x, yc = y;
+        for (let bit = 0; bit < 3; bit++, mask >>= 1) {
+          const bx = (xc & mask) ? 1 : 0, by = (yc & mask) ? 1 : 0;
+          v = (v << 2) | ((bx ^ by) << 1) | by;
+        }
+        m[y * 8 + x] = (v + 0.5) / 64;
+      }
+    }
+    return m;
+  })();
+
+  const bayer = (c, r) => BAYER8[(((r % 8) + 8) % 8) * 8 + (((c % 8) + 8) % 8)];
+
+  /* --- el núcleo: una retícula de ocupación ------------------------------
+     Se calcula la ocupación booleana por celda ANTES de dibujar. Eso es lo
+     que permite que relleno, filete, trama de puntos, knockout y dissolve
+     salgan todos de la misma decisión, en vez de ser cinco caminos.        */
+
+  /* --- campo de ruido cacheado -------------------------------------------
+     El ruido de una celda NO depende del puntero ni del tiempo: sólo de la
+     celda, la semilla y el tamaño de celda. Cacheándolo, un repintado
+     interactivo cuesta un clamp y un boxDist por celda en vez de tres vnoise
+     (doce hash21). Eso es lo que permite que la pieza corra a 60 fps en canvas
+     2D y que NO haga falta WebGL en ninguna superficie — con lo cual el hero
+     y la hoja no pueden divergir, porque son el mismo código. */
+
+  const fieldCache = new Map();
+
+  function noiseField(w, h, cell, seed) {
+    const key = w + "|" + h + "|" + cell + "|" + seed;
+    let fd = fieldCache.get(key);
+    if (fd) return fd;
+    const ox = -cell, oy = -cell;
+    const cols = Math.ceil((w - ox) / cell) + 1;
+    const rows = Math.ceil((h - oy) / cell) + 1;
+    const n = new Float32Array(cols * rows);
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        n[r * cols + c] = fbm(f(f(f(cx / cell) * 0.21) + seed),
+                              f(f(f(cy / cell) * 0.21) + seed));
+      }
+    }
+    fd = { n, cols, rows, cell, ox, oy, w, h, seed };
+    if (fieldCache.size > 40) fieldCache.clear();
+    fieldCache.set(key, fd);
+    return fd;
+  }
+
+  function grid(o) {
+    const cell   = o.cell;
+    const fringe = o.fringe !== undefined ? o.fringe : cell * 3.2;
+    const seed   = o.seed || 0;
+    const erode  = o.erode || 0;
+    const dither = o.dither || 0;
+    const rects  = o.rects || [];
+    const mode   = o.mode || "grow";
+
+    const fd = noiseField(o.w, o.h, cell, seed);
+    const ox = fd.ox, oy = fd.oy, cols = fd.cols, rows = fd.rows;
+    const on = new Uint8Array(cols * rows);
+    /* el knockout necesita un segundo campo, con su propia semilla, para que
+       las muescas no repitan el mismo ruido que el borde exterior */
+    const fdHole = (o.mode === "knockout")
+      ? noiseField(o.w, o.h, cell, seed + 19.7) : null;
+
+    /* reach de una celda contra un conjunto de cajas: el ruido se muestrea
+       en la retícula gruesa (una lóbula cada 4-5 celdas) — es lo que hace
+       que el borde lea como una forma con miembros y no como un rectángulo
+       con una capa de pintura rasposa */
+    function occupied(idx, cx, cy, boxes, fr, er, src) {
+      if (!boxes.length) return -Infinity;
+      const n = src.n[idx];
+      const reach = f(fr * clamp(f(f(n * 1.95) - 0.47), -0.20, 1.25));
+      let d = Infinity;
+      for (let i = 0; i < boxes.length; i++) {
+        const dd = boxDist(cx, cy, boxes[i]);
+        if (dd < d) d = dd;
+      }
+      return f(f(reach - er) - d);   // > 0 → adentro; el valor es la profundidad
+    }
+
+    const field = mode === "knockout"
+      ? (o.fieldRect || { x: 0, y: 0, w: o.w, h: o.h })
+      : null;
+    const notchFringe = o.notchFringe !== undefined ? o.notchFringe : cell * 1.6;
+
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        let depth;
+
+        const idx = r * cols + c;
+        if (mode === "knockout") {
+          /* la masa cubre el campo y se le RESTAN las cajas medidas — es el
+             inverso de grow, y es el look del video de referencia: los
+             bloques chicos viven en muescas recortadas dentro de la masa */
+          depth = occupied(idx, cx, cy, [field], fringe, erode, fd);
+          if (depth > 0 && occupied(idx, cx, cy, rects, notchFringe, 0, fdHole) > 0) {
+            depth = -1;
+          }
+        } else {
+          depth = occupied(idx, cx, cy, rects, fringe, erode, fd);
+        }
+
+        let hit = depth > 0;
+
+        /* dissolve: en una banda del borde hacia adentro, la celda sólo
+           sobrevive si supera el umbral ordenado de su posición */
+        if (hit && dither > 0) {
+          const t = depth / (fringe * dither);
+          if (t < 1 && bayer(c, r) > t) hit = false;
+        }
+
+        on[idx] = hit ? 1 : 0;
+      }
+    }
+
+    return { on, cols, rows, cell, ox, oy, w: o.w, h: o.h };
+  }
+
+  const at = (g, c, r) =>
+    (c < 0 || r < 0 || c >= g.cols || r >= g.rows) ? 0 : g.on[r * g.cols + c];
+
+  /* --- render ------------------------------------------------------------ */
+
+  function render(ctx, g, style) {
+    const s = style || {};
+    const cell = g.cell;
+
+    if (s.fill) {
+      ctx.fillStyle = s.fill;
+      if (s.dots) {
+        /* trama de puntos dentro de la masa: segundo valor de relleno sin
+           segundo color. Del póster zkPass. */
+        const k = typeof s.dots === "number" ? s.dots : 0.34;
+        const d = Math.max(1, cell * k);
+        const off = (cell - d) / 2;
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell + off, g.oy + r * cell + off, d, d);
+          }
+        }
+      } else {
+        /* +1 tapa la costura entre celdas contiguas */
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+          }
+        }
+      }
+    }
+
+    /* filete: se traza SÓLO sobre los lados que separan una celda encendida
+       de una apagada, así el contorno sigue la escalera exacta en vez de
+       aproximarla. Es el filete de las fichas del video. */
+    if (s.stroke) {
+      ctx.strokeStyle = s.stroke;
+      ctx.lineWidth = s.strokeWidth || Math.max(1, cell * 0.09);
+      ctx.lineCap = "square";
+      ctx.beginPath();
+      for (let r = 0; r < g.rows; r++) {
+        for (let c = 0; c < g.cols; c++) {
+          if (!g.on[r * g.cols + c]) continue;
+          const x = g.ox + c * cell, y = g.oy + r * cell;
+          if (!at(g, c, r - 1)) { ctx.moveTo(x, y);               ctx.lineTo(x + cell, y); }
+          if (!at(g, c, r + 1)) { ctx.moveTo(x, y + cell);        ctx.lineTo(x + cell, y + cell); }
+          if (!at(g, c - 1, r)) { ctx.moveTo(x, y);               ctx.lineTo(x, y + cell); }
+          if (!at(g, c + 1, r)) { ctx.moveTo(x + cell, y);        ctx.lineTo(x + cell, y + cell); }
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  /* recorta un dibujo cualquiera (una foto) a la máscara. Así entra la
+     fotografía al sistema: por la máscara, cuantizada a la celda — nunca a
+     sangre y brillante. Arch Guide / Camer Studio. */
+  function clipTo(ctx, g) {
+    ctx.beginPath();
+    const cell = g.cell;
+    for (let r = 0; r < g.rows; r++) {
+      for (let c = 0; c < g.cols; c++) {
+        if (!g.on[r * g.cols + c]) continue;
+        ctx.rect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+      }
+    }
+    ctx.clip();
+  }
+
+  /* --- capa DOM: la API declarativa por data-* --------------------------- */
+
+  function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
+
+  function sizeFor(cv) {
+    const d = dpr();
+    const w = Math.max(1, Math.round(cv.clientWidth * d));
+    const h = Math.max(1, Math.round(cv.clientHeight * d));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    return d;
+  }
+
+  function readRects(cv, d, pad) {
+    /* data-from acepta una LISTA de selectores separados por coma, que es lo
+       que habilita knockout con varios bloques de texto. Se mide contra el
+       canvas, en píxeles de dispositivo. */
+    const host = cv.parentElement;
+    const sel = cv.dataset.from || ".inner";
+    const cr = cv.getBoundingClientRect();
+    const out = [];
+    sel.split(",").map((s) => s.trim()).filter(Boolean).forEach((s) => {
+      host.querySelectorAll(s).forEach((el) => {
+        const er = el.getBoundingClientRect();
+        if (!er.width || !er.height) return;
+        out.push({
+          x: (er.left - cr.left) * d - pad,
+          y: (er.top  - cr.top)  * d - pad,
+          w: er.width  * d + pad * 2,
+          h: er.height * d + pad * 2
+        });
+      });
+    });
+    return out;
+  }
+
+  function paintBlob(cv) {
+    const d = dpr();
+    const g2 = cv.getContext("2d");
+    sizeFor(cv);
+    g2.clearRect(0, 0, cv.width, cv.height);
+
+    const T = root.BienalTokens || {};
+    const ACID = T.acid || "#C8F52D";
+    const VOID = T.void || "#12140F";
+    const QUIET = T.quiet || "#1D2016";
+
+    const cell = (+cv.dataset.cell || 20) * d;
+    const fringe = cell * (+cv.dataset.fringeCells || 3.2);
+    const seed = +cv.dataset.seed || 0;
+    const mode = cv.dataset.mode || "grow";
+    const dither = +cv.dataset.dither || 0;
+    const pad = cell * 0.5;
+
+    let rects = readRects(cv, d, pad);
+
+    /* bleed: la masa se va del borde en vez de terminar dentro del canvas.
+       Ahora las cuatro direcciones, no sólo left/bottom. */
+    const bleed = cv.dataset.bleed || "";
+    if (mode !== "knockout" && rects.length) {
+      const r0 = rects[0];
+      if (bleed.includes("left"))   { r0.w += r0.x + fringe; r0.x = -fringe; }
+      if (bleed.includes("top"))    { r0.h += r0.y + fringe; r0.y = -fringe; }
+      if (bleed.includes("right"))  { r0.w = cv.width  + fringe - r0.x; }
+      if (bleed.includes("bottom")) { r0.h = cv.height + fringe - r0.y; }
+    }
+
+    let fieldRect = null;
+    if (mode === "knockout") {
+      const inset = (+cv.dataset.inset || 0) * d;
+      fieldRect = { x: inset, y: inset, w: cv.width - inset * 2, h: cv.height - inset * 2 };
+    }
+
+    const gr = grid({
+      w: cv.width, h: cv.height, cell, fringe, seed, dither, rects, mode, fieldRect,
+      notchFringe: cell * (+cv.dataset.notchCells || 1.6)
+    });
+
+    /* `data-blob` acepta cuatro cosas: un nombre de token del sistema, "none"
+       (sin relleno: sólo queda la retícula en __grid para que otro la use),
+       un color literal `#rrggbb`, o el NOMBRE de una custom property —
+       `data-blob="--card"` lee `--card` del elemento que contiene al canvas.
+       Esa última forma es la que deja que una plancha tome el color de su
+       propia ficha sin que el motor tenga que conocer la paleta de §04. */
+    const key = cv.dataset.blob;
+    const fill =
+        key === "none"  ? null
+      : key === "void"  ? VOID
+      : key === "quiet" ? QUIET
+      : key && key.charAt(0) === "#" ? key
+      : key && key.slice(0, 2) === "--"
+          ? (getComputedStyle(cv.parentElement).getPropertyValue(key).trim() || ACID)
+      : ACID;
+    const strokeKey = cv.dataset.stroke;
+    const stroke = !strokeKey ? null
+      : strokeKey === "void" ? VOID : strokeKey === "acid" ? ACID : strokeKey;
+
+    render(g2, gr, {
+      fill,
+      stroke,
+      strokeWidth: cv.dataset.strokeWidth ? +cv.dataset.strokeWidth * d : undefined,
+      dots: cv.dataset.fill === "dots" ? (+cv.dataset.dotRatio || 0.34) : false
+    });
+
+    cv.__grid = gr;
+  }
+
+  /* --- remedición unificada ---------------------------------------------
+     Antes: el hero tenía ResizeObserver y la hoja no (una hoja que reflowea
+     sin resize de ventana quedaba con máscaras viejas); la hoja tenía
+     beforeprint y el hero no; ninguna pausaba fuera de pantalla.          */
+
+  let raf = 0, wired = false;
+
+  function paintAll() {
+    document.querySelectorAll("canvas[data-blob]").forEach(paintBlob);
+    if (root.BienalSteps) root.BienalSteps();
+  }
+
+  function schedule() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(paintAll);
+  }
+
+  function wire() {
+    if (wired) return;
+    wired = true;
+    paintAll();
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("beforeprint", paintAll);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) schedule(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(schedule);
+      document.querySelectorAll("canvas[data-blob]").forEach((cv) => {
+        if (cv.parentElement) ro.observe(cv.parentElement);
+      });
+    }
+  }
+
+  root.Mask = {
+    hash21, vnoise, fbm, boxDist, bayer, clamp,
+    grid, render, clipTo, at,
+    paintBlob, paintAll, schedule, wire, sizeFor, dpr
+  };
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", wire);
+    } else {
+      wire();
+    }
+  }
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
 </body>
 </html>
