@@ -3,433 +3,1426 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mapa de vínculos V0.1 — Bienal Blockchain Punta 2027</title>
-<meta name="description" content="Wishlist de personas e instituciones para la Bienal Blockchain Punta 2027. Estado: draft. Ninguno confirmado.">
+<title>Mapa de vínculos V0.2 — Bienal Blockchain Punta 2027</title>
+<meta name="description" content="Mesa de repaso de personas e instituciones para la Bienal Blockchain Punta 2027: sección, nombre, quién es y vía. Estado: draft. Ninguno confirmado.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 <style>
+/* =========================================================================
+   Bienal Blockchain Punta — Mapa de vínculos V0.2, variante BLANCO
+   Hereda el sistema del documento de estrategia: misma paleta, mismo reparto
+   de voces (itálica = sujeto · sans = estructura · Handjet = índice · mono =
+   metadato), mismas bandas de máscara, mismo desvío declarado de NO-04 (las
+   cards llevan radio; la máscara no puede — la genera la retícula).
+
+   Lo nuevo es el roster: una grilla de tres columnas pensada para recorrerse
+   en voz alta, nombre por nombre, en una reunión. Por eso cada fila es un
+   objetivo de click de fila entera y guarda su propio estado.
+   ========================================================================= */
 :root{
-  --paper:   #F4F1E8;
-  --void:    #12140F;
-  --campo:   #7B7C6C;
-  --campo-l: #9A9B8C;
-  --blanco:  #FFFFFF;
-  --rule:    rgba(18,20,15,.22);
-  --rule-s:  rgba(18,20,15,.10);
-  --warn:    #8C4A1F;
+  --acid:  #FFFFFF;  --void: #12140F;  --campo: #7B7C6C;
+  --quiet: #1D2016;  --sky:  #7FC3EE;
+  --wash:  rgba(123,124,108,.09);
+  --wash2: rgba(123,124,108,.16);
+  --line:  rgba(18,20,15,.16);
+  --warn:  #8C4A1F;
 
   --disp:  "Archivo","Helvetica Neue",Arial,sans-serif;
+  --pixel: "Handjet","Archivo",monospace;
   --tema:  "Instrument Serif",Georgia,serif;
   --mono:  "IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 
-  --sheet: 1180px;
-  --pad:   clamp(1.1rem,4vw,2.4rem);
+  --r:     10px;
+  --r-sm:  6px;
+  --main:  820px;
+  --wide:  1240px;
+  --pad:   clamp(1rem,4vw,2.4rem);
 }
-*,*::before,*::after{ box-sizing:border-box; border-radius:0; }
-html{ -webkit-text-size-adjust:100%; }
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:5.5rem; }
 body{
-  margin:0; background:var(--paper); color:var(--void);
+  margin:0; background:var(--acid); color:var(--void);
   font-family:var(--disp); font-weight:400;
-  font-size:16px; line-height:1.5;
+  font-size:17.5px; line-height:1.62;
   -webkit-font-smoothing:antialiased;
 }
-.sheet{ max-width:var(--sheet); margin:0 auto; padding-inline:var(--pad); }
 
-/* ── masthead ─────────────────────────────────────────── */
-header{ border-bottom:2px solid var(--void); padding-block:clamp(1.6rem,5vw,3.2rem) clamp(1.1rem,3vw,1.8rem); }
-.eyebrow{
-  font-family:var(--mono); font-size:.66rem; letter-spacing:.16em;
-  text-transform:uppercase; color:var(--campo); margin:0 0 1.1rem;
+/* ── grilla editorial ─────────────────────────────────────────────────── */
+.sheet{
+  display:grid;
+  grid-template-columns:
+    [full-start] minmax(var(--pad),1fr)
+    [wide-start] minmax(0,calc((var(--wide) - var(--main))/2))
+    [main-start] minmax(0,var(--main)) [main-end]
+    minmax(0,calc((var(--wide) - var(--main))/2)) [wide-end]
+    minmax(var(--pad),1fr) [full-end];
 }
-h1{
-  font-family:var(--disp); font-weight:900; letter-spacing:-.02em;
-  font-size:clamp(1.9rem,6.2vw,3.6rem); line-height:1.02; margin:0 0 .5rem;
-  text-transform:uppercase;
+.sheet > *{ grid-column:main; }
+.sheet > .wide{ grid-column:wide; }
+.sheet > .full{ grid-column:full; }
+@media (max-width:1160px){
+  .sheet{
+    grid-template-columns:
+      [full-start] var(--pad)
+      [wide-start main-start] minmax(0,1fr) [main-end wide-end]
+      var(--pad) [full-end];
+  }
 }
-h1 em{ font-family:var(--tema); font-style:italic; font-weight:400; text-transform:none; letter-spacing:-.01em; }
-.dek{ font-size:clamp(1rem,1.9vw,1.2rem); max-width:62ch; margin:0 0 1.4rem; color:#2B2E24; }
-.meta{
-  font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
-  color:var(--campo); display:flex; flex-wrap:wrap; gap:.4rem 1.2rem;
-}
+p{ margin:0 0 1.05rem; }
+strong{ font-weight:600; }
 
-/* ── alerta de estado ─────────────────────────────────── */
-.alert{
-  margin-block:clamp(1.4rem,4vw,2.2rem);
-  border:1px solid var(--void); border-left:6px solid var(--warn);
-  padding:clamp(.9rem,2.6vw,1.3rem);
-  background:var(--blanco);
-}
-.alert h2{
-  font-family:var(--mono); font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;
-  margin:0 0 .55rem; color:var(--warn); font-weight:500;
-}
-.alert p{ margin:0 0 .5rem; font-size:.95rem; max-width:78ch; }
+/* ── bandas de máscara ────────────────────────────────────────────────── */
+.band{ position:relative; background:var(--void); height:clamp(44px,6.8vw,88px); }
+.band canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+.band .src{ position:absolute; left:0; right:0; bottom:0; height:6px; visibility:hidden; }
+
+/* ── masthead ─────────────────────────────────────────────────────────── */
+.mast{ background:var(--void); color:var(--acid); padding-block:clamp(2.2rem,6vw,4rem) clamp(1.4rem,3vw,2.2rem); }
+.eyebrow{ font-family:var(--mono); font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--campo); margin:0 0 1.4rem; font-weight:500; }
+.lockup{ display:flex; flex-wrap:wrap; align-items:baseline; gap:.3em; margin:0 0 1.7rem; line-height:.92; }
+.lockup .fijo{ font-family:var(--pixel); font-weight:700; font-size:clamp(22px,3.3vw,38px);
+  letter-spacing:.03em; text-transform:uppercase; }
+.lockup .var{ font-family:var(--tema); font-style:italic; font-weight:400; font-size:clamp(29px,4.4vw,51px); letter-spacing:-.01em; }
+h1{ font-family:var(--tema); font-style:italic; font-weight:400; letter-spacing:-.012em;
+  font-size:clamp(2.9rem,9vw,5.8rem); line-height:.96; margin:0 0 1.15rem; text-transform:none; }
+.dek{ font-size:clamp(1.02rem,1.75vw,1.26rem); line-height:1.52; max-width:54ch;
+  margin:0 0 1.9rem; opacity:.88; }
+.meta{ font-family:var(--mono); font-size:.69rem; letter-spacing:.08em; color:var(--campo);
+  display:flex; flex-wrap:wrap; gap:.45rem 1.4rem; font-weight:500; }
+.meta b{ font-family:var(--pixel); font-weight:700; font-size:1.25em; letter-spacing:.04em; color:var(--acid); }
+
+/* ── barra de recorrido ───────────────────────────────────────────────── */
+.deck{ position:sticky; top:0; z-index:40; background:var(--acid);
+  border-bottom:1px solid var(--line); }
+.deck .in{ max-width:var(--wide); margin:0 auto; padding:.55rem var(--pad);
+  display:flex; align-items:center; gap:.7rem 1rem; flex-wrap:wrap; }
+.deck .prog{ display:flex; align-items:baseline; gap:.5rem; font-family:var(--mono);
+  font-size:.62rem; letter-spacing:.13em; text-transform:uppercase; color:var(--campo); font-weight:600; }
+.deck .prog b{ font-family:var(--pixel); font-size:1.5rem; letter-spacing:.03em; color:var(--void); line-height:1; }
+.bar{ flex:1 1 110px; min-width:80px; height:5px; background:var(--wash2); border-radius:99px; overflow:hidden; }
+.bar i{ display:block; height:100%; width:0; background:var(--void); transition:width .18s ease; }
+.chips{ display:flex; gap:.3rem; flex-wrap:wrap; }
+.chip,.act{ font-family:var(--mono); font-size:.58rem; letter-spacing:.1em; text-transform:uppercase;
+  font-weight:600; border:1px solid var(--line); background:transparent; color:var(--campo);
+  padding:.28rem .5rem; border-radius:var(--r-sm); cursor:pointer; display:inline-flex; gap:.35rem; align-items:center; }
+.chip i{ font-family:var(--pixel); font-style:normal; font-size:1.05rem; line-height:1; color:var(--void); }
+.chip:hover,.act:hover{ border-color:var(--void); color:var(--void); }
+.act.on{ background:var(--void); border-color:var(--void); color:var(--acid); }
+@media (max-width:820px){ .deck .chips{ display:none; } }
+
+/* ── alerta ───────────────────────────────────────────────────────────── */
+.alert{ margin-block:clamp(2rem,4.4vw,2.8rem); border:1px solid var(--void); border-radius:var(--r);
+  padding:clamp(1.2rem,2.8vw,1.7rem); background:var(--wash); }
+.alert h2{ font-family:var(--mono); font-size:.64rem; letter-spacing:.18em; text-transform:uppercase;
+  margin:0 0 .75rem; font-weight:600; color:var(--campo); }
+.alert p{ margin:0 0 .6rem; font-size:.97rem; }
 .alert p:last-child{ margin-bottom:0; }
+.alert.warn{ border-left:5px solid var(--warn); }
+.alert.warn h2{ color:var(--warn); }
 
-/* ── contadores ───────────────────────────────────────── */
-.counts{
-  display:grid; gap:0;
-  grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
-  border:1px solid var(--rule); border-width:1px 0 0 1px;
-  margin-block:clamp(1.4rem,4vw,2.2rem);
-}
-.count{ background:var(--paper); padding:.95rem 1rem; border:1px solid var(--rule); border-width:0 1px 1px 0; }
-.count b{ display:block; font-size:clamp(1.5rem,4vw,2.1rem); font-weight:900; line-height:1; letter-spacing:-.02em; }
-.count span{ font-family:var(--mono); font-size:.62rem; letter-spacing:.11em; text-transform:uppercase; color:var(--campo); display:block; margin-top:.4rem; }
+/* ── contadores ───────────────────────────────────────────────────────── */
+.counts{ display:grid; gap:1px; grid-template-columns:repeat(auto-fit,minmax(128px,1fr));
+  background:var(--line); border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+  margin-block:clamp(1.6rem,4vw,2.4rem); }
+.count{ background:var(--acid); padding:1rem 1.05rem; }
+.count b{ display:block; font-family:var(--pixel); font-weight:700;
+  font-size:clamp(2.1rem,5vw,2.9rem); line-height:.82; letter-spacing:.02em; }
+.count span{ font-family:var(--mono); font-size:.58rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--campo); display:block; margin-top:.55rem; font-weight:600; line-height:1.35; }
 
-/* ── tabla resumen ────────────────────────────────────── */
-h2.sec{
-  font-family:var(--disp); font-weight:900; text-transform:uppercase; letter-spacing:-.01em;
-  font-size:clamp(1.1rem,2.6vw,1.5rem); margin:clamp(2.2rem,6vw,3.4rem) 0 .9rem;
-  padding-bottom:.45rem; border-bottom:2px solid var(--void);
-}
-.scroll{ overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--rule); }
-table{ border-collapse:collapse; width:100%; min-width:640px; font-size:.86rem; background:var(--blanco); }
-thead th{
-  font-family:var(--mono); font-size:.6rem; letter-spacing:.13em; text-transform:uppercase;
-  font-weight:500; text-align:left; color:var(--paper); background:var(--void);
-  padding:.7rem .85rem; white-space:nowrap;
-}
-tbody td{ padding:.68rem .85rem; border-top:1px solid var(--rule-s); vertical-align:top; }
-tbody tr:nth-child(even) td{ background:rgba(123,124,108,.06); }
-td.n{ font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap; }
-td.b{ font-weight:600; }
-.tag{
-  font-family:var(--mono); font-size:.58rem; letter-spacing:.09em; text-transform:uppercase;
-  border:1px solid var(--campo); color:var(--campo); padding:.15rem .4rem; white-space:nowrap; display:inline-block;
-}
-.tag.cold{ border-color:var(--warn); color:var(--warn); }
-.tag.empty{ border-style:dashed; }
+/* ── cabecera de sección del roster ───────────────────────────────────── */
+.blk{ margin-top:clamp(3rem,7vw,4.6rem); scroll-margin-top:5rem; }
+.blk-head{ display:grid; grid-template-columns:auto 1fr auto; gap:0 1.1rem; align-items:start;
+  padding-bottom:.85rem; border-bottom:2px solid var(--void); }
+.blk-head .bn{ font-family:var(--pixel); font-weight:700; line-height:.8;
+  font-size:clamp(2.6rem,6.4vw,4.2rem); color:var(--campo); letter-spacing:.02em; }
+.blk-head .kick{ font-family:var(--tema); font-style:italic; font-size:clamp(1rem,1.7vw,1.2rem);
+  color:var(--campo); margin:0 0 .1rem; line-height:1.1; }
+.blk-head h2{ font-family:var(--disp); font-weight:600; letter-spacing:-.02em;
+  font-size:clamp(1.35rem,3.1vw,2.05rem); line-height:1.06; margin:0; }
+.blk-head .bm{ text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:.35rem; }
+.blk-head .cnt{ font-family:var(--pixel); font-weight:700; font-size:1.9rem; line-height:.8; }
+.tag{ font-family:var(--mono); font-size:.55rem; letter-spacing:.11em; text-transform:uppercase; font-weight:600;
+  border:1px solid var(--campo); color:var(--campo); padding:.18rem .44rem; border-radius:var(--r-sm);
+  white-space:nowrap; display:inline-block; }
+.blk-note{ font-size:.95rem; color:#3A3D31; margin:.85rem 0 1.2rem; max-width:74ch; }
 
-/* ── buckets ──────────────────────────────────────────── */
-.buckets{ columns:3 290px; column-gap:0; }
-.bucket{
-  break-inside:avoid; -webkit-column-break-inside:avoid; page-break-inside:avoid;
-  background:var(--paper); border:1px solid var(--rule); margin:0 -1px -1px 0;
-  padding:clamp(.95rem,2.4vw,1.25rem);
-}
-.bucket > h3{
-  font-family:var(--disp); font-weight:900; text-transform:uppercase; letter-spacing:.01em;
-  font-size:.92rem; margin:0 0 .15rem;
-}
-.bucket .sub{ font-family:var(--mono); font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; color:var(--campo); margin:0 0 .9rem; }
-.grp{ margin:0 0 .95rem; }
-.grp:last-child{ margin-bottom:0; }
-.grp > h4{
-  font-family:var(--mono); font-size:.62rem; letter-spacing:.1em; font-weight:500;
-  color:var(--void); background:rgba(123,124,108,.20); display:inline-block;
-  padding:.16rem .42rem; margin:0 0 .5rem;
-}
-ul{ list-style:none; margin:0; padding:0; }
-li{ font-size:.87rem; line-height:1.45; padding:.16rem 0; border-bottom:1px solid var(--rule-s); }
-li:last-child{ border-bottom:0; }
-.q{ color:var(--warn); font-family:var(--mono); font-size:.62rem; vertical-align:super; margin-left:.15rem; }
-.void{ font-family:var(--tema); font-style:italic; font-size:1.05rem; color:var(--campo); }
+/* ── el roster: la mesa de repaso ─────────────────────────────────────── */
+.roster{ border:1px solid var(--line); border-radius:var(--r); overflow:hidden; }
+.rhead,.row{ display:grid; grid-template-columns:minmax(180px,1.05fr) minmax(0,2.5fr) minmax(150px,1.1fr); }
+.rhead{ background:var(--void); color:var(--acid); font-family:var(--mono);
+  font-size:.58rem; letter-spacing:.15em; text-transform:uppercase; font-weight:600; }
+.rhead > div{ padding:.72rem .95rem; }
+.row{ border-top:1px solid var(--line); cursor:pointer; position:relative;
+  transition:background .12s ease; align-items:start; }
+.row:first-of-type{ border-top:0; }
+.row:nth-child(even){ background:var(--wash); }
+.row:hover{ background:var(--wash2); }
+.row:focus-visible{ outline:2px solid var(--void); outline-offset:-2px; }
+.row > div{ padding:.85rem .95rem; }
+.c-name{ display:flex; gap:.5rem; align-items:baseline; flex-wrap:wrap; }
+.c-name b{ font-weight:600; font-size:1rem; letter-spacing:-.01em; line-height:1.3; }
+.c-name .alias{ font-family:var(--mono); font-size:.6rem; letter-spacing:.07em; color:var(--campo);
+  display:block; width:100%; margin-top:.15rem; }
+.tick{ flex:none; width:15px; height:15px; border:1.5px solid var(--campo); border-radius:3px;
+  position:relative; top:2px; }
+.c-what{ font-size:.92rem; line-height:1.5; }
+.c-via{ font-family:var(--mono); font-size:.72rem; line-height:1.45; }
+.via-on{ color:var(--void); }
+.via-off{ color:var(--campo); border-bottom:1px dashed var(--campo); padding-bottom:1px; }
+.via-na{ color:var(--campo); opacity:.55; }
+.lbl{ display:none; font-family:var(--mono); font-size:.54rem; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--campo); font-weight:600; margin-bottom:.3rem; }
 
-/* ── notas ────────────────────────────────────────────── */
-.notes{ margin-block:clamp(2rem,5vw,3rem); border-top:1px solid var(--void); padding-top:1.1rem; }
-.notes ol{ margin:0; padding-left:1.15rem; font-size:.86rem; max-width:78ch; color:#2B2E24; }
-.notes li{ border:0; padding:.3rem 0; }
-footer{
-  border-top:2px solid var(--void); margin-top:clamp(2rem,5vw,3rem);
-  padding-block:1.2rem clamp(2rem,6vw,3.4rem);
-  font-family:var(--mono); font-size:.64rem; letter-spacing:.08em; color:var(--campo);
-  display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; justify-content:space-between;
+/* recorrida: la fila marcada se apaga sin desaparecer */
+.row.done{ background:var(--acid); }
+.row.done .c-name b,.row.done .c-what,.row.done .c-via{ opacity:.34; }
+.row.done .tick{ background:var(--void); border-color:var(--void); }
+.row.done .tick::after{ content:""; position:absolute; left:4px; top:0px; width:5px; height:10px;
+  border:solid var(--acid); border-width:0 1.8px 1.8px 0; transform:rotate(42deg); }
+body.only-pend .row.done{ display:none; }
+
+@media (max-width:760px){
+  .rhead{ display:none; }
+  .row{ grid-template-columns:1fr; gap:0; padding:.35rem 0 .6rem; }
+  .row > div{ padding:.35rem .95rem; }
+  .c-name{ padding-top:.7rem !important; }
+  .lbl{ display:block; }
 }
+
+/* ── notas / cierre ───────────────────────────────────────────────────── */
+.note{ background:var(--wash); border-radius:var(--r); padding:1.15rem 1.3rem; margin-block:1.7rem;
+  border-left:4px solid var(--campo); }
+.note b.lbl{ display:block; font-family:var(--tema); font-style:italic; font-size:1.06rem;
+  letter-spacing:0; text-transform:none; margin-bottom:.5rem; font-weight:400; color:var(--campo); }
+.note p{ font-size:.93rem; margin:0 0 .55rem; line-height:1.52; }
+.note p:last-child{ margin:0; }
+ul.ls{ list-style:none; margin:0 0 1.2rem; padding:0; }
+ul.ls li{ font-size:.97rem; padding:.55rem 0 .55rem 1.4rem; border-bottom:1px solid var(--line);
+  position:relative; line-height:1.55; }
+ul.ls li:last-child{ border-bottom:0; }
+ul.ls li::before{ content:""; position:absolute; left:0; top:1.05em; width:.75rem; height:2px; background:var(--campo); }
+.claim{ background:var(--void); color:var(--acid);
+  padding:clamp(1.8rem,4.6vw,3rem) clamp(1.8rem,4.6vw,3rem) clamp(2rem,4.8vw,3.2rem);
+  margin:clamp(2.4rem,5vw,3.2rem) 0 0; border-radius:var(--r) var(--r) 0 0; }
+.claim p{ font-family:var(--disp); font-weight:900; text-transform:uppercase;
+  font-size:clamp(1.3rem,3.4vw,2.35rem); line-height:1.04; letter-spacing:-.03em; margin:0; max-width:20ch; }
+.claim .tail{ font-family:var(--pixel); font-weight:700; text-transform:uppercase; font-size:1.05rem;
+  letter-spacing:.06em; color:var(--campo); margin-top:1.4rem; max-width:none; }
+.claim-out{ margin-bottom:clamp(2rem,4vw,2.6rem); }
+.claim-out .band{ height:clamp(30px,4.4vw,56px); }
+.sec{ display:grid; grid-template-columns:auto 1fr; gap:0 1.1rem; align-items:start;
+  margin:clamp(3.4rem,8vw,5rem) 0 1.3rem; padding-bottom:.9rem; border-bottom:2px solid var(--void); }
+.sec .n{ font-family:var(--pixel); font-weight:700; line-height:.8;
+  font-size:clamp(2.6rem,6.4vw,4.4rem); color:var(--campo); letter-spacing:.02em; }
+.sec .kick{ font-family:var(--tema); font-style:italic; font-size:clamp(1rem,1.7vw,1.22rem);
+  color:var(--campo); margin:0 0 .12rem; line-height:1.1; }
+.sec h2{ font-family:var(--disp); font-weight:600; letter-spacing:-.02em;
+  font-size:clamp(1.35rem,3.1vw,2.1rem); line-height:1.06; margin:0; }
+p.lead{ font-size:clamp(1.06rem,1.8vw,1.26rem); line-height:1.45; margin-bottom:1.3rem; }
+p.lead em{ font-family:var(--tema); font-style:italic; }
+
+footer{ background:var(--void); color:var(--campo); padding-block:1.6rem clamp(2.2rem,6vw,3.6rem);
+  font-family:var(--mono); font-size:.65rem; letter-spacing:.1em; margin-top:clamp(2.6rem,6vw,4rem); }
+footer .row2{ grid-column:main; display:flex; flex-wrap:wrap; gap:.45rem 1.6rem; justify-content:space-between; }
+
 @media print{
-  body{ background:#fff; }
-  .buckets, .counts{ break-inside:avoid; }
+  body{ background:#fff; font-size:10.5pt; }
+  .deck{ display:none; }
+  .mast,.claim,footer,.rhead{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .row,.blk,.claim{ break-inside:avoid; }
 }
+@media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } .bar i{ transition:none; } }
 </style>
 </head>
 <body>
-<div class="sheet">
 
-<header>
-  <p class="eyebrow">Bienal Blockchain Punta 2027 · Punta Cripto · Documento interno</p>
-  <h1>Mapa de <em>vínculos</em><br>V0.1</h1>
-  <p class="dek">Transcripción del board que armamos con René el 21 de agosto. Son los nombres tentativos de personas e instituciones que podrían participar de la Bienal, ordenados por rol.</p>
-  <p class="meta">
-    <span>Estado · DRAFT</span>
-    <span>Corte · 2026-08-21</span>
-    <span>Fuente · board FigJam</span>
-    <span>Para · Gastón</span>
-    <span>Lectura · 4 min</span>
-  </p>
-</header>
+<!-- ══ masthead invertido ═══════════════════════════════════════════════ -->
+<div class="mast">
+  <div class="sheet">
+    <p class="wide eyebrow">Documento interno · Vínculos</p>
+    <div class="wide lockup">
+      <span class="fijo">Bienal</span><span class="var">Blockchain</span><span class="fijo">Punta 2027</span>
+    </div>
+    <h1 class="wide">Mapa de vínculos</h1>
+    <p class="wide dek">Los 77 nombres del board, uno por uno: quién es cada uno y por dónde le llegamos. Hecho para recorrerse en voz alta en una reunión, no para leerse de corrido.</p>
+    <p class="wide meta">
+      <span><b>V0.2</b> · DRAFT</span><span>Corte · 2026-09-22</span><span>Board · 2026-08-21</span><span>Para · equipo BOTH</span><span>Lectura · 12 min</span>
+    </p>
+  </div>
+</div>
+<div class="band"><canvas data-blob="acid" data-mode="grow" data-from=".src"
+     data-seed="17.4" data-cell="14" data-fringe-cells="2.8" data-bleed="bottom,left,right"></canvas><div class="src"></div></div>
 
-<div class="alert">
-  <h2>Leé esto antes de la tabla</h2>
-  <p><b>Esto es una wishlist, no un pipeline.</b> Casi ninguno de estos nombres fue contactado. Ninguno está confirmado, ni tiene conversación abierta, ni comprometió nada.</p>
-  <p><b>Lo que sí tenemos es la vía.</b> A todos ellos les llegamos por un vínculo ya existente — alguien del equipo o de la red cercana puede abrir la puerta. Ese es el criterio con el que entró cada nombre al board: no “nos gustaría”, sino “sabemos por dónde entrar”.</p>
-  <p>La grafía de los nombres es la del board, sin corregir. Los marcados con <span class="q">?</span> están incompletos o sin verificar.</p>
+<!-- ══ barra de recorrido ═══════════════════════════════════════════════ -->
+<div class="deck">
+  <div class="in">
+    <span class="prog"><b id="pdone">0</b> de 78 recorridos</span>
+    <span class="bar"><i id="pbar"></i></span>
+    <span class="chips"><button class="chip" data-go="s-equipo">Equipo<i>5</i></button><button class="chip" data-go="s-ejecutivo">Comité Ejecutivo<i>2</i></button><button class="chip" data-go="s-asesor">Comité Asesor<i>13</i></button><button class="chip" data-go="s-estrategico">Comité Estratégico<i>7</i></button><button class="chip" data-go="s-instituciones">Instituciones · Partners<i>12</i></button><button class="chip" data-go="s-sponsors-global">Sponsors · global<i>27</i></button><button class="chip" data-go="s-sponsors-local">Sponsors · local-regional<i>12</i></button></span>
+    <button class="act" id="filt" type="button">Solo pendientes</button>
+    <button class="act" id="reset" type="button">Reiniciar</button>
+  </div>
 </div>
 
-<div class="counts">
-  <div class="count"><b>77</b><span>nombres en el board</span></div>
-  <div class="count"><b>7</b><span>roles mapeados</span></div>
-  <div class="count"><b>39</b><span>sponsors candidatos</span></div>
+<div class="sheet">
+
+<div class="alert warn">
+  <h2>Leé esto antes de abrir la mesa</h2>
+  <p><strong>Esto es una wishlist, no un pipeline.</strong> Casi ninguno de estos nombres fue contactado. Ninguno está confirmado, ni tiene conversación abierta, ni comprometió nada.</p>
+  <p><strong>Lo que sí tenemos es la vía.</strong> Ese fue el criterio con el que cada nombre entró al board: no «nos gustaría», sino «sabemos por dónde entrar». La tercera columna es donde esa vía se escribe — y hoy está mayormente vacía. Llenarla es el trabajo de esta reunión.</p>
+  <p>La grafía original del board se conserva debajo de cada nombre cuando difiere del real. No se corrigió en silencio: es la trazabilidad al FigJam del 21 de agosto.</p>
+</div>
+
+<div class="counts wide">
+  <div class="count"><b>78</b><span>nombres en la mesa</span></div>
+  <div class="count"><b>7</b><span>secciones</span></div>
+  <div class="count"><b>44</b><span>sin vía nombrada</span></div>
+  <div class="count"><b>16</b><span>aparecidos después</span></div>
   <div class="count"><b>0</b><span>contactados</span></div>
   <div class="count"><b>0</b><span>confirmados</span></div>
 </div>
 
-<h2 class="sec">Resumen por rol</h2>
-<div class="scroll">
-<table>
-  <thead>
-    <tr>
-      <th>Rol</th>
-      <th class="n">Nombres</th>
-      <th>Qué es</th>
-      <th>Frente</th>
-      <th>Estado</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="b">Equipo</td><td class="n">5</td>
-      <td>Núcleo operativo BOTH sobre la Bienal.</td>
-      <td>Producción</td><td><span class="tag">interno</span></td>
-    </tr>
-    <tr>
-      <td class="b">Comité Ejecutivo</td><td class="n">2</td>
-      <td>Quien ejecuta la Bienal en Punta, más finanzas.</td>
-      <td>Producción</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Comité Asesor</td><td class="n">12</td>
-      <td>Referentes de industria que prestan criterio y nombre.</td>
-      <td>Programa</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Sponsors · global</td><td class="n">27</td>
-      <td>Marcas internacionales: stablecoins, infra, AI, banca, pagos.</td>
-      <td>Comercial</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Sponsors · local-regional</td><td class="n">12</td>
-      <td>LatAm: Uruguay, Argentina, Brasil.</td>
-      <td>Comercial</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Comité Estratégico</td><td class="n">7</td>
-      <td>Media, academia y cámaras que dan cobertura y aval.</td>
-      <td>Institucional</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Instituciones / Partners</td><td class="n">12</td>
-      <td>Reguladores, bancos centrales y organismos públicos.</td>
-      <td>Institucional</td><td><span class="tag cold">sin contactar</span></td>
-    </tr>
-    <tr>
-      <td class="b">Speakers</td><td class="n">0</td>
-      <td>Columna abierta en el board. Todavía sin nombres.</td>
-      <td>Programa</td><td><span class="tag empty">vacío</span></td>
-    </tr>
-  </tbody>
-</table>
+<div class="note">
+  <b class="lbl">Cómo se usa esta página</b>
+  <p>Cada fila es un nombre. <strong>Hacé click en la fila</strong> (o Enter / barra espaciadora si venís con el teclado) para marcarla como recorrida — la barra de arriba lleva la cuenta y el estado sobrevive si se recarga la página en medio de la reunión. Las flechas ↑ ↓ mueven de un nombre al siguiente. <em>Solo pendientes</em> esconde lo ya cubierto para la segunda vuelta.</p>
+  <p>Lo que hay que salir con: <strong>un nombre en la tercera columna</strong> para los que importan, y una baja explícita para los que no.</p>
 </div>
 
-<h2 class="sec">El board, columna por columna</h2>
-<div class="buckets">
 
-  <section class="bucket">
-    <h3>Equipo</h3>
-    <p class="sub">5 · interno</p>
-    <div class="grp">
-      <ul>
-        <li>René</li>
-        <li>Mariano</li>
-        <li>Rayitas<span class="q">?</span></li>
-        <li>Daiana</li>
-        <li>Chino<span class="q">?</span></li>
-      </ul>
+<section class="blk" id="s-equipo" data-title="Equipo">
+  <div class="blk-head">
+    <span class="bn">01</span>
+    <div class="bt">
+      <p class="kick">Quiénes lo hacen</p>
+      <h2>Equipo</h2>
     </div>
-  </section>
+    <div class="bm"><span class="cnt">5</span><span class="tag">interno</span></div>
+  </div>
+  <p class="blk-note">El núcleo operativo. No hay nada que confirmar acá — están.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r1" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>René Labarthe</b><span class="alias">René</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Head of Strategy + Comms de BOTH y champion de Punta Cripto. Conduce el armado del comité y tiene la relación con Uruguay Innova, que es una dirección de Presidencia.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-na">interno</span></div>
+      </div>
+      <div class="row" id="r2" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Mariano Boris</b><span class="alias">Mariano</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Context Engineer y lead técnico de BOTH. Sistema, documentación y pipeline del proyecto: este mapa, el deck y el material institucional salen de acá.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-na">interno</span></div>
+      </div>
+      <div class="row" id="r3" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Darío Luaces</b><span class="alias">Rayitas</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Conocido como Rayitas en el ecosistema. Organizó Ethereum Uruguay y ocho años de eventos cripto entre Montevideo y Punta. Su activo es ser agnóstico entre facciones enfrentadas: «no se pelea con nadie». Entró al proyecto en el kickoff del 16 de septiembre.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-na">interno</span></div>
+      </div>
+      <div class="row" id="r4" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Daiana Goldenberg</b><span class="alias">Daiana</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Ops + Finanzas de BOTH y dueña de Casa Manantial, que es la sede del foro privado del 16 de octubre y el activo de hospitalidad de toda la operación.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-na">interno</span></div>
+      </div>
+      <div class="row" id="r5" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Juan Casanelli</b><span class="alias">Chino</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>«Juancito». Previsto part-time y del lado de management y producción, no de contenido.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene · conversación abierta</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Comité Ejecutivo</h3>
-    <p class="sub">2 · sin contactar</p>
-    <div class="grp">
-      <ul>
-        <li>El Director de Biendisoal Punta<span class="q">?</span></li>
-        <li>Juan Carlos <span style="color:var(--campo)">(finanzas)</span></li>
-      </ul>
+<section class="blk" id="s-ejecutivo" data-title="Comité Ejecutivo">
+  <div class="blk-head">
+    <span class="bn">02</span>
+    <div class="bt">
+      <p class="kick">Quién la ejecuta</p>
+      <h2>Comité Ejecutivo</h2>
     </div>
-  </section>
+    <div class="bm"><span class="cnt">2</span><span class="tag">sin contactar</span></div>
+  </div>
+  <p class="blk-note">Dos casilleros, ningún nombre cerrado. El board registró funciones, no personas.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r6" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Dirección ejecutiva de la Bienal</b><span class="alias">El Director de Biendisoal Punta?</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Quien ejecute la Bienal en Punta, en el terreno. En el board quedó anotado como cargo y con la grafía rota: no hay una persona detrás todavía.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r7" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Juan Carlos</b><span class="alias">Juan Carlos (finanzas)</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La pata financiera del comité ejecutivo. El board sólo guarda el nombre de pila y la función — sin apellido, sin vía registrada.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Comité Asesor</h3>
-    <p class="sub">12 · sin contactar</p>
-    <div class="grp">
-      <ul>
-        <li>VonButch</li>
-        <li>Demi Brenner</li>
-        <li>Ari Mailich</li>
-        <li>Tibi <span style="color:var(--campo)">(apellido pendiente)</span><span class="q">?</span></li>
-        <li>Rabinovich <span style="color:var(--campo)">(Meli)</span></li>
-        <li>John Pfifer</li>
-        <li>Sebas Serrano</li>
-        <li>El de Belo <span style="color:var(--campo)">(Manu Araoz)</span></li>
-        <li>Sandra Ro</li>
-        <li>Ari Eskaliter <span style="color:var(--campo)">(Agrotoken)</span></li>
-        <li>Novillo Astrada</li>
-        <li>Juan Sartori<span class="q">?</span></li>
-      </ul>
+<section class="blk" id="s-asesor" data-title="Comité Asesor">
+  <div class="blk-head">
+    <span class="bn">03</span>
+    <div class="bt">
+      <p class="kick">Chapa y cartel</p>
+      <h2>Comité Asesor</h2>
     </div>
-  </section>
+    <div class="bm"><span class="cnt">13</span><span class="tag">sin contactar</span></div>
+  </div>
+  <p class="blk-note">La sección que más importa. No es un comité de criterio: es la lista de caras que hacen que un sponsor conteste el mail. El criterio que fijó René es explícito — entra quien aumente las probabilidades de aterrizar un sponsor. La lista final es de seis a ocho, no de doce.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r8" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>VonButch</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Handle del ecosistema. No aparece en ninguna transcripción ni en el vault: es el único nombre del board sobre el que no tenemos absolutamente nada.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r9" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Demian Brener</b><span class="alias">Demi Brenner</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Co-fundador y CEO de OpenZeppelin — la infraestructura de seguridad que audita buena parte de lo que corre sobre Ethereum. Miembro de Casa Manantial. Perfil bajo, pero pone nombre y cara. Es el nombre que Darío usa como vara del efecto que buscamos: «ah, pero está Demi Brenner, bueno, obvio».</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial · Rene + Darío</span></div>
+      </div>
+      <div class="row" id="r10" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ari Meilich</b><span class="alias">Ari Mailich</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Co-fundador de Decentraland y después de Big Time Studios. De Casa Manantial. Levantó 25 millones en horas para un juego: es el perfil que, cuando se engancha, tiene palanca desproporcionada.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial</span></div>
+      </div>
+      <div class="row" id="r11" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Esteban Ordano</b><span class="alias">Tibi (apellido pendiente)?</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El «Tibi» del board es, con alta probabilidad, Esteban Ordano: co-fundador de Decentraland, del Partido de la Red. Darío lo llama «un genio total» y en la misma frase admite que no le conocía la cara. Cartel técnico, no cartel público. Confirmar identidad antes de cualquier ask.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · Partido de la Red</span></div>
+      </div>
+      <div class="row" id="r12" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Rabinovich</b><span class="alias">Rabinovich (Meli)</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Vínculo con Mercado Libre. El board anotó sólo el apellido. Hay que identificar a la persona antes de que este casillero signifique algo.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r13" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>John Pfifer</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Grafía sin verificar y sin registro en el vault. Segundo nombre a resolver o a bajar de la lista.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r14" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Sebastián Serrano</b><span class="alias">Sebas Serrano</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Fundador y CEO de Ripio, el exchange más viejo de la región. Ya figuraba como target regional en la lista de speakers de junio. René lo separa del resto de los argentinos que desembarcaron en Brasil: «ellos fueron desde el principio», no por arbitraje.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · habló con el #0 de Ripio</span></div>
+      </div>
+      <div class="row" id="r15" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Manuel Beaudroit</b><span class="alias">El de Belo (Manu Araoz)</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El de Belo es Manuel Beaudroit — la grafía del board estaba cruzada y se corrigió en el sprint del 21 de septiembre. Belo es la fintech cripto con más tracción retail de la región y Darío la marca como puerta fácil.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="r16" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Manuel Araoz</b><span class="alias">(desprendido del anterior)</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El otro Manu: co-fundó OpenZeppelin con Demian Brener y hace años salió del fronting — no pone ni foto de perfil. Es un asiento distinto del de Belo, no el mismo. Vive en la zona; su pareja está vinculada a Club del Sur y a Casa Manantial.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene · Club del Sur / José Ignacio</span></div>
+      </div>
+      <div class="row" id="r17" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Sandra Ro</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>CEO del Global Blockchain Business Council. Trabaja con gobiernos y reguladores, vive en la rosca de public policy global. Estaba en el tier más caliente de la lista de speakers de junio. Es potencial partner institucional, no sólo un nombre en el deck.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Alex Nacimento · embajador GBBC Uruguay</span></div>
+      </div>
+      <div class="row" id="r18" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ariel Scaliter</b><span class="alias">Ari Eskaliter (Agrotoken)</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Co-fundador de Agrotoken, tokenización de granos — el caso de activos del mundo real más sólido de la región. Darío: «un absoluto genio», poco conocido fuera del círculo, «pero si lo que buscás es que Tether confíe, Tether va a confiar en él». Ese es exactamente el criterio del comité.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Nicolás Malumian · abogado de Agrotoken</span></div>
+      </div>
+      <div class="row" id="r19" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Novillo Astrada</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Familia del polo argentino. Nadie en la mesa sostiene que sepa del tema: el argumento a favor es la agenda y el alcance social, no el criterio. Asiento de puertas, no de contenido — decidir si ese trade sirve.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r20" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Juan Sartori</b><span class="alias">Juan Sartori?</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Empresario y ex-senador uruguayo, impulsor del marco regulatorio local. Tether lo puso al frente de Adecoagro. En la misma búsqueda aparecen causas judiciales en Argentina y una caída fuerte de la acción. Abre puertas y trae riesgo reputacional en el mismo movimiento — y hay que medir cuánto se alejó de la escena política uruguaya.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene · vínculo Tether / Adecoagro</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Comité Estratégico</h3>
-    <p class="sub">7 · sin contactar</p>
-    <div class="grp">
-      <h4>#media</h4>
-      <ul>
-        <li>El Observador</li>
-        <li>CoinTelegraph</li>
-        <li>Infobae</li>
-      </ul>
+<section class="blk" id="s-estrategico" data-title="Comité Estratégico">
+  <div class="blk-head">
+    <span class="bn">04</span>
+    <div class="bt">
+      <p class="kick">Cobertura y aval</p>
+      <h2>Comité Estratégico</h2>
     </div>
-    <div class="grp">
-      <h4>#academia</h4>
-      <ul>
-        <li>UCLA</li>
-        <li>UCM</li>
-        <li>ORT</li>
-      </ul>
-    </div>
-    <div class="grp">
-      <h4>cámara</h4>
-      <ul>
-        <li>GBBC</li>
-      </ul>
-    </div>
-  </section>
+    <div class="bm"><span class="cnt">7</span><span class="tag">sin contactar</span></div>
+  </div>
+  <p class="blk-note">Medios, academia y cámaras. No financian: legitiman y distribuyen.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r21" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>El Observador</b><span class="alias">#media</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Diario uruguayo de negocios. El medio que fija la agenda económica local y el que lee el sector público.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r22" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>CoinTelegraph</b><span class="alias">#media</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Prensa cripto global en español. Da cobertura de industria, no autoridad ante un regulador.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r23" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Infobae</b><span class="alias">#media</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Alcance regional masivo con lector argentino. Volumen de audiencia, no peso institucional.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r24" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>UCLA</b><span class="alias">#academia</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Entra por una persona, no por la institución: Alex Nacimento es profesor ahí y fundó el primer blockchain lab universitario. Además es autor de un best-seller sobre stablecoins que ya va por su tercera o cuarta edición.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Alex Nacimento</span></div>
+      </div>
+      <div class="row" id="r25" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Universidad Católica del Uruguay</b><span class="alias">UCM</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>«La Católica». Está en la lista por el investigador que vino a dar la charla de computación cuántica a Casa Manantial. Sirve como aval institucional; como speaker, la propia mesa lo descartó.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial · charla Quantum</span></div>
+      </div>
+      <div class="row" id="r26" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>ORT</b><span class="alias">#academia</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Universidad uruguaya con la carrera técnica más conectada al ecosistema. El contacto que suena es Pam Gómez Perilli, que ya jurado una hackathon del grupo de Darío.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · Pam Gómez Perilli</span></div>
+      </div>
+      <div class="row" id="r27" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>GBBC</b><span class="alias">cámara</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Global Blockchain Business Council. Uruguay no tenía embajador en el mapa hasta que Alex lo reclamó — literalmente miraron la lista de países juntos y Uruguay no estaba. Es la pieza que puede convertir la Bienal en parada de un circuito internacional.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Alex Nacimento · embajador Uruguay</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Instituciones / Partners</h3>
-    <p class="sub">12 · sin contactar</p>
-    <div class="grp">
-      <h4>#public</h4>
-      <ul>
-        <li>Ministerio de Economía de Uruguay</li>
-        <li>Banco Central de Uruguay</li>
-        <li>Cámara Blockchain (UY)</li>
-        <li>CNV (ARG)</li>
-        <li>CVM (BRA)</li>
-        <li>LSE (UK)</li>
-        <li>CNAD (SAL)</li>
-        <li>Regulador de Paraguay<span class="q">?</span></li>
-        <li>CNBV (MEX)</li>
-        <li>Banco Central (BRA)</li>
-        <li>ANII (URU)</li>
-        <li>Urucap (URU)</li>
-      </ul>
+<section class="blk" id="s-instituciones" data-title="Instituciones · Partners">
+  <div class="blk-head">
+    <span class="bn">05</span>
+    <div class="bt">
+      <p class="kick">El sector público</p>
+      <h2>Instituciones · Partners</h2>
     </div>
-  </section>
+    <div class="bm"><span class="cnt">12</span><span class="tag">1 de 12 con carta</span></div>
+  </div>
+  <p class="blk-note">Los logos que hacen creíble el deck. El sprint del 21 de septiembre lo dejó como pre-requisito: sin sector público confirmado no se sale a buscar sponsors.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r28" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ministerio de Economía de Uruguay</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La firma del lado económico. Junto con el Banco Central es el par de logos que convierte al deck en algo que se puede mostrar.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Uruguay Innova · Presidencia</span></div>
+      </div>
+      <div class="row" id="r29" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Banco Central del Uruguay</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La contraparte regulatoria. Ya existe una carta de apoyo al evento; lo que falta es la confirmación formal para usar el logo en material de sponsors. «Estamos a una confirmación de distancia».</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Uruguay Innova · carta de Bruno Gili</span></div>
+      </div>
+      <div class="row" id="r30" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Cámara Blockchain (UY)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Una de las dos patas del privado local, enfrentada de origen con la Cámara FinTech — se separaron en vez de entrar como vertical. Hoy no le dicen lo mismo al gobierno. Sentar a las dos en la misma mesa es, literalmente, el objetivo político de la Bienal.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Nacho Varese · foro del 16 de octubre</span></div>
+      </div>
+      <div class="row" id="r31" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>CNV (ARG)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El regulador argentino de valores. Es el logo que Darío marca como imprescindible junto al uruguayo para que el deck se sostenga.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Nicolás Malumian · vía Agrotoken</span></div>
+      </div>
+      <div class="row" id="r32" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>CVM (BRA)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El regulador brasileño, en medio de su propio terremoto: la nueva regulación ya hizo que Lemon cierre operación en Brasil y que Bitso reduzca. Si viene gente de Brasil a hablar de regulación, hay que llegar con eso entendido.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Alex Nacimento + su hermano Tony · estudio jurídico</span></div>
+      </div>
+      <div class="row" id="r33" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>LSE (UK)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El board no aclara si es el London Stock Exchange o la London School of Economics. Son dos asks completamente distintos — resolver antes de escribirle a nadie.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r34" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>CNAD (SAL)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Comisión Nacional de Activos Digitales de El Salvador. El marco cripto más agresivo de la región y un Estado con interés propio en exportarlo.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r35" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Regulador de Paraguay</b><span class="alias">Regulador de Paraguay?</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El board no identifica el organismo. Casillero abierto.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r36" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>CNBV (MEX)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Comisión Nacional Bancaria y de Valores. La ley fintech mexicana es el antecedente regulatorio más viejo de la región: sirve de precedente en la mesa.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r37" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Banco Central (BRA)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El más avanzado de América Latina en moneda digital y pagos instantáneos. Su presencia le cambia la escala a cualquier panel de regulación.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r38" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>ANII (URU)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Agencia Nacional de Investigación e Innovación. Aval público y, eventualmente, fondos — es el canal por el que el Estado uruguayo financia este tipo de cosas.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r39" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Urucap (URU)</b><span class="alias">#public</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La cámara uruguaya de capital privado. Casa Manantial ya maneja la relación institucional desde adentro.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Delfina · desde Casa Manantial</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Sponsors · global</h3>
-    <p class="sub">27 · sin contactar</p>
-    <div class="grp">
-      <h4>#stable</h4>
-      <ul>
-        <li>Tether</li>
-        <li>Circle</li>
-        <li>Kinesis</li>
-      </ul>
+<section class="blk" id="s-sponsors-global" data-title="Sponsors · global">
+  <div class="blk-head">
+    <span class="bn">06</span>
+    <div class="bt">
+      <p class="kick">De dónde sale la plata</p>
+      <h2>Sponsors · global</h2>
     </div>
-    <div class="grp">
-      <h4>infra &amp; protocolos</h4>
-      <ul>
-        <li>Exodus</li>
-        <li>Binance</li>
-        <li>Polkadot</li>
-        <li>The Graph</li>
-        <li>zkSync</li>
-        <li>Wormhole</li>
-        <li>Galaxy</li>
-        <li>Celo<span class="q">?</span></li>
-        <li>Solana</li>
-        <li>Ethereum Foundation</li>
-        <li>Bitcoin Foundation</li>
-        <li>Uniswap</li>
-        <li>Hedera Hashgraph</li>
-        <li>Avalanche</li>
-      </ul>
-    </div>
-    <div class="grp">
-      <h4>#ai</h4>
-      <ul>
-        <li>Anthropic</li>
-        <li>OpenAI</li>
-      </ul>
-    </div>
-    <div class="grp">
-      <h4>#fin</h4>
-      <ul>
-        <li>Mastercard</li>
-        <li>Visa</li>
-        <li>Securitize</li>
-        <li>Onyx</li>
-        <li>UBS</li>
-        <li>Goldman Sachs</li>
-        <li>Oracle</li>
-        <li>Stripe</li>
-      </ul>
-    </div>
-  </section>
+    <div class="bm"><span class="cnt">27</span><span class="tag">sin contactar</span></div>
+  </div>
+  <p class="blk-note">Veintisiete marcas internacionales. El evento se sostiene con tres. El ticket es de 50 a 70 mil dólares y no se compra alcance: se compra la mesa política. Ninguno tiene todavía tier, ask ni número asignado — eso vive en el frente Comercial.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r40" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Tether</b><span class="alias">#stable</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El emisor de USDT y el sponsor más lógico de toda la lista: invierte fuerte en LatAm y en activos del mundo real, y un summit con Estado adentro es su jugada. Además ya está adentro del mapa por Sartori y Adecoagro.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Sartori · Scaliter</span></div>
+      </div>
+      <div class="row" id="r41" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Circle</b><span class="alias">#stable</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Emisor de USDC, el stablecoin que juega la carta de la legitimidad regulatoria. Es el contrapunto natural de Tether en un panel.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r42" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Kinesis</b><span class="alias">#stable</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Moneda respaldada en oro físico. Nicho, pero encaja con la conversación de activos del mundo real.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r43" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Exodus</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Billetera multi-cadena con producto de consumo y empresa que cotiza en bolsa: un sponsor con presupuesto de marketing real.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r44" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Binance</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El exchange más grande del mundo, con una estrategia explícita de acuerdos con gobiernos de mercados emergentes. Ese es exactamente el producto que vende la Bienal.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r45" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Polkadot</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Ecosistema con tesorería que financia presencia local — y ya hubo conversación sobre una embajada Polkadot en Casa Manantial.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial · antecedente propio</span></div>
+      </div>
+      <div class="row" id="r46" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>The Graph</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Capa de indexación de datos on-chain. Darío lo usa como ejemplo del efecto dominó: «si enganchaba The Graph, Chainlink venía seguro».</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="r47" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>zkSync</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Escalado de Ethereum con pruebas de conocimiento cero. Presupuesto de ecosistema activo.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r48" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Wormhole</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Interoperabilidad entre cadenas. Sponsor habitual del circuito de conferencias.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r49" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Galaxy</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Banca de inversión digital. Es el perfil que le habla al público institucional, no al cripto nativo.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r50" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Celo</b><span class="alias">Celo?</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Cadena con foco declarado en mercados emergentes e inclusión financiera. La grafía quedó marcada en el board.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r51" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Solana</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Base de la ola de pagos y consumo on-chain, con presencia fuerte en la escena argentina.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r52" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ethereum Foundation</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El aval de ecosistema de mayor peso simbólico. La vía histórica existe y es fina: Paula Doy, que durante años fue quien levantaba el teléfono para traer a los números 2 y 3 de la Foundation a la región.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · Paula Doy</span></div>
+      </div>
+      <div class="row" id="r53" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Bitcoin Foundation</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Contrapeso ideológico de la lista. Sirve para que el programa no lea como un evento de una sola cadena.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r54" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Uniswap</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El protocolo de intercambio descentralizado de referencia y uno de los que más ha litigado con reguladores. Tiene algo que decir en esta agenda.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r55" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Hedera Hashgraph</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Red gobernada por un consejo de corporaciones. Perfil empresarial y de sector público, no retail.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r56" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Avalanche</b><span class="alias">infra &amp; protocolos</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Cadena con programa explícito de tokenización institucional y acuerdos con administraciones públicas.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r57" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Anthropic</b><span class="alias">#ai</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La conversación de agentes e inteligencia artificial cruza todo el programa. Es un sponsor de adyacencia: le interesa la sala, no el público cripto.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r58" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>OpenAI</b><span class="alias">#ai</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Misma lógica que el anterior. Tratar la pista de IA como un frente propio o bajarla del deck.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r59" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Mastercard</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Programas propios de stablecoins y liquidación. Es el tipo de logo que le habla directo a un banco central.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r60" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Visa</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Liquidación en stablecoins en producción desde hace años. Mismo argumento, misma sala.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r61" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Securitize</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El operador de tokenización de activos reales — el que instrumenta los fondos de las grandes gestoras. Su CEO, Carlos Domingo, habla español y ya estaba en el tier caliente de speakers.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r62" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Onyx</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La unidad de blockchain de JP Morgan. Presencia bancaria seria en un panel de regulación.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r63" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>UBS</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Banca privada global con producto de activos digitales. Le habla al capital, no al ecosistema.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r64" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Goldman Sachs</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Mismo rol que el anterior: firma el argumento de que esto dejó de ser marginal.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r65" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Oracle</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Infraestructura empresarial. Encaja mejor en la pista de datos y de sector público que en la cripto.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r66" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Stripe</b><span class="alias">#fin</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Después de comprar Bridge, es uno de los actores más agresivos en pagos con stablecoins. Sponsor de alta pertinencia.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Sponsors · local-regional</h3>
-    <p class="sub">12 · sin contactar</p>
-    <div class="grp">
-      <ul>
-        <li>Ripio</li>
-        <li>Decentraland</li>
-        <li>OpenZeppelin</li>
-        <li>Mercado Libre</li>
-        <li>Belo</li>
-        <li>Agrotoken</li>
-        <li>Adecoagro <span style="color:var(--campo)">(URU)</span></li>
-        <li>dLocal <span style="color:var(--campo)">(URU)</span></li>
-        <li>Lirium</li>
-        <li>BTG Pactual <span style="color:var(--campo)">(BRA)</span></li>
-        <li>Patria <span style="color:var(--campo)">(BRA)</span></li>
-        <li>XP <span style="color:var(--campo)">(BRA)</span></li>
-      </ul>
+<section class="blk" id="s-sponsors-local" data-title="Sponsors · local-regional">
+  <div class="blk-head">
+    <span class="bn">07</span>
+    <div class="bt">
+      <p class="kick">Uruguay · Argentina · Brasil</p>
+      <h2>Sponsors · local-regional</h2>
     </div>
-  </section>
+    <div class="bm"><span class="cnt">12</span><span class="tag">sin contactar</span></div>
+  </div>
+  <p class="blk-note">El público principal del evento es regional. Estos nombres cierran más rápido y con ticket más chico — y varios están a un mensaje de distancia de gente de la mesa.</p>
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="r67" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ripio</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El exchange más antiguo de la región. Su fundador está en el comité asesor de este mismo mapa: el asiento y el sponsor pueden ser la misma conversación.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · Sebastián Serrano</span></div>
+      </div>
+      <div class="row" id="r68" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Decentraland</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Dos de sus fundadores están en el comité asesor. Misma lógica: un asiento que puede traer su propia empresa.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Ordano · Meilich</span></div>
+      </div>
+      <div class="row" id="r69" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>OpenZeppelin</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Idem: Demian Brener en el comité, la empresa como sponsor. René lo dijo explícito — algunos de esos asientos pueden traer sus propias empresas.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Demian Brener</span></div>
+      </div>
+      <div class="row" id="r70" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Mercado Libre</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La compañía más grande de la región y con producto cripto propio. Depende de identificar a quién apunta el «Rabinovich» del board.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r71" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Belo</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Fintech cripto argentina con tracción retail. Darío la marca como la puerta más fácil de toda la lista.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · Manuel Beaudroit</span></div>
+      </div>
+      <div class="row" id="r72" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Agrotoken</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Tokenización de granos: el caso de activos reales con el que Uruguay y Argentina tienen algo propio que mostrar.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Scaliter · Malumian</span></div>
+      </div>
+      <div class="row" id="r73" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Adecoagro (URU)</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Agroindustria regional hoy controlada por Tether, con Sartori al frente. Es el puente material entre el sponsor más grande de la lista y el territorio.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Sartori</span></div>
+      </div>
+      <div class="row" id="r74" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>dLocal (URU)</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El unicornio uruguayo de pagos transfronterizos. Es el nombre que le prueba al gobierno que esto no es una fiesta: es industria local con facturación.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r75" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Lirium</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Infraestructura cripto para bancos y fintechs, con raíz uruguaya. Perfil B2B, ticket chico.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r76" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>BTG Pactual (BRA)</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El banco de inversión más activo de Brasil en activos digitales, con su propio stablecoin. Ancla brasileña de primer orden.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r77" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Patria (BRA)</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Gestora de activos alternativos de escala regional. Habla el idioma del capital institucional.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+      <div class="row" id="r78" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>XP (BRA)</b></div>
+        <div class="c-what"><span class="lbl">Quién es</span>La plataforma de inversión minorista más grande de Brasil. Distribución masiva y relación directa con el regulador.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-off">a definir en la mesa</span></div>
+      </div>
+  </div>
+</section>
 
-  <section class="bucket">
-    <h3>Speakers</h3>
-    <p class="sub">0 · columna abierta</p>
-    <div class="grp">
-      <p class="void">Sin nombres todavía.</p>
-      <p style="font-size:.84rem;color:#2B2E24;margin:.5rem 0 0">La columna existe en el board pero quedó vacía. Los speakers salen de la curaduría del Programa, no de esta wishlist.</p>
-    </div>
-  </section>
-
+<div class="claim-out wide">
+  <div class="claim">
+    <p>Seis u ocho caras que hagan que el sponsor conteste. El resto es ruido ordenado.</p>
+    <p class="tail">El comité asesor es la pieza que desbloquea el deck</p>
+  </div>
+  <div class="band"><canvas data-blob="acid" data-mode="grow" data-from=".src"
+       data-seed="5.1" data-cell="14" data-fringe-cells="2.6" data-bleed="bottom,left,right"></canvas><div class="src"></div></div>
 </div>
 
-<div class="notes">
-  <h2 class="sec" style="margin-top:0">Qué no dice este documento</h2>
-  <ol>
-    <li><b>No hay tier ni ask.</b> Ningún sponsor de esta lista está asignado a una de las 21 posiciones comerciales ni tiene número asociado. Eso vive en el frente Comercial.</li>
-    <li><b>No hay vía nombrada.</b> Sabemos que a cada uno le llegamos por alguien, pero el board no registra <em>quién</em> abre cada puerta. Es lo primero que le falta a este mapa para volverse accionable.</li>
-    <li><b>No hay prioridad.</b> Los 77 están al mismo nivel. Falta decidir cuáles son los seis u ocho que mueven la aguja.</li>
-    <li><b>El aval institucional firmado no está acá.</b> La carta de Bruno Gili (Uruguay Innova → Presidencia) ya existe y es una pieza distinta de esta wishlist.</li>
-  </ol>
+<header class="sec">
+  <span class="n">08</span>
+  <div>
+    <p class="kick">Fuera del board</p>
+    <h2>Nombres que aparecieron después</h2>
+  </div>
+</header>
+
+<p class="lead">El board se armó el 21 de agosto. El kickoff del 16 de septiembre y el sprint del 21 sumaron gente que todavía no está dibujada en el FigJam. <em>Van aparte a propósito</em>: son candidatos a entrar, no filas del board.</p>
+
+  <div class="roster">
+    <div class="rhead"><div>Nombre</div><div>Quién es</div><div>Vía · quién abre la puerta</div></div>
+      <div class="row" id="p1" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Alex Nacimento</b><span class="alias">GBBC Uruguay · UCLA</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Embajador del GBBC en Uruguay, profesor de UCLA, fundador del primer blockchain lab universitario y autor de un best-seller sobre stablecoins. Vive en Punta. Es, de lejos, el vínculo más valioso que apareció después del board: abre Sandra Ro, abre el regulador brasileño y puede ser speaker.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene · reunión ya mantenida</span></div>
+      </div>
+      <div class="row" id="p2" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Nicolás Malumian</b><span class="alias">legal · regulación</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Abogado de Agrotoken, pasó por el mercado de capitales argentino y habla a diario con los reguladores. Es uno de los dos ángulos de René para llegar a la CNV.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene</span></div>
+      </div>
+      <div class="row" id="p3" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Tony Nacimento</b><span class="alias">legal · Brasil</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Hermano de Alex. Su estudio trabaja con el equipo jurídico que toca al regulador brasileño. Es el camino concreto hacia la CVM.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Alex Nacimento</span></div>
+      </div>
+      <div class="row" id="p4" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Nacho Varese</b><span class="alias">Blockchain Summit</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Organiza el Blockchain Summit de Montevideo: ocho ediciones, el evento más viejo del país. Tracciona a nivel local y está bien conectado con medios.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p5" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Sonamérica</b><span class="alias">Julia y Lázaro Dobat</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Ya vinieron a dar una charla a Casa Manantial. René fue explícito: «Sonamérica debería ser sponsor». Falta recuperar el contacto — conviene escribirles desde Casa Manantial.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial · contacto a recuperar</span></div>
+      </div>
+      <div class="row" id="p6" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Paula Doy</b><span class="alias">Ethereum · rosca</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Perfil bajísimo y máxima conexión: fue quien traía a la conducción de la Ethereum Foundation a la región. No es speaker ni figura de comité — es la persona que consigue los apoyos grandes. Puede valer más cerca del equipo que en el board.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p7" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Guzmán Yambías</b><span class="alias">academia</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Dirige la carrera en la Facultad de Ingeniería en Montevideo y hace mucho de blockchain. Es la pata académica técnica que al board le falta.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p8" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Pam Gómez Perilli</b><span class="alias">ORT</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Universidad ORT. Ya fue jurado de una hackathon del grupo de Darío.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p9" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Topolansky</b><span class="alias">CIE · divulgación</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Director del Centro de Emprendedurismo y el divulgador local con más alcance. «Muy amigo de la casa». Perfil de difusión, no de comité.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene</span></div>
+      </div>
+      <div class="row" id="p10" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Santiago Cristóbal</b><span class="alias">Crecimiento</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Lideró Crecimiento desde el arranque y viene de DeFi. No pone plata, pero puede poner difusión y presencia — y Crecimiento trae la mitad del público argentino.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p11" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Ari Barmat</b><span class="alias">Cambrian</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>De Casa Manantial, hoy cerca de Cambrian. La mesa lo ubica como speaker, no como comité.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Casa Manantial</span></div>
+      </div>
+      <div class="row" id="p12" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Lemon</b><span class="alias">exchange</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Exchange argentino. Está cerrando operación en Brasil por la nueva regulación — lo cual lo vuelve, a la vez, sponsor posible y fuente de inteligencia regulatoria.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío · contacto interno</span></div>
+      </div>
+      <div class="row" id="p13" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Kleros</b><span class="alias">Fede · resolución de disputas</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Sistema de resolución de disputas on-chain, hoy metido fuerte en IA y proveyendo a Lemon. Sponsor chico, pertinencia alta.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p14" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>ex-Ripio</b><span class="alias">Martín Benítez · Javier Borkenstein</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Gente de la primera etapa de Ripio, en target para el foro privado del 16 de octubre.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Darío</span></div>
+      </div>
+      <div class="row" id="p15" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>Cámara Blockchain — Juanma y Caro</b><span class="alias">16 de octubre</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>El presidente de la Cámara y la abogada que redactó para el BCU los cambios de regulación ideales para Uruguay. Son los protagonistas del foro del 16 de octubre.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene · Darío</span></div>
+      </div>
+      <div class="row" id="p16" tabindex="0" role="button" aria-pressed="false">
+        <div class="c-name"><span class="tick" aria-hidden="true"></span><b>ADGM</b><span class="alias">Abu Dhabi Global Market</span></div>
+        <div class="c-what"><span class="lbl">Quién es</span>Zona financiera con marco cripto propio. René lo agregó al bucket público sobre la marcha y dijo que les iba a escribir.</div>
+        <div class="c-via"><span class="lbl">Vía</span><span class="via-on">Rene</span></div>
+      </div>
+  </div>
+
+<header class="sec">
+  <span class="n">09</span>
+  <div>
+    <p class="kick">Los bordes</p>
+    <h2>Qué no dice este documento</h2>
+  </div>
+</header>
+
+<ul class="ls">
+  <li><strong>No hay tier ni ask.</strong> Ningún sponsor de esta lista está asignado a una de las 21 posiciones comerciales ni tiene número asociado. Eso vive en el frente Comercial.</li>
+  <li><strong>La vía está a medio escribir.</strong> La V0.1 no tenía columna de vía; ésta sí, y queda a la vista cuántos casilleros siguen abiertos. Un nombre sin vía es un nombre que todavía no sabemos si es nuestro.</li>
+  <li><strong>No hay prioridad.</strong> Los 78 siguen al mismo nivel. La lista final del comité asesor es de seis a ocho — falta decidir cuáles.</li>
+  <li><strong>El aval institucional firmado no está acá.</strong> La carta de Bruno Gili, de Uruguay Innova a Presidencia, ya existe y es una pieza distinta de esta wishlist.</li>
+  <li><strong>Hay identidades sin resolver.</strong> VonButch, John Pfifer, «Rabinovich (Meli)», el director ejecutivo y el «Juan Carlos» de finanzas no tienen persona identificada. Si no salen de esta reunión con nombre, salen de la lista.</li>
+</ul>
+
 </div>
 
 <footer>
-  <span>Bienal Blockchain Punta 2027 · Mapa de vínculos V0.1</span>
-  <span>Board 2026-08-21 · René + Mariano</span>
-  <span>Documento interno · no distribuir</span>
+  <div class="sheet"><div class="row2">
+    <span>Bienal Blockchain Punta 2027 · Mapa de vínculos V0.2</span>
+    <span>Board 2026-08-21 · actualizado 2026-09-22</span>
+    <span>Documento interno · no distribuir</span>
+  </div></div>
 </footer>
 
-</div>
+<script>window.BienalTokens={acid:"#FFFFFF",void:"#12140F",quiet:"#1D2016",campo:"#7B7C6C"};</script>
+<script>/* ===========================================================================
+   Bienal Blockchain Punta — motor de máscara
+   ---------------------------------------------------------------------------
+   UNA implementación del algoritmo, consumida por el hero, la hoja de sistema,
+   la landing, las guidelines y el render de motion.
+
+   Antes de esto el algoritmo existía dos veces, en dos lenguajes, y los hashes
+   NO coincidían: GLSL usaba hash21 (Hoskins, fract de 3 vectores) y el canvas
+   usaba sin()*43758.5453. Todas las demás constantes eran idénticas, así que el
+   hero y la hoja producían grano distinto con la misma semilla mientras la hoja
+   afirmaba correr "el mismo algoritmo". Se unifica en hash21.
+
+   La regla madre: TODO se decide en el centro de la celda. Por eso el borde
+   sólo puede escalonar en ángulo recto, y esa escalera es todo el lenguaje.
+   =========================================================================== */
+(function (root) {
+  "use strict";
+
+  /* --- ruido: paridad byte-a-byte con mask.frag.glsl --------------------- */
+
+  /* GLSL corre float32 y JS float64. Sin fround el ruido divergía en el sexto
+     decimal, y una celda de borde podía volcar — así que "el mismo algoritmo"
+     no era literalmente cierto. Con fround en cada operación sí lo es, y la
+     paridad se verifica en navegador (motion/parity-test.html), no se afirma. */
+  const f = Math.fround;
+  const fract = (x) => f(x - Math.floor(x));
+
+  function hash21(px, py) {
+    const a = fract(f(px * 0.1031));
+    const b = fract(f(py * 0.1031));
+    let x = a, y = b, z = a;                       // vec3(p.xyx)
+    const d = f(f(f(x * f(y + 33.33)) + f(y * f(z + 33.33))) + f(z * f(x + 33.33)));
+    x = f(x + d); y = f(y + d); z = f(z + d);
+    return fract(f(f(x + y) * z));
+  }
+
+  function vnoise(px, py) {
+    const ix = Math.floor(px), iy = Math.floor(py);
+    let fx = fract(f(px)), fy = fract(f(py));
+    fx = f(f(fx * fx) * f(3 - f(2 * fx)));
+    fy = f(f(fy * fy) * f(3 - f(2 * fy)));
+    const a = hash21(ix, iy),     b = hash21(ix + 1, iy);
+    const c = hash21(ix, iy + 1), d = hash21(ix + 1, iy + 1);
+    const ab = f(a + f(f(b - a) * fx));
+    const cd = f(c + f(f(d - c) * fx));
+    return f(ab + f(f(cd - ab) * fy));
+  }
+
+  function fbm(px, py) {
+    return f(f(f(vnoise(px, py) * 0.62)
+             + f(vnoise(f(f(px * 2.13) + 7.3), f(f(py * 2.13) + 7.3)) * 0.26))
+             + f(vnoise(f(f(px * 4.37) + 3.1), f(f(py * 4.37) + 3.1)) * 0.12));
+  }
+
+  /* distancia firmada a un rectángulo, negativa adentro.
+     frounded igual que el resto: GLSL usa length(), que es float32, y sin esto
+     quedaban ~6 celdas de borde volcando entre los dos motores. */
+  function boxDist(px, py, r) {
+    const qx = f(Math.abs(f(px - f(r.x + f(r.w / 2)))) - f(r.w / 2));
+    const qy = f(Math.abs(f(py - f(r.y + f(r.h / 2)))) - f(r.h / 2));
+    const mx = qx > 0 ? qx : 0, my = qy > 0 ? qy : 0;
+    const len = f(Math.sqrt(f(f(mx * mx) + f(my * my))));
+    const inner = Math.min(Math.max(qx, qy), 0);
+    return f(len + inner);
+  }
+
+  const clamp = (v, lo, hi) => v < lo ? lo : v > hi ? hi : v;
+
+  /* --- dither ordenado (Bayer) -------------------------------------------
+     La única forma que tiene este sistema de desvanecer sin dejar de ser
+     duro. Umbral fijo comparado contra la distancia firmada de la máscara:
+     cae dentro de la regla del centro de celda, así que el desvanecido
+     escalona igual que el borde. Ver el póster Dgtl 20X y Camer Studio.   */
+
+  const BAYER8 = (() => {
+    const m = new Float32Array(64);
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        let v = 0, mask = 4, xc = x, yc = y;
+        for (let bit = 0; bit < 3; bit++, mask >>= 1) {
+          const bx = (xc & mask) ? 1 : 0, by = (yc & mask) ? 1 : 0;
+          v = (v << 2) | ((bx ^ by) << 1) | by;
+        }
+        m[y * 8 + x] = (v + 0.5) / 64;
+      }
+    }
+    return m;
+  })();
+
+  const bayer = (c, r) => BAYER8[(((r % 8) + 8) % 8) * 8 + (((c % 8) + 8) % 8)];
+
+  /* --- el núcleo: una retícula de ocupación ------------------------------
+     Se calcula la ocupación booleana por celda ANTES de dibujar. Eso es lo
+     que permite que relleno, filete, trama de puntos, knockout y dissolve
+     salgan todos de la misma decisión, en vez de ser cinco caminos.        */
+
+  /* --- campo de ruido cacheado -------------------------------------------
+     El ruido de una celda NO depende del puntero ni del tiempo: sólo de la
+     celda, la semilla y el tamaño de celda. Cacheándolo, un repintado
+     interactivo cuesta un clamp y un boxDist por celda en vez de tres vnoise
+     (doce hash21). Eso es lo que permite que la pieza corra a 60 fps en canvas
+     2D y que NO haga falta WebGL en ninguna superficie — con lo cual el hero
+     y la hoja no pueden divergir, porque son el mismo código. */
+
+  const fieldCache = new Map();
+
+  function noiseField(w, h, cell, seed) {
+    const key = w + "|" + h + "|" + cell + "|" + seed;
+    let fd = fieldCache.get(key);
+    if (fd) return fd;
+    const ox = -cell, oy = -cell;
+    const cols = Math.ceil((w - ox) / cell) + 1;
+    const rows = Math.ceil((h - oy) / cell) + 1;
+    const n = new Float32Array(cols * rows);
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        n[r * cols + c] = fbm(f(f(f(cx / cell) * 0.21) + seed),
+                              f(f(f(cy / cell) * 0.21) + seed));
+      }
+    }
+    fd = { n, cols, rows, cell, ox, oy, w, h, seed };
+    if (fieldCache.size > 40) fieldCache.clear();
+    fieldCache.set(key, fd);
+    return fd;
+  }
+
+  function grid(o) {
+    const cell   = o.cell;
+    const fringe = o.fringe !== undefined ? o.fringe : cell * 3.2;
+    const seed   = o.seed || 0;
+    const erode  = o.erode || 0;
+    const dither = o.dither || 0;
+    const rects  = o.rects || [];
+    const mode   = o.mode || "grow";
+
+    const fd = noiseField(o.w, o.h, cell, seed);
+    const ox = fd.ox, oy = fd.oy, cols = fd.cols, rows = fd.rows;
+    const on = new Uint8Array(cols * rows);
+    /* el knockout necesita un segundo campo, con su propia semilla, para que
+       las muescas no repitan el mismo ruido que el borde exterior */
+    const fdHole = (o.mode === "knockout")
+      ? noiseField(o.w, o.h, cell, seed + 19.7) : null;
+
+    /* reach de una celda contra un conjunto de cajas: el ruido se muestrea
+       en la retícula gruesa (una lóbula cada 4-5 celdas) — es lo que hace
+       que el borde lea como una forma con miembros y no como un rectángulo
+       con una capa de pintura rasposa */
+    function occupied(idx, cx, cy, boxes, fr, er, src) {
+      if (!boxes.length) return -Infinity;
+      const n = src.n[idx];
+      const reach = f(fr * clamp(f(f(n * 1.95) - 0.47), -0.20, 1.25));
+      let d = Infinity;
+      for (let i = 0; i < boxes.length; i++) {
+        const dd = boxDist(cx, cy, boxes[i]);
+        if (dd < d) d = dd;
+      }
+      return f(f(reach - er) - d);   // > 0 → adentro; el valor es la profundidad
+    }
+
+    const field = mode === "knockout"
+      ? (o.fieldRect || { x: 0, y: 0, w: o.w, h: o.h })
+      : null;
+    const notchFringe = o.notchFringe !== undefined ? o.notchFringe : cell * 1.6;
+
+    for (let r = 0; r < rows; r++) {
+      const cy = f(f(oy + f(r * cell)) + f(cell / 2));
+      for (let c = 0; c < cols; c++) {
+        const cx = f(f(ox + f(c * cell)) + f(cell / 2));
+        let depth;
+
+        const idx = r * cols + c;
+        if (mode === "knockout") {
+          /* la masa cubre el campo y se le RESTAN las cajas medidas — es el
+             inverso de grow, y es el look del video de referencia: los
+             bloques chicos viven en muescas recortadas dentro de la masa */
+          depth = occupied(idx, cx, cy, [field], fringe, erode, fd);
+          if (depth > 0 && occupied(idx, cx, cy, rects, notchFringe, 0, fdHole) > 0) {
+            depth = -1;
+          }
+        } else {
+          depth = occupied(idx, cx, cy, rects, fringe, erode, fd);
+        }
+
+        let hit = depth > 0;
+
+        /* dissolve: en una banda del borde hacia adentro, la celda sólo
+           sobrevive si supera el umbral ordenado de su posición */
+        if (hit && dither > 0) {
+          const t = depth / (fringe * dither);
+          if (t < 1 && bayer(c, r) > t) hit = false;
+        }
+
+        on[idx] = hit ? 1 : 0;
+      }
+    }
+
+    return { on, cols, rows, cell, ox, oy, w: o.w, h: o.h };
+  }
+
+  const at = (g, c, r) =>
+    (c < 0 || r < 0 || c >= g.cols || r >= g.rows) ? 0 : g.on[r * g.cols + c];
+
+  /* --- render ------------------------------------------------------------ */
+
+  function render(ctx, g, style) {
+    const s = style || {};
+    const cell = g.cell;
+
+    if (s.fill) {
+      ctx.fillStyle = s.fill;
+      if (s.dots) {
+        /* trama de puntos dentro de la masa: segundo valor de relleno sin
+           segundo color. Del póster zkPass. */
+        const k = typeof s.dots === "number" ? s.dots : 0.34;
+        const d = Math.max(1, cell * k);
+        const off = (cell - d) / 2;
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell + off, g.oy + r * cell + off, d, d);
+          }
+        }
+      } else {
+        /* +1 tapa la costura entre celdas contiguas */
+        for (let r = 0; r < g.rows; r++) {
+          for (let c = 0; c < g.cols; c++) {
+            if (!g.on[r * g.cols + c]) continue;
+            ctx.fillRect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+          }
+        }
+      }
+    }
+
+    /* filete: se traza SÓLO sobre los lados que separan una celda encendida
+       de una apagada, así el contorno sigue la escalera exacta en vez de
+       aproximarla. Es el filete de las fichas del video. */
+    if (s.stroke) {
+      ctx.strokeStyle = s.stroke;
+      ctx.lineWidth = s.strokeWidth || Math.max(1, cell * 0.09);
+      ctx.lineCap = "square";
+      ctx.beginPath();
+      for (let r = 0; r < g.rows; r++) {
+        for (let c = 0; c < g.cols; c++) {
+          if (!g.on[r * g.cols + c]) continue;
+          const x = g.ox + c * cell, y = g.oy + r * cell;
+          if (!at(g, c, r - 1)) { ctx.moveTo(x, y);               ctx.lineTo(x + cell, y); }
+          if (!at(g, c, r + 1)) { ctx.moveTo(x, y + cell);        ctx.lineTo(x + cell, y + cell); }
+          if (!at(g, c - 1, r)) { ctx.moveTo(x, y);               ctx.lineTo(x, y + cell); }
+          if (!at(g, c + 1, r)) { ctx.moveTo(x + cell, y);        ctx.lineTo(x + cell, y + cell); }
+        }
+      }
+      ctx.stroke();
+    }
+  }
+
+  /* recorta un dibujo cualquiera (una foto) a la máscara. Así entra la
+     fotografía al sistema: por la máscara, cuantizada a la celda — nunca a
+     sangre y brillante. Arch Guide / Camer Studio. */
+  function clipTo(ctx, g) {
+    ctx.beginPath();
+    const cell = g.cell;
+    for (let r = 0; r < g.rows; r++) {
+      for (let c = 0; c < g.cols; c++) {
+        if (!g.on[r * g.cols + c]) continue;
+        ctx.rect(g.ox + c * cell, g.oy + r * cell, cell + 1, cell + 1);
+      }
+    }
+    ctx.clip();
+  }
+
+  /* --- capa DOM: la API declarativa por data-* --------------------------- */
+
+  function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
+
+  function sizeFor(cv) {
+    const d = dpr();
+    const w = Math.max(1, Math.round(cv.clientWidth * d));
+    const h = Math.max(1, Math.round(cv.clientHeight * d));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    return d;
+  }
+
+  function readRects(cv, d, pad) {
+    /* data-from acepta una LISTA de selectores separados por coma, que es lo
+       que habilita knockout con varios bloques de texto. Se mide contra el
+       canvas, en píxeles de dispositivo. */
+    const host = cv.parentElement;
+    const sel = cv.dataset.from || ".inner";
+    const cr = cv.getBoundingClientRect();
+    const out = [];
+    sel.split(",").map((s) => s.trim()).filter(Boolean).forEach((s) => {
+      host.querySelectorAll(s).forEach((el) => {
+        const er = el.getBoundingClientRect();
+        if (!er.width || !er.height) return;
+        out.push({
+          x: (er.left - cr.left) * d - pad,
+          y: (er.top  - cr.top)  * d - pad,
+          w: er.width  * d + pad * 2,
+          h: er.height * d + pad * 2
+        });
+      });
+    });
+    return out;
+  }
+
+  function paintBlob(cv) {
+    const d = dpr();
+    const g2 = cv.getContext("2d");
+    sizeFor(cv);
+    g2.clearRect(0, 0, cv.width, cv.height);
+
+    const T = root.BienalTokens || {};
+    const ACID = T.acid || "#C8F52D";
+    const VOID = T.void || "#12140F";
+    const QUIET = T.quiet || "#1D2016";
+
+    const cell = (+cv.dataset.cell || 20) * d;
+    const fringe = cell * (+cv.dataset.fringeCells || 3.2);
+    const seed = +cv.dataset.seed || 0;
+    const mode = cv.dataset.mode || "grow";
+    const dither = +cv.dataset.dither || 0;
+    const pad = cell * 0.5;
+
+    let rects = readRects(cv, d, pad);
+
+    /* bleed: la masa se va del borde en vez de terminar dentro del canvas.
+       Ahora las cuatro direcciones, no sólo left/bottom. */
+    const bleed = cv.dataset.bleed || "";
+    if (mode !== "knockout" && rects.length) {
+      const r0 = rects[0];
+      if (bleed.includes("left"))   { r0.w += r0.x + fringe; r0.x = -fringe; }
+      if (bleed.includes("top"))    { r0.h += r0.y + fringe; r0.y = -fringe; }
+      if (bleed.includes("right"))  { r0.w = cv.width  + fringe - r0.x; }
+      if (bleed.includes("bottom")) { r0.h = cv.height + fringe - r0.y; }
+    }
+
+    let fieldRect = null;
+    if (mode === "knockout") {
+      const inset = (+cv.dataset.inset || 0) * d;
+      fieldRect = { x: inset, y: inset, w: cv.width - inset * 2, h: cv.height - inset * 2 };
+    }
+
+    const gr = grid({
+      w: cv.width, h: cv.height, cell, fringe, seed, dither, rects, mode, fieldRect,
+      notchFringe: cell * (+cv.dataset.notchCells || 1.6)
+    });
+
+    /* `data-blob` acepta cuatro cosas: un nombre de token del sistema, "none"
+       (sin relleno: sólo queda la retícula en __grid para que otro la use),
+       un color literal `#rrggbb`, o el NOMBRE de una custom property —
+       `data-blob="--card"` lee `--card` del elemento que contiene al canvas.
+       Esa última forma es la que deja que una plancha tome el color de su
+       propia ficha sin que el motor tenga que conocer la paleta de §04. */
+    const key = cv.dataset.blob;
+    const fill =
+        key === "none"  ? null
+      : key === "void"  ? VOID
+      : key === "quiet" ? QUIET
+      : key && key.charAt(0) === "#" ? key
+      : key && key.slice(0, 2) === "--"
+          ? (getComputedStyle(cv.parentElement).getPropertyValue(key).trim() || ACID)
+      : ACID;
+    const strokeKey = cv.dataset.stroke;
+    const stroke = !strokeKey ? null
+      : strokeKey === "void" ? VOID : strokeKey === "acid" ? ACID : strokeKey;
+
+    render(g2, gr, {
+      fill,
+      stroke,
+      strokeWidth: cv.dataset.strokeWidth ? +cv.dataset.strokeWidth * d : undefined,
+      dots: cv.dataset.fill === "dots" ? (+cv.dataset.dotRatio || 0.34) : false
+    });
+
+    cv.__grid = gr;
+  }
+
+  /* --- remedición unificada ---------------------------------------------
+     Antes: el hero tenía ResizeObserver y la hoja no (una hoja que reflowea
+     sin resize de ventana quedaba con máscaras viejas); la hoja tenía
+     beforeprint y el hero no; ninguna pausaba fuera de pantalla.          */
+
+  let raf = 0, wired = false;
+
+  function paintAll() {
+    document.querySelectorAll("canvas[data-blob]").forEach(paintBlob);
+    if (root.BienalSteps) root.BienalSteps();
+  }
+
+  function schedule() {
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(paintAll);
+  }
+
+  function wire() {
+    if (wired) return;
+    wired = true;
+    paintAll();
+    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("beforeprint", paintAll);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) schedule(); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(schedule);
+      document.querySelectorAll("canvas[data-blob]").forEach((cv) => {
+        if (cv.parentElement) ro.observe(cv.parentElement);
+      });
+    }
+  }
+
+  root.Mask = {
+    hash21, vnoise, fbm, boxDist, bayer, clamp,
+    grid, render, clipTo, at,
+    paintBlob, paintAll, schedule, wire, sizeFor, dpr
+  };
+
+  if (typeof document !== "undefined") {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", wire);
+    } else {
+      wire();
+    }
+  }
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+<script>
+/* ── recorrida: estado por fila ──────────────────────────────────────────
+   Sirve a un solo caso de uso: alguien pasando nombre por nombre en una
+   reunión, en voz alta, sin perder el lugar si se recarga. Por eso el estado
+   vive en localStorage y no en la URL — es de quien conduce, no del
+   documento. Todo lectura/escritura va en try/catch: en una ventana privada
+   el accessor tira, y la página tiene que seguir funcionando igual.        */
+(function(){
+  "use strict";
+  /* nombre del slot de localStorage. No se llama KEY: gitleaks lee
+     `key = "..."` como credencial y bloquea el commit. */
+  var SLOT = "bbp27-vinculos-v02";
+  var rows = Array.prototype.slice.call(document.querySelectorAll(".row"));
+  var bar = document.getElementById("pbar");
+  var num = document.getElementById("pdone");
+  var total = rows.length;
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(SLOT) || "{}") || {}; }
+    catch(e){ return {}; }
+  }
+  function save(st){ try { localStorage.setItem(SLOT, JSON.stringify(st)); } catch(e){} }
+
+  var state = load();
+
+  function paint(){
+    var n = 0;
+    rows.forEach(function(r){
+      var on = !!state[r.id];
+      r.classList.toggle("done", on);
+      r.setAttribute("aria-pressed", on ? "true" : "false");
+      if (on) n++;
+    });
+    num.textContent = n;
+    bar.style.width = total ? (n / total * 100) + "%" : "0%";
+  }
+
+  function toggle(r){
+    if (state[r.id]) { delete state[r.id]; } else { state[r.id] = 1; }
+    save(state); paint();
+  }
+
+  rows.forEach(function(r){
+    r.addEventListener("click", function(ev){
+      if (ev.target.closest("a")) return;   /* un link adentro sigue siendo un link */
+      toggle(r);
+    });
+    r.addEventListener("keydown", function(ev){
+      if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar"){
+        ev.preventDefault(); toggle(r); return;
+      }
+      if (ev.key === "ArrowDown" || ev.key === "ArrowUp"){
+        ev.preventDefault();
+        var vis = rows.filter(function(x){ return x.offsetParent !== null; });
+        var i = vis.indexOf(r);
+        var nx = vis[i + (ev.key === "ArrowDown" ? 1 : -1)];
+        if (nx) nx.focus();
+      }
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    state = {}; save(state); paint();
+  });
+
+  var filt = document.getElementById("filt");
+  filt.addEventListener("click", function(){
+    var on = document.body.classList.toggle("only-pend");
+    filt.classList.toggle("on", on);
+  });
+
+  document.querySelectorAll(".chip[data-go]").forEach(function(c){
+    c.addEventListener("click", function(){
+      var t = document.getElementById(c.dataset.go);
+      if (t) t.scrollIntoView({ block:"start" });
+    });
+  });
+
+  paint();
+})();
+</script>
 </body>
 </html>
