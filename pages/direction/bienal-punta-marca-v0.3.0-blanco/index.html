@@ -1446,8 +1446,12 @@ footer{ background: var(--void); color: var(--acid); }
 
 /* 06 · el corredor — la foto se fue a la tesis; queda el campo plano.
    Las placas de las tres salas siguen en negro sobre el olivo. */
-#corredor{ background-color: var(--campo); }
-#corredor::before{ display: none; }
+/* 2026-10-02: el campo plano también se va de acá. §06 toma el papel con
+   tintas de §03 (`.papel-tintas`, por sustitución en el marcado). El ::before
+   ya no se apaga: es justamente el que pinta las cuatro tintas — la regla de
+   `.papel-tintas::before` pisa a la de `.photo::before` (misma especificidad,
+   va después) y el píxel transparente de `--bg` queda sin efecto. */
+#corredor{ background-color: #FFFFFF; }
 
 /* la pila — el cielo vuelve, y vuelve acá. El template pinta en este fondo la
    imagen del hero (su SKY_SRC) por style inline; esta variante la reemplaza por
@@ -1608,7 +1612,7 @@ footer{ background: var(--void); color: var(--acid); }
   </div>
 </section>
 
-<section id="corredor" class="photo sin-reticula" style="--bg:url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)">
+<section id="corredor" class="photo sin-reticula papel-tintas" style="--bg:url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)">
   <div class="sheet">
     <div class="head"><h2 id="hCorredor"></h2><span class="num">06</span></div>
     <p class="body" style="margin-bottom:clamp(1.4rem,3.4vw,2.2rem)" id="corrBody"></p>
