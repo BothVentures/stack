@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
 <title>Bienal Blockchain Punta 2027</title>
 <meta name="description" content="Bienal Blockchain Punta 2027. Opportunities and threats in a post-money world. The institutional platform where Southern Cone capital, those who regulate it and those who build its infrastructure sit at the same table. Every two years, in Punta del Este. March 2027.">
 <style>
@@ -576,7 +576,10 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    una sola vez para los tres: §04 la usa en plancha plena —tinta editorial
    sobre papel— y §03 y el cierre la usan difuminada, entrando por las
    esquinas. Sigue scopeada: nada de esto se filtra al resto del sitio. */
-#porque, #cierre, #senal{
+/* `.papel-tintas` es la misma receta —papel blanco + las cuatro tintas por las
+   esquinas— como clase, para que una variante pueda dársela a otra sección sin
+   duplicar la pila de gradientes (la Blanco se la da a §01 desde 2026-10-02). */
+#porque, #cierre, #senal, .papel-tintas{
   --c-peri:  #969DDA;   /* periwinkle — el bloque superior del afiche */
   --c-tan:   #C6AB7E;   /* tan/camel — la columna derecha */
   /* El bermellón de la referencia es #E23B2C, pero con tinta negra encima
@@ -802,7 +805,13 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
   display: block; font-family: var(--mono); font-size: var(--t-micro); font-weight: 600;
   letter-spacing: .17em; text-transform: uppercase; opacity: .75; margin-bottom: .35em;
 }
-.reg .v{ display: block; font-size: var(--t-sub); font-weight: 600; line-height: 1.24; }
+/* El título del bloque pesa como el de las fichas de §03 (`.why .t`, 900) y
+   sube un escalón sobre --t-sub: pedido del 2026-10-02 — más contraste entre
+   el título y el cuerpo de la ficha. */
+.reg .v{
+  display: block; font-size: clamp(1.4rem, 2.3vw, 2rem); font-weight: 900;
+  line-height: 1.02; letter-spacing: -.012em;
+}
 .reg .w{ display: block; font-family: var(--mono); font-size: .58rem; letter-spacing: .1em;
          text-transform: uppercase; opacity: .6; margin-top: .5em; }
 
@@ -855,9 +864,11 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    `.w` no servía: está pensada para un dato de contexto —mono, versalitas,
    letterspacing abierto— y una frase entera ahí se vuelve ilegible. */
 .reg .dsc{
-  display: block; margin-top: .45em; font-size: var(--t-body);
-  font-weight: 500; line-height: 1.45; max-width: 46ch;
+  display: block; margin-top: .7em; font-size: 1rem;
+  font-weight: 400; line-height: 1.45; max-width: 46ch;
 }
+/* 400 es el único cuerpo en regular del sitio; Archivo 400 entra en la URL de
+   fuentes (build_common.FONTS) sólo por esta regla. */
 
 /* ---------- §03 · el campo: papel blanco con las cuatro tintas entrando por
    las esquinas ------------------------------------------------------------
@@ -885,14 +896,16 @@ section{ padding: clamp(3rem, 8vw, 6.5rem) 0; }
    Las fichas de `.why` son opacas (`var(--acid)`), así que se recortan contra
    el campo y el difuminado pasa por detrás y por las juntas. El texto nunca se
    apoya sobre el color: se apoya sobre la ficha. */
-#porque, #cierre{ background-color: #FFFFFF; }
+#porque, #cierre, .papel-tintas{ background-color: #FFFFFF; }
+.papel-tintas{ position: relative; isolation: isolate; color: var(--void); }
+.papel-tintas .head{ border-color: var(--void); }
 /* la retícula de celda de `.photo` se apaga acá: el campo ya no es foto */
 #porque::after{ content: none; }
 /* El cierre no es `.photo`, así que no trae ni el contexto de posición ni el
    aislamiento que §03 hereda de esa clase. Se los da acá — sin `isolation` el
    pseudo con z-index negativo se iría detrás del fondo de la sección. */
 #cierre{ position: relative; isolation: isolate; }
-#porque::before, #cierre::before{
+#porque::before, #cierre::before, .papel-tintas::before{
   content: ""; position: absolute; inset: 0; z-index: -2;
   background:
     /* arriba-izquierda · periwinkle */
@@ -1393,7 +1406,13 @@ footer{ background: var(--void); color: var(--acid); }
 /* 01 · registros — la sección deja el negro y se apoya en el campo olivo.
    El knockout no se toca: la masa sigue siendo var(--acid), que ahora es
    blanca, y el texto en las muescas sigue derivando del fondo de la ficha. */
-#registros{ background: var(--campo); }
+/* 2026-10-02: el fondo olivo se va. §01 toma el papel con tintas de §03
+   (`.papel-tintas`, puesta en el marcado por sustitución más abajo) y la MASA
+   del knockout pasa a olivo: es la regla de esta variante —la masa negra pasa a
+   campo— aplicada al revés de como estaba (antes el campo era el fondo y la
+   masa era blanca; sobre papel blanco esa masa desaparecía). El texto de las
+   muescas deriva del fondo, así que pasa a tinta negra solo. */
+#registros{ background-color: #FFFFFF; }
 
 /* 02 · es / no es — las fichas negras pasan a campo. Las ácidas ya son
    blancas por token. El contenedor y sus juntas de 1px siguen en negro. */
@@ -1482,11 +1501,11 @@ footer{ background: var(--void); color: var(--acid); }
   <p class="sr" id="srPitch"></p>
 </section>
 
-<section id="registros" class="on-dark">
+<section id="registros" class="papel-tintas">
   <div class="sheet">
     <div class="head"><h2 id="hRegistros"></h2><span class="num">01</span></div>
     <div class="regs">
-      <canvas data-blob="acid" data-mode="knockout" data-seed="41.2" data-cell="13"
+      <canvas data-blob="--campo" data-mode="knockout" data-seed="41.2" data-cell="13"
               data-fringe-cells="2.4" data-notch-cells="1.0" data-inset="10"
               data-from=".reg" aria-hidden="true"></canvas>
       <div class="over" id="regsOver"></div>
@@ -2087,14 +2106,18 @@ footer{ background: var(--void); color: var(--acid); }
     agenda: [
       { n: "01",
         es: { t: "Stablecoins y pagos",
-              d: "Los rieles que América Latina ya usa — formalizados." },
+              d: "Los rieles que América Latina ya usa — formalizados. " +
+                 "Quién emite, quién liquida y bajo qué reglas." },
         en: { t: "Stablecoins & Payments",
-              d: "The rails Latin America already uses — formalized." } },
+              d: "The rails Latin America already uses — formalized. " +
+                 "Who issues, who settles, and under which rules." } },
       { n: "02",
         es: { t: "RWA y tokenización",
-              d: "Activos reales, propiedad transparente, liquidez." },
+              d: "Activos reales, propiedad transparente, liquidez. " +
+                 "De la tierra al crédito: qué se tokeniza primero, y por qué." },
         en: { t: "RWA & Tokenization",
-              d: "Real assets, transparent ownership, liquidity." } },
+              d: "Real assets, transparent ownership, liquidity. " +
+                 "From land to credit: what gets tokenized first, and why." } },
       { n: "03",
         es: { t: "AI × on-chain",
               d: "Pagos agénticos e infraestructura. La AI entra por la " +
