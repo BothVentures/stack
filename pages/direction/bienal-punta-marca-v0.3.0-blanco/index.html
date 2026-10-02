@@ -1407,12 +1407,22 @@ footer{ background: var(--void); color: var(--acid); }
    El knockout no se toca: la masa sigue siendo var(--acid), que ahora es
    blanca, y el texto en las muescas sigue derivando del fondo de la ficha. */
 /* 2026-10-02: el fondo olivo se va. §01 toma el papel con tintas de §03
-   (`.papel-tintas`, puesta en el marcado por sustitución más abajo) y la MASA
-   del knockout pasa a olivo: es la regla de esta variante —la masa negra pasa a
-   campo— aplicada al revés de como estaba (antes el campo era el fondo y la
-   masa era blanca; sobre papel blanco esa masa desaparecía). El texto de las
-   muescas deriva del fondo, así que pasa a tinta negra solo. */
+   (`.papel-tintas`, puesta en el marcado por sustitución más abajo) y las
+   fichas pasan a ser PLACAS BLANCAS sobre ese papel, como las de §03: el
+   canvas deja el knockout (masa + muescas) y pasa a `grow`, una masa blanca
+   que crece desde cada `.reg`. Hubo un paso intermedio en el mismo día —masa
+   olivo con muescas de papel— y se descartó: el olivo alrededor de las cards
+   era justo lo que se quería sacar. El fleco baja de 2.4 a 1.0 celdas porque
+   a 2.4 las tres masas se tocaban y se fundían en una sola placa. */
 #registros{ background-color: #FFFFFF; }
+/* La ficha recorta su propio canvas de puntos. El padding inferior RESERVA la
+   banda de la trama (ancla 44px + fleco 3 celdas de 11px ≈ 80px): §03 lo
+   resuelve con min-height fija, pero `.reg` baja a min-height 0 en móvil y
+   sin esta reserva los puntos se treparían al cuerpo. */
+#registros .reg{ position: relative; overflow: hidden; padding-bottom: 96px; }
+#registros .reg canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+#registros .reg .anchor{ position: absolute; left: 6%; right: 6%; bottom: 0; height: 44px; }
+#registros .reg .k, #registros .reg .v, #registros .reg .dsc{ position: relative; }
 
 /* 02 · es / no es — las fichas negras pasan a campo. Las ácidas ya son
    blancas por token. El contenedor y sus juntas de 1px siguen en negro. */
@@ -1505,8 +1515,8 @@ footer{ background: var(--void); color: var(--acid); }
   <div class="sheet">
     <div class="head"><h2 id="hRegistros"></h2><span class="num">01</span></div>
     <div class="regs">
-      <canvas data-blob="--campo" data-mode="knockout" data-seed="41.2" data-cell="13"
-              data-fringe-cells="2.4" data-notch-cells="1.0" data-inset="10"
+      <canvas data-blob="acid" data-mode="grow" data-seed="41.2" data-cell="13"
+              data-fringe-cells="1.0" data-notch-cells="1.0" data-inset="10"
               data-from=".reg" aria-hidden="true"></canvas>
       <div class="over" id="regsOver"></div>
     </div>
@@ -2873,7 +2883,11 @@ footer{ background: var(--void); color: var(--acid); }
      habla. La ficha del registro mapea sin forzar nada: clave = el bloque,
      valor = el tema, y una línea de cuerpo debajo. */
   $("regsOver").innerHTML = C.agenda.map((b) =>
-    `<div class="reg"><span class="k">Block ${b.n}</span>` +
+    `<div class="reg">` +
+    `<canvas data-blob="void" data-fill="dots" data-dot-ratio="0.32" data-seed="${29 + (+b.n) * 13}"` +
+    ` data-cell="11" data-fringe-cells="3.0" data-from=".anchor" data-bleed="bottom" aria-hidden="true"></canvas>` +
+    `<span class="anchor" aria-hidden="true"></span>` +
+    `<span class="k">Block ${b.n}</span>` +
     `<span class="v">${b.en.t}</span>` +
     `<span class="dsc">${b.en.d}</span></div>`).join("");
 
