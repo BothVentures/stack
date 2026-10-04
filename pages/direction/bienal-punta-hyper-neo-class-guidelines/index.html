@@ -578,6 +578,77 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
 @media (max-width: 1000px){ .f-lock .sheet{ grid-template-columns: auto minmax(0, 1fr); } .f-stamp{ grid-column: 1 / -1; width: 100%; max-width: 420px; } }
 @media (max-width: 640px){ .f-lock .sheet{ grid-template-columns: minmax(0, 1fr); } .f-mark{ height: 2.4rem; } }
 
+/* ---------- marcas de registro: sólo en la hoja de sistema ---------- */
+.masthead .reg{ position: absolute; width: 13px; height: 13px; z-index: 3; opacity: .85; pointer-events: none; }
+.masthead .reg::before, .masthead .reg::after{ content: ""; position: absolute; background: var(--paper); }
+.masthead .reg::before{ left: 6px; top: 0; width: 1px; height: 13px; }
+.masthead .reg::after{ top: 6px; left: 0; height: 1px; width: 13px; }
+.masthead .reg.tl{ left: 10px; top: 10px; } .masthead .reg.tr{ right: 10px; top: 10px; }
+.masthead .reg.bl{ left: 10px; bottom: 10px; } .masthead .reg.br{ right: 10px; bottom: 10px; }
+
+/* ---------- del board a la regla ---------- */
+table.board td.pin{ font-family: var(--pixel); font-weight: 800; font-size: 1.05rem; letter-spacing: .04em; white-space: nowrap; }
+table.board td.take{ border-left: 3px solid var(--void); padding-left: .7rem; }
+table.board td.leave{ color: var(--campo); }
+
+/* ---------- el gesto: la pintura se cuantiza bajo el puntero ---------- */
+.gesto{ position: relative; aspect-ratio: 16 / 7; background: var(--void); overflow: hidden; margin: 1.2rem 0; touch-action: pan-y; }
+.gesto canvas{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.gesto .tag{ position: absolute; left: 0; top: 0; z-index: 2; font-family: var(--mono); font-size: .5rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: .3rem .5rem; background: var(--paper); color: var(--void); }
+.gesto .hintg{ position: absolute; right: .8rem; bottom: .7rem; z-index: 2; font-family: var(--mono); font-size: .56rem; letter-spacing: .14em; text-transform: uppercase; color: var(--paper); opacity: .8; }
+
+/* ---------- la paleta la trae el cuadro ---------- */
+.pals{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: clamp(.7rem,1.8vw,1.2rem); margin: 1.2rem 0; }
+.pal .thumb{ aspect-ratio: 16 / 9; background-size: cover; background-position: center; }
+.pal .sws{ display: grid; grid-template-columns: repeat(6, 1fr); height: 34px; }
+.pal .sws span{ display: block; }
+.pal .cap{ font-family: var(--mono); font-size: .54rem; letter-spacing: .1em; text-transform: uppercase; margin-top: .45rem; line-height: 1.5; }
+
+/* ---------- las tres formaciones ---------- */
+.forms{ display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--void); border: var(--rule-head) solid var(--void); margin: 1.2rem 0; }
+@media (max-width: 760px){ .forms{ grid-template-columns: 1fr; } }
+.form{ padding: clamp(1rem,2.4vw,1.6rem); min-height: 200px; display: grid; align-content: end; position: relative; }
+.form .k{ position: absolute; left: .8rem; top: .7rem; font-family: var(--mono); font-size: .54rem; letter-spacing: .14em; text-transform: uppercase; opacity: .7; }
+.form--apilado{ background: var(--paper); color: var(--void); }
+.form--apilado .l{ display: block; text-transform: uppercase; line-height: .86; }
+.form--apilado .p{ font-family: var(--pixel); font-weight: 800; font-size: clamp(1.6rem, 4.2vw, 3.2rem); letter-spacing: .03em; }
+.form--apilado .s{ font-family: var(--tema); font-style: italic; font-weight: 400; text-transform: none; font-size: clamp(2.4rem, 6.4vw, 5rem); line-height: .9; }
+.form--losa{ background: var(--void); color: var(--paper); text-align: center; align-content: center; text-transform: uppercase; line-height: .9; }
+.form--losa .p{ display: block; font-family: var(--pixel); font-weight: 800; font-size: clamp(1.1rem, 2.6vw, 2rem); letter-spacing: .03em; }
+.form--losa .s{ display: block; font-family: var(--tema); font-style: italic; font-weight: 400; text-transform: none; font-size: clamp(1.8rem, 4.4vw, 3.4rem); }
+.form--hilo{ background: var(--paper); color: var(--void); grid-column: 1 / -1; min-height: 0; padding-top: 2.2rem; }
+.form--hilo .n{ display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .2em; font-size: clamp(1.1rem, 3vw, 2.4rem); line-height: .9; text-transform: uppercase; }
+.form--hilo .p{ font-family: var(--pixel); font-weight: 800; letter-spacing: .035em; }
+.form--hilo .s{ font-family: var(--tema); font-style: italic; font-weight: 400; text-transform: none; font-size: 1.16em; }
+
+/* ---------- la lista de fechas ---------- */
+.datelist{ background: var(--void); color: var(--paper); padding: clamp(1.2rem,2.6vw,2rem); display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: end; }
+.datelist ol{ list-style: none; margin: 0; padding: 0; }
+.datelist li{ font-family: var(--disp); font-weight: 900; font-size: clamp(1.8rem, 5vw, 3.8rem); line-height: .96; letter-spacing: -.03em; text-transform: uppercase; display: flex; gap: .4em; align-items: baseline; }
+.datelist li .m{ font-family: var(--pixel); font-weight: 800; font-size: .62em; letter-spacing: .04em; }
+.datelist li .w{ font-family: var(--mono); font-size: .3em; letter-spacing: .14em; opacity: .62; font-weight: 600; margin-left: .6em; }
+.datelist .side{ font-family: var(--mono); font-size: .58rem; letter-spacing: .12em; text-transform: uppercase; text-align: right; line-height: 1.6; opacity: .8; }
+
+/* ---------- modo noche: la sala ---------- */
+.noche{ position: relative; min-height: clamp(300px, 36vw, 420px); background-size: cover; background-position: center; isolation: isolate; display: grid; align-items: end; padding: clamp(1rem,2.4vw,1.6rem); }
+.noche .plate{ position: relative; background: var(--void); color: var(--paper); padding: clamp(1rem,2.4vw,1.5rem); width: fit-content; max-width: 100%; }
+.noche canvas{ position: absolute; inset: 0; width: 100%; height: 100%; }
+.noche .over{ position: relative; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.2rem; }
+@media (max-width: 760px){ .noche .over{ grid-template-columns: 1fr; } }
+.noche .k{ font-family: var(--mono); font-size: .56rem; letter-spacing: .14em; text-transform: uppercase; opacity: .6; }
+.noche .t{ font-weight: 900; font-size: 1rem; line-height: 1.1; margin: .3rem 0; }
+.noche .d{ font-weight: 400; font-size: .78rem; line-height: 1.42; opacity: .9; }
+
+/* ---------- el ticket: etiqueta vertical + letra chica ---------- */
+.ticket .edge{ position: absolute; left: 0; top: 0; bottom: 0; width: 1.1rem; z-index: 3; display: grid; place-items: center; }
+.ticket .edge span{ writing-mode: vertical-rl; transform: rotate(180deg); font-family: var(--mono); font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: var(--paper); opacity: .85; white-space: nowrap; }
+.ticket .fine{ font-family: var(--mono); font-size: .46rem; line-height: 1.45; letter-spacing: .02em; opacity: .62; max-width: 34ch; text-transform: none; }
+
+/* ---------- escala de espacio ---------- */
+.spaces{ display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-end; margin: 1rem 0; }
+.space{ font-family: var(--mono); font-size: .54rem; letter-spacing: .1em; text-transform: uppercase; text-align: center; }
+.space i{ display: block; background: var(--void); margin: 0 auto .35rem; }
+
 @media print{
   @page{ size: A3 portrait; margin: 12mm; }
   body{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -590,7 +661,8 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
   <div class="bleed" data-bg="hero"></div>
   <canvas data-blob="--paper" data-seed="11.3" data-cell="22" data-fringe-cells="3.2"
           data-from=".inner" data-bleed="left bottom" aria-hidden="true"></canvas>
-  <span class="hint">Brand guidelines · V0.5.0 · rev. 2026-10-03</span>
+  <span class="reg tl" aria-hidden="true"></span><span class="reg tr" aria-hidden="true"></span><span class="reg bl" aria-hidden="true"></span><span class="reg br" aria-hidden="true"></span>
+  <span class="hint">Brand guidelines · V0.5.0 · rev. 2026-10-03 · segunda vuelta</span>
   <div class="inner">
     <span class="mark" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 59.08" fill="currentColor" role="img">
   <path d="M 0.00,24.50 C 4.00,19.00 10.00,0.60 25.00,0.60 C 35.00,0.60 40.00,15.50 50.00,18.60 C 60.00,21.60 65.00,3.40 78.00,3.40 C 91.00,3.40 101.00,16.00 110.00,22.00 C 113.00,24.50 114.50,26.50 115.50,28.00 L 0,28.00 Z"/>
@@ -1850,6 +1922,34 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
         </dl>
       </div>
     </div>
+    <h3 class="sub-h">Del board a la regla — qué se toma y qué queda afuera</h3>
+    <p class="body">El board de Pinterest (82 pines, 34 archivados en <code>_refs/</code>) y las cuatro
+      referencias de escritorio del 2026-10-03, leídos pin por pin. La dirección no sale de una
+      referencia: sale de la <b>colisión</b> entre dos familias que el board ya traía mezcladas sin
+      nombrarlas. Cada fila dice qué cruza a regla y qué se queda del lado de la cita.</p>
+    <table class="tk board"><thead><tr><th>Pin</th><th>Qué es</th><th>Lo que cruza a regla</th><th>Lo que queda afuera</th></tr></thead><tbody>
+      <tr><td class="pin">18</td><td>«Memory Culture»: retrato del siglo XVII con masas de píxel ácido encima.</td><td class="take"><b>La semilla.</b> Pintura clásica interrumpida por el bitmap — es la costura entera en una pieza. Pasa a §02.</td><td class="leave">El ácido como campo (ya se fue: el campo es papel).</td></tr>
+      <tr><td class="pin">33 · 34 · refs</td><td>Wanderlust · pantallas rusas · tickets Eloquence y Louvre: pintura como campo con display enorme.</td><td class="take">La escala del display sobre pintura; el recorte al detalle; el ticket con banda de pintura, fecha enorme y QR.</td><td class="leave">El oro como tinta, el glow, el marco dibujado, el código de barras (líneas, no celdas), la perforación dibujada.</td></tr>
+      <tr><td class="pin">10 · 23</td><td>MAAP: lista de fechas apilada en grotesca · hfg Offenbach: columna tipográfica justificada.</td><td class="take"><b>La lista de fechas</b> como pieza display (§09.13) y la pila justificada (§09.8) — tipografía que es su propia imagen.</td><td class="leave">El negro como papel dominante: acá el negro es plancha, no campo.</td></tr>
+      <tr><td class="pin">04 · 15 · 22</td><td>Grillas editoriales densas: programa, horarios, celdas de datos en mono.</td><td class="take">La densidad como <b>valle</b> antes del pico (§10); el programa como secuencia de baja varianza; mono para todo lo que informa.</td><td class="leave">El campo saturado detrás de la grilla (22): la grilla va sobre papel o plancha.</td></tr>
+      <tr><td class="pin">13</td><td>Seis objetos 3D en fichas pastel, nombradas como dioses griegos.</td><td class="take">La ficha pastel para <b>dato</b> (la paleta editorial, scopeada) y la convivencia de nombre clásico con ficha técnica.</td><td class="leave">El render 3D; el pastel como campo de sección.</td></tr>
+      <tr><td class="pin">11 · 20 · 28 · 32</td><td>Anotaciones mono sobre imagen: coordenadas, trayectorias punteadas, aérea satelital con masas.</td><td class="take">La coordenada del hero; la insignia mono sobre placa. <b>Propuesta:</b> anotar un detalle de la pintura con insignias papel (nunca texto suelto) — §16.</td><td class="leave">Texto directo sobre la imagen: rompe la costura.</td></tr>
+      <tr><td class="pin">05 · 30 · 19</td><td>Un solo color saturado por pieza, como campo entero (naranja, rojo).</td><td class="take">Un saturado por pieza, como máximo — y es el bermellón, una vez.</td><td class="leave">El saturado como campo: acá el campo es papel y el color lo trae el cuadro.</td></tr>
+      <tr><td class="pin">24 · 26 · 27</td><td>Tipografía de píxel: en pantalla, en CRT sobre foto nocturna, y como letrero físico en una fachada.</td><td class="take">Handjet en los slots fijos. <b>Propuesta:</b> la señalética de sede como <b>matriz de píxeles física</b> — la celda del sistema se vuelve LED (§13, §16).</td><td class="leave">El efecto CRT y el glitch: la celda es dura, no vibra.</td></tr>
+      <tr><td class="pin">06 · 21 · 12</td><td>Masas ameboides de bitmap sobre negro (Sonneto, afiches ácidos).</td><td class="take">El motor de máscara, que ya era nuestro desde V0.3.0.</td><td class="leave">El ácido y el negro como pareja de campo: Máscaras no sigue.</td></tr>
+      <tr><td class="pin">09 · 34</td><td>Disco astronómico y anillo con fases lunares alrededor de la imagen.</td><td class="take">Nada.</td><td class="leave">El círculo entero: el radio del sistema es cero y la regla no admite la excepción ornamental.</td></tr>
+    </tbody></table>
+
+    <h3 class="sub-h">El gesto Hyper — la pintura se cuantiza bajo el puntero</h3>
+    <p class="body">Es el único movimiento de la capa digital sobre la capa clásica, y lo hace la persona:
+      donde pasa el puntero la pintura se vuelve celda y vuelve al soltarlo. En reposo, la pintura
+      es pintura. Movelo.</p>
+    <div class="gesto" id="gesto">
+      <canvas id="gestoCv" aria-hidden="true"></canvas>
+      <span class="tag">el gesto · celda viva · Tiepolo, 1760s</span>
+      <span class="hintg" id="gestoHint">movés vos · se cuantiza · vuelve</span>
+    </div>
+
     <div class="seam">
       <h4>La costura — es la única regla que importa</h4>
       <p>La pintura la corta la celda, nunca una forma blanda. El texto nunca pisa la pintura: se apoya
@@ -1936,6 +2036,16 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       <tr><td><b>Campo olivo</b></td><td>Ficha 02 de §02 — y nada más</td><td class="m">--paper</td><td>Sólo texto. Entra donde una masa clara sobre claro se volvería invisible. Es tercer valor, no tinta.</td></tr>
       <tr><td><b>Campo de pintura / foto</b></td><td>Hero, §02, §04 (desenfocada), tesis, §07, pila</td><td class="m">placa</td><td>Masas y placas. Texto directo sobre la imagen sólo en la losa, en blanco, con velo ≤ .42.</td></tr>
     </tbody></table>
+    <h3 class="sub-h">La escala de espacio — propuesta</h3>
+    <p class="body">El sitio corre valores sueltos en el tablero (14 · 10 · 7 · 18 · 6 · 9 px). La escala
+      que sigue los ordena en pasos de 4 con un solo intruso justificado: el <code>--room</code> de 14
+      px, que es el desborde del canvas y lo fija el alcance de la máscara, no el espacio.</p>
+    <div class="spaces">${[4,8,12,16,24,32,48].map((v,i)=>`<div class="space"><i style="width:${v}px;height:${v}px"></i>--s-${i+1}<br>${v}px</div>`).join("")}</div>
+    ${rules([
+      { k: A, t: "<code>--s-1: 4px · --s-2: 8px · --s-3: 12px · --s-4: 16px · --s-5: 24px · --s-6: 32px · --s-7: 48px</code>. Gap de fichas <code>clamp(12px, 1.6vw, 20px)</code> → <code>--s-3…--s-5</code>. Padding de ficha <code>clamp(1.2rem, 2.6vw, 1.85rem)</code> → <code>--s-5…--s-6</code>." },
+      { k: B, t: "Todo espacio nuevo es múltiplo de 4 o un token <code>--s-*</code>. <code>--room: 14px</code> y <code>--dots-cell: 11px</code> son medidas del motor, no espacio: quedan fuera de la escala a propósito." },
+      { k: Cc, t: "Si la escala se adopta en la próxima horneada del sitio. Hoy es propuesta: ningún valor del template cambió.", who: "Decide: dirección de arte, con Manu en bienal-web" }
+    ])}
     ${rules([
       { k: A, t: "Papel con tintas: blanco + ocho gradientes radiales, dos por esquina — periwinkle arriba-izquierda, tan arriba-derecha, salvia abajo-izquierda, bermellón abajo-derecha (la más chica y más floja). Clase <code>.papel-tintas</code>, en el template compartido." },
       { k: B, t: "Las tintas van en las esquinas y mueren hacia el centro. Si el centro de la sección no es blanco puro, la receta se desbordó." },
@@ -2069,6 +2179,17 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       { k: B, t: "Contraste mínimo 4.5:1 en texto chico, <b>medido color por color</b>. El sitio publicado corre todavía <code>#7B7C6C</code> en §01 y §02 (4.25:1): es deuda, no canon (§16)." }
     ])}
 
+    <h3 class="sub-h">La paleta la trae el cuadro</h3>
+    <p class="body">El color saturado del sistema no es un token: es lo que ya está pintado. Abajo, los
+      seis valores dominantes de cada pintura del inventario, extraídos del archivo al hornear este
+      documento. <b>No se copian al CSS.</b> Existen para mostrar qué temperatura entra con cada obra
+      — y para elegir obra por sección sabiendo qué trae.</p>
+    <div class="pals"><div class="pal"><div class="thumb" data-bg="midas"></div><div class="sws"><span style="background:#322417" title="#322417"></span><span style="background:#38291B" title="#38291B"></span><span style="background:#2F2114" title="#2F2114"></span><span style="background:#231C12" title="#231C12"></span><span style="background:#443221" title="#443221"></span><span style="background:#654B33" title="#654B33"></span></div><div class="cap"><b>Poussin · Midas · 1627</b><br>#322417 · #38291B · #2F2114 · #231C12 · #443221 · #654B33</div></div><div class="pal"><div class="thumb" data-bg="marius"></div><div class="sws"><span style="background:#433631" title="#433631"></span><span style="background:#14161A" title="#14161A"></span><span style="background:#76827B" title="#76827B"></span><span style="background:#7C654D" title="#7C654D"></span><span style="background:#575B56" title="#575B56"></span><span style="background:#9B9E87" title="#9B9E87"></span></div><div class="cap"><b>Tiepolo · Marius · 1729</b><br>#433631 · #14161A · #76827B · #7C654D · #575B56 · #9B9E87</div></div><div class="pal"><div class="thumb" data-bg="apoteosis"></div><div class="sws"><span style="background:#7F5926" title="#7F5926"></span><span style="background:#462E16" title="#462E16"></span><span style="background:#956A2E" title="#956A2E"></span><span style="background:#937B53" title="#937B53"></span><span style="background:#AB9160" title="#AB9160"></span><span style="background:#84693E" title="#84693E"></span></div><div class="cap"><b>Tiepolo · Apoteosis · 1760s</b><br>#7F5926 · #462E16 · #956A2E · #937B53 · #AB9160 · #84693E</div></div><div class="pal"><div class="thumb" data-bg="vernet"></div><div class="sws"><span style="background:#1A1A13" title="#1A1A13"></span><span style="background:#625636" title="#625636"></span><span style="background:#36301E" title="#36301E"></span><span style="background:#4C391C" title="#4C391C"></span><span style="background:#807D65" title="#807D65"></span><span style="background:#A1A99D" title="#A1A99D"></span></div><div class="cap"><b>Vernet · Triunfo · 1789</b><br>#1A1A13 · #625636 · #36301E · #4C391C · #807D65 · #A1A99D</div></div><div class="pal"><div class="thumb" data-bg="hero"></div><div class="sws"><span style="background:#1D0F16" title="#1D0F16"></span><span style="background:#2D191C" title="#2D191C"></span><span style="background:#603B31" title="#603B31"></span><span style="background:#8F6650" title="#8F6650"></span><span style="background:#4B1C1B" title="#4B1C1B"></span><span style="background:#C79D7D" title="#C79D7D"></span></div><div class="cap"><b>Hero · render · 2026 (propuesta)</b><br>#1D0F16 · #2D191C · #603B31 · #8F6650 · #4B1C1B · #C79D7D</div></div></div>
+    ${rules([
+      { k: B, t: "Ningún hex extraído de una pintura entra a <code>:root</code> ni a una clase. Si un color del cuadro hace falta como tinta, el sistema está pidiendo una tercera tinta — y la respuesta es no." },
+      { k: Cc, t: "Qué pintura va en qué sección según la temperatura que trae: la Apoteosis (cielo, frío) para el campo claro; Marius y Vernet (tierra, rojo) para el campo oscuro; Midas (ocre, gris) donde la ficha necesita callarse.", who: "Decide: dirección de arte, por sección" }
+    ])}
+
     <h3 class="sub-h">La paleta editorial — scopeada</h3>
     <p class="body">Cuatro tintas que viven <b>sólo</b> en tres consumidores: las planchas del tablero
       (§04), el papel con tintas (§01, §03, §06, cierre) y este manual. La tinta de texto sobre ellas
@@ -2108,6 +2229,10 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       (Neo-Class), y Archivo 900 para los titulares. Desde el 2026-10-02 el cuerpo es <b>Archivo 400</b>:
       el contraste entre el titular 900 y el cuerpo regular es la decisión tipográfica más reciente, y
       sube la temperatura editorial de cada ficha.</p>
+    <h3 class="sub-h">La escala, en píxeles — lo que mide cada voz a 390 y a 1440</h3>
+    <p class="body">Las fórmulas <code>clamp()</code> son tokens; esto es lo que dan. Calculado del
+      token al hornear (1 rem = 16 px). Es la tabla que un diseñador necesita para no adivinar.</p>
+    <table class="tk"><thead><tr><th>Token</th><th>Voz</th><th>a 390</th><th>a 1440</th><th>Fórmula</th></tr></thead><tbody><tr><td class="m">--t-tema</td><td>Instrument Serif · slot variable</td><td class="m">46 px</td><td class="m">150 px</td><td>clamp(46px, 10.4vw, 158px)</td></tr><tr><td class="m">--t-lugar</td><td>Handjet · lugar y edición</td><td class="m">38 px</td><td class="m">118 px</td><td>clamp(38px, 8.2vw, 118px)</td></tr><tr><td class="m">--t-formato</td><td>Handjet · formato</td><td class="m">30 px</td><td class="m">92 px</td><td>clamp(30px, 6.6vw, 92px)</td></tr><tr><td class="m">losa · serif</td><td>Instrument Serif en la losa</td><td class="m">42 px</td><td class="m">118 px</td><td>clamp(41.6px, 8.4vw, 118.4px)</td></tr><tr><td class="m">losa · píxel</td><td>Handjet en la losa</td><td class="m">27 px</td><td class="m">74 px</td><td>clamp(27.2px, 5.4vw, 73.6px)</td></tr><tr><td class="m">--t-display</td><td>Archivo 900 · cierre</td><td class="m">30 px</td><td class="m">78 px</td><td>clamp(30.4px, 5.4vw, 78.4px)</td></tr><tr><td class="m">--t-card</td><td>Archivo 900 · título de ficha</td><td class="m">22 px</td><td class="m">32 px</td><td>clamp(22.4px, 2.3vw, 32px)</td></tr><tr><td class="m">--t-h2</td><td>Archivo 900 · cabezal</td><td class="m">17 px</td><td class="m">24 px</td><td>clamp(16.8px, 2vw, 24px)</td></tr><tr><td class="m">--t-sub</td><td>Archivo 600 · subtítulo</td><td class="m">16 px</td><td class="m">22 px</td><td>clamp(16px, 1.9vw, 21.6px)</td></tr><tr><td class="m">--t-lead</td><td>Archivo 600 · bajada</td><td class="m">15 px</td><td class="m">20 px</td><td>clamp(15.2px, 1.55vw, 19.52px)</td></tr><tr><td class="m">--t-body</td><td>Archivo 400 · cuerpo</td><td class="m">15 px</td><td class="m">15 px</td><td>14.88px fijo</td></tr><tr><td class="m">--t-mono</td><td>IBM Plex Mono · datos</td><td class="m">12 px</td><td class="m">12 px</td><td>11.84px fijo</td></tr><tr><td class="m">--t-lbl</td><td>Mono · etiqueta</td><td class="m">9 px</td><td class="m">11 px</td><td>clamp(9.28px, 0.95vw, 10.88px) <b style="color:#6B6C5C">· bajo el piso de 11 px</b></td></tr><tr><td class="m">--t-micro</td><td>Mono · micro</td><td class="m">10 px</td><td class="m">10 px</td><td>9.6px fijo <b style="color:#6B6C5C">· bajo el piso de 11 px</b></td></tr></tbody></table>
     <div class="spec"><div class="meta">Handjet 800<br>slots fijos · ordinales<br><code>--pixel</code></div><div class="v-pixel">Bienal Punta 2027</div></div>
     <div class="spec"><div class="meta">Instrument Serif<br>itálica 400 · slot variable<br><code>--tema</code></div><div class="v-tema">Blockchain</div></div>
     <div class="spec"><div class="meta">Archivo 900<br>titulares · cifras<br><code>--disp</code></div><div class="v-disp">Es una bienal, no un summit anual</div></div>
@@ -2144,9 +2269,18 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
         <span class="slot">edición · fijo · píxel · hyper</span>
       </div>
     </div>
+    <h3 class="sub-h">Las tres formaciones</h3>
+    <div class="forms">
+      <div class="form form--apilado"><span class="k">apilado · el hero</span>
+        <span class="l p">${C.nombre.formato}</span><span class="l s">${C.nombre.tema}</span><span class="l p">${C.nombre.lugar} ${C.nombre.edicion}</span></div>
+      <div class="form form--losa"><span class="k">en losa · la tesis</span>
+        <span class="p">The first and only</span><span class="s">blockchain</span><span class="p">biennial.</span></div>
+      <div class="form form--hilo"><span class="k">al hilo · la barra y el pie</span>
+        <span class="n"><span class="p">${C.nombre.formato}</span><span class="s">${C.nombre.tema}</span><span class="p">${C.nombre.lugar}</span><span class="p">${C.nombre.edicion}</span></span></div>
+    </div>
     ${rules([
       { k: B, t: "El nombre completo, siempre. Sin acrónimo público. El <code>aria-label</code> de la marca dice el nombre entero." },
-      { k: A, t: "Tres formaciones, un reparto de voces: apilado (hero), en losa (tesis), al hilo (pie y barra)." },
+      { k: A, t: "Tres formaciones, un reparto de voces: apilado (hero), en losa (tesis), al hilo (pie y barra). Las tres arriba, generadas del copy canónico." },
       { k: B, t: "La línea de pie, verbatim: «" + C.lockup.es.pie + "» / «" + C.lockup.en.pie + "». El registro institucional («" + C.bajada.institucional.linea + "») no tiene traducción aprobada: en superficie inglesa va en español." },
       { k: B, t: "La coordenada <code>" + C.coordenada + "</code> es dato, no adorno: mono, sin <code>text-transform</code>, primos tipográficos (U+2032)." },
       { k: B, t: "La línea de continuidad, chica y en mono: «" + C.continuidad.en + "». Nunca compite con el nombre." },
@@ -2331,6 +2465,34 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       <div><b>Chequeo</b>El CTA es neutral («Get updates»): el modelo de acceso no está decidido y la acción lo esquiva, no lo contesta.</div>
     </div></div>
 
+    <h3 class="sub-h">09.12 · Modo noche — la sala</h3>
+    <div class="comp"><div class="stage noche" data-bg="marius">
+      <div class="plate">
+        <canvas data-blob="void" data-mode="grow" data-seed="88.1" data-cell="14" data-fringe-cells="1.6" data-from=".over" data-bleed="left bottom" aria-hidden="true"></canvas>
+        <div class="over">${C.audiencia.map(a => `<div><span class="k">/${a.n} · ${a.eje}</span><span class="t" style="display:block">${a.en.t}</span><span class="d">${a.en.d}</span></div>`).join("")}</div>
+      </div>
+    </div>
+    <div class="anat">
+      <div><b>Forma</b>Pintura a sangre sin velo, plancha void generada anclada abajo, tres columnas de texto en papel. Es §07 del sitio («Who sits at the table», sobre el retrato) y el registro de las pantallas rusas del board, sin su oro.</div>
+      <div><b>Regla</b>Sobre void la pintura va en color pleno y sin velo: el velo es sólo para la losa. El display en papel; la pintura nunca se oscurece para «hacer lugar» — el lugar lo hace la plancha.</div>
+      <div><b>Chequeo</b>Una sección nocturna por cada dos de papel, como máximo. Dos nocturnas seguidas apagan el documento.</div>
+    </div></div>
+
+    <h3 class="sub-h">09.13 · La lista de fechas</h3>
+    <div class="comp"><div class="stage datelist">
+      <ol>
+        <li><span class="m">Fri</span>05<span class="w">The Forum · The Dinner</span></li>
+        <li><span class="m">Sat</span>06<span class="w">The Summit · The Party</span></li>
+        <li><span class="m">Mar</span>2027<span class="w">Punta del Este, Uruguay</span></li>
+      </ol>
+      <div class="side">Nº 001<br>${C.ediciones.map(e => e.anio).join(" · ")}<br>${C.en.ritmo}</div>
+    </div>
+    <div class="anat">
+      <div><b>Forma</b>La fecha como pieza display, tomada del afiche MAAP del board (pin 10): el número en Archivo 900 enorme, el mes o el día en Handjet, la sala en mono al lado. Una columna, alineada a la izquierda, sobre plancha void o papel.</div>
+      <div><b>Dónde</b>Afiche, social 1080×1350, el dorso del ticket, la señalética de sede. En el sitio no existe todavía: es la pieza que falta entre el hero y el programa.</div>
+      <div><b>Chequeo</b>Sólo fechas decididas. Nada de «tickets open», nada de horas hasta que el programa esté firmado. Los años de las ediciones salen de <code>ediciones</code>, nunca a mano.</div>
+    </div></div>
+
     <h3 class="sub-h">09.10 · Las tres fotos del corredor y 09.11 · el pie</h3>
     <p class="body">El corredor (§06) corre tres imágenes en placa con las esquinas comidas por el bitmap
       (<code>data-bleed</code> en dos lados, celda grande) y una leyenda mono en insignia papel debajo
@@ -2422,6 +2584,7 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
     <div class="tickets">
       <div class="tickets-row">
         <div class="ticket">
+          <div class="edge"><span>${C.nombre.completo} · Nº 001 · 0001</span></div>
           <div class="band">
             <canvas data-blob="none" data-img="vernet" data-seed="12.4" data-cell="11" data-fringe-cells="3.2" data-bleed="left top bottom" data-from=".key" data-zoom="1.3" data-focus="0.5" aria-hidden="true"></canvas>
             <span class="key" aria-hidden="true"></span>
@@ -2430,6 +2593,7 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
             <div class="date"><span class="day">05</span><span class="mm">March<br>2027</span></div>
             <div class="name"><span class="p">Bienal </span><span class="s">Blockchain</span><span class="p"> Punta 2027</span></div>
             <div class="meta"><span>Room</span><span>01 · The Forum</span><span>Venue</span><span>MACA</span><span>Holder</span><span>Name in the notch</span><span>Access</span><span>Not decided</span></div>
+            <p class="fine">${C.en.posicionamiento} Painting: Carle Vernet, The Triumph of Aemilius Paulus, 1789 · The Met · CC0.</p>
           </div>
           <div class="qr"><span class="ord">Nº 001 · 0001</span><canvas class="qrbits" data-qr="34.90S 54.85W" aria-hidden="true"></canvas><span class="ord">Illustrative bitmap</span></div>
         </div>
@@ -2446,7 +2610,7 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
           <div class="qr"><span class="ord">Nº 001 · 0002</span><canvas class="qrbits" data-qr="BIENAL-0002" aria-hidden="true"></canvas></div>
         </div>
       </div>
-      <p class="ticket-cap">Ticket · 180 × 60 mm horizontal · 55 × 170 mm vertical · papel blanco 300 g · la banda de pintura ocupa ≥ 38 % y la corta la máscara en su borde interior · fecha en Archivo 900 a 3× el cuerpo · todo lo demás mono · QR en celda, nunca código de barras (líneas, no celdas) · sin perforación dibujada · el nombre de la persona vive en la muesca.</p>
+      <p class="ticket-cap">Ticket · 180 × 60 mm horizontal · 55 × 170 mm vertical · papel blanco 300 g · la banda de pintura ocupa ≥ 38 % y la corta la máscara en su borde interior · fecha en Archivo 900 a 3× el cuerpo · todo lo demás mono · etiqueta vertical en el canto de la banda (Eloquence) · letra chica: posicionamiento + colofón de la obra · QR en celda, nunca código de barras (líneas, no celdas) · sin perforación dibujada · el nombre de la persona vive en la muesca.</p>
     </div>
     <table class="tk"><thead><tr><th>Canal</th><th>Formato</th><th>Reglas propias</th></tr></thead><tbody>
       <tr><td>Web</td><td class="m">responsive</td><td>§10 entero. Celda del ancho del viewport. Barra void, cabezales con ordinal, fichas generadas. Sin scroll horizontal.</td></tr>
@@ -2456,6 +2620,7 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       <tr><td>Deck</td><td class="m">16:9</td><td>Una idea por lámina. La pintura entra como campo con placa o por la máscara, nunca como «imagen de stock» a la derecha del texto. Precio aparece tarde y nunca al lado de Casa Manantial.</td></tr>
       <tr><td>Print / papelería</td><td class="m">A3 · A2 · A4</td><td>Papel blanco, void y una pintura. Colores exactos; la máscara se recalcula en <code>beforeprint</code>. Sin crema de fondo.</td></tr>
       <tr><td>Señalética</td><td class="m">variable</td><td>Celda derivada del ancho de la pieza física. Plancha void con muescas o papel con placa. La pintura sólo en piezas grandes (≥ A1).</td></tr>
+      <tr><td>Señalética LED — <b>propuesta</b></td><td class="m">matriz física</td><td>La celda del sistema como píxel real: paneles LED de paso grueso (≥ 10 mm) en las sedes, con la masa y la lista de fechas corriendo el mismo motor. Es la pieza más Hyper posible y la única en la que la celda se puede tocar. Pines 24 · 26 · 27 del board. Decide René; costo y proveedor, Daiana.</td></tr>
       <tr><td>Merchandising</td><td class="m">bolsa 380×420</td><td>Una tinta sobre crudo; datos invertidos sobre la masa; sin pintura (una tinta no la puede llevar).</td></tr>
     </tbody></table>
     ${rules([
@@ -2527,6 +2692,8 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
       <li><b>La línea de pie</b> como parte no desprendible del lockup mínimo. Recomendación sí, pendiente de René desde agosto.</li>
       <li><b>Modelo de acceso.</b> No está decidido. El CTA lo esquiva. El ticket de §13 escribe «Not decided» donde iría el acceso: es una pieza de sistema, no un anuncio.</li>
       <li><b>La adenda «Ni cripto ni cultura: las dos.»</b> contiene el sustantivo prohibido. Doctrina interna hasta que alguien decida si la regla admite la excepción o la adenda se reescribe.</li>
+      <li><b>Cuatro propuestas de la segunda vuelta, sin consumidor en el sitio:</b> la lista de fechas (§09.13), el modo noche como componente nombrado (§09.12), la anotación de un detalle de pintura con insignias papel, y la señalética LED como celda física (§13). Todas vienen del board (pines 10, 11, 20, 24–28, 32) y de las referencias de escritorio. Ninguna cambia el template del sitio; las cuatro esperan a René.</li>
+      <li><b>La escala de espacio es propuesta.</b> Siete pasos en múltiplos de 4; el sitio corre valores sueltos. Adoptarla es una horneada en <code>bienal-web</code>, no acá.</li>
       <li><b>Registro marcario, carta de Uruguay Innova, satélite 2028.</b> Sin presentar · bajo el nombre viejo · parkeado. Owner: Andrés · continuidad · nadie.</li>
     </ol>` });
 
@@ -2614,6 +2781,79 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
     finder(0, 0); finder(N - 7, 0); finder(0, N - 7);
   }
 
+  /* ---------- el gesto: la pintura se cuantiza bajo el puntero ----------
+     Un solo canvas: la pintura a `cover`, y alrededor del puntero una ventana
+     cuadrada repintada a celda (reducida y vuelta a ampliar sin suavizado).
+     La celda es la del sistema. Nada se anima solo: tras 2.6 s sin puntero
+     entra un puntero fantasma para demostrar la pieza, salvo que la persona
+     haya pedido menos movimiento. */
+  function initGesto() {
+    const cv = $("gestoCv"); if (!cv) return;
+    const g = cv.getContext("2d");
+    const off = document.createElement("canvas"), og = off.getContext("2d");
+    let img = null, px = -1, py = -1, last = performance.now(), ghost = false, raf = 0;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const im = new Image(); im.decoding = "async";
+    im.onload = () => { img = im; size(); draw(); };
+    im.src = IMGS.apoteosis;
+    function size() {
+      const r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+      cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+    }
+    function cover() {
+      const s = Math.max(cv.width / img.width, cv.height / img.height);
+      const dw = img.width * s, dh = img.height * s;
+      return [(cv.width - dw) / 2, (cv.height - dh) * 0.4, dw, dh];
+    }
+    function draw() {
+      if (!img) return;
+      const d = Math.min(2, window.devicePixelRatio || 1);
+      const cell = Math.max(10, Math.round((document.documentElement.clientWidth || 1200) / 46)) * d;
+      g.imageSmoothingEnabled = true;
+      g.clearRect(0, 0, cv.width, cv.height);
+      g.drawImage(img, ...cover());
+      if (px < 0) return;
+      const R = cell * 7;
+      const x0 = Math.floor((px - R) / cell) * cell, y0 = Math.floor((py - R) / cell) * cell;
+      const w = Math.ceil((2 * R) / cell) * cell, h = w;
+      const cols = Math.max(1, Math.round(w / cell)), rows = Math.max(1, Math.round(h / cell));
+      off.width = cols; off.height = rows;
+      og.imageSmoothingEnabled = true;
+      og.clearRect(0, 0, cols, rows);
+      og.drawImage(cv, x0, y0, w, h, 0, 0, cols, rows);
+      g.imageSmoothingEnabled = false;
+      g.drawImage(off, 0, 0, cols, rows, x0, y0, w, h);
+      /* el filete de la ventana: la celda se declara, no se esconde */
+      g.fillStyle = window.BienalTokens.acid;
+      g.fillRect(x0, y0, w, Math.max(1, d)); g.fillRect(x0, y0 + h - d, w, Math.max(1, d));
+      g.fillRect(x0, y0, Math.max(1, d), h); g.fillRect(x0 + w - d, y0, Math.max(1, d), h);
+    }
+    function point(e) {
+      const r = cv.getBoundingClientRect(), d = cv.width / r.width;
+      px = (e.clientX - r.left) * d; py = (e.clientY - r.top) * d; last = performance.now(); ghost = false;
+      draw();
+    }
+    cv.parentElement.addEventListener("pointermove", point, { passive: true });
+    cv.parentElement.addEventListener("pointerleave", () => { px = py = -1; draw(); last = performance.now(); }, { passive: true });
+    function tick(t) {
+      raf = requestAnimationFrame(tick);
+      if (!img || reduced) return;
+      const idle = t - last;
+      if (idle > 2600) {
+        ghost = true;
+        const k = (t - last - 2600) / 1000;
+        px = cv.width * (0.5 + 0.34 * Math.sin(k * 0.9)); py = cv.height * (0.5 + 0.28 * Math.cos(k * 1.3));
+        draw();
+        $("gestoHint").textContent = "puntero fantasma · movés vos y toma el control";
+      }
+    }
+    if (!reduced) raf = requestAnimationFrame(tick);
+    /* re-medir cuando el contenedor cambia de tamaño — incluido pasar de
+       display:none a visible, que un resize de ventana no dispara */
+    if ("ResizeObserver" in window) new ResizeObserver(() => { size(); draw(); }).observe(cv.parentElement);
+    else window.addEventListener("resize", () => { size(); draw(); }, { passive: true });
+  }
+
   function publishCell() {
     const w = document.documentElement.clientWidth || 1200;
     document.documentElement.style.setProperty("--cell", Math.max(18, Math.round(w / 46)) + "px");
@@ -2672,6 +2912,7 @@ footer{ background: var(--void); color: var(--paper); margin-top: clamp(2rem,5vw
     "Lo que el sitio publicado no cumple de lo que acá se declara está en §16.";
 
   wireImages();
+  initGesto();   /* después del render: el canvas vive dentro de §02 */
   document.querySelectorAll("canvas.qrbits").forEach(drawQR);
   Mask.schedule();
 })();
