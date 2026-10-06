@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CRM de vínculos — PRD V0.1.0 · Bienal Blockchain Punta</title>
+<meta name="description" content="Alcance del MVP del CRM de vínculos de la Bienal Blockchain Punta 2027: qué entra, qué no, arquitectura en dos fases, tiempos y decisiones abiertas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;900&family=Handjet:wght@400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ===========================================================================
+   CRM de vínculos · PRD V0.1.0 — Bienal Blockchain Punta
+   ---------------------------------------------------------------------------
+   Hoja que se lee y se imprime, en Hyper-Neo-Class (tokens.hnc.css): papel
+   blanco, casi negro, un olivo por elemento, radio cero. Misma plantilla que
+   la descripción de rol del Head of Operations.
+   Fuente: comercial/2026-10-06-crm-prd-v0.1.md
+   =========================================================================== */
+:root{
+  --void:#12140F; --paper:#FFFFFF; --campo:#6B6C5C; --quiet:#1D2016; --crema:#F2EDE4;
+  --disp:"Archivo","Helvetica Neue",Arial,sans-serif; --pixel:"Handjet","Archivo",monospace;
+  --tema:"Instrument Serif",Georgia,serif; --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --rule:1px solid rgba(18,20,15,.26); --rule-f:1px solid rgba(18,20,15,.12);
+  --sheet:1000px; --pad:clamp(1rem,4vw,2.4rem);
+}
+*,*::before,*::after{border-radius:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--void);font-family:var(--disp);font-weight:400;font-size:clamp(.95rem,1.05vw,1.02rem);line-height:1.62;-webkit-font-smoothing:antialiased}
+.sheet{max-width:var(--sheet);margin:0 auto;padding:0 var(--pad)}
+.topbar{border-bottom:var(--rule)}
+.topbar .sheet{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;padding-top:.85rem;padding-bottom:.85rem;flex-wrap:wrap}
+.lockup{line-height:.9;white-space:nowrap}
+.lockup .f,.lockup .l{font-family:var(--pixel);font-weight:700;letter-spacing:.06em;font-size:.92rem}
+.lockup .t{font-family:var(--tema);font-style:italic;font-size:1.06rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
+.chip b{font-weight:600}
+.hero{padding:clamp(2.6rem,7vw,5rem) 0 clamp(1.6rem,3.4vw,2.4rem);border-bottom:var(--rule)}
+.eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--campo);margin:0 0 1.1rem}
+h1{font-family:var(--disp);font-weight:900;letter-spacing:-.035em;font-size:clamp(2.4rem,8.4vw,5.6rem);line-height:.92;margin:0;text-transform:uppercase}
+.sub{font-size:clamp(1.05rem,2.3vw,1.5rem);line-height:1.25;margin:1.1rem 0 0;max-width:38ch}
+.sub em{font-family:var(--tema);font-style:italic}
+.meta{display:flex;gap:1.4rem;flex-wrap:wrap;margin-top:1.9rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
+.meta span{color:var(--campo)} .meta b{font-weight:500;color:var(--void)}
+.oneline{border-bottom:var(--rule);padding:clamp(1.8rem,4vw,2.8rem) 0}
+.oneline p{font-size:clamp(1.2rem,2.8vw,1.9rem);line-height:1.24;margin:0;max-width:34ch;font-weight:500;letter-spacing:-.015em}
+.oneline .run{display:block;margin-top:.7rem;font-family:var(--tema);font-style:italic;font-weight:400;letter-spacing:0}
+.oneline .run b{font-family:var(--disp);font-style:normal;font-weight:900;text-transform:uppercase}
+section{border-bottom:var(--rule);padding:clamp(2.1rem,4.4vw,3.1rem) 0}
+.hd{display:grid;grid-template-columns:3.2rem 1fr;gap:1rem;align-items:start;margin:0 0 1.5rem}
+.num{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--campo);padding-top:.42rem}
+h2{font-family:var(--disp);font-weight:600;letter-spacing:-.022em;font-size:clamp(1.3rem,3vw,1.85rem);line-height:1.1;margin:0}
+.kick{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--campo);margin:.5rem 0 0}
+.body{margin-left:0} @media(min-width:720px){.body{margin-left:4.2rem}}
+.body>*:first-child{margin-top:0}
+p{margin:0 0 1rem;max-width:68ch} p.lead{font-size:1.08em}
+strong{font-weight:600} em{font-family:var(--tema);font-style:italic;font-size:1.05em}
+.tw{overflow-x:auto;margin:1.4rem 0}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;vertical-align:top;padding:.72rem .9rem;border-bottom:var(--rule-f)}
+thead th{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;background:var(--void);color:var(--paper);border-bottom:none}
+tbody tr:last-child td{border-bottom:var(--rule-f)}
+td:first-child{font-weight:600;width:28%;min-width:8.5rem}
+ul,ol{margin:1rem 0;padding-left:0;list-style:none;max-width:68ch}
+li{margin:0 0 .72rem;padding-left:1.5rem;position:relative}
+li::before{content:"—";position:absolute;left:0;color:var(--campo);font-family:var(--mono);font-size:.8rem}
+ol{counter-reset:n} ol li{counter-increment:n}
+ol li::before{content:counter(n,decimal-leading-zero);font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;top:.22em}
+ul.no li::before{content:"×";color:var(--void)}
+ul.check li::before{content:"☐";font-size:.85rem;top:-.04em}
+.mass{background:var(--campo);color:var(--paper);padding:clamp(1.1rem,2.4vw,1.6rem);margin:1.4rem 0}
+.mass .lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin:0 0 .6rem}
+.mass p{margin:0;max-width:62ch} .mass p+p{margin-top:.7rem} .mass strong{font-weight:600}
+.pipe{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.2rem 0;font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase}
+.pipe span{border:var(--rule);padding:.42rem .7rem}
+.pipe span.x{border-color:var(--void);background:var(--void);color:var(--paper)}
+.pipe i{font-style:normal;color:var(--campo);align-self:center}
+.crew{display:grid;gap:1px;background:rgba(18,20,15,.26);margin:1.4rem 0}
+@media(min-width:800px){.crew{grid-template-columns:1fr 1fr}}
+.crew>div{background:var(--paper);padding:clamp(1rem,2.2vw,1.35rem)}
+.crew h3{font-family:var(--disp);font-weight:600;font-size:.98rem;margin:0 0 .5rem;letter-spacing:-.01em}
+.crew p{margin:0;font-size:.88rem;max-width:none}
+.crew .warn{margin-top:.6rem;font-family:var(--mono);font-size:.64rem;line-height:1.5;letter-spacing:.02em;color:var(--campo);text-transform:uppercase}
+.cta{display:inline-block;margin:.4rem 0 0;padding:.75rem 1.1rem;background:var(--void);color:var(--paper);text-decoration:none;font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase}
+a{color:var(--void)}
+footer{background:var(--void);color:var(--paper);padding:clamp(2.2rem,5vw,3.4rem) 0 clamp(1.6rem,3.6vw,2.4rem)}
+footer .lockup .f,footer .lockup .l,footer .lockup .t{color:var(--paper)}
+footer .lockup{line-height:.86}
+footer .lockup .f,footer .lockup .l{font-size:clamp(1.4rem,4.4vw,2.6rem);display:block}
+footer .lockup .t{font-size:clamp(1.7rem,5.4vw,3.2rem);display:block}
+footer .fmeta{display:flex;justify-content:space-between;gap:1.4rem;flex-wrap:wrap;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(244,241,232,.22);font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase}
+footer .fmeta span{opacity:.66}
+@media print{body{font-size:10.5pt}footer{background:none;color:var(--void);border-top:var(--rule)}footer .lockup .f,footer .lockup .l,footer .lockup .t{color:var(--void)}thead th{background:none;color:var(--void);border-bottom:var(--rule)}.mass{background:none;color:var(--void);border:var(--rule)}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="sheet">
+  <div class="lockup"><span class="f">BIENAL</span> <span class="t">Blockchain</span> <span class="l">PUNTA 2027</span></div>
+  <div class="chip"><b>V0.1.0</b> · PRD · Borrador · 🔒 BOTH</div>
+</div></div>
+
+<div class="sheet">
+
+  <div class="hero">
+    <p class="eyebrow">Bienal Blockchain Punta · Edición 2027 · Comercial</p>
+    <h1>CRM de<br>vínculos</h1>
+    <p class="sub">Alcance del MVP: <em>qué se construye, qué no, y cuándo.</em></p>
+    <div class="meta">
+      <div><span>Fecha</span> <b>6 oct 2026</b></div>
+      <div><span>Lectura</span> <b>6 min</b></div>
+      <div><span>Decide</span> <b>René · Daiana</b></div>
+      <div><span>Construye</span> <b>Mariano</b></div>
+    </div>
+  </div>
+
+  <div class="oneline">
+    <p>Un solo lugar donde el equipo ve en qué está cada vínculo y registra qué pasó con él.
+      <span class="run">No reemplaza a Notion. <b>Resuelve el pipeline.</b></span></p>
+  </div>
+
+  <section>
+    <div class="hd"><div class="num">01</div><div><h2>Por qué ahora</h2><p class="kick">Lo que disparó esto</p></div></div>
+    <div class="body">
+      <ul>
+        <li>René abrió muchas conversaciones y ninguna está registrada en un lugar común. El 6/10 Daiana puso el CRM como <strong>primera prioridad comercial</strong>.</li>
+        <li>Las próximas dos semanas son 100% ventas: René y Daiana circulan el deck de sponsors desde el 7/10. Sin un pipeline compartido, dos personas llaman al mismo sponsor, o nadie sigue al que contestó.</li>
+        <li>El Mapa de vínculos (V0.2, 94 nombres) marca <strong>0 contactados desde agosto</strong>. Era una mesa de repaso para leer en voz alta; su tick vivía en un solo navegador. Nunca fue un instrumento de gestión.</li>
+        <li>Darío «Rayitas» vende con el equipo y tiene los contactos. No tiene acceso a Notion ni cuenta de Claude. <strong>Lo que se construya tiene que abrirse con un link.</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">02</div><div><h2>Quién lo usa y para qué</h2><p class="kick">Siete personas, un instrumento</p></div></div>
+    <div class="body">
+      <div class="tw"><table>
+        <thead><tr><th>Persona</th><th>Qué hace en el CRM</th><th>Frecuencia</th></tr></thead>
+        <tbody>
+          <tr><td>René</td><td>Gestiona sponsors, comité, programa. Revisa el pipeline antes del weekly del jueves.</td><td>Diario</td></tr>
+          <tr><td>Daiana</td><td>Sigue el pipeline comercial contra el modelo. Dueña de Polkadot. Valida que el instrumento sirva.</td><td>Diario</td></tr>
+          <tr><td>Rayitas</td><td>Abre puertas: registra cada toque y mueve etapas. <strong>El usuario que más carga datos.</strong></td><td>Diario</td></tr>
+          <tr><td>Mariano</td><td>Opera: semilla, clave, rebuild, V1.</td><td>Por excepción</td></tr>
+          <tr><td>Chino</td><td>Lee. Proveedores de producción no entran en esta versión.</td><td>Semanal</td></tr>
+          <tr><td>Gastón · Andrés</td><td>Leen. Gastón es dueño de S&amp;P (vía Demi).</td><td>Semanal</td></tr>
+          <tr><td>Avigador · vendedoras</td><td>Por decidir (7d).</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">03</div><div><h2>Qué entra en el MVP</h2><p class="kick">Ni de más ni de menos</p></div></div>
+    <div class="body">
+      <p><strong>Cinco segmentos</strong>, uno por sección del top nav: Sponsors · Comité · Instituciones · Programa · Aliados. Cada contacto tiene un segmento y un tipo (sponsors: global / local y tier; comité: ejecutivo / asesor / estratégico; instituciones: público; programa: speaker / KOL / advisory; aliados: conector / legal / medios / comunidad). Equipo queda afuera: vive en Notion · Equipo.</p>
+      <p><strong>Un pipeline universal de siete etapas</strong>, el mismo para todos los segmentos. Mantiene el vocabulario que René y Daiana ya usaban en Notion y generaliza las dos primeras. Para un miembro de comité, «Propuesta» es la invitación enviada; para una institución, la carta.</p>
+      <div class="pipe"><span>Identificado</span><i>→</i><span>Contactado</span><i>→</i><span>Reunión</span><i>→</i><span>Propuesta</span><i>→</i><span>Negociación</span><i>→</i><span class="x">Cerrado</span><i>|</i><span>Perdido</span></div>
+      <p><strong>Una ficha por contacto:</strong> nombre, organización, rol, segmento, tipo, tier y monto (solo sponsors), etapa, dueño, vía (quién abre la puerta), canal, email, teléfono, «quién es» heredado del mapa, notas, próximo paso con fecha, prioridad.</p>
+      <p><strong>Un historial de toques por contacto:</strong> fecha, canal, una línea. Registrar un toque sobre un contacto «Identificado» lo pasa solo a «Contactado». Cambiar de etapa deja un toque automático. Esto es lo que después alimenta el minado de reuniones.</p>
+      <div class="crew">
+        <div><h3>Portada</h3><p>Una tarjeta por segmento: cuántos, cuántos en conversación, cuántos cerrados, barra por etapa, USD en pipeline. Próximos pasos por fecha con los vencidos en rojo. Últimos toques. Distribución por etapa.</p></div>
+        <div><h3>Tabla por segmento</h3><p>Filtros por etapa, tipo, dueño y vencidos; búsqueda; orden por columna. La etapa se cambia en línea sin abrir la ficha.</p></div>
+        <div><h3>Tablero por segmento</h3><p>Siete columnas, arrastrar entre etapas. Solo desktop.</p></div>
+        <div><h3>Móvil usable</h3><p>Lista por segmento, ficha, cambiar etapa, registrar un toque. Sin tablero.</p><p class="warn">Desktop primero. El celular es para registrar al salir de una reunión.</p></div>
+      </div>
+      <p><strong>Semilla del día uno:</strong> los 94 nombres del Mapa de vínculos mapeados a los cinco segmentos, más las 14 filas de la base Sponsors de Notion (etapa, próximo paso, dueño, vía) y cinco sponsors que estaban solo en Notion (BNB, Arbitrum, Kraken, S&amp;P, Cubo). Al 6/10: 88 identificados, 2 contactados, 3 en reunión, 1 en negociación.</p>
+      <p><strong>Piel:</strong> el motor glass del weekly de BOTH con los colores y la tipografía de Hyper-Neo-Class. Lee como herramienta de la Bienal; cuesta lo mismo que la plantilla.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">04</div><div><h2>Qué no entra</h2><p class="kick">Explícito, para no construir de más</p></div></div>
+    <div class="body">
+      <ul class="no">
+        <li><strong>Identidad por persona.</strong> Una clave compartida abre la herramienta. No se registra quién cambió qué; «dueño» se elige a mano.</li>
+        <li><strong>Email o WhatsApp integrados.</strong> Los toques se registran a mano. El minado automático desde las reuniones es V2: el Worker ya mina los calls, falta que escriba acá.</li>
+        <li><strong>Adjuntos, recordatorios, notificaciones.</strong></li>
+        <li><strong>Proveedores de producción.</strong> El Chino lleva eso aparte; si lo necesita, es un sexto segmento después.</li>
+        <li><strong>Sincronización con Notion.</strong> La base Sponsors se congela y queda como link al CRM cuando V1 esté live. Nunca dos fuentes de verdad.</li>
+        <li><strong>Reporting.</strong> La portada es el reporte.</li>
+        <li><strong>Permisos por segmento o por campo.</strong> Quien tiene la clave ve todo, incluidos montos (ver 7a).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">05</div><div><h2>Arquitectura</h2><p class="kick">Dos fases, un solo front</p></div></div>
+    <div class="body">
+      <p class="lead"><strong>MVP-0 (hoy, local-first).</strong> Una página HTML autocontenida publicada en GitHub Pages. La semilla viaja <strong>cifrada</strong> dentro de la página (AES-256-GCM, clave derivada de la clave del equipo con PBKDF2, 200 000 iteraciones). El HTML es público; sin la clave no hay datos: ni nombres, ni montos. Lo que cada uno edita se guarda cifrado en su navegador. Exportar / Importar JSON permite consolidar entre personas hasta que exista V1.</p>
+      <div class="mass"><p class="lbl">Lo que el MVP-0 no es</p><p><strong>No es compartido en tiempo real.</strong> Sirve para validar la UX con Dai y René, y para que Rayitas empiece a cargar. El archivo exportado es 🔒 y se comparte solo por WhatsApp interno.</p></div>
+      <p><strong>V1 (1–2 días, después de validar el MVP-0).</strong> El mismo front cambia su capa de datos: dos tablas en Supabase detrás de una ruta nueva en el Worker de BOTH, que valida la clave del lado del servidor y es el único que toca la base. La página deja de llevar datos adentro. Todos ven lo mismo; el último que escribe gana, refresco cada 15 segundos. Los JSON del MVP-0 se importan como semilla. Desde ahí, el minado de reuniones puede escribir toques por el mismo camino.</p>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>MVP-0</th><th>V1</th></tr></thead>
+        <tbody>
+          <tr><td>Dónde viven los datos</td><td>Navegador de cada uno, cifrados</td><td>Supabase, vía el Worker</td></tr>
+          <tr><td>Compartido</td><td>Por export / import</td><td>En tiempo real (15 s)</td></tr>
+          <tr><td>Clave</td><td>Descifra la semilla en el navegador</td><td>La valida el Worker</td></tr>
+          <tr><td>Riesgo</td><td>Dos personas editan el mismo contacto y hay que reconciliar</td><td>El último que escribe gana; sin historial de versiones</td></tr>
+          <tr><td>Costo</td><td>Hecho</td><td>1–2 días de Mariano</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">06</div><div><h2>Tiempos</h2><p class="kick">Esta semana</p></div></div>
+    <div class="body">
+      <div class="tw"><table>
+        <thead><tr><th>Hito</th><th>Fecha</th><th>Quién</th></tr></thead>
+        <tbody>
+          <tr><td>MVP-0 publicado como preview</td><td>6 oct</td><td>Mariano</td></tr>
+          <tr><td>Dai y René lo tocan; Rayitas recibe la clave y carga sus contactos</td><td>7–8 oct</td><td>René · Daiana · Rayitas</td></tr>
+          <tr><td>Decisiones del punto 07</td><td>8 oct</td><td>René · Daiana</td></tr>
+          <tr><td>V1 live (Supabase + Worker)</td><td>antes del jueves 9, si el MVP-0 valida</td><td>Mariano</td></tr>
+          <tr><td>Base Sponsors de Notion congelada con link al CRM</td><td>con V1</td><td>Mariano</td></tr>
+          <tr><td>Primer weekly leído desde el CRM</td><td>jueves 9 oct</td><td>René · Daiana</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">07</div><div><h2>Abierto</h2><p class="kick">Lo que este documento no cierra</p></div></div>
+    <div class="body">
+      <ul class="check">
+        <li><strong>(a) Montos visibles para Rayitas y el Chino.</strong> La política de documentos pone los deals con sponsors en 🔒 BOTH. El MVP-0 muestra tier y monto a quien tenga la clave, porque Rayitas vende. Si no se ratifica, el campo monto se oculta con un flag y los montos siguen solo en el modelo de Dai. <em>René + Daiana</em></li>
+        <li><strong>(b) Congelar la base Sponsors de Notion</strong> con V1. <em>Daiana</em></li>
+        <li><strong>(c) Clave.</strong> La genera Mariano, la distribuye René por WhatsApp a cada persona. Rotarla es un rebuild y un aviso. <em>René</em></li>
+        <li><strong>(d) Avigador y las dos vendedoras como usuarias.</strong> Si venden, cargan, con la misma clave. <em>René</em></li>
+        <li><strong>(e) Programa arranca casi vacío.</strong> La lista de speakers de junio (tiers 1–4) se importa como semilla del segmento en V1. <em>René</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="hd"><div class="num">08</div><div><h2>Cómo sabemos que sirvió</h2><p class="kick">A dos semanas del preview · 20 oct</p></div></div>
+    <div class="body">
+      <ol>
+        <li>Al menos el 80% de los sponsors tier-1 y tier-2 con etapa distinta de «Identificado» y al menos un toque registrado.</li>
+        <li>Cero contactos con próximo paso vencido sin dueño.</li>
+        <li>René y Daiana revisan el pipeline desde la portada del CRM en el weekly del jueves, no desde un chat.</li>
+        <li>Rayitas registró sus toques en el CRM y no en WhatsApp.</li>
+      </ol>
+      <div class="mass"><p class="lbl">La vara</p><p>Si a las dos semanas la portada sigue diciendo 88 identificados, <strong>el problema no es la herramienta.</strong></p></div>
+      <a class="cta" href="https://bothventures.github.io/stack/pages/board/bienal-crm/">Abrir el CRM →</a>
+    </div>
+  </section>
+
+</div>
+
+<footer><div class="sheet">
+  <div class="lockup"><span class="f">BIENAL</span><span class="t">Blockchain</span><span class="l">PUNTA 2027</span></div>
+  <div class="fmeta">
+    <div><span>Oportunidades y amenazas en un mundo post-dinero</span></div>
+    <div><span>Punta del Este · Uruguay · Marzo 2027</span></div>
+    <div><span>PRD · CRM de vínculos</span> V0.1.0</div>
+  </div>
+</div></footer>
+</body>
+</html>
