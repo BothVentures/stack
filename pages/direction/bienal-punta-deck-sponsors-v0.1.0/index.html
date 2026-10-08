@@ -536,8 +536,11 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
 .why > .ft{ gap: var(--s-6) !important; }
 /* V0.1.0 · revisión René 2026-10-08 ------------------------------------- */
 /* 07: las cifras suben al cuarto superior derecho, junto al titular */
-.why .hd{ display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-7); align-items: start; }
-.why .hd .nums{ display: grid; gap: var(--s-3); padding-top: calc(var(--t-lbl) * 1.3 + var(--s-3)); }
+.why .hd{ display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--s-7); row-gap: 0; align-items: start; }
+.why .hd .lede{ display: contents; }
+.why .hd .lede > *{ grid-column: 1; }
+/* 2026-10-08: las cifras arrancan a la altura de la lectura, no del titular */
+.why .hd .nums{ grid-column: 2; grid-row: 3; display: grid; gap: var(--s-3); margin-top: var(--s-4); }
 /* 13: la bajada se alinea con la columna /02 y baja de cuerpo */
 .night .over .top{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .night .over .top .quote{ grid-column: 2 / span 2; font-size: clamp(1.1rem, min(1.8vw, 3.1vh), 1.65rem); max-width: 36ch; }
@@ -545,9 +548,10 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
 .take .join{ display: grid; gap: var(--s-6); max-width: 64rem; margin-bottom: var(--s-5); }
 .take .call{ margin: 0; font-weight: 900; font-size: clamp(1.4rem, min(2.6vw, 4.4vh), 2.5rem); letter-spacing: -.025em; line-height: 1.04; text-transform: uppercase; text-wrap: balance; }
 .take .call em{ font-family: var(--tema); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -.012em; font-size: 1.22em; }
-.cta.cta--big{ font-size: clamp(.82rem, 1.15vw, 1.05rem); padding: 1.25em 2.1em; gap: 1em; box-shadow: 6px 6px 0 var(--c-red); }
-.cta.cta--big:hover, .cta.cta--big:focus-visible{ box-shadow: 3px 3px 0 var(--c-red); transform: translate(3px, 3px); }
-@media (max-width: 760px){ .why .hd{ grid-template-columns: 1fr; } .night .over .top .quote{ grid-column: auto; } }
+.cta.cta--big{ font-size: clamp(.82rem, 1.15vw, 1.05rem); padding: 1.25em 2.1em; gap: 1em; box-shadow: 6px 6px 0 var(--campo); }
+.cta.cta--big:hover, .cta.cta--big:focus-visible{ box-shadow: 3px 3px 0 var(--campo); transform: translate(3px, 3px); }
+.eds--dated li.now .y{ white-space: nowrap; }
+@media (max-width: 760px){ .why .hd{ grid-template-columns: 1fr; } .why .hd .nums{ grid-column: 1; grid-row: auto; } .night .over .top .quote{ grid-column: auto; } }
 /* (s) la marca de versión, abajo a la izquierda de la última plancha */
 .ver{ position: absolute; left: var(--pad); bottom: calc(var(--pad) * .45); z-index: 2; }
 @media (max-width: 760px){
@@ -589,8 +593,13 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
     <div class="right">
       <p class="lead" data-c="lockup.en.bajada"></p>
       <p class="prom">This document sets out the format, the audience, the tiers and the terms.</p>
-      <ol class="eds" data-eds></ol>
-      <p class="pie">V0.1.0 · 2026-10-05 · <span class="draft">Draft · not for distribution</span></p>
+      <!-- el sello con fecha (René, 2026-10-08): la 001 ya tiene día; las siguientes, sólo año -->
+      <ol class="eds eds--dated">
+        <li class="now"><span class="o">Nº 001 · First edition</span><span class="y">5–6 March 2027</span><span class="s">Friday &amp; Saturday</span></li>
+        <li><span class="o">Nº 002</span><span class="y">2029</span><span class="s">To come</span></li>
+        <li><span class="o">Nº 003</span><span class="y">2031</span><span class="s">To come</span></li>
+      </ol>
+      <p class="pie"><span class="draft">Confidential</span></p>
     </div>
   </div>
 </section>
@@ -773,11 +782,11 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
     </div>
     <div class="bd"><div class="table-x"><table class="matrix">
       <thead><tr><th></th>
-        <th><b>Master</b><span>1 · USD 200,000</span></th>
-        <th><b>Diamond</b><span>2 · USD 100,000</span></th>
-        <th><b>Titanium</b><span>4 · USD 40,000</span></th>
-        <th><b>Gold</b><span>6 · USD 20,000</span></th>
-        <th><b>Supporter</b><span>8 · USD 10,000</span></th></tr></thead>
+        <th><b>Master</b><span>1 position</span></th>
+        <th><b>Diamond</b><span>2 positions</span></th>
+        <th><b>Titanium</b><span>4 positions</span></th>
+        <th><b>Gold</b><span>6 positions</span></th>
+        <th><b>Supporter</b><span>8 positions</span></th></tr></thead>
       <tbody>
         <tr><th>Visibility</th>
           <td>Naming-level credit: «presented with». Logo on all communications and signage. Two email campaigns.</td>
