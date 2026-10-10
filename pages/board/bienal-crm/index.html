@@ -167,7 +167,7 @@ a{color:var(--accent)}
 .stat .bar i{display:block;height:100%}
 .stat .leg{font-size:10.5px;color:var(--t-3);display:flex;gap:10px;flex-wrap:wrap}
 .stat .leg b{color:var(--t-2);font-weight:600}
-.home2{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}
+.home2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .list{display:flex;flex-direction:column}
 .li{display:flex;gap:10px;align-items:flex-start;padding:9px 4px;border-bottom:1px solid var(--edge-soft);cursor:pointer;border-radius:8px;transition:background .15s}
 .li:last-child{border-bottom:none}
@@ -387,7 +387,6 @@ td .d.late{color:var(--red)}td .d.soon{color:var(--amber)}
       <div class="kpis" id="homeKpis"></div>
       <div class="home" id="homeStats"></div>
       <div class="home2">
-        <div class="panel"><div class="panel-h"><span class="t">Próximos pasos</span><span class="c" id="npCount"></span></div><div class="panel-b"><div class="list" id="homeNext"></div></div></div>
         <div class="panel"><div class="panel-h"><span class="t">Últimos toques</span><span class="c" id="tCount"></span></div><div class="panel-b"><div class="list" id="homeTouches"></div></div></div>
         <div class="panel"><div class="panel-h"><span class="t">Por etapa</span><span class="c" id="pipeCount"></span></div><div class="panel-b"><div class="pipe" id="homePipe"></div></div></div>
       </div>
@@ -735,9 +734,6 @@ function renderHome(){
   }).join("");
   $("#homeStats").onclick = e=>{ if(e.target.closest("[data-target]")) return; const s=e.target.closest("[data-seg]"); if(s) go(s.dataset.seg); };
 
-  const np = c.filter(x=>x.proximo_paso && x.etapa!=="Perdido").sort((a,b)=>(a.proximo_paso_fecha||"9999").localeCompare(b.proximo_paso_fecha||"9999")).slice(0,12);
-  $("#npCount").textContent = `${c.filter(x=>x.proximo_paso_fecha && x.proximo_paso_fecha<today() && x.etapa!=="Perdido").length} vencidos`;
-  $("#homeNext").innerHTML = np.length? np.map(x=>`<div class="li" data-id="${x.id}"><div><div class="who">${esc(x.nombre)} <span class="badge sub">${SEGS[x.segmento].t}</span></div><div class="what">${esc(x.proximo_paso)}${x.dueno?` · <b>${esc(x.dueno)}</b>`:""}</div></div><span class="when ${dateClass(x.proximo_paso_fecha)}">${x.proximo_paso_fecha?fmtDate(x.proximo_paso_fecha):"sin fecha"}</span></div>`).join("") : `<div class="empty">Nadie tiene próximo paso. Abrí una ficha y anotá uno.</div>`;
 
   const tt = [...S.touches].sort((a,b)=>b.fecha.localeCompare(a.fecha)||b.created_at.localeCompare(a.created_at)).slice(0,10);
   $("#tCount").textContent = `${S.touches.length} total`;
@@ -746,7 +742,7 @@ function renderHome(){
   const n=c.length||1;
   $("#pipeCount").textContent = `${c.length} contactos`;
   $("#homePipe").innerHTML = ETAPAS.map(e=>{ const k=c.filter(x=>x.etapa===e).length; return `<div class="pr"><span class="k">${e}</span><div class="b"><i style="width:${k/n*100}%;background:${ECOLOR[e]}"></i></div><span class="v">${k}</span></div>`; }).join("");
-  $("#homeNext").onclick = $("#homeTouches").onclick = e=>{ const li=e.target.closest("[data-id]"); if(li) openDrawer(li.dataset.id); };
+  $("#homeTouches").onclick = e=>{ const li=e.target.closest("[data-id]"); if(li) openDrawer(li.dataset.id); };
 }
 
 function segRows(){
