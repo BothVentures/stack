@@ -286,6 +286,8 @@ td .d.late{color:var(--red)}td .d.soon{color:var(--amber)}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);z-index:70;background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
   border:1px solid var(--edge);border-radius:999px;padding:9px 16px;font-size:12px;opacity:0;transition:all .25s var(--ease);pointer-events:none;box-shadow:var(--shadow-card)}
 .toast.on{opacity:1;transform:translateX(-50%)}
+.toast{width:max-content;max-width:calc(100vw - 32px);text-align:center;line-height:1.45}
+.toast.long{border-radius:14px;text-align:left}
 .foot{max-width:1480px;margin:26px auto 0;padding:14px 22px 0;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--t-4);position:relative;z-index:1}
 .theme-toggle{width:34px;height:34px;border-radius:50%;border:1px solid var(--edge);background:var(--glass-3);color:var(--t-1);font-size:14px;display:inline-flex;align-items:center;justify-content:center}
 .mark svg{display:block;width:100%;height:auto}
@@ -342,7 +344,7 @@ td .d.late{color:var(--red)}td .d.soon{color:var(--amber)}
       <button class="btn" type="submit">Entrar</button>
     </form>
     <div class="err" id="gateErr"></div>
-    <p class="fine">Herramienta interna del equipo. Compartida: lo que cargás lo ven todos en segundos. V1 · 2026-10-09</p>
+    <p class="fine">Herramienta interna del equipo. Compartida: lo que cargás lo ven todos en segundos. V1 · 2026-10-10</p>
   </div>
 </div>
 
@@ -363,6 +365,7 @@ td .d.late{color:var(--red)}td .d.soon{color:var(--amber)}
         <button class="btn btn-sm" id="btnNew">+ Contacto</button>
         <button class="btn btn-ghost btn-sm" id="btnExport" title="Descargar JSON">Exportar</button>
         <button class="btn btn-ghost btn-sm" id="btnImport" title="Cargar JSON">Importar</button>
+        <button class="btn btn-ghost btn-sm hide" id="btnOld" title="Descargar lo que este navegador tenía en la versión anterior (MVP-0)">Versión anterior</button>
         <input type="file" id="fileImport" accept="application/json" class="hide">
         <button class="theme-toggle" id="themeToggle" title="Claro / oscuro">◐</button>
         <button class="btn btn-quiet btn-sm" id="btnLock" title="Cerrar y olvidar la clave en este navegador">Salir</button>
@@ -440,7 +443,7 @@ td .d.late{color:var(--red)}td .d.soon{color:var(--amber)}
 const API = "https://both-transcript-miner.winter-shadow-facb.workers.dev";
 const POLL_MS = 15000, PUSH_MS = 400, RETRY_MS = 15000;
 const LS_PASS = "bbp-crm-pass-v1", LS_CACHE = "bbp-crm-cache-v1", LS_THEME = "bbp-crm-theme", LS_VIEW = "bbp-crm-view";
-const LS_OLD_STATE = "bbp-crm-state-v1", LS_OLD_PASS = "bbp-crm-pass", LS_OLD_SKIP = "bbp-crm-mvp0-skip";   // MVP-0
+const LS_OLD_STATE = "bbp-crm-state-v1", LS_OLD_PASS = "bbp-crm-pass", LS_OLD_SKIP = "bbp-crm-mvp0-skip", LS_OLD_DONE = "bbp-crm-mvp0-done";   // MVP-0
 const SEGS = {
   sponsors:{t:"Sponsors",k:"De dónde sale la plata",subs:["global","local"]},
   comite:{t:"Comité",k:"Chapa, cartel y aval",subs:["ejecutivo","asesor","estrategico"]},
@@ -614,35 +617,57 @@ async function decryptOld(blob, pass){
   const key = await crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:200000,hash:"SHA-256"}, km, {name:"AES-GCM",length:256}, false, ["decrypt"]);
   return JSON.parse(dec.decode(await crypto.subtle.decrypt({name:"AES-GCM",iv}, key, ct)));
 }
-const strip = c=>{ const {updated_at, ...rest} = c; return JSON.stringify(rest); };
+const isEmpty = v=>v===null || v===undefined || v==="";
+const MIG_SKIP = new Set(["id","updated_at","created_at"]);
 async function migrateMvp0(){
   const blob = lsGet(LS_OLD_STATE);
-  if(!blob || lsGet(LS_OLD_SKIP)) return;
+  $("#btnOld").classList.toggle("hide", !blob);
+  if(!blob || lsGet(LS_OLD_SKIP) || lsGet(LS_OLD_DONE)) return;
   let old = null, pass = lsGet(LS_OLD_PASS);
   for(let i=0; i<2 && !old; i++){
     if(!pass) pass = window.prompt("Este navegador tiene datos cargados en la versión anterior del CRM. Para sumarlos al CRM compartido, escribí la clave VIEJA (la del 6 de octubre). Cancelá para no sumarlos.");
-    if(!pass){ lsSet(LS_OLD_SKIP,"1"); toast("No se sumaron los datos de la versión anterior"); return; }
-    try{ old = await decryptOld(blob, pass.trim()); }catch(_){ pass = null; }
+    if(!pass){ lsSet(LS_OLD_SKIP,"1"); toast("No se sumaron los datos de la versión anterior. Quedan guardados: botón «Versión anterior»", 6000); return; }
+    try{ old = await decryptOld(blob, pass.trim()); lsSet(LS_OLD_PASS, pass.trim()); }catch(_){ pass = null; }
   }
-  if(!old){ toast("La clave vieja no abrió los datos anteriores. Se pueden migrar después desde Importar."); lsSet(LS_OLD_SKIP,"1"); return; }
-  // Todo lo editado en V1 es posterior a todo lo del MVP-0: solo entra lo que difiere
-  // y cuyo día de edición no es anterior al día de la versión compartida.
-  let nc=0, nt=0;
+  if(!old){ toast("La clave vieja no abrió los datos anteriores. Quedan guardados en este navegador.", 6000); lsSet(LS_OLD_SKIP,"1"); return; }
+  // Las fechas del MVP-0 son por día y la V1 re-sella al guardar: no sirven para decidir quién es más
+  // nuevo. Lo editado en el MVP-0 (día posterior a la semilla) completa los campos que el CRM compartido
+  // tiene vacíos; si un campo ya tiene otro valor, no se pisa: queda como choque para resolver a mano.
+  // La copia vieja nunca se borra sola (botón «Versión anterior»).
+  const built = String(old.built||"").slice(0,10);
+  let nc=0, nt=0; const choques=[];
   const byId = new Map(S.contacts.map(c=>[c.id,c]));
   for(const c of old.contacts||[]){
     const s = byId.get(c.id);
     if(!s){ const n={...c, updated_at:nowIso()}; S.contacts.push(n); byId.set(n.id,n); markC(n.id); nc++; continue; }
-    if(strip(c)!==strip(s) && String(c.updated_at||"").slice(0,10) >= String(s.updated_at||"").slice(0,10)){
-      Object.assign(s, c, {updated_at:nowIso()}); markC(s.id); nc++;
-    }
+    if(!(String(c.updated_at||"").slice(0,10) > built)) continue;   // sin editar en el MVP-0
+    const ks = Object.keys(c).filter(k=>!MIG_SKIP.has(k) && !isEmpty(c[k]));
+    const fills = ks.filter(k=>isEmpty(s[k]));
+    const diff = ks.filter(k=>!isEmpty(s[k]) && JSON.stringify(s[k])!==JSON.stringify(c[k]));
+    if(fills.length){ for(const k of fills) s[k]=c[k]; s.updated_at=nowIso(); markC(s.id); nc++; }
+    if(diff.length) choques.push(c.nombre);
   }
   const tids = new Set(S.touches.map(t=>t.id));
   for(const t of old.touches||[]){ if(!tids.has(t.id) && byId.has(t.contact_id)){ S.touches.push(t); markT(t.id); nt++; } }
-  lsDel(LS_OLD_STATE); lsDel(LS_OLD_PASS);
+  lsSet(LS_OLD_DONE, nowIso());
   refresh();
   const pl=(n,a,b)=>`${n} ${n===1?a:b}`;
-  toast(nc||nt ? `Sumamos ${pl(nc,"contacto","contactos")} y ${pl(nt,"toque","toques")} de la versión anterior` : "La versión anterior no tenía cambios para sumar");
+  const suma = nc||nt ? `Sumamos ${pl(nc,"contacto","contactos")} y ${pl(nt,"toque","toques")} de la versión anterior.` : "La versión anterior no tenía cambios para sumar.";
+  if(choques.length) toast(`${suma} ${pl(choques.length,"contacto tuyo choca","contactos tuyos chocan")} con cambios del equipo (${choques.slice(0,3).join(", ")}${choques.length>3?"…":""}). Tocá «Versión anterior» y mandale el archivo a Mariano.`, 15000);
+  else toast(suma, 4000);
 }
+$("#btnOld").addEventListener("click", async ()=>{
+  const blob = lsGet(LS_OLD_STATE); if(!blob) return;
+  let old = null;
+  try{ old = await decryptOld(blob, lsGet(LS_OLD_PASS)||""); }catch(_){
+    const p = window.prompt("Clave VIEJA del CRM (la del 6 de octubre) para abrir la versión anterior:");
+    if(!p) return;
+    try{ old = await decryptOld(blob, p.trim()); lsSet(LS_OLD_PASS, p.trim()); }catch(_){ toast("Esa clave no abre la versión anterior"); return; }
+  }
+  const out=new Blob([JSON.stringify({...old, exported_at:nowIso(), mvp0:true},null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(out); a.download=`bienal-crm-mvp0-${today()}.json`; a.click(); URL.revokeObjectURL(a.href);
+  toast("Versión anterior descargada · mandásela a Mariano por WhatsApp interno", 5000);
+});
 
 /* ── nav ── */
 function counts(){ const c={}; for(const k in SEGS) c[k]=S.contacts.filter(x=>x.segmento===k).length; return c; }
@@ -955,7 +980,7 @@ $("#fileImport").addEventListener("change", async e=>{
 
 /* ── theme / misc ── */
 $("#themeToggle").addEventListener("click", ()=>{ document.body.classList.toggle("light"); try{ localStorage.setItem(LS_THEME, document.body.classList.contains("light")?"light":"dark"); }catch(_){} });
-let toastT=null; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),2200); }
+let toastT=null; function toast(m, ms=2200){ const t=$("#toast"); t.textContent=m; t.classList.toggle("long", m.length>90); t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),ms); }
 function footState(){
   const n = pendingHuman(), dot = $("#syncDot");
   let txt, cls;
