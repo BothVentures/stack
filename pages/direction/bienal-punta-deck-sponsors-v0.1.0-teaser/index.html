@@ -493,9 +493,28 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
 @media (max-width: 760px){
   .rooms > li{ grid-template-columns: 1fr; gap: var(--s-1); }
   .rooms .venue{ text-align: left; }
-  .table-x{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .table-x > table{ min-width: 720px; }
   .slots, .figs{ grid-template-columns: 1fr; }
+}
+
+/* --- tablas en celulares (2026-10-12): el runtime (DeckHNC § 5) arma una
+   tarjeta por tier a partir del <table>; acá sólo se decide quién se ve.
+   Tipo + regla, sin cajas (regla 2 del criterio). ----------------------- */
+.cards{ display: none; }
+@media (max-width: 760px){
+  .table-x{ display: none; }
+  .cards{ display: grid; gap: var(--s-4); }
+  .card{ border-top: var(--rule-head) solid var(--void); padding-top: var(--s-2); }
+  .card header b{ display: block; font-weight: 900; font-size: 1.35rem; letter-spacing: -.02em; line-height: 1; }
+  .card header span{ display: block; margin-top: .3rem; font-family: var(--mono); font-weight: 500; font-size: var(--t-micro); letter-spacing: .1em; text-transform: uppercase; opacity: .72; }
+  .card dl{ margin: var(--s-2) 0 0; }
+  .card dl > div{ display: grid; grid-template-columns: 6.6rem minmax(0, 1fr); gap: 0 var(--s-2); padding: .5rem 0; border-bottom: var(--rule); align-items: baseline; }
+  .card dl > div:last-child{ border-bottom: 0; }
+  .card dt{ font-family: var(--mono); font-weight: 600; font-size: var(--t-micro); letter-spacing: .14em; text-transform: uppercase; opacity: .72; line-height: 1.4; }
+  .card dd{ margin: 0; font-size: .86rem; line-height: 1.35; }
+  .card .pos dd{ font-family: var(--pixel); font-weight: 800; font-size: 1.45rem; line-height: .9; }
+  .card .y dd, .card .x dd{ font-family: var(--mono); font-weight: 600; font-size: var(--t-lbl); letter-spacing: .08em; text-transform: uppercase; }
+  .card .x dd, .card .none dd{ opacity: .32; }
+  .kbd{ display: none; }
 }
 
 
@@ -2139,6 +2158,7 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
      3. La imagen por la máscara (canvas[data-img]), con foco vertical y
         horizontal por imagen y data-fit="key".
      4. Navegación: folio, regla de progreso, teclado, ?s=NN.
+   5. Tablas → tarjetas por tier debajo de 760px (2026-10-12).
    Se incluye con el token «include deck-hnc.js» de build_common.INCLUDES,
    DESPUÉS de content.js y mask.js.
    Uso:  DeckHNC.start({ imgs: {slug: dataURI}, focus: {slug: 0..1}, focusX: {…} })
@@ -2246,6 +2266,38 @@ h1 .place{ display: block; font-family: var(--pixel); font-weight: 800; font-siz
       if (history.replaceState) history.replaceState(null, "", "#" + slides[n].id);
       $("kbd").dataset.spent = "1";
     };
+    /* 5. Tablas → tarjetas en celulares (2026-10-12). Debajo de 760px el
+          <table> se oculta y se lee una tarjeta por tier: la matriz (tiers
+          en columnas) se da vuelta, la escalera (tiers en filas) no. El
+          <table> sigue siendo el canon para desktop e impresión. */
+    document.querySelectorAll(".table-x > table").forEach((table) => {
+      const heads = [...table.querySelectorAll("thead th")];
+      const rows = [...table.querySelectorAll("tbody tr")];
+      if (!heads.length || !rows.length) return;
+      const cards = document.createElement("div");
+      cards.className = "cards";
+      cards.setAttribute("aria-hidden", "true");
+      const label = (el) => el.innerHTML.replace(/<br\s*\/?>/g, " ");
+      const card = (head, items) => {
+        const c = document.createElement("article");
+        c.className = "card";
+        c.innerHTML = "<header>" + head + "</header><dl>" +
+          items.map(([k, v, cls]) => '<div class="' + cls + '"><dt>' + k + "</dt><dd>" + v + "</dd></div>").join("") + "</dl>";
+        cards.appendChild(c);
+      };
+      if (table.classList.contains("matrix")) {
+        heads.slice(1).forEach((h, i) => card(h.innerHTML,
+          rows.map((r) => { const td = r.children[i + 1]; return [r.children[0].innerHTML, td.innerHTML, td.className]; })));
+      } else {
+        rows.forEach((r) => {
+          const cells = [...r.children];
+          card("<b>" + cells[0].innerHTML + "</b>",
+            cells.slice(1).map((td, i) => [label(heads[i + 1]), td.innerHTML, td.className]));
+        });
+      }
+      table.parentElement.insertAdjacentElement("afterend", cards);
+    });
+
     root.addEventListener("keydown", (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key;
