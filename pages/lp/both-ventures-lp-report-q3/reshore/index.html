@@ -1,0 +1,1014 @@
+<!doctype html><html lang="en" data-lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reshore: PO and invoice financing for manufacturers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* --- inks: one red, one paper, one carbon — and the machine as midtone ---- */
+  --red:      #EF0F0F;   /* the sign. Measured from sign.png. DISPLAY and MARK only:
+                            3.88:1 on cream, 4.43:1 on white — fails AA for small type */
+  --red-ink:  #BF0F0F;   /* the deep red: type under 18 px, and the FIELD that carries
+                            small type (cream on it passes AA). Same hue, 20% darker */
+  --cream:    #F4F3EC;   /* the plate. Neutral warm paper — not the logo file's
+                            #F2F2D1, which reads yellow on screen (retired V0.2.0) */
+  --carbon:   #221D1D;   /* the machine's near-black, warm */
+  --ash:      #AAA6A1;   /* secondary type on carbon */
+  --red-tint: #FBE3E0;   /* cream type's knockout on red fields; hover of a red row */
+  --graphite: #3A3936;   /* rules and hairlines on cream; never type */
+  --steel:    #C9C8C0;   /* the metal midtone where no image is available. Rare */
+  --cream-d:  #E6E4D8;   /* pressed state of a cream plate (:active only) */
+  --carbon-l: #2E2828;   /* a carbon plate on carbon, legible only as texture */
+
+  /* --- type: three faces, each with a named job --------------------------- */
+  --grot: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;   /* 400 · 500 · 700 */
+  --mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace; /* 400 · 700 — labels, data */
+  --dot:  "DotGothic16", "Space Mono", monospace;   /* the READOUT. One weight, a 16-unit
+                                                        dot grid. Floor 16 px. Replaced Doto
+                                                        (too heavy — René, V0.1.0 review) */
+
+  /* display scale */
+  --t-hero:    clamp(40px, 7.4vw, 112px);   /* Space Grotesk 700 · tracking −.03em */
+  --t-display: clamp(28px, 4.6vw, 64px);    /* Space Grotesk 700 · tracking −.025em */
+  --t-read:    clamp(32px, 5.4vw, 80px);    /* DotGothic16 · the readout */
+  --t-h2:      clamp(17px, 1.9vw, 24px);    /* Space Grotesk 700 · section head */
+  --t-sub:     clamp(16px, 1.7vw, 21px);    /* Space Grotesk 500 */
+  --t-lead:    clamp(15px, 1.4vw, 18px);    /* Space Grotesk 500 · lead */
+  --t-body:    15px;                        /* Space Grotesk 400 */
+  --t-mono:    12px;                        /* Space Mono · data */
+  --t-lbl:     11px;                        /* Space Mono · labels. THE FLOOR. Nothing that
+                                               carries information goes below 11 px */
+  --t-read-s:  16px;                        /* DotGothic16 floor: its own grid */
+
+  /* --- the plate: one angle, zero radius ---------------------------------- */
+  --ang:    60deg;    /* the only diagonal in the system. From the sign */
+  --k:      3.4641;   /* 2√3 — the run of a 60° end over a plate of height H is H / --k */
+  --sign-stroke: .03; /* the hexagon outline of the sign = 0.03 × H, drawn INSIDE */
+  --plate-h: 44px;    /* default height of a small plate (CTA, chip, stamp field) */
+  --plate-d: calc(var(--plate-h) / var(--k));
+  --hair:   1px;
+  --rule:   1px solid rgba(34, 29, 29, .28);
+  --rule-head: 2px;
+  --reg:    13px;     /* register mark: a 13 px crosshair with bracket ticks */
+
+  /* --- the grid --------------------------------------------------------- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 72px;
+  --pad:   clamp(1rem, 2.8vw, 2.2rem);
+  --sheet: 1180px;
+  --h-hero: 100svh;
+  --h-score: 70svh;    /* the score, the one full-bleed readout of a page */
+  --h-close: 50svh;
+
+  /* --- motion: nothing moves unless a datum changed ------------------------- */
+  --ease-out:  cubic-bezier(.22, .61, .36, 1);
+  --ease-step: cubic-bezier(.85, 0, .15, 1);   /* the readout steps, it does not glide */
+  --d-flip:  .42s;   /* a digit changing */
+  --d-type:  .6s;    /* a telemetry string typing in */
+  --d-cta:   .2s;    /* the action */
+}
+
+/* The radius of the system is zero. The only curves are the ® and the letters. */
+*, *::before, *::after{ border-radius: 0; }
+
+/* reshore.com · PO & invoice financing — the site's sheet in the «Rating Plate» direction.
+   Same class names as Gastón's markup; every value from the token sheet above. Zero radius,
+   no tilt, one angle (60°) on the actions, red as a field, the deep red for small type. */
+:root{ --bg: var(--cream); --bg2: #ECEBE2; --bg3: #E3E2D8; --ink: var(--carbon); --muted: #5E5A58; --rule-c: rgba(34,29,29,.28); --on-dark: var(--cream);
+  --f1: var(--grot); --f2: var(--mono); box-sizing: border-box; padding-top: env(safe-area-inset-top,0px); padding-bottom: env(safe-area-inset-bottom,0px); color-scheme: light; }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg: var(--carbon); --bg2: #2E2828; --bg3: #3A3433; --ink: var(--cream); --muted: var(--ash); --rule-c: rgba(244,243,236,.26); color-scheme: dark; } }
+:root[data-theme="dark"]{ --bg: var(--carbon); --bg2: #2E2828; --bg3: #3A3433; --ink: var(--cream); --muted: var(--ash); --rule-c: rgba(244,243,236,.26); }
+*, *::before, *::after{ box-sizing: inherit; border-radius: 0; }
+html{ scroll-padding-top: calc(env(safe-area-inset-top,0px) + 72px); }
+body{ margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.52 var(--f1); -webkit-font-smoothing: antialiased; }
+html[data-lang="en"] .es, html[data-lang="es"] .en{ display: none !important; }
+a{ color: inherit; } img, svg{ max-width: 100%; }
+:focus-visible{ outline: 2px solid var(--red); outline-offset: 3px; }
+h1, h2, h3{ font-family: var(--f1); font-weight: 700; line-height: 1.05; margin: 0; letter-spacing: -.025em; text-wrap: balance; }
+.lbl, .tele, .sheetno, .geo{ font-family: var(--f2); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.readout{ font-family: var(--dot); font-weight: 400; letter-spacing: .02em; color: var(--red); font-variant-numeric: tabular-nums; }
+
+/* register marks: two corners via pseudo-elements on content rectangles */
+.reg{ position: absolute; width: 13px; height: 13px; z-index: 4; pointer-events: none;
+  background: linear-gradient(currentColor, currentColor) 50% 0 / 1px 100% no-repeat, linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat; }
+.reg.tl{ left: 10px; top: 10px; } .reg.tr{ right: 10px; top: 10px; } .reg.bl{ left: 10px; bottom: 10px; } .reg.br{ right: 10px; bottom: 10px; }
+.tele{ position: absolute; z-index: 4; line-height: 1.3; letter-spacing: .06em; white-space: nowrap; color: var(--red-ink); }
+.tele.tl{ left: 34px; top: 12px; } .tele.tr{ right: 34px; top: 12px; text-align: right; }
+
+/* review strip */
+.review{ background: var(--red-ink); color: var(--cream); font: 700 11px/1.4 var(--f2); letter-spacing: .1em; text-transform: uppercase; padding: 8px 20px; text-align: center; display: flex; gap: 14px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.stampx{ display: inline-block; padding: .3em .6em; outline: 1.5px solid var(--cream); outline-offset: -1.5px; }
+
+/* nav: carbon bar with a red foot */
+.top{ position: sticky; top: env(safe-area-inset-top,0px); z-index: 20; background: var(--carbon); color: var(--cream); border-bottom: 4px solid var(--red); display: flex; align-items: center; gap: 20px; padding: 12px clamp(16px,4vw,48px); }
+.brand{ color: var(--cream); display: block; line-height: 0; }
+.logo{ width: 132px; height: auto; display: block; }
+.links{ display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.links a:not(.btn){ text-decoration: none; font: 700 11px/1 var(--f2); letter-spacing: .12em; text-transform: uppercase; padding: 10px 10px; opacity: .74; position: relative; }
+.links a.cur:not(.btn){ opacity: 1; } .links a.cur:not(.btn)::after{ content: ""; position: absolute; left: 10px; right: 10px; bottom: 2px; height: 2px; background: var(--red); }
+.links .btn{ margin-left: 10px; }
+.sheetno{ margin-left: 14px; opacity: .6; white-space: nowrap; }
+.lang{ display: flex; outline: 1px solid rgba(244,243,236,.4); outline-offset: -1px; margin-left: 12px; }
+.lang button{ font: 700 11px/1 var(--f2); background: none; color: var(--ash); border: 0; padding: 9px 9px; cursor: pointer; letter-spacing: .06em; }
+.lang button[aria-pressed="true"]{ background: var(--cream); color: var(--carbon); }
+.menu{ display: none; margin-left: auto; font: 700 11px var(--f2); letter-spacing: .1em; text-transform: uppercase; background: none; color: var(--cream); border: 1px solid var(--cream); padding: 9px 12px; }
+@media (max-width: 900px){ .menu{ display: block; } .links{ display: none; position: absolute; left: 0; right: 0; top: 100%; background: var(--carbon); flex-direction: column; align-items: flex-start; padding: 16px clamp(16px,4vw,48px) 22px; border-bottom: 4px solid var(--red); gap: 10px; } .links.open{ display: flex; } .sheetno{ display: none; } }
+
+/* actions: plates with 60° ends */
+.btn{ display: inline-flex; align-items: center; gap: .8em; text-decoration: none; font: 700 11px/1 var(--f2); letter-spacing: .14em; text-transform: uppercase; height: 46px; padding: 0 calc(13.3px + 1.1em); border: 0; clip-path: polygon(13.3px 0, calc(100% - 13.3px) 0, 100% 50%, calc(100% - 13.3px) 100%, 13.3px 100%, 0 50%); transition: background .2s cubic-bezier(.22,.61,.36,1), color .2s cubic-bezier(.22,.61,.36,1); }
+.btn::after{ content: ""; width: .55em; height: .9em; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+.btn.primary{ background: var(--red); color: var(--cream); }
+.btn.primary:hover{ background: var(--carbon); color: var(--cream); }
+.top .btn.primary:hover{ background: var(--cream); color: var(--red-ink); }
+.btn.ghost{ background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn.ghost:hover{ background: var(--ink); color: var(--bg); }
+.btn.sm{ height: 36px; padding: 0 calc(10.4px + 1em); font-size: 10px; clip-path: polygon(10.4px 0, calc(100% - 10.4px) 0, 100% 50%, calc(100% - 10.4px) 100%, 10.4px 100%, 0 50%); }
+.btn:active{ background: var(--red-ink); color: var(--cream); }
+.ctas{ display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+
+/* the page */
+.page{ max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px,4vw,48px); counter-reset: sec; }
+
+/* hero: the render as the field, the statement on a plate, the timeline as four plates */
+.hero{ position: relative; padding: 0 0 clamp(28px,4vw,44px); border-bottom: 2px solid var(--red); }
+.hero-field{ position: relative; margin: 0 calc(-1*clamp(16px,4vw,48px)); height: clamp(460px, 58vw, 680px); background: #E9E8E6; color: var(--red-ink); overflow: hidden; }
+.hero-img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 64% 38%; }
+.hero-text{ position: relative; z-index: 3; width: min(100%, 640px); background: var(--bg); color: var(--ink); padding: clamp(18px,3vw,30px) clamp(18px,3vw,30px) clamp(16px,2.6vw,24px); margin: -140px 0 0; outline: 2px solid var(--red); outline-offset: -2px; }
+@media (max-width: 820px){ .hero-text{ margin-top: -60px; width: 100%; } }
+.kicker{ font: 700 11px/1.3 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
+.kicker::before{ content: ""; width: 10px; height: 10px; background: var(--red); clip-path: polygon(29% 0, 100% 0, 71% 50%, 100% 100%, 29% 100%, 0 50%); }
+.hero h1{ font-size: clamp(34px,5.2vw,66px); line-height: .92; letter-spacing: -.035em; text-transform: none; }
+.lede{ font-size: clamp(16px,1.5vw,19px); color: var(--muted); max-width: 40em; margin: 18px 0 0; font-weight: 500; line-height: 1.35; }
+.avail{ display: flex; align-items: center; gap: 12px; margin-top: 22px; font: 700 11px/1.4 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); flex-wrap: wrap; }
+.geo{ background: var(--carbon); color: var(--cream); padding: .4em .7em; font-weight: 700; }
+.timeline{ margin: clamp(22px,3vw,34px) 0 0; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--carbon); outline: 2px solid var(--carbon); outline-offset: -1px; padding: 0; }
+.tl-stop{ position: relative; padding: 18px 18px 20px 18px; background: var(--bg); }
+.tl-stop i{ display: none; }
+.tl-stop .d{ display: block; font: 700 11px/1.2 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.tl-stop b{ display: block; font-size: clamp(15px,1.4vw,18px); line-height: 1.2; margin-top: 10px; font-weight: 700; letter-spacing: -.01em; }
+.tl-stop.s3{ background: var(--red); color: var(--cream); } .tl-stop.s3 .d{ color: var(--cream); }
+.tl-stop::before{ content: ""; position: absolute; right: 8px; top: 8px; width: 13px; height: 13px; background: linear-gradient(currentColor, currentColor) 50% 0 / 1px 100% no-repeat, linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat; opacity: .5; }
+@media (max-width: 820px){ .timeline{ grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px){ .timeline{ grid-template-columns: 1fr; } }
+
+
+/* data vault — cash and data, one partner (added rev 13 · 2026-10-11) */
+.vault{ display: grid; gap: 22px; margin: 0 0 26px; }
+.vrow{ position: relative; }
+.vrow .k{ font: 700 11px/1.3 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); margin: 0 0 8px; }
+.vr{ display: grid; grid-template-columns: 1fr 28px 1fr 28px 1fr; align-items: stretch; }
+.vr>div{ outline: 2px solid var(--carbon); outline-offset: -2px; padding: 16px 18px 18px; background: var(--bg); position: relative; min-width: 0; }
+.vr>div>.lab{ display: block; font: 700 11px/1.2 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.vr>div b{ display: block; font-size: clamp(18px,1.7vw,24px); margin-top: 6px; letter-spacing: -.02em; line-height: 1.1; }
+.vr>div>small{ display: block; font: 400 12px/1.4 var(--f2); color: var(--muted); margin-top: 6px; letter-spacing: .02em; }
+.vr>div.hot{ background: var(--red); color: var(--cream); outline-color: var(--red); }
+.vr>div.hot>.lab, .vr>div.hot>small{ color: var(--cream); opacity: .92; }
+.vr>div.ghost{ outline-style: dashed; outline-color: var(--rule-c); background: transparent; color: var(--muted); }
+.vr>div.ghost>.lab{ color: var(--muted); }
+.vr i{ align-self: center; height: 2px; background: var(--red); position: relative; }
+.vr i::after{ content: ""; position: absolute; right: -1px; top: -5px; border: 6px solid transparent; border-left: 8px solid var(--red); }
+.vr .cells{ display: flex; gap: 3px; margin-top: 10px; }
+.vr .cells em{ flex: 1; height: 8px; background: var(--red); }
+.vr .cells em.off{ background: var(--rule-c); }
+.vr.ghostrow i{ background: var(--rule-c); } .vr.ghostrow i::after{ border-left-color: var(--rule-c); }
+.vfoot{ margin-top: 14px; }
+@media (max-width: 640px){ .vr{ grid-template-columns: 1fr; } .vr i{ width: 2px; height: 22px; margin-left: 24px; } .vr i::after{ right: -5px; top: auto; bottom: -10px; border: 6px solid transparent; border-top: 8px solid var(--red); } .vr.ghostrow i::after{ border-top-color: var(--rule-c); border-left-color: transparent; } }
+
+
+/* hero map — atom · cash · data over North America (rev 13 · 2026-10-11). Drawn by the engine: no image. */
+.hero-map{ background: var(--bg); }
+.hero-canvas{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.map-title{ position: absolute; left: 34px; top: 52px; z-index: 4; font: 700 13px/1.25 var(--f1); letter-spacing: -.01em; color: var(--ink); max-width: min(240px, 26vw); }
+.map-legend{ position: absolute; right: 34px; top: 118px; justify-content: flex-end; z-index: 4; display: flex; gap: 14px; font: 700 11px/1 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+.map-legend>span{ display: inline-flex; align-items: center; gap: 7px; }
+.map-legend i{ width: 9px; height: 9px; display: inline-block; }
+.sw-atom{ background: var(--carbon); } .sw-cash{ background: var(--red); } .sw-data{ background: transparent; outline: 1.5px solid var(--red-ink); outline-offset: -1.5px; }
+.map-ticker{ position: absolute; right: 0; top: 56px; z-index: 4; display: flex; gap: 0; background: var(--carbon); color: var(--cream); font: 400 11px/1.2 var(--f2); letter-spacing: .06em; text-transform: uppercase; }
+.map-ticker>span{ display: flex; flex-direction: column; gap: 4px; padding: 9px 14px; border-left: 1px solid rgba(244,243,236,.26); }
+.map-ticker>span:first-child{ border-left: 0; }
+.map-ticker em{ font-style: normal; opacity: .7; font-size: 9.5px; }
+.map-ticker b{ font: 400 18px/1 var(--dot); color: var(--cream); letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.map-ticker .st{ justify-content: center; color: var(--red); font-weight: 700; font-size: 10px; letter-spacing: .14em; }
+.map-triad{ position: absolute; left: 34px; top: 96px; z-index: 4; display: grid; grid-template-columns: 1fr; gap: 2px; width: min(240px, 26vw); }
+.map-triad .tw{ background: var(--bg); color: var(--ink); outline: 2px solid var(--carbon); outline-offset: -2px; padding: 12px 16px 12px 18px; position: relative; transition: background .2s var(--ease-out), color .2s var(--ease-out), outline-color .2s var(--ease-out); }
+.map-triad .tw b{ display: block; font: 700 22px/1 var(--f1); letter-spacing: -.03em; }
+.map-triad .tw small{ display: block; margin-top: 6px; font: 400 10.5px/1.35 var(--f2); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); max-width: 16em; }
+.map-triad .tw.on{ background: var(--red); color: var(--cream); outline-color: var(--red); }
+.map-triad .tw.on small{ color: var(--cream); opacity: .9; }
+.map-triad .tw.on::before{ content: ""; position: absolute; left: 7px; top: 15px; width: 7px; height: 11px; background: var(--cream); clip-path: polygon(0 0, 100% 50%, 0 100%); }
+@media (max-width: 900px){ .map-ticker{ display: none; } .map-triad{ left: 16px; right: 16px; top: 112px; width: auto; grid-template-columns: 1fr 1fr 1fr; } .map-triad .tw{ padding: 10px 10px 10px 14px; } .map-triad .tw b{ font-size: 17px; } .map-triad .tw small{ display: none; } .map-legend{ left: 16px; right: auto; top: 86px; justify-content: flex-start; } .map-title{ left: 16px; top: 48px; max-width: 60%; font-size: 12px; } }
+@media (max-width: 820px){ .hero-text{ margin-top: -12px; } }
+@media (prefers-reduced-motion: reduce){ .map-triad .tw{ transition: none; } }
+
+
+/* the plant — raw material to cash, drawn in plan (rev 13 · 2026-10-11) */
+#plant{ grid-template-columns: minmax(0,4fr) minmax(0,8fr); } #plant .plant{ grid-column: 1/-1; margin: clamp(8px,1.5vw,18px) 0 0; } #plant .plant-disc{ grid-column: 1/-1; margin-top: 8px; border-top: 0; padding-top: 0; } #plant .rail h2{ position: static; }
+.plant{ position: relative; width: 100%; aspect-ratio: 16/10; min-height: 420px; background: var(--bg2); outline: 2px solid var(--carbon); outline-offset: -2px; overflow: hidden; }
+.plant-canvas{ position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.plant .reg{ color: var(--red-ink); }
+.plant-legend{ left: 22px; right: auto; top: 18px; justify-content: flex-start; }
+.sw-doc{ background: var(--bg); outline: 1.5px solid var(--carbon); outline-offset: -1.5px; }
+.plant-ticker{ right: 0; top: 18px; }
+.plant-ticker b i{ font-style: normal; font: 400 11px var(--f2); margin-left: 2px; opacity: .8; }
+.plant-ticker u{ text-decoration: none; font: 400 9.5px/1 var(--f2); letter-spacing: .06em; color: var(--ash); }
+.plant-days{ position: absolute; left: 22px; bottom: 112px; z-index: 4; background: var(--bg); outline: 2px solid var(--carbon); outline-offset: -2px; padding: 8px 14px 9px; display: flex; align-items: baseline; gap: 8px; }
+.plant-days b{ font: 400 30px/1 var(--dot); color: var(--red); font-variant-numeric: tabular-nums; letter-spacing: .02em; min-width: 2.2ch; }
+.plant-days small{ font: 700 10px/1 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.plant-steps{ position: absolute; left: 22px; right: 22px; bottom: 22px; z-index: 4; display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 1px; background: var(--carbon); outline: 2px solid var(--carbon); outline-offset: -1px; }
+.plant-steps .ps{ background: var(--bg); padding: 10px 12px 11px; position: relative; min-width: 0; transition: background .2s var(--ease-out), color .2s var(--ease-out); }
+.plant-steps .ps .d{ display: block; font: 700 10px/1.2 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.plant-steps .ps b{ display: block; font-size: 15px; line-height: 1.15; margin-top: 5px; letter-spacing: -.01em; }
+.plant-steps .ps small{ display: block; margin-top: 4px; font: 400 10px/1.3 var(--f2); letter-spacing: .03em; text-transform: uppercase; color: var(--muted); }
+.plant-steps .ps.on{ background: var(--red); color: var(--cream); }
+.plant-steps .ps.on .d, .plant-steps .ps.on small{ color: var(--cream); opacity: .9; }
+.plant-steps .ps.done{ background: var(--carbon); color: var(--cream); }
+.plant-steps .ps.done .d, .plant-steps .ps.done small{ color: var(--ash); }
+@media (max-width: 900px){ .plant-ticker{ display: none; } .plant{ aspect-ratio: auto; height: 560px; } .plant-steps{ grid-template-columns: repeat(5, minmax(0,1fr)); } .plant-steps .ps small, .plant-steps .ps .d{ display: none; } .plant-steps .ps b{ font-size: 12px; margin-top: 0; } .plant-steps .ps{ padding: 9px 8px; } .plant-days{ bottom: 78px; } }
+@media (max-width: 560px){ .plant-steps{ grid-template-columns: repeat(5, minmax(0,1fr)); } .plant-steps .ps b{ font-size: 10.5px; } }
+
+.barcode{ display: inline-block; width: 70px; height: 24px; vertical-align: -8px; margin-right: 10px; padding-top: 14px; box-sizing: border-box; font: 400 7px/10px var(--f2); letter-spacing: .08em; text-align: center; white-space: nowrap; text-transform: none; background: var(--bars, repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 3px, currentColor 3px 4px, transparent 4px 6px, currentColor 6px 8px, transparent 8px 9px, currentColor 9px 10px, transparent 10px 13px, currentColor 13px 15px, transparent 15px 16px, currentColor 16px 17px, transparent 17px 20px)) top / 70px 13px no-repeat; } .barcode::before{ content: attr(data-serial); }
+/* sections: ordinal plate + sticky rail */
+.sec{ display: grid; grid-template-columns: minmax(0,4fr) minmax(0,8fr); gap: clamp(20px,4vw,64px); padding: clamp(36px,5vw,64px) 0; border-bottom: 1px solid var(--rule-c); position: relative; counter-increment: sec; }
+.sec::before{ content: counter(sec, decimal-leading-zero); position: absolute; left: 0; top: -17px; height: 34px; padding: 0 16px; display: inline-flex; align-items: center; font: 400 20px var(--dot); color: var(--cream); background: var(--red); clip-path: polygon(9.8px 0, calc(100% - 9.8px) 0, 100% 50%, calc(100% - 9.8px) 100%, 9.8px 100%, 0 50%); }
+.sec::after{ content: attr(data-serial); position: absolute; right: 0; top: -8px; width: 70px; height: 24px; padding-top: 14px; box-sizing: border-box; font: 400 7px/10px var(--f2); letter-spacing: .08em; text-align: center; white-space: nowrap; color: var(--red-ink); background: var(--bars, repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 3px, currentColor 3px 4px, transparent 4px 6px, currentColor 6px 8px, transparent 8px 9px, currentColor 9px 10px, transparent 10px 13px, currentColor 13px 15px, transparent 15px 16px, currentColor 16px 17px, transparent 17px 20px)) top / 70px 13px no-repeat; box-shadow: 0 0 0 4px var(--bg); background-color: var(--bg); }
+.rail h2{ font-size: clamp(24px,2.6vw,34px); position: sticky; top: 96px; }
+.body{ min-width: 0; }
+.big{ font-size: clamp(17px,1.6vw,20px); margin: 0; max-width: 36em; line-height: 1.4; }
+.more{ display: inline-block; margin-top: 22px; font: 700 11px/1 var(--f2); letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border-bottom: 2px solid var(--red); padding-bottom: 6px; }
+.sec.dark{ background: var(--carbon); color: var(--cream); margin: 0 calc(-1*clamp(16px,4vw,48px)); padding-left: clamp(16px,4vw,48px); padding-right: clamp(16px,4vw,48px); border-bottom: 0; }
+.sec.dark::before{ left: clamp(16px,4vw,48px); } .sec.dark::after{ right: clamp(16px,4vw,48px); color: var(--cream); background-color: var(--carbon); box-shadow: 0 0 0 4px var(--carbon); }
+.sec.dark .feat dd{ color: var(--ash); } .sec.dark .feat>div{ border-color: rgba(244,243,236,.26); } .sec.dark .more{ border-color: var(--red); }
+@media (max-width: 820px){ .hero, .sec{ grid-template-columns: 1fr; } .rail h2{ position: static; } }
+.steps{ list-style: none; margin: 0; padding: 0; }
+.steps li{ display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 16px 0; border-top: 1px solid var(--rule-c); }
+.steps li:last-child{ border-bottom: 1px solid var(--rule-c); }
+.steps .n{ font: 400 22px/1.3 var(--dot); color: var(--red); }
+.steps b{ display: block; font-size: 18px; margin-bottom: 2px; letter-spacing: -.01em; }
+.steps p{ margin: 0; font-size: 16px; }
+.feat{ margin: 0; display: grid; gap: 0; }
+.feat>div{ padding: 18px 0; border-top: 1px solid var(--rule-c); } .feat>div:last-child{ border-bottom: 1px solid var(--rule-c); }
+.feat dt{ font-weight: 700; font-size: 19px; margin-bottom: 6px; letter-spacing: -.01em; }
+.feat dd{ margin: 0; color: var(--muted); font-size: 16px; max-width: 34em; }
+.pair{ display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--carbon); outline: 2px solid var(--carbon); outline-offset: -1px; }
+.pair .opt{ padding: 24px 24px 26px; background: var(--bg); position: relative; }
+.pair .opt+.opt{ background: var(--bg2); }
+.pair h3{ font-size: 21px; margin-bottom: 10px; }
+.pair p{ margin: 0; color: var(--muted); }
+.pair .opt h3::before{ content: ""; display: block; width: 28px; height: 3px; background: var(--red); margin-bottom: 14px; }
+.pair .opt+.opt h3::before{ background: var(--carbon); }
+@media (max-width: 640px){ .pair{ grid-template-columns: 1fr; } }
+.ticks{ list-style: none; margin: 0; padding: 0; }
+.ticks li{ padding: 13px 0 13px 28px; border-top: 1px solid var(--rule-c); position: relative; font-size: 17px; }
+.ticks li:last-child{ border-bottom: 1px solid var(--rule-c); }
+.ticks li::before{ content: ""; position: absolute; left: 0; top: 21px; width: 11px; height: 11px; background: var(--red); clip-path: polygon(29% 0, 100% 0, 71% 50%, 100% 100%, 29% 100%, 0 50%); }
+.final{ padding: clamp(48px,7vw,88px) clamp(16px,4vw,48px); margin: 0 calc(-1*clamp(16px,4vw,48px)); background: var(--red); color: var(--cream); }
+.final h2{ font-size: clamp(32px,4.6vw,60px); max-width: 16em; letter-spacing: -.035em; line-height: .92; }
+.final .btn.primary{ background: var(--cream); color: var(--red-ink); } .final .btn.primary:hover{ background: var(--carbon); color: var(--cream); }
+.final .btn.ghost{ color: var(--cream); box-shadow: inset 0 0 0 2px var(--cream); } .final .btn.ghost:hover{ background: var(--cream); color: var(--red-ink); }
+.phero{ padding: clamp(40px,6vw,80px) 0 clamp(28px,4vw,48px); border-bottom: 2px solid var(--red); }
+.phero h1{ font-size: clamp(34px,5vw,64px); max-width: 18em; line-height: .94; }
+.mission{ font-size: clamp(22px,2.6vw,32px); font-weight: 700; line-height: 1.15; margin: 0; max-width: 22em; letter-spacing: -.025em; }
+.team{ display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); border-top: 1px solid var(--rule-c); }
+.person{ padding: 20px 22px 22px 0; border-bottom: 1px solid var(--rule-c); }
+.person:nth-child(even){ padding-left: 22px; border-left: 1px solid var(--rule-c); }
+.person h3{ font-size: 20px; }
+.person .role{ font: 700 11px/1.3 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); margin: 4px 0 10px; }
+.person p{ margin: 0; color: var(--muted); font-size: 15px; }
+@media (max-width: 640px){ .team{ grid-template-columns: 1fr; } .person:nth-child(even){ padding-left: 0; border-left: 0; } }
+.dt{ width: 100%; border-collapse: collapse; font-size: 15px; margin-top: 10px; }
+.dt th{ font: 700 11px/1.3 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); text-align: left; padding: 10px 12px 10px 0; border-bottom: 2px solid var(--red); }
+.dt td{ padding: 12px 12px 12px 0; border-bottom: 1px solid var(--rule-c); vertical-align: top; }
+.dt td:first-child{ font-weight: 700; width: 34%; }
+h3.small{ font-size: 17px; margin-top: 32px; }
+.faq details{ border-top: 1px solid var(--rule-c); } .faq details:last-child{ border-bottom: 1px solid var(--rule-c); }
+.faq summary{ cursor: pointer; padding: 16px 36px 16px 0; font-weight: 700; font-size: 17px; list-style: none; position: relative; }
+.faq summary::-webkit-details-marker{ display: none; }
+.faq summary::after{ content: "+"; position: absolute; right: 4px; top: 12px; font: 400 24px/1 var(--f2); color: var(--red); }
+.faq details[open] summary::after{ content: "−"; }
+.faq details p{ margin: 0 0 18px; color: var(--muted); max-width: 40em; }
+.disc-inline{ font: 400 11px/1.6 var(--f2); color: var(--muted); max-width: 60em; margin-top: 26px; letter-spacing: .02em; }
+.iqflow{ display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: center; padding: 30px 0; border-bottom: 1px solid var(--rule-c); }
+.iqflow>div{ outline: 2px solid var(--carbon); outline-offset: -2px; padding: 18px 20px; background: var(--bg); }
+.iqflow>div.iq{ background: var(--red); color: var(--cream); outline-color: var(--red); }
+.iqflow span{ display: block; font: 700 11px/1.2 var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.iqflow .iq span{ color: var(--cream); }
+.iqflow b{ display: block; font-size: 17px; margin-top: 4px; letter-spacing: -.01em; }
+.iqflow i{ height: 2px; background: var(--red); position: relative; }
+.iqflow i::after{ content: ""; position: absolute; right: -1px; top: -5px; border: 6px solid transparent; border-left: 8px solid var(--red); }
+@media (max-width: 700px){ .iqflow{ grid-template-columns: 1fr; gap: 0; } .iqflow i{ width: 2px; height: 22px; margin-left: 24px; } .iqflow i::after{ right: -5px; top: auto; bottom: -10px; border: 6px solid transparent; border-top: 8px solid var(--red); } }
+
+/* form: a bank form on a nameplate */
+.formsec{ padding: clamp(30px,5vw,52px) 0 clamp(52px,8vw,90px); }
+.apply{ max-width: 820px; margin-top: 20px; }
+.grid2{ display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+@media (max-width: 640px){ .grid2{ grid-template-columns: 1fr; } }
+.fld{ display: block; margin-bottom: 18px; }
+.fld>span{ display: block; font: 700 11px/1.3 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); margin-bottom: 6px; }
+.fld small{ font-weight: 400; color: var(--muted); text-transform: none; letter-spacing: 0; font-family: var(--f1); font-size: 12px; }
+.fld input, .fld select{ width: 100%; font: 400 16px var(--f1); color: var(--ink); background: var(--bg); border: 0; outline: 2px solid var(--carbon); outline-offset: -2px; padding: 11px 12px; }
+.fld input:focus-visible, .fld select:focus-visible{ outline-color: var(--red); outline-offset: -2px; }
+.fld.bad input, .fld.bad select{ outline-color: var(--red-ink); }
+.err{ display: block; font: 700 11px var(--f2); color: var(--red-ink); font-style: normal; min-height: 0; margin-top: 5px; letter-spacing: .04em; }
+.confirm{ margin-top: 22px; border-left: 4px solid var(--red); padding: 6px 0 6px 16px; }
+.confirm p{ margin: 0; } .confirm .note{ color: var(--muted); font-size: 13px; margin-top: 6px; font-family: var(--f2); }
+.sending{ color: var(--muted); }
+
+/* footer: the deep red */
+.foot{ background: var(--red-ink); color: var(--cream); padding: 52px clamp(16px,4vw,48px) calc(28px + env(safe-area-inset-bottom,0px)); }
+.fgrid{ max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1.2fr; gap: 32px; }
+.foot .logo{ color: var(--cream); width: 150px; }
+.foot .tag{ color: var(--cream); opacity: .85; margin: 16px 0 0; max-width: 24em; font-weight: 500; }
+.foot h4{ font: 700 11px/1.2 var(--f2); letter-spacing: .14em; text-transform: uppercase; color: var(--cream); opacity: .8; margin: 0 0 12px; }
+.foot a{ display: block; text-decoration: none; padding: 4px 0; color: var(--cream); opacity: .9; }
+.foot a:hover{ opacity: 1; text-decoration: underline; text-underline-offset: .2em; }
+.members, .disc, .legal{ max-width: 1240px; margin: 28px auto 0; font: 400 11px/1.65 var(--f2); color: var(--cream); opacity: .85; letter-spacing: .02em; }
+.disc{ border-top: 2px solid var(--cream); padding-top: 18px; }
+.legal{ display: flex; gap: 18px; flex-wrap: wrap; align-items: center; text-transform: uppercase; letter-spacing: .08em; }
+.legal a{ display: inline; color: var(--cream); }
+@media (max-width: 820px){ .fgrid{ grid-template-columns: 1fr 1fr; } .fbrand{ grid-column: 1/-1; } }
+
+/* film: the stage, in the system's inks. Nothing loops. */
+.filmsec{ padding: clamp(36px,5vw,64px) 0; border-bottom: 1px solid var(--rule-c); }
+.filmsec h2{ font-size: clamp(24px,2.6vw,34px); margin-bottom: 22px; }
+.film{ --fr: var(--red); --fpanel: var(--cream); --fline: #D9D7CC; --fink: var(--carbon); --fmut: #5E5A58; --fbg: #ECEBE2; }
+.frame{ position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--fbg); outline: 2px solid var(--carbon); outline-offset: -2px; }
+.frame:fullscreen{ outline: 0; }
+.stage{ position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; color: var(--fink); font-family: var(--f1);
+  background: repeating-linear-gradient(0deg, rgba(34,29,29,.06) 0 1px, transparent 1px 40px), repeating-linear-gradient(90deg, rgba(34,29,29,.06) 0 1px, transparent 1px 40px), var(--fbg); }
+.scene{ position: absolute; inset: 0; opacity: 0; transition: opacity .4s cubic-bezier(.22,.61,.36,1); pointer-events: none; }
+.scene.on{ opacity: 1; }
+.fx{ opacity: 0; transform: translateY(14px); transition: opacity .45s cubic-bezier(.22,.61,.36,1), transform .45s cubic-bezier(.22,.61,.36,1); }
+.fx.on{ opacity: 1; transform: none; }
+.pop{ opacity: 0; transition: opacity .3s cubic-bezier(.22,.61,.36,1); }
+.pop.on{ opacity: 1; }
+.abs{ position: absolute; }
+.col{ display: flex; flex-direction: column; gap: 18px; }
+.eyebrow{ font: 700 13px/1 var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); display: flex; align-items: center; gap: 10px; }
+.eyebrow::before{ content: ""; width: 12px; height: 12px; background: var(--fr); clip-path: polygon(29% 0, 100% 0, 71% 50%, 100% 100%, 29% 100%, 0 50%); }
+.stage .h{ font-size: 66px; line-height: .95; font-weight: 700; margin: 0; letter-spacing: -.035em; }
+.stage .h em, .stage h3 em{ font-style: normal; color: var(--fr); }
+.stage .r{ color: var(--fr); }
+.stage .sub{ font-size: 24px; line-height: 1.3; color: var(--fmut); max-width: 520px; font-weight: 500; }
+.po{ left: 110px; top: 110px; width: 470px; background: var(--fpanel); outline: 2px solid var(--fink); outline-offset: -2px; padding: 24px 30px; font: 400 15px var(--f2); }
+.po::before{ content: ""; position: absolute; right: 8px; bottom: 8px; width: 13px; height: 13px; background: linear-gradient(currentColor, currentColor) 50% 0 / 1px 100% no-repeat, linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat; opacity: .5; }
+.pohead{ display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; border-bottom: 2px solid var(--fr); padding-bottom: 8px; }
+.po .t{ font: 700 20px var(--f1); letter-spacing: -.01em; }
+.po .ex{ font: 700 11px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); outline: 1.5px solid var(--red-ink); outline-offset: -1.5px; padding: 3px 8px; }
+.po .row{ display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid var(--fline); padding: 8px 0; }
+.po .row span:first-child{ color: var(--fmut); text-transform: uppercase; font-size: 11px; letter-spacing: .08em; }
+.po .tot{ font-size: 24px; border-bottom: 0; padding-top: 12px; font-family: var(--dot); color: var(--fr); }
+.stamp{ left: 300px; top: 450px; outline: 4px solid var(--fr); outline-offset: -4px; color: var(--fr); font: 700 24px var(--f2); letter-spacing: .14em; text-transform: uppercase; padding: 10px 18px; opacity: 0; transition: opacity .3s cubic-bezier(.22,.61,.36,1); }
+.stamp.on{ opacity: 1; }
+.track{ left: 120px; top: 400px; width: 1040px; height: 4px; background: var(--fline); }
+.trackfill{ left: 120px; top: 400px; height: 4px; background: var(--fr); width: 0; }
+.ms{ position: absolute; top: 388px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.ms i{ width: 26px; height: 26px; background: var(--fpanel); outline: 3px solid var(--fline); outline-offset: -3px; display: block; }
+.ms.hit i{ outline-color: var(--fr); background: var(--fr); }
+.ms b{ font-size: 19px; font-weight: 700; white-space: nowrap; letter-spacing: -.01em; }
+.ms small{ font: 700 11px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--fmut); }
+.daycount{ right: 120px; top: 120px; text-align: right; }
+.daycount .lbl{ font: 700 12px var(--f2); color: var(--fmut); letter-spacing: .12em; }
+.daycount .n{ font: 400 120px/1 var(--dot); color: var(--fr); font-variant-numeric: tabular-nums; }
+.cash{ left: 120px; top: 580px; width: 540px; }
+.cash .lbl{ display: flex; justify-content: space-between; font: 700 12px var(--f2); color: var(--fmut); margin-bottom: 8px; letter-spacing: .08em; }
+.cash .bar{ height: 14px; background: var(--fline); }
+.cash .bar div{ height: 100%; width: 100%; background: var(--fink); }
+.node{ background: var(--fpanel); outline: 2px solid var(--fink); outline-offset: -2px; padding: 22px 26px; width: 300px; }
+.node .k{ font: 700 12px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.node .v{ font-size: 32px; font-weight: 700; margin-top: 4px; white-space: nowrap; letter-spacing: -.02em; }
+.flow .arrow{ height: 4px; background: repeating-linear-gradient(90deg, var(--fr) 0 12px, transparent 12px 20px); position: relative; margin-top: 22px; }
+.flow .arrow::after{ content: ""; position: absolute; right: -4px; top: -10px; border: 12px solid transparent; border-left: 18px solid var(--fr); }
+.flowlbl{ text-align: center; font: 700 13px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); margin-top: 18px; }
+.stepsrow{ display: flex; gap: 14px; flex-wrap: wrap; }
+.step{ outline: 2px solid var(--fline); outline-offset: -2px; background: var(--fpanel); padding: 14px 22px; font-size: 21px; font-weight: 700; display: flex; align-items: center; gap: 14px; letter-spacing: -.01em; }
+.step i{ font: 400 20px var(--dot); color: var(--fr); font-style: normal; }
+.step.hot{ outline-color: var(--fr); }
+.hub{ left: 440px; top: 300px; width: 400px; height: 150px; background: var(--fr); color: var(--cream); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; clip-path: polygon(43.3px 0, calc(100% - 43.3px) 0, 100% 50%, calc(100% - 43.3px) 100%, 43.3px 100%, 0 50%); }
+.hub b{ font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
+.hub small{ font: 700 12px var(--f2); letter-spacing: .1em; text-transform: uppercase; opacity: .9; }
+.chip{ background: var(--fpanel); outline: 2px solid var(--fink); outline-offset: -2px; border-left: 6px solid var(--fr); padding: 12px 18px; font-size: 20px; font-weight: 700; display: flex; flex-direction: column; gap: 3px; letter-spacing: -.01em; }
+.chip small{ font: 400 12px var(--f2); color: var(--fmut); letter-spacing: .04em; }
+.stage .opt{ top: 250px; width: 500px; background: var(--fpanel); outline: 2px solid var(--fink); outline-offset: -2px; padding: 30px 34px; display: flex; flex-direction: column; gap: 18px; }
+.stage .opt .tag{ font: 700 12px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--red-ink); }
+.stage .opt h3{ margin: 0; font-size: 40px; font-weight: 700; line-height: 1; letter-spacing: -.03em; }
+.stage .opt p{ margin: 0; font-size: 21px; color: var(--fmut); }
+.rbar{ display: flex; flex-direction: column; gap: 6px; }
+.rbar .l{ font: 700 12px var(--f2); letter-spacing: .08em; text-transform: uppercase; color: var(--fmut); }
+.rbar .b{ height: 14px; background: var(--fline); }
+.rbar .b div{ height: 100%; background: var(--fmut); transition: width .42s cubic-bezier(.85,0,.15,1); }
+.rbar.lic .b div{ background: var(--fr); }
+.or{ left: 615px; top: 390px; width: 50px; text-align: center; font: 700 14px var(--f2); letter-spacing: .1em; text-transform: uppercase; color: var(--fmut); }
+.rec{ left: 110px; top: 230px; width: 640px; background: var(--fpanel); outline: 2px solid var(--fink); outline-offset: -2px; padding: 24px 30px; font: 400 17px var(--f2); }
+.rec .rh{ display: flex; justify-content: space-between; color: var(--red-ink); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; border-bottom: 2px solid var(--fr); padding-bottom: 8px; }
+.rec .f{ display: grid; grid-template-columns: 180px 1fr; padding: 9px 0; border-bottom: 1px solid var(--fline); align-items: center; }
+.rec .f:last-child{ border-bottom: 0; }
+.rec .f>span:first-child{ color: var(--fmut); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.sw{ position: relative; height: 24px; }
+.sw span{ position: absolute; left: 0; top: 0; white-space: nowrap; transition: opacity .42s; }
+.sw .b{ opacity: 0; color: var(--fr); }
+.anon .sw .a{ opacity: 0; } .anon .sw .b{ opacity: 1; }
+.sw.keep .a{ opacity: 1 !important; }
+.word{ left: 0; right: 0; top: 150px; display: flex; justify-content: center; }
+.word .logo-film{ width: 900px; height: auto; color: var(--fr); display: block; }
+.tagline{ left: 140px; right: 140px; top: 400px; text-align: center; font-size: 34px; font-weight: 700; line-height: 1.1; letter-spacing: -.025em; }
+.pills{ left: 0; right: 0; top: 520px; display: flex; justify-content: center; gap: 14px; }
+.pills span{ font: 700 12px var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--cream); background: var(--fink); padding: 0 calc(10.4px + 1em); height: 36px; display: inline-flex; align-items: center; clip-path: polygon(10.4px 0, calc(100% - 10.4px) 0, 100% 50%, calc(100% - 10.4px) 100%, 10.4px 100%, 0 50%); }
+.url{ left: 0; right: 0; top: 600px; text-align: center; font: 700 16px var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--red-ink); }
+.mark{ position: absolute; left: 48px; bottom: 28px; font: 700 11px var(--f2); letter-spacing: .14em; text-transform: uppercase; color: var(--red-ink); }
+.chap{ position: absolute; right: 48px; bottom: 28px; font: 400 11px var(--f2); letter-spacing: .08em; text-transform: uppercase; color: var(--fmut); }
+.frame:focus-visible{ outline: 2px solid var(--red); outline-offset: 3px; }
+.farrow{ position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; min-width: 46px; height: 46px; padding: 0; border: 0; background: var(--carbon); color: var(--cream); font: 700 22px/1 var(--f2); cursor: pointer; }
+.farrow.prev{ left: 14px; } .farrow.next{ right: 14px; }
+.farrow.again{ font: 700 11px/1 var(--f2); letter-spacing: .12em; text-transform: uppercase; padding: 0 18px; }
+.farrow[disabled]{ opacity: .35; cursor: default; }
+.farrow:not([disabled]):hover{ background: var(--red); }
+.fnav{ display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 14px; }
+.dots{ display: flex; align-items: center; }
+.dots button{ width: 26px; height: 26px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.dots button::before{ content: ""; width: 10px; height: 10px; outline: 1.5px solid var(--rule-c); outline-offset: -1.5px; background: transparent; }
+.dots button[aria-current="step"]::before{ background: var(--red); outline-color: var(--red); }
+.fstep{ display: none; font: 700 11px var(--f2); letter-spacing: .12em; text-transform: uppercase; color: var(--ink); background: var(--bg2); border: 0; outline: 2px solid var(--carbon); outline-offset: -2px; padding: 10px 14px; cursor: pointer; white-space: nowrap; }
+.fstep[disabled]{ opacity: .4; cursor: default; }
+@media (max-width: 700px){ .farrow{ display: none; } .fstep{ display: inline-block; } .fnav{ justify-content: space-between; flex-wrap: wrap; row-gap: 10px; } .dots{ order: 3; width: 100%; justify-content: center; } }
+@media (prefers-reduced-motion: reduce){ .fx, .pop, .scene, .stamp, .rbar .b div{ transition-duration: .01s !important; } }
+
+</style></head><body>
+<div class="review"><span class="stampx">Proposal</span><span class="en">Review preview · Rating Plate V0.3.0 · rev 13 · 2026-10-11 · not the live site · forms do not send data.</span><span class="es">Vista previa para revisión. No es el sitio en vivo. Los formularios no envían datos.</span></div>
+<nav class="top" aria-label="Main">
+ <a class="brand" href="#/" aria-label="Reshore home"><svg class="logo" viewBox="0 0 2659 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reshore">
+<path d="M2512.51 1.42969H146.159L0 254.582L146.159 507.734H2512.51L2658.67 254.582L2512.51 1.42969ZM2505.89 494.654H529.324L390.72 254.582L529.324 14.5092H2505.89L2644.49 254.582L2505.89 494.654Z" fill="currentColor"/>
+<path d="M801.63 128.206C858.542 128.206 882.882 163.405 882.882 203.845C882.882 235.301 867.903 268.998 829.337 279.857L888.128 380.952H839.075L781.406 283.224H715.504C711.388 283.224 709.142 285.093 709.142 289.586V380.948H664.954V280.973C664.954 252.517 676.939 240.91 704.646 240.91H803.123C828.208 240.91 838.322 223.685 838.322 205.711C838.322 187.737 827.459 172.386 803.123 172.386H664.582L690.179 128.202H801.625L801.63 128.206Z" fill="currentColor"/>
+<path d="M2090.31 128.207C2147.23 128.207 2171.57 163.405 2171.57 203.845C2171.57 235.301 2156.59 268.998 2118.02 279.857L2176.81 380.952H2127.76L2070.09 283.224H2004.19C2000.07 283.224 1997.83 285.093 1997.83 289.586V380.948H1953.64V280.973C1953.64 252.517 1965.62 240.91 1993.33 240.91H2091.81C2116.89 240.91 2127.01 223.685 2127.01 205.711C2127.01 187.737 2116.14 172.386 2091.81 172.386H1953.27L1953.27 128.202H2090.31L2090.31 128.207Z" fill="currentColor"/>
+<path d="M921.351 128.396H1103.16V166.599H965.564V232.745H1092.9V268.824H965.564V342.754H1105.64V380.956H921.351V128.396Z" fill="currentColor"/>
+<path d="M1343.1 128.206V172.39H1213.54C1190.7 172.39 1180.59 184.746 1180.59 202.344C1180.59 217.695 1188.46 232.301 1218.04 232.301H1277.2C1346.1 232.301 1362.2 270.491 1362.2 306.815C1362.2 349.501 1339.35 380.957 1281.69 380.957H1140.9V336.773H1283.19C1307.16 336.773 1318.01 323.668 1318.01 305.318C1318.01 288.841 1309.4 273.862 1278.32 273.862H1219.54C1152.14 273.862 1136.41 236.045 1136.41 200.846C1136.41 158.909 1158.88 128.206 1215.04 128.206H1343.11H1343.1Z" fill="currentColor"/>
+<path d="M1440.43 128.206V231.176H1569.61V128.206H1614.17V380.952H1569.61V275.36H1440.43V380.952H1396.25V128.206H1440.43Z" fill="currentColor"/>
+<path d="M1802.76 128.206C1876.15 128.206 1916.96 170.144 1916.96 255.14C1916.96 340.136 1876.52 380.952 1802.76 380.952H1768.31C1694.55 380.952 1654.11 339.764 1654.11 255.14C1654.11 170.516 1694.93 128.206 1768.31 128.206H1802.76ZM1768.31 172.39C1719.63 172.39 1698.29 197.102 1698.29 255.14C1698.29 312.805 1719.26 336.769 1768.31 336.769H1802.76C1851.44 336.769 1872.41 312.805 1872.41 254.763C1872.41 197.102 1851.44 172.39 1802.76 172.39H1768.31Z" fill="currentColor"/>
+<path d="M2210.04 128.396H2391.85V166.599H2254.26V232.745H2381.59V268.824H2254.26V342.754H2394.33V380.956H2210.04V128.396Z" fill="currentColor"/>
+</svg></a>
+ <button class="menu" id="menu" type="button" aria-expanded="false" aria-controls="navlinks"><span class="en">Menu</span><span class="es">Menú</span></button>
+ <div class="links" id="navlinks"><a href="#/advanced-factoring" data-route="advanced-factoring"><span class="en">Advanced Factoring</span><span class="es">Advanced Factoring</span></a><a href="#/reshore-iq" data-route="reshore-iq"><span class="en">Reshore IQ</span><span class="es">Reshore IQ</span></a><a href="#/how-it-works" data-route="how-it-works"><span class="en">How It Works</span><span class="es">Cómo funciona</span></a><a href="#/company" data-route="company"><span class="en">Company</span><span class="es">Empresa</span></a><a class="btn primary sm" href="#/apply" data-route="apply"><span class="en">Apply</span><span class="es">Solicitar</span></a>
+ <span class="sheetno barcode" aria-hidden="true"></span><div class="lang" role="group" aria-label="Language"><button type="button" data-set="en">EN</button><button type="button" data-set="es">ES</button></div></div>
+</nav>
+<main class="page" data-page="home" hidden>
+<header class="hero">
+ <div class="hero-field hero-map"><canvas class="hero-canvas" id="namap" aria-label="North America: atoms, cash and data moving between Mexican plants and US buyers — simulated"></canvas>
+  <span class="tele tl">020 26 #06<br>nearshoring</span><span class="tele tr">atoms · cash · data<br>simulated · rev 13</span>
+  <div class="map-title"><span class="en">Working capital and tools for North American manufacturers</span><span class="es">Capital de trabajo y herramientas para fabricantes de Norteamérica</span></div>
+  <div class="map-legend" aria-hidden="true"><span><i class="sw-atom"></i><span class="en">Atoms</span><span class="es">Átomos</span></span><span><i class="sw-cash"></i><span class="en">Cash</span><span class="es">Efectivo</span></span><span><i class="sw-data"></i><span class="en">Data</span><span class="es">Datos</span></span></div>
+  <div class="map-ticker" aria-hidden="true"><span><em class="en">Parts in transit</em><em class="es">Piezas en tránsito</em><b id="tkAtom">0</b></span><span><em class="en">Cash settled · USD</em><em class="es">Efectivo liquidado · USD</em><b id="tkCash">0</b></span><span><em class="en">Data · records</em><em class="es">Datos · registros</em><b id="tkData">0</b></span></div>
+  <div class="map-triad" id="triad" aria-hidden="true">
+    <div class="tw" data-k="make"><b>Make.</b><small><span class="en">Atoms are transformed and leave the plant.</span><span class="es">Los átomos se transforman y salen de la planta.</span></small></div>
+    <div class="tw" data-k="near"><b>Visible.</b><small><span class="en">Tracked from raw material to delivered part.</span><span class="es">Rastreado de la materia prima a la pieza entregada.</span></small></div>
+    <div class="tw" data-k="smart"><b>Smart.</b><small><span class="en">Data that unlocks cash.</span><span class="es">Datos que liberan efectivo.</span></small></div>
+  </div>
+  <span class="reg tl"></span><span class="reg tr"></span><span class="reg bl"></span><span class="reg br"></span></div>
+ <div class="hero-text">
+  <p class="kicker"><span class="en">For factories in Mexico, the US and Canada</span><span class="es">Para fábricas en México, Estados Unidos y Canadá</span></p>
+  <h1><span class="en">One partner for your factory's working capital.</span><span class="es">Un solo aliado para el capital de trabajo de tu fábrica.</span></h1>
+  <p class="lede"><span class="en">Advanced Factoring finances your orders from PO to payment. Use your operational data to get a more competitive rate. Every enrolled factory gets Reshore IQ, a platform that automates your workflows and shows where to act.</span><span class="es">Advanced Factoring financia tus pedidos desde la orden de compra hasta el pago. Usa los datos operativos de tu fábrica para obtener una tasa más competitiva. Cada fábrica inscrita recibe Reshore IQ, una plataforma que automatiza tus flujos de trabajo y te muestra dónde actuar.</span></p>
+  <div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a><a class="btn ghost" href="#/how-it-works"><span class="en">See how it works</span><span class="es">Ver cómo funciona</span></a></div>
+ </div>
+ <figure class="timeline" aria-label="PO to payment">
+  <div class="tl-stop s0"><i></i><span class="d"><span class="en">Day 0</span><span class="es">Día 0</span></span><b><span class="en">Verified PO</span><span class="es">OC verificada</span></b></div>
+  <div class="tl-stop s1"><i></i><span class="d"><span class="en">Production</span><span class="es">Producción</span></span><b><span class="en">Advance covers your production costs</span><span class="es">El anticipo cubre tus costos de producción</span></b></div>
+  <div class="tl-stop s2"><i></i><span class="d"><span class="en">Shipment</span><span class="es">Embarque</span></span><b><span class="en">You ship and invoice</span><span class="es">Entregas y facturas</span></b></div>
+  <div class="tl-stop s3"><i></i><span class="d"><span class="en">Up to Day 120</span><span class="es">Hasta el día 120</span></span><b><span class="en">Your buyer pays. We are repaid.</span><span class="es">Tu comprador paga. Recuperamos el anticipo.</span></b></div>
+ </figure>
+</header>
+<section class="sec "><div class="rail"><h2><span class="en">You get orders, then wait to get paid.</span><span class="es">Recibes pedidos y luego esperas tu pago.</span></h2></div><div class="body"><p class='big'><span class="en">You get orders from many buyers. Your buyers pay 60 days or more after each invoice. Production starts months before the first invoice. Until your buyers pay, you carry your production costs.</span><span class="es">Recibes pedidos de muchos compradores. Tus compradores pagan 60 días o más después de cada factura. La producción empieza meses antes de la primera factura. Hasta que tus compradores pagan, tú cargas con los costos de producción.</span></p></div></section>
+<section class="filmsec"><h2><span class="en">How Advanced Factoring works</span><span class="es">Cómo funciona Advanced Factoring</span></h2><div class="film" id="film">
+<div class="frame" id="frame" tabindex="0" aria-roledescription="carousel" aria-label="Advanced Factoring film"><div class="stage" id="stage">
+<section class="scene" data-t="0,6.2">
+ <div class="abs po fx" data-t="0.3,6.2">
+  <div class="pohead"><span class="t"><span class="en">PURCHASE ORDER</span><span class="es">ORDEN DE COMPRA</span></span><span class="ex"><span class="en">Example</span><span class="es">Ejemplo</span></span></div>
+  <div class="row"><span><span class="en">PO no.</span><span class="es">Núm. de OC</span></span><span>PO-2026-0418</span></div>
+  <div class="row"><span><span class="en">Buyer</span><span class="es">Comprador</span></span><span><span class="en">US appliance OEM</span><span class="es">OEM de electrodomésticos de EE. UU.</span></span></div>
+  <div class="row"><span><span class="en">Part</span><span class="es">Pieza</span></span><span><span class="en">PP housing, 2-cavity</span><span class="es">Carcasa de PP, 2 cavidades</span></span></div>
+  <div class="row"><span><span class="en">Quantity</span><span class="es">Cantidad</span></span><span><span class="en">120,000 units</span><span class="es">120,000 unidades</span></span></div>
+  <div class="row"><span><span class="en">Terms</span><span class="es">Plazo</span></span><span><span class="en">Net 90</span><span class="es">Neto 90 días</span></span></div>
+  <div class="row tot"><span>Total</span><span>$384,000</span></div>
+ </div>
+ <div class="abs stamp" data-t="3.2,6.2"><span class="en">VERIFIED PO</span><span class="es">OC VERIFICADA</span></div>
+ <div class="abs col" style="left:650px;top:170px;width:540px">
+  <div class="eyebrow fx" data-t="0.8,6.2"><span class="en">Orders are coming in</span><span class="es">Llegan los pedidos</span></div>
+  <h2 class="h fx" data-t="1.1,6.2" style="font-size:72px"><span class="en">You're getting <em>big orders.</em></span><span class="es">Recibes <em>pedidos grandes.</em></span></h2>
+  <div class="sub fx" data-t="2,6.2"><span class="en">Solid purchase orders from buyers on net terms.</span><span class="es">Órdenes de compra sólidas de compradores con plazos de pago.</span></div>
+ </div>
+</section>
+
+<section class="scene" data-t="6,14.2">
+ <div class="abs col" style="left:120px;top:120px;width:700px">
+  <div class="eyebrow fx" data-t="6.2,14.2"><span class="en">The problem</span><span class="es">El problema</span></div>
+  <h2 class="h fx" data-t="6.4,14.2"><span class="en">Then you wait <em>months</em> to get paid.</span><span class="es">Luego esperas <em>meses</em> para cobrar.</span></h2>
+ </div>
+ <div class="abs daycount fx" data-t="6.8,14.2"><div class="lbl"><span class="en">DAYS UNTIL PAID</span><span class="es">DÍAS HASTA EL PAGO</span></div><div class="n" id="days">0</div></div>
+ <div class="abs track"></div><div class="abs trackfill" id="tfill"></div>
+ <div id="milestones"></div>
+ <div class="abs cash fx" data-t="7.2,14.2"><div class="lbl"><span><span class="en">FACTORY WORKING CAPITAL</span><span class="es">CAPITAL DE TRABAJO DE LA FÁBRICA</span></span><span id="cashpct">100%</span></div><div class="bar"><div id="cashbar"></div></div></div>
+</section>
+<section class="scene" data-t="14,22.2">
+ <div class="abs col" style="left:110px;top:90px;width:1060px">
+  <div class="eyebrow fx" data-t="14.2,22.2"><span class="en">The Reshore offer</span><span class="es">La oferta de Reshore</span></div>
+  <h2 class="h fx" data-t="14.4,22.2"><span class="en">One partner for your <em>working capital.</em></span><span class="es">Un solo aliado para tu <em>capital de trabajo.</em></span></h2>
+ </div>
+ <div class="abs node fx" data-t="15,22.2" style="left:110px;top:300px"><div class="k"><span class="en">Capital</span><span class="es">Capital</span></div><div class="v">Reshore</div></div>
+ <div class="abs node fx" data-t="15.3,22.2" style="left:860px;top:300px"><div class="k"><span class="en">Manufacturer</span><span class="es">Fabricante</span></div><div class="v"><span class="en">Your factory</span><span class="es">Tu fábrica</span></div></div>
+ <div class="abs flow fx" data-t="15.8,22.2" style="left:400px;top:318px;width:440px"><div class="arrow"></div><div class="flowlbl"><span class="en">Advance against verified PO</span><span class="es">Anticipo sobre OC verificada</span></div></div>
+ <div class="abs stepsrow" style="left:110px;top:500px;width:1060px">
+  <div class="step pop" data-t="16.8,22.2"><i>01</i><span class="en">Cover your production costs</span><span class="es">Cubre tus costos de producción</span></div>
+  <div class="step pop" data-t="17.8,22.2"><i>02</i><span class="en">Ship on time</span><span class="es">Entrega a tiempo</span></div>
+  <div class="step pop hot" data-t="18.8,22.2"><i>03</i><span class="en">Repaid when the buyer pays</span><span class="es">Se paga cuando el comprador paga</span></div>
+ </div>
+</section>
+<section class="scene" data-t="22,27.6">
+ <div class="abs col" style="left:110px;top:80px;width:1060px">
+  <div class="eyebrow fx" data-t="22.2,27.6"><span class="en">What else you have</span><span class="es">Qué más tienes</span></div>
+  <h2 class="h fx" data-t="22.4,27.6"><span class="en">Every order creates <span class='r'>operational data.</span></span><span class="es">Cada pedido crea <span class='r'>datos operativos.</span></span></h2>
+ </div>
+ <div class="abs hub pop" data-t="22.9,27.6"><b><span class="en">Your factory data</span><span class="es">Los datos de tu fábrica</span></b><small><span class="en">years of real operations</span><span class="es">años de operación real</span></small></div>
+ <div class="abs chip pop" data-t="23.4,27.6" style="left:150px;top:270px"><span class="en">Manufacturing</span><span class="es">Manufactura</span><small><span class="en">cycle times, scrap, yields</span><span class="es">tiempos de ciclo, scrap, rendimientos</span></small></div>
+ <div class="abs chip pop" data-t="23.8,27.6" style="left:880px;top:270px"><span class="en">Molds &amp; tooling</span><span class="es">Moldes y herramentales</span><small><span class="en">cavities, steel, maintenance</span><span class="es">cavidades, acero, mantenimiento</span></small></div>
+ <div class="abs chip pop" data-t="24.2,27.6" style="left:120px;top:420px"><span class="en">Operations</span><span class="es">Operaciones</span><small><span class="en">machines, shifts, OEE</span><span class="es">máquinas, turnos, OEE</span></small></div>
+ <div class="abs chip pop" data-t="24.6,27.6" style="left:910px;top:420px"><span class="en">Materials</span><span class="es">Materiales</span><small><span class="en">resins, colorants, lots</span><span class="es">resinas, colorantes, lotes</span></small></div>
+ <div class="abs chip pop" data-t="25,27.6" style="left:530px;top:540px"><span class="en">Quality</span><span class="es">Calidad</span><small><span class="en">defects, inspections, certifications</span><span class="es">defectos, inspecciones, certificaciones</span></small></div>
+</section>
+<section class="scene" data-t="27.5,34.2">
+ <div class="abs col" style="left:110px;top:80px;width:1060px">
+  <div class="eyebrow fx" data-t="27.6,34.2"><span class="en">Two ways to work with Reshore</span><span class="es">Dos formas de trabajar con Reshore</span></div>
+  <h2 class="h fx" data-t="27.8,34.2"><span class="en">Your data. <span class='r'>Your choice.</span></span><span class="es">Tus datos. <span class='r'>Tu decisión.</span></span></h2>
+ </div>
+ <div class="abs opt fx" data-t="28.4,34.2" style="left:110px">
+  <div class="tag"><span class="en">Option A · Advanced Factoring</span><span class="es">Opción A · Advanced Factoring</span></div>
+  <h3><span class="en">Share your data. Get a <em>better rate.</em></span><span class="es">Comparte tus datos. Obtén una <em>mejor tasa.</em></span></h3>
+  <div class="rbar"><div class="l"><span class="en">Standard rate</span><span class="es">Tasa estándar</span></div><div class="b"><div style="width:100%"></div></div></div>
+  <div class="rbar lic"><div class="l"><span class="en">Rate with your data connected</span><span class="es">Tasa con tus datos conectados</span></div><div class="b"><div id="licbar" style="width:100%"></div></div></div>
+ </div>
+ <div class="abs or pop" data-t="29.6,34.2"><span class="en">or</span><span class="es">o</span></div>
+ <div class="abs opt fx" data-t="29.8,34.2" style="left:670px">
+  <div class="tag"><span class="en">Option B · Reshore IQ</span><span class="es">Opción B · Reshore IQ</span></div>
+  <h3><span class="en">Reshore IQ <em>on its own.</em></span><span class="es">Reshore IQ <em>por sí solo.</em></span></h3>
+  <p><span class="en">Connect to Reshore IQ, with or without capital.</span><span class="es">Conéctate a Reshore IQ, con o sin capital.</span></p>
+ </div>
+</section>
+<section class="scene" data-t="34,42.2">
+ <div class="abs col" style="left:110px;top:80px;width:1060px">
+  <div class="eyebrow fx" data-t="34.2,42.2"><span class="en">Privacy first</span><span class="es">Privacidad primero</span></div>
+  <h2 class="h fx" data-t="34.4,42.2"><span class="en">We <span class='r'>anonymize</span> every record.</span><span class="es"><span class='r'>Anonimizamos</span> cada registro.</span></h2>
+ </div>
+ <div class="abs rec fx" id="rec" data-t="35,42.2" style="top:270px">
+  <div class="rh"><span><span class="en">Sample production record</span><span class="es">Registro de producción de ejemplo</span></span><span id="recstate"></span></div>
+  <div class="f"><span><span class="en">factory</span><span class="es">fábrica</span></span><div class="sw"><span class="a">Plásticos del Bajío S.A.</span><span class="b">fac_7f3a91</span></div></div>
+  <div class="f"><span><span class="en">buyer</span><span class="es">comprador</span></span><div class="sw"><span class="a"><span class="en">US appliance OEM</span><span class="es">OEM de electrodomésticos de EE. UU.</span></span><span class="b">buy_c2e04d</span></div></div>
+  <div class="f"><span><span class="en">mold</span><span class="es">molde</span></span><div class="sw"><span class="a">Mold A-114 · 2 cav</span><span class="b">mold_19b · 2 cav</span></div></div>
+  <div class="f"><span><span class="en">resin</span><span class="es">resina</span></span><div class="sw keep"><span class="a">PP homopolymer</span><span class="b"></span></div></div>
+  <div class="f"><span><span class="en">cycle time</span><span class="es">tiempo de ciclo</span></span><div class="sw keep"><span class="a">32.4 s</span><span class="b"></span></div></div>
+  <div class="f"><span><span class="en">scrap rate</span><span class="es">tasa de scrap</span></span><div class="sw keep"><span class="a">1.8 %</span><span class="b"></span></div></div>
+ </div>
+ <div class="abs sub fx" data-t="38.5,42.2" style="left:800px;top:300px;max-width:380px"><span class="en">Your data is secure and encrypted.</span><span class="es">Tus datos están seguros y cifrados.</span></div>
+</section>
+<section class="scene" data-t="42,48">
+ <div class="abs word fx" data-t="42.3,48"><svg class="logo-film" viewBox="0 0 2659 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reshore">
+<path d="M2512.51 1.42969H146.159L0 254.582L146.159 507.734H2512.51L2658.67 254.582L2512.51 1.42969ZM2505.89 494.654H529.324L390.72 254.582L529.324 14.5092H2505.89L2644.49 254.582L2505.89 494.654Z" fill="currentColor"/>
+<path d="M801.63 128.206C858.542 128.206 882.882 163.405 882.882 203.845C882.882 235.301 867.903 268.998 829.337 279.857L888.128 380.952H839.075L781.406 283.224H715.504C711.388 283.224 709.142 285.093 709.142 289.586V380.948H664.954V280.973C664.954 252.517 676.939 240.91 704.646 240.91H803.123C828.208 240.91 838.322 223.685 838.322 205.711C838.322 187.737 827.459 172.386 803.123 172.386H664.582L690.179 128.202H801.625L801.63 128.206Z" fill="currentColor"/>
+<path d="M2090.31 128.207C2147.23 128.207 2171.57 163.405 2171.57 203.845C2171.57 235.301 2156.59 268.998 2118.02 279.857L2176.81 380.952H2127.76L2070.09 283.224H2004.19C2000.07 283.224 1997.83 285.093 1997.83 289.586V380.948H1953.64V280.973C1953.64 252.517 1965.62 240.91 1993.33 240.91H2091.81C2116.89 240.91 2127.01 223.685 2127.01 205.711C2127.01 187.737 2116.14 172.386 2091.81 172.386H1953.27L1953.27 128.202H2090.31L2090.31 128.207Z" fill="currentColor"/>
+<path d="M921.351 128.396H1103.16V166.599H965.564V232.745H1092.9V268.824H965.564V342.754H1105.64V380.956H921.351V128.396Z" fill="currentColor"/>
+<path d="M1343.1 128.206V172.39H1213.54C1190.7 172.39 1180.59 184.746 1180.59 202.344C1180.59 217.695 1188.46 232.301 1218.04 232.301H1277.2C1346.1 232.301 1362.2 270.491 1362.2 306.815C1362.2 349.501 1339.35 380.957 1281.69 380.957H1140.9V336.773H1283.19C1307.16 336.773 1318.01 323.668 1318.01 305.318C1318.01 288.841 1309.4 273.862 1278.32 273.862H1219.54C1152.14 273.862 1136.41 236.045 1136.41 200.846C1136.41 158.909 1158.88 128.206 1215.04 128.206H1343.11H1343.1Z" fill="currentColor"/>
+<path d="M1440.43 128.206V231.176H1569.61V128.206H1614.17V380.952H1569.61V275.36H1440.43V380.952H1396.25V128.206H1440.43Z" fill="currentColor"/>
+<path d="M1802.76 128.206C1876.15 128.206 1916.96 170.144 1916.96 255.14C1916.96 340.136 1876.52 380.952 1802.76 380.952H1768.31C1694.55 380.952 1654.11 339.764 1654.11 255.14C1654.11 170.516 1694.93 128.206 1768.31 128.206H1802.76ZM1768.31 172.39C1719.63 172.39 1698.29 197.102 1698.29 255.14C1698.29 312.805 1719.26 336.769 1768.31 336.769H1802.76C1851.44 336.769 1872.41 312.805 1872.41 254.763C1872.41 197.102 1851.44 172.39 1802.76 172.39H1768.31Z" fill="currentColor"/>
+<path d="M2210.04 128.396H2391.85V166.599H2254.26V232.745H2381.59V268.824H2254.26V342.754H2394.33V380.956H2210.04V128.396Z" fill="currentColor"/>
+</svg></div>
+ <div class="abs tagline fx" data-t="43.2,48"><span class="en">Working capital and tools for North American manufacturers.</span><span class="es">Capital de trabajo y herramientas para fabricantes de Norteamérica.</span></div>
+ <div class="abs pills fx" data-t="44.2,48"><span>Advanced Factoring</span><span>Reshore IQ</span></div>
+ <div class="abs url fx" data-t="45,48">reshore.com</div>
+</section>
+<div class="mark"><span class="barcode"></span> ADVANCED FACTORING</div>
+<div class="chap" id="chap"></div>
+</div>
+<button class="farrow prev" type="button" aria-label="Back">‹</button><button class="farrow next" type="button" aria-label="Next">›</button>
+</div>
+<div class="fnav"><button class="fstep prev" type="button"><span class="en">‹ Back</span><span class="es">‹ Atrás</span></button><div class="dots" id="dots" role="group" aria-label="Scenes"></div><button class="fstep next" type="button"></button></div>
+</div></section>
+<section class="sec " id="plant"><div class="rail"><h2><span class="en">From raw material to cash, on one platform.</span><span class="es">De la materia prima al efectivo, en una sola plataforma.</span></h2></div><div class="body"><p class='big'><span class="en">One plant, one order, one ledger. A purchase order becomes resin lots, pressed parts, a pallet on a truck, an invoice and — at the end of the buyer's terms — a payment. Every step leaves data behind; Reshore reads it to price the next order and to advance the cash before the first part ships.</span><span class="es">Una planta, un pedido, un libro mayor. Una orden de compra se convierte en lotes de resina, piezas moldeadas, una tarima en un camión, una factura y —al vencer los términos del comprador— un pago. Cada paso deja datos; Reshore los lee para cotizar el siguiente pedido y para adelantar el efectivo antes de que embarque la primera pieza.</span></p></div>
+<div class="plant" id="plantWrap">
+  <canvas class="plant-canvas" id="plantmap" aria-label="A plant drawn in plan: raw material, presses, inspection, the dock, the buyer and Reshore's ledger, with parts, cash, documents and data moving between them — simulated"></canvas>
+  <div class="map-legend plant-legend" aria-hidden="true"><span><i class="sw-atom"></i><span class="en">Atoms</span><span class="es">Átomos</span></span><span><i class="sw-cash"></i><span class="en">Cash</span><span class="es">Efectivo</span></span><span><i class="sw-data"></i><span class="en">Data</span><span class="es">Datos</span></span><span><i class="sw-doc"></i><span class="en">PO · invoice</span><span class="es">OC · factura</span></span></div>
+  <div class="map-ticker plant-ticker" aria-hidden="true"><span><em class="en">Cycle time</em><em class="es">Tiempo de ciclo</em><b>32.4<i>s</i></b><u><span class="en">peers 35.1</span><span class="es">pares 35.1</span></u></span><span><em class="en">Scrap</em><em class="es">Scrap</em><b>1.8<i>%</i></b><u><span class="en">peers 2.6</span><span class="es">pares 2.6</span></u></span><span><em>OEE</em><b>71<i>%</i></b><u><span class="en">peers 64</span><span class="es">pares 64</span></u></span><span><em>DSO</em><b>47<i>d</i></b><u><span class="en">terms 60</span><span class="es">términos 60</span></u></span></div>
+  <div class="plant-days" id="plantDays" aria-hidden="true"><b id="plantDay">0</b><small><span class="en">day</span><span class="es">día</span></small></div>
+  <div class="plant-steps" id="plantSteps" aria-hidden="true">
+    <div class="ps" data-ph="po"><span class="d">Day 0</span><b><span class="en">PO received</span><span class="es">OC recibida</span></b><small><span class="en">Advance covers raw material</span><span class="es">El anticipo cubre la materia prima</span></small></div>
+    <div class="ps" data-ph="make"><span class="d">Day 14</span><b><span class="en">Production starts</span><span class="es">Arranca la producción</span></b><small><span class="en">Resin → press → inspection</span><span class="es">Resina → prensa → inspección</span></small></div>
+    <div class="ps" data-ph="ship"><span class="d">Day 45</span><b><span class="en">Shipped</span><span class="es">Embarcado</span></b><small><span class="en">Invoice issued</span><span class="es">Factura emitida</span></small></div>
+    <div class="ps" data-ph="terms"><span class="d">Day 45 → 90</span><b><span class="en">Payment terms</span><span class="es">Términos de pago</span></b><small><span class="en">The buyer's clock runs</span><span class="es">Corre el reloj del comprador</span></small></div>
+    <div class="ps" data-ph="paid"><span class="d">Day 90</span><b><span class="en">Paid</span><span class="es">Pagado</span></b><small><span class="en">Reshore is repaid</span><span class="es">Reshore recupera el anticipo</span></small></div>
+  </div>
+  <span class="reg tl"></span><span class="reg tr"></span><span class="reg bl"></span><span class="reg br"></span>
+</div>
+<p class="disc-inline plant-disc"><span class="en">Illustrative.</span><span class="es">Ilustrativo.</span></p></section>
+<section class="sec "><div class="rail"><h2><span class="en">Advanced Factoring: from PO to payment</span><span class="es">Advanced Factoring: de la orden de compra al pago</span></h2></div><div class="body"><ol class="steps"><li><span class="n">01</span><div><p><span class="en">Send us a verified purchase order.</span><span class="es">Envíanos una orden de compra verificada.</span></p></div></li><li><span class="n">02</span><div><p><span class="en">Get an advance to cover your production costs.</span><span class="es">Recibe un anticipo para cubrir tus costos de producción.</span></p></div></li><li><span class="n">03</span><div><p><span class="en">Ship on time.</span><span class="es">Entrega a tiempo.</span></p></div></li><li><span class="n">04</span><div><p><span class="en">We are repaid when your buyer pays.</span><span class="es">Recuperamos el anticipo cuando tu comprador paga.</span></p></div></li></ol><a class="more" href="#/advanced-factoring"><span class="en">Learn about Advanced Factoring</span><span class="es">Conoce Advanced Factoring</span></a></div></section>
+<section class="sec " id="data-vault"><div class="rail"><h2><span class="en">Your data should work for you, just like your cash.</span><span class="es">Tus datos deberían trabajar para ti, igual que tu efectivo.</span></h2></div><div class="body">
+<p class='big'><span class="en">Every order creates operational data: production, tooling, quality, materials and payment records. You keep your cash where it is safe and earns. Your data has sat idle and unstructured. Reshore structures it, keeps it safe — encrypted, every record anonymized — and uses it to score your risk. More data gives us a more accurate view of your plant, so your cost of capital falls and financing opens earlier: from the verified purchase order, before you ship.</span><span class="es">Cada pedido crea datos operativos: registros de producción, herramentales, calidad, materiales y pagos. Tu efectivo lo guardas donde está seguro y rinde. Tus datos han estado inactivos y sin estructura. Reshore los estructura, los resguarda —cifrados, cada registro anonimizado— y los usa para evaluar tu riesgo. Con más datos vemos tu planta con más precisión, así tu costo de capital baja y el financiamiento llega antes: desde la orden de compra verificada, antes de embarcar.</span></p>
+<div class="vault" style="margin-top:26px">
+ <div class="vrow"><p class="k"><span class="en">What you already do</span><span class="es">Lo que ya haces</span></p>
+  <div class="vr ghostrow">
+   <div class="ghost"><span class="lab"><span class="en">Asset</span><span class="es">Activo</span></span><b><span class="en">Cash</span><span class="es">Efectivo</span></b></div><i></i>
+   <div class="ghost"><span class="lab"><span class="en">Kept with</span><span class="es">Guardado en</span></span><b><span class="en">A bank</span><span class="es">Un banco</span></b><small><span class="en">safe keeping</span><span class="es">resguardo</span></small></div><i></i>
+   <div class="ghost"><span class="lab"><span class="en">Gets you</span><span class="es">Te da</span></span><b><span class="en">Yield</span><span class="es">Rendimiento</span></b></div>
+  </div></div>
+ <div class="vrow"><p class="k"><span class="en">What Reshore does</span><span class="es">Lo que hace Reshore</span></p>
+  <div class="vr">
+   <div><span class="lab"><span class="en">Asset</span><span class="es">Activo</span></span><b><span class="en">Operating data</span><span class="es">Datos operativos</span></b><small><span class="en">production · tooling · quality · materials · payments</span><span class="es">producción · herramentales · calidad · materiales · pagos</span></small></div><i></i>
+   <div class="hot"><span class="lab"><span class="en">Kept with</span><span class="es">Guardado en</span></span><b><span class="en">Reshore · data vault</span><span class="es">Reshore · bóveda de datos</span></b><small><span class="en">structured · encrypted · every record anonymized · stays yours</span><span class="es">estructurado · cifrado · cada registro anonimizado · sigue siendo tuyo</span></small></div><i></i>
+   <div><span class="lab"><span class="en">Gets you</span><span class="es">Te da</span></span><b><span class="en">A lower cost of capital. Financing before you ship.</span><span class="es">Menor costo de capital. Financiamiento antes de embarcar.</span></b></div>
+  </div></div>
+</div>
+<dl class="feat">
+<div><dt><span class="en">An asset you already own</span><span class="es">Un activo que ya es tuyo</span></dt><dd><span class="en">Years of cycle times, tooling, quality, materials and payment records, scattered across emails, spreadsheets and your ERP. Reshore structures them and keeps them safe in one place. They stay yours.</span><span class="es">Años de tiempos de ciclo, herramentales, calidad, materiales y registros de pago, dispersos en correos, hojas de cálculo y tu ERP. Reshore los estructura y los resguarda en un solo lugar. Siguen siendo tuyos.</span></dd></div>
+<div><dt><span class="en">A lower cost of capital</span><span class="es">Un menor costo de capital</span></dt><dd><span class="en">We score your credit risk on how your plant actually runs, not only on your buyer's balance sheet. More data gives us a more accurate view of your risk, so we can offer you a better rate.</span><span class="es">Evaluamos tu riesgo de crédito por cómo opera realmente tu planta, no solo por el balance de tu comprador. Con más datos vemos tu riesgo con más precisión, y así podemos ofrecerte una mejor tasa.</span></dd></div>
+<div><dt><span class="en">Financing before you ship</span><span class="es">Financiamiento antes de embarcar</span></dt><dd><span class="en">With your data connected, the advance can start at the verified purchase order and cover production — months before the first invoice, not after it.</span><span class="es">Con tus datos conectados, el adelanto puede empezar en la orden de compra verificada y cubrir la producción — meses antes de la primera factura, no después.</span></dd></div>
+<div><dt><span class="en">Cash and data, one partner</span><span class="es">Efectivo y datos, un solo socio</span></dt><dd><span class="en">Working capital against your verified orders, and a vault for the data those orders create. One agreement, one ledger, one place where both are read.</span><span class="es">Capital de trabajo contra tus órdenes verificadas, y una bóveda para los datos que esas órdenes generan. Un contrato, un libro mayor, un solo lugar donde se leen los dos.</span></dd></div>
+</dl>
+<p class="disc-inline vfoot"><span class="en">Reshore is not a bank and does not take deposits. Financing is subject to credit approval and a signed agreement.</span><span class="es">Reshore no es un banco y no capta depósitos. El financiamiento está sujeto a aprobación de crédito y a un contrato firmado.</span></p>
+</div></section>
+<section class="sec dark"><div class="rail"><h2><span class="en">Reshore IQ comes with your capital.</span><span class="es">Reshore IQ viene con tu capital.</span></h2></div><div class="body"><dl class="feat">
+<div><dt><span class="en">Financial operations tools</span><span class="es">Herramientas de operaciones financieras</span></dt><dd><span class="en">Purchase orders, invoices and payments arrive by email. Reshore IQ reads them and enters them into your ERP. Your team stops retyping data.</span><span class="es">Las órdenes de compra, facturas y pagos llegan por correo. Reshore IQ los lee y los captura en tu ERP. Tu equipo deja de capturar datos a mano.</span></dd></div>
+<div><dt><span class="en">Analytics</span><span class="es">Analítica</span></dt><dd><span class="en">See efficiency gains, operational risks and opportunities to improve.</span><span class="es">Ve mejoras de eficiencia, riesgos operativos y oportunidades de mejora.</span></dd></div></dl><a class="more" href="#/reshore-iq"><span class="en">Explore Reshore IQ</span><span class="es">Conoce Reshore IQ</span></a></div></section>
+<section class="sec "><div class="rail"><h2><span class="en">Two ways to work with Reshore</span><span class="es">Dos formas de trabajar con Reshore</span></h2></div><div class="body"><div class="pair">
+<div class="opt"><h3><span class="en">Advanced Factoring with Reshore IQ</span><span class="es">Advanced Factoring con Reshore IQ</span></h3><p><span class="en">Get working capital at a better rate. You connect your operational data to Reshore. Reshore IQ is included.</span><span class="es">Obtén capital de trabajo a una mejor tasa. Conectas tus datos operativos a Reshore. Reshore IQ está incluido.</span></p></div>
+<div class="opt"><h3><span class="en">Reshore IQ on its own</span><span class="es">Reshore IQ por sí solo</span></h3><p><span class="en">You can connect to Reshore IQ even if you're not using our capital solutions yet.</span><span class="es">Puedes conectarte a Reshore IQ aunque todavía no uses nuestras soluciones de capital.</span></p></div></div></div></section>
+<section class="sec "><div class="rail"><h2><span class="en">Your data is protected.</span><span class="es">Tus datos están protegidos.</span></h2></div><div class="body"><p class='big'><span class="en">Privacy is a core part of Reshore IQ and of every partnership with Reshore. Your data is secure and encrypted, and we anonymize every record. We take your data, your compliance and your business relationships seriously.</span><span class="es">La privacidad es parte central de Reshore IQ y de cada relación con Reshore. Tus datos están seguros y cifrados, y anonimizamos cada registro. Tomamos en serio tus datos, tu cumplimiento normativo y tus relaciones comerciales.</span></p></div></section>
+<section class="sec "><div class="rail"><h2><span class="en">Onboarding</span><span class="es">Alta de tu fábrica</span></h2></div><div class="body"><p class='big'><span class="en">Our engineers connect Reshore IQ to the systems your factory already uses, across the product lifecycle.</span><span class="es">Nuestros ingenieros conectan Reshore IQ a los sistemas que tu fábrica ya usa, en todo el ciclo de vida del producto.</span></p></div></section>
+<section class="final"><h2><span class="en">Get working capital for your next order.</span><span class="es">Obtén capital de trabajo para tu próximo pedido.</span></h2><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a><a class="btn ghost" href="#/reshore-iq"><span class="en">Explore Reshore IQ</span><span class="es">Conoce Reshore IQ</span></a></div></section>
+</main><main class="page" data-page="advanced-factoring" hidden><header class="phero"><h1><span class="en">Advanced Factoring: invoice factoring and PO financing for manufacturers</span><span class="es">Advanced Factoring: factoraje de facturas y financiamiento de órdenes de compra para fabricantes</span></h1><p class="lede"><span class="en">Get an advance on your purchase orders and invoices. Use your operational data to get a better rate.</span><span class="es">Recibe un anticipo sobre tus órdenes de compra y facturas. Usa tus datos operativos para obtener una mejor tasa.</span></p><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a></div></header><section class="sec "><div class="rail"><h2><span class="en">Net terms tie up your cash</span><span class="es">Los plazos de pago inmovilizan tu efectivo</span></h2></div><div class="body"><p class='big'><span class="en">Your buyers pay on net terms, 60 days or more after each invoice. Your production costs start months before that. Each new order needs more working capital.</span><span class="es">Tus compradores pagan a plazo, 60 días o más después de cada factura. Tus costos de producción empiezan meses antes. Cada pedido nuevo necesita más capital de trabajo.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">What you get</span><span class="es">Qué obtienes</span></h2></div><div class="body"><ul class="ticks"><li><span class="en">An advance on each verified purchase order and invoice.</span><span class="es">Un anticipo sobre cada orden de compra y factura verificada.</span></li><li><span class="en">A better rate when you share your operational data with Reshore.</span><span class="es">Una mejor tasa cuando compartes tus datos operativos con Reshore.</span></li><li><span class="en">Repayment cycles up to 120 days.</span><span class="es">Ciclos de pago de hasta 120 días.</span></li><li><span class="en">Repayment when your buyer pays.</span><span class="es">El anticipo se paga cuando tu comprador paga.</span></li><li><span class="en">Reshore IQ included.</span><span class="es">Reshore IQ incluido.</span></li></ul></div></section><section class="sec "><div class="rail"><h2><span class="en">Your data gets you a better rate.</span><span class="es">Tus datos te dan una mejor tasa.</span></h2></div><div class="body"><p class='big'><span class="en">Every order creates operational data: production, tooling, quality, materials and operations records. You share it with Reshore. We use it to score your credit risk. More data gives us a more accurate view of your risk, so we can offer you a better rate.</span><span class="es">Cada pedido crea datos operativos: registros de producción, herramentales, calidad, materiales y operaciones. Los compartes con Reshore. Los usamos para evaluar tu riesgo de crédito. Con más datos vemos tu riesgo con más precisión, y así podemos ofrecerte una mejor tasa.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Who can apply</span><span class="es">Quién puede solicitar</span></h2></div><div class="body"><p class='big'><span class="en">North American manufacturers with buyer contracts of one year or more. Your buyers place recurring orders and pay on a predictable cycle.</span><span class="es">Fabricantes de Norteamérica con contratos de compradores de un año o más. Tus compradores hacen pedidos recurrentes y pagan en un ciclo predecible.</span></p><div class="avail"><span class="geo">MX · US · CA</span><span><span class="en">Available to manufacturers in North America.</span><span class="es">Disponible para fabricantes en Norteamérica.</span></span></div><a class='more' href='#/how-it-works/eligibility'><span class="en">See full eligibility</span><span class="es">Ver todos los requisitos</span></a></div></section><section class="sec "><div class="rail"><h2><span class="en">How to start</span><span class="es">Cómo empezar</span></h2></div><div class="body"><ol class="steps"><li><span class="n">01</span><div><b><span class="en">Apply</span><span class="es">Solicita</span></b><p><span class="en">Send the application form.</span><span class="es">Envía el formulario de solicitud.</span></p></div></li><li><span class="n">02</span><div><b><span class="en">Review</span><span class="es">Revisión</span></b><p><span class="en">We review your buyers, your purchase orders and your payment history.</span><span class="es">Revisamos tus compradores, tus órdenes de compra y tu historial de pagos.</span></p></div></li><li><span class="n">03</span><div><b><span class="en">Connect</span><span class="es">Conexión</span></b><p><span class="en">Our engineers connect Reshore IQ to the systems your factory already uses.</span><span class="es">Nuestros ingenieros conectan Reshore IQ a los sistemas que tu fábrica ya usa.</span></p></div></li><li><span class="n">04</span><div><b><span class="en">Score</span><span class="es">Evaluación</span></b><p><span class="en">We use your operational data to score your credit risk.</span><span class="es">Usamos tus datos operativos para evaluar tu riesgo de crédito.</span></p></div></li><li><span class="n">05</span><div><b><span class="en">First advance</span><span class="es">Primer anticipo</span></b><p><span class="en">You get your first advance on a verified purchase order.</span><span class="es">Recibes tu primer anticipo sobre una orden de compra verificada.</span></p></div></li></ol></div></section><section class="final"><h2><span class="en">Apply for Advanced Factoring</span><span class="es">Solicita Advanced Factoring</span></h2><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a></div></section></main><main class="page" data-page="reshore-iq" hidden><header class="phero"><h1><span class="en">Reshore IQ: less manual work, more visibility.</span><span class="es">Reshore IQ: menos trabajo manual, más visibilidad.</span></h1><p class="lede"><span class="en">Reshore IQ enters your POs, invoices and payments into your ERP, and shows the gains, risks and opportunities in your operations.</span><span class="es">Reshore IQ captura tus órdenes de compra, facturas y pagos en tu ERP, y te muestra las mejoras, los riesgos y las oportunidades en tus operaciones.</span></p><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Get Reshore IQ</span><span class="es">Obtén Reshore IQ</span></a></div></header><div class="iqflow" aria-hidden="true"><div><span><span class="en">Email</span><span class="es">Correo</span></span><b><span class="en">PO · Invoice · Payment</span><span class="es">OC · Factura · Pago</span></b></div><i></i><div class="iq"><span>Reshore IQ</span><b><span class="en">Reads and enters</span><span class="es">Lee y captura</span></b></div><i></i><div><span>ERP</span><b><span class="en">Your records, up to date</span><span class="es">Tus registros, al día</span></b></div></div><section class="sec "><div class="rail"><h2><span class="en">Stop retyping purchase orders and invoices</span><span class="es">Deja de recapturar órdenes de compra y facturas</span></h2></div><div class="body"><p class='big'><span class="en">Your team gets purchase orders, invoices and payments by email, then types them into your ERP. Reshore IQ reads these documents and enters them for you.</span><span class="es">Tu equipo recibe órdenes de compra, facturas y pagos por correo y luego los captura en tu ERP. Reshore IQ lee estos documentos y los captura por ti.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">See where to improve</span><span class="es">Ve dónde mejorar</span></h2></div><div class="body"><p class='big'><span class="en">Reshore IQ analyzes your factory data.</span><span class="es">Reshore IQ analiza los datos de tu fábrica.</span></p><table class="dt"><thead><tr><th><span class="en">What you see</span><span class="es">Qué ves</span></th><th><span class="en">Examples</span><span class="es">Ejemplos</span></th></tr></thead><tbody><tr><td><span class="en">Efficiency gains</span><span class="es">Mejoras de eficiencia</span></td><td><span class="en">Downtime, scrap, rework, long setups</span><span class="es">Tiempo muerto, scrap, retrabajo, cambios de molde largos</span></td></tr><tr><td><span class="en">Operational risks</span><span class="es">Riesgos operativos</span></td><td><span class="en">Late deliveries, quality problems, overdue or short-paid invoices</span><span class="es">Entregas tardías, problemas de calidad, facturas vencidas o pagadas de menos</span></td></tr><tr><td><span class="en">Opportunities to improve</span><span class="es">Oportunidades de mejora</span></td><td><span class="en">Idle machine time, quote win and loss patterns, supplier performance</span><span class="es">Tiempo ocioso de máquinas, patrones de cotizaciones ganadas y perdidas, desempeño de proveedores</span></td></tr></tbody></table><p class='big' style='margin-top:24px'><span class="en">Reshore IQ shows where to act. You decide what to do.</span><span class="es">Reshore IQ te muestra dónde actuar. Tú decides qué hacer.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Two ways to get Reshore IQ</span><span class="es">Dos formas de obtener Reshore IQ</span></h2></div><div class="body"><div class="pair"><div class="opt"><h3><span class="en">With Advanced Factoring</span><span class="es">Con Advanced Factoring</span></h3><p><span class="en">Reshore IQ is included when you get working capital from Reshore.</span><span class="es">Reshore IQ está incluido cuando obtienes capital de trabajo de Reshore.</span></p></div><div class="opt"><h3><span class="en">On its own</span><span class="es">Por sí solo</span></h3><p><span class="en">You can connect to Reshore IQ even if you're not using our capital solutions yet.</span><span class="es">Puedes conectarte a Reshore IQ aunque todavía no uses nuestras soluciones de capital.</span></p></div></div></div></section><section class="sec "><div class="rail"><h2><span class="en">Your data is protected.</span><span class="es">Tus datos están protegidos.</span></h2></div><div class="body"><p class='big'><span class="en">Privacy is a core part of Reshore IQ and of every partnership with Reshore. Your data is secure and encrypted, and we anonymize every record. We take your data, your compliance and your business relationships seriously.</span><span class="es">La privacidad es parte central de Reshore IQ y de cada relación con Reshore. Tus datos están seguros y cifrados, y anonimizamos cada registro. Tomamos en serio tus datos, tu cumplimiento normativo y tus relaciones comerciales.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Setup</span><span class="es">Configuración</span></h2></div><div class="body"><p class='big'><span class="en">Our engineers connect Reshore IQ to the systems your factory already uses.</span><span class="es">Nuestros ingenieros conectan Reshore IQ a los sistemas que tu fábrica ya usa.</span></p></div></section><section class="final"><h2><span class="en">Get Reshore IQ for your factory</span><span class="es">Obtén Reshore IQ para tu fábrica</span></h2><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a></div></section></main><main class="page" data-page="how-it-works" hidden><header class="phero"><h1><span class="en">How Advanced Factoring works</span><span class="es">Cómo funciona Advanced Factoring</span></h1><p class="lede"><span class="en">Advanced Factoring finances the cycle from purchase order to buyer payment. You share your operational data with Reshore to get a better rate.</span><span class="es">Advanced Factoring financia el ciclo desde la orden de compra hasta el pago del comprador. Compartes tus datos operativos con Reshore para obtener una mejor tasa.</span></p></header><section class="sec "><div class="rail"><h2><span class="en">From PO to payment</span><span class="es">De la orden de compra al pago</span></h2></div><div class="body"><ol class="steps"><li><span class="n">01</span><div><b><span class="en">Send a PO</span><span class="es">Envía una OC</span></b><p><span class="en">You send a purchase order from a qualified buyer. We verify it.</span><span class="es">Envías una orden de compra de un comprador calificado. Nosotros la verificamos.</span></p></div></li><li><span class="n">02</span><div><b><span class="en">Get an advance</span><span class="es">Recibe un anticipo</span></b><p><span class="en">We advance funds to cover your production costs.</span><span class="es">Te damos un anticipo para cubrir tus costos de producción.</span></p></div></li><li><span class="n">03</span><div><b><span class="en">Produce and ship</span><span class="es">Produce y entrega</span></b><p><span class="en">You make the parts, ship them on time and invoice your buyer.</span><span class="es">Fabricas las piezas, las entregas a tiempo y facturas a tu comprador.</span></p></div></li><li><span class="n">04</span><div><b><span class="en">Buyer pays</span><span class="es">El comprador paga</span></b><p><span class="en">We are repaid when your buyer pays the invoice. Repayment cycles go up to 120 days.</span><span class="es">Recuperamos el anticipo cuando tu comprador paga la factura. Los ciclos de pago son de hasta 120 días.</span></p></div></li></ol></div></section><section class="sec " id="eligibility"><div class="rail"><h2><span class="en">Eligibility</span><span class="es">Requisitos</span></h2></div><div class="body"><dl class="feat"><div><dt><span class="en">Who can apply</span><span class="es">Quién puede solicitar</span></dt><dd><span class="en">Manufacturers in North America — Mexico, the United States and Canada — with buyer contracts of one year or more: recurring orders and deliveries through the year, and a predictable payment cycle.</span><span class="es">Fabricantes en Norteamérica —México, Estados Unidos y Canadá— con contratos de compradores de un año o más: pedidos y entregas recurrentes durante el año y un ciclo de pago predecible.</span></dd></div></dl><div class="avail"><span class="geo">MX · US · CA</span><span><span class="en">Advanced Factoring is available to manufacturers in North America. Eligibility and terms depend on credit approval and applicable law.</span><span class="es">Advanced Factoring está disponible para fabricantes en Norteamérica. La elegibilidad y los términos dependen de la aprobación de crédito y de la ley aplicable.</span></span></div></div></section><section class="sec "><div class="rail"><h2><span class="en">How your data gets you a better rate</span><span class="es">Cómo tus datos te dan una mejor tasa</span></h2></div><div class="body"><p class='big'><span class="en">Every order creates operational data: production, tooling, quality, materials and operations records. You share it with Reshore. We use it to score your credit risk. More data gives us a more accurate view of your risk, so we can offer you a better rate.</span><span class="es">Cada pedido crea datos operativos: registros de producción, herramentales, calidad, materiales y operaciones. Los compartes con Reshore. Los usamos para evaluar tu riesgo de crédito. Con más datos vemos tu riesgo con más precisión, y así podemos ofrecerte una mejor tasa.</span></p><h3 class='small'><span class="en">Data that counts toward your rate</span><span class="es">Datos que cuentan para tu tasa</span></h3><table class="dt"><thead><tr><th><span class="en">Category</span><span class="es">Categoría</span></th><th><span class="en">Examples</span><span class="es">Ejemplos</span></th></tr></thead><tbody><tr><td><span class="en">Production</span><span class="es">Producción</span></td><td><span class="en">Cycle times, scrap, yields</span><span class="es">Tiempos de ciclo, scrap, rendimientos</span></td></tr><tr><td><span class="en">Tooling</span><span class="es">Herramentales</span></td><td><span class="en">Molds, cavities, steel, maintenance</span><span class="es">Moldes, cavidades, acero, mantenimiento</span></td></tr><tr><td><span class="en">Operations</span><span class="es">Operaciones</span></td><td><span class="en">Machines, shifts, OEE</span><span class="es">Máquinas, turnos, OEE</span></td></tr><tr><td><span class="en">Materials</span><span class="es">Materiales</span></td><td><span class="en">Resins, colorants, lots</span><span class="es">Resinas, colorantes, lotes</span></td></tr><tr><td><span class="en">Quality</span><span class="es">Calidad</span></td><td><span class="en">Defects, inspections, certifications</span><span class="es">Defectos, inspecciones, certificaciones</span></td></tr></tbody></table></div></section><section class="sec "><div class="rail"><h2><span class="en">Reshore IQ included</span><span class="es">Reshore IQ incluido</span></h2></div><div class="body"><p class='big'><span class="en">Reshore IQ is included with Advanced Factoring.</span><span class="es">Reshore IQ está incluido con Advanced Factoring.</span></p><a class='more' href='#/reshore-iq'><span class="en">Explore Reshore IQ</span><span class="es">Conoce Reshore IQ</span></a></div></section><section class="sec "><div class="rail"><h2><span class="en">Two ways to work with Reshore</span><span class="es">Dos formas de trabajar con Reshore</span></h2></div><div class="body"><div class="pair">
+<div class="opt"><h3><span class="en">Advanced Factoring with Reshore IQ</span><span class="es">Advanced Factoring con Reshore IQ</span></h3><p><span class="en">Get working capital at a better rate. You connect your operational data to Reshore. Reshore IQ is included.</span><span class="es">Obtén capital de trabajo a una mejor tasa. Conectas tus datos operativos a Reshore. Reshore IQ está incluido.</span></p></div>
+<div class="opt"><h3><span class="en">Reshore IQ on its own</span><span class="es">Reshore IQ por sí solo</span></h3><p><span class="en">You can connect to Reshore IQ even if you're not using our capital solutions yet.</span><span class="es">Puedes conectarte a Reshore IQ aunque todavía no uses nuestras soluciones de capital.</span></p></div></div></div></section><section class="sec "><div class="rail"><h2><span class="en">Your data is protected.</span><span class="es">Tus datos están protegidos.</span></h2></div><div class="body"><p class='big'><span class="en">Privacy is a core part of Reshore IQ and of every partnership with Reshore. Your data is secure and encrypted, and we anonymize every record. We take your data, your compliance and your business relationships seriously.</span><span class="es">La privacidad es parte central de Reshore IQ y de cada relación con Reshore. Tus datos están seguros y cifrados, y anonimizamos cada registro. Tomamos en serio tus datos, tu cumplimiento normativo y tus relaciones comerciales.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Onboarding</span><span class="es">Alta de tu fábrica</span></h2></div><div class="body"><p class='big'><span class="en">Our engineers connect Reshore IQ to the systems your factory already uses, across the product lifecycle.</span><span class="es">Nuestros ingenieros conectan Reshore IQ a los sistemas que tu fábrica ya usa, en todo el ciclo de vida del producto.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Questions</span><span class="es">Preguntas frecuentes</span></h2></div><div class="body"><div class="faq"><details><summary><span class="en">What is Advanced Factoring?</span><span class="es">¿Qué es Advanced Factoring?</span></summary><p><span class="en">Financing for factories, from purchase order to buyer payment. You share your operational data with Reshore to get a better rate.</span><span class="es">Financiamiento para fábricas, desde la orden de compra hasta el pago del comprador. Compartes tus datos operativos con Reshore para obtener una mejor tasa.</span></p></details><details><summary><span class="en">Which factories can apply?</span><span class="es">¿Qué fábricas pueden solicitar?</span></summary><p><span class="en">Manufacturers in North America: Mexico, the United States and Canada.</span><span class="es">Fabricantes en Norteamérica: México, Estados Unidos y Canadá.</span></p></details><details><summary><span class="en">Which buyers qualify?</span><span class="es">¿Qué compradores califican?</span></summary><p><span class="en">Buyers with contracts of one year or more, recurring orders and a predictable payment cycle.</span><span class="es">Compradores con contratos de un año o más, pedidos recurrentes y un ciclo de pago predecible.</span></p></details><details><summary><span class="en">How long are repayment cycles?</span><span class="es">¿Qué tan largos son los ciclos de pago?</span></summary><p><span class="en">Up to 120 days.</span><span class="es">Hasta 120 días.</span></p></details><details><summary><span class="en">What data do you use to score my credit risk?</span><span class="es">¿Qué datos usan para evaluar mi riesgo de crédito?</span></summary><p><span class="en">Production, tooling, quality, materials and operations records. Up to 65 data types count toward your rate.</span><span class="es">Registros de producción, herramentales, calidad, materiales y operaciones. Hasta 65 tipos de datos cuentan para tu tasa.</span></p></details><details><summary><span class="en">Who reviews my data?</span><span class="es">¿Quién revisa mis datos?</span></summary><p><span class="en">Reshore reviews it to score your credit risk.</span><span class="es">Reshore los revisa para evaluar tu riesgo de crédito.</span></p></details><details><summary><span class="en">What is the difference between the two options?</span><span class="es">¿Cuál es la diferencia entre las dos opciones?</span></summary><p><span class="en">Advanced Factoring with Reshore IQ gives you working capital at a better rate, and you connect your operational data to Reshore. With Reshore IQ on its own, you can connect to Reshore IQ even if you're not using our capital solutions yet.</span><span class="es">Advanced Factoring con Reshore IQ te da capital de trabajo a una mejor tasa, y conectas tus datos operativos a Reshore. Con Reshore IQ por sí solo, puedes conectarte a Reshore IQ aunque todavía no uses nuestras soluciones de capital.</span></p></details><details><summary><span class="en">How do you protect my data?</span><span class="es">¿Cómo protegen mis datos?</span></summary><p><span class="en">Privacy is a core part of Reshore IQ and of every partnership with Reshore. Your data is secure and encrypted, and we anonymize every record.</span><span class="es">La privacidad es parte central de Reshore IQ y de cada relación con Reshore. Tus datos están seguros y cifrados, y anonimizamos cada registro.</span></p></details><details><summary><span class="en">What is Reshore IQ?</span><span class="es">¿Qué es Reshore IQ?</span></summary><p><span class="en">A workflow automation and analytics platform. It enters purchase orders, invoices and payments into your ERP, and shows efficiency gains, operational risks and opportunities to improve.</span><span class="es">Una plataforma de automatización de flujos de trabajo y analítica. Captura órdenes de compra, facturas y pagos en tu ERP, y muestra mejoras de eficiencia, riesgos operativos y oportunidades de mejora.</span></p></details><details><summary><span class="en">Can I use Reshore IQ without capital?</span><span class="es">¿Puedo usar Reshore IQ sin capital?</span></summary><p><span class="en">Yes. You can connect to Reshore IQ even if you're not using our capital solutions yet.</span><span class="es">Sí. Puedes conectarte a Reshore IQ aunque todavía no uses nuestras soluciones de capital.</span></p></details><details><summary><span class="en">Is Reshore a bank?</span><span class="es">¿Reshore es un banco?</span></summary><p><span class="en">No. Reshore is a commercial company. It does not take deposits from the public.</span><span class="es">No. Reshore es una empresa comercial. No capta recursos del público.</span></p></details><details><summary><span class="en">How do I apply?</span><span class="es">¿Cómo solicito?</span></summary><p><span class="en">Send the form on the Apply page.</span><span class="es">Envía el formulario de la página Solicitar.</span></p></details></div></div></section><section class="final"><h2><span class="en">Ready to apply?</span><span class="es">¿Listo para solicitar?</span></h2><div class="ctas"><a class="btn primary" href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a></div><p class="disc-inline"><span class="en">Reshore is a commercial company. Reshore is not a bank and does not take deposits from the public. Financing is for businesses only and is subject to credit approval and a signed agreement.</span><span class="es">Reshore es una empresa comercial. Reshore no es un banco y no capta recursos del público. El financiamiento es solo para empresas y está sujeto a aprobación de crédito y a un contrato firmado.</span></p></section></main><main class="page" data-page="company" hidden><header class="phero"><h1><span class="en">About Reshore</span><span class="es">Sobre Reshore</span></h1><p class="lede"><span class="en">Reshore gives North American manufacturers working capital and the tools to run their operations.</span><span class="es">Reshore da a los fabricantes de Norteamérica capital de trabajo y las herramientas para operar.</span></p></header><section class="sec "><div class="rail"><h2><span class="en">Our mission</span><span class="es">Nuestra misión</span></h2></div><div class="body"><p class='mission'><span class="en">Stronger North American factories, with the capital and tools to grow.</span><span class="es">Fábricas de Norteamérica más fuertes, con el capital y las herramientas para crecer.</span></p></div></section><section class="sec "><div class="rail"><h2><span class="en">Team</span><span class="es">Equipo</span></h2></div><div class="body"><div class="team"><div class="person"><h3>Sergio Vela</h3><p class="role"><span class="en">Co-founder & CEO</span><span class="es">Cofundador y CEO</span></p><p><span class="en">Data Platforms expert. Healthcare.com CTO &amp; Co-Founder. Sold 2 companies. Scaled global engineering &amp; data teams. AdTech &amp; InsureTech.</span><span class="es">Experto en plataformas de datos. CTO y cofundador de Healthcare.com. Vendió 2 empresas. Escaló equipos globales de ingeniería y datos. AdTech e InsureTech.</span></p></div><div class="person"><h3>Gaston Frydlewski</h3><p class="role"><span class="en">Co-founder & CSO</span><span class="es">Cofundador y CSO</span></p><p><span class="en">Marketplaces and distribution. Led Mercado Shops. Whyline and Hickies co-founder. J.P. Morgan investment banking. Expert in manufacturing and financing.</span><span class="es">Marketplaces y distribución. Dirigió Mercado Shops. Cofundador de Whyline y Hickies. Banca de inversión en J.P. Morgan. Experto en manufactura y financiamiento.</span></p></div><div class="person"><h3>Michael Twersky</h3><p class="role"><span class="en">Co-founder & CFO</span><span class="es">Cofundador y CFO</span></p><p><span class="en">Capital and company building. Whyline co-founder and CEO, acquired by CLEAR. J.P. Morgan, U.S. and LatAm.</span><span class="es">Capital y construcción de empresas. Cofundador y CEO de Whyline, adquirida por CLEAR. J.P. Morgan, Estados Unidos y LatAm.</span></p></div><div class="person"><h3>Boris Ruiz Palma</h3><p class="role"><span class="en">CTO</span><span class="es">CTO</span></p><p><span class="en">Engineering execution. VP Engineering, Healthcare.com. Founding engineer, Lionworks. Global software teams.</span><span class="es">Ejecución de ingeniería. VP de Ingeniería en Healthcare.com. Ingeniero fundador de Lionworks. Equipos globales de software.</span></p></div><div class="person"><h3>Shirish Pareek</h3><p class="role"><span class="en">Senior Advisor</span><span class="es">Asesor Senior</span></p><p><span class="en">Manufacturing expertise. Founder, Hydraulex Global. Chairman, Adaptec Solutions. Senior advisor, McKinsey.</span><span class="es">Experiencia en manufactura. Fundador de Hydraulex Global. Presidente de Adaptec Solutions. Asesor senior en McKinsey.</span></p></div></div></div></section><section class="sec "><div class="rail"><h2><span class="en">Member of</span><span class="es">Miembro de</span></h2></div><div class="body"><ul class='ticks'><li><a href='https://www.usmcocne.org/p/members' target='_blank' rel='noopener'>US-Mexico Chamber of Commerce</a></li><li><a href='https://www.usmexicofoundation.org/bridge49' target='_blank' rel='noopener'>US-Mexico Foundation / Bridge49</a></li></ul></div></section><section class="sec " id="contact"><div class="rail"><h2><span class="en">Contact</span><span class="es">Contacto</span></h2></div><div class="body"><dl class="feat"><div><dt><span class="en">Advanced Factoring and Reshore IQ</span><span class="es">Advanced Factoring y Reshore IQ</span></dt><dd><span class="en">Apply on the <a href="#/apply">Apply page</a>.</span><span class="es">Solicita en la página <a href="#/apply">Solicitar</a>.</span></dd></div><div><dt><span class="en">General questions</span><span class="es">Preguntas generales</span></dt><dd><a href="mailto:contact@reshore.com">contact@reshore.com</a></dd></div><div><dt><span class="en">Careers</span><span class="es">Empleo</span></dt><dd><span class="en">To work at Reshore, write to <a href="mailto:careers@reshore.com">careers@reshore.com</a>.</span><span class="es">Para trabajar en Reshore, escribe a <a href="mailto:careers@reshore.com">careers@reshore.com</a>.</span></dd></div></dl></div></section></main><main class="page" data-page="apply" hidden><header class="phero"><h1><span class="en">Apply to Reshore</span><span class="es">Solicita con Reshore</span></h1><p class="lede"><span class="en">Tell us about your factory, your buyers and your payment terms. Choose Advanced Factoring, Reshore IQ, or both.</span><span class="es">Cuéntanos sobre tu fábrica, tus compradores y tus plazos de pago. Elige Advanced Factoring, Reshore IQ o ambos.</span></p></header><section class="formsec"><div class="avail"><span class="geo">MX · US · CA</span><span><span class="en">Available to manufacturers in North America.</span><span class="es">Disponible para fabricantes en Norteamérica.</span></span></div><form class="apply" id="applyform" novalidate>
+<div class="grid2">
+<label class="fld"><span><span class="en">Company name</span><span class="es">Nombre de la empresa</span></span><input name="company"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Contact name</span><span class="es">Nombre de contacto</span></span><input name="contact"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Role</span><span class="es">Puesto</span></span><input name="role"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Email</span><span class="es">Correo electrónico</span></span><input type="email" name="email"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Phone or WhatsApp</span><span class="es">Teléfono o WhatsApp</span></span><input type="tel" name="phone"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Country</span><span class="es">País</span></span><select name="country" required><option value="" data-en="Select" data-es="Selecciona">Select</option><option value="1" data-en="Mexico" data-es="México">Mexico</option><option value="2" data-en="United States" data-es="Estados Unidos">United States</option><option value="3" data-en="Canada" data-es="Canadá">Canada</option></select><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Main manufacturing process</span><span class="es">Proceso principal de manufactura</span></span><input name="process"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Countries of your main buyers</span><span class="es">Países de tus principales compradores</span></span><input name="buyers"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Typical payment terms (days)</span><span class="es">Plazo de pago típico (días)</span></span><input type="number" min="0" name="terms"  required><em class="err" aria-live="polite"></em></label>
+<label class="fld"><span><span class="en">Monthly PO volume (USD)</span><span class="es">Volumen mensual de órdenes de compra (USD)</span></span><select name="volume" required><option value="" data-en="Select" data-es="Selecciona">Select</option><option value="1" data-en="Under $100K" data-es="Menos de $100K">Under $100K</option><option value="2" data-en="$100K to $500K" data-es="$100K a $500K">$100K to $500K</option><option value="3" data-en="$500K to $2M" data-es="$500K a $2M">$500K to $2M</option><option value="4" data-en="Over $2M" data-es="Más de $2M">Over $2M</option></select><em class="err" aria-live="polite"></em></label>
+</div>
+<label class="fld"><span><span class="en">Interest</span><span class="es">Interés</span></span><select name="interest" required><option value="" data-en="Select" data-es="Selecciona">Select</option><option value="1" data-en="Advanced Factoring with Reshore IQ" data-es="Advanced Factoring con Reshore IQ">Advanced Factoring with Reshore IQ</option><option value="2" data-en="Reshore IQ only" data-es="Solo Reshore IQ">Reshore IQ only</option><option value="3" data-en="Both" data-es="Ambas">Both</option></select><em class="err" aria-live="polite"></em></label>
+<button class="btn primary" type="submit"><span class="en">Send application</span><span class="es">Enviar solicitud</span></button>
+<p class="sending" hidden><span class="en">Sending...</span><span class="es">Enviando...</span></p>
+<div class="confirm" hidden><p><span class="en">Thank you. We received your application. Our team will contact you by email.</span><span class="es">Gracias. Recibimos tu solicitud. Nuestro equipo te contactará por correo.</span></p><p class="note"><span class="en">Preview: this form does not send data.</span><span class="es">Vista previa: este formulario no envía datos.</span></p></div>
+</form><p class="disc-inline"><span class="en">Reshore is a commercial company. Reshore is not a bank and does not take deposits from the public. Financing is for businesses only and is subject to credit approval and a signed agreement. Data licenses and data partnerships are subject to a separate agreement.</span><span class="es">Reshore es una empresa comercial. Reshore no es un banco y no capta recursos del público. El financiamiento es solo para empresas y está sujeto a aprobación de crédito y a un contrato firmado. Las licencias de datos y las alianzas de datos están sujetas a un contrato por separado.</span></p></section></main><main class="page" data-page="blog" hidden><header class="phero"><h1><span class="en">Blog</span><span class="es">Blog</span></h1><p class="lede"><span class="en">Blog posts are a separate phase. They do not appear in this preview.</span><span class="es">Los artículos del blog son una fase separada. No aparecen en esta vista previa.</span></p></header></main><main class="page" data-page="legal" hidden><header class="phero"><h1><span class="en">Privacy Policy and Terms of Service</span><span class="es">Política de privacidad y Términos de servicio</span></h1><p class="lede"><span class="en">These pages do not change in this phase.</span><span class="es">Estas páginas no cambian en esta fase.</span></p></header></main>
+<footer class="foot">
+ <div class="fgrid">
+  <div class="fbrand"><svg class="logo" viewBox="0 0 2659 508" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reshore">
+<path d="M2512.51 1.42969H146.159L0 254.582L146.159 507.734H2512.51L2658.67 254.582L2512.51 1.42969ZM2505.89 494.654H529.324L390.72 254.582L529.324 14.5092H2505.89L2644.49 254.582L2505.89 494.654Z" fill="currentColor"/>
+<path d="M801.63 128.206C858.542 128.206 882.882 163.405 882.882 203.845C882.882 235.301 867.903 268.998 829.337 279.857L888.128 380.952H839.075L781.406 283.224H715.504C711.388 283.224 709.142 285.093 709.142 289.586V380.948H664.954V280.973C664.954 252.517 676.939 240.91 704.646 240.91H803.123C828.208 240.91 838.322 223.685 838.322 205.711C838.322 187.737 827.459 172.386 803.123 172.386H664.582L690.179 128.202H801.625L801.63 128.206Z" fill="currentColor"/>
+<path d="M2090.31 128.207C2147.23 128.207 2171.57 163.405 2171.57 203.845C2171.57 235.301 2156.59 268.998 2118.02 279.857L2176.81 380.952H2127.76L2070.09 283.224H2004.19C2000.07 283.224 1997.83 285.093 1997.83 289.586V380.948H1953.64V280.973C1953.64 252.517 1965.62 240.91 1993.33 240.91H2091.81C2116.89 240.91 2127.01 223.685 2127.01 205.711C2127.01 187.737 2116.14 172.386 2091.81 172.386H1953.27L1953.27 128.202H2090.31L2090.31 128.207Z" fill="currentColor"/>
+<path d="M921.351 128.396H1103.16V166.599H965.564V232.745H1092.9V268.824H965.564V342.754H1105.64V380.956H921.351V128.396Z" fill="currentColor"/>
+<path d="M1343.1 128.206V172.39H1213.54C1190.7 172.39 1180.59 184.746 1180.59 202.344C1180.59 217.695 1188.46 232.301 1218.04 232.301H1277.2C1346.1 232.301 1362.2 270.491 1362.2 306.815C1362.2 349.501 1339.35 380.957 1281.69 380.957H1140.9V336.773H1283.19C1307.16 336.773 1318.01 323.668 1318.01 305.318C1318.01 288.841 1309.4 273.862 1278.32 273.862H1219.54C1152.14 273.862 1136.41 236.045 1136.41 200.846C1136.41 158.909 1158.88 128.206 1215.04 128.206H1343.11H1343.1Z" fill="currentColor"/>
+<path d="M1440.43 128.206V231.176H1569.61V128.206H1614.17V380.952H1569.61V275.36H1440.43V380.952H1396.25V128.206H1440.43Z" fill="currentColor"/>
+<path d="M1802.76 128.206C1876.15 128.206 1916.96 170.144 1916.96 255.14C1916.96 340.136 1876.52 380.952 1802.76 380.952H1768.31C1694.55 380.952 1654.11 339.764 1654.11 255.14C1654.11 170.516 1694.93 128.206 1768.31 128.206H1802.76ZM1768.31 172.39C1719.63 172.39 1698.29 197.102 1698.29 255.14C1698.29 312.805 1719.26 336.769 1768.31 336.769H1802.76C1851.44 336.769 1872.41 312.805 1872.41 254.763C1872.41 197.102 1851.44 172.39 1802.76 172.39H1768.31Z" fill="currentColor"/>
+<path d="M2210.04 128.396H2391.85V166.599H2254.26V232.745H2381.59V268.824H2254.26V342.754H2394.33V380.956H2210.04V128.396Z" fill="currentColor"/>
+</svg><p class="tag"><span class="en">Working capital and tools for North American manufacturers.</span><span class="es">Capital de trabajo y herramientas para fabricantes de Norteamérica.</span></p></div>
+  <div><h4><span class="en">Products</span><span class="es">Productos</span></h4><a href="#/advanced-factoring">Advanced Factoring</a><a href="#/reshore-iq">Reshore IQ</a><a href="#/how-it-works"><span class="en">How It Works</span><span class="es">Cómo funciona</span></a><a href="#/apply"><span class="en">Apply</span><span class="es">Solicitar</span></a></div>
+  <div><h4><span class="en">Company</span><span class="es">Empresa</span></h4><a href="#/company"><span class="en">About</span><span class="es">Empresa</span></a><a href="#/blog">Blog</a><a href="mailto:careers@reshore.com"><span class="en">Careers</span><span class="es">Empleo</span></a><a href="#/company/contact"><span class="en">Contact</span><span class="es">Contacto</span></a></div>
+  <div><h4>Email</h4><a href="mailto:contact@reshore.com">contact@reshore.com</a><a href="mailto:careers@reshore.com">careers@reshore.com</a></div>
+ </div>
+ <p class="members"><span class="en">Member:</span><span class="es">Miembro:</span> US-Mexico Chamber of Commerce · US-Mexico Foundation / Bridge49</p>
+ <p class="disc"><span class="en">Reshore is a commercial company. Reshore is not a bank and does not take deposits from the public. Financing is for businesses only and is subject to credit approval and a signed agreement. Data licenses and data partnerships are subject to a separate agreement.</span><span class="es">Reshore es una empresa comercial. Reshore no es un banco y no capta recursos del público. El financiamiento es solo para empresas y está sujeto a aprobación de crédito y a un contrato firmado. Las licencias de datos y las alianzas de datos están sujetas a un contrato por separado.</span></p>
+ <div class="legal"><a href="#/legal"><span class="en">Privacy Policy</span><span class="es">Política de privacidad</span></a><a href="#/legal"><span class="en">Terms of Service</span><span class="es">Términos de servicio</span></a><a href="#/legal"><span class="en">Cookie Settings</span><span class="es">Configuración de cookies</span></a><span>© 2026 Reshore. <span class="en">All rights reserved.</span><span class="es">Todos los derechos reservados.</span></span></div>
+</footer>
+<script>(function(){
+const TITLES={"home": ["Reshore: PO and invoice financing for manufacturers", "Reshore: factoraje y financiamiento de \u00f3rdenes de compra"], "advanced-factoring": ["Advanced Factoring | Reshore", "Advanced Factoring | Reshore"], "reshore-iq": ["Reshore IQ | Reshore", "Reshore IQ | Reshore"], "how-it-works": ["How Advanced Factoring Works | Reshore", "C\u00f3mo funciona Advanced Factoring | Reshore"], "company": ["About Reshore", "Sobre Reshore"], "apply": ["Apply to Reshore", "Solicita con Reshore"], "blog": ["Blog | Reshore", "Blog | Reshore"], "legal": ["Legal | Reshore", "Legal | Reshore"]};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let lang='en';
+try{const s=localStorage.getItem('rs-lang'); if(s==='es'||s==='en') lang=s;}catch(e){}
+const MSG={en:{req:'This field is required.',email:'Enter a valid email address.',tel:'Enter a valid phone number.',num:'Enter the number of days.',sel:'Select an option.'},
+           es:{req:'Este campo es obligatorio.',email:'Escribe un correo electrónico válido.',tel:'Escribe un número de teléfono válido.',num:'Escribe el número de días.',sel:'Selecciona una opción.'}};
+function setLang(l){
+  lang=l; document.documentElement.dataset.lang=l; document.documentElement.lang=l;
+  try{localStorage.setItem('rs-lang',l);}catch(e){}
+  $$('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.set===l));
+  $$('option[data-en]').forEach(o=>o.textContent=o.dataset[l]);
+  $$('.fld.bad').forEach(validate);
+  film.relabel(); route();
+}
+$$('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.set));
+const menu=$('#menu'), links=$('#navlinks');
+menu.onclick=()=>{const o=links.classList.toggle('open');menu.setAttribute('aria-expanded',o);};
+let lastPage=null;
+function route(){
+  const parts=(location.hash.replace(/^#\/?/,'')||'').split('/');
+  let page=parts[0]||'home'; const anchor=parts[1];
+  if(!$(`.page[data-page="${page}"]`)) page='home';
+  $$('.page').forEach(p=>p.hidden=p.dataset.page!==page);
+  $$('.links a[data-route]').forEach(a=>a.classList.toggle('cur',a.dataset.route===page));
+  document.title=(TITLES[page]||TITLES.home)[lang==='es'?1:0];
+  links.classList.remove('open'); menu.setAttribute('aria-expanded','false');
+  if(page!==lastPage||anchor){
+    const el=anchor&&document.getElementById(anchor);
+    if(el) el.scrollIntoView(); else window.scrollTo(0,0);
+  }
+  lastPage=page; film.fit();
+}
+window.addEventListener('hashchange',route);
+
+/* film: step-through scenes */
+const film=(function(){
+  const stage=$('#stage'), frame=$('#frame'); if(!stage) return {fit(){},relabel(){}};
+  const timed=$$('#stage [data-t]').map(el=>{const [a,b]=el.dataset.t.split(',').map(Number);return {el,a,b};});
+  // [scene start, time when the scene is complete, EN label, ES label]
+  const CH=[[0,4.6,'Purchase order','Orden de compra'],[6,13,'Waiting to get paid','Espera del pago'],[14,19.6,'The advance','El anticipo'],[22,25.8,'Your data','Tus datos'],[27.5,31,'Two ways','Dos formas'],[34,39.6,'Privacy','Privacidad'],[42,45.6,'Reshore','Reshore']];
+  const MS=[[0,'PO received','Orden recibida'],[14,'Production starts','Inicia producción'],[45,'Shipped','Embarque'],[90,'Paid','Pago']];
+  const mWrap=$('#milestones');
+  MS.forEach(m=>{const d=document.createElement('div');d.className='ms';d.style.left=(120+1040*m[0]/90)+'px';d.dataset.day=m[0];d.innerHTML='<i></i><b></b><small></small>';mWrap.appendChild(d);});
+  const msEls=[...mWrap.children];
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const SPEED=1.6;
+  let idx=0, t=CH[0][1], target=t, raf=null, last=null;
+  const dotsWrap=$('#dots');
+  CH.forEach((c,i)=>{const b=document.createElement('button');b.type='button';b.onclick=()=>go(i);dotsWrap.appendChild(b);});
+  const dots=[...dotsWrap.children], prevs=$$('#film .prev'), nexts=$$('#film .next');
+  function fit(){ if(frame.clientWidth) stage.style.transform='scale('+(frame.clientWidth/1280)+')'; }
+  new ResizeObserver(fit).observe(frame);
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v)), ease=x=>1-Math.pow(1-x,3), es=()=>lang==='es', pad=n=>String(n).padStart(2,'0');
+  function relabel(){
+    const i=es()?2:1;
+    msEls.forEach((m,k)=>{m.querySelector('b').textContent=MS[k][i];m.querySelector('small').textContent=(es()?'Día ':'Day ')+MS[k][0];});
+    render();
+  }
+  function render(){
+    timed.forEach(o=>o.el.classList.toggle('on',t>=o.a&&t<o.b));
+    const p=ease(clamp((t-7.5)/5,0,1)), day=Math.round(p*90);
+    $('#days').textContent=day; $('#tfill').style.width=(1040*p)+'px';
+    msEls.forEach(m=>m.classList.toggle('hit',day>=+m.dataset.day));
+    const cash=Math.round(100-85*p); $('#cashpct').textContent=cash+'%'; $('#cashbar').style.width=cash+'%';
+    $('#licbar').style.width=(t>=29.4?'64%':'100%');
+    const anon=t>=36.5; $('#rec').classList.toggle('anon',anon);
+    $('#recstate').textContent=anon?(es()?'Anonimizado':'Anonymized'):'Original';
+    $('#recstate').style.color=anon?'var(--fr)':'';
+    const li=es()?3:2, end=idx===CH.length-1;
+    $('#chap').textContent=pad(idx+1)+' / '+pad(CH.length)+'  '+CH[idx][li].toUpperCase();
+    dots.forEach((d,i)=>{d.setAttribute('aria-current',i===idx?'step':'false');d.setAttribute('aria-label',(es()?'Escena ':'Scene ')+(i+1)+': '+CH[i][li]);});
+    const again=es()?'Empezar de nuevo':'Start again', nx=es()?'Siguiente':'Next';
+    prevs.forEach(b=>{b.disabled=idx===0; if(b.classList.contains('farrow')) b.setAttribute('aria-label',es()?'Atrás':'Back');});
+    nexts.forEach(b=>{
+      if(b.classList.contains('farrow')){b.textContent=end?again:'›';b.classList.toggle('again',end);b.setAttribute('aria-label',end?again:nx);}
+      else b.textContent=end?again:nx+' ›';
+    });
+  }
+  function step(ts){ if(last==null) last=ts; t=Math.min(target,t+(ts-last)/1000*SPEED); last=ts; render(); raf=t<target?requestAnimationFrame(step):null; }
+  function go(i){
+    idx=clamp(i,0,CH.length-1); t=CH[idx][0]; target=CH[idx][1];
+    if(raf){cancelAnimationFrame(raf);raf=null;} last=null;
+    if(reduce){t=target;render();return;}
+    render(); raf=requestAnimationFrame(step);
+  }
+  const next=()=>go(idx===CH.length-1?0:idx+1), back=()=>{if(idx>0)go(idx-1);};
+  prevs.forEach(b=>b.onclick=back); nexts.forEach(b=>b.onclick=next);
+  frame.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();back();}});
+  let tx=null,ty=null;
+  frame.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+  frame.addEventListener('touchend',e=>{ if(tx==null) return; const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty; tx=null;
+    if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)) dx<0?next():back(); },{passive:true});
+  return {fit,relabel};
+})();
+
+/* form */
+const form=$('#applyform');
+function validate(lbl){
+  const el=lbl.querySelector('input,select'); const err=lbl.querySelector('.err'); const m=MSG[lang]; let msg='';
+  const v=el.value.trim();
+  if(el.required&&!v) msg=el.tagName==='SELECT'?m.sel:(el.type==='number'?m.num:m.req);
+  else if(v&&el.type==='email'&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) msg=m.email;
+  else if(v&&el.type==='tel'&&!/^[+()\d\s.-]{7,}$/.test(v)) msg=m.tel;
+  else if(v&&el.type==='number'&&!(+v>=0)) msg=m.num;
+  err.textContent=msg; lbl.classList.toggle('bad',!!msg); return !msg;
+}
+if(form){
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const ok=$$('#applyform .fld').map(validate).every(Boolean);
+    if(!ok){ const f=$('#applyform .fld.bad input, #applyform .fld.bad select'); if(f) f.focus(); return; }
+    const s=form.querySelector('.sending'), c=form.querySelector('.confirm');
+    s.hidden=false; c.hidden=true;
+    setTimeout(()=>{s.hidden=true;c.hidden=false;},700);
+  });
+  form.addEventListener('change',e=>{const l=e.target.closest('.fld'); if(l&&l.classList.contains('bad')) validate(l);});
+}
+setLang(lang);
+})();
+
+</script>
+<script>
+const NA_RINGS=["CAN:73,286 61,271 58,265 47,257 46,247 49,240 42,233 44,225 39,215 40,209 45,206 47,199 39,189 37,176 36,167 32,161 30,156 29,149 22,150 14,153 12,145 10,139 5,134 0,131 23,82 37,53 45,59 51,66 56,68 61,67 68,67 75,71 84,70 92,71 95,75 99,75 101,71 104,73 111,83 119,79 118,86 124,86 127,84 133,86 140,91 151,97 158,100 164,100 170,106 162,109 171,112 185,114 190,113 195,119 202,115 197,111 200,108 207,109 211,108 215,111 220,116 226,115 236,120 244,119 252,119 251,114 256,113 264,116 264,124 268,117 272,117 274,109 269,104 263,100 263,91 269,86 276,87 281,90 288,99 284,103 294,104 294,113 301,106 308,111 306,117 312,123 317,116 320,108 320,99 327,99 335,99 343,102 344,106 340,111 345,115 345,120 335,127 327,130 321,127 320,132 315,140 314,144 308,151 300,152 296,157 296,163 289,164 282,173 276,184 273,192 273,204 282,205 286,215 289,223 298,220 310,224 316,227 322,232 330,234 337,238 348,237 355,237 356,247 359,257 366,269 377,278 382,273 384,261 378,245 372,240 382,234 388,225 390,217 388,210 382,202 373,196 379,184 375,176 370,161 374,158 384,159 390,158 394,155 400,157 409,161 411,164 422,162 424,170 429,182 435,182 441,187 448,179 451,166 453,161 460,168 472,178 483,187 483,195 493,197 500,201 511,200 516,202 522,209 528,208 532,211 537,222 534,228 530,233 521,241 516,253 505,259 490,261 480,264 473,267 469,277 462,284 455,301 450,313 455,310 463,292 475,279 485,275 493,278 489,288 495,298 499,306 511,308 522,303 525,288 528,296 534,298 528,308 514,320 508,327 502,337 496,338 493,329 503,316 491,320 484,324 477,319 473,304 469,302 465,305 461,303 458,312 458,321 457,327 454,330 452,331 452,334 438,337 426,339 423,342 417,352 415,358 407,359 400,360 397,363 398,365 400,368 390,376 382,379 374,387 369,386 368,383 369,379 372,372 373,365 371,355 368,345 359,341 359,338 355,336 354,334 351,335 349,333 348,330 342,327 336,324 328,320 321,317 315,320 303,318 297,320 290,317 282,315 277,314 275,313 274,306 271,307 271,311 256,311 231,310 207,309 185,307 164,304 142,301 121,297 114,295 93,291 73,286","CAN:304,67 296,66 283,65 281,61 280,58 275,56 265,55 260,53 262,51 271,51 277,53 286,53 290,54 289,57 295,58 298,59 304,59 312,59 319,57 329,55 337,54 342,56 344,59 341,61 334,63 327,63 314,66 304,67","CAN:541,231 540,238 539,249 542,244 547,244 547,249 554,249 556,245 564,246 565,254 569,250 572,255 577,261 578,271 575,273 570,273 568,264 565,263 561,276 557,277 560,270 552,270 545,274 531,279 529,276 532,271 528,269 531,260 532,241 534,234 538,228 541,227 541,231","CAN:333,139 340,142 347,144 348,148 352,147 356,149 352,153 342,152 339,148 334,154 326,160 323,154 316,156 320,151 320,143 321,135 325,135 327,139 330,137 333,139","CAN:352,75 356,72 367,73 375,75 376,79 385,75 392,78 404,78 410,80 417,86 408,93 422,95 431,94 440,99 449,97 449,103 443,117 435,115 425,109 418,112 419,117 426,121 434,123 437,124 444,132 444,139 436,139 420,136 430,141 437,145 439,148 423,149 409,147 401,144 403,141 393,138 384,135 385,138 369,142 364,140 366,133 377,131 388,127 385,124 386,120 391,110 389,106 386,104 377,101 366,101 369,98 363,94 358,94 353,92 351,95 342,98 323,98 312,97 303,96 299,94 304,90 296,90 294,83 298,76 303,73 315,70 312,75 316,79 320,73 333,68 342,74 342,79 352,75","CAN:208,55 213,55 218,56 218,59 215,62 199,61 186,62 178,61 189,57 167,54 161,52 168,47 173,46 186,51 194,55 202,57 196,50 201,49 205,50 207,53 208,55","CAN:213,75 218,78 220,86 222,91 230,96 239,100 238,104 230,104 233,107 231,110 221,108 213,105 206,105 196,107 183,106 173,105 171,101 164,97 159,97 154,90 158,90 166,90 173,92 180,91 171,88 160,86 152,85 150,81 163,81 155,79 147,75 152,71 156,69 170,67 175,69 172,72 183,72 190,76 196,74 200,77 203,84 206,82 203,74 208,73 213,75","CAN:285,27 292,26 297,26 306,25 312,23 318,22 323,23 326,20 332,19 339,17 353,15 368,12 377,9 387,7 398,4 407,2 416,0 406,6 396,10 392,12 401,9 392,15 385,18 378,23 369,26 366,28 353,31 359,30 356,32 361,34 357,36 350,39 348,42 342,44 350,44 339,51 326,51 312,54 305,54 296,54 295,51 304,49 301,45 304,45 317,46 310,43 303,43 306,40 314,38 309,35 307,33 319,32 323,32 330,29 319,30 303,32 295,31 291,30 286,29","USA:73,286 93,291 114,295 121,297 142,301 164,304 185,307 207,309 231,310 256,311 271,311 271,307 274,306 275,313 277,314 282,315 290,317 297,320 303,318 312,320 321,317 328,320 336,324 342,327 348,330 349,333 351,335 354,334 355,336 359,338 359,341 368,345 371,355 373,365 372,372 369,379 368,383 369,386 372,387 382,379 390,376 400,369 398,365 397,363 400,360 407,359 415,358 416,353 423,342 426,339 438,337 452,334 452,331 454,330 457,327 458,321 458,312 461,303 465,305 469,302 473,304 477,319 484,324 486,327 479,334 473,340 466,346 463,353 463,356 464,362 468,367 471,367 469,363 472,365 473,368 468,371 464,372 459,375 455,377 451,378 445,383 456,378 459,380 449,386 444,387 442,389 444,389 444,397 440,407 439,405 434,402 437,408 439,409 440,414 438,419 435,428 436,420 431,417 428,407 427,412 430,419 425,419 431,421 433,432 436,432 438,436 441,447 437,456 429,461 424,469 420,471 416,475 416,479 407,488 403,495 399,502 399,510 402,518 406,527 412,534 413,539 419,552 420,559 420,564 419,571 416,573 411,572 409,567 405,565 398,556 393,548 391,544 392,536 388,530 380,522 376,520 367,527 360,521 354,519 344,522 336,521 329,522 325,524 327,527 327,532 329,534 324,534 320,536 313,536 306,531 298,532 291,530 285,531 277,534 269,542 259,547 254,553 252,558 252,566 252,571 254,575 250,575 243,573 236,569 233,563 231,555 226,549 223,542 218,534 212,529 204,529 198,537 190,533 186,530 184,523 181,517 176,511 172,507 169,503 153,501 153,506 145,505 127,503 108,491 95,483 85,481 75,479 75,473 70,466 66,463 66,460 61,458 59,455 51,452 50,449 50,443 45,430 42,412 43,410 40,405 36,394 38,385 35,378 39,369 42,359 42,350 48,341 51,331 55,321 58,306 58,297 57,291 68,296 69,307 72,304 73,295 73,286","MEX:75,479 85,481 97,481 108,491 127,503 145,505 153,506 153,501 169,503 172,507 176,511 181,517 184,523 186,530 190,533 198,537 204,529 212,529 218,534 223,542 226,549 231,555 233,563 236,569 243,573 250,575 254,575 250,585 248,593 247,608 246,613 248,620 251,625 253,634 260,642 262,648 266,654 277,657 282,661 291,658 299,657 307,654 314,652 320,647 322,641 323,631 324,628 331,625 342,621 351,621 357,620 360,622 360,627 355,634 353,641 355,643 354,648 352,657 349,654 345,655 341,662 338,661 328,663 318,664 319,670 314,670 318,674 322,676 323,678 325,683 311,683 306,692 307,697 307,700 294,689 288,685 279,683 273,683 264,688 259,689 251,686 243,684 233,678 225,676 213,671 205,665 202,662 196,661 185,657 181,652 171,644 166,637 164,631 168,631 167,627 169,625 170,621 167,615 166,611 164,605 156,593 147,583 143,575 135,570 134,567 136,560 131,557 126,551 125,542 120,541 116,534 112,528 112,524 109,515 107,506 108,501 102,496 99,496 94,492 92,496 92,502 92,510 94,516 100,525 101,527 103,533 105,540 107,544 109,548 114,555 116,565 118,571 120,576 119,582 124,583 127,589 130,594 125,600 122,593 116,585 110,579 105,575 107,567 106,561 102,557 96,550 93,548 88,545 83,537 88,538 92,534 93,529 88,520 83,516 81,508 79,500 76,490 75,479"];
+const NA_CITIES={"MTY":[223,576],"SAL":[216,579],"QRO":[220,633],"TIJ":[76,480],"JUA":[169,503],"GDL":[189,631],"SLP":[214,616],"DET":[368,380],"CHI":[332,389],"DAL":[258,496],"HOU":[271,531],"LAX":[69,460],"ATL":[369,479],"CLT":[398,458],"PHX":[122,477],"NSH":[345,454],"LRD":[231,556],"TOR":[395,361],"MTL":[435,332]};
+
+/* hero map · atom · cash · data — drawn by the engine, nothing is an image. Figures are simulated. */
+(function(){
+  const cv = document.getElementById("namap"); if (!cv) return;
+  const ctx = cv.getContext("2d");
+  const R = NA_RINGS.map(s => { const [id, pts] = s.split(":"); return { id, p: pts.split(" ").map(q => q.split(",").map(Number)) }; });
+  const C = NA_CITIES;
+  const MX = ["TIJ","JUA","MTY","SAL","SLP","QRO","GDL"], US = ["LAX","PHX","DAL","HOU","ATL","NSH","CLT","CHI","DET","TOR"];
+  const NAME = { TIJ:"Tijuana", JUA:"Juárez", MTY:"Monterrey", SAL:"Saltillo", SLP:"San Luis", QRO:"Querétaro", GDL:"Guadalajara", LAX:"Los Angeles", PHX:"Phoenix", DAL:"Dallas", HOU:"Houston", ATL:"Atlanta", NSH:"Nashville", CLT:"Charlotte", CHI:"Chicago", DET:"Detroit", TOR:"Toronto", LRD:"Laredo" };
+  const LANES = [["TIJ","LAX"],["TIJ","PHX"],["JUA","DAL"],["JUA","PHX"],["MTY","DAL"],["MTY","HOU"],["MTY","DET"],["MTY","ATL"],["SAL","DET"],["SAL","NSH"],["SLP","CHI"],["QRO","CHI"],["QRO","CLT"],["GDL","LAX"],["GDL","HOU"],["MTY","TOR"]];
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const ink = () => getComputedStyle(document.documentElement);
+  let W=0,H=0,dpr=1,T=null, lanes=[];
+  function fit(){
+    const r = cv.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio||1);
+    W = r.width; H = r.height; cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    // view: x 40..500 · y 300..700 of the projected sheet, fitted to the right side of the field
+    const vx0=40, vx1=500, vy0=300, vy1=700, pad=28;
+    const narrow = W < 900;
+    const triW = narrow ? 0 : Math.min(240, W*0.26) + 34 + 16; const areaX = narrow ? pad : triW, areaW = W - areaX - pad, areaH = H - pad - (narrow ? 150 : 180);
+    const s = Math.min(areaW/(vx1-vx0), areaH/(vy1-vy0));
+    const ox = areaX + (areaW - (vx1-vx0)*s) * 0.5, oy = pad + (narrow ? 130 : 30);
+    T = p => [ox + (p[0]-vx0)*s, oy + (p[1]-vy0)*s]; T.s = s;
+    lanes = LANES.map(([a,b]) => { const p0=T(C[a]), p2=T(C[b]); const mx=(p0[0]+p2[0])/2, my=(p0[1]+p2[1])/2; const dx=p2[0]-p0[0], dy=p2[1]-p0[1], L=Math.hypot(dx,dy);
+      const cp=[mx - dy/L*L*0.22, my + dx/L*L*0.22 - L*0.1]; return { a, b, p0, p2, cp, L }; });
+  }
+  const bez = (l,t) => { const u=1-t; return [u*u*l.p0[0]+2*u*t*l.cp[0]+t*t*l.p2[0], u*u*l.p0[1]+2*u*t*l.cp[1]+t*t*l.p2[1]]; };
+  // particles: atoms MX→US · cash US→MX · data both ways
+  const P = [];
+  lanes.length; // filled after fit
+  function seed(){ P.length = 0; lanes.forEach((l,i) => { const n = 2 + (i%3); for (let k=0;k<n;k++) P.push({ l:i, k:"atom", t:(k/n + i*0.07)%1, v:0.0012 + (i%4)*0.00025, dir:1 });
+    for (let k=0;k<2;k++) P.push({ l:i, k:"cash", t:(k/2 + i*0.13)%1, v:0.0016 + (i%3)*0.0003, dir:-1 });
+    for (let k=0;k<3;k++) P.push({ l:i, k:"data", t:(k/3 + i*0.19)%1, v:0.0042 + (i%5)*0.0004, dir: k%2 ? -1 : 1 }); }); }
+  const phases = ["make","near","smart"]; let phase = 0, phaseT = 0;
+  const triad = document.getElementById("triad");
+  function setPhase(i){ phase = i; triad && [...triad.children].forEach((el,j) => el.classList.toggle("on", j===i)); }
+  // simulated counters
+  const tk = { atom: 1284, cash: 184200, data: 42816 };
+  const $ = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString("en-US");
+  function plate(x,y,w,h,fill){ const d=h/3.4641; ctx.beginPath(); ctx.moveTo(x-w/2+d,y-h/2); ctx.lineTo(x+w/2-d,y-h/2); ctx.lineTo(x+w/2,y); ctx.lineTo(x+w/2-d,y+h/2); ctx.lineTo(x-w/2+d,y+h/2); ctx.lineTo(x-w/2,y); ctx.closePath(); ctx.fillStyle=fill; ctx.fill(); }
+  function draw(){ if (!W || !H) return;
+    const st = ink(); const red=st.getPropertyValue("--red").trim()||"#EF0F0F", redInk=st.getPropertyValue("--red-ink").trim()||"#BF0F0F", carbon=st.getPropertyValue("--carbon").trim()||"#221D1D", bg=st.getPropertyValue("--bg").trim()||"#F4F3EC", bg2=st.getPropertyValue("--bg2").trim()||"#ECEBE2", ruleC=st.getPropertyValue("--rule-c").trim()||"rgba(34,29,29,.28)", inkC=st.getPropertyValue("--ink").trim()||carbon;
+    ctx.clearRect(0,0,W,H);
+    // the readout field: a dot grid
+    ctx.fillStyle = ruleC; const g = 24; for (let x=(W%g)/2; x<W; x+=g) for (let y=(H%g)/2; y<H; y+=g) ctx.fillRect(x,y,1,1);
+    // land
+    for (const r of R){ ctx.beginPath(); r.p.forEach((p,i)=>{ const q=T(p); i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]); }); ctx.closePath(); ctx.fillStyle = r.id==="MEX" ? bg2 : bg; ctx.fill(); ctx.lineWidth = r.id==="MEX" ? 1.5 : 1; ctx.strokeStyle = r.id==="MEX" ? inkC : ruleC; ctx.stroke(); }
+    // lanes
+    const hot = phases[phase];
+    for (const l of lanes){ ctx.beginPath(); ctx.moveTo(l.p0[0],l.p0[1]); ctx.quadraticCurveTo(l.cp[0],l.cp[1],l.p2[0],l.p2[1]); ctx.setLineDash([2,5]); ctx.lineWidth=1; ctx.strokeStyle = hot==="near" ? redInk : ruleC; ctx.globalAlpha = hot==="near" ? .9 : .7; ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1; }
+    // particles
+    for (const q of P){ const l=lanes[q.l]; const t = q.dir>0 ? q.t : 1-q.t; const [x,y]=bez(l,t);
+      const bold = (hot==="make"&&q.k==="atom")||(hot==="near"&&q.k==="atom")||(hot==="smart"&&q.k!=="atom");
+      ctx.globalAlpha = bold ? 1 : .38;
+      if (q.k==="atom"){ ctx.fillStyle=carbon; ctx.fillRect(x-2.5,y-2.5,5,5); }
+      else if (q.k==="cash"){ ctx.fillStyle=red; ctx.fillRect(x-2.5,y-2.5,5,5); }
+      else { ctx.strokeStyle=redInk; ctx.lineWidth=1; ctx.strokeRect(x-1.5,y-1.5,3,3); }
+      ctx.globalAlpha=1; }
+    // nodes
+    const s = T.s, lbl = s > 1.1;
+    ctx.font = "700 10px " + (st.getPropertyValue("--f2").trim()||"monospace"); ctx.textBaseline="middle";
+    for (const k of US){ const [x,y]=T(C[k]); ctx.fillStyle = hot==="smart" ? red : carbon; ctx.fillRect(x-3.5,y-3.5,7,7); if (lbl){ ctx.fillStyle=inkC; ctx.textAlign="left"; ctx.fillText(NAME[k].toUpperCase(), x+8, y); } }
+    for (const k of MX){ const [x,y]=T(C[k]); plate(x,y,16,9, hot==="make" ? red : redInk); if (lbl && k!=="SAL" && k!=="SLP" && k!=="GDL"){ ctx.fillStyle=inkC; ctx.textAlign="right"; ctx.fillText(NAME[k].toUpperCase(), x-11, y); } }
+    // border crossing mark at Laredo
+    const [lx,ly]=T(C.LRD); ctx.strokeStyle=redInk; ctx.lineWidth=1; ctx.strokeRect(lx-4,ly-4,8,8); if (lbl){ ctx.fillStyle=redInk; ctx.textAlign="left"; ctx.fillText("LAREDO · CROSSING", lx+9, ly); }
+  }
+  let last=0, acc=0;
+  function tick(ts){
+    const dt = Math.min(50, ts-last||16); last = ts;
+    for (const q of P){ q.t += q.v*dt/16; if (q.t>=1){ q.t-=1; if (q.k==="atom") tk.atom += 1; else if (q.k==="cash") tk.cash += 1200 + (q.l%7)*350; else tk.data += 3; } }
+    phaseT += dt; if (phaseT > 2600){ phaseT = 0; setPhase((phase+1)%3); }
+    acc += dt; if (acc > 500){ acc = 0; $("tkAtom") && ($("tkAtom").textContent = fmt(tk.atom)); $("tkCash") && ($("tkCash").textContent = fmt(tk.cash)); $("tkData") && ($("tkData").textContent = fmt(tk.data)); }
+    draw(); if (!reduce) requestAnimationFrame(tick);
+  }
+  function start(){ fit(); seed(); setPhase(0); $("tkAtom") && ($("tkAtom").textContent = fmt(tk.atom)); $("tkCash") && ($("tkCash").textContent = fmt(tk.cash)); $("tkData") && ($("tkData").textContent = fmt(tk.data)); if (reduce){ draw(); } else requestAnimationFrame(tick); }
+  addEventListener("resize", () => { fit(); if (reduce) draw(); });
+  if (window.ResizeObserver) new ResizeObserver(() => { fit(); if (reduce) draw(); }).observe(cv);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+})();
+
+
+</script>
+<script>
+
+/* the plant · raw material → parts → invoice → payment, with cash and data — drawn by the engine. Conceptual, simulated. */
+(function(){
+  const cv = document.getElementById("plantmap"); if (!cv) return;
+  const ctx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LW = 1200, LH = 640;             // the sheet (the plan ends at y 600)
+  const ST = {                           // stations on the sheet
+    raw:   { x:70,  y:170, w:205, h:170, n:"01", t:"RAW MATERIAL", s:"resin · lots" },
+    press: { x:300, y:150, w:270, h:220, n:"02", t:"PRODUCTION", s:"injection · 14 presses" },
+    qc:    { x:600, y:170, w:195, h:140, n:"03", t:"INSPECTION", s:"quality · certs" },
+    dock:  { x:610, y:380, w:190, h:150, n:"04", t:"DOCK", s:"pallets · b/l" },
+    buyer: { x:960, y:400, w:190, h:120, n:"",   t:"BUYER · US", s:"paid day 90" },
+    rs:    { x:900, y:130, w:250, h:130, n:"",   t:"RESHORE · DATA VAULT", s:"" },
+  };
+  const c = s => [s.x + s.w/2, s.y + s.h/2];
+  const LANES = {
+    atoms: [c(ST.raw), c(ST.press), c(ST.qc), [697,380], c(ST.dock), [800,455], c(ST.buyer)],
+    po:    [[1055,400], [1055,300], [1025,260]],
+    adv:   [[900,200], [860,200], [860,92], [172,92], [172,170]],
+    inv:   [[705,470], [800,470], [1055,470], [1055,420]],
+    pay:   [[1100,400], [1100,300], [1100,260]],
+    d_raw:   [[172,170], [172,92], [880,92], [905,160]],
+    d_press: [[435,150], [435,92], [880,92], [905,160]],
+    d_qc:    [[697,170], [697,92], [880,92], [905,160]],
+    d_dock:  [[800,420], [860,420], [860,92], [905,160]],
+    d_buyer: [[1055,400], [1055,300], [1025,260]],
+  };
+  const len = p => { let L=[0]; for (let i=1;i<p.length;i++) L.push(L[i-1]+Math.hypot(p[i][0]-p[i-1][0], p[i][1]-p[i-1][1])); return L; };
+  const LEN = {}; for (const k in LANES) LEN[k] = len(LANES[k]);
+  function at(k, f){ const p=LANES[k], L=LEN[k], d=f*L[L.length-1]; let i=1; while (i<L.length-1 && L[i]<d) i++; const a=p[i-1], b=p[i], u=(d-L[i-1])/((L[i]-L[i-1])||1); return [a[0]+(b[0]-a[0])*u, a[1]+(b[1]-a[1])*u]; }
+  // the cycle: 14 s. Emitters: lane · kind · window [t0,t1] · period · travel time (ms)
+  const CYCLE = 14000;
+  const PH = [["po",0,2000],["make",2000,7000],["ship",7000,9500],["terms",9500,12500],["paid",12500,14000]];
+  const EM = [
+    { k:"doc",  l:"po",      t0:0,     t1:300,   per:400, dur:1100 },
+    { k:"cash", l:"adv",     t0:900,   t1:2000,  per:220, dur:1800 },
+    { k:"atom", l:"atoms",   t0:2000,  t1:7200,  per:170, dur:5200, f1:0.62 },   // raw → press → qc, waits at qc
+    { k:"atom", l:"atoms",   t0:7000,  t1:9200,  per:170, dur:3000, f0:0.62 },   // qc → dock → buyer
+    { k:"doc",  l:"inv",     t0:7600,  t1:7900,  per:400, dur:1400 },
+    { k:"cash", l:"pay",     t0:12500, t1:13600, per:140, dur:900 },
+    { k:"data", l:"d_raw",   t0:2000,  t1:7000,  per:260, dur:1600 },
+    { k:"data", l:"d_press", t0:2400,  t1:7000,  per:180, dur:1400 },
+    { k:"data", l:"d_qc",    t0:3200,  t1:7200,  per:300, dur:1200 },
+    { k:"data", l:"d_dock",  t0:7000,  t1:9500,  per:220, dur:1500 },
+    { k:"data", l:"d_buyer", t0:9500,  t1:14000, per:420, dur:900 },
+    { k:"data", l:"d_press", t0:9500,  t1:14000, per:900, dur:1400 },
+  ];
+  let W=0,H=0,dpr=1,S=1,OX=0,OY=0;
+  function fit(){ const r=cv.getBoundingClientRect(); dpr=Math.min(2,devicePixelRatio||1); W=r.width; H=r.height; cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    const narrow = W < 900; const top = narrow ? 44 : 70, bottom = narrow ? 112 : 150;
+    S = Math.min(W/LW, (H-top-bottom)/LH); OX = (W-LW*S)/2; OY = top + ((H-top-bottom)-LH*S)/2; }
+  const X = p => [OX+p[0]*S, OY+p[1]*S];
+  const ink = () => getComputedStyle(document.documentElement);
+  const steps = document.getElementById("plantSteps"), dayEl = document.getElementById("plantDay");
+  function phaseAt(t){ for (let i=0;i<PH.length;i++) if (t < PH[i][2]) return i; return PH.length-1; }
+  function dayAt(t){ const i=phaseAt(t), [k,a,b]=PH[i], u=(t-a)/(b-a); return Math.round([0, 14+31*u, 45, 45+45*u, 90][i]); }
+  let cycleN = 0;
+  function draw(t){
+    if (!W||!H) return;
+    ST.rs.s = "PO " + (4471 + cycleN) + " · 70% · 11.4%";
+    const st=ink(); const red=st.getPropertyValue("--red").trim()||"#EF0F0F", redInk=st.getPropertyValue("--red-ink").trim()||"#BF0F0F", carbon=st.getPropertyValue("--carbon").trim()||"#221D1D", bg=st.getPropertyValue("--bg").trim()||"#F4F3EC", ruleC=st.getPropertyValue("--rule-c").trim()||"rgba(34,29,29,.28)", inkC=st.getPropertyValue("--ink").trim()||carbon, mono=st.getPropertyValue("--f2").trim()||"monospace", cream=st.getPropertyValue("--cream").trim()||"#F4F3EC";
+    const ph = PH[phaseAt(t)][0];
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle=ruleC; const g=24*S; for (let x=OX%g; x<W; x+=g) for (let y=OY%g; y<H; y+=g) ctx.fillRect(x,y,1,1);
+    // the floor
+    const F=[60,110,820,560]; const [fx,fy]=X([F[0],F[1]]), fw=(F[2]-F[0])*S, fh=(F[3]-F[1])*S;
+    ctx.fillStyle=bg; ctx.fillRect(fx,fy,fw,fh); ctx.lineWidth=2; ctx.strokeStyle=inkC; ctx.strokeRect(fx,fy,fw,fh);
+    ctx.strokeStyle=ruleC; ctx.lineWidth=1; for (let x=F[0]+60; x<F[2]; x+=60){ const [ax]=X([x,0]); ctx.beginPath(); ctx.moveTo(ax,fy); ctx.lineTo(ax,fy+fh); ctx.stroke(); }
+    // corridor (data) at y=92 and the dimension line of the floor
+    const [cx0,cy]=X([172,92]), [cx1]=X([880,92]); ctx.setLineDash([2,5]); ctx.strokeStyle=ruleC; ctx.beginPath(); ctx.moveTo(cx0,cy); ctx.lineTo(cx1,cy); ctx.stroke(); ctx.setLineDash([]);
+    const [dx0,dy]=X([60,590]), [dx1]=X([820,590]); ctx.strokeStyle=redInk; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(dx0,dy); ctx.lineTo(dx1,dy); ctx.moveTo(dx0,dy-5); ctx.lineTo(dx0,dy+5); ctx.moveTo(dx1,dy-5); ctx.lineTo(dx1,dy+5); ctx.stroke();
+    ctx.font = `400 ${Math.max(9,10*S)}px ${mono}`; ctx.fillStyle=redInk; ctx.textAlign="center"; ctx.textBaseline="bottom"; if (S > 0.45) ctx.fillText("SITE 02 · PLAN · 180 m", (dx0+dx1)/2, dy-4);
+    // lanes (ghost)
+    for (const k of ["atoms","inv","adv","pay"]){ const p=LANES[k]; ctx.beginPath(); p.forEach((q,i)=>{ const r=X(q); i?ctx.lineTo(r[0],r[1]):ctx.moveTo(r[0],r[1]); }); ctx.setLineDash([2,5]); ctx.strokeStyle = (k==="atoms"&&(ph==="make"||ph==="ship"))||(k==="inv"&&ph==="ship")||(k==="adv"&&ph==="po")||(k==="pay"&&ph==="paid") ? redInk : ruleC; ctx.lineWidth=1; ctx.stroke(); ctx.setLineDash([]); }
+    // stations
+    const fs = Math.max(9, 10*S);
+    for (const id in ST){ const s=ST[id]; const [x,y]=X([s.x,s.y]), w=s.w*S, h=s.h*S;
+      const hot = (id==="raw"&&(ph==="po"||ph==="make"))||(id==="press"&&ph==="make")||(id==="qc"&&ph==="make")||(id==="dock"&&ph==="ship")||(id==="buyer"&&(ph==="terms"||ph==="paid"))||(id==="rs"&&(ph==="po"||ph==="paid"));
+      if (id==="rs"){ ctx.fillStyle=carbon; ctx.fillRect(x,y,w,h); } else if (id==="buyer"){ ctx.fillStyle = hot ? red : bg; ctx.fillRect(x,y,w,h); ctx.strokeStyle = hot ? red : inkC; ctx.lineWidth=2; ctx.strokeRect(x,y,w,h); }
+      else { ctx.fillStyle = bg; ctx.fillRect(x,y,w,h); ctx.strokeStyle = hot ? red : inkC; ctx.lineWidth = hot ? 2.5 : 1.5; ctx.strokeRect(x,y,w,h); }
+      // register marks
+      const m=Math.max(6,9*S); ctx.strokeStyle = id==="rs" ? red : (hot ? red : redInk); ctx.lineWidth=1;
+      for (const [px,py] of [[x+4,y+4],[x+w-4-m,y+4],[x+4,y+h-4-m],[x+w-4-m,y+h-4-m]]){ ctx.beginPath(); ctx.moveTo(px+m/2,py); ctx.lineTo(px+m/2,py+m); ctx.moveTo(px,py+m/2); ctx.lineTo(px+m,py+m/2); ctx.stroke(); }
+      // labels
+      const onDark = id==="rs" || (id==="buyer"&&hot);
+      ctx.textAlign="left"; ctx.textBaseline="top"; ctx.fillStyle = onDark ? cream : (hot ? red : redInk); ctx.font=`700 ${fs}px ${mono}`;
+      ctx.fillText(S < 0.45 ? (s.n || s.t.split(" ")[0]) : (s.n ? s.n+" · " : "") + s.t, x+14*S+4, y+14*S);
+      if (S > 0.5){ ctx.fillStyle = onDark ? cream : inkC; ctx.globalAlpha = onDark ? .8 : 1; ctx.font=`400 ${fs}px ${mono}`; ctx.fillText(s.s.toUpperCase(), x+14*S+4, y+14*S+fs*1.5); ctx.globalAlpha=1; }
+      if (id==="press"){ // six presses, two tie bars each
+        for (let i=0;i<6;i++){ const px=x+w*0.12+(i%3)*w*0.3, py=y+h*0.42+Math.floor(i/3)*h*0.3, pw=w*0.2, phh=h*0.18; ctx.strokeStyle=inkC; ctx.lineWidth=1.2; ctx.strokeRect(px,py,pw,phh); ctx.beginPath(); ctx.moveTo(px+pw*0.3,py); ctx.lineTo(px+pw*0.3,py+phh); ctx.moveTo(px+pw*0.7,py); ctx.lineTo(px+pw*0.7,py+phh); ctx.stroke(); ctx.fillStyle = ph==="make" ? red : ruleC; ctx.fillRect(px+pw*0.42,py+phh*0.3,pw*0.16,phh*0.4); } }
+      if (id==="dock"){ for (let i=0;i<4;i++){ const px=x+w*0.12+i*w*0.21, py=y+h*0.55, pw=w*0.16, phh=h*0.22; ctx.strokeStyle=inkC; ctx.lineWidth=1.2; ctx.strokeRect(px,py,pw,phh); ctx.beginPath(); ctx.moveTo(px,py+phh/2); ctx.lineTo(px+pw,py+phh/2); ctx.stroke(); } }
+      if (id==="raw"){ for (let i=0;i<6;i++){ const px=x+w*0.12+(i%3)*w*0.28, py=y+h*0.5+Math.floor(i/3)*h*0.22, pw=w*0.2, phh=h*0.15; ctx.fillStyle = (ph==="po"||ph==="make") ? carbon : ruleC; ctx.fillRect(px,py,pw,phh); } }
+      if (id==="rs"){ ctx.fillStyle=red; ctx.font=`400 ${Math.max(14,22*S)}px ${st.getPropertyValue("--dot").trim()||mono}`; ctx.textAlign="right"; ctx.textBaseline="bottom"; ctx.fillText(ph==="paid" ? "REPAID" : ph==="po" ? "ADVANCED" : "612", x+w-14*S, y+h-12*S); }
+    }
+    // particles
+    const sq = Math.max(3, 5*S);
+    for (const e of EM){ if (t < e.t0 - 0 || t > e.t1 + e.dur) continue;
+      for (let s0 = e.t0; s0 <= Math.min(e.t1, t); s0 += e.per){ const u=(t-s0)/e.dur; if (u<0||u>1) continue; const f0=e.f0||0, f1=e.f1||1; const [px,py]=X(at(e.l, f0+(f1-f0)*u));
+        if (e.k==="atom"){ ctx.fillStyle=carbon; ctx.fillRect(px-sq/2,py-sq/2,sq,sq); }
+        else if (e.k==="cash"){ ctx.fillStyle=red; ctx.fillRect(px-sq/2,py-sq/2,sq,sq); }
+        else if (e.k==="doc"){ ctx.fillStyle=bg; ctx.fillRect(px-sq*1.1,py-sq*1.4,sq*2.2,sq*2.8); ctx.strokeStyle=carbon; ctx.lineWidth=1.2; ctx.strokeRect(px-sq*1.1,py-sq*1.4,sq*2.2,sq*2.8); ctx.strokeStyle=red; ctx.beginPath(); ctx.moveTo(px-sq*.6,py-sq*.5); ctx.lineTo(px+sq*.6,py-sq*.5); ctx.moveTo(px-sq*.6,py+sq*.1); ctx.lineTo(px+sq*.6,py+sq*.1); ctx.stroke(); }
+        else { ctx.strokeStyle=redInk; ctx.lineWidth=1; ctx.strokeRect(px-sq*.3,py-sq*.3,sq*.6,sq*.6); } } }
+  }
+  function ui(t){ const i=phaseAt(t); if (steps) [...steps.children].forEach((el,j)=>{ el.classList.toggle("on", j===i); el.classList.toggle("done", j<i); }); if (dayEl) dayEl.textContent = dayAt(t); }
+  let t0=null;
+  function tick(ts){ if (t0===null) t0=ts; const el=ts-t0; cycleN = Math.floor(el/CYCLE); const t=el%CYCLE; draw(t); ui(t); requestAnimationFrame(tick); }
+  function start(){ fit(); if (reduce){ draw(4200); ui(4200); } else requestAnimationFrame(tick); }
+  if (window.ResizeObserver) new ResizeObserver(()=>{ fit(); if (reduce) draw(4200); }).observe(cv); addEventListener("resize", ()=>{ fit(); if (reduce) draw(4200); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start); else start();
+})();
+
+
+</script>
+<script>
+
+/* sheet marks: every barcode and its serial is different, seeded by position */
+(function(){
+  const rnd = seed => () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
+  const bars = r => { let x = 0, stops = []; while (x < 70){ const w = 1 + Math.floor(r()*3), g = 1 + Math.floor(r()*3); stops.push(`currentColor ${x}px ${x+w}px, transparent ${x+w}px ${x+w+g}px`); x += w + g; } return `linear-gradient(90deg, ${stops.join(", ")})`; };
+  const serial = r => { const d = n => String(Math.floor(r()*Math.pow(10,n))).padStart(n,"0"); return `${d(1)} ${d(5)} ${d(5)} ${d(1)}`; };
+  let i = 0;
+  document.querySelectorAll(".sec, .barcode").forEach(el => { const r = rnd(2609 + 7919 * (++i)); el.style.setProperty("--bars", bars(r)); el.setAttribute("data-serial", serial(r)); });
+})();
+
+</script></body></html>
