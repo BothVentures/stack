@@ -63,6 +63,13 @@
                                                como clara. Lo decide el JS, no el ojo */
   --grano:       .05;                       /* grano de película sobre VERANO */
 
+  /* --- las tres maneras de poner texto sobre una foto (ver _engine/foto.css) --- */
+  --grad-from:   28%;    /* 1 · degradado: dónde empieza a aparecer el color */
+  --grad-mid:    68%;    /*     dónde llega a media opacidad */
+  --grad-max:    .96;    /*     opacidad al pie — casi plano, nunca 1 */
+  --blur:        14px;   /* 3 · desenfoque: radio */
+  --blur-velo:   .7;     /*     cuánto del velo se aplica encima del blur (0–1) */
+
   /* --- tipografía: tres familias ------------------------------------------ */
   --serif: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;  /* 300 · 400 · 500 + itálica */
   --sans:  "DM Sans", "Helvetica Neue", Arial, sans-serif;               /* 400 · 500 */
@@ -108,6 +115,63 @@
    la ELIPSE (el óvalo de precio) y el SELLO (el círculo). */
 *, *::before, *::after{ border-radius: 0; }
 
+/* ===========================================================================
+   Casa Manantial — texto sobre fotografía · las tres maneras · V0.1.0
+   ---------------------------------------------------------------------------
+   Toda pieza que pone texto sobre una foto usa UNA de estas tres clases sobre
+   un contenedor con la foto de fondo (background-image, cover). Nunca texto
+   sobre la foto desnuda. Los hijos quedan por encima del tratamiento.
+
+     .foto.foto--grad   1 · DEGRADADO de abajo hacia arriba, en cualquiera de
+                        los colores de la paleta (g-hueso · g-lino · g-pino ·
+                        g-noche · g-oro). El texto va al pie. Portadas, heros,
+                        la plancha de cita, el tile de ritual.
+     .foto.foto--velo   2 · VELO INTELIGENTE: una capa plana, hueso o pino,
+                        según la claridad medida de la foto. El texto puede ir
+                        en cualquier lado. Tiles, planchas, lockup sobre foto.
+     .foto.foto--blur   3 · DESENFOQUE: la foto pasa a fondo (blur + velo
+                        suave) y el texto manda. La tapa de mes, el diario,
+                        cualquier pieza donde la foto acompaña y no es el tema.
+
+   El tono lo decide el JS (función `tone`, en las guidelines §07): mide la
+   claridad L* de la foto bajo el texto y escribe data-tone="light|dark" en
+   el contenedor. Con data-smart, las tres clases lo respetan: el degradado
+   elige hueso o pino solo, el velo elige su color, el blur elige su velo.
+   Sin data-smart, el degradado toma el color de su clase g-* y el velo y el
+   blur asumen foto oscura (texto hueso). Una pieza estática (deck, print)
+   mide una vez y fija la clase.
+   =========================================================================== */
+.foto{ position: relative; isolation: isolate; overflow: hidden;
+       background-size: cover; background-position: 50% 50%; color: var(--txt, var(--hueso)); }
+.foto > *{ position: relative; z-index: 1; }
+.foto::before, .foto::after{ content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.foto::after{ content: none; }
+
+/* el tono: lo escribe el JS, lo pueden fijar a mano las piezas estáticas */
+.foto[data-tone="light"]{ --txt: var(--pino);  --veil: var(--velo-claro);  --g-rgb: 242,237,227; }
+.foto[data-tone="dark"] { --txt: var(--hueso); --veil: var(--velo-oscuro); --g-rgb: 20,42,33; }
+
+/* 1 · degradado ----------------------------------------------------------- */
+.foto--grad{ --g-rgb: 30,58,47; }
+.foto--grad::before{
+  background: linear-gradient(180deg,
+    rgba(var(--g-rgb), 0)   var(--grad-from),
+    rgba(var(--g-rgb), .55) var(--grad-mid),
+    rgba(var(--g-rgb), var(--grad-max)) 100%); }
+.foto--grad.g-hueso{ --g-rgb: 242,237,227; --txt: var(--pino); }
+.foto--grad.g-lino { --g-rgb: 229,222,208; --txt: var(--pino); }
+.foto--grad.g-pino { --g-rgb: 30,58,47;    --txt: var(--hueso); }
+.foto--grad.g-noche{ --g-rgb: 20,42,33;    --txt: var(--hueso); }
+.foto--grad.g-oro  { --g-rgb: 179,149,92;  --txt: var(--pino); }
+
+/* 2 · velo inteligente ---------------------------------------------------- */
+.foto--velo::before{ background: var(--veil, var(--velo-oscuro)); }
+
+/* 3 · desenfoque ----------------------------------------------------------- */
+.foto--blur::before{ background: inherit; background-size: cover; background-position: inherit;
+  filter: blur(var(--blur)); transform: scale(1.08); }
+.foto--blur::after{ content: ""; background: var(--veil, var(--velo-oscuro)); opacity: var(--blur-velo); }
+
 
 *{ box-sizing: border-box; }
 html, body{ overflow-x: clip; }
@@ -135,9 +199,12 @@ svg.cm-lockup, svg.cm-ola, svg.cm-apilado{ display: block; width: 100%; height: 
 .masthead .bleed{ position: absolute; inset: 0; background-size: cover; background-position: 50% 35%; z-index: 0; }
 .masthead .bleed.mobile{ display: none; }
 @media (max-width: 700px){ .masthead .bleed.desktop{ display: none; } .masthead .bleed.mobile{ display: block; background-position: 50% 20%; } }
+/* la portada corre el tratamiento 1 (degradado) con los tokens de _engine/foto.css;
+   el color lo decide el tono medido: pino sobre foto oscura, hueso sobre foto clara */
+.masthead{ --g-rgb: 20,42,33; }
+.masthead[data-tone="light"]{ --g-rgb: 242,237,227; }
 .masthead::before{ content: ""; position: absolute; inset: 0; z-index: 1;
-  background: linear-gradient(180deg, rgba(20,42,33,0) 28%, rgba(20,42,33,.52) 68%, rgba(20,42,33,.86) 100%); }
-.masthead[data-tone="light"]::before{ background: linear-gradient(180deg, rgba(242,237,227,0) 26%, rgba(242,237,227,.66) 66%, rgba(242,237,227,.98) 100%); }
+  background: linear-gradient(180deg, rgba(var(--g-rgb),0) var(--grad-from), rgba(var(--g-rgb),.55) var(--grad-mid), rgba(var(--g-rgb),var(--grad-max)) 100%); }
 .masthead > *{ position: relative; z-index: 2; }
 .masthead{ color: var(--hueso); } .masthead[data-tone="light"]{ color: var(--pino); }
 .masthead .inner{ position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(1.8rem, 5vw, 4rem); max-width: 1000px; }
@@ -338,6 +405,11 @@ table.tk td.pin{ font-family: var(--serif); font-weight: 400; font-size: 1.2rem;
 .velos{ display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1px; background: rgba(30,58,47,.16); margin: 1.2rem 0; }
 .velo-tile{ aspect-ratio: 4 / 5; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.1rem; }
 .velo-tile .q{ font-family: var(--serif); font-style: italic; font-size: clamp(24px, 2.6vw, 34px); line-height: 1; }
+.velo-tile.tapa{ justify-content: center; align-items: center; text-align: center; gap: .6rem; }
+.velo-tile.tapa .cm-ola{ width: 22px; }
+.velo-tile.tapa .mes{ font-family: var(--serif); font-weight: 300; text-transform: uppercase; letter-spacing: var(--track-big); font-size: clamp(18px, 2vw, 26px); line-height: 1.05; }
+.velo-tile.tapa .pie{ position: absolute; bottom: 1rem; left: 0; right: 0; font-family: var(--sans); font-size: var(--t-micro); letter-spacing: .1em; text-align: center; }
+.velo-tile .k{ position: absolute; top: .8rem; left: .9rem; font-family: var(--mono); font-size: var(--t-micro); letter-spacing: .08em; color: var(--hueso); background: rgba(20,42,33,.6); padding: .25em .55em; }
 .velo-tile .m{ font-family: var(--mono); font-size: var(--t-micro); letter-spacing: .08em; text-transform: uppercase; margin-top: .6rem; opacity: .85; }
 .grano{ position: absolute; inset: 0; pointer-events: none; opacity: var(--grano); mix-blend-mode: multiply; }
 
@@ -489,7 +561,7 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
     <span class="lbl">Casa Manantial · Founders House · since 2023</span>
     <h1>“Not a cowork.”<small>Casa Manantial · Brand guidelines · V0.1.0 · Club de Verano</small></h1>
     <p class="sub">Una casa de cal y teja frente al mar, con los códigos de un club de toda la vida: verde, lino, bordado, un número. Una tribu que se junta cada semana alrededor del fuego, la mesa y las ideas. No se vende. Se invita.</p>
-    <p class="lect">Lectura · 51 min</p>
+    <p class="lect">Lectura · 53 min</p>
   </div>
 </div>
 
@@ -725,7 +797,7 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
 <div class="rules">
   <div class="rule"><span class="cls cls-a">Token</span><div class="txt">Todos los valores viven en <code>_engine/tokens.css</code> y en el theme <code>templates/themes/casa-manantial.css</code>. Los contrastes están medidos al hornear (WCAG 2.x). Una pieza nueva no copia hexes: incluye el theme.</div></div>
   <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Texto: sólo <code>--pino</code> sobre hueso/lino, o <code>--hueso</code> sobre pino/noche. Oro nunca en texto menor a 40 px sobre hueso; sobre pino aguanta desde 14 px (4.1:1) y aun así se reserva para bordado y numerales.</div></div>
-  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Sin degradados de tono. El único degradado del sistema es el velo sobre fotografía (§07), que es de <b>opacidad</b>. Sin sombras en piezas: la sombra de los mockups de §09 es del mockup, no del sistema.</div></div>
+  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Sin degradados de tono entre dos colores. El único degradado del sistema es el de abajo hacia arriba sobre fotografía (§07, tratamiento 1), que es de <b>opacidad</b> de un solo color. Sin sombras en piezas.</div></div>
   <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">No hay gris, no hay negro, no hay rojo, no hay amarillo, no hay azul fuera del lockup heredado. Un <code>#888</code>, un <code>#000</code> o un naranja en una pieza es violación — si hace falta calor, se pone una foto.</div></div>
 </div>
 <h3 class="sub-h">De la identidad V2 (mayo 2026) a Club de Verano</h3>
@@ -843,18 +915,39 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
   <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Toda regeneración se guarda con su prompt y la referencia de la que salió en <code>_assets/_manifest.md</code>. Imagen sin procedencia = imagen sin producción.</div></div>
   <div class="rule"><span class="cls cls-c">Juicio</span><div class="txt">Qué regeneración «se parece a la casa» y cuál es un hotel genérico lo decide René por lote, no por imagen. Daiana veta cualquier imagen que muestre a un member real sin cesión firmada.<span class="who">René · selección por lote · Daiana · cesiones</span></div></div>
 </div>
-<h3 class="sub-h">El velo — lo que va entre la foto y el texto</h3>
-<p class="body">El texto nunca pisa la foto desnuda. Entre los dos va el <b>velo</b>, y el velo es inteligente: mide la claridad de la foto debajo del texto y decide el tono. Foto clara → velo hueso y texto pino. Foto oscura → velo pino y texto hueso. Lo decide el código, no el ojo, y por eso nunca hay texto que no se lea. Las cuatro de abajo corren esa medición en vivo.</p>
+<h3 class="sub-h">Texto sobre foto — las tres maneras</h3>
+<p class="body">El texto nunca pisa la foto desnuda. Hay exactamente tres maneras de ponerlo encima, y las tres viven en un solo archivo (<code>_engine/foto.css</code>, incluido en el theme): el <b>degradado</b> de abajo hacia arriba, el <b>velo</b> plano, el <b>desenfoque</b>. Las tres son inteligentes: el código mide la claridad de la foto bajo el texto y elige el tono — foto clara, hueso y texto pino; foto oscura, pino y texto hueso. Una pieza estática mide una vez y fija la clase.</p>
+<h3 class="sub-h"><span class="n">1</span>El degradado — de abajo hacia arriba, en cualquier color</h3>
+<p class="body">Para texto al pie: portadas, heros, la plancha de cita, el tile de ritual. Empieza transparente al 28% de la altura, llega a media opacidad al 68% y cierra casi plano. Los cinco colores de la paleta pueden ser el degradado; el texto toma el color que corresponde al campo. La portada de este documento es este tratamiento, con el color elegido por la medición.</p>
+<div class="velos">
+  <div class="velo-tile foto foto--grad g-hueso" ${bg("gNaipes")}><span class="k">.foto--grad .g-hueso</span><span class="q">Fuego lento.</span><span class="m">domingos · 12.30</span></div>
+  <div class="velo-tile foto foto--grad g-lino" ${bg("gNaipes")}><span class="k">.g-lino</span><span class="q">Fuego lento.</span><span class="m">domingos · 12.30</span></div>
+  <div class="velo-tile foto foto--grad g-oro" ${bg("gNaipes")}><span class="k">.g-oro</span><span class="q">Fuego lento.</span><span class="m">domingos · 12.30</span></div>
+  <div class="velo-tile foto foto--grad g-pino" ${bg("gNaipes")}><span class="k">.g-pino</span><span class="q">Fuego lento.</span><span class="m">domingos · 12.30</span></div>
+  <div class="velo-tile foto foto--grad g-noche" ${bg("gNaipes")}><span class="k">.g-noche</span><span class="q">Fuego lento.</span><span class="m">domingos · 12.30</span></div>
+  <div class="velo-tile foto foto--grad" ${bg("gNaipes")} data-smart data-region="bottom"><span class="k">data-smart · el código elige</span><span class="q">Fuego lento.</span><span class="m" data-lum></span></div>
+</div>
+<h3 class="sub-h"><span class="n">2</span>El velo — plano, inteligente</h3>
+<p class="body">Para texto en cualquier lado de la foto: tiles, planchas con la cita centrada, el lockup sobre foto. Una capa plana, hueso al .34 o pino al .44, según la claridad medida bajo el texto. Las cuatro de abajo corren la medición en vivo.</p>
 <div class="velos" id="veloDemo">
-  <div class="velo-tile smart" ${bg("pileta")} data-smart><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
-  <div class="velo-tile smart" ${bg("bodega")} data-smart><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
-  <div class="velo-tile smart" ${bg("aerea")} data-smart><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
-  <div class="velo-tile smart" ${bg("suki")} data-smart><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
+  <div class="velo-tile foto foto--velo" ${bg("pileta")} data-smart data-region="bottom"><span class="k">.foto--velo</span><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
+  <div class="velo-tile foto foto--velo" ${bg("bodega")} data-smart data-region="bottom"><span class="k">.foto--velo</span><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
+  <div class="velo-tile foto foto--velo" ${bg("aerea")} data-smart data-region="bottom"><span class="k">.foto--velo</span><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
+  <div class="velo-tile foto foto--velo" ${bg("suki")} data-smart data-region="bottom"><span class="k">.foto--velo</span><span class="q">“Not a cowork.”</span><span class="m" data-lum></span></div>
+</div>
+<h3 class="sub-h"><span class="n">3</span>El desenfoque — la foto pasa a fondo</h3>
+<p class="body">Para cuando la foto acompaña y no es el tema: la tapa de mes, el diario, un fondo de ficha. Blur de 14 px, la imagen escalada un 8% para que no asomen los bordes, y el velo del tono encima al 70%. Es la gramática que las tapas de 2026 («Agosto en Casa Manantial») ya tenían, con el tono decidido por el código en vez de a ojo.</p>
+<div class="velos">
+  <div class="velo-tile tapa foto foto--blur" ${bg("gMesa")} data-smart><span class="k">.foto--blur</span>${OLA}<span class="mes">Noviembre en<br>Casa Manantial</span><span class="pie">2026. Punta del Este, Uruguay</span></div>
+  <div class="velo-tile tapa foto foto--blur" ${bg("piletaArb")} data-smart><span class="k">.foto--blur</span>${OLA}<span class="mes">Diciembre en<br>Casa Manantial</span><span class="pie">2026. Punta del Este, Uruguay</span></div>
+  <div class="velo-tile tapa foto foto--blur" ${bg("suki")} data-smart><span class="k">.foto--blur</span>${OLA}<span class="mes">Enero en<br>Casa Manantial</span><span class="pie">2027. Punta del Este, Uruguay</span></div>
+  <div class="velo-tile tapa foto foto--blur" ${bg("terraza")} data-smart><span class="k">.foto--blur</span>${OLA}<span class="mes">Febrero en<br>Casa Manantial</span><span class="pie">2027. Punta del Este, Uruguay</span></div>
 </div>
 <div class="rules">
-  <div class="rule"><span class="cls cls-a">Token</span><div class="txt"><code>--umbral: .55</code> de claridad media (L* de CIE sobre 100, muestreada a 32×32 sobre la zona donde va el texto: toda la foto, o la mitad de abajo cuando el texto va al pie). Arriba: <code>--velo-claro</code> rgba(242,237,227,.34) + texto pino. Abajo: <code>--velo-oscuro</code> rgba(20,42,33,.44) + texto hueso. En una pieza estática (deck, print) el diseñador mide una vez y aplica el mismo par.</div></div>
-  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Texto sobre fotografía sin velo: violación. Velo claro con texto hueso, o velo oscuro con texto pino: violación. La única excepción es el pie de plancha en mono micro, que puede ir con sombra de texto en vez de velo.</div></div>
-  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">El velo es plano o es un degradado de opacidad del mismo color (portada). Nunca un degradado de dos colores, nunca un blur.</div></div>
+  <div class="rule"><span class="cls cls-a">Token</span><div class="txt">Las tres clases: <code>.foto.foto--grad</code> (+ <code>.g-hueso | .g-lino | .g-oro | .g-pino | .g-noche</code>, o <code>data-smart</code>) · <code>.foto.foto--velo</code> · <code>.foto.foto--blur</code>. Perillas en los tokens: <code>--grad-from: 28%</code> · <code>--grad-mid: 68%</code> · <code>--grad-max: .96</code> · <code>--velo-claro</code> .34 · <code>--velo-oscuro</code> .44 · <code>--blur: 14px</code> · <code>--blur-velo: .7</code> · <code>--umbral: .55</code> de claridad L*. Viven en <code>_engine/foto.css</code> y en el theme.</div></div>
+  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">Texto al pie → degradado. Texto centrado o en cualquier lado → velo. La foto acompaña y no es el tema → desenfoque. Una pieza usa <b>uno</b> de los tres por foto; dos a la vez es violación. Texto sobre foto sin ninguno de los tres: violación. La única excepción es el pie de plancha en mono micro, con sombra de texto.</div></div>
+  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">El tono lo decide la medición, no el gusto: velo hueso con texto hueso, o degradado pino con texto pino, es violación. En una pieza estática se mide una vez (el script de esta página) y se fija la clase.</div></div>
+  <div class="rule"><span class="cls cls-b">Chequeo</span><div class="txt">El desenfoque no se usa sobre fotos de la casa que están para mostrar la casa (familia A como tema), ni sobre las cápsulas. Se usa cuando la foto es fondo. El degradado nunca es de dos colores. El velo nunca es un blur.</div></div>
 </div>
 `});
 
@@ -994,8 +1087,8 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
 <h3 class="sub-h">Instagram · @manantial.casa · el sueño</h3>
 <p class="body">El moodboard de la casa: grano, luz natural, quietud. Texturas, la mesa recién dejada, el mar, los datos de la casa como fichas diseñadas. <b>Nunca</b> caras (espaldas, manos, siluetas), nunca nombres, nunca formatos de moda, nunca hashtags, nunca urgencia. La agenda del mes sale el 1 como tapa. La casa no etiqueta a sus invitados; los invitados pueden etiquetar a la casa. Cadencia: tres por semana. Lo que se mide: guardados y mensajes de «¿cómo me invitan?», nunca seguidores.</p>
 <div class="tiles">
-  <div class="tile smart" ${bg("gNaipes")} data-smart data-region="bottom"><div class="mid" style="justify-content:flex-start;padding-top:12%"><span style="width:16px">${OLA}</span><span class="mes" style="margin-top:.6em">Noviembre en<br>Casa Manantial</span></div><div class="pie"><span>2026. Punta del Este, Uruguay</span><span></span></div></div>
-  <div class="tile smart" ${bg("gMesa")} data-smart><span style="position:absolute;top:5%;left:6%;width:18px">${OLA}</span><div class="mid"><span class="q">Fuego lento.</span><span class="s">Domingos · 12.30</span></div><div class="pie"><span>Ritual semanal</span><span>Socios + 1</span></div></div>
+  <div class="tile foto foto--blur" ${bg("gNaipes")} data-smart><div class="mid" style="justify-content:flex-start;padding-top:12%"><span style="width:16px">${OLA}</span><span class="mes" style="margin-top:.6em">Noviembre en<br>Casa Manantial</span></div><div class="pie"><span>2026. Punta del Este, Uruguay</span><span></span></div></div>
+  <div class="tile foto foto--grad" ${bg("gMesa")} data-smart data-region="bottom"><span style="position:absolute;top:5%;left:6%;width:18px">${OLA}</span><div class="mid" style="justify-content:flex-end;padding-bottom:16%;align-items:flex-start;text-align:left"><span class="q">Fuego lento.</span><span class="s">Domingos · 12.30</span></div><div class="pie"><span>Ritual semanal</span><span>Socios + 1</span></div></div>
   <div class="tile t-lino">${OLA}<span class="e">La casa · hoy</span><div class="mid"><span class="big">13.8°</span><span class="s">Atlántico · viento SW 16 km/h<br>fuego encendido 19.30 · mesa para 22</span></div><div class="pie"><span>Montoya</span><span>manantial.casa</span></div></div>
   <div class="tile t-pino sq">${OLA}<span class="e">El Salón</span><div class="mid"><span class="it">Buenas preguntas.</span><span class="s" style="opacity:.85">Jueves · 18.30 · una conversación grabada</span></div><div class="pie"><span>Ideas, no nombres</span><span>Se invita</span></div></div>
 </div>
@@ -1038,7 +1131,7 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
 </div>
 <h3 class="sub-h">Medidas de social</h3>
 <div class="rules">
-  <div class="rule"><span class="cls cls-a">Token</span><div class="txt">Tile 1080×1350 (default) y 1080×1080 (grilla). Margen 6% lateral, 5% arriba/abajo. Ola a 64 px de ancho; etiqueta arriba a la derecha; pie en dos esquinas. Una tipografía display por tile. Cuatro tipos: tapa de mes · ritual sobre foto · datos de la casa sobre lino · noche sobre pino. Un carrusel alterna tipos.</div></div>
+  <div class="rule"><span class="cls cls-a">Token</span><div class="txt">Tile 1080×1350 (default) y 1080×1080 (grilla). Margen 6% lateral, 5% arriba/abajo. Ola a 64 px de ancho; etiqueta arriba a la derecha; pie en dos esquinas. Una tipografía display por tile. Cuatro tipos: tapa de mes (desenfoque) · ritual sobre foto (degradado) · datos de la casa sobre lino · noche sobre pino. Un carrusel alterna tipos.</div></div>
 </div>
 <h3 class="sub-h">Sitio · manantial.casa</h3>
 <p class="body">Hoy el sitio es una página de espera en Framer: una cortina al viento en video, Inter en versales, «MANANTIAL.CASA · SINCE 2023 · PUNTA DEL ESTE · FOUNDERS HOUSE · BUSINESS FIRST &amp; COMMUNITY DRIVEN · HOLA@MANANTIAL.CASA». Está bien que sea una espera. Lo que esta dirección pide para cuando deje de serlo:</p>
@@ -1153,7 +1246,8 @@ footer{ margin-top: clamp(3rem, 7vw, 6rem); }
   <li><code>projects/casa-manantial/marca/_assets/full/</code> + <code>_manifest.md</code><span><b>Las 20 imágenes</b> de esta página con familia, procedencia y uso sancionado. Leer el manifest antes de usar una.</span></li>
   <li><code>projects/casa-manantial/marca/guidelines-v0.1.0.template.html</code> + <code>.build.py</code><span><b>La fuente de esta página.</b> No se edita el HTML horneado: se edita el template y se corre el build (embebe imágenes, mide contrastes, calcula la escala en px, extrae paletas, parte el logo).</span></li>
   <li><code>§07 · Prompt pack</code><span><b>Los seis prompts</b> de familia B, para regenerar referencias. Copiar entero, cambiar la línea de sujeto.</span></li>
-  <li><code>§07 · El velo</code><span><b>La medición</b> está en el script de esta página (función <code>tone</code>): claridad L* media a 32×32 de la zona del texto, umbral .55. Copiar tal cual al sitio.</span></li>
+  <li><code>projects/casa-manantial/marca/_engine/foto.css</code><span><b>Las tres maneras de poner texto sobre foto</b> — degradado, velo, desenfoque — como clases reutilizables. Incluido en el theme; cualquier pieza las usa tal cual.</span></li>
+  <li><code>§07 · la medición</code><span><b>La función <code>tone</code></b> del script de esta página: claridad L* media a 32×32 de la zona del texto, umbral .55, escribe <code>data-tone</code>. Copiar tal cual al sitio.</span></li>
   <li>Google Fonts<span><code>Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500 · DM+Sans:wght@400;500 · DM+Mono:wght@400;500</code> — la llamada está en el theme.</span></li>
   <li>Figma<span><b>No hay archivo todavía.</b> Se arma después de GA/GB; las placas se exportan desde esta página.</span></li>
 </ul>
