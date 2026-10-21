@@ -10,149 +10,76 @@
 <title>Casa Manantial · Big Cheese · Sunset en la casa · 2026 · V0.1.1</title>
 <meta name="description" content="Casa Manantial — propuesta para Big Cheese: Sunset en la casa, Punta Tech Week 2027. Sobre la dirección «Club de Verano». V0.1.1 · 2026-10-21.">
 <style>
-/* ===========================================================================
-   Casa Manantial — tokens de la dirección «CLUB DE VERANO» · V0.1.0 · rev. 2
-   ---------------------------------------------------------------------------
-   Propuesta 2026-10-20 (pedido de René); segunda vuelta la misma tarde tras
-   su review: teja afuera, manteca afuera, script afuera, tres colores.
 
-   Old money, rustic-chic, Hamptons / Saint-Tropez: club de tenis clásico y
-   verano mediterráneo. Tres capas, una costura:
-
-     CLUB     la pertenencia — verde pino, sello, gorra, bordado en oro,
-              serif en versales con tracking, la etiqueta de llave, el Nº.
-     CASA     el lugar — hueso, lino, la serif de alto contraste, la luz de
-              las siete de la tarde. El amarillo de la casa vive en la foto,
-              no en la paleta.
-     VERANO   la fotografía — Riviera en película: lino, barco, naipes al
-              borde de la pileta, nadie mira a cámara.
-
-   La costura: el CLUB vive en objetos y marcas; la CASA en superficies y
-   tipografía; el VERANO sólo en la fotografía.
-
-   Esta hoja es la ÚNICA fuente de valores. Las guidelines la leen al hornear
-   (la directiva include del build) y el theme compañero
-   `templates/themes/casa-manantial.css` se genera desde acá con
-   `python3 _engine/theme-build.py`. Nadie copia hexes a mano.
-   =========================================================================== */
 :root{
-  /* --- tres colores. Nada más. ------------------------------------------- */
-  --hueso: #F2EDE3;   /* el papel. Campo de todo lo de día. Nunca blanco puro */
-  --pino:  #1E3A2F;   /* la tinta. Texto, reglas, sello, bordado, campo de noche.
-                         Es el verde del club (Leon Dore, Sporty & Rich, Golden
-                         Oaks) llevado a tinta. Medido sobre hueso: 10.6:1 */
-  --oro:   #B3955C;   /* el bronce. Hilo del bordado sobre pino, numerales y
-                         versales display sobre hueso (≥ 40 px), el aro de la
-                         llave. Nunca texto de cuerpo: sobre hueso 2.7:1 */
+  
+  --hueso: #F2EDE3;   
+  --pino:  #1E3A2F;   
+  --oro:   #B3955C;   
 
-  /* --- dos sombras de los mismos colores: no son colores nuevos ----------- */
-  --lino:  #E5DED0;   /* hueso un paso más oscuro — superficies de apoyo,
-                         segunda columna, :active, el fondo de una tabla */
-  --noche: #142A21;   /* pino un paso más profundo — el campo del modo noche
-                         y del speakeasy. Nunca sobre hueso */
+  --lino:  #E5DED0;   
+  --noche: #142A21;   
 
-  /* --- legado ------------------------------------------------------------- */
-  --mar:   #506DD6;   /* el azul del lockup actual, medido. Vive SÓLO dentro
-                         del lockup del sitio heredado hasta G0. Ningún otro
-                         elemento del sistema es azul — ver «Abierto» */
+  --mar:   #506DD6;   
 
-  /* --- velos: lo que va entre la fotografía y el texto -------------------- */
-  --velo-claro:  rgba(242, 237, 227, .34);  /* sobre foto clara: texto pino */
-  --velo-oscuro: rgba(20, 42, 33, .44);     /* sobre foto oscura: texto hueso */
-  --umbral:      .55;                       /* claridad media (L* de CIE / 100) por
-                                               encima de la cual una foto cuenta
-                                               como clara. Lo decide el JS, no el ojo */
-  --grano:       .05;                       /* grano de película sobre VERANO */
+  --velo-claro:  rgba(242, 237, 227, .34);  
+  --velo-oscuro: rgba(20, 42, 33, .44);     
+  --umbral:      .55;                       
+  --grano:       .05;                       
 
-  /* --- las tres maneras de poner texto sobre una foto (ver _engine/foto.css) --- */
-  --grad-from:   28%;    /* 1 · degradado: dónde empieza a aparecer el color */
-  --grad-mid:    68%;    /*     dónde llega a media opacidad */
-  --grad-max:    .96;    /*     opacidad al pie — casi plano, nunca 1 */
-  --blur:        14px;   /* 3 · desenfoque: radio */
-  --blur-velo:   .7;     /*     cuánto del velo se aplica encima del blur (0–1) */
+  --grad-from:   28%;    
+  --grad-mid:    68%;    
+  --grad-max:    .96;    
+  --blur:        14px;   
+  --blur-velo:   .7;     
 
-  /* --- tipografía: tres familias ------------------------------------------ */
-  --serif: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;  /* 300 · 400 · 500 + itálica */
-  --sans:  "DM Sans", "Helvetica Neue", Arial, sans-serif;               /* 400 · 500 */
-  --mono:  "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;    /* datos, tokens */
+  --serif: "Cormorant Garamond", "Cormorant", Garamond, Georgia, serif;  
+  --sans:  "DM Sans", "Helvetica Neue", Arial, sans-serif;               
+  --mono:  "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;    
 
-  /* escala display — las voces de la serif */
-  --t-titulo:  clamp(44px, 9vw, 136px);     /* versales 300, tracking .06em */
-  --t-cita:    clamp(44px, 8.4vw, 128px);   /* itálica 400 entre comillas */
-  --t-cifra:   clamp(56px, 10vw, 150px);    /* numerales 300 */
-  --t-display: clamp(30px, 4.6vw, 64px);    /* titular de plancha, 400 */
-  --t-h2:      clamp(26px, 3vw, 40px);      /* cabezal de sección, itálica 400 */
-  --t-lead:    clamp(19px, 2vw, 24px);      /* el primer párrafo, serif 400 */
-  --t-sub:     clamp(17px, 1.7vw, 22px);    /* subtítulo, serif 500 */
-  /* escala de texto — la sans */
-  --t-body:    15px;                        /* cuerpo, 400 — nunca 300 */
-  --t-lbl:     clamp(10px, .9vw, 11px);     /* etiqueta: 500, versales, tracking .2em */
-  --t-mono:    11.5px;                      /* datos */
-  --t-micro:   10px;                        /* piso. Nada baja de acá */
+  --t-titulo:  clamp(44px, 9vw, 136px);     
+  --t-cita:    clamp(44px, 8.4vw, 128px);   
+  --t-cifra:   clamp(56px, 10vw, 150px);    
+  --t-display: clamp(30px, 4.6vw, 64px);    
+  --t-h2:      clamp(26px, 3vw, 40px);      
+  --t-lead:    clamp(19px, 2vw, 24px);      
+  --t-sub:     clamp(17px, 1.7vw, 22px);    
+  
+  --t-body:    15px;                        
+  --t-lbl:     clamp(10px, .9vw, 11px);     
+  --t-mono:    11.5px;                      
+  --t-micro:   10px;                        
 
-  /* --- reglas y mobiliario ------------------------------------------------ */
   --hair:      1px;
-  --rule:      1px solid rgba(30, 58, 47, .18);   /* filete — el único grosor de regla */
-  --rule-head: 1px solid var(--pino);             /* regla de cabezal: fina, no gruesa */
-  --track:     .2em;       /* tracking de etiquetas */
-  --track-caps: .26em;     /* versales chicas (sello, pie) */
-  --track-big: .06em;      /* versales display */
-  --clear:     1;          /* área de respeto del lockup = 1 alto de ola, por lado */
+  --rule:      1px solid rgba(30, 58, 47, .18);   
+  --rule-head: 1px solid var(--pino);             
+  --track:     .2em;       
+  --track-caps: .26em;     
+  --track-big: .06em;      
+  --clear:     1;          
 
-  /* --- ritmo -------------------------------------------------------------- */
   --pad:    clamp(1.1rem, 3vw, 2.6rem);
   --sheet:  1160px;
-  --plancha-w: 1920px;     /* el deck: 16:9 */
+  --plancha-w: 1920px;     
   --plancha-h: 1080px;
-  --tile:   1080px;        /* social: 1080×1350 (4:5) y 1080×1080 */
+  --tile:   1080px;        
 
-  /* --- curvas nombradas --------------------------------------------------- */
-  --ease:    cubic-bezier(.3, .7, .2, 1);   /* una sola curva: lenta, sin rebote */
+  --ease:    cubic-bezier(.3, .7, .2, 1);   
   --d-fade:  .6s;
   --d-hover: .25s;
 }
 
-/* El radio del sistema es cero. Dos excepciones nombradas, y sólo esas:
-   la ELIPSE (el óvalo de precio) y el SELLO (el círculo). */
 *, *::before, *::after{ border-radius: 0; }
 
-/* ===========================================================================
-   Casa Manantial — texto sobre fotografía · las tres maneras · V0.1.0
-   ---------------------------------------------------------------------------
-   Toda pieza que pone texto sobre una foto usa UNA de estas tres clases sobre
-   un contenedor con la foto de fondo (background-image, cover). Nunca texto
-   sobre la foto desnuda. Los hijos quedan por encima del tratamiento.
-
-     .foto.foto--grad   1 · DEGRADADO de abajo hacia arriba, en cualquiera de
-                        los colores de la paleta (g-hueso · g-lino · g-pino ·
-                        g-noche · g-oro). El texto va al pie. Portadas, heros,
-                        la plancha de cita, el tile de ritual.
-     .foto.foto--velo   2 · VELO INTELIGENTE: una capa plana, hueso o pino,
-                        según la claridad medida de la foto. El texto puede ir
-                        en cualquier lado. Tiles, planchas, lockup sobre foto.
-     .foto.foto--blur   3 · DESENFOQUE: la foto pasa a fondo (blur + velo
-                        suave) y el texto manda. La tapa de mes, el diario,
-                        cualquier pieza donde la foto acompaña y no es el tema.
-
-   El tono lo decide el JS (función `tone`, en las guidelines §07): mide la
-   claridad L* de la foto bajo el texto y escribe data-tone="light|dark" en
-   el contenedor. Con data-smart, las tres clases lo respetan: el degradado
-   elige hueso o pino solo, el velo elige su color, el blur elige su velo.
-   Sin data-smart, el degradado toma el color de su clase g-* y el velo y el
-   blur asumen foto oscura (texto hueso). Una pieza estática (deck, print)
-   mide una vez y fija la clase.
-   =========================================================================== */
 .foto{ position: relative; isolation: isolate; overflow: hidden;
        background-size: cover; background-position: 50% 50%; color: var(--txt, var(--hueso)); }
 .foto > *{ position: relative; z-index: 1; }
 .foto::before, .foto::after{ content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .foto::after{ content: none; }
 
-/* el tono: lo escribe el JS, lo pueden fijar a mano las piezas estáticas */
 .foto[data-tone="light"]{ --txt: var(--pino);  --veil: var(--velo-claro);  --g-rgb: 242,237,227; }
 .foto[data-tone="dark"] { --txt: var(--hueso); --veil: var(--velo-oscuro); --g-rgb: 20,42,33; }
 
-/* 1 · degradado ----------------------------------------------------------- */
 .foto--grad{ --g-rgb: 30,58,47; }
 .foto--grad::before{
   background: linear-gradient(180deg,
@@ -165,22 +92,12 @@
 .foto--grad.g-noche{ --g-rgb: 20,42,33;    --txt: var(--hueso); }
 .foto--grad.g-oro  { --g-rgb: 179,149,92;  --txt: var(--pino); }
 
-/* 2 · velo inteligente ---------------------------------------------------- */
 .foto--velo::before{ background: var(--veil, var(--velo-oscuro)); }
 
-/* 3 · desenfoque ----------------------------------------------------------- */
 .foto--blur::before{ background: inherit; background-size: cover; background-position: inherit;
   filter: blur(var(--blur)); transform: scale(1.08); }
 .foto--blur::after{ content: ""; background: var(--veil, var(--velo-oscuro)); opacity: var(--blur-velo); }
 
-/* ===========================================================================
-   Casa Manantial — hoja compartida de los decks · 1920×1080 · V0.1.0
-   ---------------------------------------------------------------------------
-   Extraída del deck Tiers (2026-10-20) para que todo deck nuevo sea un
-   template con sus planchas + un build de diez líneas. Se incluye DESPUÉS de
-   tokens.css y foto.css con la directiva «include deck». Todo escala por --u
-   (= min(100vw/1920, 100vh/1080)); el PDF se saca con deck-pdf.py.
-   =========================================================================== */
 *{ box-sizing: border-box; }
 html{ scroll-snap-type: y mandatory; }
 body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
@@ -191,7 +108,7 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .pl.pino{ background: var(--pino); color: var(--hueso); }
 .pl.noche{ background: var(--noche); color: var(--hueso); }
 .pl.lino{ background: var(--lino); }
-/* chrome fijo de cada plancha */
+
 .ceja{ position: absolute; top: calc(var(--u) * 72); left: calc(var(--u) * 96); right: calc(var(--u) * 96); display: flex; justify-content: space-between; }
 .ceja div + div{ text-align: right; }
 .lbl{ font-family: var(--sans); font-weight: 500; font-size: calc(var(--u) * 15); letter-spacing: var(--track); text-transform: uppercase; }
@@ -202,7 +119,7 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .pie{ position: absolute; bottom: calc(var(--u) * 60); left: calc(var(--u) * 96); right: calc(var(--u) * 96); display: flex; justify-content: space-between; align-items: baseline; }
 .pie span{ font-family: var(--sans); font-size: calc(var(--u) * 15); letter-spacing: .06em; }
 .pie span + span{ font-family: var(--serif); font-size: calc(var(--u) * 20); letter-spacing: 0; }
-/* voces */
+
 .titulo{ font-family: var(--serif); font-weight: 300; text-transform: uppercase; letter-spacing: var(--track-big); line-height: .95; }
 .cita{ font-family: var(--serif); font-style: italic; font-weight: 400; line-height: 1; }
 .h{ font-family: var(--serif); font-weight: 400; line-height: 1.08; }
@@ -210,7 +127,7 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .body{ font-family: var(--sans); font-size: calc(var(--u) * 22); line-height: 1.55; }
 .mono{ font-family: var(--mono); font-size: calc(var(--u) * 15); letter-spacing: .06em; }
 .elipse{ display: inline-block; padding: .6em 1.6em; border: 1px solid currentColor; border-radius: 50%; font-family: var(--serif); font-weight: 400; font-size: calc(var(--u) * 34); line-height: 1; }
-/* layouts */
+
 .centro{ position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: calc(var(--u) * 28); padding: 0 calc(var(--u) * 160); }
 .centro .ola-c{ width: calc(var(--u) * 46); }
 .centro .ola-c svg{ display: block; width: 100%; height: auto; }
@@ -220,7 +137,7 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .fotocol .ph{ background-size: cover; background-position: 50% 50%; }
 .trip{ position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr 1fr; }
 .trip > div{ display: grid; grid-template-rows: auto calc(var(--u) * 100) auto; align-content: start; justify-items: center; text-align: center; padding: calc(var(--u) * 300) calc(var(--u) * 60) calc(var(--u) * 120); gap: calc(var(--u) * 18); }
-.trip .lbl{ align-self: start; }  /* las tres bajadas arrancan en la misma línea aunque el rótulo ocupe 1 o 4 líneas */
+.trip .lbl{ align-self: start; }  
 .trip .c1{ background: var(--hueso); color: var(--pino); } .trip .c2{ background: var(--lino); color: var(--pino); } .trip .c3{ background: var(--pino); color: var(--hueso); }
 .trip .c3 .cifra{ color: var(--oro); }
 .trip .cifra{ font-size: calc(var(--u) * 150); }
@@ -256,7 +173,7 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .fmt .elipse{ margin-top: auto; font-size: calc(var(--u) * 28); }
 .fmt .c3 .elipse{ border-color: var(--oro); color: var(--oro); }
 .ind{ position: absolute; left: calc(var(--u) * 96); right: calc(var(--u) * 96); top: calc(var(--u) * 200); bottom: calc(var(--u) * 130); display: grid; grid-template-columns: calc(var(--u) * 420) 1fr; gap: calc(var(--u) * 80); align-items: center; }
-.ind .big{ font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 260); line-height: .9; font-variant-numeric: lining-nums; }  /* lining: las cifras elzevirianas de Cormorant bajan de la base y pisan el rótulo */
+.ind .big{ font-family: var(--serif); font-weight: 300; font-size: calc(var(--u) * 260); line-height: .9; font-variant-numeric: lining-nums; }  
 .ind .six{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: calc(var(--u) * 50) calc(var(--u) * 40); }
 .ind .six div{ text-align: center; }
 .ind .six .w{ font-family: var(--serif); font-weight: 400; font-size: calc(var(--u) * 72); line-height: 1; }
@@ -271,10 +188,10 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .cierre .mail{ font-family: var(--serif); font-size: calc(var(--u) * 34); line-height: 1; margin-top: calc(var(--u) * 26); }
 .cierre .lbl{ opacity: .85; }
 .cierre .lk svg{ display: block; width: 100%; height: auto; }
-/* texto al pie sobre foto (tratamiento 1) */
+
 .foto.full{ position: absolute; inset: 0; }
 .foto.full .txt{ position: absolute; left: calc(var(--u) * 96); right: calc(var(--u) * 96); bottom: calc(var(--u) * 150); }
-/* folio, progreso, teclado */
+
 .prog{ position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 40; background: var(--oro); transform-origin: left; transform: scaleX(var(--p, 0)); }
 .folio{ position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 30; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; color: var(--hueso); opacity: .7; pointer-events: none; }
 .kbd{ position: fixed; right: 16px; bottom: 12px; z-index: 30; font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--hueso); opacity: .6; pointer-events: none; }
@@ -282,7 +199,6 @@ body{ margin: 0; background: var(--noche); color: var(--pino); font-family: var(
 .draft{ position: fixed; left: 16px; bottom: 12px; z-index: 30; font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--oro); pointer-events: none; }
 @media print{ .prog, .kbd, .folio, .draft{ display: none !important; } .slide{ break-after: page; } }
 
-/* la propuesta y la inversión */
 .prop{ position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
 .prop .l{ padding: calc(var(--u) * 150) calc(var(--u) * 96) calc(var(--u) * 120); display: flex; flex-direction: column; gap: calc(var(--u) * 22); }
 .prop .l .ph{ margin-top: calc(var(--u) * 10); flex: 1; min-height: calc(var(--u) * 380); background-size: cover; background-position: 50% 60%; }
